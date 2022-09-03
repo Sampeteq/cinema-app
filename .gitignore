@@ -1,5 +1,8 @@
 .idea
 .mvn
+HELP.md
+mvnw
 target
 *.iml
 *.db
+*.cmd

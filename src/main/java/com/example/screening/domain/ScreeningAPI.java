@@ -22,18 +22,18 @@ public class ScreeningAPI {
     private final ScreeningRepository screeningRepository;
     private final FilmAPI filmAPI;
 
-    public ScreeningDTO addScreening(AddScreeningDTO cmd) {
-        if (filmAPI.isFilmPresent(cmd.filmId() ) ) {
+    public ScreeningDTO addScreening(AddScreeningDTO dto) {
+        if (filmAPI.isFilmPresent(dto.filmId() ) ) {
             return screeningRepository.save(
                     new Screening(
-                    cmd.shownAt(),
-                    cmd.freeSeats(),
-                    cmd.minAge(),
-                    cmd.filmId()
+                    dto.shownAt(),
+                    dto.freeSeats(),
+                    dto.minAge(),
+                    dto.filmId()
                     )
             ).toDTO();
         } else {
-            throw new FilmNotFoundException(cmd.filmId() );
+            throw new FilmNotFoundException(dto.filmId() );
         }
     }
 

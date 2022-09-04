@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,5 +30,10 @@ class ScreeningController {
     @GetMapping("/screenings/film/{filmId}")
     List<ScreeningDTO> readScreeningsByFilmId(@PathVariable UUID filmId) {
         return screeningAPI.readScreeningsByFilmId(filmId);
+    }
+
+    @GetMapping("/screenings/date")
+    List<ScreeningDTO> readScreeningsByDate(@RequestParam LocalDateTime date) {
+        return screeningAPI.readAllScreeningsByDate(date);
     }
 }

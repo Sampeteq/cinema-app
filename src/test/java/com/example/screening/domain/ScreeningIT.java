@@ -57,6 +57,20 @@ class ScreeningIT {
         );
     }
 
+    @Test
+    void should_return_screenings_by_date() {
+        var sampleFilms= addSampleFilms();
+        var sampleFilmId1= sampleFilms.get(0).filmId();
+        var sampleFilmId2= sampleFilms.get(1).filmId();
+        var sampleScreenings= addSampleScreenings(sampleFilmId1, sampleFilmId2);
+        var date = sampleScreenings.get(0).shownAt();
+        assertThat(
+                screeningAPI.readAllScreeningsByDate(date)
+        ).allMatch(
+                screening -> screening.filmId().equals(sampleFilmId1 )
+        );
+    }
+
     private FilmDTO addSampleFilm() {
         return filmAPI.addFilm(new AddFilmDTO("Sample film", FilmCategory.COMEDY));
     }

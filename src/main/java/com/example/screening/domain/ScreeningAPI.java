@@ -88,4 +88,12 @@ public class ScreeningAPI {
                 .findById(screeningId)
                 .orElseThrow( () -> new ScreeningNotFoundException(screeningId) );
     }
+
+    public List<ScreeningDTO> readAllScreeningsByDate(LocalDateTime date) {
+        return screeningRepository
+                .findAllByShownAt(date)
+                .stream()
+                .map(Screening::toDTO)
+                .toList();
+    }
 }

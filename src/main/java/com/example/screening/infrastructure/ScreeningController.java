@@ -26,7 +26,7 @@ class ScreeningController {
         return screeningAPI.readAllScreenings();
     }
 
-    @GetMapping("/screenings/{filmId}")
+    @GetMapping("/screenings/film/{filmId}")
     List<ScreeningDTO> readScreeningsByFilmId(@PathVariable UUID filmId) {
         return screeningAPI.readScreeningsByFilmId(filmId);
     }

@@ -12,6 +12,10 @@ public class FilmTestSpec {
     @Autowired
     public FilmAPI filmAPI;
 
+    public AddFilmDTO sampleAddFilmDto() {
+        return new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022);
+    }
+
     public FilmDTO addSampleFilm() {
         return filmAPI.addFilm(
                 new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022)

@@ -13,10 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-class FilmIT {
-    @Autowired
-    private FilmAPI filmAPI;
-
+class FilmIT extends FilmTestSpec {
     @Test
     void should_add_film() {
         var addedFilm= filmAPI.addFilm(sampleAddFilmDto() );
@@ -36,17 +33,6 @@ class FilmIT {
                 filmAPI.readFilmsByCategory(FilmCategory.COMEDY )
         ).allMatch(
                 film -> film.category().equals(FilmCategory.COMEDY)
-        );
-    }
-
-    private AddFilmDTO sampleAddFilmDto() {
-        return new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022);
-    }
-
-    private List<FilmDTO> addSampleFilms() {
-        return List.of(
-                filmAPI.addFilm(new AddFilmDTO("Sample film 1", FilmCategory.COMEDY, 2022)),
-                filmAPI.addFilm(new AddFilmDTO("Sample film 2", FilmCategory.ACTION, 2021))
         );
     }
 }

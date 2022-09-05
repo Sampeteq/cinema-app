@@ -30,7 +30,7 @@ public class TicketAPI {
     @Transactional
     public void cancel(UUID ticketId, LocalDateTime currentDate) {
         var ticket = getTicketOrThrowException(ticketId);
-        screeningAPI.checkCancelPossibility(ticket.getScreeningId(), currentDate);
+        screeningAPI.checkCancelReservationPossibility(ticket.getScreeningId(), currentDate);
         ticket.cancel();
     }
 

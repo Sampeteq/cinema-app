@@ -10,7 +10,6 @@ import com.example.ticket.domain.exception.TooLateToCancelTicketReservationExcep
 import com.example.ticket.domain.exception.WrongTicketAgeException;
 import lombok.AllArgsConstructor;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -73,11 +72,11 @@ public class ScreeningAPI {
         }
     }
 
-    public void checkCancelPossibility(UUID screeningId, LocalDateTime currentDate) {
+    public void checkCancelReservationPossibility(UUID screeningId, LocalDateTime currentDate) {
         var screening = screeningRepository
                 .findById(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
-        if (Duration.between(currentDate, screening.getDate()).toHours() < 24) {
+        if (!screening.canCancelReservation(currentDate) ) {
             throw new TooLateToCancelTicketReservationException();
         }
     }

@@ -10,6 +10,7 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -49,6 +50,10 @@ class Screening {
 
     boolean hasFreeSeats() {
         return this.freeSeats > 0;
+    }
+
+    boolean canCancelReservation(LocalDateTime currentDate) {
+        return Duration.between(currentDate, this.date).toHours() > 24;
     }
 
     ScreeningDTO toDTO() {

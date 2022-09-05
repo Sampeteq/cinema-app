@@ -2,6 +2,7 @@ package com.example.screening.domain;
 
 import com.example.film.domain.FilmAPI;
 import com.example.film.domain.FilmCategory;
+import com.example.film.domain.FilmTestSpec;
 import com.example.film.domain.dto.AddFilmDTO;
 import com.example.film.domain.dto.FilmDTO;
 import com.example.screening.domain.dto.AddScreeningDTO;
@@ -19,12 +20,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-class ScreeningIT {
+class ScreeningIT extends FilmTestSpec {
     @Autowired
     private ScreeningAPI screeningAPI;
-
-    @Autowired
-    private FilmAPI filmAPI;
 
     @Test
     void should_add_screening() {
@@ -69,16 +67,6 @@ class ScreeningIT {
         ).allMatch(
                 screening -> screening.filmId().equals(sampleFilmId1 )
         );
-    }
-
-    private FilmDTO addSampleFilm() {
-        return filmAPI.addFilm(new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022));
-    }
-
-    private List<FilmDTO> addSampleFilms() {
-        var sampleFilm1= filmAPI.addFilm(new AddFilmDTO("Sample film 1", FilmCategory.COMEDY, 2022));
-        var sampleFilm2= filmAPI.addFilm(new AddFilmDTO("Sample film 2", FilmCategory.ACTION, 2021) );
-        return List.of(sampleFilm1, sampleFilm2);
     }
 
     private static AddScreeningDTO sampleAddScreeningDTO(FilmDTO addedFilm) {

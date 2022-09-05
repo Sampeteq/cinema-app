@@ -2,6 +2,7 @@ package com.example.ticket.domain;
 
 import com.example.film.domain.FilmAPI;
 import com.example.film.domain.FilmCategory;
+import com.example.film.domain.FilmTestSpec;
 import com.example.film.domain.dto.AddFilmDTO;
 import com.example.film.domain.dto.FilmDTO;
 import com.example.screening.domain.ScreeningAPI;
@@ -27,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
-class TicketIT {
+class TicketIT extends FilmTestSpec {
 
     @Autowired
     private TicketAPI ticketAPI;
@@ -35,8 +36,8 @@ class TicketIT {
     @Autowired
     private ScreeningAPI screeningAPI;
 
-    @Autowired
-    private FilmAPI filmAPI;
+//    @Autowired
+//    private FilmAPI filmAPI;
 
     @Autowired
     private UnderageTicketDiscountPolicy underageTicketDiscountPolicy;
@@ -143,9 +144,9 @@ class TicketIT {
        ).isEqualTo(sampleTickets);
     }
 
-    private FilmDTO addSampleFilm() {
-        return filmAPI.addFilm(new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022) );
-    }
+//    private FilmDTO addSampleFilm() {
+//        return filmAPI.addFilm(new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022) );
+//    }
 
     private ScreeningDTO addSampleScreening(UUID sampleFilmId) {
         return screeningAPI.addScreening(

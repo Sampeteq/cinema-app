@@ -4,10 +4,12 @@ import com.example.screening.domain.ScreeningAPI;
 import com.example.screening.domain.dto.AddScreeningDTO;
 import com.example.screening.domain.dto.ScreeningDTO;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +35,7 @@ class ScreeningController {
     }
 
     @GetMapping("/screenings/date")
-    List<ScreeningDTO> readScreeningsByDate(@RequestParam LocalDateTime date) {
+    List<ScreeningDTO> readScreeningsByDate(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime date) {
         return screeningAPI.readAllScreeningsByDate(date);
     }
 }

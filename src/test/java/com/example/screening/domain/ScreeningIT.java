@@ -47,7 +47,7 @@ class ScreeningIT extends ScreeningTestSpec {
         assertThat(
                 screeningAPI.readAllScreeningsByDate(date)
         ).allMatch(
-                screening -> screening.filmId().equals(sampleFilmId1)
+                screening -> screening.date().equals(date)
         );
     }
 }

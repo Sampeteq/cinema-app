@@ -1,11 +1,9 @@
 package com.example.film.domain;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Transactional
 class FilmIT extends FilmTestSpec {
     @Test
     void should_add_film() {

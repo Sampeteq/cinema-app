@@ -72,12 +72,12 @@ class ScreeningIT {
     }
 
     private FilmDTO addSampleFilm() {
-        return filmAPI.addFilm(new AddFilmDTO("Sample film", FilmCategory.COMEDY));
+        return filmAPI.addFilm(new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022));
     }
 
     private List<FilmDTO> addSampleFilms() {
-        var sampleFilm1= filmAPI.addFilm(new AddFilmDTO("Sample film 1", FilmCategory.COMEDY) );
-        var sampleFilm2= filmAPI.addFilm(new AddFilmDTO("Sample film 2", FilmCategory.ACTION) );
+        var sampleFilm1= filmAPI.addFilm(new AddFilmDTO("Sample film 1", FilmCategory.COMEDY, 2022));
+        var sampleFilm2= filmAPI.addFilm(new AddFilmDTO("Sample film 2", FilmCategory.ACTION, 2021) );
         return List.of(sampleFilm1, sampleFilm2);
     }
 

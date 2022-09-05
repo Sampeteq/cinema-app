@@ -13,7 +13,7 @@ public class FilmAPI {
     private final FilmRepository filmRepository;
 
     public FilmDTO addFilm(AddFilmDTO cmd) {
-        return filmRepository.save(new Film(cmd.title(), cmd.filmCategory() ) ).toDTO();
+        return filmRepository.save(new Film(cmd.title(), cmd.filmCategory(), cmd.year() ) ).toDTO();
     }
 
     public FilmDTO readFilmById(UUID filmId) {

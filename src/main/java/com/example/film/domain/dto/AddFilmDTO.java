@@ -8,4 +8,5 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public record AddFilmDTO(
         @NotBlank(message = "empty") String title,
-        FilmCategory filmCategory) {}
+        FilmCategory filmCategory,
+        int year) {}

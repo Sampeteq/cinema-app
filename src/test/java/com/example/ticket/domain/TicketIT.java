@@ -144,7 +144,7 @@ class TicketIT {
     }
 
     private FilmDTO addSampleFilm() {
-        return filmAPI.addFilm(new AddFilmDTO("Sample film", FilmCategory.COMEDY) );
+        return filmAPI.addFilm(new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022) );
     }
 
     private ScreeningDTO addSampleScreening(UUID sampleFilmId) {

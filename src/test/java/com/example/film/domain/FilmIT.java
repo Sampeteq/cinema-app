@@ -40,13 +40,13 @@ class FilmIT {
     }
 
     private AddFilmDTO sampleAddFilmDto() {
-        return new AddFilmDTO("Sample film", FilmCategory.COMEDY);
+        return new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022);
     }
 
     private List<FilmDTO> addSampleFilms() {
         return List.of(
-                filmAPI.addFilm(new AddFilmDTO("Sample film 1", FilmCategory.COMEDY)),
-                filmAPI.addFilm(new AddFilmDTO("Sample film 2", FilmCategory.ACTION))
+                filmAPI.addFilm(new AddFilmDTO("Sample film 1", FilmCategory.COMEDY, 2022)),
+                filmAPI.addFilm(new AddFilmDTO("Sample film 2", FilmCategory.ACTION, 2021))
         );
     }
 }

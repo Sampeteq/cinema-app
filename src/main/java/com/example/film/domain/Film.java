@@ -20,14 +20,17 @@ class Film {
     @Enumerated(EnumType.STRING)
     private FilmCategory category;
 
+    private int year;
+
     protected Film() {}
 
-    Film(String title, FilmCategory category) {
+    Film(String title, FilmCategory category, int year) {
         this.title = title;
         this.category = category;
+        this.year = year;
     }
 
     FilmDTO toDTO() {
-        return new FilmDTO(this.id, this.title, this.category);
+        return new FilmDTO(this.id, this.title, this.category, this.year);
     }
 }

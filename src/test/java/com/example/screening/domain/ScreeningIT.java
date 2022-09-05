@@ -1,28 +1,14 @@
 package com.example.screening.domain;
 
-import com.example.film.domain.FilmAPI;
-import com.example.film.domain.FilmCategory;
-import com.example.film.domain.FilmTestSpec;
-import com.example.film.domain.dto.AddFilmDTO;
-import com.example.film.domain.dto.FilmDTO;
-import com.example.screening.domain.dto.AddScreeningDTO;
-import com.example.screening.domain.dto.ScreeningDTO;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-class ScreeningIT extends FilmTestSpec {
-    @Autowired
-    private ScreeningAPI screeningAPI;
+class ScreeningIT extends ScreeningTestSpec {
 
     @Test
     void should_add_screening() {
@@ -67,43 +53,5 @@ class ScreeningIT extends FilmTestSpec {
         ).allMatch(
                 screening -> screening.filmId().equals(sampleFilmId1 )
         );
-    }
-
-    private static AddScreeningDTO sampleAddScreeningDTO(FilmDTO addedFilm) {
-        return AddScreeningDTO
-                .builder()
-                .filmId(addedFilm.filmId() )
-                .date(LocalDateTime.parse("2022-05-05T16:30") )
-                .freeSeats(100)
-                .minAge(13)
-                .build();
-    }
-
-    private List<ScreeningDTO> addSampleScreenings(UUID sampleFilmId1, UUID sampleFilmId2) {
-        var screening1 = screeningAPI.addScreening(
-                AddScreeningDTO
-                        .builder()
-                        .filmId(sampleFilmId1)
-                        .date(LocalDateTime.parse("2022-05-05T16:00") )
-                        .freeSeats(100)
-                        .minAge(13)
-                        .build() );
-        var screening2= screeningAPI.addScreening(
-                AddScreeningDTO
-                        .builder()
-                        .filmId(sampleFilmId1 )
-                        .date(LocalDateTime.parse("2022-06-09T17:30") )
-                        .freeSeats(100)
-                        .minAge(13)
-                        .build() );
-        var screening3= screeningAPI.addScreening(
-                AddScreeningDTO
-                        .builder()
-                        .filmId(sampleFilmId2 )
-                        .date(LocalDateTime.parse("2022-08-01T19:30") )
-                        .freeSeats(100)
-                        .minAge(15)
-                        .build() );
-        return List.of(screening1, screening2, screening3);
     }
 }

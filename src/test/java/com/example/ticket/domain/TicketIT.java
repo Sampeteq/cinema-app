@@ -6,6 +6,7 @@ import com.example.film.domain.FilmTestSpec;
 import com.example.film.domain.dto.AddFilmDTO;
 import com.example.film.domain.dto.FilmDTO;
 import com.example.screening.domain.ScreeningAPI;
+import com.example.screening.domain.ScreeningTestSpec;
 import com.example.screening.domain.dto.AddScreeningDTO;
 import com.example.screening.domain.dto.ScreeningDTO;
 import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
@@ -28,16 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
-class TicketIT extends FilmTestSpec {
+class TicketIT extends ScreeningTestSpec {
 
     @Autowired
     private TicketAPI ticketAPI;
-
-    @Autowired
-    private ScreeningAPI screeningAPI;
-
-//    @Autowired
-//    private FilmAPI filmAPI;
 
     @Autowired
     private UnderageTicketDiscountPolicy underageTicketDiscountPolicy;
@@ -142,43 +137,6 @@ class TicketIT extends FilmTestSpec {
        assertThat(
                ticketAPI.readAllTickets()
        ).isEqualTo(sampleTickets);
-    }
-
-//    private FilmDTO addSampleFilm() {
-//        return filmAPI.addFilm(new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022) );
-//    }
-
-    private ScreeningDTO addSampleScreening(UUID sampleFilmId) {
-        return screeningAPI.addScreening(
-                AddScreeningDTO
-                        .builder()
-                        .filmId(sampleFilmId )
-                        .date(LocalDateTime.parse("2022-05-05T16:30") )
-                        .freeSeats(100)
-                        .minAge(13)
-                        .build() );
-    }
-
-    private ScreeningDTO addSampleScreening(UUID sampleFilmId, LocalDateTime screeningDate) {
-        return screeningAPI.addScreening(
-                AddScreeningDTO
-                        .builder()
-                        .filmId(sampleFilmId )
-                        .date(screeningDate)
-                        .freeSeats(100)
-                        .minAge(13)
-                        .build() );
-    }
-
-    private ScreeningDTO addSampleScreeningWithNoFreeSeats(UUID sampleFilmId) {
-        return screeningAPI.addScreening(
-                AddScreeningDTO
-                        .builder()
-                        .filmId(sampleFilmId )
-                        .date(LocalDateTime.parse("2022-05-05T16:30") )
-                        .freeSeats(0)
-                        .minAge(13)
-                        .build() );
     }
 
     private static ReserveTicketDTO sampleReserveTicketDTO(UUID sampleScreeningId, int age) {

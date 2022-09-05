@@ -14,11 +14,11 @@ class ParameterExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<?> getAdvice(MethodArgumentNotValidException exception) {
-        var errors= exception
+        var errors = exception
                 .getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage) );
+                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }

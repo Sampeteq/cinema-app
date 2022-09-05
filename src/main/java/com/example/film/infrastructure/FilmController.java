@@ -31,7 +31,7 @@ class FilmController {
 
     @GetMapping("/films/category")
     List<FilmDTO> readAllFilmsByCategory(@RequestParam FilmCategory category) {
-       return filmAPI.readFilmsByCategory(category);
+        return filmAPI.readFilmsByCategory(category);
     }
 }
 

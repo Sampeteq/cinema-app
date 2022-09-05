@@ -20,16 +20,16 @@ public class TicketAPI {
 
     @Transactional
     public TicketDTO reserveTicket(ReserveTicketDTO dto) {
-        screeningAPI.checkReservePossibility(dto.screeningId(), dto.age() );
+        screeningAPI.checkReservePossibility(dto.screeningId(), dto.age());
         var ticket = ticketFactory.createTicket(dto);
-        var addedTicket= ticketRepository.save(ticket);
-        screeningAPI.decreaseFreeSeatsByOne(dto.screeningId() );
+        var addedTicket = ticketRepository.save(ticket);
+        screeningAPI.decreaseFreeSeatsByOne(dto.screeningId());
         return addedTicket.toDTO();
     }
 
     @Transactional
     public void cancel(UUID ticketId, LocalDateTime currentDate) {
-        var ticket= getTicketOrThrowException(ticketId);
+        var ticket = getTicketOrThrowException(ticketId);
         screeningAPI.checkCancelPossibility(ticket.getScreeningId(), currentDate);
         ticket.cancel();
     }
@@ -49,6 +49,6 @@ public class TicketAPI {
     private Ticket getTicketOrThrowException(UUID ticketId) {
         return ticketRepository
                 .findById(ticketId)
-                .orElseThrow( () -> new TicketNotFoundException(ticketId) );
+                .orElseThrow(() -> new TicketNotFoundException(ticketId));
     }
 }

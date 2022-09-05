@@ -14,4 +14,5 @@ public record TicketDTO(
         BigDecimal prize,
         TicketStatus status,
         UUID screeningId
-) { }
+) {
+}

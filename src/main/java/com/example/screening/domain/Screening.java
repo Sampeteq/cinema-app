@@ -32,7 +32,8 @@ class Screening {
 
     private UUID filmId;
 
-    protected Screening() {}
+    protected Screening() {
+    }
 
     boolean isAgeEnough(int age) {
         return age >= this.minAge;

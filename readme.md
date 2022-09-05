@@ -1,6 +1,5 @@
 This is a cinema-app to browse films, making reservations for their screenings and management for admins.
 
-
 Tech stack: Java 17, Spring Boot 2.6.7, Lombok, H2 DB, Open API
 
 API available on localhost:8080/swagger-ui:

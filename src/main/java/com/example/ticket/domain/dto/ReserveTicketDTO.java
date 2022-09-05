@@ -13,4 +13,5 @@ public record ReserveTicketDTO(
         @NotBlank String firstName,
 
         @NotBlank String lastName,
-        @Min(value = ScreeningValues.SCREENING_MIN_AGE) int age) {}
+        @Min(value = ScreeningValues.SCREENING_MIN_AGE) int age) {
+}

@@ -23,7 +23,8 @@ class Film {
 
     private int year;
 
-    protected Film() {}
+    protected Film() {
+    }
 
     Film(String title, FilmCategory category, int year) {
         this.title = title;

@@ -18,8 +18,8 @@ public class ScreeningTestSpec extends FilmTestSpec {
     public static AddScreeningDTO sampleAddScreeningDTO(FilmDTO addedFilm) {
         return AddScreeningDTO
                 .builder()
-                .filmId(addedFilm.filmId() )
-                .date(LocalDateTime.parse("2022-05-05T16:30") )
+                .filmId(addedFilm.filmId())
+                .date(LocalDateTime.parse("2022-05-05T16:30"))
                 .freeSeats(100)
                 .minAge(13)
                 .build();
@@ -29,33 +29,33 @@ public class ScreeningTestSpec extends FilmTestSpec {
         return screeningAPI.addScreening(
                 AddScreeningDTO
                         .builder()
-                        .filmId(sampleFilmId )
-                        .date(LocalDateTime.parse("2022-05-05T16:30") )
+                        .filmId(sampleFilmId)
+                        .date(LocalDateTime.parse("2022-05-05T16:30"))
                         .freeSeats(100)
                         .minAge(13)
-                        .build() );
+                        .build());
     }
 
     public ScreeningDTO addSampleScreening(UUID sampleFilmId, LocalDateTime screeningDate) {
         return screeningAPI.addScreening(
                 AddScreeningDTO
                         .builder()
-                        .filmId(sampleFilmId )
+                        .filmId(sampleFilmId)
                         .date(screeningDate)
                         .freeSeats(100)
                         .minAge(13)
-                        .build() );
+                        .build());
     }
 
     public ScreeningDTO addSampleScreeningWithNoFreeSeats(UUID sampleFilmId) {
         return screeningAPI.addScreening(
                 AddScreeningDTO
                         .builder()
-                        .filmId(sampleFilmId )
-                        .date(LocalDateTime.parse("2022-05-05T16:30") )
+                        .filmId(sampleFilmId)
+                        .date(LocalDateTime.parse("2022-05-05T16:30"))
                         .freeSeats(0)
                         .minAge(13)
-                        .build() );
+                        .build());
     }
 
     public List<ScreeningDTO> addSampleScreenings(UUID sampleFilmId1, UUID sampleFilmId2) {
@@ -63,26 +63,26 @@ public class ScreeningTestSpec extends FilmTestSpec {
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId1)
-                        .date(LocalDateTime.parse("2022-05-05T16:00") )
+                        .date(LocalDateTime.parse("2022-05-05T16:00"))
                         .freeSeats(100)
                         .minAge(13)
-                        .build() );
-        var screening2= screeningAPI.addScreening(
+                        .build());
+        var screening2 = screeningAPI.addScreening(
                 AddScreeningDTO
                         .builder()
-                        .filmId(sampleFilmId1 )
-                        .date(LocalDateTime.parse("2022-06-09T17:30") )
+                        .filmId(sampleFilmId1)
+                        .date(LocalDateTime.parse("2022-06-09T17:30"))
                         .freeSeats(100)
                         .minAge(13)
-                        .build() );
-        var screening3= screeningAPI.addScreening(
+                        .build());
+        var screening3 = screeningAPI.addScreening(
                 AddScreeningDTO
                         .builder()
-                        .filmId(sampleFilmId2 )
-                        .date(LocalDateTime.parse("2022-08-01T19:30") )
+                        .filmId(sampleFilmId2)
+                        .date(LocalDateTime.parse("2022-08-01T19:30"))
                         .freeSeats(100)
                         .minAge(15)
-                        .build() );
+                        .build());
         return List.of(screening1, screening2, screening3);
     }
 }

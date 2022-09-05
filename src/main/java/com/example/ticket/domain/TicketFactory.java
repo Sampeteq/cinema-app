@@ -9,7 +9,7 @@ class TicketFactory {
     private final UnderageTicketDiscountPolicy underageTicketDiscountPolicy;
 
     Ticket createTicket(ReserveTicketDTO cmd) {
-        var ticket = new Ticket(cmd.firstName(), cmd.lastName(), cmd.screeningId() );
+        var ticket = new Ticket(cmd.firstName(), cmd.lastName(), cmd.screeningId());
         if (cmd.age() < 18) {
             ticket.applyDiscount(underageTicketDiscountPolicy);
         }

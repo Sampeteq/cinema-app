@@ -50,20 +50,20 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .dataSource(dataSource)
                 .passwordEncoder(passwordEncoder);
 
-        var userDetailsService= configurer.getUserDetailsService();
+        var userDetailsService = configurer.getUserDetailsService();
 
         if (userDetailsService.userExists(MAIN_ADMIN_USERNAME)) {
             log.info("Main admin already exists.Username: {}.Password: {}",
                     MAIN_ADMIN_USERNAME,
-                    MAIN_ADMIN_PASSWORD );
+                    MAIN_ADMIN_PASSWORD);
         } else {
             configurer
                     .withUser(MAIN_ADMIN_USERNAME)
                     .password(passwordEncoder.encode(MAIN_ADMIN_PASSWORD))
-                    .authorities("ROLE_ADMIN" );
+                    .authorities("ROLE_ADMIN");
             log.info("Main admin added.Username: {}.Password: {}",
                     MAIN_ADMIN_USERNAME,
-                    MAIN_ADMIN_PASSWORD );
+                    MAIN_ADMIN_PASSWORD);
         }
     }
 }

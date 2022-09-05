@@ -29,7 +29,7 @@ class TicketController {
 
     @PatchMapping("/tickets/{ticketId}/reservation/cancelled")
     void cancelTicket(@PathVariable UUID ticketId) {
-        ticketAPI.cancel(ticketId, LocalDateTime.now() );
+        ticketAPI.cancel(ticketId, LocalDateTime.now());
     }
 
     @GetMapping("/tickets")

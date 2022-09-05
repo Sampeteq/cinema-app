@@ -9,7 +9,7 @@ class TicketConfig {
 
     @Bean
     TicketAPI ticketAPI(TicketRepository ticketRepository, ScreeningAPI screeningAPI) {
-        var nonAdultPercentDiscount= TicketValues.UNDERAGE_DISCOUNT_PERCENT;
+        var nonAdultPercentDiscount = TicketValues.UNDERAGE_DISCOUNT_PERCENT;
         var nonAdultTicketDiscountPolicy = new PercentUnderageTicketDiscountPolicy(nonAdultPercentDiscount);
         var ticketFactory = new TicketFactory(nonAdultTicketDiscountPolicy);
         return new TicketAPI(ticketRepository, ticketFactory, screeningAPI);

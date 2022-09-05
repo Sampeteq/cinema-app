@@ -27,36 +27,36 @@ class TicketIT extends ScreeningTestSpec {
 
     @Test
     void should_reserve_ticket() {
-       var sampleFilm= addSampleFilm();
-       var sampleScreening= addSampleScreening(sampleFilm.filmId() );
-       var reservedTicket= ticketAPI.reserveTicket(
-               sampleReserveTicketDTO(sampleScreening.id(), 25)
-       );
-       assertThat(
-               ticketAPI.readTicketById(reservedTicket.ticketId() )
-       ).isEqualTo(reservedTicket);
+        var sampleFilm = addSampleFilm();
+        var sampleScreening = addSampleScreening(sampleFilm.filmId());
+        var reservedTicket = ticketAPI.reserveTicket(
+                sampleReserveTicketDTO(sampleScreening.id(), 25)
+        );
+        assertThat(
+                ticketAPI.readTicketById(reservedTicket.ticketId())
+        ).isEqualTo(reservedTicket);
     }
 
     @Test
     void should_apply_discount_for_children() {
         var sampleFilm = addSampleFilm();
-        var sampleScreening= addSampleScreening(sampleFilm.filmId() );
-        var sampleTicket= ticketAPI.reserveTicket(
-                sampleReserveTicketDTO(sampleScreening.id(), 15 )
+        var sampleScreening = addSampleScreening(sampleFilm.filmId());
+        var sampleTicket = ticketAPI.reserveTicket(
+                sampleReserveTicketDTO(sampleScreening.id(), 15)
         );
         assertThat(
-                ticketAPI.readTicketById(sampleTicket.ticketId() ).prize()
-        ).isEqualTo(underageTicketDiscountPolicy.calculatePrize(TICKET_BASIC_PRIZE) );
+                ticketAPI.readTicketById(sampleTicket.ticketId()).prize()
+        ).isEqualTo(underageTicketDiscountPolicy.calculatePrize(TICKET_BASIC_PRIZE));
     }
 
     @Test
     void should_throw_exception_when_no_screening_free_seats() {
         var sampleFilm = addSampleFilm();
-        var sampleScreeningWithNoFreeSeats= addSampleScreeningWithNoFreeSeats(sampleFilm.filmId() );
+        var sampleScreeningWithNoFreeSeats = addSampleScreeningWithNoFreeSeats(sampleFilm.filmId());
         assertThrows(
                 NoScreeningFreeSeatsException.class,
                 () -> ticketAPI.reserveTicket(
-                        sampleReserveTicketDTO(sampleScreeningWithNoFreeSeats.id(), 25 )
+                        sampleReserveTicketDTO(sampleScreeningWithNoFreeSeats.id(), 25)
                 )
         );
     }
@@ -64,11 +64,11 @@ class TicketIT extends ScreeningTestSpec {
     @Test
     void should_throw_exception_when_ticket_age_is_wrong() {
         var sampleFilm = addSampleFilm();
-        var sampleScreening= addSampleScreening(sampleFilm.filmId() );
+        var sampleScreening = addSampleScreening(sampleFilm.filmId());
         assertThrows(
                 WrongTicketAgeException.class,
                 () -> ticketAPI.reserveTicket(
-                        sampleReserveTicketDTO(sampleScreening.id(), sampleScreening.minAge() - 1 )
+                        sampleReserveTicketDTO(sampleScreening.id(), sampleScreening.minAge() - 1)
                 )
         );
     }
@@ -76,37 +76,37 @@ class TicketIT extends ScreeningTestSpec {
     @Test
     void should_reduce_screening_free_seats_by_one_after_ticket_reservation() {
         var sampleFilm = addSampleFilm();
-        var sampleScreening= addSampleScreening(sampleFilm.filmId() );
-        var freeSeatsBeforeReservation= sampleScreening.freeSeats();
+        var sampleScreening = addSampleScreening(sampleFilm.filmId());
+        var freeSeatsBeforeReservation = sampleScreening.freeSeats();
         ticketAPI.reserveTicket(
-                sampleReserveTicketDTO(sampleScreening.id(), 25 )
+                sampleReserveTicketDTO(sampleScreening.id(), 25)
         );
         assertThat(
                 screeningAPI
-                        .readScreeningById(sampleScreening.id() )
+                        .readScreeningById(sampleScreening.id())
                         .freeSeats()
         ).isEqualTo(freeSeatsBeforeReservation - 1);
     }
 
     @Test
     void should_cancel_ticket_reservation() {
-        var sampleFilm= addSampleFilm();
-        var sampleScreening= addSampleScreening(sampleFilm.filmId() );
-        var sampleTicket = reserveSampleTicket(sampleScreening.id() );
-        var currentDate= sampleScreening.date().minusHours(48);
+        var sampleFilm = addSampleFilm();
+        var sampleScreening = addSampleScreening(sampleFilm.filmId());
+        var sampleTicket = reserveSampleTicket(sampleScreening.id());
+        var currentDate = sampleScreening.date().minusHours(48);
         ticketAPI.cancel(sampleTicket.ticketId(), currentDate);
         assertThat(
                 ticketAPI
-                        .readTicketById(sampleTicket.ticketId() )
+                        .readTicketById(sampleTicket.ticketId())
                         .status()
         ).isEqualTo(TicketStatus.CANCELLED);
     }
 
     @Test
     void should_be_possible_to_cancel_ticket_reservation_at_least_one_day_before_screening() {
-        var sampleFilm= addSampleFilm();
-        var screeningDate= LocalDateTime.parse("2022-05-05T16:30");
-        var sampleScreening= addSampleScreening(sampleFilm.filmId(), screeningDate);
+        var sampleFilm = addSampleFilm();
+        var screeningDate = LocalDateTime.parse("2022-05-05T16:30");
+        var sampleScreening = addSampleScreening(sampleFilm.filmId(), screeningDate);
         var sampleTicket = ticketAPI.reserveTicket(
                 sampleReserveTicketDTO(sampleScreening.id(), 25)
         );
@@ -119,12 +119,12 @@ class TicketIT extends ScreeningTestSpec {
 
     @Test
     void should_return_all_tickets() {
-       var sampleFilm= addSampleFilm();
-       var sampleScreening= addSampleScreening(sampleFilm.filmId() );
-       var sampleTickets= reserveSampleTickets(sampleScreening.id() );
-       assertThat(
-               ticketAPI.readAllTickets()
-       ).isEqualTo(sampleTickets);
+        var sampleFilm = addSampleFilm();
+        var sampleScreening = addSampleScreening(sampleFilm.filmId());
+        var sampleTickets = reserveSampleTickets(sampleScreening.id());
+        assertThat(
+                ticketAPI.readAllTickets()
+        ).isEqualTo(sampleTickets);
     }
 
     private static ReserveTicketDTO sampleReserveTicketDTO(UUID sampleScreeningId, int age) {
@@ -150,7 +150,7 @@ class TicketIT extends ScreeningTestSpec {
     }
 
     private List<TicketDTO> reserveSampleTickets(UUID sampleScreeningId) {
-        var sampleTicket1= ticketAPI.reserveTicket(
+        var sampleTicket1 = ticketAPI.reserveTicket(
                 ReserveTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)
@@ -159,7 +159,7 @@ class TicketIT extends ScreeningTestSpec {
                         .age(20)
                         .build()
         );
-        var sampleTicket2= ticketAPI.reserveTicket(
+        var sampleTicket2 = ticketAPI.reserveTicket(
                 ReserveTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)

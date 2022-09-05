@@ -25,10 +25,10 @@ public class FilmTestSpec {
     }
 
     public List<FilmDTO> addSampleFilms() {
-        var sampleFilm1= filmAPI.addFilm(
+        var sampleFilm1 = filmAPI.addFilm(
                 new AddFilmDTO("Sample film 1", FilmCategory.COMEDY, 2022)
         );
-        var sampleFilm2= filmAPI.addFilm(
+        var sampleFilm2 = filmAPI.addFilm(
                 new AddFilmDTO("Sample film 2", FilmCategory.ACTION, 2021)
         );
         return List.of(sampleFilm1, sampleFilm2);

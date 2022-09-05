@@ -14,14 +14,14 @@ public class FilmAPI {
     private final FilmRepository filmRepository;
 
     public FilmDTO addFilm(AddFilmDTO cmd) {
-        return filmRepository.save(new Film(cmd.title(), cmd.filmCategory(), cmd.year() ) ).toDTO();
+        return filmRepository.save(new Film(cmd.title(), cmd.filmCategory(), cmd.year())).toDTO();
     }
 
     public FilmDTO readFilmById(UUID filmId) {
         return filmRepository
                 .findById(filmId)
                 .map(Film::toDTO)
-                .orElseThrow(() -> new FilmNotFoundException(filmId) );
+                .orElseThrow(() -> new FilmNotFoundException(filmId));
     }
 
     public List<FilmDTO> readAllFilms() {

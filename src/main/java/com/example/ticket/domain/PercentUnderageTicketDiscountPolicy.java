@@ -8,8 +8,9 @@ import java.math.BigDecimal;
 class PercentUnderageTicketDiscountPolicy implements UnderageTicketDiscountPolicy {
 
     private final Double discountPercent;
+
     @Override
     public BigDecimal calculatePrize(BigDecimal basicPrize) {
-        return basicPrize.subtract(basicPrize.multiply(BigDecimal.valueOf(discountPercent) ) );
+        return basicPrize.subtract(basicPrize.multiply(BigDecimal.valueOf(discountPercent)));
     }
 }

@@ -22,17 +22,17 @@ public class ScreeningAPI {
     private final FilmAPI filmAPI;
 
     public ScreeningDTO addScreening(AddScreeningDTO dto) {
-        if (filmAPI.isFilmPresent(dto.filmId() ) ) {
+        if (filmAPI.isFilmPresent(dto.filmId())) {
             return screeningRepository.save(
                     new Screening(
-                    dto.date(),
-                    dto.freeSeats(),
-                    dto.minAge(),
-                    dto.filmId()
+                            dto.date(),
+                            dto.freeSeats(),
+                            dto.minAge(),
+                            dto.filmId()
                     )
             ).toDTO();
         } else {
-            throw new FilmNotFoundException(dto.filmId() );
+            throw new FilmNotFoundException(dto.filmId());
         }
     }
 
@@ -62,22 +62,22 @@ public class ScreeningAPI {
     }
 
     public void checkReservePossibility(UUID screeningId, int age) {
-        var screening= screeningRepository
+        var screening = screeningRepository
                 .findById(screeningId)
-                .orElseThrow( () -> new ScreeningNotFoundException(screeningId) );
-        if (!screening.hasFreeSeats() ) {
+                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
+        if (!screening.hasFreeSeats()) {
             throw new NoScreeningFreeSeatsException(screeningId);
         }
-        if (!screening.isAgeEnough(age ) ) {
+        if (!screening.isAgeEnough(age)) {
             throw new WrongTicketAgeException(age);
         }
     }
 
     public void checkCancelPossibility(UUID screeningId, LocalDateTime currentDate) {
-        var screening= screeningRepository
-                .findById(screeningId )
-                .orElseThrow( () -> new ScreeningNotFoundException(screeningId) );
-        if (Duration.between(currentDate, screening.getDate() ).toHours() < 24) {
+        var screening = screeningRepository
+                .findById(screeningId)
+                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
+        if (Duration.between(currentDate, screening.getDate()).toHours() < 24) {
             throw new TooLateToCancelTicketReservationException();
         }
     }
@@ -85,7 +85,7 @@ public class ScreeningAPI {
     private Screening getScreeningOrThrowException(UUID screeningId) {
         return screeningRepository
                 .findById(screeningId)
-                .orElseThrow( () -> new ScreeningNotFoundException(screeningId) );
+                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
     }
 
     public List<ScreeningDTO> readAllScreeningsByDate(LocalDateTime date) {

@@ -27,8 +27,6 @@ import static com.example.ticket.domain.TicketValues.TICKET_BASIC_PRIZE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
-@Transactional
 class TicketIT extends ScreeningTestSpec {
 
     @Autowired

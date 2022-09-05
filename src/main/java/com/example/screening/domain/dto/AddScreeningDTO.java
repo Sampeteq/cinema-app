@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 public record AddScreeningDTO(
         UUID filmId,
-        LocalDateTime shownAt,
+        LocalDateTime date,
         @Positive
         int freeSeats,
         @Min(ScreeningValues.SCREENING_MIN_AGE)

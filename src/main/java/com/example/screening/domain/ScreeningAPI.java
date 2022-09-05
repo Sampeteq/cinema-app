@@ -6,7 +6,6 @@ import com.example.screening.domain.dto.AddScreeningDTO;
 import com.example.screening.domain.dto.ScreeningDTO;
 import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
 import com.example.screening.domain.exception.ScreeningNotFoundException;
-import com.example.ticket.domain.dto.ReserveTicketDTO;
 import com.example.ticket.domain.exception.TooLateToCancelTicketReservationException;
 import com.example.ticket.domain.exception.WrongTicketAgeException;
 import lombok.AllArgsConstructor;
@@ -26,7 +25,7 @@ public class ScreeningAPI {
         if (filmAPI.isFilmPresent(dto.filmId() ) ) {
             return screeningRepository.save(
                     new Screening(
-                    dto.shownAt(),
+                    dto.date(),
                     dto.freeSeats(),
                     dto.minAge(),
                     dto.filmId()
@@ -78,7 +77,7 @@ public class ScreeningAPI {
         var screening= screeningRepository
                 .findById(screeningId )
                 .orElseThrow( () -> new ScreeningNotFoundException(screeningId) );
-        if (Duration.between(currentDate, screening.getShownAt() ).toHours() < 24) {
+        if (Duration.between(currentDate, screening.getDate() ).toHours() < 24) {
             throw new TooLateToCancelTicketReservationException();
         }
     }
@@ -91,7 +90,7 @@ public class ScreeningAPI {
 
     public List<ScreeningDTO> readAllScreeningsByDate(LocalDateTime date) {
         return screeningRepository
-                .findAllByShownAt(date)
+                .findByDate(date)
                 .stream()
                 .map(Screening::toDTO)
                 .toList();

@@ -24,7 +24,7 @@ class Screening {
     private final UUID id = UUID.randomUUID();
 
     @Getter
-    private LocalDateTime shownAt;
+    private LocalDateTime date;
 
     private int freeSeats;
 
@@ -54,7 +54,7 @@ class Screening {
         return ScreeningDTO
                 .builder()
                 .id(this.id)
-                .shownAt(this.shownAt)
+                .date(this.date)
                 .freeSeats(this.freeSeats)
                 .minAge(this.minAge)
                 .filmId(this.filmId)

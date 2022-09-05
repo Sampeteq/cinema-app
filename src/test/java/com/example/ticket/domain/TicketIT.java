@@ -109,7 +109,7 @@ class TicketIT {
         var sampleFilm= addSampleFilm();
         var sampleScreening= addSampleScreening(sampleFilm.filmId() );
         var sampleTicket = reserveSampleTicket(sampleScreening.id() );
-        var currentDate= sampleScreening.shownAt().minusHours(48);
+        var currentDate= sampleScreening.date().minusHours(48);
         ticketAPI.cancel(sampleTicket.ticketId(), currentDate);
         assertThat(
                 ticketAPI
@@ -152,7 +152,7 @@ class TicketIT {
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId )
-                        .shownAt(LocalDateTime.parse("2022-05-05T16:30") )
+                        .date(LocalDateTime.parse("2022-05-05T16:30") )
                         .freeSeats(100)
                         .minAge(13)
                         .build() );
@@ -163,7 +163,7 @@ class TicketIT {
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId )
-                        .shownAt(screeningDate)
+                        .date(screeningDate)
                         .freeSeats(100)
                         .minAge(13)
                         .build() );
@@ -174,7 +174,7 @@ class TicketIT {
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId )
-                        .shownAt(LocalDateTime.parse("2022-05-05T16:30") )
+                        .date(LocalDateTime.parse("2022-05-05T16:30") )
                         .freeSeats(0)
                         .minAge(13)
                         .build() );

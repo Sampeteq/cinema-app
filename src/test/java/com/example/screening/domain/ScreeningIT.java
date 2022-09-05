@@ -63,7 +63,7 @@ class ScreeningIT {
         var sampleFilmId1= sampleFilms.get(0).filmId();
         var sampleFilmId2= sampleFilms.get(1).filmId();
         var sampleScreenings= addSampleScreenings(sampleFilmId1, sampleFilmId2);
-        var date = sampleScreenings.get(0).shownAt();
+        var date = sampleScreenings.get(0).date();
         assertThat(
                 screeningAPI.readAllScreeningsByDate(date)
         ).allMatch(
@@ -85,7 +85,7 @@ class ScreeningIT {
         return AddScreeningDTO
                 .builder()
                 .filmId(addedFilm.filmId() )
-                .shownAt(LocalDateTime.parse("2022-05-05T16:30") )
+                .date(LocalDateTime.parse("2022-05-05T16:30") )
                 .freeSeats(100)
                 .minAge(13)
                 .build();
@@ -96,7 +96,7 @@ class ScreeningIT {
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId1)
-                        .shownAt(LocalDateTime.parse("2022-05-05T16:00") )
+                        .date(LocalDateTime.parse("2022-05-05T16:00") )
                         .freeSeats(100)
                         .minAge(13)
                         .build() );
@@ -104,7 +104,7 @@ class ScreeningIT {
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId1 )
-                        .shownAt(LocalDateTime.parse("2022-06-09T17:30") )
+                        .date(LocalDateTime.parse("2022-06-09T17:30") )
                         .freeSeats(100)
                         .minAge(13)
                         .build() );
@@ -112,7 +112,7 @@ class ScreeningIT {
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId2 )
-                        .shownAt(LocalDateTime.parse("2022-08-01T19:30") )
+                        .date(LocalDateTime.parse("2022-08-01T19:30") )
                         .freeSeats(100)
                         .minAge(15)
                         .build() );

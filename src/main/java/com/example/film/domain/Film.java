@@ -1,7 +1,8 @@
 package com.example.film.domain;
 
 import com.example.film.domain.dto.FilmDTO;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.UUID;

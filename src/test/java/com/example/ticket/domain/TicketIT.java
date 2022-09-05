@@ -1,14 +1,6 @@
 package com.example.ticket.domain;
 
-import com.example.film.domain.FilmAPI;
-import com.example.film.domain.FilmCategory;
-import com.example.film.domain.FilmTestSpec;
-import com.example.film.domain.dto.AddFilmDTO;
-import com.example.film.domain.dto.FilmDTO;
-import com.example.screening.domain.ScreeningAPI;
 import com.example.screening.domain.ScreeningTestSpec;
-import com.example.screening.domain.dto.AddScreeningDTO;
-import com.example.screening.domain.dto.ScreeningDTO;
 import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
 import com.example.ticket.domain.dto.ReserveTicketDTO;
 import com.example.ticket.domain.dto.TicketDTO;
@@ -16,8 +8,6 @@ import com.example.ticket.domain.exception.TooLateToCancelTicketReservationExcep
 import com.example.ticket.domain.exception.WrongTicketAgeException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;

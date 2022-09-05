@@ -1,13 +1,7 @@
 package com.example.film.domain;
 
-import com.example.film.domain.dto.AddFilmDTO;
-import com.example.film.domain.dto.FilmDTO;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -2,7 +2,6 @@ package com.example.ticket.domain;
 
 import com.example.ticket.domain.dto.ReserveTicketDTO;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 @AllArgsConstructor
 class TicketFactory {

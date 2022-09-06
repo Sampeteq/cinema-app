@@ -20,7 +20,7 @@ public class TicketAPI {
 
     @Transactional
     public TicketDTO reserveTicket(ReserveTicketDTO dto) {
-        screeningAPI.checkReservePossibility(dto.screeningId(), dto.age());
+        screeningAPI.checkReservationPossibility(dto.screeningId(), dto.age());
         var ticket = ticketFactory.createTicket(dto);
         var addedTicket = ticketRepository.save(ticket);
         screeningAPI.decreaseFreeSeatsByOne(dto.screeningId());

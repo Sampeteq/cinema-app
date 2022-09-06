@@ -63,15 +63,8 @@ public class ScreeningAPI {
                 .toList();
     }
 
-    public void decreaseFreeSeatsByOne(UUID screeningId) {
+    public void checkReservationPossibility(UUID screeningId, int age) {
         var screening = getScreeningOrThrowException(screeningId);
-        screening.decreaseFreeSeatsByOne();
-    }
-
-    public void checkReservePossibility(UUID screeningId, int age) {
-        var screening = screeningRepository
-                .findById(screeningId)
-                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
         if (!screening.hasFreeSeats()) {
             throw new NoScreeningFreeSeatsException(screeningId);
         }
@@ -80,10 +73,13 @@ public class ScreeningAPI {
         }
     }
 
+    public void decreaseFreeSeatsByOne(UUID screeningId) {
+        var screening = getScreeningOrThrowException(screeningId);
+        screening.decreaseFreeSeatsByOne();
+    }
+
     public void checkCancelReservationPossibility(UUID screeningId, LocalDateTime currentDate) {
-        var screening = screeningRepository
-                .findById(screeningId)
-                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
+        var screening = getScreeningOrThrowException(screeningId);
         if (!screening.canCancelReservation(currentDate) ) {
             throw new TooLateToCancelTicketReservationException();
         }

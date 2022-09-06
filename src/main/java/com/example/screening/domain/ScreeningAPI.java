@@ -55,6 +55,14 @@ public class ScreeningAPI {
                 .toList();
     }
 
+    public List<ScreeningDTO> readAllScreeningsByDate(LocalDateTime date) {
+        return screeningRepository
+                .findByDate(date)
+                .stream()
+                .map(Screening::toDTO)
+                .toList();
+    }
+
     public void decreaseFreeSeatsByOne(UUID screeningId) {
         var screening = getScreeningOrThrowException(screeningId);
         screening.decreaseFreeSeatsByOne();
@@ -85,13 +93,5 @@ public class ScreeningAPI {
         return screeningRepository
                 .findById(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
-    }
-
-    public List<ScreeningDTO> readAllScreeningsByDate(LocalDateTime date) {
-        return screeningRepository
-                .findByDate(date)
-                .stream()
-                .map(Screening::toDTO)
-                .toList();
     }
 }

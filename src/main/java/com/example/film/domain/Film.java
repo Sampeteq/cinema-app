@@ -1,6 +1,8 @@
 package com.example.film.domain;
 
 import com.example.film.domain.dto.FilmDTO;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -9,12 +11,13 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "FILMS")
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @ToString
 class Film {
 
     @Id
-    private UUID id = UUID.randomUUID();
+    private final UUID id = UUID.randomUUID();
 
     private String title;
 
@@ -24,12 +27,6 @@ class Film {
     private int year;
 
     protected Film() {
-    }
-
-    Film(String title, FilmCategory category, int year) {
-        this.title = title;
-        this.category = category;
-        this.year = year;
     }
 
     FilmDTO toDTO() {

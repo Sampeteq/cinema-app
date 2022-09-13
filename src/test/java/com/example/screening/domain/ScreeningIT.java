@@ -1,8 +1,10 @@
 package com.example.screening.domain;
 
+import com.example.screening.domain.exception.NotCurrentScreeningYearException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ScreeningIT extends ScreeningTestSpec {
 
@@ -10,9 +12,22 @@ class ScreeningIT extends ScreeningTestSpec {
     void should_add_screening() {
         var addedFilm = addSampleFilm();
         var addedScreening = screeningAPI.addScreening(
-                sampleAddScreeningDTO(addedFilm)
+                sampleAddScreeningDTO(addedFilm),
+                currentYear
         );
         assertThat(screeningAPI.readScreeningById(addedScreening.id())).isEqualTo(addedScreening);
+    }
+
+    @Test
+    void should_throw_exception_when_new_screening_year_is_not_same_as_current_one() {
+        var addedFilm = addSampleFilm();
+        assertThrows(
+                NotCurrentScreeningYearException.class,
+                () ->  screeningAPI.addScreening(
+                        sampleAddScreeningDTOwithNotCurrentYear(addedFilm),
+                        currentYear
+                )
+        );
     }
 
     @Test

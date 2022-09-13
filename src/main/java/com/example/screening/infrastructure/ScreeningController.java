@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,9 +19,11 @@ class ScreeningController {
 
     private final ScreeningAPI screeningAPI;
 
+    private final Year currentYear;
+
     @PostMapping("/screenings")
     ScreeningDTO addNewScreening(@RequestBody @Valid AddScreeningDTO dto) {
-        return screeningAPI.addScreening(dto);
+        return screeningAPI.addScreening(dto, currentYear);
     }
 
     @GetMapping("/screenings")

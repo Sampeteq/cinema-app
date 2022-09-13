@@ -1,7 +1,9 @@
 package com.example.screening.domain;
 
+import com.example.screening.domain.dto.AddScreeningDTO;
 import com.example.screening.domain.dto.ScreeningDTO;
 import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
+import com.example.screening.domain.exception.NotCurrentScreeningYearException;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,6 +16,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.UUID;
 
 @Entity
@@ -38,6 +41,19 @@ class Screening {
     private UUID filmId;
 
     protected Screening() {
+    }
+
+    static Screening fromDTO(AddScreeningDTO dto, Year currentYear) {
+        var yearFromDTO= dto.date().getYear();
+        if (yearFromDTO != currentYear.getValue()) {
+            throw new NotCurrentScreeningYearException(Year.of(yearFromDTO), currentYear);
+        } else {
+            return new Screening(
+                    dto.date(),
+                    dto.freeSeats(),
+                    dto.minAge(),
+                    dto.filmId() );
+        }
     }
 
     boolean isAgeEnough(int age) {

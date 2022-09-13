@@ -11,6 +11,7 @@ import com.example.ticket.domain.exception.WrongTicketAgeException;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,15 +21,10 @@ public class ScreeningAPI {
     private final ScreeningRepository screeningRepository;
     private final FilmAPI filmAPI;
 
-    public ScreeningDTO addScreening(AddScreeningDTO dto) {
+    public ScreeningDTO addScreening(AddScreeningDTO dto, Year currentYear) {
         if (filmAPI.isFilmPresent(dto.filmId())) {
             return screeningRepository.save(
-                    new Screening(
-                            dto.date(),
-                            dto.freeSeats(),
-                            dto.minAge(),
-                            dto.filmId()
-                    )
+                    Screening.fromDTO(dto, currentYear)
             ).toDTO();
         } else {
             throw new FilmNotFoundException(dto.filmId());

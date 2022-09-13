@@ -10,6 +10,8 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -29,6 +31,8 @@ class Screening {
 
     private int freeSeats;
 
+    @Min(value = ScreeningValues.SCREENING_MIN_AGE)
+    @Max(value = ScreeningValues.SCREENING_MAX_AGE)
     private int minAge;
 
     private UUID filmId;

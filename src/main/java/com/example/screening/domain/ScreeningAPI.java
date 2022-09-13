@@ -76,7 +76,7 @@ public class ScreeningAPI {
 
     public void checkCancelReservationPossibility(UUID screeningId, LocalDateTime currentDate) {
         var screening = getScreeningOrThrowException(screeningId);
-        if (!screening.canCancelReservation(currentDate) ) {
+        if (!screening.canCancelReservation(currentDate)) {
             throw new TooLateToCancelTicketReservationException();
         }
     }

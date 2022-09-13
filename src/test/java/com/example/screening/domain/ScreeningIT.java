@@ -23,7 +23,7 @@ class ScreeningIT extends ScreeningTestSpec {
         var addedFilm = addSampleFilm();
         assertThrows(
                 NotCurrentScreeningYearException.class,
-                () ->  screeningAPI.addScreening(
+                () -> screeningAPI.addScreening(
                         sampleAddScreeningDTOwithNotCurrentYear(addedFilm),
                         currentYear
                 )

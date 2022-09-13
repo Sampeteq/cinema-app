@@ -44,7 +44,7 @@ class Screening {
     }
 
     static Screening fromDTO(AddScreeningDTO dto, Year currentYear) {
-        var yearFromDTO= dto.date().getYear();
+        var yearFromDTO = dto.date().getYear();
         if (yearFromDTO != currentYear.getValue()) {
             throw new NotCurrentScreeningYearException(Year.of(yearFromDTO), currentYear);
         } else {
@@ -52,7 +52,7 @@ class Screening {
                     dto.date(),
                     dto.freeSeats(),
                     dto.minAge(),
-                    dto.filmId() );
+                    dto.filmId());
         }
     }
 

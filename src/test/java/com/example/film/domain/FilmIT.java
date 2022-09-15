@@ -10,11 +10,13 @@ class FilmIT extends FilmTestSpec {
     @Test
     void should_add_film() {
         var addedFilm = filmAPI.addFilm(sampleAddFilmDto());
-        assertThat(filmAPI.readFilmById(addedFilm.filmId())).isEqualTo(addedFilm);
+        assertThat(
+                filmAPI.readFilmById(addedFilm.filmId())
+        ).isEqualTo(addedFilm);
     }
 
     @Test
-    void should_Throw_Exception_When_FilmYear_Is_Neither_Previous_Nor_Current_Nor_Next_One() {
+    void should_throw_exception_when_filmYear_is_neither_previous_nor_current_nor_next_one() {
         assertThrows(
                 WrongFilmYearException.class,
                 () -> filmAPI.addFilm(
@@ -31,11 +33,13 @@ class FilmIT extends FilmTestSpec {
 
     @Test
     void should_return_films_with_given_category() {
-        addSampleFilms();
+        var sampleCategory= addSampleFilms()
+                .get(0)
+                .category();
         assertThat(
-                filmAPI.readFilmsByCategory(FilmCategory.COMEDY)
+                filmAPI.readFilmsByCategory(sampleCategory)
         ).allMatch(
-                film -> film.category().equals(FilmCategory.COMEDY)
+                film -> film.category().equals(sampleCategory)
         );
     }
 }

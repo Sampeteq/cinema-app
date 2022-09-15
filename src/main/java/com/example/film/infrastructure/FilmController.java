@@ -4,6 +4,7 @@ import com.example.film.domain.FilmAPI;
 import com.example.film.domain.FilmCategory;
 import com.example.film.domain.dto.AddFilmDTO;
 import com.example.film.domain.dto.FilmDTO;
+import com.example.film.domain.exception.FilmException;
 import com.example.film.domain.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,10 +37,14 @@ class FilmController {
 }
 
 @RestControllerAdvice
-class FilmErrorHandler {
+class FilmExceptionHandler {
 
-    @ExceptionHandler(FilmNotFoundException.class)
-    ResponseEntity<?> handle(FilmNotFoundException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    @ExceptionHandler(FilmException.class)
+    ResponseEntity<String> handle(FilmException exception) {
+        if (exception instanceof FilmNotFoundException) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -1,11 +1,12 @@
 package com.example.screening.domain;
 
 import com.example.film.domain.FilmAPI;
+import com.example.film.domain.FilmId;
 import com.example.film.domain.exception.FilmNotFoundException;
 import com.example.screening.domain.dto.AddScreeningDTO;
 import com.example.screening.domain.dto.ScreeningDTO;
-import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
 import com.example.screening.domain.exception.ScreeningNotFoundException;
+import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
 import com.example.ticket.domain.exception.TooLateToCancelTicketReservationException;
 import com.example.ticket.domain.exception.WrongTicketAgeException;
 import lombok.AllArgsConstructor;
@@ -22,16 +23,22 @@ public class ScreeningAPI {
     private final FilmAPI filmAPI;
 
     public ScreeningDTO addScreening(AddScreeningDTO dto, Year currentYear) {
-        if (filmAPI.isFilmPresent(dto.filmId())) {
-            return screeningRepository.save(
-                    Screening.fromDTO(dto, currentYear)
-            ).toDTO();
+        if (filmAPI.isFilmPresent(FilmId.of(dto.filmId() ) ) ) {
+            var screening = new Screening(
+                    ScreeningDate.of(dto.date(), currentYear),
+                    FreeSeats.of(dto.freeSeats() ),
+                    MinAge.of(dto.minAge() ),
+                    FilmId.of(dto.filmId() )
+            );
+            return screeningRepository
+                    .save(screening)
+                    .toDTO();
         } else {
-            throw new FilmNotFoundException(dto.filmId());
+            throw new FilmNotFoundException(FilmId.of(dto.filmId()));
         }
     }
 
-    public ScreeningDTO readScreeningById(UUID screeningId) {
+    public ScreeningDTO readScreeningById(ScreeningId screeningId) {
         return getScreeningOrThrowException(screeningId).toDTO();
     }
 
@@ -43,7 +50,7 @@ public class ScreeningAPI {
                 .toList();
     }
 
-    public List<ScreeningDTO> readScreeningsByFilmId(UUID filmId) {
+    public List<ScreeningDTO> readScreeningsByFilmId(FilmId filmId) {
         return screeningRepository
                 .findAllByFilmId(filmId)
                 .stream()
@@ -51,7 +58,7 @@ public class ScreeningAPI {
                 .toList();
     }
 
-    public List<ScreeningDTO> readAllScreeningsByDate(LocalDateTime date) {
+    public List<ScreeningDTO> readAllScreeningsByDate(ScreeningDate date) {
         return screeningRepository
                 .findByDate(date)
                 .stream()
@@ -59,7 +66,7 @@ public class ScreeningAPI {
                 .toList();
     }
 
-    public void checkReservationPossibility(UUID screeningId, int age) {
+    public void checkReservationPossibility(ScreeningId screeningId, int age) {
         var screening = getScreeningOrThrowException(screeningId);
         if (!screening.hasFreeSeats()) {
             throw new NoScreeningFreeSeatsException(screeningId);
@@ -69,19 +76,19 @@ public class ScreeningAPI {
         }
     }
 
-    public void decreaseFreeSeatsByOne(UUID screeningId) {
+    public void decreaseFreeSeatsByOne(ScreeningId screeningId) {
         var screening = getScreeningOrThrowException(screeningId);
         screening.decreaseFreeSeatsByOne();
     }
 
-    public void checkCancelReservationPossibility(UUID screeningId, LocalDateTime currentDate) {
+    public void checkCancelReservationPossibility(ScreeningId screeningId, LocalDateTime currentDate) {
         var screening = getScreeningOrThrowException(screeningId);
         if (!screening.canCancelReservation(currentDate)) {
             throw new TooLateToCancelTicketReservationException();
         }
     }
 
-    private Screening getScreeningOrThrowException(UUID screeningId) {
+    private Screening getScreeningOrThrowException(ScreeningId screeningId) {
         return screeningRepository
                 .findById(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));

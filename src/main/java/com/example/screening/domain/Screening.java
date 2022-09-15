@@ -1,88 +1,70 @@
 package com.example.screening.domain;
 
-import com.example.screening.domain.dto.AddScreeningDTO;
+import com.example.film.domain.FilmId;
 import com.example.screening.domain.dto.ScreeningDTO;
 import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
-import com.example.screening.domain.exception.NotCurrentScreeningYearException;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.persistence.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Year;
 import java.util.UUID;
 
 @Entity
 @Table(name = "SCREENINGS")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @ToString
-@AllArgsConstructor
 class Screening {
 
-    @Id
-    private final UUID id = UUID.randomUUID();
+    @EmbeddedId
+    @AttributeOverride(name = "value", column = @Column(name = "id"))
+    private final ScreeningId id = ScreeningId.of(UUID.randomUUID());
 
-    @Getter
-    private LocalDateTime date;
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "date"))
+    private ScreeningDate date;
 
-    private int freeSeats;
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "freeSeats"))
+    private FreeSeats freeSeats;
 
-    @Min(value = ScreeningValues.SCREENING_MIN_AGE)
-    @Max(value = ScreeningValues.SCREENING_MAX_AGE)
-    private int minAge;
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "minAge"))
+    private MinAge minAge;
 
-    private UUID filmId;
-
-    protected Screening() {
-    }
-
-    static Screening fromDTO(AddScreeningDTO dto, Year currentYear) {
-        var yearFromDTO = dto.date().getYear();
-        if (yearFromDTO != currentYear.getValue()) {
-            throw new NotCurrentScreeningYearException(Year.of(yearFromDTO), currentYear);
-        } else {
-            return new Screening(
-                    dto.date(),
-                    dto.freeSeats(),
-                    dto.minAge(),
-                    dto.filmId());
-        }
-    }
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "filmId"))
+    private FilmId filmId;
 
     boolean isAgeEnough(int age) {
-        return age >= this.minAge;
+        return age >= this.minAge.getValue();
     }
 
     void decreaseFreeSeatsByOne() {
-        if (this.freeSeats == 0) {
+        if (this.freeSeats.getValue() == 0) {
             throw new NoScreeningFreeSeatsException(this.id);
         } else {
-            this.freeSeats = this.freeSeats - 1;
+            this.freeSeats = FreeSeats.of(this.freeSeats.getValue() - 1);
         }
     }
 
     boolean hasFreeSeats() {
-        return this.freeSeats > 0;
+        return this.freeSeats.getValue() > 0;
     }
 
     boolean canCancelReservation(LocalDateTime currentDate) {
-        return Duration.between(currentDate, this.date).toHours() > 24;
+        return Duration.between(currentDate, this.date.getValue()).toHours() > 24;
     }
 
     ScreeningDTO toDTO() {
         return ScreeningDTO
                 .builder()
                 .id(this.id)
-                .date(this.date)
-                .freeSeats(this.freeSeats)
-                .minAge(this.minAge)
+                .date(this.date.getValue())
+                .freeSeats(this.freeSeats.getValue())
+                .minAge(this.minAge.getValue())
                 .filmId(this.filmId)
                 .build();
     }

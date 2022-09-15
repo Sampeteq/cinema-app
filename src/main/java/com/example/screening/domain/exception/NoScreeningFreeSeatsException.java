@@ -1,10 +1,10 @@
 package com.example.screening.domain.exception;
 
-import java.util.UUID;
+import com.example.screening.domain.ScreeningId;
 
-public class NoScreeningFreeSeatsException extends RuntimeException {
+public class NoScreeningFreeSeatsException extends ScreeningException {
 
-    public NoScreeningFreeSeatsException(UUID screeningId) {
+    public NoScreeningFreeSeatsException(ScreeningId screeningId) {
         super("No screening free seats: " + screeningId);
     }
 }

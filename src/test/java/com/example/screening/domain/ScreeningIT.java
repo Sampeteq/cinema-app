@@ -1,6 +1,6 @@
 package com.example.screening.domain;
 
-import com.example.screening.domain.exception.NotCurrentScreeningYearException;
+import com.example.screening.domain.exception.WrongScreeningYearException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,16 +15,18 @@ class ScreeningIT extends ScreeningTestSpec {
                 sampleAddScreeningDTO(addedFilm),
                 currentYear
         );
-        assertThat(screeningAPI.readScreeningById(addedScreening.id())).isEqualTo(addedScreening);
+        assertThat(
+                screeningAPI.readScreeningById(addedScreening.id() )
+        ).isEqualTo(addedScreening);
     }
 
     @Test
-    void should_throw_exception_when_new_screening_year_is_not_same_as_current_one() {
+    void should_throw_exception_when_new_screening_year_is_not_current_or_previous_one() {
         var addedFilm = addSampleFilm();
         assertThrows(
-                NotCurrentScreeningYearException.class,
+                WrongScreeningYearException.class,
                 () -> screeningAPI.addScreening(
-                        sampleAddScreeningDTOwithNotCurrentYear(addedFilm),
+                        sampleAddScreeningDTOwithNotCurrentOrNextYear(addedFilm),
                         currentYear
                 )
         );
@@ -35,7 +37,7 @@ class ScreeningIT extends ScreeningTestSpec {
         var sampleFilms = addSampleFilms();
         var sampleFilmId1 = sampleFilms.get(0).filmId();
         var sampleFilmId2 = sampleFilms.get(1).filmId();
-        var sampleScreenings = addSampleScreenings(sampleFilmId1, sampleFilmId2);
+        var sampleScreenings = addSampleScreenings(sampleFilmId1.getValue(), sampleFilmId2.getValue());
         assertThat(screeningAPI.readAllScreenings()).isEqualTo(sampleScreenings);
     }
 
@@ -44,7 +46,7 @@ class ScreeningIT extends ScreeningTestSpec {
         var sampleFilms = addSampleFilms();
         var sampleFilmId1 = sampleFilms.get(0).filmId();
         var sampleFilmId2 = sampleFilms.get(1).filmId();
-        addSampleScreenings(sampleFilmId1, sampleFilmId2);
+        addSampleScreenings(sampleFilmId1.getValue(), sampleFilmId2.getValue());
         assertThat(
                 screeningAPI.readScreeningsByFilmId(sampleFilmId1)
         ).allMatch(
@@ -57,10 +59,10 @@ class ScreeningIT extends ScreeningTestSpec {
         var sampleFilms = addSampleFilms();
         var sampleFilmId1 = sampleFilms.get(0).filmId();
         var sampleFilmId2 = sampleFilms.get(1).filmId();
-        var sampleScreenings = addSampleScreenings(sampleFilmId1, sampleFilmId2);
+        var sampleScreenings = addSampleScreenings(sampleFilmId1.getValue(), sampleFilmId2.getValue());
         var date = sampleScreenings.get(0).date();
         assertThat(
-                screeningAPI.readAllScreeningsByDate(date)
+                screeningAPI.readAllScreeningsByDate(ScreeningDate.of(date, currentYear))
         ).allMatch(
                 screening -> screening.date().equals(date)
         );

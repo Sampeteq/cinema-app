@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Year;
 import java.util.List;
 
 @SpringBootTest
@@ -16,6 +17,10 @@ public class FilmTestSpec {
 
     public AddFilmDTO sampleAddFilmDto() {
         return new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022);
+    }
+
+    public AddFilmDTO sampleAddFilmDtoWithWrongFilmYear() {
+        return new AddFilmDTO("Sample film", FilmCategory.COMEDY, Year.now().getValue() - 5);
     }
 
     public FilmDTO addSampleFilm() {

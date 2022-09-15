@@ -1,7 +1,6 @@
 package com.example.ticket.domain;
 
-import java.math.BigDecimal;
-
 interface TicketDiscountPolicy {
-    BigDecimal calculatePrize(BigDecimal basicPrize);
+
+    Money calculate(Money basicPrize);
 }

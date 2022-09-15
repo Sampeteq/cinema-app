@@ -21,17 +21,17 @@ public class ScreeningTestSpec extends FilmTestSpec {
     public static AddScreeningDTO sampleAddScreeningDTO(FilmDTO addedFilm) {
         return AddScreeningDTO
                 .builder()
-                .filmId(addedFilm.filmId())
+                .filmId(addedFilm.filmId().getValue() )
                 .date(LocalDateTime.parse("2022-05-05T16:30"))
                 .freeSeats(100)
                 .minAge(13)
                 .build();
     }
 
-    public static AddScreeningDTO sampleAddScreeningDTOwithNotCurrentYear(FilmDTO addedFilm) {
+    public static AddScreeningDTO sampleAddScreeningDTOwithNotCurrentOrNextYear(FilmDTO addedFilm) {
         return AddScreeningDTO
                 .builder()
-                .filmId(addedFilm.filmId())
+                .filmId(addedFilm.filmId().getValue() )
                 .date(LocalDateTime.of(currentYear.getValue() - 1, 1, 1, 18, 30))
                 .freeSeats(100)
                 .minAge(13)

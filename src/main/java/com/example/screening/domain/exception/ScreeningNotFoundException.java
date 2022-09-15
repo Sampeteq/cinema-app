@@ -1,10 +1,10 @@
 package com.example.screening.domain.exception;
 
-import java.util.UUID;
+import com.example.screening.domain.ScreeningId;
 
-public class ScreeningNotFoundException extends RuntimeException {
+public class ScreeningNotFoundException extends ScreeningException {
 
-    public ScreeningNotFoundException(UUID screeningId) {
+    public ScreeningNotFoundException(ScreeningId screeningId) {
         super("Screening not found: " + screeningId);
     }
 }

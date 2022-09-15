@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.UUID;
 
-interface FilmRepository extends JpaRepository<Film, UUID> {
+interface FilmRepository extends JpaRepository<Film, FilmId> {
 
     List<Film> findAllByCategory(FilmCategory category);
 }

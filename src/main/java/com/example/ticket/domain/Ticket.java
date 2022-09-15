@@ -1,14 +1,12 @@
 package com.example.ticket.domain;
 
+import com.example.screening.domain.ScreeningId;
 import com.example.ticket.domain.dto.TicketDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.math.BigDecimal;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -24,24 +22,28 @@ class Ticket {
 
     private String lastName;
 
-    private BigDecimal prize = TicketValues.TICKET_BASIC_PRIZE;
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "prize"))
+    private Money prize = Money.of(TicketValues.TICKET_BASIC_PRIZE);
 
     private TicketStatus status = TicketStatus.OPEN;
 
     @Getter
-    private UUID screeningId;
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "screeningId"))
+    private ScreeningId screeningId;
 
     protected Ticket() {
     }
 
-    Ticket(String firstName, String lastName, UUID screeningId) {
+    Ticket(String firstName, String lastName, ScreeningId screeningId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.screeningId = screeningId;
     }
 
     void applyDiscount(TicketDiscountPolicy policy) {
-        this.prize = policy.calculatePrize(this.prize);
+        this.prize = policy.calculate(this.prize);
     }
 
     void cancel() {
@@ -54,7 +56,7 @@ class Ticket {
                 .ticketId(this.id)
                 .firstName(this.firstName)
                 .lastName(this.lastName)
-                .prize(this.prize)
+                .prize(this.prize.getValue())
                 .status(this.status)
                 .screeningId(this.screeningId)
                 .build();

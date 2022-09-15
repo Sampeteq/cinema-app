@@ -6,7 +6,6 @@ import com.example.film.domain.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class FilmAPI {
@@ -14,10 +13,17 @@ public class FilmAPI {
     private final FilmRepository filmRepository;
 
     public FilmDTO addFilm(AddFilmDTO cmd) {
-        return filmRepository.save(new Film(cmd.title(), cmd.filmCategory(), cmd.year())).toDTO();
+        var film = new Film(
+                cmd.title(),
+                cmd.filmCategory(),
+                FilmYear.of(cmd.year() )
+        );
+        return filmRepository
+                .save(film)
+                .toDTO();
     }
 
-    public FilmDTO readFilmById(UUID filmId) {
+    public FilmDTO readFilmById(FilmId filmId) {
         return filmRepository
                 .findById(filmId)
                 .map(Film::toDTO)
@@ -40,7 +46,7 @@ public class FilmAPI {
                 .toList();
     }
 
-    public boolean isFilmPresent(UUID filmId) {
+    public boolean isFilmPresent(FilmId filmId) {
         return filmRepository.findById(filmId).isPresent();
     }
 }

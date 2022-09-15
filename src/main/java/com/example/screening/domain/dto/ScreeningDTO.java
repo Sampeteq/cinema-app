@@ -1,5 +1,7 @@
 package com.example.screening.domain.dto;
 
+import com.example.film.domain.FilmId;
+import com.example.screening.domain.ScreeningId;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -7,9 +9,9 @@ import java.util.UUID;
 
 @Builder
 public record ScreeningDTO(
-        UUID id,
+        ScreeningId id,
         LocalDateTime date,
         int freeSeats,
         int minAge,
-        UUID filmId) {
+        FilmId filmId) {
 }

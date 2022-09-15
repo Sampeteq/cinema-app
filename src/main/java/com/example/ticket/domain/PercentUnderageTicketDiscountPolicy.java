@@ -10,7 +10,7 @@ class PercentUnderageTicketDiscountPolicy implements UnderageTicketDiscountPolic
     private final Double discountPercent;
 
     @Override
-    public BigDecimal calculatePrize(BigDecimal basicPrize) {
-        return basicPrize.subtract(basicPrize.multiply(BigDecimal.valueOf(discountPercent)));
+    public Money calculate(Money basicPrize) {
+        return basicPrize.subtractPercent(discountPercent);
     }
 }

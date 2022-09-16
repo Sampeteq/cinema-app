@@ -32,7 +32,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
     public static AddScreeningDTO sampleAddScreeningDTOwithWrongFilmYear(FilmDTO addedFilm) {
         return AddScreeningDTO
                 .builder()
-                .filmId(addedFilm.filmId().getValue() )
+                .filmId(addedFilm.filmId().getValue())
                 .date(LocalDateTime.of(currentYear.getValue() - 1, 1, 1, 18, 30))
                 .freeSeats(100)
                 .minAge(13)

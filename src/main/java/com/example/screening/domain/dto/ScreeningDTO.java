@@ -5,7 +5,6 @@ import com.example.screening.domain.ScreeningId;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Builder
 public record ScreeningDTO(

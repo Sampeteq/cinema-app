@@ -8,8 +8,8 @@ public class WrongScreeningMinAgeException extends ScreeningException {
     public WrongScreeningMinAgeException() {
         super(
                 "Wrong screening min age exception"
-                + ".Min: " + SCREENING_MIN_AGE
-                + ".Max: " + SCREENING_MAX_AGE
+                        + ".Min: " + SCREENING_MIN_AGE
+                        + ".Max: " + SCREENING_MAX_AGE
         );
     }
 }

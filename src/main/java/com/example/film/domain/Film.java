@@ -16,7 +16,7 @@ class Film {
 
     @EmbeddedId
     @AttributeOverride(name = "value", column = @Column(name = "id"))
-    private final FilmId id = FilmId.of(UUID.randomUUID() );
+    private final FilmId id = FilmId.of(UUID.randomUUID());
 
     private String title;
 
@@ -28,6 +28,6 @@ class Film {
     private FilmYear year;
 
     FilmDTO toDTO() {
-        return new FilmDTO(this.id, this.title, this.category, this.year.getValue() );
+        return new FilmDTO(this.id, this.title, this.category, this.year.getValue());
     }
 }

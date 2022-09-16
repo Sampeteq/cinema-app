@@ -16,7 +16,7 @@ public class FilmAPI {
         var film = new Film(
                 cmd.title(),
                 cmd.filmCategory(),
-                FilmYear.of(cmd.year() )
+                FilmYear.of(cmd.year())
         );
         return filmRepository
                 .save(film)

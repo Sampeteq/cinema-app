@@ -5,8 +5,8 @@ import com.example.film.domain.FilmId;
 import com.example.film.domain.exception.FilmNotFoundException;
 import com.example.screening.domain.dto.AddScreeningDTO;
 import com.example.screening.domain.dto.ScreeningDTO;
-import com.example.screening.domain.exception.ScreeningNotFoundException;
 import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
+import com.example.screening.domain.exception.ScreeningNotFoundException;
 import com.example.ticket.domain.exception.TooLateToCancelTicketReservationException;
 import com.example.ticket.domain.exception.WrongTicketAgeException;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class ScreeningAPI {
@@ -23,12 +22,12 @@ public class ScreeningAPI {
     private final FilmAPI filmAPI;
 
     public ScreeningDTO addScreening(AddScreeningDTO dto, Year currentYear) {
-        if (filmAPI.isFilmPresent(FilmId.of(dto.filmId() ) ) ) {
+        if (filmAPI.isFilmPresent(FilmId.of(dto.filmId()))) {
             var screening = new Screening(
                     ScreeningDate.of(dto.date(), currentYear),
-                    FreeSeats.of(dto.freeSeats() ),
-                    MinAge.of(dto.minAge() ),
-                    FilmId.of(dto.filmId() )
+                    FreeSeats.of(dto.freeSeats()),
+                    MinAge.of(dto.minAge()),
+                    FilmId.of(dto.filmId())
             );
             return screeningRepository
                     .save(screening)

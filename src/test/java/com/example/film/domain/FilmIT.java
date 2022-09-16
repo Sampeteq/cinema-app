@@ -33,7 +33,7 @@ class FilmIT extends FilmTestSpec {
 
     @Test
     void should_return_films_with_given_category() {
-        var sampleCategory= addSampleFilms()
+        var sampleCategory = addSampleFilms()
                 .get(0)
                 .category();
         assertThat(

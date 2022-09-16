@@ -16,7 +16,7 @@ class FilmYear {
     private int value;
 
     static FilmYear of(int year) {
-        var currentYear= Year
+        var currentYear = Year
                 .now()
                 .getValue();
         if (year != currentYear - 1 && year != currentYear && year != currentYear + 1) {

@@ -23,8 +23,8 @@ class Money {
         if (percent < 0 || percent > 1) {
             throw new IllegalArgumentException("A percent cannot be negative and bigger than 1.");
         } else {
-            var percentAsBigDecimal= BigDecimal.valueOf(percent);
-            var valueToSubtract= value.multiply(percentAsBigDecimal);
+            var percentAsBigDecimal = BigDecimal.valueOf(percent);
+            var valueToSubtract = value.multiply(percentAsBigDecimal);
             return Money.of(
                     value.subtract(valueToSubtract)
             );

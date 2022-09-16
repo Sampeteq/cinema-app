@@ -15,6 +15,7 @@ import java.util.UUID;
 public class ScreeningId implements Serializable {
 
     private UUID value;
+
     static ScreeningId of(UUID value) {
         return new ScreeningId(value);
     }

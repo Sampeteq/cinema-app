@@ -1,11 +1,10 @@
 package com.example.ticket.infrastructure;
 
-import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
 import com.example.ticket.domain.TicketAPI;
 import com.example.ticket.domain.dto.ReserveTicketDTO;
 import com.example.ticket.domain.dto.TicketDTO;
-import com.example.ticket.domain.exception.TooLateToCancelTicketReservationException;
-import com.example.ticket.domain.exception.WrongTicketAgeException;
+import com.example.ticket.domain.exception.TicketException;
+import com.example.ticket.domain.exception.TicketNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,18 +40,12 @@ class TicketController {
 @RestControllerAdvice
 class TicketErrorHandler {
 
-    @ExceptionHandler(NoScreeningFreeSeatsException.class)
-    ResponseEntity<?> handle(NoScreeningFreeSeatsException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(WrongTicketAgeException.class)
-    ResponseEntity<?> handle(WrongTicketAgeException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(TooLateToCancelTicketReservationException.class)
-    ResponseEntity<?> handle(TooLateToCancelTicketReservationException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(TicketException.class)
+    ResponseEntity<?> handle(TicketException exception) {
+        if (exception instanceof TicketNotFoundException) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

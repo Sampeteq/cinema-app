@@ -8,4 +8,5 @@ import javax.validation.constraints.NotNull;
 public record ReserveTicketDTO(@NotNull Long screeningId,
                                @NotNull String firstName,
                                @NotNull String lastName,
-                               @NotNull Integer age) {}
+                               @NotNull Integer age) {
+}

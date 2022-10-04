@@ -21,8 +21,8 @@ class TicketController {
     private final TicketFacade ticketFacade;
 
     @PostMapping("/tickets/reservation")
-    TicketDTO reserveTicket(@RequestBody @Valid ReserveTicketDTO cmd) {
-        return ticketFacade.reserveTicket(cmd);
+    TicketDTO reserveTicket(@RequestBody @Valid ReserveTicketDTO dto) {
+        return ticketFacade.reserveTicket(dto);
     }
 
     @PatchMapping("/tickets/{ticketId}/reservation/cancelled")

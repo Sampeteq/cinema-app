@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class ScreeningAPI {
+public class ScreeningFacade {
 
     private final ScreeningRepository screeningRepository;
     private final FilmFacade filmFacade;

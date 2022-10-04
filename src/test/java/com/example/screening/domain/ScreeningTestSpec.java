@@ -15,7 +15,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
     public static final Year currentYear = Year.now();
 
     @Autowired
-    public ScreeningAPI screeningAPI;
+    public ScreeningFacade screeningFacade;
 
     public static AddScreeningDTO sampleAddScreeningDTO(Long filmId) {
         return AddScreeningDTO
@@ -38,7 +38,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
     }
 
     public ScreeningDTO addSampleScreening(Long sampleFilmId) {
-        return screeningAPI.addScreening(
+        return screeningFacade.addScreening(
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId)
@@ -51,7 +51,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
     }
 
     public ScreeningDTO addSampleScreening(Long sampleFilmId, LocalDateTime screeningDate) {
-        return screeningAPI.addScreening(
+        return screeningFacade.addScreening(
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId)
@@ -64,7 +64,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
     }
 
     public ScreeningDTO addSampleScreeningWithNoFreeSeats(Long sampleFilmId) {
-        return screeningAPI.addScreening(
+        return screeningFacade.addScreening(
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId)
@@ -77,7 +77,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
     }
 
     public List<ScreeningDTO> addSampleScreenings(Long filmId) {
-        var screening1 = screeningAPI.addScreening(
+        var screening1 = screeningFacade.addScreening(
                 AddScreeningDTO
                         .builder()
                         .filmId(filmId)
@@ -87,7 +87,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
                         .build(),
                 currentYear
         );
-        var screening2 = screeningAPI.addScreening(
+        var screening2 = screeningFacade.addScreening(
                 AddScreeningDTO
                         .builder()
                         .filmId(filmId)

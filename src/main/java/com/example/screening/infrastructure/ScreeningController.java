@@ -1,6 +1,6 @@
 package com.example.screening.infrastructure;
 
-import com.example.screening.domain.ScreeningAPI;
+import com.example.screening.domain.ScreeningFacade;
 import com.example.screening.domain.ScreeningDate;
 import com.example.screening.domain.dto.AddScreeningDTO;
 import com.example.screening.domain.dto.ScreeningDTO;
@@ -21,28 +21,28 @@ import java.util.List;
 @AllArgsConstructor
 class ScreeningController {
 
-    private final ScreeningAPI screeningAPI;
+    private final ScreeningFacade screeningFacade;
 
     private final Year currentYear;
 
     @PostMapping("/screenings")
     ScreeningDTO addNewScreening(@RequestBody @Valid AddScreeningDTO dto) {
-        return screeningAPI.addScreening(dto, currentYear);
+        return screeningFacade.addScreening(dto, currentYear);
     }
 
     @GetMapping("/screenings")
     List<ScreeningDTO> readAllScreenings() {
-        return screeningAPI.readAllScreenings();
+        return screeningFacade.readAllScreenings();
     }
 
     @GetMapping("/screenings/{filmId}")
     List<ScreeningDTO> readScreeningsByFilmId(@PathVariable Long filmId) {
-        return screeningAPI.readScreeningsByFilmId(filmId);
+        return screeningFacade.readScreeningsByFilmId(filmId);
     }
 
     @GetMapping("/screenings/date")
     List<ScreeningDTO> readScreeningsByDate(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime date) {
-        return screeningAPI.readAllScreeningsByDate(ScreeningDate.of(date, currentYear));
+        return screeningFacade.readAllScreeningsByDate(ScreeningDate.of(date, currentYear));
     }
 }
 

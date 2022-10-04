@@ -87,7 +87,7 @@ class TicketIT extends ScreeningTestSpec {
                 sampleReserveTicketDTO(sampleScreening.id(), 25)
         );
         assertThat(
-                screeningAPI
+                screeningFacade
                         .readScreeningById(sampleScreening.id())
                         .freeSeats()
         ).isEqualTo(freeSeatsBeforeReservation - 1);

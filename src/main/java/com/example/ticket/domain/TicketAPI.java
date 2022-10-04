@@ -1,6 +1,6 @@
 package com.example.ticket.domain;
 
-import com.example.screening.domain.ScreeningAPI;
+import com.example.screening.domain.ScreeningFacade;
 import com.example.ticket.domain.dto.ReserveTicketDTO;
 import com.example.ticket.domain.dto.TicketDTO;
 import com.example.ticket.domain.exception.TicketNotFoundException;
@@ -16,21 +16,21 @@ public class TicketAPI {
 
     private final TicketRepository ticketRepository;
     private final TicketFactory ticketFactory;
-    private final ScreeningAPI screeningAPI;
+    private final ScreeningFacade screeningFacade;
 
     @Transactional
     public TicketDTO reserveTicket(ReserveTicketDTO dto) {
-        screeningAPI.checkReservationPossibility(dto.screeningId(), dto.age());
+        screeningFacade.checkReservationPossibility(dto.screeningId(), dto.age());
         var ticket = ticketFactory.createTicket(dto);
         var addedTicket = ticketRepository.save(ticket);
-        screeningAPI.decreaseFreeSeatsByOne(dto.screeningId());
+        screeningFacade.decreaseFreeSeatsByOne(dto.screeningId());
         return addedTicket.toDTO();
     }
 
     @Transactional
     public void cancel(UUID ticketId, LocalDateTime currentDate) {
         var ticket = getTicketOrThrowException(ticketId);
-        screeningAPI.checkCancelReservationPossibility(ticket.getScreeningId(), currentDate);
+        screeningFacade.checkCancelReservationPossibility(ticket.getScreeningId(), currentDate);
         ticket.cancel();
     }
 

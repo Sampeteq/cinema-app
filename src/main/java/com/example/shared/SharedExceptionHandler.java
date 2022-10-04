@@ -1,4 +1,4 @@
-package com.example.util;
+package com.example.shared;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-class ParameterExceptionHandler {
+class SharedExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity<?> getAdvice(MethodArgumentNotValidException exception) {
+    ResponseEntity<?> handle(MethodArgumentNotValidException exception) {
         var errors = exception
                 .getBindingResult()
                 .getFieldErrors()

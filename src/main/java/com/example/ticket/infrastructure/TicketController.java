@@ -37,7 +37,7 @@ class TicketController {
 }
 
 @RestControllerAdvice
-class TicketErrorHandler {
+class TicketExceptionHandler {
 
     @ExceptionHandler(TicketException.class)
     ResponseEntity<?> handle(TicketException exception) {

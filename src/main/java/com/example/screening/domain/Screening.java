@@ -1,6 +1,5 @@
 package com.example.screening.domain;
 
-import com.example.film.domain.FilmId;
 import com.example.screening.domain.dto.ScreeningDTO;
 import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
 import lombok.*;
@@ -34,9 +33,7 @@ class Screening {
     @AttributeOverride(name = "value", column = @Column(name = "minAge"))
     private MinAge minAge;
 
-    @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "filmId"))
-    private FilmId filmId;
+    private Long filmId;
 
     boolean isAgeEnough(int age) {
         return age >= this.minAge.getValue();

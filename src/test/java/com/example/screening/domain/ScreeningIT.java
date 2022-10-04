@@ -12,7 +12,7 @@ class ScreeningIT extends ScreeningTestSpec {
     void should_add_screening() {
         var addedFilm = addSampleFilm();
         var addedScreening = screeningAPI.addScreening(
-                sampleAddScreeningDTO(addedFilm.filmId()),
+                sampleAddScreeningDTO(addedFilm.id()),
                 currentYear
         );
         assertThat(
@@ -35,7 +35,7 @@ class ScreeningIT extends ScreeningTestSpec {
     @Test
     void should_return_all_screenings() {
         var sampleFilm = addSampleFilm();
-        var sampleScreenings = addSampleScreenings(sampleFilm.filmId());
+        var sampleScreenings = addSampleScreenings(sampleFilm.id());
         assertThat(
                 screeningAPI.readAllScreenings()
         ).isEqualTo(sampleScreenings);
@@ -44,8 +44,8 @@ class ScreeningIT extends ScreeningTestSpec {
     @Test
     void should_return_screenings_by_film_id() {
         var sampleFilms = addSampleFilms();
-        var sampleFilmId1 = sampleFilms.get(0).filmId();
-        var sampleFilmId2 = sampleFilms.get(1).filmId();
+        var sampleFilmId1 = sampleFilms.get(0).id();
+        var sampleFilmId2 = sampleFilms.get(1).id();
         addSampleScreening(sampleFilmId1);
         addSampleScreening(sampleFilmId2);
         assertThat(
@@ -58,7 +58,7 @@ class ScreeningIT extends ScreeningTestSpec {
     @Test
     void should_return_screenings_by_date() {
         var sampleFilm = addSampleFilm();
-        var sampleScreenings = addSampleScreenings(sampleFilm.filmId());
+        var sampleScreenings = addSampleScreenings(sampleFilm.id());
         var sampleDate = sampleScreenings
                 .get(0)
                 .date();

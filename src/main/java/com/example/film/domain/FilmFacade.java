@@ -6,6 +6,7 @@ import com.example.film.domain.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class FilmFacade {
@@ -14,6 +15,8 @@ public class FilmFacade {
 
     public FilmDTO addFilm(AddFilmDTO cmd) {
         var film = new Film(
+                null,
+                UUID.randomUUID(),
                 cmd.title(),
                 cmd.filmCategory(),
                 FilmYear.of(cmd.year())
@@ -23,7 +26,7 @@ public class FilmFacade {
                 .toDTO();
     }
 
-    public FilmDTO readFilmById(FilmId filmId) {
+    public FilmDTO readFilmById(Long filmId) {
         return filmRepository
                 .findById(filmId)
                 .map(Film::toDTO)
@@ -46,7 +49,7 @@ public class FilmFacade {
                 .toList();
     }
 
-    public boolean isFilmPresent(FilmId filmId) {
+    public boolean isFilmPresent(Long filmId) {
         return filmRepository.findById(filmId).isPresent();
     }
 }

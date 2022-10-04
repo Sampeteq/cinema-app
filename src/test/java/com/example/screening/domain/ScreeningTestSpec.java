@@ -1,6 +1,5 @@
 package com.example.screening.domain;
 
-import com.example.film.domain.FilmId;
 import com.example.film.domain.FilmTestSpec;
 import com.example.film.domain.dto.FilmDTO;
 import com.example.screening.domain.dto.AddScreeningDTO;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
-import java.util.UUID;
 
 public class ScreeningTestSpec extends FilmTestSpec {
 
@@ -19,10 +17,10 @@ public class ScreeningTestSpec extends FilmTestSpec {
     @Autowired
     public ScreeningAPI screeningAPI;
 
-    public static AddScreeningDTO sampleAddScreeningDTO(FilmId filmId) {
+    public static AddScreeningDTO sampleAddScreeningDTO(Long filmId) {
         return AddScreeningDTO
                 .builder()
-                .filmId(filmId.getValue())
+                .filmId(filmId)
                 .date(LocalDateTime.parse("2022-05-05T16:30"))
                 .freeSeats(100)
                 .minAge(13)
@@ -32,18 +30,18 @@ public class ScreeningTestSpec extends FilmTestSpec {
     public static AddScreeningDTO sampleAddScreeningDTOwithWrongFilmYear(FilmDTO addedFilm) {
         return AddScreeningDTO
                 .builder()
-                .filmId(addedFilm.filmId().getValue())
+                .filmId(addedFilm.id())
                 .date(LocalDateTime.of(currentYear.getValue() - 1, 1, 1, 18, 30))
                 .freeSeats(100)
                 .minAge(13)
                 .build();
     }
 
-    public ScreeningDTO addSampleScreening(FilmId sampleFilmId) {
+    public ScreeningDTO addSampleScreening(Long sampleFilmId) {
         return screeningAPI.addScreening(
                 AddScreeningDTO
                         .builder()
-                        .filmId(sampleFilmId.getValue())
+                        .filmId(sampleFilmId)
                         .date(LocalDateTime.parse("2022-05-05T16:30"))
                         .freeSeats(100)
                         .minAge(13)
@@ -52,7 +50,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
         );
     }
 
-    public ScreeningDTO addSampleScreening(UUID sampleFilmId, LocalDateTime screeningDate) {
+    public ScreeningDTO addSampleScreening(Long sampleFilmId, LocalDateTime screeningDate) {
         return screeningAPI.addScreening(
                 AddScreeningDTO
                         .builder()
@@ -65,7 +63,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
         );
     }
 
-    public ScreeningDTO addSampleScreeningWithNoFreeSeats(UUID sampleFilmId) {
+    public ScreeningDTO addSampleScreeningWithNoFreeSeats(Long sampleFilmId) {
         return screeningAPI.addScreening(
                 AddScreeningDTO
                         .builder()
@@ -78,11 +76,11 @@ public class ScreeningTestSpec extends FilmTestSpec {
         );
     }
 
-    public List<ScreeningDTO> addSampleScreenings(FilmId filmId) {
+    public List<ScreeningDTO> addSampleScreenings(Long filmId) {
         var screening1 = screeningAPI.addScreening(
                 AddScreeningDTO
                         .builder()
-                        .filmId(filmId.getValue())
+                        .filmId(filmId)
                         .date(LocalDateTime.parse("2022-05-05T16:00"))
                         .freeSeats(100)
                         .minAge(13)
@@ -92,7 +90,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
         var screening2 = screeningAPI.addScreening(
                 AddScreeningDTO
                         .builder()
-                        .filmId(filmId.getValue())
+                        .filmId(filmId)
                         .date(LocalDateTime.parse("2022-06-09T17:30"))
                         .freeSeats(100)
                         .minAge(13)

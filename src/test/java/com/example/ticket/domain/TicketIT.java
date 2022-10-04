@@ -28,7 +28,7 @@ class TicketIT extends ScreeningTestSpec {
     @Test
     void should_reserve_ticket() {
         var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.filmId());
+        var sampleScreening = addSampleScreening(sampleFilm.id());
         var reservedTicket = ticketAPI.reserveTicket(
                 sampleReserveTicketDTO(sampleScreening.id(), 25)
         );
@@ -40,7 +40,7 @@ class TicketIT extends ScreeningTestSpec {
     @Test
     void should_apply_discount_for_children() {
         var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.filmId());
+        var sampleScreening = addSampleScreening(sampleFilm.id());
         var sampleTicket = ticketAPI.reserveTicket(
                 sampleReserveTicketDTO(sampleScreening.id(), 15)
         );
@@ -58,11 +58,7 @@ class TicketIT extends ScreeningTestSpec {
     @Test
     void should_throw_exception_when_no_screening_free_seats() {
         var sampleFilm = addSampleFilm();
-        var sampleScreeningWithNoFreeSeats = addSampleScreeningWithNoFreeSeats(
-                sampleFilm
-                        .filmId()
-                        .getValue()
-        );
+        var sampleScreeningWithNoFreeSeats = addSampleScreeningWithNoFreeSeats(sampleFilm.id());
         assertThrows(
                 NoScreeningFreeSeatsException.class,
                 () -> ticketAPI.reserveTicket(
@@ -74,7 +70,7 @@ class TicketIT extends ScreeningTestSpec {
     @Test
     void should_throw_exception_when_ticket_age_is_wrong() {
         var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.filmId());
+        var sampleScreening = addSampleScreening(sampleFilm.id());
         assertThrows(
                 WrongTicketAgeException.class,
                 () -> ticketAPI.reserveTicket(
@@ -86,7 +82,7 @@ class TicketIT extends ScreeningTestSpec {
     @Test
     void should_reduce_screening_free_seats_by_one_after_ticket_reservation() {
         var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.filmId());
+        var sampleScreening = addSampleScreening(sampleFilm.id());
         var freeSeatsBeforeReservation = sampleScreening.freeSeats();
         ticketAPI.reserveTicket(
                 sampleReserveTicketDTO(sampleScreening.id(), 25)
@@ -101,7 +97,7 @@ class TicketIT extends ScreeningTestSpec {
     @Test
     void should_cancel_ticket_reservation() {
         var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.filmId());
+        var sampleScreening = addSampleScreening(sampleFilm.id());
         var sampleTicket = reserveSampleTicket(sampleScreening.id());
         var currentDate = sampleScreening.date().minusHours(48);
         ticketAPI.cancel(sampleTicket.ticketId(), currentDate);
@@ -116,7 +112,7 @@ class TicketIT extends ScreeningTestSpec {
     void should_be_possible_to_cancel_ticket_reservation_at_least_one_day_before_screening() {
         var sampleFilm = addSampleFilm();
         var screeningDate = LocalDateTime.parse("2022-05-05T16:30");
-        var sampleScreening = addSampleScreening(sampleFilm.filmId().getValue(), screeningDate);
+        var sampleScreening = addSampleScreening(sampleFilm.id(), screeningDate);
         var sampleTicket = ticketAPI.reserveTicket(
                 sampleReserveTicketDTO(sampleScreening.id(), 25)
         );
@@ -130,7 +126,7 @@ class TicketIT extends ScreeningTestSpec {
     @Test
     void should_return_all_tickets() {
         var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.filmId());
+        var sampleScreening = addSampleScreening(sampleFilm.id());
         var sampleTickets = reserveSampleTickets(sampleScreening.id());
         assertThat(
                 ticketAPI.readAllTickets()

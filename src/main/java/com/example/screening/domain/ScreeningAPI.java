@@ -1,7 +1,6 @@
 package com.example.screening.domain;
 
 import com.example.film.domain.FilmFacade;
-import com.example.film.domain.FilmId;
 import com.example.film.domain.exception.FilmNotFoundException;
 import com.example.screening.domain.dto.AddScreeningDTO;
 import com.example.screening.domain.dto.ScreeningDTO;
@@ -22,18 +21,18 @@ public class ScreeningAPI {
     private final FilmFacade filmFacade;
 
     public ScreeningDTO addScreening(AddScreeningDTO dto, Year currentYear) {
-        if (filmFacade.isFilmPresent(FilmId.of(dto.filmId()))) {
+        if (filmFacade.isFilmPresent(dto.filmId())) {
             var screening = new Screening(
                     ScreeningDate.of(dto.date(), currentYear),
                     FreeSeats.of(dto.freeSeats()),
                     MinAge.of(dto.minAge()),
-                    FilmId.of(dto.filmId())
+                    dto.filmId()
             );
             return screeningRepository
                     .save(screening)
                     .toDTO();
         } else {
-            throw new FilmNotFoundException(FilmId.of(dto.filmId()));
+            throw new FilmNotFoundException(dto.filmId());
         }
     }
 
@@ -49,7 +48,7 @@ public class ScreeningAPI {
                 .toList();
     }
 
-    public List<ScreeningDTO> readScreeningsByFilmId(FilmId filmId) {
+    public List<ScreeningDTO> readScreeningsByFilmId(Long filmId) {
         return screeningRepository
                 .findAllByFilmId(filmId)
                 .stream()

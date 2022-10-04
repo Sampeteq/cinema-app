@@ -1,6 +1,5 @@
 package com.example.screening.domain.dto;
 
-import com.example.film.domain.FilmId;
 import com.example.screening.domain.ScreeningId;
 import lombok.Builder;
 
@@ -12,5 +11,5 @@ public record ScreeningDTO(
         LocalDateTime date,
         int freeSeats,
         int minAge,
-        FilmId filmId) {
+        Long filmId) {
 }

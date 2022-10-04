@@ -11,7 +11,7 @@ class FilmIT extends FilmTestSpec {
     void should_add_film() {
         var addedFilm = filmFacade.addFilm(sampleAddFilmDto());
         assertThat(
-                filmFacade.readFilmById(addedFilm.filmId())
+                filmFacade.readFilmById(addedFilm.id())
         ).isEqualTo(addedFilm);
     }
 

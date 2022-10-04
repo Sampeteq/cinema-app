@@ -10,13 +10,15 @@ import java.util.UUID;
 @Table(name = "FILMS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "uuid")
 @ToString
 class Film {
 
-    @EmbeddedId
-    @AttributeOverride(name = "value", column = @Column(name = "id"))
-    private final FilmId id = FilmId.of(UUID.randomUUID());
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private UUID uuid;
 
     private String title;
 

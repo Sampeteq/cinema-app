@@ -1,6 +1,5 @@
 package com.example.screening.infrastructure;
 
-import com.example.film.domain.FilmId;
 import com.example.screening.domain.ScreeningAPI;
 import com.example.screening.domain.ScreeningDate;
 import com.example.screening.domain.dto.AddScreeningDTO;
@@ -17,7 +16,6 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -38,10 +36,8 @@ class ScreeningController {
     }
 
     @GetMapping("/screenings/{filmId}")
-    List<ScreeningDTO> readScreeningsByFilmId(@PathVariable UUID filmId) {
-        return screeningAPI.readScreeningsByFilmId(
-                FilmId.of(filmId)
-        );
+    List<ScreeningDTO> readScreeningsByFilmId(@PathVariable Long filmId) {
+        return screeningAPI.readScreeningsByFilmId(filmId);
     }
 
     @GetMapping("/screenings/date")

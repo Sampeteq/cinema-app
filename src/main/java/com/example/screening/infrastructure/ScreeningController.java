@@ -26,23 +26,23 @@ class ScreeningController {
     private final Year currentYear;
 
     @PostMapping("/screenings")
-    ScreeningDTO addNewScreening(@RequestBody @Valid AddScreeningDTO dto) {
-        return screeningFacade.addScreening(dto, currentYear);
+    ScreeningDTO add(@RequestBody @Valid AddScreeningDTO dto) {
+        return screeningFacade.add(dto, currentYear);
     }
 
     @GetMapping("/screenings")
-    List<ScreeningDTO> readAllScreenings() {
-        return screeningFacade.readAllScreenings();
+    List<ScreeningDTO> readAll() {
+        return screeningFacade.readAll();
     }
 
     @GetMapping("/screenings/{filmId}")
-    List<ScreeningDTO> readScreeningsByFilmId(@PathVariable Long filmId) {
-        return screeningFacade.readScreeningsByFilmId(filmId);
+    List<ScreeningDTO> readByFilmId(@PathVariable Long filmId) {
+        return screeningFacade.readAllByFilmId(filmId);
     }
 
     @GetMapping("/screenings/date")
-    List<ScreeningDTO> readScreeningsByDate(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime date) {
-        return screeningFacade.readAllScreeningsByDate(ScreeningDate.of(date, currentYear));
+    List<ScreeningDTO> readByDate(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime date) {
+        return screeningFacade.readAllByDate(ScreeningDate.of(date, currentYear));
     }
 }
 

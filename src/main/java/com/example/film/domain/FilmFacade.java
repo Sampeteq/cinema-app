@@ -13,7 +13,7 @@ public class FilmFacade {
 
     private final FilmRepository filmRepository;
 
-    public FilmDTO addFilm(AddFilmDTO cmd) {
+    public FilmDTO add(AddFilmDTO cmd) {
         var film = new Film(
                 null,
                 UUID.randomUUID(),
@@ -26,14 +26,14 @@ public class FilmFacade {
                 .toDTO();
     }
 
-    public FilmDTO readFilmById(Long filmId) {
+    public FilmDTO read(Long filmId) {
         return filmRepository
                 .findById(filmId)
                 .map(Film::toDTO)
                 .orElseThrow(() -> new FilmNotFoundException(filmId));
     }
 
-    public List<FilmDTO> readAllFilms() {
+    public List<FilmDTO> readAll() {
         return filmRepository
                 .findAll()
                 .stream()
@@ -41,7 +41,7 @@ public class FilmFacade {
                 .toList();
     }
 
-    public List<FilmDTO> readFilmsByCategory(FilmCategory category) {
+    public List<FilmDTO> readAllByCategory(FilmCategory category) {
         return filmRepository
                 .findAllByCategory(category)
                 .stream()
@@ -49,7 +49,7 @@ public class FilmFacade {
                 .toList();
     }
 
-    public boolean isFilmPresent(Long filmId) {
+    public boolean isPresent(Long filmId) {
         return filmRepository.findById(filmId).isPresent();
     }
 }

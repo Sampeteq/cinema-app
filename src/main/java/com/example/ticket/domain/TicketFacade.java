@@ -18,7 +18,7 @@ public class TicketFacade {
     private final ScreeningFacade screeningFacade;
 
     @Transactional
-    public TicketDTO reserveTicket(ReserveTicketDTO dto) {
+    public TicketDTO reserve(ReserveTicketDTO dto) {
         screeningFacade.checkReservationPossibility(dto.screeningId(), dto.age());
         var ticket = ticketFactory.createTicket(dto);
         var addedTicket = ticketRepository.save(ticket);
@@ -33,11 +33,11 @@ public class TicketFacade {
         ticket.cancel();
     }
 
-    public TicketDTO readTicketById(Long ticketId) {
+    public TicketDTO read(Long ticketId) {
         return getTicketOrThrowException(ticketId).toDTO();
     }
 
-    public List<TicketDTO> readAllTickets() {
+    public List<TicketDTO> readAll() {
         return ticketRepository
                 .findAll()
                 .stream()

@@ -21,18 +21,18 @@ class TicketController {
     private final TicketFacade ticketFacade;
 
     @PostMapping("/tickets/reservation")
-    TicketDTO reserveTicket(@RequestBody @Valid ReserveTicketDTO dto) {
-        return ticketFacade.reserveTicket(dto);
+    TicketDTO reserve(@RequestBody @Valid ReserveTicketDTO dto) {
+        return ticketFacade.reserve(dto);
     }
 
     @PatchMapping("/tickets/{ticketId}/reservation/cancelled")
-    void cancelTicket(@PathVariable Long ticketId) {
+    void cancel(@PathVariable Long ticketId) {
         ticketFacade.cancel(ticketId, LocalDateTime.now());
     }
 
     @GetMapping("/tickets")
-    List<TicketDTO> readAllTickets() {
-        return ticketFacade.readAllTickets();
+    List<TicketDTO> readAll() {
+        return ticketFacade.readAll();
     }
 }
 

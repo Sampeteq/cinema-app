@@ -24,16 +24,16 @@ public class FilmTestSpec {
     }
 
     public FilmDTO addSampleFilm() {
-        return filmFacade.addFilm(
+        return filmFacade.add(
                 new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022)
         );
     }
 
     public List<FilmDTO> addSampleFilms() {
-        var sampleFilm1 = filmFacade.addFilm(
+        var sampleFilm1 = filmFacade.add(
                 new AddFilmDTO("Sample film 1", FilmCategory.COMEDY, 2022)
         );
-        var sampleFilm2 = filmFacade.addFilm(
+        var sampleFilm2 = filmFacade.add(
                 new AddFilmDTO("Sample film 2", FilmCategory.ACTION, 2021)
         );
         return List.of(sampleFilm1, sampleFilm2);

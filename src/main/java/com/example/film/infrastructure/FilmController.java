@@ -21,18 +21,18 @@ class FilmController {
     private final FilmFacade filmFacade;
 
     @PostMapping("/films")
-    FilmDTO addFilm(@RequestBody @Valid AddFilmDTO dto) {
-        return filmFacade.addFilm(dto);
+    FilmDTO add(@RequestBody @Valid AddFilmDTO dto) {
+        return filmFacade.add(dto);
     }
 
     @GetMapping("/films")
-    List<FilmDTO> readAllFilms() {
-        return filmFacade.readAllFilms();
+    List<FilmDTO> readAll() {
+        return filmFacade.readAll();
     }
 
     @GetMapping("/films/category")
-    List<FilmDTO> readAllFilmsByCategory(@RequestParam FilmCategory category) {
-        return filmFacade.readFilmsByCategory(category);
+    List<FilmDTO> readAllByCategory(@RequestParam FilmCategory category) {
+        return filmFacade.readAllByCategory(category);
     }
 }
 

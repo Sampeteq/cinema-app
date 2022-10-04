@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class FilmIT extends FilmTestSpec {
     @Test
     void should_add_film() {
-        var addedFilm = filmFacade.addFilm(sampleAddFilmDto());
+        var addedFilm = filmFacade.add(sampleAddFilmDto());
         assertThat(
-                filmFacade.readFilmById(addedFilm.id())
+                filmFacade.read(addedFilm.id())
         ).isEqualTo(addedFilm);
     }
 
@@ -19,7 +19,7 @@ class FilmIT extends FilmTestSpec {
     void should_throw_exception_when_filmYear_is_neither_previous_nor_current_nor_next_one() {
         assertThrows(
                 WrongFilmYearException.class,
-                () -> filmFacade.addFilm(
+                () -> filmFacade.add(
                         sampleAddFilmDtoWithWrongFilmYear()
                 )
         );
@@ -28,7 +28,7 @@ class FilmIT extends FilmTestSpec {
     @Test
     void should_return_all_films() {
         var sampleFilms = addSampleFilms();
-        assertThat(filmFacade.readAllFilms()).isEqualTo(sampleFilms);
+        assertThat(filmFacade.readAll()).isEqualTo(sampleFilms);
     }
 
     @Test
@@ -37,7 +37,7 @@ class FilmIT extends FilmTestSpec {
                 .get(0)
                 .category();
         assertThat(
-                filmFacade.readFilmsByCategory(sampleCategory)
+                filmFacade.readAllByCategory(sampleCategory)
         ).allMatch(
                 film -> film.category().equals(sampleCategory)
         );

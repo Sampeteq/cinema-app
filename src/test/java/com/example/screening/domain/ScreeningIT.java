@@ -11,12 +11,12 @@ class ScreeningIT extends ScreeningTestSpec {
     @Test
     void should_add_screening() {
         var addedFilm = addSampleFilm();
-        var addedScreening = screeningFacade.addScreening(
+        var addedScreening = screeningFacade.add(
                 sampleAddScreeningDTO(addedFilm.id()),
                 currentYear
         );
         assertThat(
-                screeningFacade.readScreeningById(addedScreening.id())
+                screeningFacade.readScreening(addedScreening.id())
         ).isEqualTo(addedScreening);
     }
 
@@ -25,7 +25,7 @@ class ScreeningIT extends ScreeningTestSpec {
         var addedFilm = addSampleFilm();
         assertThrows(
                 WrongScreeningYearException.class,
-                () -> screeningFacade.addScreening(
+                () -> screeningFacade.add(
                         sampleAddScreeningDTOwithWrongFilmYear(addedFilm),
                         currentYear
                 )
@@ -37,7 +37,7 @@ class ScreeningIT extends ScreeningTestSpec {
         var sampleFilm = addSampleFilm();
         var sampleScreenings = addSampleScreenings(sampleFilm.id());
         assertThat(
-                screeningFacade.readAllScreenings()
+                screeningFacade.readAll()
         ).isEqualTo(sampleScreenings);
     }
 
@@ -49,7 +49,7 @@ class ScreeningIT extends ScreeningTestSpec {
         addSampleScreening(sampleFilmId1);
         addSampleScreening(sampleFilmId2);
         assertThat(
-                screeningFacade.readScreeningsByFilmId(sampleFilmId1)
+                screeningFacade.readAllByFilmId(sampleFilmId1)
         ).allMatch(
                 screening -> screening.filmId().equals(sampleFilmId1)
         );
@@ -63,7 +63,7 @@ class ScreeningIT extends ScreeningTestSpec {
                 .get(0)
                 .date();
         assertThat(
-                screeningFacade.readAllScreeningsByDate(ScreeningDate.of(sampleDate, currentYear))
+                screeningFacade.readAllByDate(ScreeningDate.of(sampleDate, currentYear))
         ).allMatch(
                 screening -> screening.date().equals(sampleDate)
         );

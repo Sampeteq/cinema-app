@@ -21,8 +21,8 @@ public class ScreeningFacade {
     private final ScreeningRepository screeningRepository;
     private final FilmFacade filmFacade;
 
-    public ScreeningDTO addScreening(AddScreeningDTO dto, Year currentYear) {
-        if (filmFacade.isFilmPresent(dto.filmId())) {
+    public ScreeningDTO add(AddScreeningDTO dto, Year currentYear) {
+        if (filmFacade.isPresent(dto.filmId())) {
             var screening = new Screening(
                     null,
                     UUID.randomUUID(),
@@ -39,11 +39,11 @@ public class ScreeningFacade {
         }
     }
 
-    public ScreeningDTO readScreeningById(Long screeningId) {
+    public ScreeningDTO readScreening(Long screeningId) {
         return getScreeningOrThrowException(screeningId).toDTO();
     }
 
-    public List<ScreeningDTO> readAllScreenings() {
+    public List<ScreeningDTO> readAll() {
         return screeningRepository
                 .findAll()
                 .stream()
@@ -51,7 +51,7 @@ public class ScreeningFacade {
                 .toList();
     }
 
-    public List<ScreeningDTO> readScreeningsByFilmId(Long filmId) {
+    public List<ScreeningDTO> readAllByFilmId(Long filmId) {
         return screeningRepository
                 .findAllByFilmId(filmId)
                 .stream()
@@ -59,7 +59,7 @@ public class ScreeningFacade {
                 .toList();
     }
 
-    public List<ScreeningDTO> readAllScreeningsByDate(ScreeningDate date) {
+    public List<ScreeningDTO> readAllByDate(ScreeningDate date) {
         return screeningRepository
                 .findByDate(date)
                 .stream()

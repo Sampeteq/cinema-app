@@ -38,7 +38,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
     }
 
     public ScreeningDTO addSampleScreening(Long sampleFilmId) {
-        return screeningFacade.addScreening(
+        return screeningFacade.add(
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId)
@@ -51,7 +51,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
     }
 
     public ScreeningDTO addSampleScreening(Long sampleFilmId, LocalDateTime screeningDate) {
-        return screeningFacade.addScreening(
+        return screeningFacade.add(
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId)
@@ -64,7 +64,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
     }
 
     public ScreeningDTO addSampleScreeningWithNoFreeSeats(Long sampleFilmId) {
-        return screeningFacade.addScreening(
+        return screeningFacade.add(
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId)
@@ -77,7 +77,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
     }
 
     public List<ScreeningDTO> addSampleScreenings(Long filmId) {
-        var screening1 = screeningFacade.addScreening(
+        var screening1 = screeningFacade.add(
                 AddScreeningDTO
                         .builder()
                         .filmId(filmId)
@@ -87,7 +87,7 @@ public class ScreeningTestSpec extends FilmTestSpec {
                         .build(),
                 currentYear
         );
-        var screening2 = screeningFacade.addScreening(
+        var screening2 = screeningFacade.add(
                 AddScreeningDTO
                         .builder()
                         .filmId(filmId)

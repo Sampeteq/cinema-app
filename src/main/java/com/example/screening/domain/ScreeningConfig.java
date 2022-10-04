@@ -1,6 +1,6 @@
 package com.example.screening.domain;
 
-import com.example.film.domain.FilmAPI;
+import com.example.film.domain.FilmFacade;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,8 +10,8 @@ import java.time.Year;
 class ScreeningConfig {
 
     @Bean
-    ScreeningAPI screeningAPI(ScreeningRepository screeningRepository, FilmAPI filmAPI) {
-        return new ScreeningAPI(screeningRepository, filmAPI);
+    ScreeningAPI screeningAPI(ScreeningRepository screeningRepository, FilmFacade filmFacade) {
+        return new ScreeningAPI(screeningRepository, filmFacade);
     }
 
     @Bean

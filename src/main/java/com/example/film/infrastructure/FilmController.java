@@ -1,6 +1,6 @@
 package com.example.film.infrastructure;
 
-import com.example.film.domain.FilmAPI;
+import com.example.film.domain.FilmFacade;
 import com.example.film.domain.FilmCategory;
 import com.example.film.domain.dto.AddFilmDTO;
 import com.example.film.domain.dto.FilmDTO;
@@ -18,21 +18,21 @@ import java.util.List;
 @AllArgsConstructor
 class FilmController {
 
-    private final FilmAPI filmAPI;
+    private final FilmFacade filmFacade;
 
     @PostMapping("/films")
     FilmDTO addFilm(@RequestBody @Valid AddFilmDTO dto) {
-        return filmAPI.addFilm(dto);
+        return filmFacade.addFilm(dto);
     }
 
     @GetMapping("/films")
     List<FilmDTO> readAllFilms() {
-        return filmAPI.readAllFilms();
+        return filmFacade.readAllFilms();
     }
 
     @GetMapping("/films/category")
     List<FilmDTO> readAllFilmsByCategory(@RequestParam FilmCategory category) {
-        return filmAPI.readFilmsByCategory(category);
+        return filmFacade.readFilmsByCategory(category);
     }
 }
 

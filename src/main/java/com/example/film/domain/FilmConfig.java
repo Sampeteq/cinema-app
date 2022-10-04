@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 class FilmConfig {
 
     @Bean
-    FilmAPI filmAPI(FilmRepository filmRepository) {
-        return new FilmAPI(filmRepository);
+    FilmFacade filmAPI(FilmRepository filmRepository) {
+        return new FilmFacade(filmRepository);
     }
 }

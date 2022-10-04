@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import java.util.List;
 
 @AllArgsConstructor
-public class FilmAPI {
+public class FilmFacade {
 
     private final FilmRepository filmRepository;
 

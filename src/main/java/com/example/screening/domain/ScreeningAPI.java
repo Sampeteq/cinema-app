@@ -1,6 +1,6 @@
 package com.example.screening.domain;
 
-import com.example.film.domain.FilmAPI;
+import com.example.film.domain.FilmFacade;
 import com.example.film.domain.FilmId;
 import com.example.film.domain.exception.FilmNotFoundException;
 import com.example.screening.domain.dto.AddScreeningDTO;
@@ -19,10 +19,10 @@ import java.util.List;
 public class ScreeningAPI {
 
     private final ScreeningRepository screeningRepository;
-    private final FilmAPI filmAPI;
+    private final FilmFacade filmFacade;
 
     public ScreeningDTO addScreening(AddScreeningDTO dto, Year currentYear) {
-        if (filmAPI.isFilmPresent(FilmId.of(dto.filmId()))) {
+        if (filmFacade.isFilmPresent(FilmId.of(dto.filmId()))) {
             var screening = new Screening(
                     ScreeningDate.of(dto.date(), currentYear),
                     FreeSeats.of(dto.freeSeats()),

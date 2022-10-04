@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional
 public class FilmTestSpec {
     @Autowired
-    public FilmAPI filmAPI;
+    public FilmFacade filmFacade;
 
     public AddFilmDTO sampleAddFilmDto() {
         return new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022);
@@ -24,16 +24,16 @@ public class FilmTestSpec {
     }
 
     public FilmDTO addSampleFilm() {
-        return filmAPI.addFilm(
+        return filmFacade.addFilm(
                 new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022)
         );
     }
 
     public List<FilmDTO> addSampleFilms() {
-        var sampleFilm1 = filmAPI.addFilm(
+        var sampleFilm1 = filmFacade.addFilm(
                 new AddFilmDTO("Sample film 1", FilmCategory.COMEDY, 2022)
         );
-        var sampleFilm2 = filmAPI.addFilm(
+        var sampleFilm2 = filmFacade.addFilm(
                 new AddFilmDTO("Sample film 2", FilmCategory.ACTION, 2021)
         );
         return List.of(sampleFilm1, sampleFilm2);

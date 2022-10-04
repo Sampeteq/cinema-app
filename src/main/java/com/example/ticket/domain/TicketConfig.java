@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration;
 class TicketConfig {
 
     @Bean
-    TicketAPI ticketAPI(TicketRepository ticketRepository, ScreeningFacade screeningFacade) {
+    TicketFacade ticketAPI(TicketRepository ticketRepository, ScreeningFacade screeningFacade) {
         var nonAdultPercentDiscount = TicketValues.UNDERAGE_DISCOUNT_PERCENT;
         var nonAdultTicketDiscountPolicy = new PercentUnderageTicketDiscountPolicy(nonAdultPercentDiscount);
         var ticketFactory = new TicketFactory(nonAdultTicketDiscountPolicy);
-        return new TicketAPI(ticketRepository, ticketFactory, screeningFacade);
+        return new TicketFacade(ticketRepository, ticketFactory, screeningFacade);
     }
 
     @Bean

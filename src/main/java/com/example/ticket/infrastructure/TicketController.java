@@ -1,6 +1,6 @@
 package com.example.ticket.infrastructure;
 
-import com.example.ticket.domain.TicketAPI;
+import com.example.ticket.domain.TicketFacade;
 import com.example.ticket.domain.dto.ReserveTicketDTO;
 import com.example.ticket.domain.dto.TicketDTO;
 import com.example.ticket.domain.exception.TicketException;
@@ -13,27 +13,26 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
 class TicketController {
 
-    private final TicketAPI ticketAPI;
+    private final TicketFacade ticketFacade;
 
     @PostMapping("/tickets/reservation")
     TicketDTO reserveTicket(@RequestBody @Valid ReserveTicketDTO cmd) {
-        return ticketAPI.reserveTicket(cmd);
+        return ticketFacade.reserveTicket(cmd);
     }
 
     @PatchMapping("/tickets/{ticketId}/reservation/cancelled")
     void cancelTicket(@PathVariable Long ticketId) {
-        ticketAPI.cancel(ticketId, LocalDateTime.now());
+        ticketFacade.cancel(ticketId, LocalDateTime.now());
     }
 
     @GetMapping("/tickets")
     List<TicketDTO> readAllTickets() {
-        return ticketAPI.readAllTickets();
+        return ticketFacade.readAllTickets();
     }
 }
 

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
-public class TicketAPI {
+public class TicketFacade {
 
     private final TicketRepository ticketRepository;
     private final TicketFactory ticketFactory;

@@ -10,12 +10,16 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "TICKETS")
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "uuid")
 @ToString
 class Ticket {
 
     @Id
-    private final UUID id = UUID.randomUUID();
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    private Long id;
+
+    private UUID uuid = UUID.randomUUID();
 
     private String firstName;
 

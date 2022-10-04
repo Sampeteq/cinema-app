@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class TicketAPI {
@@ -28,13 +27,13 @@ public class TicketAPI {
     }
 
     @Transactional
-    public void cancel(UUID ticketId, LocalDateTime currentDate) {
+    public void cancel(Long ticketId, LocalDateTime currentDate) {
         var ticket = getTicketOrThrowException(ticketId);
         screeningFacade.checkCancelReservationPossibility(ticket.getScreeningId(), currentDate);
         ticket.cancel();
     }
 
-    public TicketDTO readTicketById(UUID ticketId) {
+    public TicketDTO readTicketById(Long ticketId) {
         return getTicketOrThrowException(ticketId).toDTO();
     }
 
@@ -46,7 +45,7 @@ public class TicketAPI {
                 .toList();
     }
 
-    private Ticket getTicketOrThrowException(UUID ticketId) {
+    private Ticket getTicketOrThrowException(Long ticketId) {
         return ticketRepository
                 .findById(ticketId)
                 .orElseThrow(() -> new TicketNotFoundException(ticketId));

@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-interface TicketRepository extends JpaRepository<Ticket, UUID> {
+interface TicketRepository extends JpaRepository<Ticket, Long> {
 }

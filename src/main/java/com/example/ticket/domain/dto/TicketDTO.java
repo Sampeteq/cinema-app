@@ -1,6 +1,5 @@
 package com.example.ticket.domain.dto;
 
-import com.example.screening.domain.ScreeningId;
 import com.example.ticket.domain.TicketStatus;
 import lombok.Builder;
 
@@ -14,6 +13,6 @@ public record TicketDTO(
         String lastName,
         BigDecimal prize,
         TicketStatus status,
-        ScreeningId screeningId
+        Long screeningId
 ) {
 }

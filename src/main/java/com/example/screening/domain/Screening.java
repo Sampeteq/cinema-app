@@ -13,13 +13,15 @@ import java.util.UUID;
 @Table(name = "SCREENINGS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "uuid")
 @ToString
 class Screening {
 
-    @EmbeddedId
-    @AttributeOverride(name = "value", column = @Column(name = "id"))
-    private final ScreeningId id = ScreeningId.of(UUID.randomUUID());
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private UUID uuid;
 
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "date"))

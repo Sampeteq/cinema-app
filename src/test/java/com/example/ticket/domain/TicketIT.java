@@ -1,6 +1,5 @@
 package com.example.ticket.domain;
 
-import com.example.screening.domain.ScreeningId;
 import com.example.screening.domain.ScreeningTestSpec;
 import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
 import com.example.ticket.domain.dto.ReserveTicketDTO;
@@ -133,7 +132,7 @@ class TicketIT extends ScreeningTestSpec {
         ).isEqualTo(sampleTickets);
     }
 
-    private static ReserveTicketDTO sampleReserveTicketDTO(ScreeningId sampleScreeningId, int age) {
+    private static ReserveTicketDTO sampleReserveTicketDTO(Long sampleScreeningId, int age) {
         return ReserveTicketDTO
                 .builder()
                 .screeningId(sampleScreeningId)
@@ -143,7 +142,7 @@ class TicketIT extends ScreeningTestSpec {
                 .build();
     }
 
-    private TicketDTO reserveSampleTicket(ScreeningId sampleScreeningId) {
+    private TicketDTO reserveSampleTicket(Long sampleScreeningId) {
         return ticketAPI.reserveTicket(
                 ReserveTicketDTO
                         .builder()
@@ -155,7 +154,7 @@ class TicketIT extends ScreeningTestSpec {
         );
     }
 
-    private List<TicketDTO> reserveSampleTickets(ScreeningId sampleScreeningId) {
+    private List<TicketDTO> reserveSampleTickets(Long sampleScreeningId) {
         var sampleTicket1 = ticketAPI.reserveTicket(
                 ReserveTicketDTO
                         .builder()

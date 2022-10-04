@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class ScreeningAPI {
@@ -23,6 +24,8 @@ public class ScreeningAPI {
     public ScreeningDTO addScreening(AddScreeningDTO dto, Year currentYear) {
         if (filmFacade.isFilmPresent(dto.filmId())) {
             var screening = new Screening(
+                    null,
+                    UUID.randomUUID(),
                     ScreeningDate.of(dto.date(), currentYear),
                     FreeSeats.of(dto.freeSeats()),
                     MinAge.of(dto.minAge()),
@@ -36,7 +39,7 @@ public class ScreeningAPI {
         }
     }
 
-    public ScreeningDTO readScreeningById(ScreeningId screeningId) {
+    public ScreeningDTO readScreeningById(Long screeningId) {
         return getScreeningOrThrowException(screeningId).toDTO();
     }
 
@@ -64,7 +67,7 @@ public class ScreeningAPI {
                 .toList();
     }
 
-    public void checkReservationPossibility(ScreeningId screeningId, int age) {
+    public void checkReservationPossibility(Long screeningId, int age) {
         var screening = getScreeningOrThrowException(screeningId);
         if (!screening.hasFreeSeats()) {
             throw new NoScreeningFreeSeatsException(screeningId);
@@ -74,19 +77,19 @@ public class ScreeningAPI {
         }
     }
 
-    public void decreaseFreeSeatsByOne(ScreeningId screeningId) {
+    public void decreaseFreeSeatsByOne(Long screeningId) {
         var screening = getScreeningOrThrowException(screeningId);
         screening.decreaseFreeSeatsByOne();
     }
 
-    public void checkCancelReservationPossibility(ScreeningId screeningId, LocalDateTime currentDate) {
+    public void checkCancelReservationPossibility(Long screeningId, LocalDateTime currentDate) {
         var screening = getScreeningOrThrowException(screeningId);
         if (!screening.canCancelReservation(currentDate)) {
             throw new TooLateToCancelTicketReservationException();
         }
     }
 
-    private Screening getScreeningOrThrowException(ScreeningId screeningId) {
+    private Screening getScreeningOrThrowException(Long screeningId) {
         return screeningRepository
                 .findById(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));

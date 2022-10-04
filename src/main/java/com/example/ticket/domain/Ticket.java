@@ -1,6 +1,5 @@
 package com.example.ticket.domain;
 
-import com.example.screening.domain.ScreeningId;
 import com.example.ticket.domain.dto.TicketDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,14 +28,12 @@ class Ticket {
     private TicketStatus status = TicketStatus.OPEN;
 
     @Getter
-    @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "screeningId"))
-    private ScreeningId screeningId;
+    private Long screeningId;
 
     protected Ticket() {
     }
 
-    Ticket(String firstName, String lastName, ScreeningId screeningId) {
+    Ticket(String firstName, String lastName, Long screeningId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.screeningId = screeningId;

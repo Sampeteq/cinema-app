@@ -7,7 +7,7 @@ import com.example.ticket.domain.exception.TicketNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.Clock;
 import java.util.List;
 
 @AllArgsConstructor
@@ -27,9 +27,9 @@ public class TicketFacade {
     }
 
     @Transactional
-    public void cancel(Long ticketId, LocalDateTime currentDate) {
+    public void cancel(Long ticketId, Clock clock) {
         var ticket = getTicketOrThrowException(ticketId);
-        screeningFacade.checkCancelReservationPossibility(ticket.getScreeningId(), currentDate);
+        screeningFacade.checkCancelReservationPossibility(ticket.getScreeningId(), clock);
         ticket.cancel();
     }
 

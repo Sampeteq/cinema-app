@@ -10,6 +10,7 @@ import com.example.ticket.domain.exception.TooLateToCancelTicketReservationExcep
 import com.example.ticket.domain.exception.WrongTicketAgeException;
 import lombok.AllArgsConstructor;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
@@ -82,9 +83,9 @@ public class ScreeningFacade {
         screening.decreaseFreeSeatsByOne();
     }
 
-    public void checkCancelReservationPossibility(Long screeningId, LocalDateTime currentDate) {
+    public void checkCancelReservationPossibility(Long screeningId, Clock clock) {
         var screening = getScreeningOrThrowException(screeningId);
-        if (!screening.canCancelReservation(currentDate)) {
+        if (!screening.canCancelReservation(clock)) {
             throw new TooLateToCancelTicketReservationException();
         }
     }

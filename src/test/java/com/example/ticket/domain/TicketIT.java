@@ -9,7 +9,9 @@ import com.example.ticket.domain.exception.WrongTicketAgeException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static com.example.ticket.domain.TicketValues.TICKET_BASIC_PRIZE;
@@ -98,8 +100,12 @@ class TicketIT extends ScreeningTestSpec {
         var sampleFilm = addSampleFilm();
         var sampleScreening = addSampleScreening(sampleFilm.id());
         var sampleTicket = reserveSampleTicket(sampleScreening.id());
-        var currentDate = sampleScreening.date().minusHours(48);
-        ticketFacade.cancel(sampleTicket.ticketId(), currentDate);
+        var twoDaysBeforeScreening = sampleScreening
+                .date()
+                .minusHours(48)
+                .toInstant(ZoneOffset.UTC);
+        var clock = Clock.fixed(twoDaysBeforeScreening, ZoneOffset.UTC);
+        ticketFacade.cancel(sampleTicket.ticketId(), clock);
         assertThat(
                 ticketFacade
                         .read(sampleTicket.ticketId())
@@ -115,10 +121,13 @@ class TicketIT extends ScreeningTestSpec {
         var sampleTicket = ticketFacade.reserve(
                 sampleReserveTicketDTO(sampleScreening.id(), 25)
         );
-        var currentDate = screeningDate.minusHours(15);
+        var lessThanOneDayBeforeScreening = screeningDate
+                .minusHours(15)
+                .toInstant(ZoneOffset.UTC);
+        var clock = Clock.fixed(lessThanOneDayBeforeScreening, ZoneOffset.UTC);
         assertThrows(
                 TooLateToCancelTicketReservationException.class,
-                () -> ticketFacade.cancel(sampleTicket.ticketId(), currentDate)
+                () -> ticketFacade.cancel(sampleTicket.ticketId(), clock)
         );
     }
 

@@ -5,6 +5,7 @@ import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -53,8 +54,10 @@ class Screening {
         return this.freeSeats.getValue() > 0;
     }
 
-    boolean canCancelReservation(LocalDateTime currentDate) {
-        return Duration.between(currentDate, this.date.getValue()).toHours() > 24;
+    boolean canCancelReservation(Clock clock) {
+        return Duration
+                .between(LocalDateTime.now(clock), this.date.getValue())
+                .toHours() > 24;
     }
 
     ScreeningDTO toDTO() {

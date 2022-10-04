@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @RestController
@@ -27,7 +29,7 @@ class TicketController {
 
     @PatchMapping("/tickets/{ticketId}/reservation/cancelled")
     void cancel(@PathVariable Long ticketId) {
-        ticketFacade.cancel(ticketId, LocalDateTime.now());
+        ticketFacade.cancel(ticketId, Clock.system(ZoneOffset.UTC));
     }
 
     @GetMapping("/tickets")

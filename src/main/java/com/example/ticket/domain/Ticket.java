@@ -45,8 +45,12 @@ class Ticket {
         this.screeningId = screeningId;
     }
 
-    void applyDiscount(Function<BigDecimal, BigDecimal> policy) {
-        this.prize = policy.apply(this.prize);
+    void applyDiscount(Function<BigDecimal, BigDecimal> discount) {
+        var difference= discount.apply(this.prize);
+        if (difference.compareTo(this.prize) >= 0){
+            throw new IllegalArgumentException("A discount difference cannot be bigger or equal to basic price");
+        }
+        this.prize = this.prize.subtract(difference);
     }
 
     void cancel() {

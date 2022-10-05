@@ -11,10 +11,7 @@ class TicketFactory {
     Ticket createTicket(ReserveTicketDTO dto) {
         var ticket = new Ticket(dto.firstName(), dto.lastName(), dto.screeningId());
         if (dto.age() < 18) {
-            ticket.applyDiscount(basicPrize -> basicPrize.subtract(
-                    basicPrize.multiply(CHILDREN_DISCOUNT_PERCENT)
-                    )
-            );
+            ticket.applyDiscount(basicPrize -> basicPrize.multiply(CHILDREN_DISCOUNT_PERCENT));
         }
         return ticket;
     }

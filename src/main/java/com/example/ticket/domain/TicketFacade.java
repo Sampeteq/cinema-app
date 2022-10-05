@@ -3,6 +3,7 @@ package com.example.ticket.domain;
 import com.example.screening.domain.ScreeningFacade;
 import com.example.ticket.domain.dto.ReserveTicketDTO;
 import com.example.ticket.domain.dto.TicketDTO;
+import com.example.ticket.domain.exception.TicketAlreadyCancelledException;
 import com.example.ticket.domain.exception.TicketNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,9 @@ public class TicketFacade {
     @Transactional
     public void cancel(Long ticketId, Clock clock) {
         var ticket = getTicketOrThrowException(ticketId);
+        if (ticket.isAlreadyCancelled()) {
+            throw new TicketAlreadyCancelledException(ticketId);
+        }
         screeningFacade.checkCancelReservationPossibility(ticket.getScreeningId(), clock);
         ticket.cancel();
     }

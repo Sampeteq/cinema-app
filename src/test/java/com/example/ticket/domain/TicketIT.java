@@ -4,6 +4,7 @@ import com.example.screening.domain.ScreeningTestSpec;
 import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
 import com.example.ticket.domain.dto.ReserveTicketDTO;
 import com.example.ticket.domain.dto.TicketDTO;
+import com.example.ticket.domain.exception.TicketAlreadyCancelledException;
 import com.example.ticket.domain.exception.TooLateToCancelTicketReservationException;
 import com.example.ticket.domain.exception.WrongTicketAgeException;
 import org.junit.jupiter.api.Test;
@@ -106,6 +107,22 @@ class TicketIT extends ScreeningTestSpec {
                         .read(sampleTicket.ticketId())
                         .status()
         ).isEqualTo(TicketStatus.CANCELLED);
+    }
+
+    @Test
+    void should_throw_exception_when_ticket_is_already_cancelled() {
+        var sampleFilm= addSampleFilm();
+        var sampleScreening= addSampleScreening(sampleFilm.id());
+        var sampleTicket= reserveSampleTicket(sampleScreening.id());
+        var instant= sampleScreening
+                .date()
+                .minusDays(2)
+                .toInstant(ZoneOffset.UTC);
+        ticketFacade.cancel(sampleTicket.ticketId(), Clock.fixed(instant, ZoneOffset.UTC));
+        assertThrows(
+                TicketAlreadyCancelledException.class,
+                () -> ticketFacade.cancel(sampleTicket.ticketId(), Clock.systemUTC())
+        );
     }
 
     @Test

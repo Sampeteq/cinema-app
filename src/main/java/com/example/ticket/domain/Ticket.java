@@ -68,4 +68,8 @@ class Ticket {
                 .screeningId(this.screeningId)
                 .build();
     }
+
+    public boolean isAlreadyCancelled() {
+        return this.status.equals(TicketStatus.CANCELLED);
+    }
 }

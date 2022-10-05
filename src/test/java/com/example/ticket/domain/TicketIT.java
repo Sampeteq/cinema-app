@@ -47,7 +47,7 @@ class TicketIT extends ScreeningTestSpec {
                         .read(sampleTicket.ticketId())
                         .prize()
         ).isEqualTo(
-                Money.of(BigDecimal.valueOf(9.0))
+                new BigDecimal("9.00")
         );
     }
 

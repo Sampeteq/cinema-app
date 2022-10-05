@@ -6,8 +6,11 @@ import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.function.Function;
+
+import static com.example.ticket.domain.TicketValues.TICKET_BASIC_PRIZE;
 
 @Entity
 @Table(name = "TICKETS")
@@ -26,9 +29,7 @@ class Ticket {
 
     private String lastName;
 
-    @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "prize"))
-    private Money prize = Money.of(TicketValues.TICKET_BASIC_PRIZE);
+    private BigDecimal prize = TICKET_BASIC_PRIZE;
 
     private TicketStatus status = TicketStatus.OPEN;
 
@@ -44,7 +45,7 @@ class Ticket {
         this.screeningId = screeningId;
     }
 
-    void applyDiscount(Function<Money, Money> policy) {
+    void applyDiscount(Function<BigDecimal, BigDecimal> policy) {
         this.prize = policy.apply(this.prize);
     }
 

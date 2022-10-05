@@ -9,19 +9,7 @@ class TicketConfig {
 
     @Bean
     TicketFacade ticketAPI(TicketRepository ticketRepository, ScreeningFacade screeningFacade) {
-        var nonAdultPercentDiscount = TicketValues.UNDERAGE_DISCOUNT_PERCENT;
-        var nonAdultTicketDiscountPolicy = new PercentUnderageTicketDiscountPolicy(nonAdultPercentDiscount);
-        var ticketFactory = new TicketFactory(nonAdultTicketDiscountPolicy);
+        var ticketFactory = new TicketFactory();
         return new TicketFacade(ticketRepository, ticketFactory, screeningFacade);
-    }
-
-    @Bean
-    UnderageTicketDiscountPolicy underageTicketDiscountPolicy(Double discountPercent) {
-        return new PercentUnderageTicketDiscountPolicy(discountPercent);
-    }
-
-    @Bean
-    Double underAgeDiscountPercent() {
-        return TicketValues.UNDERAGE_DISCOUNT_PERCENT;
     }
 }

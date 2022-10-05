@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.UUID;
+import java.util.function.Function;
 
 @Entity
 @Table(name = "TICKETS")
@@ -43,8 +44,8 @@ class Ticket {
         this.screeningId = screeningId;
     }
 
-    void applyDiscount(TicketDiscountPolicy policy) {
-        this.prize = policy.calculate(this.prize);
+    void applyDiscount(Function<Money, Money> policy) {
+        this.prize = policy.apply(this.prize);
     }
 
     void cancel() {
@@ -57,7 +58,7 @@ class Ticket {
                 .ticketId(this.id)
                 .firstName(this.firstName)
                 .lastName(this.lastName)
-                .prize(this.prize.getValue())
+                .prize(this.prize)
                 .status(this.status)
                 .screeningId(this.screeningId)
                 .build();

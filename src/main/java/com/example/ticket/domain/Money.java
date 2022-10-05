@@ -11,11 +11,11 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 @Getter
 @ToString
-class Money {
+public class Money {
 
     private BigDecimal value;
 
-    static Money of(BigDecimal value) {
+    public static Money of(BigDecimal value) {
         return new Money(value);
     }
 

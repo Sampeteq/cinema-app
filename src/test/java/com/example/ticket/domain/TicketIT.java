@@ -9,12 +9,12 @@ import com.example.ticket.domain.exception.WrongTicketAgeException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-import static com.example.ticket.domain.TicketValues.TICKET_BASIC_PRIZE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -22,9 +22,6 @@ class TicketIT extends ScreeningTestSpec {
 
     @Autowired
     private TicketFacade ticketFacade;
-
-    @Autowired
-    private UnderageTicketDiscountPolicy underageTicketDiscountPolicy;
 
     @Test
     void should_reserve_ticket() {
@@ -50,9 +47,7 @@ class TicketIT extends ScreeningTestSpec {
                         .read(sampleTicket.ticketId())
                         .prize()
         ).isEqualTo(
-                underageTicketDiscountPolicy
-                        .calculate(Money.of(TICKET_BASIC_PRIZE))
-                        .getValue()
+                Money.of(BigDecimal.valueOf(9.0))
         );
     }
 

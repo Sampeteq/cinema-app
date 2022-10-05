@@ -111,10 +111,10 @@ class TicketIT extends ScreeningTestSpec {
 
     @Test
     void should_throw_exception_when_ticket_is_already_cancelled() {
-        var sampleFilm= addSampleFilm();
-        var sampleScreening= addSampleScreening(sampleFilm.id());
-        var sampleTicket= reserveSampleTicket(sampleScreening.id());
-        var instant= sampleScreening
+        var sampleFilm = addSampleFilm();
+        var sampleScreening = addSampleScreening(sampleFilm.id());
+        var sampleTicket = reserveSampleTicket(sampleScreening.id());
+        var instant = sampleScreening
                 .date()
                 .minusDays(2)
                 .toInstant(ZoneOffset.UTC);

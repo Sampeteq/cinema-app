@@ -1,8 +1,14 @@
 package com.example.ticket.domain.exception;
 
+import java.util.UUID;
+
 public class TicketNotFoundException extends TicketException {
 
-    public TicketNotFoundException(Long id) {
-        super("Ticket not found: " + id);
+    public TicketNotFoundException(Long ticketId) {
+        super("Ticket not found: " + ticketId);
+    }
+
+    public TicketNotFoundException(UUID ticketId) {
+        super("Ticket not found: " + ticketId);
     }
 }

@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import java.time.Clock;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -26,9 +27,9 @@ class TicketController {
         return ticketFacade.reserve(dto);
     }
 
-    @PatchMapping("/tickets/{ticketId}/reservation/cancelled")
-    void cancel(@PathVariable Long ticketId) {
-        ticketFacade.cancel(ticketId, Clock.system(ZoneOffset.UTC));
+    @PatchMapping("/tickets/{ticketUUID}/reservation/cancelled")
+    void cancel(@PathVariable UUID ticketUUID) {
+        ticketFacade.cancel(ticketUUID, Clock.system(ZoneOffset.UTC));
     }
 
     @GetMapping("/tickets")

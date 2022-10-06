@@ -61,6 +61,7 @@ class Ticket {
         return TicketDTO
                 .builder()
                 .ticketId(this.id)
+                .ticketUuid(this.uuid)
                 .firstName(this.firstName)
                 .lastName(this.lastName)
                 .prize(this.prize)

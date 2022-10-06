@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class TicketFacade {
@@ -28,8 +29,10 @@ public class TicketFacade {
     }
 
     @Transactional
-    public void cancel(Long ticketId, Clock clock) {
-        var ticket = getTicketOrThrowException(ticketId);
+    public void cancel(UUID ticketId, Clock clock) {
+        var ticket = ticketRepository
+                .findByUuid(ticketId)
+                .orElseThrow(() -> new TicketNotFoundException(ticketId));
         if (ticket.isAlreadyCancelled()) {
             throw new TicketAlreadyCancelledException(ticketId);
         }

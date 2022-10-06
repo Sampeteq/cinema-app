@@ -101,7 +101,7 @@ class TicketIT extends ScreeningTestSpec {
                 .minusHours(48)
                 .toInstant(ZoneOffset.UTC);
         var clock = Clock.fixed(twoDaysBeforeScreening, ZoneOffset.UTC);
-        ticketFacade.cancel(sampleTicket.ticketId(), clock);
+        ticketFacade.cancel(sampleTicket.ticketUuid(), clock);
         assertThat(
                 ticketFacade
                         .read(sampleTicket.ticketId())
@@ -118,10 +118,10 @@ class TicketIT extends ScreeningTestSpec {
                 .date()
                 .minusDays(2)
                 .toInstant(ZoneOffset.UTC);
-        ticketFacade.cancel(sampleTicket.ticketId(), Clock.fixed(instant, ZoneOffset.UTC));
+        ticketFacade.cancel(sampleTicket.ticketUuid(), Clock.fixed(instant, ZoneOffset.UTC));
         assertThrows(
                 TicketAlreadyCancelledException.class,
-                () -> ticketFacade.cancel(sampleTicket.ticketId(), Clock.systemUTC())
+                () -> ticketFacade.cancel(sampleTicket.ticketUuid(), Clock.systemUTC())
         );
     }
 
@@ -139,7 +139,7 @@ class TicketIT extends ScreeningTestSpec {
         var clock = Clock.fixed(lessThanOneDayBeforeScreening, ZoneOffset.UTC);
         assertThrows(
                 TooLateToCancelTicketReservationException.class,
-                () -> ticketFacade.cancel(sampleTicket.ticketId(), clock)
+                () -> ticketFacade.cancel(sampleTicket.ticketUuid(), clock)
         );
     }
 

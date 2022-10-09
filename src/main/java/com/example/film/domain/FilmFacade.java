@@ -15,8 +15,6 @@ public class FilmFacade {
 
     public FilmDTO add(AddFilmDTO cmd) {
         var film = new Film(
-                null,
-                UUID.randomUUID(),
                 cmd.title(),
                 cmd.filmCategory(),
                 FilmYear.of(cmd.year())

@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import java.time.Clock;
 import java.time.Year;
 import java.util.List;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class ScreeningFacade {
@@ -24,8 +23,6 @@ public class ScreeningFacade {
     public ScreeningDTO add(AddScreeningDTO dto, Year currentYear) {
         if (filmFacade.isPresent(dto.filmId())) {
             var screening = new Screening(
-                    null,
-                    UUID.randomUUID(),
                     ScreeningDate.of(dto.date(), currentYear),
                     FreeSeats.of(dto.freeSeats()),
                     MinAge.of(dto.minAge()),

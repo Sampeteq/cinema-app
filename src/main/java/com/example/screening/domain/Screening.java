@@ -12,8 +12,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "SCREENINGS")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "uuid")
 @ToString
 class Screening {
@@ -22,7 +20,7 @@ class Screening {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private UUID uuid;
+    private UUID uuid = UUID.randomUUID();
 
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "date"))
@@ -37,6 +35,16 @@ class Screening {
     private MinAge minAge;
 
     private Long filmId;
+
+    protected Screening() {
+    }
+
+    Screening(ScreeningDate date, FreeSeats freeSeats, MinAge minAge, Long filmId) {
+        this.date = date;
+        this.freeSeats = freeSeats;
+        this.minAge = minAge;
+        this.filmId = filmId;
+    }
 
     boolean isAgeEnough(int age) {
         return age >= this.minAge.getValue();

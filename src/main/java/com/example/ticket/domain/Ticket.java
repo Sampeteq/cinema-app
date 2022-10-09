@@ -20,7 +20,6 @@ class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
     private Long id;
 
     private UUID uuid = UUID.randomUUID();

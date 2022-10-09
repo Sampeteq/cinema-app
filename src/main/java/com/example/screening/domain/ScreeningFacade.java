@@ -3,6 +3,7 @@ package com.example.screening.domain;
 import com.example.film.domain.FilmFacade;
 import com.example.film.domain.exception.FilmNotFoundException;
 import com.example.screening.domain.dto.AddScreeningDTO;
+import com.example.screening.domain.dto.ScreeningTicketDataDTO;
 import com.example.screening.domain.dto.ScreeningDTO;
 import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
 import com.example.screening.domain.exception.ScreeningNotFoundException;
@@ -79,11 +80,9 @@ public class ScreeningFacade {
         screening.decreaseFreeSeatsByOne();
     }
 
-    public void checkCancelReservationPossibility(Long screeningId, Clock clock) {
-        var screening = getScreeningOrThrowException(screeningId);
-        if (!screening.canCancelReservation(clock)) {
-            throw new TooLateToCancelTicketReservationException();
-        }
+    public ScreeningTicketDataDTO readScreeningTicketData(Long screeningId) {
+        var screening= getScreeningOrThrowException(screeningId).toDTO();
+        return new ScreeningTicketDataDTO(screening.date(), screening.minAge(), screening.freeSeats());
     }
 
     private Screening getScreeningOrThrowException(Long screeningId) {

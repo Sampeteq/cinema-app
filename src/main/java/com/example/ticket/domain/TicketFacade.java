@@ -5,10 +5,13 @@ import com.example.ticket.domain.dto.ReserveTicketDTO;
 import com.example.ticket.domain.dto.TicketDTO;
 import com.example.ticket.domain.exception.TicketAlreadyCancelledException;
 import com.example.ticket.domain.exception.TicketNotFoundException;
+import com.example.ticket.domain.exception.TooLateToCancelTicketReservationException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,7 +39,13 @@ public class TicketFacade {
         if (ticket.isAlreadyCancelled()) {
             throw new TicketAlreadyCancelledException(ticketId);
         }
-        screeningFacade.checkCancelReservationPossibility(ticket.getScreeningId(), clock);
+        var screeningData = screeningFacade.readScreeningTicketData(ticket.getScreeningId());
+        var differenceBetweenCurrentDateAndScreeningOne= Duration
+                .between(LocalDateTime.now(clock), screeningData.screeningDate())
+                .toHours();
+        if (differenceBetweenCurrentDateAndScreeningOne < 24) {
+            throw new TooLateToCancelTicketReservationException();
+        }
         ticket.cancel();
     }
 

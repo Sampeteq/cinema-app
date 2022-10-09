@@ -1,11 +1,13 @@
 package com.example.ticket.domain;
 
 import com.example.screening.domain.ScreeningFacade;
+import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
 import com.example.ticket.domain.dto.ReserveTicketDTO;
 import com.example.ticket.domain.dto.TicketDTO;
 import com.example.ticket.domain.exception.TicketAlreadyCancelledException;
 import com.example.ticket.domain.exception.TicketNotFoundException;
 import com.example.ticket.domain.exception.TooLateToCancelTicketReservationException;
+import com.example.ticket.domain.exception.WrongTicketAgeException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +26,13 @@ public class TicketFacade {
 
     @Transactional
     public TicketDTO reserve(ReserveTicketDTO dto) {
-        screeningFacade.checkReservationPossibility(dto.screeningId(), dto.age());
+        var screeningData= screeningFacade.readTicketData(dto.screeningId());
+        if (screeningData.screeningFreeSeats() < 0){
+            throw new NoScreeningFreeSeatsException(dto.screeningId());
+        }
+        if (dto.age() < screeningData.screeningMinAge()) {
+            throw new WrongTicketAgeException(dto.age());
+        }
         var ticket = ticketFactory.createTicket(dto);
         var addedTicket = ticketRepository.save(ticket);
         screeningFacade.decreaseFreeSeatsByOne(dto.screeningId());
@@ -39,7 +47,7 @@ public class TicketFacade {
         if (ticket.isAlreadyCancelled()) {
             throw new TicketAlreadyCancelledException(ticketId);
         }
-        var screeningData = screeningFacade.readScreeningTicketData(ticket.getScreeningId());
+        var screeningData = screeningFacade.readTicketData(ticket.getScreeningId());
         var differenceBetweenCurrentDateAndScreeningOne= Duration
                 .between(LocalDateTime.now(clock), screeningData.screeningDate())
                 .toHours();

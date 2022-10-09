@@ -3,15 +3,11 @@ package com.example.screening.domain;
 import com.example.film.domain.FilmFacade;
 import com.example.film.domain.exception.FilmNotFoundException;
 import com.example.screening.domain.dto.AddScreeningDTO;
-import com.example.screening.domain.dto.ScreeningTicketDataDTO;
 import com.example.screening.domain.dto.ScreeningDTO;
-import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
+import com.example.screening.domain.dto.ScreeningTicketDataDTO;
 import com.example.screening.domain.exception.ScreeningNotFoundException;
-import com.example.ticket.domain.exception.TooLateToCancelTicketReservationException;
-import com.example.ticket.domain.exception.WrongTicketAgeException;
 import lombok.AllArgsConstructor;
 
-import java.time.Clock;
 import java.time.Year;
 import java.util.List;
 
@@ -65,22 +61,12 @@ public class ScreeningFacade {
                 .toList();
     }
 
-    public void checkReservationPossibility(Long screeningId, int age) {
-        var screening = getScreeningOrThrowException(screeningId);
-        if (!screening.hasFreeSeats()) {
-            throw new NoScreeningFreeSeatsException(screeningId);
-        }
-        if (!screening.isAgeEnough(age)) {
-            throw new WrongTicketAgeException(age);
-        }
-    }
-
     public void decreaseFreeSeatsByOne(Long screeningId) {
         var screening = getScreeningOrThrowException(screeningId);
         screening.decreaseFreeSeatsByOne();
     }
 
-    public ScreeningTicketDataDTO readScreeningTicketData(Long screeningId) {
+    public ScreeningTicketDataDTO readTicketData(Long screeningId) {
         var screening= getScreeningOrThrowException(screeningId).toDTO();
         return new ScreeningTicketDataDTO(screening.date(), screening.minAge(), screening.freeSeats());
     }

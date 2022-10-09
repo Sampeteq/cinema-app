@@ -53,6 +53,10 @@ class Ticket {
         this.prize = this.prize.subtract(difference);
     }
 
+    boolean isAlreadyCancelled() {
+        return this.status.equals(TicketStatus.CANCELLED);
+    }
+
     void cancel() {
         this.status = TicketStatus.CANCELLED;
     }
@@ -68,9 +72,5 @@ class Ticket {
                 .status(this.status)
                 .screeningId(this.screeningId)
                 .build();
-    }
-
-    public boolean isAlreadyCancelled() {
-        return this.status.equals(TicketStatus.CANCELLED);
     }
 }

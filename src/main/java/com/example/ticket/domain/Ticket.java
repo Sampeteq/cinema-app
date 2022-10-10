@@ -1,12 +1,16 @@
 package com.example.ticket.domain;
 
 import com.example.ticket.domain.dto.TicketDTO;
+import com.example.ticket.domain.exception.TooLateToCancelTicketReservationException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -56,7 +60,13 @@ class Ticket {
         return this.status.equals(TicketStatus.CANCELLED);
     }
 
-    void cancel() {
+    void cancel(LocalDateTime screeningDate, Clock clock) {
+        var differenceBetweenCurrentDateAndScreeningOne= Duration
+                .between(LocalDateTime.now(clock), screeningDate)
+                .toHours();
+        if (differenceBetweenCurrentDateAndScreeningOne < 24) {
+            throw new TooLateToCancelTicketReservationException();
+        }
         this.status = TicketStatus.CANCELLED;
     }
 

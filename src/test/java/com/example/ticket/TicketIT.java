@@ -2,10 +2,10 @@ package com.example.ticket;
 
 import com.example.screening.ScreeningTestSpec;
 import com.example.screening.exception.NoScreeningFreeSeatsException;
-import com.example.ticket.dto.ReserveTicketDTO;
+import com.example.ticket.dto.BookTicketDTO;
 import com.example.ticket.dto.TicketDTO;
 import com.example.ticket.exception.TicketAlreadyCancelledException;
-import com.example.ticket.exception.TooLateToCancelTicketReservationException;
+import com.example.ticket.exception.TooLateToCancelTicketException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,15 +23,15 @@ class TicketIT extends ScreeningTestSpec {
     private TicketFacade ticketFacade;
 
     @Test
-    void should_reserve_ticket() {
+    void should_book_ticket() {
         var sampleFilm = addSampleFilm();
         var sampleScreening = addSampleScreening(sampleFilm.id());
-        var reservedTicket = ticketFacade.reserve(
-                sampleReserveTicketDTO(sampleScreening.id())
+        var bookedTicket = ticketFacade.book(
+                sampleBookTicketDTO(sampleScreening.id())
         );
         assertThat(
-                ticketFacade.read(reservedTicket.ticketId())
-        ).isEqualTo(reservedTicket);
+                ticketFacade.read(bookedTicket.ticketId())
+        ).isEqualTo(bookedTicket);
     }
 
     @Test
@@ -40,32 +40,32 @@ class TicketIT extends ScreeningTestSpec {
         var sampleScreeningWithNoFreeSeats = addSampleScreeningWithNoFreeSeats(sampleFilm.id());
         assertThrows(
                 NoScreeningFreeSeatsException.class,
-                () -> ticketFacade.reserve(
-                        sampleReserveTicketDTO(sampleScreeningWithNoFreeSeats.id())
+                () -> ticketFacade.book(
+                        sampleBookTicketDTO(sampleScreeningWithNoFreeSeats.id())
                 )
         );
     }
 
     @Test
-    void should_reduce_screening_free_seats_by_one_after_ticket_reservation() {
+    void should_reduce_screening_free_seats_by_one_after_ticket_booking() {
         var sampleFilm = addSampleFilm();
         var sampleScreening = addSampleScreening(sampleFilm.id());
-        var freeSeatsBeforeReservation = sampleScreening.freeSeats();
-        ticketFacade.reserve(
-                sampleReserveTicketDTO(sampleScreening.id())
+        var freeSeatsBeforeBooking = sampleScreening.freeSeats();
+        ticketFacade.book(
+                sampleBookTicketDTO(sampleScreening.id())
         );
         assertThat(
                 screeningFacade
                         .readScreening(sampleScreening.id())
                         .freeSeats()
-        ).isEqualTo(freeSeatsBeforeReservation - 1);
+        ).isEqualTo(freeSeatsBeforeBooking - 1);
     }
 
     @Test
-    void should_cancel_ticket_reservation() {
+    void should_cancel_ticket() {
         var sampleFilm = addSampleFilm();
         var sampleScreening = addSampleScreening(sampleFilm.id());
-        var sampleTicket = reserveSampleTicket(sampleScreening.id());
+        var sampleTicket = bookSampleTicket(sampleScreening.id());
         var twoDaysBeforeScreening = sampleScreening
                 .date()
                 .minusHours(48)
@@ -83,7 +83,7 @@ class TicketIT extends ScreeningTestSpec {
     void should_throw_exception_when_ticket_is_already_cancelled() {
         var sampleFilm = addSampleFilm();
         var sampleScreening = addSampleScreening(sampleFilm.id());
-        var sampleTicket = reserveSampleTicket(sampleScreening.id());
+        var sampleTicket = bookSampleTicket(sampleScreening.id());
         var instant = sampleScreening
                 .date()
                 .minusDays(2)
@@ -96,19 +96,19 @@ class TicketIT extends ScreeningTestSpec {
     }
 
     @Test
-    void should_be_possible_to_cancel_ticket_reservation_at_least_one_day_before_screening() {
+    void should_be_possible_to_cancel_ticket_at_least_one_day_before_screening() {
         var sampleFilm = addSampleFilm();
         var screeningDate = LocalDateTime.parse("2022-05-05T16:30");
         var sampleScreening = addSampleScreening(sampleFilm.id(), screeningDate);
-        var sampleTicket = ticketFacade.reserve(
-                sampleReserveTicketDTO(sampleScreening.id())
+        var sampleTicket = ticketFacade.book(
+                sampleBookTicketDTO(sampleScreening.id())
         );
         var lessThanOneDayBeforeScreening = screeningDate
                 .minusHours(15)
                 .toInstant(ZoneOffset.UTC);
         var clock = Clock.fixed(lessThanOneDayBeforeScreening, ZoneOffset.UTC);
         assertThrows(
-                TooLateToCancelTicketReservationException.class,
+                TooLateToCancelTicketException.class,
                 () -> ticketFacade.cancel(sampleTicket.ticketUuid(), clock)
         );
     }
@@ -117,14 +117,14 @@ class TicketIT extends ScreeningTestSpec {
     void should_return_all_tickets() {
         var sampleFilm = addSampleFilm();
         var sampleScreening = addSampleScreening(sampleFilm.id());
-        var sampleTickets = reserveSampleTickets(sampleScreening.id());
+        var sampleTickets = bookSampleTickets(sampleScreening.id());
         assertThat(
                 ticketFacade.readAll()
         ).isEqualTo(sampleTickets);
     }
 
-    private static ReserveTicketDTO sampleReserveTicketDTO(Long sampleScreeningId) {
-        return ReserveTicketDTO
+    private static BookTicketDTO sampleBookTicketDTO(Long sampleScreeningId) {
+        return BookTicketDTO
                 .builder()
                 .screeningId(sampleScreeningId)
                 .firstName("Name 1")
@@ -132,9 +132,9 @@ class TicketIT extends ScreeningTestSpec {
                 .build();
     }
 
-    private TicketDTO reserveSampleTicket(Long sampleScreeningId) {
-        return ticketFacade.reserve(
-                ReserveTicketDTO
+    private TicketDTO bookSampleTicket(Long sampleScreeningId) {
+        return ticketFacade.book(
+                BookTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)
                         .firstName("Name")
@@ -143,17 +143,17 @@ class TicketIT extends ScreeningTestSpec {
         );
     }
 
-    private List<TicketDTO> reserveSampleTickets(Long sampleScreeningId) {
-        var sampleTicket1 = ticketFacade.reserve(
-                ReserveTicketDTO
+    private List<TicketDTO> bookSampleTickets(Long sampleScreeningId) {
+        var sampleTicket1 = ticketFacade.book(
+                BookTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)
                         .firstName("Name 1")
                         .lastName("lastname 1")
                         .build()
         );
-        var sampleTicket2 = ticketFacade.reserve(
-                ReserveTicketDTO
+        var sampleTicket2 = ticketFacade.book(
+                BookTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)
                         .firstName("Name 2")

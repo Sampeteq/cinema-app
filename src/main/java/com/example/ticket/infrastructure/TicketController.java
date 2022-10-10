@@ -1,7 +1,7 @@
 package com.example.ticket.infrastructure;
 
 import com.example.ticket.TicketFacade;
-import com.example.ticket.dto.ReserveTicketDTO;
+import com.example.ticket.dto.BookTicketDTO;
 import com.example.ticket.dto.TicketDTO;
 import com.example.ticket.exception.TicketException;
 import com.example.ticket.exception.TicketNotFoundException;
@@ -22,12 +22,12 @@ class TicketController {
 
     private final TicketFacade ticketFacade;
 
-    @PostMapping("/tickets/reservation")
-    TicketDTO reserve(@RequestBody @Valid ReserveTicketDTO dto) {
-        return ticketFacade.reserve(dto);
+    @PostMapping("/tickets/booking")
+    TicketDTO reserve(@RequestBody @Valid BookTicketDTO dto) {
+        return ticketFacade.book(dto);
     }
 
-    @PatchMapping("/tickets/{ticketUUID}/reservation/cancelled")
+    @PatchMapping("/tickets/{ticketUUID}/booking/cancelled")
     void cancel(@PathVariable UUID ticketUUID) {
         ticketFacade.cancel(ticketUUID, Clock.system(ZoneOffset.UTC));
     }

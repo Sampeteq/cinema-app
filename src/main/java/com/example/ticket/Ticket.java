@@ -1,7 +1,7 @@
 package com.example.ticket;
 
 import com.example.ticket.dto.TicketDTO;
-import com.example.ticket.exception.TooLateToCancelTicketReservationException;
+import com.example.ticket.exception.TooLateToCancelTicketException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -56,7 +56,7 @@ class Ticket {
                 .between(LocalDateTime.now(clock), screeningDate)
                 .toHours();
         if (differenceBetweenCurrentDateAndScreeningOne < 24) {
-            throw new TooLateToCancelTicketReservationException();
+            throw new TooLateToCancelTicketException();
         }
         this.status = TicketStatus.CANCELLED;
     }

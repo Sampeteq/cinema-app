@@ -2,7 +2,7 @@ package com.example.ticket;
 
 import com.example.screening.ScreeningFacade;
 import com.example.screening.exception.NoScreeningFreeSeatsException;
-import com.example.ticket.dto.ReserveTicketDTO;
+import com.example.ticket.dto.BookTicketDTO;
 import com.example.ticket.dto.TicketDTO;
 import com.example.ticket.exception.TicketAlreadyCancelledException;
 import com.example.ticket.exception.TicketNotFoundException;
@@ -20,7 +20,7 @@ public class TicketFacade {
     private final ScreeningFacade screeningFacade;
 
     @Transactional
-    public TicketDTO reserve(ReserveTicketDTO dto) {
+    public TicketDTO book(BookTicketDTO dto) {
         var screeningData = screeningFacade.readTicketData(dto.screeningId());
         if (screeningData.screeningFreeSeats() < 0) {
             throw new NoScreeningFreeSeatsException(dto.screeningId());

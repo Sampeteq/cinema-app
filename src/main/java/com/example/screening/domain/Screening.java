@@ -5,9 +5,6 @@ import com.example.screening.domain.exception.NoScreeningFreeSeatsException;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.Clock;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -46,26 +43,12 @@ class Screening {
         this.filmId = filmId;
     }
 
-    boolean isAgeEnough(int age) {
-        return age >= this.minAge.getValue();
-    }
-
     void decreaseFreeSeatsByOne() {
         if (this.freeSeats.getValue() == 0) {
             throw new NoScreeningFreeSeatsException(this.id);
         } else {
             this.freeSeats = FreeSeats.of(this.freeSeats.getValue() - 1);
         }
-    }
-
-    boolean hasFreeSeats() {
-        return this.freeSeats.getValue() > 0;
-    }
-
-    boolean canCancelReservation(Clock clock) {
-        return Duration
-                .between(LocalDateTime.now(clock), this.date.getValue())
-                .toHours() > 24;
     }
 
     ScreeningDTO toDTO() {

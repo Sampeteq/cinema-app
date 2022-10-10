@@ -6,7 +6,6 @@ import com.example.ticket.domain.dto.ReserveTicketDTO;
 import com.example.ticket.domain.dto.TicketDTO;
 import com.example.ticket.domain.exception.TicketAlreadyCancelledException;
 import com.example.ticket.domain.exception.TicketNotFoundException;
-import com.example.ticket.domain.exception.WrongTicketAgeException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,6 @@ import java.util.UUID;
 public class TicketFacade {
 
     private final TicketRepository ticketRepository;
-    private final TicketFactory ticketFactory;
     private final ScreeningFacade screeningFacade;
 
     @Transactional
@@ -27,10 +25,7 @@ public class TicketFacade {
         if (screeningData.screeningFreeSeats() < 0){
             throw new NoScreeningFreeSeatsException(dto.screeningId());
         }
-        if (dto.age() < screeningData.screeningMinAge()) {
-            throw new WrongTicketAgeException(dto.age());
-        }
-        var ticket = ticketFactory.createTicket(dto);
+        var ticket = new Ticket(dto.firstName(), dto.lastName(), dto.screeningId());
         var addedTicket = ticketRepository.save(ticket);
         screeningFacade.decreaseFreeSeatsByOne(dto.screeningId());
         return addedTicket.toDTO();

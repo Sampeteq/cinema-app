@@ -12,7 +12,6 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import java.util.function.Function;
 
 import static com.example.ticket.domain.TicketValues.TICKET_BASIC_PRIZE;
 
@@ -46,14 +45,6 @@ class Ticket {
         this.firstName = firstName;
         this.lastName = lastName;
         this.screeningId = screeningId;
-    }
-
-    void applyDiscount(Function<BigDecimal, BigDecimal> discount) {
-        var difference = discount.apply(this.prize);
-        if (difference.compareTo(this.prize) >= 0) {
-            throw new IllegalArgumentException("A discount difference cannot be bigger or equal to basic price");
-        }
-        this.prize = this.prize.subtract(difference);
     }
 
     boolean isAlreadyCancelled() {

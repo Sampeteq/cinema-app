@@ -9,7 +9,6 @@ class TicketConfig {
 
     @Bean
     TicketFacade ticketAPI(TicketRepository ticketRepository, ScreeningFacade screeningFacade) {
-        var ticketFactory = new TicketFactory();
-        return new TicketFacade(ticketRepository, ticketFactory, screeningFacade);
+        return new TicketFacade(ticketRepository, screeningFacade);
     }
 }

@@ -6,11 +6,9 @@ import com.example.ticket.domain.dto.ReserveTicketDTO;
 import com.example.ticket.domain.dto.TicketDTO;
 import com.example.ticket.domain.exception.TicketAlreadyCancelledException;
 import com.example.ticket.domain.exception.TooLateToCancelTicketReservationException;
-import com.example.ticket.domain.exception.WrongTicketAgeException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -29,27 +27,11 @@ class TicketIT extends ScreeningTestSpec {
         var sampleFilm = addSampleFilm();
         var sampleScreening = addSampleScreening(sampleFilm.id());
         var reservedTicket = ticketFacade.reserve(
-                sampleReserveTicketDTO(sampleScreening.id(), 25)
+                sampleReserveTicketDTO(sampleScreening.id())
         );
         assertThat(
                 ticketFacade.read(reservedTicket.ticketId())
         ).isEqualTo(reservedTicket);
-    }
-
-    @Test
-    void should_apply_discount_for_children() {
-        var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.id());
-        var sampleTicket = ticketFacade.reserve(
-                sampleReserveTicketDTO(sampleScreening.id(), 15)
-        );
-        assertThat(
-                ticketFacade
-                        .read(sampleTicket.ticketId())
-                        .prize()
-        ).isEqualTo(
-                new BigDecimal("9.00")
-        );
     }
 
     @Test
@@ -59,19 +41,7 @@ class TicketIT extends ScreeningTestSpec {
         assertThrows(
                 NoScreeningFreeSeatsException.class,
                 () -> ticketFacade.reserve(
-                        sampleReserveTicketDTO(sampleScreeningWithNoFreeSeats.id(), 25)
-                )
-        );
-    }
-
-    @Test
-    void should_throw_exception_when_ticket_age_is_wrong() {
-        var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.id());
-        assertThrows(
-                WrongTicketAgeException.class,
-                () -> ticketFacade.reserve(
-                        sampleReserveTicketDTO(sampleScreening.id(), sampleScreening.minAge() - 1)
+                        sampleReserveTicketDTO(sampleScreeningWithNoFreeSeats.id())
                 )
         );
     }
@@ -82,7 +52,7 @@ class TicketIT extends ScreeningTestSpec {
         var sampleScreening = addSampleScreening(sampleFilm.id());
         var freeSeatsBeforeReservation = sampleScreening.freeSeats();
         ticketFacade.reserve(
-                sampleReserveTicketDTO(sampleScreening.id(), 25)
+                sampleReserveTicketDTO(sampleScreening.id())
         );
         assertThat(
                 screeningFacade
@@ -131,7 +101,7 @@ class TicketIT extends ScreeningTestSpec {
         var screeningDate = LocalDateTime.parse("2022-05-05T16:30");
         var sampleScreening = addSampleScreening(sampleFilm.id(), screeningDate);
         var sampleTicket = ticketFacade.reserve(
-                sampleReserveTicketDTO(sampleScreening.id(), 25)
+                sampleReserveTicketDTO(sampleScreening.id())
         );
         var lessThanOneDayBeforeScreening = screeningDate
                 .minusHours(15)
@@ -153,13 +123,12 @@ class TicketIT extends ScreeningTestSpec {
         ).isEqualTo(sampleTickets);
     }
 
-    private static ReserveTicketDTO sampleReserveTicketDTO(Long sampleScreeningId, int age) {
+    private static ReserveTicketDTO sampleReserveTicketDTO(Long sampleScreeningId) {
         return ReserveTicketDTO
                 .builder()
                 .screeningId(sampleScreeningId)
                 .firstName("Name 1")
                 .lastName("Lastname 1")
-                .age(age)
                 .build();
     }
 
@@ -170,7 +139,6 @@ class TicketIT extends ScreeningTestSpec {
                         .screeningId(sampleScreeningId)
                         .firstName("Name")
                         .lastName("Lastname")
-                        .age(50)
                         .build()
         );
     }
@@ -182,7 +150,6 @@ class TicketIT extends ScreeningTestSpec {
                         .screeningId(sampleScreeningId)
                         .firstName("Name 1")
                         .lastName("lastname 1")
-                        .age(20)
                         .build()
         );
         var sampleTicket2 = ticketFacade.reserve(
@@ -191,7 +158,6 @@ class TicketIT extends ScreeningTestSpec {
                         .screeningId(sampleScreeningId)
                         .firstName("Name 2")
                         .lastName("lastname 2")
-                        .age(30)
                         .build()
         );
         return List.of(sampleTicket1, sampleTicket2);

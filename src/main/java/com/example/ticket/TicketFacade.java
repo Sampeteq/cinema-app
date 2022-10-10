@@ -21,8 +21,8 @@ public class TicketFacade {
 
     @Transactional
     public TicketDTO reserve(ReserveTicketDTO dto) {
-        var screeningData= screeningFacade.readTicketData(dto.screeningId());
-        if (screeningData.screeningFreeSeats() < 0){
+        var screeningData = screeningFacade.readTicketData(dto.screeningId());
+        if (screeningData.screeningFreeSeats() < 0) {
             throw new NoScreeningFreeSeatsException(dto.screeningId());
         }
         var ticket = new Ticket(dto.firstName(), dto.lastName(), dto.screeningId());

@@ -2,7 +2,6 @@ package com.example.screening;
 
 import com.example.film.FilmTestSpec;
 import com.example.film.dto.FilmDTO;
-import com.example.screening.ScreeningFacade;
 import com.example.screening.dto.AddScreeningDTO;
 import com.example.screening.dto.ScreeningDTO;
 import org.springframework.beans.factory.annotation.Autowired;

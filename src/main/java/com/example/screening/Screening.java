@@ -2,7 +2,8 @@ package com.example.screening;
 
 import com.example.screening.dto.ScreeningDTO;
 import com.example.screening.exception.NoScreeningFreeSeatsException;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.UUID;

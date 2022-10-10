@@ -52,7 +52,7 @@ class Ticket {
     }
 
     void cancel(LocalDateTime screeningDate, Clock clock) {
-        var differenceBetweenCurrentDateAndScreeningOne= Duration
+        var differenceBetweenCurrentDateAndScreeningOne = Duration
                 .between(LocalDateTime.now(clock), screeningDate)
                 .toHours();
         if (differenceBetweenCurrentDateAndScreeningOne < 24) {

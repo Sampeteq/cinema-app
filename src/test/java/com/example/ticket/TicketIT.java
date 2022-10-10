@@ -2,8 +2,6 @@ package com.example.ticket;
 
 import com.example.screening.ScreeningTestSpec;
 import com.example.screening.exception.NoScreeningFreeSeatsException;
-import com.example.ticket.TicketFacade;
-import com.example.ticket.TicketStatus;
 import com.example.ticket.dto.ReserveTicketDTO;
 import com.example.ticket.dto.TicketDTO;
 import com.example.ticket.exception.TicketAlreadyCancelledException;

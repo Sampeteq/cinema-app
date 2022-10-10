@@ -1,7 +1,5 @@
 package com.example.film;
 
-import com.example.film.FilmCategory;
-import com.example.film.FilmFacade;
 import com.example.film.dto.AddFilmDTO;
 import com.example.film.dto.FilmDTO;
 import org.springframework.beans.factory.annotation.Autowired;

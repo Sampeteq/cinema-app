@@ -43,7 +43,7 @@ public class TicketFacade {
         ticket.cancel(screeningData.screeningDate(), clock);
     }
 
-    public TicketDTO read(Long ticketId) {
+    public TicketDTO read(UUID ticketId) {
         return getTicketOrThrowException(ticketId).toDTO();
     }
 
@@ -55,9 +55,9 @@ public class TicketFacade {
                 .toList();
     }
 
-    private Ticket getTicketOrThrowException(Long ticketId) {
+    private Ticket getTicketOrThrowException(UUID ticketId) {
         return ticketRepository
-                .findById(ticketId)
+                .findByUuid(ticketId)
                 .orElseThrow(() -> new TicketNotFoundException(ticketId));
     }
 }

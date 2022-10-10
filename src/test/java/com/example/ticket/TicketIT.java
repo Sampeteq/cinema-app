@@ -30,7 +30,7 @@ class TicketIT extends ScreeningTestSpec {
                 sampleBookTicketDTO(sampleScreening.id())
         );
         assertThat(
-                ticketFacade.read(bookedTicket.ticketId())
+                ticketFacade.read(bookedTicket.ticketUuid())
         ).isEqualTo(bookedTicket);
     }
 
@@ -74,7 +74,7 @@ class TicketIT extends ScreeningTestSpec {
         ticketFacade.cancel(sampleTicket.ticketUuid(), clock);
         assertThat(
                 ticketFacade
-                        .read(sampleTicket.ticketId())
+                        .read(sampleTicket.ticketUuid())
                         .status()
         ).isEqualTo(TicketStatus.CANCELLED);
     }

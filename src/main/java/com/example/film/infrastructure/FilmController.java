@@ -1,11 +1,11 @@
 package com.example.film.infrastructure;
 
-import com.example.film.domain.FilmCategory;
-import com.example.film.domain.FilmFacade;
-import com.example.film.domain.dto.AddFilmDTO;
-import com.example.film.domain.dto.FilmDTO;
-import com.example.film.domain.exception.FilmException;
-import com.example.film.domain.exception.FilmNotFoundException;
+import com.example.film.FilmCategory;
+import com.example.film.FilmFacade;
+import com.example.film.dto.AddFilmDTO;
+import com.example.film.dto.FilmDTO;
+import com.example.film.exception.FilmException;
+import com.example.film.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

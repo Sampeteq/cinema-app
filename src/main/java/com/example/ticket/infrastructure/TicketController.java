@@ -1,10 +1,10 @@
 package com.example.ticket.infrastructure;
 
-import com.example.ticket.domain.TicketFacade;
-import com.example.ticket.domain.dto.ReserveTicketDTO;
-import com.example.ticket.domain.dto.TicketDTO;
-import com.example.ticket.domain.exception.TicketException;
-import com.example.ticket.domain.exception.TicketNotFoundException;
+import com.example.ticket.TicketFacade;
+import com.example.ticket.dto.ReserveTicketDTO;
+import com.example.ticket.dto.TicketDTO;
+import com.example.ticket.exception.TicketException;
+import com.example.ticket.exception.TicketNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

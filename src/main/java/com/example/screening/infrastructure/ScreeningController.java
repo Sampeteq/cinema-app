@@ -1,11 +1,11 @@
 package com.example.screening.infrastructure;
 
-import com.example.screening.domain.ScreeningDate;
-import com.example.screening.domain.ScreeningFacade;
-import com.example.screening.domain.dto.AddScreeningDTO;
-import com.example.screening.domain.dto.ScreeningDTO;
-import com.example.screening.domain.exception.ScreeningException;
-import com.example.screening.domain.exception.ScreeningNotFoundException;
+import com.example.screening.ScreeningDate;
+import com.example.screening.ScreeningFacade;
+import com.example.screening.dto.AddScreeningDTO;
+import com.example.screening.dto.ScreeningDTO;
+import com.example.screening.exception.ScreeningException;
+import com.example.screening.exception.ScreeningNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;

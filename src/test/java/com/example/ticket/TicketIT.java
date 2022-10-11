@@ -98,13 +98,13 @@ class TicketIT extends ScreeningTestSpec {
     @Test
     void should_be_possible_to_cancel_ticket_at_least_one_day_before_screening() {
         var sampleFilm = addSampleFilm();
-        var screeningDate = LocalDateTime.parse("2022-05-05T16:30");
-        var sampleScreening = addSampleScreening(sampleFilm.id(), screeningDate);
+        var sampleScreening = addSampleScreening(sampleFilm.id());
         var sampleTicket = ticketFacade.book(
                 sampleBookTicketDTO(sampleScreening.id())
         );
-        var lessThanOneDayBeforeScreening = screeningDate
-                .minusHours(15)
+        var lessThanOneDayBeforeScreening = sampleScreening
+                .date()
+                .minusHours(23)
                 .toInstant(ZoneOffset.UTC);
         var clock = Clock.fixed(lessThanOneDayBeforeScreening, ZoneOffset.UTC);
         assertThrows(

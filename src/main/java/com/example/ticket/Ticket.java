@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static com.example.ticket.TicketValues.TICKET_BASIC_PRIZE;
@@ -52,8 +53,10 @@ class Ticket {
     }
 
     void cancel(LocalDateTime screeningDate, Clock clock) {
+        var currentDate= LocalDateTime.now(clock);
         var differenceBetweenCurrentDateAndScreeningOne = Duration
-                .between(LocalDateTime.now(clock), screeningDate)
+                .between(screeningDate, currentDate)
+                .abs()
                 .toHours();
         if (differenceBetweenCurrentDateAndScreeningOne < 24) {
             throw new TooLateToCancelTicketException();

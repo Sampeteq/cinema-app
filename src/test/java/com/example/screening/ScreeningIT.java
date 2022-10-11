@@ -1,6 +1,7 @@
 package com.example.screening;
 
 import com.example.screening.dto.AddScreeningRoomDTO;
+import com.example.screening.exception.ScreeningRoomAlreadyExistsException;
 import com.example.screening.exception.WrongScreeningYearException;
 import org.junit.jupiter.api.Test;
 
@@ -81,6 +82,20 @@ class ScreeningIT extends ScreeningTestSpec {
         var addedRoom= screeningFacade.readRoom(screeningRoomDTO.uuid());
         assertThat(addedRoom.number()).isEqualTo(sampleDTO.number());
         assertThat(addedRoom.freeSeats()).isEqualTo(sampleDTO.freeSeats());
+    }
+
+    @Test
+    void should_throw_exception_when_room_number_is_notUnique() {
+        var sampleDTO= AddScreeningRoomDTO
+                .builder()
+                .number(1)
+                .freeSeats(200)
+                .build();
+        screeningFacade.addRoom(sampleDTO);
+        assertThrows(
+                ScreeningRoomAlreadyExistsException.class,
+                () -> screeningFacade.addRoom(sampleDTO)
+        );
     }
 }
 

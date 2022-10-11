@@ -96,7 +96,7 @@ class TicketIT extends ScreeningTestSpec {
     }
 
     @Test
-    void should_be_possible_to_cancel_ticket_at_least_one_day_before_screening() {
+    void should_throw_exception_when_trying_cancel_ticket_when_there_is_less_than_24h_to_screening() {
         var sampleFilm = addSampleFilm();
         var sampleScreening = addSampleScreening(sampleFilm.id());
         var sampleTicket = ticketFacade.book(

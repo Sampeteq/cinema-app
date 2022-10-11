@@ -1,5 +1,6 @@
 package com.example.screening;
 
+import com.example.screening.dto.AddScreeningRoomDTO;
 import com.example.screening.exception.WrongScreeningYearException;
 import org.junit.jupiter.api.Test;
 
@@ -68,4 +69,18 @@ class ScreeningIT extends ScreeningTestSpec {
                 screening -> screening.date().equals(sampleDate)
         );
     }
+
+    @Test
+    void should_add_screening_room() {
+        var sampleDTO= AddScreeningRoomDTO
+                .builder()
+                .number(1)
+                .freeSeats(200)
+                .build();
+        var screeningRoomDTO = screeningFacade.addRoom(sampleDTO);
+        var addedRoom= screeningFacade.readRoom(screeningRoomDTO.uuid());
+        assertThat(addedRoom.number()).isEqualTo(sampleDTO.number());
+        assertThat(addedRoom.freeSeats()).isEqualTo(sampleDTO.freeSeats());
+    }
 }
+

@@ -3,7 +3,9 @@ package com.example.screening.infrastructure;
 import com.example.screening.ScreeningDate;
 import com.example.screening.ScreeningFacade;
 import com.example.screening.dto.AddScreeningDTO;
+import com.example.screening.dto.AddScreeningRoomDTO;
 import com.example.screening.dto.ScreeningDTO;
+import com.example.screening.dto.ScreeningRoomDTO;
 import com.example.screening.exception.ScreeningException;
 import com.example.screening.exception.ScreeningNotFoundException;
 import lombok.AllArgsConstructor;
@@ -43,6 +45,16 @@ class ScreeningController {
     @GetMapping("/screenings/date")
     List<ScreeningDTO> readByDate(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime date) {
         return screeningFacade.readAllByDate(ScreeningDate.of(date, currentYear));
+    }
+
+    @PostMapping("/screening-rooms")
+    ScreeningRoomDTO addRoom(@RequestBody @Valid AddScreeningRoomDTO dto) {
+        return screeningFacade.addRoom(dto);
+    }
+
+    @GetMapping("/screening-rooms")
+    List<ScreeningRoomDTO> readAllRooms() {
+        return screeningFacade.readAllRooms();
     }
 }
 

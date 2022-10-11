@@ -10,8 +10,10 @@ import java.time.Year;
 class ScreeningConfig {
 
     @Bean
-    ScreeningFacade screeningAPI(ScreeningRepository screeningRepository, FilmFacade filmFacade) {
-        return new ScreeningFacade(screeningRepository, filmFacade);
+    ScreeningFacade screeningAPI(ScreeningRepository screeningRepository,
+                                 ScreeningRoomRepository screeningRoomRepository,
+                                 FilmFacade filmFacade) {
+        return new ScreeningFacade(screeningRepository, screeningRoomRepository, filmFacade);
     }
 
     @Bean

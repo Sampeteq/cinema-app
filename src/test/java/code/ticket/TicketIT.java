@@ -16,6 +16,7 @@ import java.time.Clock;
 import java.time.ZoneOffset;
 import java.util.List;
 
+import static code.film.FilmTestUtils.addSampleFilm;
 import static code.screening.ScreeningTestUtils.addSampleScreening;
 import static code.screening.ScreeningTestUtils.addSampleScreeningWithNoFreeSeats;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,7 +35,7 @@ class TicketIT extends SpringTestsSpec {
 
     @Test
     void should_book_ticket() {
-        var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
+        var sampleFilm = addSampleFilm(filmFacade);
         var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var bookedTicket = ticketFacade.book(
                 sampleBookTicketDTO(sampleScreening.id())
@@ -46,7 +47,7 @@ class TicketIT extends SpringTestsSpec {
 
     @Test
     void should_throw_exception_when_no_screening_free_seats() {
-        var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
+        var sampleFilm = addSampleFilm(filmFacade);
         var sampleScreeningWithNoFreeSeats = addSampleScreeningWithNoFreeSeats(sampleFilm.id(), screeningFacade);
         assertThrows(
                 NoScreeningFreeSeatsException.class,
@@ -58,7 +59,7 @@ class TicketIT extends SpringTestsSpec {
 
     @Test
     void should_reduce_screening_free_seats_by_one_after_ticket_booking() {
-        var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
+        var sampleFilm = addSampleFilm(filmFacade);
         var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var freeSeatsBeforeBooking = sampleScreening.freeSeats();
         ticketFacade.book(
@@ -73,7 +74,7 @@ class TicketIT extends SpringTestsSpec {
 
     @Test
     void should_cancel_ticket() {
-        var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
+        var sampleFilm = addSampleFilm(filmFacade);
         var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var sampleTicket = bookSampleTicket(sampleScreening.id());
         var twoDaysBeforeScreening = sampleScreening
@@ -91,7 +92,7 @@ class TicketIT extends SpringTestsSpec {
 
     @Test
     void should_throw_exception_when_ticket_is_already_cancelled() {
-        var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
+        var sampleFilm = addSampleFilm(filmFacade);
         var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var sampleTicket = bookSampleTicket(sampleScreening.id());
         var instant = sampleScreening
@@ -107,7 +108,7 @@ class TicketIT extends SpringTestsSpec {
 
     @Test
     void should_throw_exception_when_trying_cancel_ticket_when_there_is_less_than_24h_to_screening() {
-        var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
+        var sampleFilm = addSampleFilm(filmFacade);
         var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var sampleTicket = ticketFacade.book(
                 sampleBookTicketDTO(sampleScreening.id())
@@ -125,7 +126,7 @@ class TicketIT extends SpringTestsSpec {
 
     @Test
     void should_return_all_tickets() {
-        var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
+        var sampleFilm = addSampleFilm(filmFacade);
         var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var sampleTickets = bookSampleTickets(sampleScreening.id());
         assertThat(

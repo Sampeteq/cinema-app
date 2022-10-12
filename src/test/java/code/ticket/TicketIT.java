@@ -77,12 +77,7 @@ class TicketIT extends SpringTestsSpec {
         var sampleFilm = addSampleFilm(filmFacade);
         var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var sampleTicket = bookSampleTicket(sampleScreening.id());
-        var twoDaysBeforeScreening = sampleScreening
-                .date()
-                .minusHours(48)
-                .toInstant(ZoneOffset.UTC);
-        var clock = Clock.fixed(twoDaysBeforeScreening, ZoneOffset.UTC);
-        ticketFacade.cancel(sampleTicket.ticketUuid(), clock);
+        ticketFacade.cancel(sampleTicket.ticketUuid(), Clock.systemUTC());
         assertThat(
                 ticketFacade
                         .read(sampleTicket.ticketUuid())
@@ -95,11 +90,7 @@ class TicketIT extends SpringTestsSpec {
         var sampleFilm = addSampleFilm(filmFacade);
         var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var sampleTicket = bookSampleTicket(sampleScreening.id());
-        var instant = sampleScreening
-                .date()
-                .minusDays(2)
-                .toInstant(ZoneOffset.UTC);
-        ticketFacade.cancel(sampleTicket.ticketUuid(), Clock.fixed(instant, ZoneOffset.UTC));
+        ticketFacade.cancel(sampleTicket.ticketUuid(), Clock.systemUTC());
         assertThrows(
                 TicketAlreadyCancelledException.class,
                 () -> ticketFacade.cancel(sampleTicket.ticketUuid(), Clock.systemUTC())

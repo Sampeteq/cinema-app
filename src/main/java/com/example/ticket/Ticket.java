@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static com.example.ticket.TicketValues.TICKET_BASIC_PRIZE;
@@ -53,7 +52,7 @@ class Ticket {
     }
 
     void cancel(LocalDateTime screeningDate, Clock clock) {
-        var currentDate= LocalDateTime.now(clock);
+        var currentDate = LocalDateTime.now(clock);
         var differenceBetweenCurrentDateAndScreeningOne = Duration
                 .between(screeningDate, currentDate)
                 .abs()

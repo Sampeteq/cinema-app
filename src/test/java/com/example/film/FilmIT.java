@@ -1,15 +1,22 @@
 package com.example.film;
 
+import com.example.SpringTestsSpec;
 import com.example.film.exception.WrongFilmYearException;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.example.film.FilmTestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class FilmIT extends FilmTestSpec {
+class FilmIT extends SpringTestsSpec {
+
+    @Autowired
+    private FilmFacade filmFacade;
+
     @Test
     void should_add_film() {
-        var addedFilm = filmFacade.add(sampleAddFilmDto());
+        var addedFilm = filmFacade.add(sampleAddFilmDTO());
         assertThat(
                 filmFacade.read(addedFilm.id())
         ).isEqualTo(addedFilm);
@@ -20,20 +27,20 @@ class FilmIT extends FilmTestSpec {
         assertThrows(
                 WrongFilmYearException.class,
                 () -> filmFacade.add(
-                        sampleAddFilmDtoWithWrongFilmYear()
+                        sampleAddFilmDTOWithWrongFilmYear()
                 )
         );
     }
 
     @Test
     void should_return_all_films() {
-        var sampleFilms = addSampleFilms();
+        var sampleFilms = addSampleDistinctFilms(filmFacade);
         assertThat(filmFacade.readAll()).isEqualTo(sampleFilms);
     }
 
     @Test
     void should_return_films_with_given_category() {
-        var sampleCategory = addSampleFilms()
+        var sampleCategory = addSampleDistinctFilms(filmFacade)
                 .get(0)
                 .category();
         assertThat(

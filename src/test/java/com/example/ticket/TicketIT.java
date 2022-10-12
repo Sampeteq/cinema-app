@@ -1,6 +1,8 @@
 package com.example.ticket;
 
-import com.example.screening.ScreeningTestSpec;
+import com.example.SpringTestsSpec;
+import com.example.film.FilmFacade;
+import com.example.screening.ScreeningFacade;
 import com.example.screening.exception.NoScreeningFreeSeatsException;
 import com.example.ticket.dto.BookTicketDTO;
 import com.example.ticket.dto.TicketDTO;
@@ -10,22 +12,30 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
+import static com.example.film.FilmTestUtils.addSampleFilm;
+import static com.example.screening.ScreeningTestUtils.addSampleScreening;
+import static com.example.screening.ScreeningTestUtils.addSampleScreeningWithNoFreeSeats;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class TicketIT extends ScreeningTestSpec {
+class TicketIT extends SpringTestsSpec {
 
     @Autowired
     private TicketFacade ticketFacade;
 
+    @Autowired
+    private ScreeningFacade screeningFacade;
+
+    @Autowired
+    private FilmFacade filmFacade;
+
     @Test
     void should_book_ticket() {
-        var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.id());
+        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var bookedTicket = ticketFacade.book(
                 sampleBookTicketDTO(sampleScreening.id())
         );
@@ -36,8 +46,8 @@ class TicketIT extends ScreeningTestSpec {
 
     @Test
     void should_throw_exception_when_no_screening_free_seats() {
-        var sampleFilm = addSampleFilm();
-        var sampleScreeningWithNoFreeSeats = addSampleScreeningWithNoFreeSeats(sampleFilm.id());
+        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleScreeningWithNoFreeSeats = addSampleScreeningWithNoFreeSeats(sampleFilm.id(), screeningFacade);
         assertThrows(
                 NoScreeningFreeSeatsException.class,
                 () -> ticketFacade.book(
@@ -48,8 +58,8 @@ class TicketIT extends ScreeningTestSpec {
 
     @Test
     void should_reduce_screening_free_seats_by_one_after_ticket_booking() {
-        var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.id());
+        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var freeSeatsBeforeBooking = sampleScreening.freeSeats();
         ticketFacade.book(
                 sampleBookTicketDTO(sampleScreening.id())
@@ -63,8 +73,8 @@ class TicketIT extends ScreeningTestSpec {
 
     @Test
     void should_cancel_ticket() {
-        var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.id());
+        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var sampleTicket = bookSampleTicket(sampleScreening.id());
         var twoDaysBeforeScreening = sampleScreening
                 .date()
@@ -81,8 +91,8 @@ class TicketIT extends ScreeningTestSpec {
 
     @Test
     void should_throw_exception_when_ticket_is_already_cancelled() {
-        var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.id());
+        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var sampleTicket = bookSampleTicket(sampleScreening.id());
         var instant = sampleScreening
                 .date()
@@ -97,8 +107,8 @@ class TicketIT extends ScreeningTestSpec {
 
     @Test
     void should_throw_exception_when_trying_cancel_ticket_when_there_is_less_than_24h_to_screening() {
-        var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.id());
+        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var sampleTicket = ticketFacade.book(
                 sampleBookTicketDTO(sampleScreening.id())
         );
@@ -115,8 +125,8 @@ class TicketIT extends ScreeningTestSpec {
 
     @Test
     void should_return_all_tickets() {
-        var sampleFilm = addSampleFilm();
-        var sampleScreening = addSampleScreening(sampleFilm.id());
+        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleScreening = addSampleScreening(sampleFilm.id(), screeningFacade);
         var sampleTickets = bookSampleTickets(sampleScreening.id());
         assertThat(
                 ticketFacade.readAll()

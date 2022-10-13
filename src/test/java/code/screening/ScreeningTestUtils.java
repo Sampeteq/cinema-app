@@ -79,4 +79,9 @@ public class ScreeningTestUtils {
         );
         return List.of(screening1, screening2);
     }
+
+    public static List<Integer> getWrongScreeningYears() {
+        var currentYear= Year.now().getValue();
+        return List.of(currentYear - 1, currentYear + 2);
+    }
 }

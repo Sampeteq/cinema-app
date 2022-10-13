@@ -3,11 +3,17 @@ package code.screening;
 import code.SpringTestsSpec;
 import code.film.FilmFacade;
 import code.film.FilmTestUtils;
+import code.screening.dto.AddScreeningDTO;
 import code.screening.dto.AddScreeningRoomDTO;
 import code.screening.exception.ScreeningRoomAlreadyExistsException;
 import code.screening.exception.WrongScreeningYearException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+import java.time.Year;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,12 +38,23 @@ class ScreeningIT extends SpringTestsSpec {
         ).isEqualTo(addedScreening);
     }
 
-    @Test
-    void should_throw_exception_when_new_screening_year_is_not_current_or_previous_one() {
+    @ParameterizedTest
+    @MethodSource("code.screening.ScreeningTestUtils#getWrongScreeningYears")
+    void should_throw_exception_when_screening_year_is_not_current_or_next_one(Integer wrongYear) {
         var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
+        var currentYear= Year.now();
         assertThrows(
                 WrongScreeningYearException.class,
-                () -> ScreeningTestUtils.addSampleScreeningWithWrongFilmYear(sampleFilm.id(), screeningFacade)
+                () -> screeningFacade.add(
+                        AddScreeningDTO
+                                .builder()
+                                .date(LocalDateTime.of(wrongYear,1,1,16,30))
+                                .freeSeats(200)
+                                .minAge(13)
+                                .filmId(sampleFilm.id())
+                                .build(),
+                        currentYear
+                )
         );
     }
 

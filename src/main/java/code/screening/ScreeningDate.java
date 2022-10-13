@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Year;
 
@@ -18,11 +19,11 @@ public class ScreeningDate {
 
     private LocalDateTime value;
 
-    public static ScreeningDate of(LocalDateTime value, Year currentYear) {
-        if (value.getYear() != currentYear.getValue()) {
-            throw new WrongScreeningYearException(Year.of(value.getYear()), currentYear);
+    public static ScreeningDate of(LocalDateTime date, Year currentYear) {
+        if (date.getYear() != currentYear.getValue() && date.getYear() != currentYear.getValue() + 1) {
+            throw new WrongScreeningYearException(Year.of(date.getYear()), currentYear);
         } else {
-            return new ScreeningDate(value);
+            return new ScreeningDate(date);
         }
     }
 }

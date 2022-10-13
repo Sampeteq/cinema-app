@@ -1,20 +1,24 @@
 package code.screening;
 
 import code.screening.dto.AddScreeningDTO;
+import code.screening.dto.AddScreeningRoomDTO;
 import code.screening.dto.ScreeningDTO;
+import code.screening.dto.ScreeningRoomDTO;
 
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
+import java.util.UUID;
 
 public class ScreeningTestUtils {
 
     public static final Year currentYear = Year.now();
 
-    public static AddScreeningDTO sampleAddScreeningDTO(Long filmId) {
+    public static AddScreeningDTO sampleAddScreeningDTO(Long filmId, UUID roomId) {
         return AddScreeningDTO
                 .builder()
                 .filmId(filmId)
+                .roomUuid(roomId)
                 .date(LocalDateTime.parse("2022-05-05T16:30"))
                 .freeSeats(100)
                 .minAge(13)
@@ -83,5 +87,14 @@ public class ScreeningTestUtils {
     public static List<Integer> getWrongScreeningYears() {
         var currentYear= Year.now().getValue();
         return List.of(currentYear - 1, currentYear + 2);
+    }
+
+    public static ScreeningRoomDTO addSampleScreeningRoom(ScreeningFacade screeningFacade) {
+        var dto = AddScreeningRoomDTO
+                .builder()
+                .number(1)
+                .freeSeats(200)
+                .build();
+        return screeningFacade.addRoom(dto);
     }
 }

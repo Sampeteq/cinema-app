@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.time.Year;
 
+import static code.screening.ScreeningTestUtils.addSampleScreeningRoom;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -28,9 +29,10 @@ class ScreeningIT extends SpringTestsSpec {
 
     @Test
     void should_add_screening() {
-        var addedFilm = FilmTestUtils.addSampleFilm(filmFacade);
+        var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
+        var sampleRoom = addSampleScreeningRoom(screeningFacade);
         var addedScreening = screeningFacade.add(
-                ScreeningTestUtils.sampleAddScreeningDTO(addedFilm.id()),
+                ScreeningTestUtils.sampleAddScreeningDTO(sampleFilm.id(), sampleRoom.uuid()),
                 ScreeningTestUtils.currentYear
         );
         assertThat(

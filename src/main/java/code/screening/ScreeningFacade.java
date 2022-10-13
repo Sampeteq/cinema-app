@@ -21,19 +21,21 @@ public class ScreeningFacade {
     private final FilmFacade filmFacade;
 
     public ScreeningDTO add(AddScreeningDTO dto, Year currentYear) {
-        if (filmFacade.isPresent(dto.filmId())) {
-            var screening = new Screening(
-                    ScreeningDate.of(dto.date(), currentYear),
-                    FreeSeats.of(dto.freeSeats()),
-                    MinAge.of(dto.minAge()),
-                    dto.filmId()
-            );
-            return screeningRepository
-                    .save(screening)
-                    .toDTO();
-        } else {
+        if (!filmFacade.isPresent(dto.filmId())) {
             throw new FilmNotFoundException(dto.filmId());
         }
+        if (screeningRoomRepository.findById(dto.roomUuid()).isEmpty()) {
+            throw new ScreeningRoomNotFoundException(dto.roomUuid());
+        }
+        var screening = new Screening(
+                ScreeningDate.of(dto.date(), currentYear),
+                FreeSeats.of(dto.freeSeats()),
+                MinAge.of(dto.minAge()),
+                dto.filmId()
+        );
+        return screeningRepository
+                .save(screening)
+                .toDTO();
     }
 
     public ScreeningDTO readScreening(Long screeningId) {

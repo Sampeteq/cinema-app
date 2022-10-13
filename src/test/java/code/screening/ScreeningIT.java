@@ -6,7 +6,7 @@ import code.film.FilmTestUtils;
 import code.screening.dto.AddScreeningDTO;
 import code.screening.dto.AddScreeningRoomDTO;
 import code.screening.exception.ScreeningRoomAlreadyExistsException;
-import code.screening.exception.WrongScreeningYearException;
+import code.screening.exception.ScreeningYearException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -44,7 +44,7 @@ class ScreeningIT extends SpringTestsSpec {
         var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
         var currentYear= Year.now();
         assertThrows(
-                WrongScreeningYearException.class,
+                ScreeningYearException.class,
                 () -> screeningFacade.add(
                         AddScreeningDTO
                                 .builder()

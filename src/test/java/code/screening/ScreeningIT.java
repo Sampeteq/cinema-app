@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.time.Year;
 
-import static code.screening.ScreeningTestUtils.addSampleScreeningRoom;
+import static code.film.FilmTestUtils.addSampleDistinctFilms;
+import static code.film.FilmTestUtils.addSampleFilm;
+import static code.screening.ScreeningTestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -29,11 +31,11 @@ class ScreeningIT extends SpringTestsSpec {
 
     @Test
     void should_add_screening() {
-        var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
+        var sampleFilm = addSampleFilm(filmFacade);
         var sampleRoom = addSampleScreeningRoom(screeningFacade);
         var addedScreening = screeningFacade.add(
-                ScreeningTestUtils.sampleAddScreeningDTO(sampleFilm.id(), sampleRoom.uuid()),
-                ScreeningTestUtils.currentYear
+                sampleAddScreeningDTO(sampleFilm.id(), sampleRoom.uuid()),
+                currentYear
         );
         assertThat(
                 screeningFacade.readScreening(addedScreening.id())
@@ -43,7 +45,7 @@ class ScreeningIT extends SpringTestsSpec {
     @ParameterizedTest
     @MethodSource("code.screening.ScreeningTestUtils#getWrongScreeningYears")
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(Integer wrongYear) {
-        var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
+        var sampleFilm = addSampleFilm(filmFacade);
         var currentYear= Year.now();
         assertThrows(
                 ScreeningYearException.class,
@@ -62,8 +64,8 @@ class ScreeningIT extends SpringTestsSpec {
 
     @Test
     void should_return_all_screenings() {
-        var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
-        var sampleScreenings = ScreeningTestUtils.addSampleDistinctScreenings(sampleFilm.id(), screeningFacade);
+        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleScreenings = addSampleDistinctScreenings(sampleFilm.id(), screeningFacade);
         assertThat(
                 screeningFacade.readAll()
         ).isEqualTo(sampleScreenings);
@@ -71,11 +73,11 @@ class ScreeningIT extends SpringTestsSpec {
 
     @Test
     void should_return_screenings_by_film_id() {
-        var sampleFilms = FilmTestUtils.addSampleDistinctFilms(filmFacade);
+        var sampleFilms = addSampleDistinctFilms(filmFacade);
         var sampleFilmId1 = sampleFilms.get(0).id();
         var sampleFilmId2 = sampleFilms.get(1).id();
-        ScreeningTestUtils.addSampleScreening(sampleFilmId1, screeningFacade);
-        ScreeningTestUtils.addSampleScreening(sampleFilmId2, screeningFacade);
+        addSampleScreening(sampleFilmId1, screeningFacade);
+        addSampleScreening(sampleFilmId2, screeningFacade);
         assertThat(
                 screeningFacade.readAllByFilmId(sampleFilmId1)
         ).allMatch(
@@ -85,13 +87,13 @@ class ScreeningIT extends SpringTestsSpec {
 
     @Test
     void should_return_screenings_by_date() {
-        var sampleFilm = FilmTestUtils.addSampleFilm(filmFacade);
-        var sampleScreenings = ScreeningTestUtils.addSampleDistinctScreenings(sampleFilm.id(), screeningFacade);
+        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleScreenings = addSampleDistinctScreenings(sampleFilm.id(), screeningFacade);
         var sampleDate = sampleScreenings
                 .get(0)
                 .date();
         assertThat(
-                screeningFacade.readAllByDate(ScreeningDate.of(sampleDate, ScreeningTestUtils.currentYear))
+                screeningFacade.readAllByDate(ScreeningDate.of(sampleDate, currentYear))
         ).allMatch(
                 screening -> screening.date().equals(sampleDate)
         );

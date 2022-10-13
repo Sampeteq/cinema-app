@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static code.film.FilmTestUtils.addSampleDistinctFilms;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class FilmIT extends SpringTestsSpec {
@@ -33,13 +34,13 @@ class FilmIT extends SpringTestsSpec {
 
     @Test
     void should_return_all_films() {
-        var sampleFilms = FilmTestUtils.addSampleDistinctFilms(filmFacade);
+        var sampleFilms = addSampleDistinctFilms(filmFacade);
         Assertions.assertThat(filmFacade.readAll()).isEqualTo(sampleFilms);
     }
 
     @Test
     void should_return_films_with_given_category() {
-        var sampleCategory = FilmTestUtils.addSampleDistinctFilms(filmFacade)
+        var sampleCategory = addSampleDistinctFilms(filmFacade)
                 .get(0)
                 .category();
         Assertions.assertThat(

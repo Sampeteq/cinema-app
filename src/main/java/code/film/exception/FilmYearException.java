@@ -2,11 +2,11 @@ package code.film.exception;
 
 import java.time.Year;
 
-public class WrongFilmYearException extends FilmException {
+public class FilmYearException extends FilmException {
 
     private static final int CURRENT_YEAR = Year.now().getValue();
 
-    public WrongFilmYearException(int year) {
+    public FilmYearException(int year) {
         super(
                 "A film year must be previous, current or next one."
                         + "Given: " + year

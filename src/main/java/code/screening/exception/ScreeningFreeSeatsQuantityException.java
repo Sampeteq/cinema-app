@@ -2,9 +2,9 @@ package code.screening.exception;
 
 import code.screening.ScreeningValues;
 
-public class WrongScreeningFreeSeatsQuantityException extends ScreeningException {
+public class ScreeningFreeSeatsQuantityException extends ScreeningException {
 
-    public WrongScreeningFreeSeatsQuantityException() {
+    public ScreeningFreeSeatsQuantityException() {
         super("Wrong screening free seats quantity.Min: "
                 + ScreeningValues.SCREENING_MIN_FREE_SEATS
                 + ".Max: "

@@ -1,6 +1,6 @@
 package code.screening;
 
-import code.screening.exception.WrongScreeningFreeSeatsQuantityException;
+import code.screening.exception.ScreeningFreeSeatsQuantityException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +23,7 @@ class FreeSeats {
         if (value == 0) {
             return new FreeSeats(value);
         } else if (value < SCREENING_MIN_FREE_SEATS || value > SCREENING_MAX_FREE_SEATS) {
-            throw new WrongScreeningFreeSeatsQuantityException();
+            throw new ScreeningFreeSeatsQuantityException();
         } else {
             return new FreeSeats(value);
         }

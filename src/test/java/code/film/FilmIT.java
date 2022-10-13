@@ -1,7 +1,7 @@
 package code.film;
 
 import code.SpringTestsSpec;
-import code.film.exception.WrongFilmYearException;
+import code.film.exception.FilmYearException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ class FilmIT extends SpringTestsSpec {
     @Test
     void should_throw_exception_when_filmYear_is_neither_previous_nor_current_nor_next_one() {
         assertThrows(
-                WrongFilmYearException.class,
+                FilmYearException.class,
                 () -> filmFacade.add(
                         FilmTestUtils.sampleAddFilmDTOWithWrongFilmYear()
                 )

@@ -1,6 +1,6 @@
 package code.film;
 
-import code.film.exception.WrongFilmYearException;
+import code.film.exception.FilmYearException;
 import lombok.*;
 
 import javax.persistence.Embeddable;
@@ -20,7 +20,7 @@ class FilmYear {
                 .now()
                 .getValue();
         if (year != currentYear - 1 && year != currentYear && year != currentYear + 1) {
-            throw new WrongFilmYearException(year);
+            throw new FilmYearException(year);
         } else {
             return new FilmYear(year);
         }

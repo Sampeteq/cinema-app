@@ -49,8 +49,8 @@ class TicketIT extends SpringTestsSpec {
     @Test
     void should_throw_exception_when_no_screening_free_seats() {
         var sampleFilm = addSampleFilm(filmFacade);
-        var sampleRoom = addSampleScreeningRoom(screeningFacade);
-        var sampleScreeningWithNoFreeSeats = addSampleScreeningWithNoFreeSeats(sampleFilm.id(), sampleRoom.uuid(), screeningFacade);
+        var sampleRoom = addSampleScreeningRoomWithNoFreeSeats(screeningFacade);
+        var sampleScreeningWithNoFreeSeats = addSampleScreening(sampleFilm.id(), sampleRoom.uuid(), screeningFacade);
         assertThrows(
                 NoScreeningFreeSeatsException.class,
                 () -> ticketFacade.book(
@@ -64,7 +64,7 @@ class TicketIT extends SpringTestsSpec {
         var sampleFilm = addSampleFilm(filmFacade);
         var sampleRoom = addSampleScreeningRoom(screeningFacade);
         var sampleScreening = addSampleScreening(sampleFilm.id(), sampleRoom.uuid(), screeningFacade);
-        var freeSeatsBeforeBooking = sampleScreening.freeSeats();
+        var freeSeatsBeforeBooking = sampleRoom.freeSeats();
         ticketFacade.book(
                 sampleBookTicketDTO(sampleScreening.id())
         );

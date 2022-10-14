@@ -53,7 +53,6 @@ class ScreeningIT extends SpringTestsSpec {
                         AddScreeningDTO
                                 .builder()
                                 .date(LocalDateTime.of(wrongYear,1,1,16,30))
-                                .freeSeats(200)
                                 .minAge(13)
                                 .filmId(sampleFilm.id())
                                 .roomUuid(sampleRoom.uuid())

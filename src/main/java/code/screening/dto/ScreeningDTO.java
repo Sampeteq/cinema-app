@@ -11,6 +11,5 @@ public record ScreeningDTO(
         LocalDateTime date,
         int freeSeats,
         int minAge,
-        Long filmId,
-        UUID roomUuid) {
+        Long filmId) {
 }

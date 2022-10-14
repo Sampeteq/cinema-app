@@ -1,8 +1,8 @@
 package code.screening;
 
 import code.screening.dto.ScreeningDTO;
-import code.screening.exception.NoScreeningFreeSeatsException;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -25,34 +25,26 @@ class Screening {
     private ScreeningDate date;
 
     @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "freeSeats"))
-    private FreeSeats freeSeats;
-
-    @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "minAge"))
     private MinAge minAge;
 
     private Long filmId;
 
-    private UUID roomUuid;
+    @ManyToOne
+    private ScreeningRoom room;
 
     protected Screening() {
     }
 
-    Screening(ScreeningDate date, FreeSeats freeSeats, MinAge minAge, Long filmId, UUID roomUuid) {
+    Screening(ScreeningDate date, MinAge minAge, Long filmId, ScreeningRoom room) {
         this.date = date;
-        this.freeSeats = freeSeats;
         this.minAge = minAge;
         this.filmId = filmId;
-        this.roomUuid = roomUuid;
+        this.room = room;
     }
 
     void decreaseFreeSeatsByOne() {
-        if (this.freeSeats.getValue() == 0) {
-            throw new NoScreeningFreeSeatsException(this.id);
-        } else {
-            this.freeSeats = FreeSeats.of(this.freeSeats.getValue() - 1);
-        }
+        this.room.decreaseFreeSeatsByOne(this.id);
     }
 
     ScreeningDTO toDTO() {
@@ -60,10 +52,9 @@ class Screening {
                 .builder()
                 .id(this.id)
                 .date(this.date.getValue())
-                .freeSeats(this.freeSeats.getValue())
+                .freeSeats(this.room.getFreeSeats().getValue())
                 .minAge(this.minAge.getValue())
                 .filmId(this.filmId)
-                .roomUuid(this.roomUuid)
                 .build();
     }
 }

@@ -24,15 +24,15 @@ public class ScreeningFacade {
         if (!filmFacade.isPresent(dto.filmId())) {
             throw new FilmNotFoundException(dto.filmId());
         }
-        if (screeningRoomRepository.findById(dto.roomUuid()).isEmpty()) {
-            throw new ScreeningRoomNotFoundException(dto.roomUuid());
-        }
+         var room= screeningRoomRepository
+                 .findById(dto.roomUuid())
+                 .orElseThrow(() -> new ScreeningRoomNotFoundException(dto.roomUuid()));
+
         var screening = new Screening(
                 ScreeningDate.of(dto.date(), currentYear),
-                FreeSeats.of(dto.freeSeats()),
                 MinAge.of(dto.minAge()),
                 dto.filmId(),
-                dto.roomUuid()
+                room
         );
         return screeningRepository
                 .save(screening)
@@ -44,11 +44,7 @@ public class ScreeningFacade {
     }
 
     public List<ScreeningDTO> readAll() {
-        return screeningRepository
-                .findAll()
-                .stream()
-                .map(Screening::toDTO)
-                .toList();
+        return screeningRepository.findAllAsDTO();
     }
 
     public List<ScreeningDTO> readAllByFilmId(Long filmId) {
@@ -68,8 +64,7 @@ public class ScreeningFacade {
     }
 
     public void decreaseFreeSeatsByOne(Long screeningId) {
-        var screening = getScreeningOrThrowException(screeningId);
-        screening.decreaseFreeSeatsByOne();
+        getScreeningOrThrowException(screeningId).decreaseFreeSeatsByOne();
     }
 
     public ScreeningTicketDataDTO readTicketData(Long screeningId) {
@@ -81,7 +76,7 @@ public class ScreeningFacade {
         if (screeningRoomRepository.existsByNumber(dto.number())) {
             throw new ScreeningRoomAlreadyExistsException(dto.number());
         }
-        var screeningRoom = new ScreeningRoom(dto.number(), dto.freeSeats());
+        var screeningRoom = new ScreeningRoom(dto.number(), FreeSeats.of(dto.freeSeats()));
         return screeningRoomRepository
                 .save(screeningRoom)
                 .toDTO();

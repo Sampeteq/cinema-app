@@ -1,12 +1,12 @@
 package code.screening;
 
 import code.screening.dto.ScreeningRoomDTO;
+import code.screening.exception.NoScreeningFreeSeatsException;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -16,21 +16,33 @@ import java.util.UUID;
 class ScreeningRoom {
 
     @Id
+    @Getter
     private UUID uuid = UUID.randomUUID();
 
     private int number;
 
-    private int freeSeats;
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "freeSeats"))
+    @Getter
+    private FreeSeats freeSeats;
 
     protected ScreeningRoom() {
     }
 
-    ScreeningRoom(int number, int freeSeats) {
+    ScreeningRoom(int number, FreeSeats freeSeats) {
         this.number = number;
         this.freeSeats = freeSeats;
     }
 
+    void decreaseFreeSeatsByOne(Long screeningId) {
+        if (this.freeSeats.getValue() == 0) {
+            throw new NoScreeningFreeSeatsException(screeningId);
+        } else {
+            this.freeSeats = FreeSeats.of(this.freeSeats.getValue() - 1);
+        }
+    }
+
     ScreeningRoomDTO toDTO() {
-        return new ScreeningRoomDTO(this.uuid, number, freeSeats);
+        return new ScreeningRoomDTO(this.uuid, number, freeSeats.getValue());
     }
 }

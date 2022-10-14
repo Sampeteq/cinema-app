@@ -11,6 +11,5 @@ public record AddScreeningDTO(@NotNull Long filmId,
 
                               @NotNull UUID roomUuid,
                               @NotNull LocalDateTime date,
-                              @NotNull Integer freeSeats,
                               @NotNull Integer minAge) {
 }

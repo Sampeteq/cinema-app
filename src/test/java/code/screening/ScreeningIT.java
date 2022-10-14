@@ -2,7 +2,6 @@ package code.screening;
 
 import code.SpringTestsSpec;
 import code.film.FilmFacade;
-import code.film.FilmTestUtils;
 import code.screening.dto.AddScreeningDTO;
 import code.screening.dto.AddScreeningRoomDTO;
 import code.screening.exception.ScreeningRoomAlreadyExistsException;
@@ -46,6 +45,7 @@ class ScreeningIT extends SpringTestsSpec {
     @MethodSource("code.screening.ScreeningTestUtils#getWrongScreeningYears")
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(Integer wrongYear) {
         var sampleFilm = addSampleFilm(filmFacade);
+        var sampleRoom = addSampleScreeningRoom(screeningFacade);
         var currentYear= Year.now();
         assertThrows(
                 ScreeningYearException.class,
@@ -56,6 +56,7 @@ class ScreeningIT extends SpringTestsSpec {
                                 .freeSeats(200)
                                 .minAge(13)
                                 .filmId(sampleFilm.id())
+                                .roomUuid(sampleRoom.uuid())
                                 .build(),
                         currentYear
                 )
@@ -65,7 +66,8 @@ class ScreeningIT extends SpringTestsSpec {
     @Test
     void should_return_all_screenings() {
         var sampleFilm = addSampleFilm(filmFacade);
-        var sampleScreenings = addSampleDistinctScreenings(sampleFilm.id(), screeningFacade);
+        var sampleRoom = addSampleScreeningRoom(screeningFacade);
+        var sampleScreenings = addSampleDistinctScreenings(sampleFilm.id(), sampleRoom.uuid(), screeningFacade);
         assertThat(
                 screeningFacade.readAll()
         ).isEqualTo(sampleScreenings);
@@ -76,8 +78,9 @@ class ScreeningIT extends SpringTestsSpec {
         var sampleFilms = addSampleDistinctFilms(filmFacade);
         var sampleFilmId1 = sampleFilms.get(0).id();
         var sampleFilmId2 = sampleFilms.get(1).id();
-        addSampleScreening(sampleFilmId1, screeningFacade);
-        addSampleScreening(sampleFilmId2, screeningFacade);
+        var sampleRoom = addSampleScreeningRoom(screeningFacade);
+        addSampleScreening(sampleFilmId1, sampleRoom.uuid(), screeningFacade);
+        addSampleScreening(sampleFilmId2, sampleRoom.uuid(), screeningFacade);
         assertThat(
                 screeningFacade.readAllByFilmId(sampleFilmId1)
         ).allMatch(
@@ -88,7 +91,8 @@ class ScreeningIT extends SpringTestsSpec {
     @Test
     void should_return_screenings_by_date() {
         var sampleFilm = addSampleFilm(filmFacade);
-        var sampleScreenings = addSampleDistinctScreenings(sampleFilm.id(), screeningFacade);
+        var sampleRoom = addSampleScreeningRoom(screeningFacade);
+        var sampleScreenings = addSampleDistinctScreenings(sampleFilm.id(), sampleRoom.uuid(), screeningFacade);
         var sampleDate = sampleScreenings
                 .get(0)
                 .date();

@@ -25,10 +25,11 @@ public class ScreeningTestUtils {
                 .build();
     }
 
-    public static ScreeningDTO addSampleScreening(Long filmId, ScreeningFacade screeningFacade) {
+    public static ScreeningDTO addSampleScreening(Long filmId, UUID roomUuid,  ScreeningFacade screeningFacade) {
         var dto = AddScreeningDTO
                 .builder()
                 .filmId(filmId)
+                .roomUuid(roomUuid)
                 .date(LocalDateTime.parse("2022-05-05T16:30"))
                 .freeSeats(100)
                 .minAge(13)
@@ -47,11 +48,12 @@ public class ScreeningTestUtils {
         return screeningFacade.add(dto, currentYear);
     }
 
-    public static ScreeningDTO addSampleScreeningWithNoFreeSeats(Long sampleFilmId, ScreeningFacade screeningFacade) {
+    public static ScreeningDTO addSampleScreeningWithNoFreeSeats(Long sampleFilmId, UUID sampleRoomUuid, ScreeningFacade screeningFacade) {
         return screeningFacade.add(
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId)
+                        .roomUuid(sampleRoomUuid)
                         .date(LocalDateTime.parse("2022-05-05T16:30"))
                         .freeSeats(0)
                         .minAge(13)
@@ -60,11 +62,12 @@ public class ScreeningTestUtils {
         );
     }
 
-    public static List<ScreeningDTO> addSampleDistinctScreenings(Long filmId, ScreeningFacade screeningFacade) {
+    public static List<ScreeningDTO> addSampleDistinctScreenings(Long filmId, UUID roomUuid, ScreeningFacade screeningFacade) {
         var screening1 = screeningFacade.add(
                 AddScreeningDTO
                         .builder()
                         .filmId(filmId)
+                        .roomUuid(roomUuid)
                         .date(LocalDateTime.parse("2022-05-05T16:00"))
                         .freeSeats(100)
                         .minAge(13)
@@ -75,6 +78,7 @@ public class ScreeningTestUtils {
                 AddScreeningDTO
                         .builder()
                         .filmId(filmId)
+                        .roomUuid(roomUuid)
                         .date(LocalDateTime.parse("2022-06-09T17:30"))
                         .freeSeats(100)
                         .minAge(13)

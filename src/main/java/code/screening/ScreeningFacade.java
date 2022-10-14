@@ -31,7 +31,8 @@ public class ScreeningFacade {
                 ScreeningDate.of(dto.date(), currentYear),
                 FreeSeats.of(dto.freeSeats()),
                 MinAge.of(dto.minAge()),
-                dto.filmId()
+                dto.filmId(),
+                dto.roomUuid()
         );
         return screeningRepository
                 .save(screening)

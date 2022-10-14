@@ -34,14 +34,17 @@ class Screening {
 
     private Long filmId;
 
+    private UUID roomUuid;
+
     protected Screening() {
     }
 
-    Screening(ScreeningDate date, FreeSeats freeSeats, MinAge minAge, Long filmId) {
+    Screening(ScreeningDate date, FreeSeats freeSeats, MinAge minAge, Long filmId, UUID roomUuid) {
         this.date = date;
         this.freeSeats = freeSeats;
         this.minAge = minAge;
         this.filmId = filmId;
+        this.roomUuid = roomUuid;
     }
 
     void decreaseFreeSeatsByOne() {
@@ -60,6 +63,7 @@ class Screening {
                 .freeSeats(this.freeSeats.getValue())
                 .minAge(this.minAge.getValue())
                 .filmId(this.filmId)
+                .roomUuid(this.roomUuid)
                 .build();
     }
 }

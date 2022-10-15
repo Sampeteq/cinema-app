@@ -24,7 +24,7 @@ class TicketController {
 
     @PostMapping("/tickets/booking")
     TicketDTO reserve(@RequestBody @Valid BookTicketDTO dto) {
-        return ticketFacade.book(dto);
+        return ticketFacade.book(dto, Clock.systemUTC());
     }
 
     @PatchMapping("/tickets/{ticketUUID}/booking/cancelled")

@@ -3,15 +3,18 @@ package code.ticket;
 import code.SpringTestsSpec;
 import code.film.FilmFacade;
 import code.screening.ScreeningFacade;
+import code.screening.dto.AddScreeningDTO;
 import code.screening.exception.NoScreeningFreeSeatsException;
 import code.ticket.dto.BookTicketDTO;
 import code.ticket.dto.TicketDTO;
 import code.ticket.exception.TicketAlreadyCancelledException;
+import code.ticket.exception.TooLateToBookTicketException;
 import code.ticket.exception.TooLateToCancelTicketException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Clock;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
@@ -31,17 +34,40 @@ class TicketIT extends SpringTestsSpec {
     @Autowired
     private FilmFacade filmFacade;
 
+    private final Clock clock = Clock.systemUTC();
+
     @Test
     void should_book_ticket() {
         var sampleFilm = addFilm(filmFacade);
         var sampleRoom = addSampleScreeningRoom(screeningFacade);
         var sampleScreening = addSampleScreening(sampleFilm.id(), sampleRoom.uuid(), screeningFacade);
         var bookedTicket = ticketFacade.book(
-                sampleBookTicketDTO(sampleScreening.id())
+                sampleBookTicketDTO(sampleScreening.id()), clock
         );
         assertThat(
                 ticketFacade.read(bookedTicket.ticketUuid())
         ).isEqualTo(bookedTicket);
+    }
+
+    @Test
+    void should_throw_exception_when_there_is_too_late_to_book_ticket() {
+        var sampleFilm = addFilm(filmFacade);
+        var sampleRoom = addSampleScreeningRoom(screeningFacade);
+        var currentDate = LocalDateTime.now(clock);
+        var sampleScreening = screeningFacade.add(
+                AddScreeningDTO
+                        .builder()
+                        .date(currentDate.minusHours(23))
+                        .minAge(13)
+                        .roomUuid(sampleRoom.uuid())
+                        .filmId(sampleFilm.id())
+                        .build(),
+                currentYear
+        );
+        assertThrows(
+                TooLateToBookTicketException.class,
+                () -> ticketFacade.book(sampleBookTicketDTO(sampleScreening.id()), clock)
+        );
     }
 
     @Test
@@ -52,7 +78,8 @@ class TicketIT extends SpringTestsSpec {
         assertThrows(
                 NoScreeningFreeSeatsException.class,
                 () -> ticketFacade.book(
-                        sampleBookTicketDTO(sampleScreeningWithNoFreeSeats.id())
+                        sampleBookTicketDTO(sampleScreeningWithNoFreeSeats.id()),
+                        clock
                 )
         );
     }
@@ -64,7 +91,8 @@ class TicketIT extends SpringTestsSpec {
         var sampleScreening = addSampleScreening(sampleFilm.id(), sampleRoom.uuid(), screeningFacade);
         var freeSeatsBeforeBooking = sampleRoom.freeSeats();
         ticketFacade.book(
-                sampleBookTicketDTO(sampleScreening.id())
+                sampleBookTicketDTO(sampleScreening.id()),
+                clock
         );
         assertThat(
                 screeningFacade
@@ -106,7 +134,8 @@ class TicketIT extends SpringTestsSpec {
         var sampleRoom = addSampleScreeningRoom(screeningFacade);
         var sampleScreening = addSampleScreening(sampleFilm.id(), sampleRoom.uuid(), screeningFacade);
         var sampleTicket = ticketFacade.book(
-                sampleBookTicketDTO(sampleScreening.id())
+                sampleBookTicketDTO(sampleScreening.id()),
+                clock
         );
         var lessThanOneDayBeforeScreening = sampleScreening
                 .date()
@@ -146,7 +175,8 @@ class TicketIT extends SpringTestsSpec {
                         .screeningId(sampleScreeningId)
                         .firstName("Name")
                         .lastName("Lastname")
-                        .build()
+                        .build(),
+                clock
         );
     }
 
@@ -157,7 +187,8 @@ class TicketIT extends SpringTestsSpec {
                         .screeningId(sampleScreeningId)
                         .firstName("Name 1")
                         .lastName("lastname 1")
-                        .build()
+                        .build(),
+                clock
         );
         var sampleTicket2 = ticketFacade.book(
                 BookTicketDTO
@@ -165,7 +196,8 @@ class TicketIT extends SpringTestsSpec {
                         .screeningId(sampleScreeningId)
                         .firstName("Name 2")
                         .lastName("lastname 2")
-                        .build()
+                        .build(),
+                clock
         );
         return List.of(sampleTicket1, sampleTicket2);
     }

@@ -8,27 +8,61 @@ import java.util.List;
 
 public class FilmTestUtils {
 
-    public static AddFilmDTO sampleAddFilmDTO() {
-        return new AddFilmDTO("Sample film", FilmCategory.COMEDY, 2022);
+    private static final Year currentYear = Year.now();
+
+    public static AddFilmDTO addFilmDTO() {
+        return AddFilmDTO
+                .builder()
+                .title("Sample title")
+                .filmCategory(FilmCategory.COMEDY)
+                .year(Year.now().getValue())
+                .build();
     }
 
-    public static AddFilmDTO sampleAddFilmDTOWithWrongFilmYear() {
-        return new AddFilmDTO("Sample film", FilmCategory.COMEDY, Year.now().getValue() - 3);
+    public static AddFilmDTO addFilmDTOWithWrongYear(int wrongFilmYear) {
+        return AddFilmDTO
+                .builder()
+                .title("Sample title")
+                .filmCategory(FilmCategory.COMEDY)
+                .year(wrongFilmYear)
+                .build();
     }
 
-    public static FilmDTO addSampleFilm(FilmFacade filmFacade) {
+    public static FilmDTO addFilm(FilmFacade filmFacade) {
         return filmFacade.add(
-                new AddFilmDTO("Sample film 1", FilmCategory.COMEDY, 2022)
+                AddFilmDTO
+                        .builder()
+                        .title("Sample title")
+                        .filmCategory(FilmCategory.COMEDY)
+                        .year(Year.now().getValue())
+                        .build()
         );
     }
 
-    public static List<FilmDTO> addSampleDistinctFilms(FilmFacade filmFacade) {
+    public static List<FilmDTO> addDistinctFilms(FilmFacade filmFacade) {
         var sampleFilmDTO1 = filmFacade.add(
-                new AddFilmDTO("Sample film 1", FilmCategory.COMEDY, 2022)
+                AddFilmDTO
+                        .builder()
+                        .title("Sample title 1")
+                        .filmCategory(FilmCategory.COMEDY)
+                        .year(Year.now().getValue())
+                        .build()
         );
         var sampleFilmDTO2 = filmFacade.add(
-                new AddFilmDTO("Sample film 2", FilmCategory.ACTION, 2021)
+                AddFilmDTO
+                        .builder()
+                        .title("Sample title 2")
+                        .filmCategory(FilmCategory.DRAMA)
+                        .year(Year.now().plusYears(1).getValue())
+                        .build()
         );
         return List.of(sampleFilmDTO1, sampleFilmDTO2);
+    }
+
+    public static List<Integer> wrongFilmYears() {
+        return List.of(
+                currentYear.minusYears(2).getValue(),
+                currentYear.plusYears(2).getValue()
+        );
     }
 }

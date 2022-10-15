@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.time.Year;
 
-import static code.film.FilmTestUtils.addSampleDistinctFilms;
-import static code.film.FilmTestUtils.addSampleFilm;
+import static code.film.FilmTestUtils.addDistinctFilms;
+import static code.film.FilmTestUtils.addFilm;
 import static code.screening.ScreeningTestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,7 +30,7 @@ class ScreeningIT extends SpringTestsSpec {
 
     @Test
     void should_add_screening() {
-        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleFilm = addFilm(filmFacade);
         var sampleRoom = addSampleScreeningRoom(screeningFacade);
         var addedScreening = screeningFacade.add(
                 sampleAddScreeningDTO(sampleFilm.id(), sampleRoom.uuid()),
@@ -44,7 +44,7 @@ class ScreeningIT extends SpringTestsSpec {
     @ParameterizedTest
     @MethodSource("code.screening.ScreeningTestUtils#getWrongScreeningYears")
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(Integer wrongYear) {
-        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleFilm = addFilm(filmFacade);
         var sampleRoom = addSampleScreeningRoom(screeningFacade);
         var currentYear= Year.now();
         assertThrows(
@@ -64,7 +64,7 @@ class ScreeningIT extends SpringTestsSpec {
 
     @Test
     void should_return_all_screenings() {
-        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleFilm = addFilm(filmFacade);
         var sampleRoom = addSampleScreeningRoom(screeningFacade);
         var sampleScreenings = addSampleDistinctScreenings(sampleFilm.id(), sampleRoom.uuid(), screeningFacade);
         assertThat(
@@ -74,7 +74,7 @@ class ScreeningIT extends SpringTestsSpec {
 
     @Test
     void should_return_screenings_by_film_id() {
-        var sampleFilms = addSampleDistinctFilms(filmFacade);
+        var sampleFilms = addDistinctFilms(filmFacade);
         var sampleFilmId1 = sampleFilms.get(0).id();
         var sampleFilmId2 = sampleFilms.get(1).id();
         var sampleRoom = addSampleScreeningRoom(screeningFacade);
@@ -89,7 +89,7 @@ class ScreeningIT extends SpringTestsSpec {
 
     @Test
     void should_return_screenings_by_date() {
-        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleFilm = addFilm(filmFacade);
         var sampleRoom = addSampleScreeningRoom(screeningFacade);
         var sampleScreenings = addSampleDistinctScreenings(sampleFilm.id(), sampleRoom.uuid(), screeningFacade);
         var sampleDate = sampleScreenings

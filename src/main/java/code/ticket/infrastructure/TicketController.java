@@ -22,14 +22,16 @@ class TicketController {
 
     private final TicketFacade ticketFacade;
 
+    private final Clock clock;
+
     @PostMapping("/tickets/booking")
     TicketDTO reserve(@RequestBody @Valid BookTicketDTO dto) {
-        return ticketFacade.book(dto, Clock.systemUTC());
+        return ticketFacade.book(dto, clock);
     }
 
     @PatchMapping("/tickets/{ticketUUID}/booking/cancelled")
     void cancel(@PathVariable UUID ticketUUID) {
-        ticketFacade.cancel(ticketUUID, Clock.system(ZoneOffset.UTC));
+        ticketFacade.cancel(ticketUUID, clock);
     }
 
     @GetMapping("/tickets")

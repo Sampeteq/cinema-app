@@ -16,7 +16,6 @@ class TicketConfig {
     }
 
     @Bean
-    @Profile("dev")
     Clock clock() {
         return Clock.systemUTC();
     }

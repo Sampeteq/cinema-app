@@ -18,7 +18,7 @@ class FilmIT extends SpringTestsSpec {
 
     @Test
     void should_add_film() {
-        var addedFilm = filmFacade.add(addFilmDTO());
+        var addedFilm = filmFacade.add(sampleAddFilmDTO());
         Assertions.assertThat(
                 filmFacade.read(addedFilm.id())
         ).isEqualTo(addedFilm);
@@ -30,20 +30,20 @@ class FilmIT extends SpringTestsSpec {
         assertThrows(
                 FilmYearException.class,
                 () -> filmFacade.add(
-                        addFilmDTOWithWrongYear(wrongFilmYear)
+                        sampleAddFilmDTOWithWrongFilmYear(wrongFilmYear)
                 )
         );
     }
 
     @Test
     void should_return_all_films() {
-        var sampleFilms = addDistinctFilms(filmFacade);
+        var sampleFilms = addSampleFilms(filmFacade);
         Assertions.assertThat(filmFacade.readAll()).isEqualTo(sampleFilms);
     }
 
     @Test
     void should_return_films_with_given_category() {
-        var sampleCategory = addDistinctFilms(filmFacade)
+        var sampleCategory = addSampleFilms(filmFacade)
                 .get(0)
                 .category();
         Assertions.assertThat(

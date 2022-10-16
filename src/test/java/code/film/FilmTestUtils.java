@@ -10,7 +10,7 @@ public class FilmTestUtils {
 
     private static final Year currentYear = Year.now();
 
-    public static AddFilmDTO addFilmDTO() {
+    public static AddFilmDTO sampleAddFilmDTO() {
         return AddFilmDTO
                 .builder()
                 .title("Sample title")
@@ -19,7 +19,7 @@ public class FilmTestUtils {
                 .build();
     }
 
-    public static AddFilmDTO addFilmDTOWithWrongYear(int wrongFilmYear) {
+    public static AddFilmDTO sampleAddFilmDTOWithWrongFilmYear(int wrongFilmYear) {
         return AddFilmDTO
                 .builder()
                 .title("Sample title")
@@ -28,7 +28,7 @@ public class FilmTestUtils {
                 .build();
     }
 
-    public static FilmDTO addFilm(FilmFacade filmFacade) {
+    public static FilmDTO addSampleFilm(FilmFacade filmFacade) {
         return filmFacade.add(
                 AddFilmDTO
                         .builder()
@@ -39,7 +39,7 @@ public class FilmTestUtils {
         );
     }
 
-    public static List<FilmDTO> addDistinctFilms(FilmFacade filmFacade) {
+    public static List<FilmDTO> addSampleFilms(FilmFacade filmFacade) {
         var sampleFilmDTO1 = filmFacade.add(
                 AddFilmDTO
                         .builder()

@@ -59,11 +59,11 @@ class ScreeningIT extends SpringTestsSpec {
         assertThrows(
                 ScreeningYearException.class,
                 () -> screeningFacade.add(
-                       sampleAddScreeningDTOWithWrongScreeningYear(
-                               sampleFilms.get(0).id(),
-                               sampleRooms.get(0).uuid(),
-                               wrongScreeningYear
-                       ),
+                        sampleAddScreeningDTOWithWrongScreeningYear(
+                                sampleFilms.get(0).id(),
+                                sampleRooms.get(0).uuid(),
+                                wrongScreeningYear
+                        ),
                         currentYear
                 )
         );

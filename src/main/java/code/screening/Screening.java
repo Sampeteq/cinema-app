@@ -2,7 +2,6 @@ package code.screening;
 
 import code.screening.dto.ScreeningDTO;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.*;

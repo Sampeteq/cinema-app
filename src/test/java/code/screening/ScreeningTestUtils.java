@@ -36,12 +36,12 @@ public class ScreeningTestUtils {
     }
 
     public static List<ScreeningRoomDTO> addSampleScreeningRooms(ScreeningFacade screeningFacade) {
-        var room1= AddScreeningRoomDTO
+        var room1 = AddScreeningRoomDTO
                 .builder()
                 .number(1)
                 .freeSeats(200)
                 .build();
-        var room2= AddScreeningRoomDTO
+        var room2 = AddScreeningRoomDTO
                 .builder()
                 .number(2)
                 .freeSeats(100)
@@ -54,7 +54,7 @@ public class ScreeningTestUtils {
 
     public static ScreeningDTO addSampleScreeningWithNoFreeSeats(Long sampleFilmId,
                                                                  ScreeningFacade screeningFacade) {
-        var screeningRoom= screeningFacade.addRoom(
+        var screeningRoom = screeningFacade.addRoom(
                 AddScreeningRoomDTO
                         .builder()
                         .number(5)

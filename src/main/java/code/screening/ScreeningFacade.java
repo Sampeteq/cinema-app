@@ -24,9 +24,9 @@ public class ScreeningFacade {
         if (!filmFacade.isPresent(dto.filmId())) {
             throw new FilmNotFoundException(dto.filmId());
         }
-         var room= screeningRoomRepository
-                 .findById(dto.roomUuid())
-                 .orElseThrow(() -> new ScreeningRoomNotFoundException(dto.roomUuid()));
+        var room = screeningRoomRepository
+                .findById(dto.roomUuid())
+                .orElseThrow(() -> new ScreeningRoomNotFoundException(dto.roomUuid()));
 
         var screening = new Screening(
                 ScreeningDate.of(dto.date(), currentYear),

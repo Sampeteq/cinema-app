@@ -38,9 +38,9 @@ public class FilmFacade {
                 .toList();
     }
 
-    public List<FilmDTO> readAllByCategory(FilmCategory category) {
+    public List<FilmDTO> readByCategory(FilmCategory category) {
         return filmRepository
-                .findAllByCategory(category)
+                .findByCategory(category)
                 .stream()
                 .map(Film::toDTO)
                 .toList();

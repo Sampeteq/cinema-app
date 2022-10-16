@@ -24,7 +24,7 @@ class TicketController {
     private final Clock clock;
 
     @PostMapping("/tickets/booking")
-    TicketDTO reserve(@RequestBody @Valid BookTicketDTO dto) {
+    TicketDTO book(@RequestBody @Valid BookTicketDTO dto) {
         return ticketFacade.book(dto, clock);
     }
 

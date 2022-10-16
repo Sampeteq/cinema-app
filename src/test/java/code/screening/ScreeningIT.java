@@ -49,7 +49,7 @@ class ScreeningIT extends SpringTestsSpec {
                 currentYear
         );
         assertThat(
-                screeningFacade.readScreening(addedScreening.id())
+                screeningFacade.read(addedScreening.id())
         ).isEqualTo(addedScreening);
     }
 
@@ -79,7 +79,7 @@ class ScreeningIT extends SpringTestsSpec {
     @Test
     void should_return_screenings_by_film_id() {
         assertThat(
-                screeningFacade.readAllByFilmId(sampleFilms.get(0).id())
+                screeningFacade.readByFilmId(sampleFilms.get(0).id())
         ).allMatch(
                 screening -> screening.filmId().equals(sampleFilms.get(0).id())
         );
@@ -88,7 +88,7 @@ class ScreeningIT extends SpringTestsSpec {
     @Test
     void should_return_screenings_by_date() {
         assertThat(
-                screeningFacade.readAllByDate(ScreeningDate.of(sampleScreenings.get(0).date(), currentYear))
+                screeningFacade.readByDate(ScreeningDate.of(sampleScreenings.get(0).date(), currentYear))
         ).allMatch(
                 screening -> screening.date().equals(sampleScreenings.get(0).date())
         );

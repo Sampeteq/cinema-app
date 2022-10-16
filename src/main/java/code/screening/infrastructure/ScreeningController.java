@@ -39,12 +39,12 @@ class ScreeningController {
 
     @GetMapping("/screenings/{filmId}")
     List<ScreeningDTO> readByFilmId(@PathVariable Long filmId) {
-        return screeningFacade.readAllByFilmId(filmId);
+        return screeningFacade.readByFilmId(filmId);
     }
 
     @GetMapping("/screenings/date")
     List<ScreeningDTO> readByDate(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime date) {
-        return screeningFacade.readAllByDate(ScreeningDate.of(date, currentYear));
+        return screeningFacade.readByDate(ScreeningDate.of(date, currentYear));
     }
 
     @PostMapping("/screening-rooms")

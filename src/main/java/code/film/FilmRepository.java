@@ -6,5 +6,5 @@ import java.util.List;
 
 interface FilmRepository extends JpaRepository<Film, Long> {
 
-    List<Film> findAllByCategory(FilmCategory category);
+    List<Film> findByCategory(FilmCategory category);
 }

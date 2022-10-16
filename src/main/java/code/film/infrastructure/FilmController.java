@@ -31,8 +31,8 @@ class FilmController {
     }
 
     @GetMapping("/films/category")
-    List<FilmDTO> readAllByCategory(@RequestParam FilmCategory category) {
-        return filmFacade.readAllByCategory(category);
+    List<FilmDTO> readByCategory(@RequestParam FilmCategory category) {
+        return filmFacade.readByCategory(category);
     }
 }
 

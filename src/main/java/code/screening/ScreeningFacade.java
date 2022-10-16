@@ -39,7 +39,7 @@ public class ScreeningFacade {
                 .toDTO();
     }
 
-    public ScreeningDTO readScreening(Long screeningId) {
+    public ScreeningDTO read(Long screeningId) {
         return getScreeningOrThrowException(screeningId).toDTO();
     }
 
@@ -47,15 +47,15 @@ public class ScreeningFacade {
         return screeningRepository.findAllAsDTO();
     }
 
-    public List<ScreeningDTO> readAllByFilmId(Long filmId) {
+    public List<ScreeningDTO> readByFilmId(Long filmId) {
         return screeningRepository
-                .findAllByFilmId(filmId)
+                .findByFilmId(filmId)
                 .stream()
                 .map(Screening::toDTO)
                 .toList();
     }
 
-    public List<ScreeningDTO> readAllByDate(ScreeningDate date) {
+    public List<ScreeningDTO> readByDate(ScreeningDate date) {
         return screeningRepository
                 .findByDate(date)
                 .stream()

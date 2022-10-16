@@ -107,7 +107,7 @@ class TicketIT extends SpringTestsSpec {
         );
         assertThat(
                 screeningFacade
-                        .readScreening(sampleScreenings.get(0).id())
+                        .read(sampleScreenings.get(0).id())
                         .freeSeats()
         ).isEqualTo(freeSeatsBeforeBooking - 1);
     }

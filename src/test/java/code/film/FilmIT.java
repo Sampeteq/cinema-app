@@ -47,7 +47,7 @@ class FilmIT extends SpringTestsSpec {
                 .get(0)
                 .category();
         Assertions.assertThat(
-                filmFacade.readAllByCategory(sampleCategory)
+                filmFacade.readByCategory(sampleCategory)
         ).allMatch(
                 film -> film.category().equals(sampleCategory)
         );

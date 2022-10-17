@@ -2,5 +2,5 @@ package code.screening.dto;
 
 import java.time.LocalDateTime;
 
-public record ScreeningTicketDTO(LocalDateTime screeningDate, Integer screeningMinAge, Integer screeningFreeSeats) {
+public record ScreeningTicketDTO(LocalDateTime screeningDate, Integer screeningFreeSeats) {
 }

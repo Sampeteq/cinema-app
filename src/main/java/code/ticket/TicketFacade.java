@@ -24,14 +24,14 @@ public class TicketFacade {
 
     @Transactional
     public TicketDTO book(BookTicketDTO dto, Clock clock) {
-        var screeningData = screeningFacade.readTicketData(dto.screeningId());
+        var screeningTicketDTO = screeningFacade.readTicketData(dto.screeningId());
         if (Duration
-                .between(LocalDateTime.now(clock), screeningData.screeningDate())
+                .between(LocalDateTime.now(clock), screeningTicketDTO.screeningDate())
                 .abs()
                 .toHours() < 24) {
             throw new TooLateToBookTicketException();
         }
-        if (screeningData.screeningFreeSeats() < 0) {
+        if (screeningTicketDTO.screeningFreeSeats() < 0) {
             throw new NoScreeningFreeSeatsException(dto.screeningId());
         }
         var ticket = new Ticket(dto.firstName(), dto.lastName(), dto.screeningId());

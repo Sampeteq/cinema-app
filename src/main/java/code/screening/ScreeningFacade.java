@@ -69,9 +69,9 @@ public class ScreeningFacade {
         getScreeningOrThrowException(screeningId).decreaseFreeSeatsByOne();
     }
 
-    public ScreeningTicketDataDTO readTicketData(Long screeningId) {
+    public ScreeningTicketDTO readTicketData(Long screeningId) {
         var screening = getScreeningOrThrowException(screeningId).toDTO();
-        return new ScreeningTicketDataDTO(screening.date(), screening.minAge(), screening.freeSeats());
+        return new ScreeningTicketDTO(screening.date(), screening.minAge(), screening.freeSeats());
     }
 
     public ScreeningRoomDTO addRoom(AddScreeningRoomDTO dto) {

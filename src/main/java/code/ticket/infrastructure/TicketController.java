@@ -23,12 +23,12 @@ class TicketController {
 
     private final Clock clock;
 
-    @PostMapping("/tickets/booking")
+    @PostMapping("/tickets")
     TicketDTO book(@RequestBody @Valid BookTicketDTO dto) {
         return ticketFacade.book(dto, clock);
     }
 
-    @PatchMapping("/tickets/{ticketUUID}/booking/cancelled")
+    @PatchMapping("/tickets/{ticketUUID}/cancelled")
     void cancel(@PathVariable UUID ticketUUID) {
         ticketFacade.cancel(ticketUUID, clock);
     }

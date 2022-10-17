@@ -88,7 +88,7 @@ class ScreeningIT extends SpringTestsSpec {
     @Test
     void should_return_screenings_by_date() {
         assertThat(
-                screeningFacade.readByDate(ScreeningDate.of(sampleScreenings.get(0).date(), currentYear))
+                screeningFacade.readByDate(sampleScreenings.get(0).date(), currentYear)
         ).allMatch(
                 screening -> screening.date().equals(sampleScreenings.get(0).date())
         );

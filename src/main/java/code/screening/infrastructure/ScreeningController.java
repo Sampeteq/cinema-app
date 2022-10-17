@@ -44,7 +44,7 @@ class ScreeningController {
 
     @GetMapping("/screenings/date")
     List<ScreeningDTO> readByDate(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime date) {
-        return screeningFacade.readByDate(ScreeningDate.of(date, currentYear));
+        return screeningFacade.readByDate(date, currentYear);
     }
 
     @PostMapping("/screening-rooms")

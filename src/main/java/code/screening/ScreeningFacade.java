@@ -8,6 +8,7 @@ import code.screening.exception.ScreeningRoomAlreadyExistsException;
 import code.screening.exception.ScreeningRoomNotFoundException;
 import lombok.AllArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
 import java.util.UUID;
@@ -55,9 +56,10 @@ public class ScreeningFacade {
                 .toList();
     }
 
-    public List<ScreeningDTO> readByDate(ScreeningDate date) {
+    public List<ScreeningDTO> readByDate(LocalDateTime date, Year currentYear) {
+        var screeningDate= ScreeningDate.of(date, currentYear);
         return screeningRepository
-                .findByDate(date)
+                .findByDate(screeningDate)
                 .stream()
                 .map(Screening::toDTO)
                 .toList();

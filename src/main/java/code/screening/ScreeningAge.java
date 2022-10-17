@@ -12,15 +12,19 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-class MinAge {
+class ScreeningAge {
 
     private int value;
 
-    static MinAge of(int value) {
-        if (value < ScreeningValues.SCREENING_MIN_AGE || value > ScreeningValues.SCREENING_MAX_AGE) {
-            throw new ScreeningMinAgeException();
+    private static final int SCREENING_MIN_AGE = 5;
+
+    private static final int SCREENING_MAX_AGE = 21;
+
+    static ScreeningAge of(int value) {
+        if (value < SCREENING_MIN_AGE || value > SCREENING_MAX_AGE) {
+            throw new ScreeningMinAgeException(SCREENING_MIN_AGE, SCREENING_MAX_AGE);
         } else {
-            return new MinAge(value);
+            return new ScreeningAge(value);
         }
     }
 }

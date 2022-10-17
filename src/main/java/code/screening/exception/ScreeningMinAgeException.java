@@ -1,14 +1,12 @@
 package code.screening.exception;
 
-import code.screening.ScreeningValues;
-
 public class ScreeningMinAgeException extends ScreeningException {
 
-    public ScreeningMinAgeException() {
+    public ScreeningMinAgeException(int minAge, int maxAge) {
         super(
                 "Wrong screening min age exception"
-                        + ".Min: " + ScreeningValues.SCREENING_MIN_AGE
-                        + ".Max: " + ScreeningValues.SCREENING_MAX_AGE
+                        + ".Min: " + minAge
+                        + ".Max: " + maxAge
         );
     }
 }

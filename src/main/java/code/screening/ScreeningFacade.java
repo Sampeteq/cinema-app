@@ -31,7 +31,7 @@ public class ScreeningFacade {
 
         var screening = new Screening(
                 ScreeningDate.of(dto.date(), currentYear),
-                MinAge.of(dto.minAge()),
+                ScreeningAge.of(dto.minAge()),
                 dto.filmId(),
                 room
         );

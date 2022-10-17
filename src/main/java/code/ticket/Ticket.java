@@ -19,6 +19,8 @@ import java.util.UUID;
 @ToString
 class Ticket {
 
+    private static final BigDecimal TICKET_BASIC_PRIZE = new BigDecimal("10.0");
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +31,7 @@ class Ticket {
 
     private String lastName;
 
-    private BigDecimal prize = TicketValues.TICKET_BASIC_PRIZE;
+    private BigDecimal prize = TICKET_BASIC_PRIZE;
 
     private TicketStatus status = TicketStatus.OPEN;
 

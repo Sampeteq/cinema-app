@@ -14,11 +14,11 @@ import java.time.Year;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class ScreeningDate {
+class ScreeningDate {
 
     private LocalDateTime value;
 
-    public static ScreeningDate of(LocalDateTime date, Year currentYear) {
+    static ScreeningDate of(LocalDateTime date, Year currentYear) {
         if (date.getYear() != currentYear.getValue() && date.getYear() != currentYear.getValue() + 1) {
             throw new ScreeningYearException(Year.of(date.getYear()), currentYear);
         } else {

@@ -1,6 +1,5 @@
 package code.screening.infrastructure;
 
-import code.screening.ScreeningDate;
 import code.screening.ScreeningFacade;
 import code.screening.dto.AddScreeningDTO;
 import code.screening.dto.AddScreeningRoomDTO;

@@ -24,7 +24,7 @@ public class TicketFacade {
 
     @Transactional
     public TicketDTO book(BookTicketDTO dto, Clock clock) {
-        var screeningTicketDTO = screeningFacade.readTicketData(dto.screeningId());
+        var screeningTicketDTO = screeningFacade.readScreeningTicketData(dto.screeningId());
         if (Duration
                 .between(LocalDateTime.now(clock), screeningTicketDTO.screeningDate())
                 .abs()
@@ -48,7 +48,7 @@ public class TicketFacade {
         if (ticket.isAlreadyCancelled()) {
             throw new TicketAlreadyCancelledException(ticketId);
         }
-        var screeningData = screeningFacade.readTicketData(ticket.getScreeningId());
+        var screeningData = screeningFacade.readScreeningTicketData(ticket.getScreeningId());
         ticket.cancel(screeningData.screeningDate(), clock);
     }
 

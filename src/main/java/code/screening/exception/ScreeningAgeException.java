@@ -1,8 +1,8 @@
 package code.screening.exception;
 
-public class ScreeningMinAgeException extends ScreeningException {
+public class ScreeningAgeException extends ScreeningException {
 
-    public ScreeningMinAgeException(int minAge, int maxAge) {
+    public ScreeningAgeException(int minAge, int maxAge) {
         super(
                 "Wrong screening min age exception"
                         + ".Min: " + minAge

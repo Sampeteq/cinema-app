@@ -1,6 +1,6 @@
 package code.screening;
 
-import code.screening.exception.ScreeningMinAgeException;
+import code.screening.exception.ScreeningAgeException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +22,7 @@ class ScreeningAge {
 
     static ScreeningAge of(int value) {
         if (value < SCREENING_MIN_AGE || value > SCREENING_MAX_AGE) {
-            throw new ScreeningMinAgeException(SCREENING_MIN_AGE, SCREENING_MAX_AGE);
+            throw new ScreeningAgeException(SCREENING_MIN_AGE, SCREENING_MAX_AGE);
         } else {
             return new ScreeningAge(value);
         }

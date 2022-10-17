@@ -45,9 +45,6 @@ public class TicketFacade {
         var ticket = ticketRepository
                 .findByUuid(ticketId)
                 .orElseThrow(() -> new TicketNotFoundException(ticketId));
-        if (ticket.isAlreadyCancelled()) {
-            throw new TicketAlreadyCancelledException(ticketId);
-        }
         var screeningData = screeningFacade.readScreeningTicketData(ticket.getScreeningId());
         ticket.cancel(screeningData.screeningDate(), clock);
     }

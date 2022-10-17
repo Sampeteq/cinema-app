@@ -1,6 +1,7 @@
 package code.ticket;
 
 import code.ticket.dto.TicketDTO;
+import code.ticket.exception.TicketAlreadyCancelledException;
 import code.ticket.exception.TooLateToCancelTicketException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -47,11 +48,10 @@ class Ticket {
         this.screeningId = screeningId;
     }
 
-    boolean isAlreadyCancelled() {
-        return this.status.equals(TicketStatus.CANCELLED);
-    }
-
     void cancel(LocalDateTime screeningDate, Clock clock) {
+        if (this.status.equals(TicketStatus.CANCELLED)) {
+            throw new TicketAlreadyCancelledException(this.uuid);
+        }
         var currentDate = LocalDateTime.now(clock);
         var differenceBetweenCurrentDateAndScreeningOne = Duration
                 .between(screeningDate, currentDate)

@@ -78,7 +78,7 @@ public class ScreeningFacade {
         if (screeningRoomRepository.existsByNumber(dto.number())) {
             throw new ScreeningRoomAlreadyExistsException(dto.number());
         }
-        var screeningRoom = new ScreeningRoom(dto.number(), FreeSeats.of(dto.freeSeats()));
+        var screeningRoom = new ScreeningRoom(dto.number(), ScreeningRoomFreeSeats.of(dto.freeSeats()));
         return screeningRoomRepository
                 .save(screeningRoom)
                 .toDTO();

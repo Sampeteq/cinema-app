@@ -8,24 +8,25 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
-import static code.screening.ScreeningValues.SCREENING_MAX_FREE_SEATS;
-import static code.screening.ScreeningValues.SCREENING_MIN_FREE_SEATS;
-
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-class FreeSeats {
+class ScreeningRoomFreeSeats {
 
     private int value;
 
-    static FreeSeats of(int value) {
+    private static final int SCREENING_MIN_FREE_SEATS = 50;
+
+    private static final int SCREENING_MAX_FREE_SEATS = 200;
+
+    static ScreeningRoomFreeSeats of(int value) {
         if (value == 0) {
-            return new FreeSeats(value);
+            return new ScreeningRoomFreeSeats(value);
         } else if (value < SCREENING_MIN_FREE_SEATS || value > SCREENING_MAX_FREE_SEATS) {
-            throw new ScreeningFreeSeatsQuantityException();
+            throw new ScreeningFreeSeatsQuantityException(SCREENING_MIN_FREE_SEATS, SCREENING_MAX_FREE_SEATS);
         } else {
-            return new FreeSeats(value);
+            return new ScreeningRoomFreeSeats(value);
         }
     }
 }

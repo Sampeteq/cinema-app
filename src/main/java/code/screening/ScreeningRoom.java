@@ -22,14 +22,14 @@ class ScreeningRoom {
     private int number;
 
     @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "freeSeats"))
+    @AttributeOverride(name = "value", column = @Column(name = "free_seats"))
     @Getter
-    private FreeSeats freeSeats;
+    private ScreeningRoomFreeSeats freeSeats;
 
     protected ScreeningRoom() {
     }
 
-    ScreeningRoom(int number, FreeSeats freeSeats) {
+    ScreeningRoom(int number, ScreeningRoomFreeSeats freeSeats) {
         this.number = number;
         this.freeSeats = freeSeats;
     }
@@ -38,7 +38,7 @@ class ScreeningRoom {
         if (this.freeSeats.getValue() == 0) {
             throw new NoScreeningFreeSeatsException(screeningId);
         } else {
-            this.freeSeats = FreeSeats.of(this.freeSeats.getValue() - 1);
+            this.freeSeats = ScreeningRoomFreeSeats.of(this.freeSeats.getValue() - 1);
         }
     }
 

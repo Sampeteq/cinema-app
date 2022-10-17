@@ -1,13 +1,11 @@
 package code.screening.exception;
 
-import code.screening.ScreeningValues;
-
 public class ScreeningFreeSeatsQuantityException extends ScreeningException {
 
-    public ScreeningFreeSeatsQuantityException() {
+    public ScreeningFreeSeatsQuantityException(int minFreeSeats, int maxFreeSeats) {
         super("Wrong screening free seats quantity.Min: "
-                + ScreeningValues.SCREENING_MIN_FREE_SEATS
+                + minFreeSeats
                 + ".Max: "
-                + ScreeningValues.SCREENING_MAX_FREE_SEATS);
+                + maxFreeSeats);
     }
 }

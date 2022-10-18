@@ -3,10 +3,7 @@ package code.screening;
 import code.film.FilmFacade;
 import code.film.exception.FilmNotFoundException;
 import code.screening.dto.*;
-import code.screening.exception.ScreeningNotFoundException;
-import code.screening.exception.ScreeningRoomAlreadyExistsException;
-import code.screening.exception.ScreeningRoomNotFoundException;
-import code.screening.exception.ScreeningTicketNotFoundException;
+import code.screening.exception.*;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +29,7 @@ public class ScreeningFacade {
         }
         var room = screeningRoomRepository
                 .findById(dto.roomUuid())
-                .orElseThrow(() -> new ScreeningRoomNotFoundException(dto.roomUuid()));
+                .orElseThrow(() -> ScreeningRoomException.notFound(dto.roomUuid()));
 
         var screening = new Screening(
                 ScreeningDate.of(dto.date(), currentYear),
@@ -72,7 +69,7 @@ public class ScreeningFacade {
 
     public ScreeningRoomDTO addRoom(AddScreeningRoomDTO dto) {
         if (screeningRoomRepository.existsByNumber(dto.number())) {
-            throw new ScreeningRoomAlreadyExistsException(dto.number());
+            throw ScreeningRoomException.alreadyExists(dto.number());
         }
         var screeningRoom = new ScreeningRoom(dto.number(), ScreeningRoomFreeSeats.of(dto.freeSeats()));
         return screeningRoomRepository
@@ -84,7 +81,7 @@ public class ScreeningFacade {
         return screeningRoomRepository
                 .findById(roomUuid)
                 .map(ScreeningRoom::toDTO)
-                .orElseThrow(() -> new ScreeningRoomNotFoundException(roomUuid));
+                .orElseThrow(() -> ScreeningRoomException.notFound(roomUuid));
     }
 
     public List<ScreeningRoomDTO> readAllRooms() {
@@ -109,7 +106,7 @@ public class ScreeningFacade {
     public void cancelTicket(UUID ticketId, Clock clock) {
         var ticket = screeningTicketRepository
                 .findByUuid(ticketId)
-                .orElseThrow(() -> new ScreeningTicketNotFoundException(ticketId));
+                .orElseThrow(() -> ScreeningTicketException.notFound(ticketId));
         ticket.cancel(clock);
     }
 
@@ -128,12 +125,12 @@ public class ScreeningFacade {
     private Screening getScreeningOrThrowException(Long screeningId) {
         return screeningRepository
                 .findById(screeningId)
-                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
+                .orElseThrow(() -> ScreeningException.screeningNotFound(screeningId));
     }
 
     private ScreeningTicket getTicketOrThrowException(UUID ticketId) {
         return screeningTicketRepository
                 .findByUuid(ticketId)
-                .orElseThrow(() -> new ScreeningTicketNotFoundException(ticketId));
+                .orElseThrow(() -> ScreeningTicketException.notFound(ticketId));
     }
 }

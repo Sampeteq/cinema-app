@@ -9,7 +9,7 @@ public class ScreeningYearException extends ScreeningException {
                 "A screening's year must be current or next one"
                         + ".Given: " + given
                         + ".Current: " + current
-                        + ".Next one: " + current.plusYears(1)
+                        + ".Next one: " + current.plusYears(1), ScreeningExceptionType.DATE
         );
     }
 }

@@ -3,8 +3,7 @@ package code.screening.infrastructure;
 import code.screening.ScreeningFacade;
 import code.screening.dto.*;
 import code.screening.exception.ScreeningException;
-import code.screening.exception.ScreeningNotFoundException;
-import code.screening.exception.ScreeningTicketNotFoundException;
+import code.screening.exception.ScreeningExceptionType;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -79,7 +78,7 @@ class ScreeningExceptionHandler {
 
     @ExceptionHandler(ScreeningException.class)
     ResponseEntity<String> handle(ScreeningException exception) {
-        if (exception instanceof ScreeningNotFoundException || exception instanceof ScreeningTicketNotFoundException) {
+        if (exception.isType(ScreeningExceptionType.NOT_FOUND)) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);

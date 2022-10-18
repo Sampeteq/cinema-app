@@ -1,6 +1,6 @@
 package code.screening;
 
-import code.screening.exception.ScreeningFreeSeatsQuantityException;
+import code.screening.exception.ScreeningFreeSeatsException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +24,7 @@ class ScreeningRoomFreeSeats {
         if (value == 0) {
             return new ScreeningRoomFreeSeats(value);
         } else if (value < SCREENING_MIN_FREE_SEATS || value > SCREENING_MAX_FREE_SEATS) {
-            throw new ScreeningFreeSeatsQuantityException(SCREENING_MIN_FREE_SEATS, SCREENING_MAX_FREE_SEATS);
+            throw ScreeningFreeSeatsException.wrongQuantity(SCREENING_MIN_FREE_SEATS, SCREENING_MAX_FREE_SEATS);
         } else {
             return new ScreeningRoomFreeSeats(value);
         }

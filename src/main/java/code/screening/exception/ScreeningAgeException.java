@@ -6,7 +6,7 @@ public class ScreeningAgeException extends ScreeningException {
         super(
                 "Wrong screening min age exception"
                         + ".Min: " + minAge
-                        + ".Max: " + maxAge
+                        + ".Max: " + maxAge, ScreeningExceptionType.WRONG_AGE
         );
     }
 }

@@ -7,14 +7,9 @@ import code.screening.dto.AddScreeningDTO;
 import code.screening.dto.AddScreeningRoomDTO;
 import code.screening.dto.ScreeningDTO;
 import code.screening.dto.ScreeningRoomDTO;
-import code.screening.exception.NoScreeningFreeSeatsException;
-import code.screening.exception.ScreeningRoomAlreadyExistsException;
-import code.screening.exception.ScreeningYearException;
+import code.screening.exception.*;
 import code.screening.dto.BookScreeningTicketDTO;
 import code.screening.dto.TicketDTO;
-import code.screening.exception.ScreeningTicketAlreadyCancelledException;
-import code.screening.exception.TooLateToBookScreeningTicketException;
-import code.screening.exception.TooLateToCancelScreeningTicketException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -123,7 +118,7 @@ class ScreeningIT extends SpringTestsSpec {
     @Test
     void should_throw_exception_when_room_number_is_not_unique() {
         assertThrows(
-                ScreeningRoomAlreadyExistsException.class,
+                ScreeningRoomException.class,
                 () -> screeningFacade.addRoom(
                         AddScreeningRoomDTO
                                 .builder()
@@ -158,7 +153,7 @@ class ScreeningIT extends SpringTestsSpec {
                 currentYear
         );
         assertThrows(
-                TooLateToBookScreeningTicketException.class,
+                ScreeningTicketException.class,
                 () -> screeningFacade.bookTicket(sampleBookTicketDTO(sampleScreening.id()), clock)
         );
     }
@@ -171,7 +166,7 @@ class ScreeningIT extends SpringTestsSpec {
         );
 
         assertThrows(
-                NoScreeningFreeSeatsException.class,
+                ScreeningFreeSeatsException.class,
                 () -> screeningFacade.bookTicket(
                         sampleBookTicketDTO(sampleScreeningWithNoFreeSeats.id()),
                         clock
@@ -209,7 +204,7 @@ class ScreeningIT extends SpringTestsSpec {
         var sampleTicket = bookSampleTicket(sampleScreenings.get(0).id());
         screeningFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC());
         assertThrows(
-                ScreeningTicketAlreadyCancelledException.class,
+                ScreeningTicketException.class,
                 () -> screeningFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC())
         );
     }
@@ -226,7 +221,7 @@ class ScreeningIT extends SpringTestsSpec {
                 .toInstant(ZoneOffset.UTC);
         var clock = Clock.fixed(lessThanOneDayBeforeScreening, ZoneOffset.UTC);
         assertThrows(
-                TooLateToCancelScreeningTicketException.class,
+                ScreeningTicketException.class,
                 () -> screeningFacade.cancelTicket(sampleTicket.ticketUuid(), clock)
         );
     }

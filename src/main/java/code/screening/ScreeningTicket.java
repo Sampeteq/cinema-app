@@ -1,10 +1,7 @@
 package code.screening;
 
 import code.screening.dto.TicketDTO;
-import code.screening.exception.NoScreeningFreeSeatsException;
-import code.screening.exception.ScreeningTicketAlreadyCancelledException;
-import code.screening.exception.TooLateToBookScreeningTicketException;
-import code.screening.exception.TooLateToCancelScreeningTicketException;
+import code.screening.exception.*;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -49,20 +46,20 @@ class ScreeningTicket {
 
     void book(Clock clock) {
         if (this.screening.differenceBetweenCurrentDateAndScreeningOneInHours(clock) < 24) {
-            throw new TooLateToBookScreeningTicketException();
+            throw ScreeningTicketException.tooLateToBook();
         }
         if (!this.screening.hasFreeSeats()) {
-            throw new NoScreeningFreeSeatsException(this.screening.getId());
+            throw ScreeningFreeSeatsException.noFreeSeats(this.screening.getId());
         }
         this.screening.decreaseFreeSeatsByOne();
     }
 
     void cancel(Clock clock) {
         if (this.status.equals(ScreeningTicketStatus.CANCELLED)) {
-            throw new ScreeningTicketAlreadyCancelledException(this.uuid);
+            throw ScreeningTicketException.alreadyCancelled(this.uuid);
         }
         if (this.screening.differenceBetweenCurrentDateAndScreeningOneInHours(clock) < 24) {
-            throw new TooLateToCancelScreeningTicketException();
+            throw ScreeningTicketException.tooLateToCancel();
         }
         this.status = ScreeningTicketStatus.CANCELLED;
     }

@@ -1,6 +1,5 @@
-package code.ticket;
+package code.screening;
 
-import code.screening.ScreeningFacade;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

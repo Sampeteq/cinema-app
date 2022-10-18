@@ -1,4 +1,4 @@
-package code.ticket.exception;
+package code.screening.exception;
 
 public class TooLateToCancelTicketException extends TicketException {
 

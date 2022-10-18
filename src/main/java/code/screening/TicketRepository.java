@@ -1,4 +1,4 @@
-package code.ticket;
+package code.screening;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package code.ticket.dto;
+package code.screening.dto;
 
 import lombok.Builder;
 

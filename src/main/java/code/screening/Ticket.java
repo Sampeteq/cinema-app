@@ -1,8 +1,8 @@
-package code.ticket;
+package code.screening;
 
-import code.ticket.dto.TicketDTO;
-import code.ticket.exception.TicketAlreadyCancelledException;
-import code.ticket.exception.TooLateToCancelTicketException;
+import code.screening.dto.TicketDTO;
+import code.screening.exception.TicketAlreadyCancelledException;
+import code.screening.exception.TooLateToCancelTicketException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;

@@ -1,12 +1,10 @@
-package code.ticket;
+package code.screening;
 
-import code.screening.ScreeningFacade;
 import code.screening.exception.NoScreeningFreeSeatsException;
-import code.ticket.dto.BookTicketDTO;
-import code.ticket.dto.TicketDTO;
-import code.ticket.exception.TicketAlreadyCancelledException;
-import code.ticket.exception.TicketNotFoundException;
-import code.ticket.exception.TooLateToBookTicketException;
+import code.screening.dto.BookTicketDTO;
+import code.screening.dto.TicketDTO;
+import code.screening.exception.TicketNotFoundException;
+import code.screening.exception.TooLateToBookTicketException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

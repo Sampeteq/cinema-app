@@ -1,4 +1,4 @@
-package code.ticket;
+package code.screening;
 
 public enum TicketStatus {
 

@@ -1,10 +1,10 @@
-package code.ticket.infrastructure;
+package code.screening.infrastructure;
 
-import code.ticket.TicketFacade;
-import code.ticket.dto.BookTicketDTO;
-import code.ticket.dto.TicketDTO;
-import code.ticket.exception.TicketException;
-import code.ticket.exception.TicketNotFoundException;
+import code.screening.TicketFacade;
+import code.screening.dto.BookTicketDTO;
+import code.screening.dto.TicketDTO;
+import code.screening.exception.TicketException;
+import code.screening.exception.TicketNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

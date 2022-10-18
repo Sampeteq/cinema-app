@@ -4,7 +4,7 @@ import code.screening.ScreeningFacade;
 import code.screening.dto.*;
 import code.screening.exception.ScreeningException;
 import code.screening.exception.ScreeningNotFoundException;
-import code.screening.exception.TicketNotFoundException;
+import code.screening.exception.ScreeningTicketNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -48,27 +48,27 @@ class ScreeningController {
         return ticketFacade.readByDate(date, currentYear);
     }
 
-    @PostMapping("/screening-rooms")
+    @PostMapping("/screenings-rooms")
     ScreeningRoomDTO addRoom(@RequestBody @Valid AddScreeningRoomDTO dto) {
         return ticketFacade.addRoom(dto);
     }
 
-    @GetMapping("/screening-rooms")
+    @GetMapping("/screenings-rooms")
     List<ScreeningRoomDTO> readAllRooms() {
         return ticketFacade.readAllRooms();
     }
 
-    @PostMapping("/tickets")
-    TicketDTO bookTicket(@RequestBody @Valid BookTicketDTO dto) {
+    @PostMapping("/screenings-tickets")
+    TicketDTO bookTicket(@RequestBody @Valid BookScreeningTicketDTO dto) {
         return ticketFacade.bookTicket(dto, clock);
     }
 
-    @PatchMapping("/tickets/{ticketUUID}/cancelled")
+    @PatchMapping("/screenings-tickets/{ticketUUID}/cancelled")
     void cancelTicket(@PathVariable UUID ticketUUID) {
         ticketFacade.cancelTicket(ticketUUID, clock);
     }
 
-    @GetMapping("/tickets")
+    @GetMapping("/screenings-tickets")
     List<TicketDTO> readAllTickets() {
         return ticketFacade.readAllTickets();
     }
@@ -79,7 +79,7 @@ class ScreeningExceptionHandler {
 
     @ExceptionHandler(ScreeningException.class)
     ResponseEntity<String> handle(ScreeningException exception) {
-        if (exception instanceof ScreeningNotFoundException || exception instanceof TicketNotFoundException) {
+        if (exception instanceof ScreeningNotFoundException || exception instanceof ScreeningTicketNotFoundException) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);

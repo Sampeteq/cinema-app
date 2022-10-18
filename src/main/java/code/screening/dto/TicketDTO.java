@@ -1,6 +1,6 @@
 package code.screening.dto;
 
-import code.screening.TicketStatus;
+import code.screening.ScreeningTicketStatus;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -13,7 +13,7 @@ public record TicketDTO(
         String firstName,
         String lastName,
         BigDecimal prize,
-        TicketStatus status,
+        ScreeningTicketStatus status,
         Long screeningId
 ) {
 }

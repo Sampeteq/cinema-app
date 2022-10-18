@@ -1,6 +1,6 @@
 package code.screening;
 
-public enum TicketStatus {
+public enum ScreeningTicketStatus {
 
     OPEN, CANCELLED
 }

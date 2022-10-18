@@ -10,11 +10,11 @@ import code.screening.dto.ScreeningRoomDTO;
 import code.screening.exception.NoScreeningFreeSeatsException;
 import code.screening.exception.ScreeningRoomAlreadyExistsException;
 import code.screening.exception.ScreeningYearException;
-import code.screening.dto.BookTicketDTO;
+import code.screening.dto.BookScreeningTicketDTO;
 import code.screening.dto.TicketDTO;
-import code.screening.exception.TicketAlreadyCancelledException;
-import code.screening.exception.TooLateToBookTicketException;
-import code.screening.exception.TooLateToCancelTicketException;
+import code.screening.exception.ScreeningTicketAlreadyCancelledException;
+import code.screening.exception.TooLateToBookScreeningTicketException;
+import code.screening.exception.TooLateToCancelScreeningTicketException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -158,7 +158,7 @@ class ScreeningIT extends SpringTestsSpec {
                 currentYear
         );
         assertThrows(
-                TooLateToBookTicketException.class,
+                TooLateToBookScreeningTicketException.class,
                 () -> screeningFacade.bookTicket(sampleBookTicketDTO(sampleScreening.id()), clock)
         );
     }
@@ -201,7 +201,7 @@ class ScreeningIT extends SpringTestsSpec {
                 screeningFacade
                         .readTicket(sampleTicket.ticketUuid())
                         .status()
-        ).isEqualTo(TicketStatus.CANCELLED);
+        ).isEqualTo(ScreeningTicketStatus.CANCELLED);
     }
 
     @Test
@@ -209,7 +209,7 @@ class ScreeningIT extends SpringTestsSpec {
         var sampleTicket = bookSampleTicket(sampleScreenings.get(0).id());
         screeningFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC());
         assertThrows(
-                TicketAlreadyCancelledException.class,
+                ScreeningTicketAlreadyCancelledException.class,
                 () -> screeningFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC())
         );
     }
@@ -226,7 +226,7 @@ class ScreeningIT extends SpringTestsSpec {
                 .toInstant(ZoneOffset.UTC);
         var clock = Clock.fixed(lessThanOneDayBeforeScreening, ZoneOffset.UTC);
         assertThrows(
-                TooLateToCancelTicketException.class,
+                TooLateToCancelScreeningTicketException.class,
                 () -> screeningFacade.cancelTicket(sampleTicket.ticketUuid(), clock)
         );
     }
@@ -239,8 +239,8 @@ class ScreeningIT extends SpringTestsSpec {
         ).isEqualTo(sampleTickets);
     }
 
-    private static BookTicketDTO sampleBookTicketDTO(Long sampleScreeningId) {
-        return BookTicketDTO
+    private static BookScreeningTicketDTO sampleBookTicketDTO(Long sampleScreeningId) {
+        return BookScreeningTicketDTO
                 .builder()
                 .screeningId(sampleScreeningId)
                 .firstName("Name 1")
@@ -250,7 +250,7 @@ class ScreeningIT extends SpringTestsSpec {
 
     private TicketDTO bookSampleTicket(Long sampleScreeningId) {
         return screeningFacade.bookTicket(
-                BookTicketDTO
+                BookScreeningTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)
                         .firstName("Name")
@@ -262,7 +262,7 @@ class ScreeningIT extends SpringTestsSpec {
 
     private List<TicketDTO> bookSampleTickets(Long sampleScreeningId) {
         var sampleTicket1 = screeningFacade.bookTicket(
-                BookTicketDTO
+                BookScreeningTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)
                         .firstName("Name 1")
@@ -271,7 +271,7 @@ class ScreeningIT extends SpringTestsSpec {
                 clock
         );
         var sampleTicket2 = screeningFacade.bookTicket(
-                BookTicketDTO
+                BookScreeningTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)
                         .firstName("Name 2")

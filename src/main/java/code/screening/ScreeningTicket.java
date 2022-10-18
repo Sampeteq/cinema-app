@@ -1,8 +1,8 @@
 package code.screening;
 
 import code.screening.dto.TicketDTO;
-import code.screening.exception.TicketAlreadyCancelledException;
-import code.screening.exception.TooLateToCancelTicketException;
+import code.screening.exception.ScreeningTicketAlreadyCancelledException;
+import code.screening.exception.TooLateToCancelScreeningTicketException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "TICKETS")
+@Table(name = "SCREENINGS_TICKETS")
 @EqualsAndHashCode(of = "uuid")
 @ToString
-class Ticket {
+class ScreeningTicket {
 
     private static final BigDecimal TICKET_BASIC_PRIZE = new BigDecimal("10.0");
 
@@ -34,23 +34,23 @@ class Ticket {
 
     private BigDecimal prize = TICKET_BASIC_PRIZE;
 
-    private TicketStatus status = TicketStatus.OPEN;
+    private ScreeningTicketStatus status = ScreeningTicketStatus.OPEN;
 
     @Getter
     private Long screeningId;
 
-    protected Ticket() {
+    protected ScreeningTicket() {
     }
 
-    Ticket(String firstName, String lastName, Long screeningId) {
+    ScreeningTicket(String firstName, String lastName, Long screeningId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.screeningId = screeningId;
     }
 
     void cancel(LocalDateTime screeningDate, Clock clock) {
-        if (this.status.equals(TicketStatus.CANCELLED)) {
-            throw new TicketAlreadyCancelledException(this.uuid);
+        if (this.status.equals(ScreeningTicketStatus.CANCELLED)) {
+            throw new ScreeningTicketAlreadyCancelledException(this.uuid);
         }
         var currentDate = LocalDateTime.now(clock);
         var differenceBetweenCurrentDateAndScreeningOne = Duration
@@ -58,9 +58,9 @@ class Ticket {
                 .abs()
                 .toHours();
         if (differenceBetweenCurrentDateAndScreeningOne < 24) {
-            throw new TooLateToCancelTicketException();
+            throw new TooLateToCancelScreeningTicketException();
         }
-        this.status = TicketStatus.CANCELLED;
+        this.status = ScreeningTicketStatus.CANCELLED;
     }
 
     TicketDTO toDTO() {

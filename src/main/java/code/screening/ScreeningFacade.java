@@ -21,7 +21,7 @@ public class ScreeningFacade {
 
     private final ScreeningRoomRepository screeningRoomRepository;
 
-    private final TicketRepository ticketRepository;
+    private final ScreeningTicketRepository screeningTicketRepository;
     private final FilmFacade filmFacade;
 
     public ScreeningDTO add(AddScreeningDTO dto, Year currentYear) {
@@ -103,28 +103,28 @@ public class ScreeningFacade {
     }
 
     @Transactional
-    public TicketDTO bookTicket(BookTicketDTO dto, Clock clock) {
+    public TicketDTO bookTicket(BookScreeningTicketDTO dto, Clock clock) {
         var screeningTicketDTO = this.readScreeningTicketData(dto.screeningId());
         if (Duration
                 .between(LocalDateTime.now(clock), screeningTicketDTO.screeningDate())
                 .abs()
                 .toHours() < 24) {
-            throw new TooLateToBookTicketException();
+            throw new TooLateToBookScreeningTicketException();
         }
         if (screeningTicketDTO.screeningFreeSeats() < 0) {
             throw new NoScreeningFreeSeatsException(dto.screeningId());
         }
-        var ticket = new Ticket(dto.firstName(), dto.lastName(), dto.screeningId());
-        var addedTicket = ticketRepository.save(ticket);
+        var ticket = new ScreeningTicket(dto.firstName(), dto.lastName(), dto.screeningId());
+        var addedTicket = screeningTicketRepository.save(ticket);
         this.decreaseFreeSeatsByOne(dto.screeningId());
         return addedTicket.toDTO();
     }
 
     @Transactional
     public void cancelTicket(UUID ticketId, Clock clock) {
-        var ticket = ticketRepository
+        var ticket = screeningTicketRepository
                 .findByUuid(ticketId)
-                .orElseThrow(() -> new TicketNotFoundException(ticketId));
+                .orElseThrow(() -> new ScreeningTicketNotFoundException(ticketId));
         var screeningData = this.readScreeningTicketData(ticket.getScreeningId());
         ticket.cancel(screeningData.screeningDate(), clock);
     }
@@ -134,10 +134,10 @@ public class ScreeningFacade {
     }
 
     public List<TicketDTO> readAllTickets() {
-        return ticketRepository
+        return screeningTicketRepository
                 .findAll()
                 .stream()
-                .map(Ticket::toDTO)
+                .map(ScreeningTicket::toDTO)
                 .toList();
     }
 
@@ -147,9 +147,9 @@ public class ScreeningFacade {
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
     }
 
-    private Ticket getTicketOrThrowException(UUID ticketId) {
-        return ticketRepository
+    private ScreeningTicket getTicketOrThrowException(UUID ticketId) {
+        return screeningTicketRepository
                 .findByUuid(ticketId)
-                .orElseThrow(() -> new TicketNotFoundException(ticketId));
+                .orElseThrow(() -> new ScreeningTicketNotFoundException(ticketId));
     }
 }

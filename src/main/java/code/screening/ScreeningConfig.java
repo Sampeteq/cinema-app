@@ -13,9 +13,9 @@ class ScreeningConfig {
     @Bean
     ScreeningFacade screeningAPI(ScreeningRepository screeningRepository,
                                  ScreeningRoomRepository screeningRoomRepository,
-                                 TicketRepository ticketRepository,
+                                 ScreeningTicketRepository screeningTicketRepository,
                                  FilmFacade filmFacade) {
-        return new ScreeningFacade(screeningRepository, screeningRoomRepository, ticketRepository, filmFacade);
+        return new ScreeningFacade(screeningRepository, screeningRoomRepository, screeningTicketRepository, filmFacade);
     }
 
     @Bean

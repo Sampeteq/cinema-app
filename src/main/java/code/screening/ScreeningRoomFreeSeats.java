@@ -29,4 +29,12 @@ class ScreeningRoomFreeSeats {
             return new ScreeningRoomFreeSeats(value);
         }
     }
+
+    boolean anyFree() {
+        return this.value > 0;
+    }
+
+    public int currentFree() {
+        return this.value;
+    }
 }

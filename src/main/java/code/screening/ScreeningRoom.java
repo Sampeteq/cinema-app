@@ -23,7 +23,6 @@ class ScreeningRoom {
 
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "free_seats"))
-    @Getter
     private ScreeningRoomFreeSeats freeSeats;
 
     protected ScreeningRoom() {
@@ -35,11 +34,19 @@ class ScreeningRoom {
     }
 
     void decreaseFreeSeatsByOne(Long screeningId) {
-        if (this.freeSeats.getValue() == 0) {
+        if (!this.freeSeats.anyFree()) {
             throw new NoScreeningFreeSeatsException(screeningId);
         } else {
             this.freeSeats = ScreeningRoomFreeSeats.of(this.freeSeats.getValue() - 1);
         }
+    }
+
+    boolean anyFreeSeats() {
+        return this.freeSeats.anyFree();
+    }
+
+    int currentFree() {
+        return this.freeSeats.currentFree();
     }
 
     ScreeningRoomDTO toDTO() {

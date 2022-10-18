@@ -2,9 +2,11 @@ package code.screening;
 
 import code.screening.dto.ScreeningDTO;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.Clock;
 import java.util.UUID;
 
 @Entity
@@ -15,6 +17,7 @@ class Screening {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
 
     private UUID uuid = UUID.randomUUID();
@@ -42,6 +45,14 @@ class Screening {
         this.room = room;
     }
 
+    int differenceBetweenCurrentDateAndScreeningOneInHours(Clock clock) {
+        return this.date.differenceBetweenCurrentDateAndScreeningOneInHours(clock);
+    }
+
+    boolean hasFreeSeats() {
+        return this.room.anyFreeSeats();
+    }
+
     void decreaseFreeSeatsByOne() {
         this.room.decreaseFreeSeatsByOne(this.id);
     }
@@ -51,7 +62,7 @@ class Screening {
                 .builder()
                 .id(this.id)
                 .date(this.date.getValue())
-                .freeSeats(this.room.getFreeSeats().getValue())
+                .freeSeats(this.room.currentFree())
                 .minAge(this.minAge.getValue())
                 .filmId(this.filmId)
                 .build();

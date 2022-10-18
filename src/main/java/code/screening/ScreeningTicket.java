@@ -1,17 +1,16 @@
 package code.screening;
 
 import code.screening.dto.TicketDTO;
+import code.screening.exception.NoScreeningFreeSeatsException;
 import code.screening.exception.ScreeningTicketAlreadyCancelledException;
+import code.screening.exception.TooLateToBookScreeningTicketException;
 import code.screening.exception.TooLateToCancelScreeningTicketException;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Clock;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -36,28 +35,33 @@ class ScreeningTicket {
 
     private ScreeningTicketStatus status = ScreeningTicketStatus.OPEN;
 
-    @Getter
-    private Long screeningId;
+    @ManyToOne
+    private Screening screening;
 
     protected ScreeningTicket() {
     }
 
-    ScreeningTicket(String firstName, String lastName, Long screeningId) {
+    ScreeningTicket(String firstName, String lastName, Screening screening) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.screeningId = screeningId;
+        this.screening = screening;
     }
 
-    void cancel(LocalDateTime screeningDate, Clock clock) {
+    void book(Clock clock) {
+        if (this.screening.differenceBetweenCurrentDateAndScreeningOneInHours(clock) < 24) {
+            throw new TooLateToBookScreeningTicketException();
+        }
+        if (!this.screening.hasFreeSeats()) {
+            throw new NoScreeningFreeSeatsException(this.screening.getId());
+        }
+        this.screening.decreaseFreeSeatsByOne();
+    }
+
+    void cancel(Clock clock) {
         if (this.status.equals(ScreeningTicketStatus.CANCELLED)) {
             throw new ScreeningTicketAlreadyCancelledException(this.uuid);
         }
-        var currentDate = LocalDateTime.now(clock);
-        var differenceBetweenCurrentDateAndScreeningOne = Duration
-                .between(screeningDate, currentDate)
-                .abs()
-                .toHours();
-        if (differenceBetweenCurrentDateAndScreeningOne < 24) {
+        if (this.screening.differenceBetweenCurrentDateAndScreeningOneInHours(clock) < 24) {
             throw new TooLateToCancelScreeningTicketException();
         }
         this.status = ScreeningTicketStatus.CANCELLED;
@@ -66,13 +70,12 @@ class ScreeningTicket {
     TicketDTO toDTO() {
         return TicketDTO
                 .builder()
-                .ticketId(this.id)
                 .ticketUuid(this.uuid)
                 .firstName(this.firstName)
                 .lastName(this.lastName)
                 .prize(this.prize)
                 .status(this.status)
-                .screeningId(this.screeningId)
+                .screeningId(this.screening.toDTO().id())
                 .build();
     }
 }

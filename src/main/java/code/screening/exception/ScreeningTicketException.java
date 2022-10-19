@@ -15,9 +15,9 @@ public class ScreeningTicketException extends ScreeningException {
         );
     }
 
-    public static ScreeningTicketException tooLateToBook() {
+    public static ScreeningTicketException tooLateToReserve() {
         return new ScreeningTicketException(
-                "Too late to book screening ticket",
+                "Too late to reserve screening ticket",
                 ScreeningExceptionType.DATE
         );
     }

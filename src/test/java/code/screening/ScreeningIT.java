@@ -3,13 +3,10 @@ package code.screening;
 import code.SpringTestsSpec;
 import code.film.FilmFacade;
 import code.film.dto.FilmDTO;
-import code.screening.dto.AddScreeningDTO;
 import code.screening.dto.AddScreeningRoomDTO;
 import code.screening.dto.ScreeningDTO;
 import code.screening.dto.ScreeningRoomDTO;
 import code.screening.exception.*;
-import code.screening.dto.BookScreeningTicketDTO;
-import code.screening.dto.TicketDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,8 +14,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 import static code.film.FilmTestUtils.addSampleFilms;

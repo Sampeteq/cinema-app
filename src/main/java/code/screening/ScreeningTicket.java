@@ -44,9 +44,9 @@ class ScreeningTicket {
         this.screening = screening;
     }
 
-    void book(Clock clock) {
+    void reserve(Clock clock) {
         if (this.screening.differenceBetweenCurrentDateAndScreeningOneInHours(clock) < 24) {
-            throw ScreeningTicketException.tooLateToBook();
+            throw ScreeningTicketException.tooLateToReserve();
         }
         if (!this.screening.hasFreeSeats()) {
             throw ScreeningFreeSeatsException.noFreeSeats(this.screening.getId());

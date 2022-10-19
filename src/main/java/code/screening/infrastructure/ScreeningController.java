@@ -58,8 +58,8 @@ class ScreeningController {
     }
 
     @PostMapping("/screenings-tickets")
-    TicketDTO bookTicket(@RequestBody @Valid BookScreeningTicketDTO dto) {
-        return ticketFacade.bookTicket(dto, clock);
+    TicketDTO reserveTicket(@RequestBody @Valid ReserveScreeningTicketDTO dto) {
+        return ticketFacade.reserveTicket(dto, clock);
     }
 
     @PatchMapping("/screenings-tickets/{ticketUUID}/cancelled")

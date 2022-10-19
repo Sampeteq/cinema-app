@@ -93,11 +93,11 @@ public class ScreeningFacade {
     }
 
     @Transactional
-    public TicketDTO bookTicket(BookScreeningTicketDTO dto, Clock clock) {
+    public TicketDTO reserveTicket(ReserveScreeningTicketDTO dto, Clock clock) {
         var screening= getScreeningOrThrowException(dto.screeningId());
         var screeningTicket = new ScreeningTicket(dto.firstName(), dto.lastName(), screening);
 //        screening.bookTicket(screeningTicket, clock);
-        screeningTicket.book(clock);
+        screeningTicket.reserve(clock);
         return screeningTicketRepository.save(screeningTicket).toDTO();
 //        return screeningTicket.toDTO();
     }

@@ -1,5 +1,7 @@
 package code.screening.infrastructure;
 
+import code.reservation.dto.ReserveScreeningTicketDTO;
+import code.reservation.dto.TicketDTO;
 import code.screening.ScreeningFacade;
 import code.screening.dto.*;
 import code.screening.exception.ScreeningException;

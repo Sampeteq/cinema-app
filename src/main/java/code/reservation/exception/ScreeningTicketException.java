@@ -1,4 +1,7 @@
-package code.screening.exception;
+package code.reservation.exception;
+
+import code.screening.exception.ScreeningException;
+import code.screening.exception.ScreeningExceptionType;
 
 import java.util.UUID;
 

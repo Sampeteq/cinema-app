@@ -1,4 +1,4 @@
-package code.screening.dto;
+package code.reservation.dto;
 
 import lombok.Builder;
 

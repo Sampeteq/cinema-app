@@ -2,6 +2,9 @@ package code.screening;
 
 import code.film.FilmFacade;
 import code.film.exception.FilmNotFoundException;
+import code.reservation.dto.ReserveScreeningTicketDTO;
+import code.reservation.dto.TicketDTO;
+import code.reservation.exception.ScreeningTicketException;
 import code.screening.dto.*;
 import code.screening.exception.*;
 import lombok.AllArgsConstructor;

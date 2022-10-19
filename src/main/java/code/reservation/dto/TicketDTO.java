@@ -1,4 +1,4 @@
-package code.screening.dto;
+package code.reservation.dto;
 
 import code.screening.ScreeningTicketStatus;
 import lombok.Builder;

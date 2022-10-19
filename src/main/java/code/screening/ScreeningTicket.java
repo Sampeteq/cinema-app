@@ -1,6 +1,7 @@
 package code.screening;
 
-import code.screening.dto.TicketDTO;
+import code.reservation.exception.ScreeningTicketException;
+import code.reservation.dto.TicketDTO;
 import code.screening.exception.*;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

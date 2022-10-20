@@ -18,13 +18,13 @@ interface ScreeningRepository extends JpaRepository<Screening, Long> {
     @Query("select new code.screening.dto.ScreeningDTO(" +
             "s.id, " +
             "s.date.value, " +
-            "s.room.freeSeats.value, " +
-            "s.minAge.value, " +
+            "s.room.freeSeats, " +
+            "s.minAge, " +
             "s.filmId) from Screening s")
     List<ScreeningDTO> findAllAsDTO();
 
     @Query("select new code.screening.dto.ScreeningReservationData(" +
             "s.date.value, " +
-            "s.room.freeSeats.value) from Screening s where s.id = :screeningId")
+            "s.room.freeSeats) from Screening s where s.id = :screeningId")
     Optional<ScreeningReservationData> findByIdAsReservationData(@Param("screeningId") Long screeningId);
 }

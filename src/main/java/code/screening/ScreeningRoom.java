@@ -21,31 +21,29 @@ class ScreeningRoom {
 
     private int number;
 
-    @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "free_seats"))
-    private ScreeningRoomFreeSeats freeSeats;
+    private int freeSeats;
 
     protected ScreeningRoom() {
     }
 
-    ScreeningRoom(int number, ScreeningRoomFreeSeats freeSeats) {
+    ScreeningRoom(int number, int freeSeats) {
         this.number = number;
         this.freeSeats = freeSeats;
     }
 
     void decreaseFreeSeatsByOne(Long screeningId) {
-        if (!this.freeSeats.anyFree()) {
+        if (this.freeSeats == 0) {
             throw ScreeningFreeSeatsException.noFreeSeats(screeningId);
         } else {
-            this.freeSeats = ScreeningRoomFreeSeats.of(this.freeSeats.getValue() - 1);
+            this.freeSeats = this.freeSeats - 1;
         }
     }
 
     int currentFree() {
-        return this.freeSeats.currentFree();
+        return this.freeSeats;
     }
 
     ScreeningRoomDTO toDTO() {
-        return new ScreeningRoomDTO(this.uuid, number, freeSeats.getValue());
+        return new ScreeningRoomDTO(this.uuid, number, freeSeats);
     }
 }

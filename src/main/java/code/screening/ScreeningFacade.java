@@ -32,7 +32,7 @@ public class ScreeningFacade {
 
         var screening = new Screening(
                 ScreeningDate.of(dto.date(), currentYear),
-                ScreeningAge.of(dto.minAge()),
+                dto.minAge(),
                 dto.filmId(),
                 room
         );
@@ -70,7 +70,7 @@ public class ScreeningFacade {
         if (screeningRoomRepository.existsByNumber(dto.number())) {
             throw ScreeningRoomException.alreadyExists(dto.number());
         }
-        var screeningRoom = new ScreeningRoom(dto.number(), ScreeningRoomFreeSeats.of(dto.freeSeats()));
+        var screeningRoom = new ScreeningRoom(dto.number(), dto.freeSeats());
         return screeningRoomRepository
                 .save(screeningRoom)
                 .toDTO();

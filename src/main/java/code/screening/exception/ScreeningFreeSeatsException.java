@@ -11,12 +11,4 @@ public class ScreeningFreeSeatsException extends ScreeningException {
                 "No free seats for screening: " + screeningId, ScreeningExceptionType.NO_FREE_SEATS
         );
     }
-
-    public static ScreeningFreeSeatsException wrongQuantity(int minFreeSeats, int maxFreeSeats) {
-        return new ScreeningFreeSeatsException(
-                "Wrong screening free seats quantity" +
-                        ".Min: " + minFreeSeats +
-                        ".Max: " + maxFreeSeats, ScreeningExceptionType.WRONG_FREE_SEATS_QUANTITY
-        );
-    }
 }

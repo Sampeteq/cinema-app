@@ -25,9 +25,7 @@ class Screening {
     @AttributeOverride(name = "value", column = @Column(name = "date"))
     private ScreeningDate date;
 
-    @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "min_Age"))
-    private ScreeningAge minAge;
+    private int minAge;
 
     private Long filmId;
 
@@ -37,7 +35,7 @@ class Screening {
     protected Screening() {
     }
 
-    Screening(ScreeningDate date, ScreeningAge minAge, Long filmId, ScreeningRoom room) {
+    Screening(ScreeningDate date, int minAge, Long filmId, ScreeningRoom room) {
         this.date = date;
         this.minAge = minAge;
         this.filmId = filmId;
@@ -54,7 +52,7 @@ class Screening {
                 .id(this.id)
                 .date(this.date.getValue())
                 .freeSeats(this.room.currentFree())
-                .minAge(this.minAge.getValue())
+                .minAge(this.minAge)
                 .filmId(this.filmId)
                 .build();
     }

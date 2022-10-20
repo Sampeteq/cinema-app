@@ -14,6 +14,6 @@ class ReservationConfig {
             ScreeningTicketRepository screeningTicketRepository,
             EventBus eventBus
     ) {
-        return new ReservationFacade(screeningFacade,screeningTicketRepository, eventBus);
+        return new ReservationFacade(screeningFacade, screeningTicketRepository, eventBus);
     }
 }

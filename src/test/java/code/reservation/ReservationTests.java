@@ -9,7 +9,9 @@ import code.reservation.exception.ReservationAlreadyCancelled;
 import code.reservation.exception.TooLateToCancelReservationException;
 import code.reservation.exception.TooLateToReservationException;
 import code.screening.ScreeningFacade;
-import code.screening.dto.*;
+import code.screening.dto.AddScreeningDTO;
+import code.screening.dto.ScreeningDTO;
+import code.screening.dto.ScreeningRoomDTO;
 import code.screening.exception.ScreeningNoFreeSeatsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +24,6 @@ import java.util.List;
 
 import static code.film.FilmTestUtils.addSampleFilms;
 import static code.screening.ScreeningTestUtils.*;
-import static code.screening.ScreeningTestUtils.addSampleScreeningWithNoFreeSeats;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -115,7 +116,7 @@ class ReservationTests extends SpringTestsSpec {
     @Test
     void should_increase_screening_free_seats_by_one_after_ticket_reservation_cancelling() {
         var sampleTicket = reserveSampleTicket(sampleScreenings.get(0).id());
-        var freeSeatsAfterReservation= screeningFacade
+        var freeSeatsAfterReservation = screeningFacade
                 .read(sampleScreenings.get(0).id())
                 .freeSeats();
         reservationFacade.cancelTicket(

@@ -12,4 +12,5 @@ public record TicketDTO(UUID ticketUuid,
                         String lastName,
                         BigDecimal prize,
                         ScreeningTicketStatus status,
-                        Long screeningId) { }
+                        Long screeningId) {
+}

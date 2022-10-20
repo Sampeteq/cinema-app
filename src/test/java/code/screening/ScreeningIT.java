@@ -7,7 +7,9 @@ import code.screening.dto.AddScreeningDTO;
 import code.screening.dto.AddScreeningRoomDTO;
 import code.screening.dto.ScreeningDTO;
 import code.screening.dto.ScreeningRoomDTO;
-import code.screening.exception.*;
+import code.screening.exception.ScreeningRoomAlreadyExistsException;
+import code.screening.exception.ScreeningRoomBusyException;
+import code.screening.exception.ScreeningYearException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -74,7 +76,7 @@ class ScreeningIT extends SpringTestsSpec {
 
     @Test
     void should_throw_exception_when_screening_room_is_busy() {
-        var sampleAddScreeningDTOWithSameDateAndRoom= AddScreeningDTO
+        var sampleAddScreeningDTOWithSameDateAndRoom = AddScreeningDTO
                 .builder()
                 .date(sampleScreenings.get(0).date())
                 .roomUuid(sampleRooms.get(0).uuid())

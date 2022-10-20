@@ -1,7 +1,7 @@
 package code.screening;
 
-import code.screening.dto.ScreeningReservationData;
 import code.screening.dto.ScreeningDTO;
+import code.screening.dto.ScreeningReservationData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

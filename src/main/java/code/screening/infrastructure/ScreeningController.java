@@ -1,7 +1,10 @@
 package code.screening.infrastructure;
 
 import code.screening.ScreeningFacade;
-import code.screening.dto.*;
+import code.screening.dto.AddScreeningDTO;
+import code.screening.dto.AddScreeningRoomDTO;
+import code.screening.dto.ScreeningDTO;
+import code.screening.dto.ScreeningRoomDTO;
 import code.screening.exception.ScreeningException;
 import code.screening.exception.ScreeningNotFoundException;
 import code.screening.exception.ScreeningRoomNotFoundException;

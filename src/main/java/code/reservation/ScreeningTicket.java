@@ -1,12 +1,12 @@
 package code.reservation;
 
 import code.reservation.dto.ReserveScreeningTicketDTO;
-import code.reservation.exception.ReservationAlreadyCancelled;
 import code.reservation.dto.TicketDTO;
+import code.reservation.exception.ReservationAlreadyCancelled;
 import code.reservation.exception.TooLateToCancelReservationException;
 import code.reservation.exception.TooLateToReservationException;
 import code.screening.dto.ScreeningReservationData;
-import code.screening.exception.*;
+import code.screening.exception.ScreeningNoFreeSeatsException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -58,7 +58,7 @@ class ScreeningTicket {
             Clock clock
     ) {
 
-        var differenceBetweenCurrentDateAndScreeningOne= Duration
+        var differenceBetweenCurrentDateAndScreeningOne = Duration
                 .between(LocalDateTime.now(clock), screeningReservationData.screeningDate())
                 .abs()
                 .toHours();
@@ -79,7 +79,7 @@ class ScreeningTicket {
         if (this.status.equals(ScreeningTicketStatus.CANCELLED)) {
             throw new ReservationAlreadyCancelled(this.uuid);
         }
-        var differenceBetweenCurrentDateAndScreeningOne= Duration
+        var differenceBetweenCurrentDateAndScreeningOne = Duration
                 .between(LocalDateTime.now(clock), screeningDate)
                 .abs()
                 .toHours();

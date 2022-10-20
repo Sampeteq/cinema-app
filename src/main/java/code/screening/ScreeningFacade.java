@@ -2,11 +2,12 @@ package code.screening;
 
 import code.film.FilmFacade;
 import code.film.exception.FilmNotFoundException;
-import code.screening.dto.ScreeningReservationData;
 import code.screening.dto.*;
-import code.screening.exception.*;
+import code.screening.exception.ScreeningNotFoundException;
+import code.screening.exception.ScreeningRoomAlreadyExistsException;
+import code.screening.exception.ScreeningRoomBusyException;
+import code.screening.exception.ScreeningRoomNotFoundException;
 import lombok.AllArgsConstructor;
-
 
 import java.time.LocalDateTime;
 import java.time.Year;
@@ -61,7 +62,7 @@ public class ScreeningFacade {
     }
 
     public List<ScreeningDTO> readByDate(LocalDateTime date, Year currentYear) {
-        var screeningDate= ScreeningDate.of(date, currentYear);
+        var screeningDate = ScreeningDate.of(date, currentYear);
         return screeningRepository
                 .findByDate(screeningDate)
                 .stream()

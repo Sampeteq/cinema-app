@@ -3,6 +3,7 @@ package code.screening;
 import code.SpringTestsSpec;
 import code.film.FilmFacade;
 import code.film.dto.FilmDTO;
+import code.screening.dto.AddScreeningDTO;
 import code.screening.dto.AddScreeningRoomDTO;
 import code.screening.dto.ScreeningDTO;
 import code.screening.dto.ScreeningRoomDTO;
@@ -68,6 +69,21 @@ class ScreeningIT extends SpringTestsSpec {
                         ),
                         currentYear
                 )
+        );
+    }
+
+    @Test
+    void should_throw_exception_when_screening_room_is_busy() {
+        var sampleAddScreeningDTOWithSameDateAndRoom= AddScreeningDTO
+                .builder()
+                .date(sampleScreenings.get(0).date())
+                .roomUuid(sampleRooms.get(0).uuid())
+                .filmId(sampleFilms.get(0).id())
+                .minAge(13)
+                .build();
+        assertThrows(
+                ScreeningRoomBusyException.class,
+                () -> screeningFacade.add(sampleAddScreeningDTOWithSameDateAndRoom, currentYear)
         );
     }
 

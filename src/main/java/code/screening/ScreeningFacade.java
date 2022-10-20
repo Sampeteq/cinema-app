@@ -2,7 +2,6 @@ package code.screening;
 
 import code.film.FilmFacade;
 import code.film.exception.FilmNotFoundException;
-import code.reservation.exception.ScreeningTicketNotFoundException;
 import code.screening.dto.ScreeningReservationData;
 import code.screening.dto.*;
 import code.screening.exception.*;
@@ -30,6 +29,9 @@ public class ScreeningFacade {
         var room = screeningRoomRepository
                 .findById(dto.roomUuid())
                 .orElseThrow(() -> new ScreeningRoomNotFoundException(dto.roomUuid()));
+        if (screeningRepository.existsByDate_valueAndRoom_uuid(dto.date(), dto.roomUuid())) {
+            throw new ScreeningRoomBusyException(dto.roomUuid());
+        }
 
         var screening = new Screening(
                 ScreeningDate.of(dto.date(), currentYear),

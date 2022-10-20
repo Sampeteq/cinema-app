@@ -82,7 +82,7 @@ class ScreeningTicket {
                 .abs()
                 .toHours();
         if (differenceBetweenCurrentDateAndScreeningOne < 24) {
-            throw ScreeningTicketException.tooLateToReserve();
+            throw ScreeningTicketException.tooLateToCancel();
         }
         this.status = ScreeningTicketStatus.CANCELLED;
     }

@@ -24,7 +24,7 @@ class ReservationController {
         return reservationFacade.reserveTicket(dto, clock);
     }
 
-    @PatchMapping("/screenings-tickets/{ticketUUID}/cancelled")
+    @PatchMapping("/screenings-tickets/{ticketUUID}/cancel")
     void cancelTicket(@PathVariable UUID ticketUUID) {
         reservationFacade.cancelTicket(ticketUUID, clock);
     }

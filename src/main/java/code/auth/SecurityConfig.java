@@ -32,7 +32,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers(HttpMethod.GET, "/films", "/films/{category}", "/screenings/**").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/screenings-tickets").permitAll()
-                .mvcMatchers(HttpMethod.PATCH, "/screenings-tickets/{ticketId}/cancelled").permitAll()
+                .mvcMatchers(HttpMethod.PATCH, "/screenings-tickets/{ticketId}/cancel").permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2/console/**").permitAll()
                 .anyRequest().hasAuthority("ROLE_ADMIN")
                 .and()

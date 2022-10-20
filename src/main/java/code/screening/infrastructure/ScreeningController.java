@@ -1,7 +1,5 @@
 package code.screening.infrastructure;
 
-import code.reservation.dto.ReserveScreeningTicketDTO;
-import code.reservation.dto.TicketDTO;
 import code.screening.ScreeningFacade;
 import code.screening.dto.*;
 import code.screening.exception.ScreeningException;
@@ -17,7 +15,6 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -57,21 +54,6 @@ class ScreeningController {
     @GetMapping("/screenings-rooms")
     List<ScreeningRoomDTO> readAllRooms() {
         return ticketFacade.readAllRooms();
-    }
-
-    @PostMapping("/screenings-tickets")
-    TicketDTO reserveTicket(@RequestBody @Valid ReserveScreeningTicketDTO dto) {
-        return ticketFacade.reserveTicket(dto, clock);
-    }
-
-    @PatchMapping("/screenings-tickets/{ticketUUID}/cancelled")
-    void cancelTicket(@PathVariable UUID ticketUUID) {
-        ticketFacade.cancelTicket(ticketUUID, clock);
-    }
-
-    @GetMapping("/screenings-tickets")
-    List<TicketDTO> readAllTickets() {
-        return ticketFacade.readAllTickets();
     }
 }
 

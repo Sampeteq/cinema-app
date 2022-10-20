@@ -6,7 +6,6 @@ import code.film.dto.FilmDTO;
 import code.reservation.dto.ReserveScreeningTicketDTO;
 import code.reservation.dto.TicketDTO;
 import code.screening.ScreeningFacade;
-import code.screening.ScreeningTicketStatus;
 import code.screening.dto.*;
 import code.screening.exception.ScreeningFreeSeatsException;
 import code.reservation.exception.ScreeningTicketException;
@@ -33,6 +32,9 @@ class ReservationTests extends SpringTestsSpec {
     @Autowired
     private FilmFacade filmFacade;
 
+    @Autowired
+    private ReservationFacade reservationFacade;
+
     private List<FilmDTO> sampleFilms;
 
     private List<ScreeningDTO> sampleScreenings;
@@ -51,11 +53,11 @@ class ReservationTests extends SpringTestsSpec {
 
     @Test
     void should_reserved_ticket() {
-        var bookedTicket = screeningFacade.reserveTicket(
+        var bookedTicket = reservationFacade.reserveTicket(
                 sampleReserveTicketDTO(sampleScreenings.get(0).id()), clock
         );
         assertThat(
-                screeningFacade.readTicket(bookedTicket.ticketUuid())
+                reservationFacade.readTicket(bookedTicket.ticketUuid())
         ).isEqualTo(bookedTicket);
     }
 
@@ -74,7 +76,7 @@ class ReservationTests extends SpringTestsSpec {
         );
         assertThrows(
                 ScreeningTicketException.class,
-                () -> screeningFacade.reserveTicket(sampleReserveTicketDTO(sampleScreening.id()), clock)
+                () -> reservationFacade.reserveTicket(sampleReserveTicketDTO(sampleScreening.id()), clock)
         );
     }
 
@@ -87,7 +89,7 @@ class ReservationTests extends SpringTestsSpec {
 
         assertThrows(
                 ScreeningFreeSeatsException.class,
-                () -> screeningFacade.reserveTicket(
+                () -> reservationFacade.reserveTicket(
                         sampleReserveTicketDTO(sampleScreeningWithNoFreeSeats.id()),
                         clock
                 )
@@ -97,7 +99,7 @@ class ReservationTests extends SpringTestsSpec {
     @Test
     void should_reduce_screening_free_seats_by_one_after_ticket_reservation() {
         var freeSeatsBeforeBooking = sampleRooms.get(0).freeSeats();
-        screeningFacade.reserveTicket(
+        reservationFacade.reserveTicket(
                 sampleReserveTicketDTO(sampleScreenings.get(0).id()),
                 clock
         );
@@ -111,9 +113,9 @@ class ReservationTests extends SpringTestsSpec {
     @Test
     void should_cancel_ticket() {
         var sampleTicket = reserveSampleTicket(sampleScreenings.get(0).id());
-        screeningFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC());
+        reservationFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC());
         assertThat(
-                screeningFacade
+                reservationFacade
                         .readTicket(sampleTicket.ticketUuid())
                         .status()
         ).isEqualTo(ScreeningTicketStatus.CANCELLED);
@@ -122,16 +124,16 @@ class ReservationTests extends SpringTestsSpec {
     @Test
     void should_throw_exception_when_ticket_is_already_cancelled() {
         var sampleTicket = reserveSampleTicket(sampleScreenings.get(0).id());
-        screeningFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC());
+        reservationFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC());
         assertThrows(
                 ScreeningTicketException.class,
-                () -> screeningFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC())
+                () -> reservationFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC())
         );
     }
 
     @Test
     void should_throw_exception_when_trying_cancel_ticket_when_there_is_less_than_24h_to_screening() {
-        var sampleTicket = screeningFacade.reserveTicket(
+        var sampleTicket = reservationFacade.reserveTicket(
                 sampleReserveTicketDTO(sampleScreenings.get(0).id()),
                 clock
         );
@@ -142,7 +144,7 @@ class ReservationTests extends SpringTestsSpec {
         var clock = Clock.fixed(lessThanOneDayBeforeScreening, ZoneOffset.UTC);
         assertThrows(
                 ScreeningTicketException.class,
-                () -> screeningFacade.cancelTicket(sampleTicket.ticketUuid(), clock)
+                () -> reservationFacade.cancelTicket(sampleTicket.ticketUuid(), clock)
         );
     }
 
@@ -150,7 +152,7 @@ class ReservationTests extends SpringTestsSpec {
     void should_return_all_tickets() {
         var sampleTickets = reserveSampleTickets(sampleScreenings.get(0).id());
         assertThat(
-                screeningFacade.readAllTickets()
+                reservationFacade.readAllTickets()
         ).isEqualTo(sampleTickets);
     }
 
@@ -164,7 +166,7 @@ class ReservationTests extends SpringTestsSpec {
     }
 
     private TicketDTO reserveSampleTicket(Long sampleScreeningId) {
-        return screeningFacade.reserveTicket(
+        return reservationFacade.reserveTicket(
                 ReserveScreeningTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)
@@ -176,7 +178,7 @@ class ReservationTests extends SpringTestsSpec {
     }
 
     private List<TicketDTO> reserveSampleTickets(Long sampleScreeningId) {
-        var sampleTicket1 = screeningFacade.reserveTicket(
+        var sampleTicket1 = reservationFacade.reserveTicket(
                 ReserveScreeningTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)
@@ -185,7 +187,7 @@ class ReservationTests extends SpringTestsSpec {
                         .build(),
                 clock
         );
-        var sampleTicket2 = screeningFacade.reserveTicket(
+        var sampleTicket2 = reservationFacade.reserveTicket(
                 ReserveScreeningTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)

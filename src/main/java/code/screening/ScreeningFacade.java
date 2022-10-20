@@ -2,15 +2,12 @@ package code.screening;
 
 import code.film.FilmFacade;
 import code.film.exception.FilmNotFoundException;
-import code.reservation.dto.ReserveScreeningTicketDTO;
-import code.reservation.dto.TicketDTO;
-import code.reservation.exception.ScreeningTicketException;
+import code.screening.dto.ScreeningReservationData;
 import code.screening.dto.*;
 import code.screening.exception.*;
 import lombok.AllArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Clock;
+
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
@@ -23,7 +20,6 @@ public class ScreeningFacade {
 
     private final ScreeningRoomRepository screeningRoomRepository;
 
-    private final ScreeningTicketRepository screeningTicketRepository;
     private final FilmFacade filmFacade;
 
     public ScreeningDTO add(AddScreeningDTO dto, Year currentYear) {
@@ -95,45 +91,15 @@ public class ScreeningFacade {
                 .toList();
     }
 
-    @Transactional
-    public TicketDTO reserveTicket(ReserveScreeningTicketDTO dto, Clock clock) {
-        var screening= getScreeningOrThrowException(dto.screeningId());
-        var screeningTicket = new ScreeningTicket(dto.firstName(), dto.lastName(), screening);
-//        screening.bookTicket(screeningTicket, clock);
-        screeningTicket.reserve(clock);
-        return screeningTicketRepository.save(screeningTicket).toDTO();
-//        return screeningTicket.toDTO();
-    }
-
-    @Transactional
-    public void cancelTicket(UUID ticketId, Clock clock) {
-        var ticket = screeningTicketRepository
-                .findByUuid(ticketId)
-                .orElseThrow(() -> ScreeningTicketException.notFound(ticketId));
-        ticket.cancel(clock);
-    }
-
-    public TicketDTO readTicket(UUID ticketId) {
-        return getTicketOrThrowException(ticketId).toDTO();
-    }
-
-    public List<TicketDTO> readAllTickets() {
-        return screeningTicketRepository
-                .findAll()
-                .stream()
-                .map(ScreeningTicket::toDTO)
-                .toList();
+    public ScreeningReservationData fetchReservationData(Long screeningId) {
+        return screeningRepository
+                .findByIdAsReservationData(screeningId)
+                .orElseThrow(() -> ScreeningException.screeningNotFound(screeningId));
     }
 
     private Screening getScreeningOrThrowException(Long screeningId) {
         return screeningRepository
                 .findById(screeningId)
                 .orElseThrow(() -> ScreeningException.screeningNotFound(screeningId));
-    }
-
-    private ScreeningTicket getTicketOrThrowException(UUID ticketId) {
-        return screeningTicketRepository
-                .findByUuid(ticketId)
-                .orElseThrow(() -> ScreeningTicketException.notFound(ticketId));
     }
 }

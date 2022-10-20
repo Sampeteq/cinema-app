@@ -1,6 +1,7 @@
 package code.screening;
 
 import code.film.FilmFacade;
+import com.google.common.eventbus.EventBus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,9 +14,11 @@ class ScreeningConfig {
     @Bean
     ScreeningFacade screeningAPI(ScreeningRepository screeningRepository,
                                  ScreeningRoomRepository screeningRoomRepository,
-                                 ScreeningTicketRepository screeningTicketRepository,
-                                 FilmFacade filmFacade) {
-        return new ScreeningFacade(screeningRepository, screeningRoomRepository, screeningTicketRepository, filmFacade);
+                                 FilmFacade filmFacade,
+                                 EventBus eventBus) {
+        var screeningEventHandler = new ScreeningEventHandler(screeningRepository);
+        eventBus.register(screeningEventHandler);
+        return new ScreeningFacade(screeningRepository, screeningRoomRepository, filmFacade);
     }
 
     @Bean

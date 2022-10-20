@@ -1,4 +1,4 @@
-package code.screening;
+package code.reservation;
 
 public enum ScreeningTicketStatus {
 

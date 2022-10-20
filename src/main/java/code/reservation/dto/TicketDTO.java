@@ -1,6 +1,6 @@
 package code.reservation.dto;
 
-import code.screening.ScreeningTicketStatus;
+import code.reservation.ScreeningTicketStatus;
 import lombok.Builder;
 
 import java.math.BigDecimal;

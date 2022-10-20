@@ -41,10 +41,6 @@ class ScreeningRoom {
         }
     }
 
-    boolean anyFreeSeats() {
-        return this.freeSeats.anyFree();
-    }
-
     int currentFree() {
         return this.freeSeats.currentFree();
     }

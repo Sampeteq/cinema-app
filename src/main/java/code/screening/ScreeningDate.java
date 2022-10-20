@@ -27,11 +27,4 @@ class ScreeningDate {
             return new ScreeningDate(date);
         }
     }
-
-    int differenceBetweenCurrentDateAndScreeningOneInHours(Clock clock) {
-        return (int) Duration
-                .between(LocalDateTime.now(clock), value)
-                .abs()
-                .toHours();
-    }
 }

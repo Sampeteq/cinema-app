@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.Clock;
 import java.util.UUID;
 
 @Entity
@@ -43,14 +42,6 @@ class Screening {
         this.minAge = minAge;
         this.filmId = filmId;
         this.room = room;
-    }
-
-    int differenceBetweenCurrentDateAndScreeningOneInHours(Clock clock) {
-        return this.date.differenceBetweenCurrentDateAndScreeningOneInHours(clock);
-    }
-
-    boolean hasFreeSeats() {
-        return this.room.anyFreeSeats();
     }
 
     void decreaseFreeSeatsByOne() {

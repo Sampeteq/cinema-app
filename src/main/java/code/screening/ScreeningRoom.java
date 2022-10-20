@@ -1,7 +1,7 @@
 package code.screening;
 
 import code.screening.dto.ScreeningRoomDTO;
-import code.screening.exception.ScreeningFreeSeatsException;
+import code.screening.exception.ScreeningNoFreeSeatsException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -33,7 +33,7 @@ class ScreeningRoom {
 
     void decreaseFreeSeatsByOne(Long screeningId) {
         if (this.freeSeats == 0) {
-            throw ScreeningFreeSeatsException.noFreeSeats(screeningId);
+            throw new ScreeningNoFreeSeatsException(screeningId);
         } else {
             this.freeSeats = this.freeSeats - 1;
         }

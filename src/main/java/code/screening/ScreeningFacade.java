@@ -2,6 +2,7 @@ package code.screening;
 
 import code.film.FilmFacade;
 import code.film.exception.FilmNotFoundException;
+import code.reservation.exception.ScreeningTicketNotFoundException;
 import code.screening.dto.ScreeningReservationData;
 import code.screening.dto.*;
 import code.screening.exception.*;
@@ -28,7 +29,7 @@ public class ScreeningFacade {
         }
         var room = screeningRoomRepository
                 .findById(dto.roomUuid())
-                .orElseThrow(() -> ScreeningRoomException.notFound(dto.roomUuid()));
+                .orElseThrow(() -> new ScreeningRoomNotFoundException(dto.roomUuid()));
 
         var screening = new Screening(
                 ScreeningDate.of(dto.date(), currentYear),
@@ -42,7 +43,7 @@ public class ScreeningFacade {
     }
 
     public ScreeningDTO read(Long screeningId) {
-        return getScreeningOrThrowException(screeningId).toDTO();
+        return getScreeningOrThrow(screeningId).toDTO();
     }
 
     public List<ScreeningDTO> readAll() {
@@ -68,7 +69,7 @@ public class ScreeningFacade {
 
     public ScreeningRoomDTO addRoom(AddScreeningRoomDTO dto) {
         if (screeningRoomRepository.existsByNumber(dto.number())) {
-            throw ScreeningRoomException.alreadyExists(dto.number());
+            throw new ScreeningRoomAlreadyExistsException(dto.number());
         }
         var screeningRoom = new ScreeningRoom(dto.number(), dto.freeSeats());
         return screeningRoomRepository
@@ -80,7 +81,7 @@ public class ScreeningFacade {
         return screeningRoomRepository
                 .findById(roomUuid)
                 .map(ScreeningRoom::toDTO)
-                .orElseThrow(() -> ScreeningRoomException.notFound(roomUuid));
+                .orElseThrow(() -> new ScreeningRoomNotFoundException(roomUuid));
     }
 
     public List<ScreeningRoomDTO> readAllRooms() {
@@ -94,12 +95,12 @@ public class ScreeningFacade {
     public ScreeningReservationData fetchReservationData(Long screeningId) {
         return screeningRepository
                 .findByIdAsReservationData(screeningId)
-                .orElseThrow(() -> ScreeningException.screeningNotFound(screeningId));
+                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
     }
 
-    private Screening getScreeningOrThrowException(Long screeningId) {
+    private Screening getScreeningOrThrow(Long screeningId) {
         return screeningRepository
                 .findById(screeningId)
-                .orElseThrow(() -> ScreeningException.screeningNotFound(screeningId));
+                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
     }
 }

@@ -3,7 +3,7 @@ package code.reservation;
 import code.reservation.dto.ReserveScreeningTicketDTO;
 import code.reservation.dto.ScreeningTicketReservedEvent;
 import code.reservation.dto.TicketDTO;
-import code.reservation.exception.ScreeningTicketException;
+import code.reservation.exception.ScreeningTicketNotFoundException;
 import code.screening.ScreeningFacade;
 import com.google.common.eventbus.EventBus;
 import lombok.AllArgsConstructor;
@@ -56,6 +56,6 @@ public class ReservationFacade {
     private ScreeningTicket getTicketOrThrow(UUID ticketId) {
         return screeningTicketRepository
                 .findByUuid(ticketId)
-                .orElseThrow(() -> ScreeningTicketException.notFound(ticketId));
+                .orElseThrow(() -> new ScreeningTicketNotFoundException(ticketId));
     }
 }

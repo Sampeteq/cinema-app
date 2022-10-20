@@ -5,10 +5,12 @@ import code.film.FilmFacade;
 import code.film.dto.FilmDTO;
 import code.reservation.dto.ReserveScreeningTicketDTO;
 import code.reservation.dto.TicketDTO;
+import code.reservation.exception.ReservationAlreadyCancelled;
+import code.reservation.exception.TooLateToCancelReservationException;
+import code.reservation.exception.TooLateToReservationException;
 import code.screening.ScreeningFacade;
 import code.screening.dto.*;
-import code.screening.exception.ScreeningFreeSeatsException;
-import code.reservation.exception.ScreeningTicketException;
+import code.screening.exception.ScreeningNoFreeSeatsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +77,7 @@ class ReservationTests extends SpringTestsSpec {
                 currentYear
         );
         assertThrows(
-                ScreeningTicketException.class,
+                TooLateToReservationException.class,
                 () -> reservationFacade.reserveTicket(sampleReserveTicketDTO(sampleScreening.id()), clock)
         );
     }
@@ -88,7 +90,7 @@ class ReservationTests extends SpringTestsSpec {
         );
 
         assertThrows(
-                ScreeningFreeSeatsException.class,
+                ScreeningNoFreeSeatsException.class,
                 () -> reservationFacade.reserveTicket(
                         sampleReserveTicketDTO(sampleScreeningWithNoFreeSeats.id()),
                         clock
@@ -126,7 +128,7 @@ class ReservationTests extends SpringTestsSpec {
         var sampleTicket = reserveSampleTicket(sampleScreenings.get(0).id());
         reservationFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC());
         assertThrows(
-                ScreeningTicketException.class,
+                ReservationAlreadyCancelled.class,
                 () -> reservationFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC())
         );
     }
@@ -143,7 +145,7 @@ class ReservationTests extends SpringTestsSpec {
                 .toInstant(ZoneOffset.UTC);
         var clock = Clock.fixed(lessThanOneDayBeforeScreening, ZoneOffset.UTC);
         assertThrows(
-                ScreeningTicketException.class,
+                TooLateToCancelReservationException.class,
                 () -> reservationFacade.cancelTicket(sampleTicket.ticketUuid(), clock)
         );
     }

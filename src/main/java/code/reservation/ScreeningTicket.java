@@ -1,8 +1,10 @@
 package code.reservation;
 
 import code.reservation.dto.ReserveScreeningTicketDTO;
-import code.reservation.exception.ScreeningTicketException;
+import code.reservation.exception.ReservationAlreadyCancelled;
 import code.reservation.dto.TicketDTO;
+import code.reservation.exception.TooLateToCancelReservationException;
+import code.reservation.exception.TooLateToReservationException;
 import code.screening.dto.ScreeningReservationData;
 import code.screening.exception.*;
 import lombok.EqualsAndHashCode;
@@ -61,10 +63,10 @@ class ScreeningTicket {
                 .abs()
                 .toHours();
         if (differenceBetweenCurrentDateAndScreeningOne < 24) {
-            throw ScreeningTicketException.tooLateToReserve();
+            throw new TooLateToReservationException();
         }
         if (screeningReservationData.screeningFreeSeats() == 0) {
-            throw ScreeningFreeSeatsException.noFreeSeats(reserveScreeningTicketDTO.screeningId());
+            throw new ScreeningNoFreeSeatsException(reserveScreeningTicketDTO.screeningId());
         }
         return new ScreeningTicket(
                 reserveScreeningTicketDTO.firstName(),
@@ -75,14 +77,14 @@ class ScreeningTicket {
 
     void cancel(LocalDateTime screeningDate, Clock clock) {
         if (this.status.equals(ScreeningTicketStatus.CANCELLED)) {
-            throw ScreeningTicketException.alreadyCancelled(this.uuid);
+            throw new ReservationAlreadyCancelled(this.uuid);
         }
         var differenceBetweenCurrentDateAndScreeningOne= Duration
                 .between(LocalDateTime.now(clock), screeningDate)
                 .abs()
                 .toHours();
         if (differenceBetweenCurrentDateAndScreeningOne < 24) {
-            throw ScreeningTicketException.tooLateToCancel();
+            throw new TooLateToCancelReservationException(this.uuid);
         }
         this.status = ScreeningTicketStatus.CANCELLED;
     }

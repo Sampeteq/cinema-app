@@ -113,7 +113,7 @@ class ScreeningIT extends SpringTestsSpec {
     @Test
     void should_throw_exception_when_room_number_is_not_unique() {
         assertThrows(
-                ScreeningRoomException.class,
+                ScreeningRoomAlreadyExistsException.class,
                 () -> screeningFacade.addRoom(
                         AddScreeningRoomDTO
                                 .builder()

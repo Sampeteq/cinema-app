@@ -113,6 +113,23 @@ class ReservationTests extends SpringTestsSpec {
     }
 
     @Test
+    void should_increase_screening_free_seats_by_one_after_ticket_reservation_cancelling() {
+        var sampleTicket = reserveSampleTicket(sampleScreenings.get(0).id());
+        var freeSeatsAfterReservation= screeningFacade
+                .read(sampleScreenings.get(0).id())
+                .freeSeats();
+        reservationFacade.cancelTicket(
+                sampleTicket.ticketUuid(),
+                clock
+        );
+        assertThat(
+                screeningFacade
+                        .read(sampleScreenings.get(0).id())
+                        .freeSeats()
+        ).isEqualTo(freeSeatsAfterReservation + 1);
+    }
+
+    @Test
     void should_cancel_ticket() {
         var sampleTicket = reserveSampleTicket(sampleScreenings.get(0).id());
         reservationFacade.cancelTicket(sampleTicket.ticketUuid(), Clock.systemUTC());

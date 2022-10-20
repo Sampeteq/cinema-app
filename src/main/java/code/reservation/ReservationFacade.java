@@ -1,6 +1,7 @@
 package code.reservation;
 
 import code.reservation.dto.ReserveScreeningTicketDTO;
+import code.reservation.dto.ScreeningTicketReservationCancelledEvent;
 import code.reservation.dto.ScreeningTicketReservedEvent;
 import code.reservation.dto.TicketDTO;
 import code.reservation.exception.ScreeningTicketNotFoundException;
@@ -39,6 +40,9 @@ public class ReservationFacade {
         var ticket = getTicketOrThrow(ticketId);
         var screeningReservationData = screeningFacade.fetchReservationData(ticket.getScreeningId());
         ticket.cancel(screeningReservationData.screeningDate(), clock);
+        eventBus.post(
+                new ScreeningTicketReservationCancelledEvent(ticket.getScreeningId())
+        );
     }
 
     public TicketDTO readTicket(UUID ticketId) {

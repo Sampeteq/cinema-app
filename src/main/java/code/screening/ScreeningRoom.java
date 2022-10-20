@@ -39,6 +39,10 @@ class ScreeningRoom {
         }
     }
 
+    void increaseFreeSeatsByOne() {
+        this.freeSeats = this.freeSeats + 1;
+    }
+
     int currentFree() {
         return this.freeSeats;
     }

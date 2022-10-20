@@ -56,4 +56,8 @@ class Screening {
                 .filmId(this.filmId)
                 .build();
     }
+
+    public void increaseFreeSeatsByOne() {
+        this.room.increaseFreeSeatsByOne();
+    }
 }

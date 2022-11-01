@@ -7,6 +7,7 @@ import code.screenings.dto.AddScreeningDTO;
 import code.screenings.dto.AddScreeningRoomDTO;
 import code.screenings.dto.ScreeningDTO;
 import code.screenings.dto.ScreeningRoomDTO;
+import code.screenings.exception.ScreeningFreeSeatsQuantityBiggerThanRoomOneException;
 import code.screenings.exception.ScreeningRoomAlreadyExistsException;
 import code.screenings.exception.ScreeningRoomBusyException;
 import code.screenings.exception.ScreeningYearException;
@@ -17,6 +18,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static code.films.FilmTestUtils.addSampleFilms;
@@ -86,6 +89,24 @@ class ScreeningIT extends SpringTestsSpec {
         assertThrows(
                 ScreeningRoomBusyException.class,
                 () -> screeningFacade.add(sampleAddScreeningDTOWithSameDateAndRoom, currentYear)
+        );
+    }
+
+    @Test
+    void should_throw_exception_when_screening_free_seats_quantity_is_bigger_than_room_one() {
+        assertThrows(
+                ScreeningFreeSeatsQuantityBiggerThanRoomOneException.class,
+                () -> screeningFacade.add(
+                        AddScreeningDTO
+                                .builder()
+                                .freeSeatsQuantity(sampleRooms.get(0).freeSeats() + 1)
+                                .roomUuid(sampleRooms.get(0).uuid())
+                                .date(LocalDateTime.ofInstant(clock.instant(), ZoneOffset.UTC))
+                                .filmId(sampleFilms.get(0).id())
+                                .minAge(13)
+                                .build(),
+                        currentYear
+                )
         );
     }
 

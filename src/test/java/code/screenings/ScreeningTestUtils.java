@@ -22,6 +22,7 @@ public class ScreeningTestUtils {
                 .roomUuid(roomId)
                 .date(LocalDateTime.parse("2022-05-05T16:30"))
                 .minAge(13)
+                .freeSeatsQuantity(200)
                 .build();
     }
 
@@ -32,6 +33,7 @@ public class ScreeningTestUtils {
                 .roomUuid(roomId)
                 .date(LocalDateTime.parse("2022-05-05T16:30").withYear(wrongScreeningYear))
                 .minAge(13)
+                .freeSeatsQuantity(200)
                 .build();
     }
 
@@ -44,7 +46,7 @@ public class ScreeningTestUtils {
         var room2 = AddScreeningRoomDTO
                 .builder()
                 .number(2)
-                .freeSeats(100)
+                .freeSeats(200)
                 .build();
         return List.of(
                 screeningFacade.addRoom(room1),
@@ -69,6 +71,7 @@ public class ScreeningTestUtils {
                         .roomUuid(screeningRoom.uuid())
                         .date(LocalDateTime.parse("2022-05-05T16:30"))
                         .minAge(13)
+                        .freeSeatsQuantity(0)
                         .build(),
                 currentYear
         );
@@ -85,6 +88,7 @@ public class ScreeningTestUtils {
                         .roomUuid(sampleRooms.get(0).uuid())
                         .date(LocalDateTime.parse("2022-05-05T16:00"))
                         .minAge(13)
+                        .freeSeatsQuantity(200)
                         .build(),
                 currentYear
         );
@@ -95,6 +99,7 @@ public class ScreeningTestUtils {
                         .roomUuid(sampleRooms.get(1).uuid())
                         .date(LocalDateTime.parse("2022-06-09T17:30"))
                         .minAge(13)
+                        .freeSeatsQuantity(200)
                         .build(),
                 currentYear
         );

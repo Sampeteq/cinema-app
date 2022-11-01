@@ -31,6 +31,7 @@ public class ScreeningFacade {
         var screening = new Screening(
                 ScreeningDate.of(dto.date(), currentYear),
                 dto.minAge(),
+                dto.freeSeatsQuantity(),
                 dto.filmId(),
                 room
         );

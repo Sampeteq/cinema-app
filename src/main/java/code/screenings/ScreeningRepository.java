@@ -27,7 +27,7 @@ interface ScreeningRepository extends JpaRepository<Screening, Long> {
 
     @Query("select new code.screenings.dto.ScreeningReservationData(" +
             "s.date.value, " +
-            "s.room.freeSeats) from Screening s where s.id = :screeningId")
+            "s.freeSeatsQuantity) from Screening s where s.id = :screeningId")
     Optional<ScreeningReservationData> findByIdAsReservationData(@Param("screeningId") Long screeningId);
 
     boolean existsByDateAndRoom_uuid(ScreeningDate screeningDate, UUID roomUuid);

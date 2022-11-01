@@ -23,6 +23,7 @@ class ScreeningRoom {
 
     private int number;
 
+    @Getter
     private int freeSeats;
 
     protected ScreeningRoom() {
@@ -31,22 +32,6 @@ class ScreeningRoom {
     ScreeningRoom(int number, int freeSeats) {
         this.number = number;
         this.freeSeats = freeSeats;
-    }
-
-    void decreaseFreeSeatsByOne(Long screeningId) {
-        if (this.freeSeats == 0) {
-            throw new ScreeningNoFreeSeatsException(screeningId);
-        } else {
-            this.freeSeats = this.freeSeats - 1;
-        }
-    }
-
-    void increaseFreeSeatsByOne() {
-        this.freeSeats = this.freeSeats + 1;
-    }
-
-    int currentFree() {
-        return this.freeSeats;
     }
 
     ScreeningRoomDTO toDTO() {

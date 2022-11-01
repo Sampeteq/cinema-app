@@ -66,20 +66,17 @@ class ReservationTests extends SpringTestsSpec {
 
     @Test
     void should_throw_exception_when_there_is_too_late_to_reserved_ticket() {
-        var currentDate = LocalDateTime.now(clock);
-        var sampleScreening = screeningFacade.add(
-                AddScreeningDTO
-                        .builder()
-                        .date(currentDate.minusHours(23))
-                        .minAge(13)
-                        .roomUuid(sampleRooms.get(0).uuid())
-                        .filmId(sampleFilms.get(0).id())
-                        .build(),
-                currentYear
-        );
+        var current = sampleScreenings
+                .get(0)
+                .date()
+                .minusHours(23)
+                .toInstant(ZoneOffset.UTC);
+        var clock = Clock.fixed(current, ZoneOffset.UTC);
         assertThrows(
                 TooLateToReservationException.class,
-                () -> reservationFacade.reserveTicket(sampleReserveTicketDTO(sampleScreening.id()), clock)
+                () -> reservationFacade.reserveTicket(
+                        sampleReserveTicketDTO(sampleScreenings.get(0).id()), clock
+                )
         );
     }
 
@@ -101,7 +98,7 @@ class ReservationTests extends SpringTestsSpec {
 
     @Test
     void should_reduce_screening_free_seats_by_one_after_ticket_reservation() {
-        var freeSeatsBeforeBooking = sampleRooms.get(0).freeSeats();
+        var freeSeatsBeforeBooking = sampleScreenings.get(0).freeSeats();
         reservationFacade.reserveTicket(
                 sampleReserveTicketDTO(sampleScreenings.get(0).id()),
                 clock

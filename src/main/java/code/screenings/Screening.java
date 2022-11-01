@@ -1,6 +1,8 @@
 package code.screenings;
 
 import code.screenings.dto.ScreeningDTO;
+import code.screenings.exception.ScreeningFreeSeatsQuantityBiggerThanRoomOneException;
+import code.screenings.exception.ScreeningNoFreeSeatsException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -27,6 +29,8 @@ class Screening {
 
     private int minAge;
 
+    private int freeSeatsQuantity;
+
     private Long filmId;
 
     @ManyToOne
@@ -35,19 +39,27 @@ class Screening {
     protected Screening() {
     }
 
-    Screening(ScreeningDate date, int minAge, Long filmId, ScreeningRoom room) {
+    Screening(ScreeningDate date, int minAge, int freeSeatsQuantity, Long filmId, ScreeningRoom room) {
+        if (freeSeatsQuantity > room.getFreeSeats()) {
+            throw new ScreeningFreeSeatsQuantityBiggerThanRoomOneException();
+        }
         this.date = date;
         this.minAge = minAge;
+        this.freeSeatsQuantity = freeSeatsQuantity;
         this.filmId = filmId;
         this.room = room;
     }
 
     void decreaseFreeSeatsByOne() {
-        this.room.decreaseFreeSeatsByOne(this.id);
+        if (this.freeSeatsQuantity < 0) {
+            throw new ScreeningNoFreeSeatsException(this.id);
+        } else {
+            this.freeSeatsQuantity--;
+        }
     }
 
     void increaseFreeSeatsByOne() {
-        this.room.increaseFreeSeatsByOne();
+        this.freeSeatsQuantity++;
     }
 
     ScreeningDTO toDTO() {
@@ -55,7 +67,7 @@ class Screening {
                 .builder()
                 .id(this.id)
                 .date(this.date.getValue())
-                .freeSeats(this.room.currentFree())
+                .freeSeats(this.freeSeatsQuantity)
                 .minAge(this.minAge)
                 .filmId(this.filmId)
                 .build();

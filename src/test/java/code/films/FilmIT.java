@@ -25,7 +25,7 @@ class FilmIT extends SpringTestsSpec {
     }
 
     @ParameterizedTest
-    @MethodSource("code.film.FilmTestUtils#wrongFilmYears")
+    @MethodSource("code.films.FilmTestUtils#wrongFilmYears")
     void should_throw_exception_when_film_year_is_neither_previous_nor_current_nor_next_one(Integer wrongFilmYear) {
         assertThrows(
                 FilmYearException.class,

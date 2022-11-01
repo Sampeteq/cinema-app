@@ -58,11 +58,11 @@ class ScreeningTicket {
             Clock clock
     ) {
 
-        var differenceBetweenCurrentDateAndScreeningOne = Duration
+        var differenceBetweenCurrentDateAndScreeningOneInHours = Duration
                 .between(LocalDateTime.now(clock), screeningReservationData.screeningDate())
                 .abs()
                 .toHours();
-        if (differenceBetweenCurrentDateAndScreeningOne < 24) {
+        if (differenceBetweenCurrentDateAndScreeningOneInHours < 24) {
             throw new TooLateToReservationException();
         }
         if (screeningReservationData.screeningFreeSeats() == 0) {
@@ -79,11 +79,11 @@ class ScreeningTicket {
         if (this.status.equals(ScreeningTicketStatus.CANCELLED)) {
             throw new ReservationAlreadyCancelled(this.uuid);
         }
-        var differenceBetweenCurrentDateAndScreeningOne = Duration
+        var differenceBetweenCurrentDateAndScreeningOneInHours = Duration
                 .between(LocalDateTime.now(clock), screeningDate)
                 .abs()
                 .toHours();
-        if (differenceBetweenCurrentDateAndScreeningOne < 24) {
+        if (differenceBetweenCurrentDateAndScreeningOneInHours < 24) {
             throw new TooLateToCancelReservationException(this.uuid);
         }
         this.status = ScreeningTicketStatus.CANCELLED;

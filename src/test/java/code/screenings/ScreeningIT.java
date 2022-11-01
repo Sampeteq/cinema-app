@@ -59,7 +59,7 @@ class ScreeningIT extends SpringTestsSpec {
     }
 
     @ParameterizedTest
-    @MethodSource("code.screening.ScreeningTestUtils#getWrongScreeningYears")
+    @MethodSource("code.screenings.ScreeningTestUtils#getWrongScreeningYears")
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(Integer wrongScreeningYear) {
         assertThrows(
                 ScreeningYearException.class,

@@ -30,7 +30,8 @@ public class ScreeningFacade {
         var room = screeningRoomRepository
                 .findById(dto.roomUuid())
                 .orElseThrow(() -> new ScreeningRoomNotFoundException(dto.roomUuid()));
-        if (screeningRepository.existsByDate_valueAndRoom_uuid(dto.date(), dto.roomUuid())) {
+        var date = ScreeningDate.of(dto.date(), currentYear);
+        if (screeningRepository.existsByDateAndRoom_uuid(date, dto.roomUuid())) {
             throw new ScreeningRoomBusyException(dto.roomUuid());
         }
 

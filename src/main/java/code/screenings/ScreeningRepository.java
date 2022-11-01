@@ -30,5 +30,5 @@ interface ScreeningRepository extends JpaRepository<Screening, Long> {
             "s.room.freeSeats) from Screening s where s.id = :screeningId")
     Optional<ScreeningReservationData> findByIdAsReservationData(@Param("screeningId") Long screeningId);
 
-    boolean existsByDate_valueAndRoom_uuid(LocalDateTime screeningDate, UUID roomUuid);
+    boolean existsByDateAndRoom_uuid(ScreeningDate screeningDate, UUID roomUuid);
 }

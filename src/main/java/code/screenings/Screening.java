@@ -46,6 +46,10 @@ class Screening {
         this.room.decreaseFreeSeatsByOne(this.id);
     }
 
+    void increaseFreeSeatsByOne() {
+        this.room.increaseFreeSeatsByOne();
+    }
+
     ScreeningDTO toDTO() {
         return ScreeningDTO
                 .builder()
@@ -55,9 +59,5 @@ class Screening {
                 .minAge(this.minAge)
                 .filmId(this.filmId)
                 .build();
-    }
-
-    public void increaseFreeSeatsByOne() {
-        this.room.increaseFreeSeatsByOne();
     }
 }

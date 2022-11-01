@@ -24,17 +24,10 @@ public class ScreeningFacade {
     private final FilmFacade filmFacade;
 
     public ScreeningDTO add(AddScreeningDTO dto, Year currentYear) {
-        if (!filmFacade.isPresent(dto.filmId())) {
-            throw new FilmNotFoundException(dto.filmId());
-        }
-        var room = screeningRoomRepository
-                .findById(dto.roomUuid())
-                .orElseThrow(() -> new ScreeningRoomNotFoundException(dto.roomUuid()));
+        validateFilmExisting(dto.filmId());
+        var room = getScreeningRoomOrThrow(dto.roomUuid());
         var date = ScreeningDate.of(dto.date(), currentYear);
-        if (screeningRepository.existsByDateAndRoom_uuid(date, dto.roomUuid())) {
-            throw new ScreeningRoomBusyException(dto.roomUuid());
-        }
-
+        validateScreeningRoomBeingBusy(date, dto.roomUuid());
         var screening = new Screening(
                 ScreeningDate.of(dto.date(), currentYear),
                 dto.minAge(),
@@ -106,5 +99,23 @@ public class ScreeningFacade {
         return screeningRepository
                 .findById(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
+    }
+
+    private void validateFilmExisting(Long filmId) {
+        if (!filmFacade.isPresent(filmId)) {
+            throw new FilmNotFoundException(filmId);
+        }
+    }
+
+    private ScreeningRoom getScreeningRoomOrThrow(UUID roomUuid) {
+        return screeningRoomRepository
+                .findById(roomUuid)
+                .orElseThrow(() -> new ScreeningRoomNotFoundException(roomUuid));
+    }
+
+    private void validateScreeningRoomBeingBusy(ScreeningDate date, UUID roomUuid) {
+        if (screeningRepository.existsByDateAndRoom_uuid(date, roomUuid)) {
+            throw new ScreeningRoomBusyException(roomUuid);
+        }
     }
 }

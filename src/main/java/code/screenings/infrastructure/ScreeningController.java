@@ -15,9 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.Year;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,13 +25,9 @@ class ScreeningController {
 
     private final ScreeningFacade ticketFacade;
 
-    private final Year currentYear;
-
-    private final Clock clock;
-
     @PostMapping("/screenings")
     ScreeningDTO add(@RequestBody @Valid AddScreeningDTO dto) {
-        return ticketFacade.add(dto, currentYear);
+        return ticketFacade.add(dto);
     }
 
     @GetMapping("/screenings")

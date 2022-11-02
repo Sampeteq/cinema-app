@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Example;
 
 import java.time.LocalDateTime;
-import java.time.Year;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -25,13 +24,13 @@ public class ScreeningFacade {
 
     private final FilmFacade filmFacade;
 
-    public ScreeningDTO add(AddScreeningDTO dto, Year currentYear) {
+    public ScreeningDTO add(AddScreeningDTO dto) {
         validateFilmExisting(dto.filmId());
         var room = getScreeningRoomOrThrow(dto.roomUuid());
-        var date = ScreeningDate.of(dto.date(), currentYear);
+        var date = ScreeningDate.of(dto.date());
         validateScreeningRoomBeingBusy(date, dto.roomUuid());
         var screening = new Screening(
-                ScreeningDate.of(dto.date(), currentYear),
+                date,
                 dto.minAge(),
                 dto.freeSeatsQuantity(),
                 dto.filmId(),
@@ -53,7 +52,7 @@ public class ScreeningFacade {
                 .builder()
                 .id(filmId);
         if (date != null) {
-            var screeningDate = ScreeningDate.of(date, Year.now());
+            var screeningDate = ScreeningDate.of(date);
             screeningBuilder.date(screeningDate);
         }
         var screening = screeningBuilder.build();

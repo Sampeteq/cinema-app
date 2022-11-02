@@ -72,8 +72,7 @@ public class ScreeningTestUtils {
                         .date(LocalDateTime.parse("2022-05-05T16:30"))
                         .minAge(13)
                         .freeSeatsQuantity(0)
-                        .build(),
-                currentYear
+                        .build()
         );
     }
 
@@ -89,8 +88,7 @@ public class ScreeningTestUtils {
                         .date(LocalDateTime.parse("2022-05-05T16:00"))
                         .minAge(13)
                         .freeSeatsQuantity(200)
-                        .build(),
-                currentYear
+                        .build()
         );
         var screening2 = screeningFacade.add(
                 AddScreeningDTO
@@ -100,8 +98,7 @@ public class ScreeningTestUtils {
                         .date(LocalDateTime.parse("2022-06-09T17:30"))
                         .minAge(13)
                         .freeSeatsQuantity(200)
-                        .build(),
-                currentYear
+                        .build()
         );
         return List.of(screening1, screening2);
     }

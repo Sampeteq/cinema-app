@@ -5,8 +5,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.checkerframework.checker.units.qual.C;
 
 import javax.persistence.Embeddable;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Year;
 
@@ -16,11 +18,13 @@ import java.time.Year;
 @Getter
 class ScreeningDate {
 
+    private static final int CURRENT_YEAR = Year.now().getValue();
+
     private LocalDateTime value;
 
-    static ScreeningDate of(LocalDateTime date, Year currentYear) {
-        if (date.getYear() != currentYear.getValue() && date.getYear() != currentYear.getValue() + 1) {
-            throw new ScreeningYearException(Year.of(date.getYear()), currentYear);
+    static ScreeningDate of(LocalDateTime date) {
+        if (date.getYear() != CURRENT_YEAR && date.getYear() != CURRENT_YEAR + 1) {
+            throw new ScreeningYearException(date.getYear(), CURRENT_YEAR);
         } else {
             return new ScreeningDate(date);
         }

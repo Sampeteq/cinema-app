@@ -55,8 +55,7 @@ class ScreeningIT extends SpringTestsSpec {
     @Test
     void should_add_screening() {
         var addedScreening = screeningFacade.add(
-                sampleAddScreeningDTO(sampleFilms.get(0).id(), sampleRooms.get(0).uuid()),
-                currentYear
+                sampleAddScreeningDTO(sampleFilms.get(0).id(), sampleRooms.get(0).uuid())
         );
         assertThat(
                 screeningFacade.read(addedScreening.id())
@@ -73,8 +72,7 @@ class ScreeningIT extends SpringTestsSpec {
                                 sampleFilms.get(0).id(),
                                 sampleRooms.get(0).uuid(),
                                 wrongScreeningYear
-                        ),
-                        currentYear
+                        )
                 )
         );
     }
@@ -90,7 +88,7 @@ class ScreeningIT extends SpringTestsSpec {
                 .build();
         assertThrows(
                 ScreeningRoomBusyException.class,
-                () -> screeningFacade.add(sampleAddScreeningDTOWithSameDateAndRoom, currentYear)
+                () -> screeningFacade.add(sampleAddScreeningDTOWithSameDateAndRoom)
         );
     }
 
@@ -106,8 +104,7 @@ class ScreeningIT extends SpringTestsSpec {
                                 .date(LocalDateTime.ofInstant(clock.instant(), ZoneOffset.UTC))
                                 .filmId(sampleFilms.get(0).id())
                                 .minAge(13)
-                                .build(),
-                        currentYear
+                                .build()
                 )
         );
     }

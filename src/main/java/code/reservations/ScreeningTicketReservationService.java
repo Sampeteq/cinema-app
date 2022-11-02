@@ -17,7 +17,6 @@ class ScreeningTicketReservationService {
 
     private final EventBus eventBus;
 
-//    @Transactional
     public ScreeningTicket reserve(ReserveScreeningTicketDTO dto, Clock clock) {
         var screeningReservationData = screeningFacade.fetchReservationData(dto.screeningId());
         var ticket = ScreeningTicket.reserve(dto, screeningReservationData, clock);
@@ -27,7 +26,6 @@ class ScreeningTicketReservationService {
         return ticket;
     }
 
-//    @Transactional
     public void cancelTicket(ScreeningTicket ticket, Clock clock) {
         var screeningReservationData = screeningFacade.fetchReservationData(ticket.getScreeningId());
         ticket.cancel(screeningReservationData.screeningDate(), clock);

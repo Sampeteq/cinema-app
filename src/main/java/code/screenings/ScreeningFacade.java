@@ -8,10 +8,12 @@ import code.screenings.exception.ScreeningRoomAlreadyExistsException;
 import code.screenings.exception.ScreeningRoomBusyException;
 import code.screenings.exception.ScreeningRoomNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Example;
 
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -44,22 +46,21 @@ public class ScreeningFacade {
         return getScreeningOrThrow(screeningId).toDTO();
     }
 
-    public List<ScreeningDTO> readAll() {
-        return screeningRepository.findAllAsDTO();
-    }
+    public List<ScreeningDTO> searchBy(Map<String, Object> readParams) {
+        var filmId = (Long) readParams.get("filmId");
+        var date = (LocalDateTime) readParams.get("date");
+        var screeningBuilder = Screening
+                .builder()
+                .id(filmId);
+        if (date != null) {
+            var screeningDate = ScreeningDate.of(date, Year.now());
+            screeningBuilder.date(screeningDate);
+        }
+        var screening = screeningBuilder.build();
+        var example = Example.of(screening);
 
-    public List<ScreeningDTO> readByFilmId(Long filmId) {
         return screeningRepository
-                .findByFilmId(filmId)
-                .stream()
-                .map(Screening::toDTO)
-                .toList();
-    }
-
-    public List<ScreeningDTO> readByDate(LocalDateTime date, Year currentYear) {
-        var screeningDate = ScreeningDate.of(date, currentYear);
-        return screeningRepository
-                .findByDate(screeningDate)
+                .findAll(example)
                 .stream()
                 .map(Screening::toDTO)
                 .toList();

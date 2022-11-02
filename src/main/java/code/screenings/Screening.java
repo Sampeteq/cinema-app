@@ -3,15 +3,15 @@ package code.screenings;
 import code.screenings.dto.ScreeningDTO;
 import code.screenings.exception.ScreeningFreeSeatsQuantityBiggerThanRoomOneException;
 import code.screenings.exception.ScreeningNoFreeSeatsException;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Table(name = "SCREENINGS")
+@AllArgsConstructor
+@Builder
 @EqualsAndHashCode(of = "uuid")
 @ToString
 class Screening {
@@ -27,9 +27,9 @@ class Screening {
     @AttributeOverride(name = "value", column = @Column(name = "date"))
     private ScreeningDate date;
 
-    private int minAge;
+    private Integer minAge;
 
-    private int freeSeatsQuantity;
+    private Integer freeSeatsQuantity;
 
     private Long filmId;
 

@@ -20,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static code.films.FilmTestUtils.addSampleFilms;
 import static code.screenings.ScreeningTestUtils.*;
@@ -111,25 +113,22 @@ class ScreeningIT extends SpringTestsSpec {
     }
 
     @Test
-    void should_return_all_screenings() {
+    void should_search_all_screenings() {
         assertThat(
-                screeningFacade.readAll()
+                screeningFacade.searchBy(Map.of())
         ).isEqualTo(sampleScreenings);
     }
 
     @Test
-    void should_return_screenings_by_film_id() {
+    void should_search_screenings_by_search_params() {
+        var readParams = new HashMap<String, Object>() {{
+            put("filmId", sampleFilms.get(0).id());
+            put("date", sampleScreenings.get(0).date());
+        }};
         assertThat(
-                screeningFacade.readByFilmId(sampleFilms.get(0).id())
+                screeningFacade.searchBy(readParams)
         ).allMatch(
                 screening -> screening.filmId().equals(sampleFilms.get(0).id())
-        );
-    }
-
-    @Test
-    void should_return_screenings_by_date() {
-        assertThat(
-                screeningFacade.readByDate(sampleScreenings.get(0).date(), currentYear)
         ).allMatch(
                 screening -> screening.date().equals(sampleScreenings.get(0).date())
         );

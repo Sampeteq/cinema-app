@@ -39,6 +39,7 @@ public class FilmFacade {
                         .category((FilmCategory) parameters.get("category"))
                         .build()
         );
+        System.out.println(example.getProbe());
         return filmRepository
                 .findAll(example)
                 .stream()

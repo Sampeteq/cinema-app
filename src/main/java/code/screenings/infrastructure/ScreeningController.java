@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Year;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -36,18 +37,13 @@ class ScreeningController {
     }
 
     @GetMapping("/screenings")
-    List<ScreeningDTO> readAll() {
-        return ticketFacade.readAll();
-    }
-
-    @GetMapping("/screenings/{filmId}")
-    List<ScreeningDTO> readByFilmId(@PathVariable Long filmId) {
-        return ticketFacade.readByFilmId(filmId);
-    }
-
-    @GetMapping("/screenings/date")
-    List<ScreeningDTO> readByDate(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime date) {
-        return ticketFacade.readByDate(date, currentYear);
+    List<ScreeningDTO> searchBy(@RequestParam(required = false) Long filmId,
+                                @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime date) {
+        var searchParams = new HashMap<String, Object>() {{
+           put("filmId", filmId);
+           put("date", date);
+        }};
+        return ticketFacade.searchBy(searchParams);
     }
 
     @PostMapping("/screenings-rooms")

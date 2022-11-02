@@ -1,12 +1,8 @@
 package code.reservations;
 
 import code.reservations.dto.ReserveScreeningTicketDTO;
-import code.reservations.dto.ScreeningTicketReservationCancelledEvent;
-import code.reservations.dto.ScreeningTicketReservedEvent;
 import code.reservations.dto.TicketDTO;
 import code.reservations.exception.ScreeningTicketNotFoundException;
-import code.screenings.ScreeningFacade;
-import com.google.common.eventbus.EventBus;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,19 +13,13 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ReservationFacade {
 
-    private final ScreeningFacade screeningFacade;
-
     private final ScreeningTicketRepository screeningTicketRepository;
 
-    private final EventBus eventBus;
+    private final ScreeningTicketReservationService screeningTicketReservationService;
 
     @Transactional
-    public TicketDTO reserveTicket(ReserveScreeningTicketDTO reserveTicketDTO, Clock clock) {
-        var screeningReservationData = screeningFacade.fetchReservationData(reserveTicketDTO.screeningId());
-        var ticket = ScreeningTicket.reserve(reserveTicketDTO, screeningReservationData, clock);
-        eventBus.post(
-                new ScreeningTicketReservedEvent(reserveTicketDTO.screeningId())
-        );
+    public TicketDTO reserveTicket(ReserveScreeningTicketDTO dto, Clock clock) {
+        var ticket = screeningTicketReservationService.reserve(dto, clock);
         return screeningTicketRepository
                 .save(ticket)
                 .toDTO();
@@ -38,11 +28,7 @@ public class ReservationFacade {
     @Transactional
     public void cancelTicket(UUID ticketId, Clock clock) {
         var ticket = getTicketOrThrow(ticketId);
-        var screeningReservationData = screeningFacade.fetchReservationData(ticket.getScreeningId());
-        ticket.cancel(screeningReservationData.screeningDate(), clock);
-        eventBus.post(
-                new ScreeningTicketReservationCancelledEvent(ticket.getScreeningId())
-        );
+        screeningTicketReservationService.cancelTicket(ticket, clock);
     }
 
     public TicketDTO readTicket(UUID ticketId) {

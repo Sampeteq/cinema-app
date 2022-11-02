@@ -9,7 +9,6 @@ import code.reservations.exception.ReservationAlreadyCancelled;
 import code.reservations.exception.TooLateToCancelReservationException;
 import code.reservations.exception.TooLateToReservationException;
 import code.screenings.ScreeningFacade;
-import code.screenings.dto.AddScreeningDTO;
 import code.screenings.dto.ScreeningDTO;
 import code.screenings.dto.ScreeningRoomDTO;
 import code.screenings.exception.ScreeningNoFreeSeatsException;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 

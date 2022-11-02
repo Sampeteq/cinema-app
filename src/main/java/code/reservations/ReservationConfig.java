@@ -14,6 +14,7 @@ class ReservationConfig {
             ScreeningTicketRepository screeningTicketRepository,
             EventBus eventBus
     ) {
-        return new ReservationFacade(screeningFacade, screeningTicketRepository, eventBus);
+        var screeningTicketReservationService = new ScreeningTicketReservationService(screeningFacade, eventBus);
+        return new ReservationFacade(screeningTicketRepository, screeningTicketReservationService);
     }
 }

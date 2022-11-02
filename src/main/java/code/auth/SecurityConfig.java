@@ -17,7 +17,6 @@ import javax.sql.DataSource;
 @Configuration
 @AllArgsConstructor
 @Log4j2
-@Profile("dev")
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String MAIN_ADMIN_USERNAME = "MainAdmin";

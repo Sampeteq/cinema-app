@@ -19,6 +19,22 @@ public class FilmTestUtils {
                 .build();
     }
 
+    public static List<AddFilmDTO> sampleAddFilmDTOs() {
+        var dto1 = AddFilmDTO
+                .builder()
+                .title("Sample title 1")
+                .filmCategory(FilmCategory.COMEDY)
+                .year(Year.now().getValue())
+                .build();
+        var dto2 = AddFilmDTO
+                .builder()
+                .title("Sample title 1")
+                .filmCategory(FilmCategory.COMEDY)
+                .year(Year.now().getValue())
+                .build();
+        return List.of(dto1, dto2);
+    }
+
     public static AddFilmDTO sampleAddFilmDTOWithWrongFilmYear(int wrongFilmYear) {
         return AddFilmDTO
                 .builder()

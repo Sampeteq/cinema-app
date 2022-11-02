@@ -1,57 +1,128 @@
 package code.films;
 
 import code.SpringTestsSpec;
+import code.WebTestUtils;
 import code.films.exception.FilmYearException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.assertj.core.api.Assertions;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
+import static code.WebTestUtils.fromJson;
+import static code.WebTestUtils.toJson;
 import static code.films.FilmTestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@AutoConfigureMockMvc
 class FilmIT extends SpringTestsSpec {
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @Autowired
     private FilmFacade filmFacade;
 
     @Test
-    void should_add_film() {
-        var addedFilm = filmFacade.add(sampleAddFilmDTO());
-        Assertions.assertThat(
-                filmFacade.read(addedFilm.id())
-        ).isEqualTo(addedFilm);
+    @WithMockUser(username = "user", roles = "ADMIN")
+    void should_add_film() throws Exception {
+        //given
+        var sampleAddFilmDTO = sampleAddFilmDTO();
+
+        //when
+        var result = mockMvc.perform(
+                post("/films")
+                        .content(toJson(sampleAddFilmDTO))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result.andExpect(status().isOk());
+        mockMvc.perform(
+          get("/films")
+        ).andExpect(
+                jsonPath("$[0].title").value(sampleAddFilmDTO.title())
+        ).andExpect(
+                jsonPath("$[0].category").value(sampleAddFilmDTO.filmCategory().name())
+        ).andExpect(
+                jsonPath("$[0].year").value(sampleAddFilmDTO.year())
+        );
     }
 
     @ParameterizedTest
     @MethodSource("code.films.FilmTestUtils#wrongFilmYears")
-    void should_throw_exception_when_film_year_is_neither_previous_nor_current_nor_next_one(Integer wrongFilmYear) {
-        assertThrows(
-                FilmYearException.class,
-                () -> filmFacade.add(
-                        sampleAddFilmDTOWithWrongFilmYear(wrongFilmYear)
-                )
+    @WithMockUser(username = "user", roles = "ADMIN")
+    void should_throw_exception_when_film_year_is_neither_previous_nor_current_nor_next_one(Integer wrongFilmYear) throws Exception {
+        //given
+        var dto = sampleAddFilmDTOWithWrongFilmYear(wrongFilmYear);
+
+        //when
+        var result = mockMvc.perform(
+          post("/films")
+                  .content(toJson(dto))
+                  .contentType(MediaType.APPLICATION_JSON)
         );
+
+        //then
+        result
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(new FilmYearException(dto.year()).getMessage()));
     }
 
     @Test
-    void should_return_all_films() {
-        var sampleFilms = addSampleFilms(filmFacade);
-        Assertions.assertThat(filmFacade.readAll(Map.of())).isEqualTo(sampleFilms);
+    void should_search_all_films() throws Exception {
+        //given
+        var sampleFilms = sampleAddFilmDTOs()
+                .stream()
+                .map(dto -> filmFacade.add(dto))
+                .toList();
+
+        //when
+        var result = mockMvc.perform(
+                get("/films")
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(sampleFilms)));
     }
 
     @Test
-    void should_return_films_by_param() {
-        var sampleCategory = addSampleFilms(filmFacade)
-                .get(0)
-                .category();
-        Assertions.assertThat(
-                filmFacade.readAll(Map.of("category", sampleCategory))
-        ).allMatch(
-                film -> film.category().equals(sampleCategory)
+    void should_search_films_by_params() throws Exception {
+        //given
+        var sampleFilms = sampleAddFilmDTOs()
+                .stream()
+                .map(dto -> filmFacade.add(dto))
+                .toList();
+        var category = sampleFilms.get(0).category();
+        var filteredFilms= sampleFilms
+                .stream()
+                .filter(f -> f.category().equals(category))
+                .toList();
+
+        //when
+        var result = mockMvc.perform(
+                get("/films")
+                        .param("category", category.name())
         );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(filteredFilms)));
     }
 }

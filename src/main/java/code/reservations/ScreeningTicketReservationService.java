@@ -6,7 +6,6 @@ import code.reservations.dto.ScreeningTicketReservedEvent;
 import code.screenings.ScreeningFacade;
 import com.google.common.eventbus.EventBus;
 import lombok.AllArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 
@@ -18,8 +17,9 @@ class ScreeningTicketReservationService {
     private final EventBus eventBus;
 
     public ScreeningTicket reserve(ReserveScreeningTicketDTO dto, Clock clock) {
-        var screeningReservationData = screeningFacade.fetchReservationData(dto.screeningId());
-        var ticket = ScreeningTicket.reserve(dto, screeningReservationData, clock);
+        var reservationData = screeningFacade.fetchReservationData(dto.screeningId());
+        var ticket = new ScreeningTicket(dto.firstName(), dto.lastName(), dto.screeningId());
+        ticket.reserve(reservationData.screeningDate(), reservationData.screeningFreeSeats(), clock);
         eventBus.post(
                 new ScreeningTicketReservedEvent(dto.screeningId())
         );
@@ -27,8 +27,8 @@ class ScreeningTicketReservationService {
     }
 
     public void cancelTicket(ScreeningTicket ticket, Clock clock) {
-        var screeningReservationData = screeningFacade.fetchReservationData(ticket.getScreeningId());
-        ticket.cancel(screeningReservationData.screeningDate(), clock);
+        var screeningDate = screeningFacade.fetchScreeningDate(ticket.getScreeningId());
+        ticket.cancel(screeningDate, clock);
         eventBus.post(
                 new ScreeningTicketReservationCancelledEvent(ticket.getScreeningId())
         );

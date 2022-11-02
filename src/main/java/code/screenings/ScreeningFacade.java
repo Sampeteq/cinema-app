@@ -96,6 +96,12 @@ public class ScreeningFacade {
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
     }
 
+    public LocalDateTime fetchScreeningDate(Long screeningId) {
+        return getScreeningOrThrow(screeningId)
+                .toDTO()
+                .date();
+    }
+
     private Screening getScreeningOrThrow(Long screeningId) {
         return screeningRepository
                 .findById(screeningId)

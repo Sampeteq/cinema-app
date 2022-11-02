@@ -1,11 +1,9 @@
 package code.reservations;
 
-import code.reservations.dto.ReserveScreeningTicketDTO;
 import code.reservations.dto.TicketDTO;
 import code.reservations.exception.ReservationAlreadyCancelled;
 import code.reservations.exception.TooLateToCancelReservationException;
 import code.reservations.exception.TooLateToReservationException;
-import code.screenings.dto.ScreeningReservationData;
 import code.screenings.exception.ScreeningNoFreeSeatsException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,7 +36,7 @@ class ScreeningTicket {
 
     private BigDecimal prize = TICKET_BASIC_PRIZE;
 
-    private ScreeningTicketStatus status = ScreeningTicketStatus.OPEN;
+    private ScreeningTicketStatus status;
 
     @Getter
     private Long screeningId;
@@ -46,33 +44,24 @@ class ScreeningTicket {
     protected ScreeningTicket() {
     }
 
-    private ScreeningTicket(String firstName, String lastName, Long screeningId) {
+    ScreeningTicket(String firstName, String lastName, Long screeningId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.screeningId = screeningId;
     }
 
-    static ScreeningTicket reserve(
-            ReserveScreeningTicketDTO reserveScreeningTicketDTO,
-            ScreeningReservationData screeningReservationData,
-            Clock clock
-    ) {
-
+    void reserve(LocalDateTime screeningDate, int screeningFreeSeats, Clock clock) {
         var differenceBetweenCurrentDateAndScreeningOneInHours = Duration
-                .between(LocalDateTime.now(clock), screeningReservationData.screeningDate())
+                .between(LocalDateTime.now(clock), screeningDate)
                 .abs()
                 .toHours();
         if (differenceBetweenCurrentDateAndScreeningOneInHours < 24) {
             throw new TooLateToReservationException();
         }
-        if (screeningReservationData.screeningFreeSeats() == 0) {
-            throw new ScreeningNoFreeSeatsException(reserveScreeningTicketDTO.screeningId());
+        if (screeningFreeSeats == 0) {
+            throw new ScreeningNoFreeSeatsException(this.id);
         }
-        return new ScreeningTicket(
-                reserveScreeningTicketDTO.firstName(),
-                reserveScreeningTicketDTO.lastName(),
-                reserveScreeningTicketDTO.screeningId()
-        );
+        this.status = ScreeningTicketStatus.RESERVED;
     }
 
     void cancel(LocalDateTime screeningDate, Clock clock) {

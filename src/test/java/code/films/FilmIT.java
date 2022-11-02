@@ -8,6 +8,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Map;
+
 import static code.films.FilmTestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -38,16 +40,16 @@ class FilmIT extends SpringTestsSpec {
     @Test
     void should_return_all_films() {
         var sampleFilms = addSampleFilms(filmFacade);
-        Assertions.assertThat(filmFacade.readAll()).isEqualTo(sampleFilms);
+        Assertions.assertThat(filmFacade.readAll(Map.of())).isEqualTo(sampleFilms);
     }
 
     @Test
-    void should_return_films_with_given_category() {
+    void should_return_films_by_param() {
         var sampleCategory = addSampleFilms(filmFacade)
                 .get(0)
                 .category();
         Assertions.assertThat(
-                filmFacade.readByCategory(sampleCategory)
+                filmFacade.readAll(Map.of("category", sampleCategory))
         ).allMatch(
                 film -> film.category().equals(sampleCategory)
         );

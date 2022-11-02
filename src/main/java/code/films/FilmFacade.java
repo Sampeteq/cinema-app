@@ -4,8 +4,10 @@ import code.films.dto.AddFilmDTO;
 import code.films.dto.FilmDTO;
 import code.films.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Example;
 
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 public class FilmFacade {
@@ -30,17 +32,15 @@ public class FilmFacade {
                 .orElseThrow(() -> new FilmNotFoundException(filmId));
     }
 
-    public List<FilmDTO> readAll() {
+    public List<FilmDTO> readAll(Map<String, Object> parameters) {
+        var example = Example.of(
+                Film
+                        .builder()
+                        .category((FilmCategory) parameters.get("category"))
+                        .build()
+        );
         return filmRepository
-                .findAll()
-                .stream()
-                .map(Film::toDTO)
-                .toList();
-    }
-
-    public List<FilmDTO> readByCategory(FilmCategory category) {
-        return filmRepository
-                .findByCategory(category)
+                .findAll(example)
                 .stream()
                 .map(Film::toDTO)
                 .toList();

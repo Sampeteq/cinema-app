@@ -7,12 +7,16 @@ import code.films.dto.FilmDTO;
 import code.films.exception.FilmException;
 import code.films.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Nullable;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -26,13 +30,11 @@ class FilmController {
     }
 
     @GetMapping("/films")
-    List<FilmDTO> readAll() {
-        return filmFacade.readAll();
-    }
-
-    @GetMapping("/films/category")
-    List<FilmDTO> readByCategory(@RequestParam FilmCategory category) {
-        return filmFacade.readByCategory(category);
+    List<FilmDTO> readAll(@RequestParam(required = false) FilmCategory category) {
+        var readParameters = new HashMap<String, Object>() {{
+            put("category", category);
+        }};
+        return filmFacade.readAll(readParameters);
     }
 }
 

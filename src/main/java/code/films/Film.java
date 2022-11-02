@@ -1,6 +1,8 @@
 package code.films;
 
 import code.films.dto.FilmDTO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -9,6 +11,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "FILMS")
+@AllArgsConstructor
+@Builder
 @EqualsAndHashCode(of = "uuid")
 @ToString
 class Film {

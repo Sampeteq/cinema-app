@@ -1,11 +1,7 @@
 package code.films;
 
 import code.SpringTestsSpec;
-import code.WebTestUtils;
 import code.films.exception.FilmYearException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.assertj.core.api.Assertions;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,12 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
-
-import static code.WebTestUtils.fromJson;
 import static code.WebTestUtils.toJson;
 import static code.films.FilmTestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -28,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
-class FilmIT extends SpringTestsSpec {
+class FilmsIntegrationTests extends SpringTestsSpec {
 
     @Autowired
     private MockMvc mockMvc;

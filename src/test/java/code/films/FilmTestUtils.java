@@ -44,17 +44,6 @@ public class FilmTestUtils {
                 .build();
     }
 
-    public static FilmDTO addSampleFilm(FilmFacade filmFacade) {
-        return filmFacade.add(
-                AddFilmDTO
-                        .builder()
-                        .title("Sample title")
-                        .filmCategory(FilmCategory.COMEDY)
-                        .year(Year.now().getValue())
-                        .build()
-        );
-    }
-
     public static List<FilmDTO> addSampleFilms(FilmFacade filmFacade) {
         var sampleFilmDTO1 = filmFacade.add(
                 AddFilmDTO

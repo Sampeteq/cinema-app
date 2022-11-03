@@ -2,6 +2,7 @@ package code.screenings;
 
 import code.SpringTestsSpec;
 import code.films.FilmFacade;
+import code.films.SampleFilms;
 import code.films.dto.FilmDTO;
 import code.screenings.dto.AddScreeningDTO;
 import code.screenings.dto.AddScreeningRoomDTO;
@@ -24,12 +25,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static code.films.FilmTestUtils.addSampleFilms;
 import static code.screenings.ScreeningTestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ScreeningIT extends SpringTestsSpec {
+class ScreeningIT extends SpringTestsSpec implements SampleFilms {
 
     @Autowired
     private ScreeningFacade screeningFacade;

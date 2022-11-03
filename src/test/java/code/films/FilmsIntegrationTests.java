@@ -12,14 +12,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static code.WebTestUtils.toJson;
-import static code.films.FilmTestUtils.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
-class FilmsIntegrationTests extends SpringTestsSpec {
+class FilmsIntegrationTests extends SpringTestsSpec implements SampleFilms {
 
     @Autowired
     private MockMvc mockMvc;
@@ -54,7 +52,7 @@ class FilmsIntegrationTests extends SpringTestsSpec {
     }
 
     @ParameterizedTest
-    @MethodSource("code.films.FilmTestUtils#wrongFilmYears")
+    @MethodSource("code.films.SampleFilms#wrongFilmYears")
     @WithMockUser(username = "user", roles = "ADMIN")
     void should_throw_exception_when_film_year_is_neither_previous_nor_current_nor_next_one(Integer wrongFilmYear) throws Exception {
         //given

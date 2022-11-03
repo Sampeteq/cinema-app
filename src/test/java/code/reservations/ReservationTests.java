@@ -2,6 +2,7 @@ package code.reservations;
 
 import code.SpringTestsSpec;
 import code.films.FilmFacade;
+import code.films.SampleFilms;
 import code.films.dto.FilmDTO;
 import code.reservations.dto.ReserveScreeningTicketDTO;
 import code.reservations.dto.TicketDTO;
@@ -20,12 +21,11 @@ import java.time.Clock;
 import java.time.ZoneOffset;
 import java.util.List;
 
-import static code.films.FilmTestUtils.addSampleFilms;
 import static code.screenings.ScreeningTestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ReservationTests extends SpringTestsSpec {
+class ReservationTests extends SpringTestsSpec implements SampleFilms {
 
     @Autowired
     private ScreeningFacade screeningFacade;

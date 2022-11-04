@@ -70,6 +70,7 @@ class Screening {
                 .freeSeats(this.freeSeatsQuantity)
                 .minAge(this.minAge)
                 .filmId(this.filmId)
+                .roomUuid(this.room.getUuid())
                 .build();
     }
 }

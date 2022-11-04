@@ -1,5 +1,7 @@
 package code.screenings;
 
+import code.films.FilmFacade;
+import code.films.SampleFilms;
 import code.films.dto.FilmDTO;
 import code.screenings.dto.AddScreeningDTO;
 import code.screenings.dto.AddScreeningRoomDTO;
@@ -11,7 +13,7 @@ import java.time.Year;
 import java.util.List;
 import java.util.UUID;
 
-public class ScreeningTestUtils {
+public class ScreeningTestUtils implements SampleFilms {
 
     public static final Year currentYear = Year.now();
 
@@ -26,7 +28,7 @@ public class ScreeningTestUtils {
                 .build();
     }
 
-    public static AddScreeningDTO sampleAddScreeningDTOWithWrongScreeningYear(Long filmId, UUID roomId, int wrongScreeningYear) {
+    public static AddScreeningDTO sampleAddScreeningDTO(Long filmId, UUID roomId, int wrongScreeningYear) {
         return AddScreeningDTO
                 .builder()
                 .filmId(filmId)
@@ -34,6 +36,16 @@ public class ScreeningTestUtils {
                 .date(LocalDateTime.parse("2022-05-05T16:30").withYear(wrongScreeningYear))
                 .minAge(13)
                 .freeSeatsQuantity(200)
+                .build();
+    }
+
+
+
+    public static AddScreeningRoomDTO sampleAddRoomDTO() {
+        return AddScreeningRoomDTO
+                .builder()
+                .freeSeats(200)
+                .number(1)
                 .build();
     }
 
@@ -76,10 +88,9 @@ public class ScreeningTestUtils {
         );
     }
 
-    public static List<ScreeningDTO> addSampleScreenings(List<FilmDTO> sampleFilms,
-                                                         List<ScreeningRoomDTO> sampleRooms,
-                                                         ScreeningFacade screeningFacade) {
-
+    public static List<ScreeningDTO> addSampleScreenings(ScreeningFacade screeningFacade, FilmFacade filmFacade) {
+        var sampleFilms = SampleFilms.addSampleFilms(filmFacade);
+        var sampleRooms = addSampleScreeningRooms(screeningFacade);
         var screening1 = screeningFacade.add(
                 AddScreeningDTO
                         .builder()
@@ -105,5 +116,19 @@ public class ScreeningTestUtils {
 
     public static List<Integer> getWrongScreeningYears() {
         return List.of(currentYear.getValue() - 1, currentYear.getValue() + 2);
+    }
+
+    public static List<AddScreeningRoomDTO> distinctAddScreeningRoomDTOs() {
+        var dto1 = AddScreeningRoomDTO
+                .builder()
+                .number(1)
+                .freeSeats(200)
+                .build();
+        var dto2 = AddScreeningRoomDTO
+                .builder()
+                .number(2)
+                .freeSeats(200)
+                .build();
+        return List.of(dto1, dto2);
     }
 }

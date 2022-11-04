@@ -24,7 +24,7 @@ class ScreeningDate {
 
     static ScreeningDate of(LocalDateTime date) {
         if (date.getYear() != CURRENT_YEAR && date.getYear() != CURRENT_YEAR + 1) {
-            throw new ScreeningYearException(date.getYear(), CURRENT_YEAR);
+            throw new ScreeningYearException(date.getYear());
         } else {
             return new ScreeningDate(date);
         }

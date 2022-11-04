@@ -42,7 +42,7 @@ public interface SampleFilms {
                 .build();
     }
 
-    default List<FilmDTO> addSampleFilms(FilmFacade filmFacade) {
+    static List<FilmDTO> addSampleFilms(FilmFacade filmFacade) {
         var sampleFilmDTO1 = filmFacade.add(
                 AddFilmDTO
                         .builder()

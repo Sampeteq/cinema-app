@@ -47,9 +47,9 @@ class ReservationTests extends SpringTestsSpec implements SampleFilms {
 
     @BeforeEach
     void initTestData() {
-        sampleFilms = addSampleFilms(filmFacade);
+        sampleFilms = SampleFilms.addSampleFilms(filmFacade);
         sampleRooms = addSampleScreeningRooms(screeningFacade);
-        sampleScreenings = addSampleScreenings(sampleFilms, sampleRooms, screeningFacade);
+        sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
     }
 
     @Test

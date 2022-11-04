@@ -2,7 +2,6 @@ package code.screenings;
 
 import code.films.FilmFacade;
 import code.films.SampleFilms;
-import code.films.dto.FilmDTO;
 import code.screenings.dto.AddScreeningDTO;
 import code.screenings.dto.AddScreeningRoomDTO;
 import code.screenings.dto.ScreeningDTO;
@@ -116,19 +115,5 @@ public class ScreeningTestUtils implements SampleFilms {
 
     public static List<Integer> getWrongScreeningYears() {
         return List.of(currentYear.getValue() - 1, currentYear.getValue() + 2);
-    }
-
-    public static List<AddScreeningRoomDTO> distinctAddScreeningRoomDTOs() {
-        var dto1 = AddScreeningRoomDTO
-                .builder()
-                .number(1)
-                .freeSeats(200)
-                .build();
-        var dto2 = AddScreeningRoomDTO
-                .builder()
-                .number(2)
-                .freeSeats(200)
-                .build();
-        return List.of(dto1, dto2);
     }
 }

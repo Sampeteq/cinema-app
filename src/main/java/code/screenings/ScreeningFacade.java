@@ -25,10 +25,10 @@ public class ScreeningFacade {
     private final FilmFacade filmFacade;
 
     public ScreeningDTO add(AddScreeningDTO dto) {
-        validateFilmExisting(dto.filmId());
-        var room = getScreeningRoomOrThrow(dto.roomUuid());
         var date = ScreeningDate.of(dto.date());
+        var room = getScreeningRoomOrThrow(dto.roomUuid());
         validateScreeningRoomBeingBusy(date, dto.roomUuid());
+        validateFilmExisting(dto.filmId());
         var screening = new Screening(
                 date,
                 dto.minAge(),

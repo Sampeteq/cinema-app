@@ -11,11 +11,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static code.WebTestUtils.toJson;
+import static code.films.FilmTestUtils.sampleAddFilmDTOWithWrongFilmYear;
+import static code.films.FilmTestUtils.sampleAddFilmDTOs;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class FilmIntegrationTests extends SpringIntegrationTests implements SampleFilms {
+class FilmIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -27,7 +29,7 @@ class FilmIntegrationTests extends SpringIntegrationTests implements SampleFilms
     @WithMockUser(username = "user", roles = "ADMIN")
     void should_add_film() throws Exception {
         //given
-        var sampleAddFilmDTO = sampleAddFilmDTO();
+        var sampleAddFilmDTO = FilmTestUtils.sampleAddFilmDTO();
 
         //when
         var result = mockMvc.perform(
@@ -50,7 +52,7 @@ class FilmIntegrationTests extends SpringIntegrationTests implements SampleFilms
     }
 
     @ParameterizedTest
-    @MethodSource("code.films.SampleFilms#wrongFilmYears")
+    @MethodSource("code.films.FilmTestUtils#wrongFilmYears")
     @WithMockUser(username = "user", roles = "ADMIN")
     void should_throw_exception_when_film_year_is_neither_previous_nor_current_nor_next_one(Integer wrongFilmYear) throws Exception {
         //given

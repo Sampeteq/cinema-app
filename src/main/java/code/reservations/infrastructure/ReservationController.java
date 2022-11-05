@@ -3,7 +3,10 @@ package code.reservations.infrastructure;
 import code.reservations.ReservationFacade;
 import code.reservations.dto.ReserveScreeningTicketDTO;
 import code.reservations.dto.TicketDTO;
+import code.reservations.exception.ReservationException;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,5 +35,14 @@ class ReservationController {
     @GetMapping("/screenings-tickets")
     List<TicketDTO> readAllTickets() {
         return reservationFacade.readAllTickets();
+    }
+}
+
+@RestControllerAdvice
+class ReservationExceptionHandler {
+
+    @ExceptionHandler(ReservationException.class)
+    ResponseEntity<?> handle(ReservationException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

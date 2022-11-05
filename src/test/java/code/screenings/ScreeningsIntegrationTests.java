@@ -2,7 +2,7 @@ package code.screenings;
 
 import code.SpringIntegrationTests;
 import code.films.FilmFacade;
-import code.films.SampleFilms;
+import code.films.FilmTestUtils;
 import code.screenings.dto.AddScreeningDTO;
 import code.screenings.exception.ScreeningFreeSeatsQuantityBiggerThanRoomOneException;
 import code.screenings.exception.ScreeningRoomAlreadyExistsException;
@@ -19,12 +19,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 
 import static code.WebTestUtils.toJson;
+import static code.films.FilmTestUtils.sampleAddFilmDTO;
 import static code.screenings.ScreeningTestUtils.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class ScreeningsIntegrationTests extends SpringIntegrationTests implements SampleFilms {
+class ScreeningsIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;

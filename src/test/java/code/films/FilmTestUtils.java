@@ -6,9 +6,11 @@ import code.films.dto.FilmDTO;
 import java.time.Year;
 import java.util.List;
 
-public interface SampleFilms {
+public abstract class FilmTestUtils {
 
-    default AddFilmDTO sampleAddFilmDTO() {
+    private FilmTestUtils() {}
+
+    public static AddFilmDTO sampleAddFilmDTO() {
         return AddFilmDTO
                 .builder()
                 .title("Sample title")
@@ -17,7 +19,7 @@ public interface SampleFilms {
                 .build();
     }
 
-    default List<AddFilmDTO> sampleAddFilmDTOs() {
+    public static List<AddFilmDTO> sampleAddFilmDTOs() {
         var dto1 = AddFilmDTO
                 .builder()
                 .title("Sample title 1")
@@ -33,7 +35,7 @@ public interface SampleFilms {
         return List.of(dto1, dto2);
     }
 
-    default AddFilmDTO sampleAddFilmDTOWithWrongFilmYear(int wrongFilmYear) {
+    public static AddFilmDTO sampleAddFilmDTOWithWrongFilmYear(int wrongFilmYear) {
         return AddFilmDTO
                 .builder()
                 .title("Sample title")
@@ -42,7 +44,7 @@ public interface SampleFilms {
                 .build();
     }
 
-    static List<FilmDTO> addSampleFilms(FilmFacade filmFacade) {
+    public static List<FilmDTO> addSampleFilms(FilmFacade filmFacade) {
         var sampleFilmDTO1 = filmFacade.add(
                 AddFilmDTO
                         .builder()
@@ -62,7 +64,7 @@ public interface SampleFilms {
         return List.of(sampleFilmDTO1, sampleFilmDTO2);
     }
 
-    static List<Integer> wrongFilmYears() {
+    public static List<Integer> wrongFilmYears() {
         var currentYear = Year.now();
         return List.of(
                 currentYear.minusYears(2).getValue(),

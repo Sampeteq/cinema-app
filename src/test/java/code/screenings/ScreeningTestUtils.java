@@ -1,7 +1,7 @@
 package code.screenings;
 
 import code.films.FilmFacade;
-import code.films.SampleFilms;
+import code.films.FilmTestUtils;
 import code.screenings.dto.AddScreeningDTO;
 import code.screenings.dto.AddScreeningRoomDTO;
 import code.screenings.dto.ScreeningDTO;
@@ -12,7 +12,7 @@ import java.time.Year;
 import java.util.List;
 import java.util.UUID;
 
-public class ScreeningTestUtils implements SampleFilms {
+public class ScreeningTestUtils {
 
     public static final Year currentYear = Year.now();
 
@@ -88,7 +88,7 @@ public class ScreeningTestUtils implements SampleFilms {
     }
 
     public static List<ScreeningDTO> addSampleScreenings(ScreeningFacade screeningFacade, FilmFacade filmFacade) {
-        var sampleFilms = SampleFilms.addSampleFilms(filmFacade);
+        var sampleFilms = FilmTestUtils.addSampleFilms(filmFacade);
         var sampleRooms = addSampleScreeningRooms(screeningFacade);
         var screening1 = screeningFacade.add(
                 AddScreeningDTO

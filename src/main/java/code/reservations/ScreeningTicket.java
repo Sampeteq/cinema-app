@@ -59,7 +59,7 @@ class ScreeningTicket {
             throw new TooLateToReservationException();
         }
         if (screeningFreeSeats == 0) {
-            throw new ScreeningNoFreeSeatsException(this.id);
+            throw new ScreeningNoFreeSeatsException(this.screeningId);
         }
         this.status = ScreeningTicketStatus.RESERVED;
     }

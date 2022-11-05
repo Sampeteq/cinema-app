@@ -1,12 +1,11 @@
 package code.films;
 
-import code.SpringTestsSpec;
+import code.SpringIntegrationTests;
 import code.films.exception.FilmYearException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,8 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@AutoConfigureMockMvc
-class FilmsIntegrationTests extends SpringTestsSpec implements SampleFilms {
+class FilmIntegrationTests extends SpringIntegrationTests implements SampleFilms {
 
     @Autowired
     private MockMvc mockMvc;

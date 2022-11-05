@@ -1,6 +1,6 @@
 package code.reservations;
 
-import code.SpringTestsSpec;
+import code.SpringIntegrationTests;
 import code.films.FilmFacade;
 import code.films.SampleFilms;
 import code.films.dto.FilmDTO;
@@ -25,7 +25,7 @@ import static code.screenings.ScreeningTestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ReservationTests extends SpringTestsSpec implements SampleFilms {
+class ReservationIntegrationTests extends SpringIntegrationTests implements SampleFilms {
 
     @Autowired
     private ScreeningFacade screeningFacade;

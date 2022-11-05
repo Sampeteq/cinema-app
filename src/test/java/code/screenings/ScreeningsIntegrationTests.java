@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
-class ScreeningIT extends SpringTestsSpec implements SampleFilms {
+class ScreeningsIntegrationTests extends SpringTestsSpec implements SampleFilms {
 
     @Autowired
     private MockMvc mockMvc;

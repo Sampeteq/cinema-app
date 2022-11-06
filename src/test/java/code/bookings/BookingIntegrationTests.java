@@ -4,7 +4,7 @@ import code.SpringIntegrationTests;
 import code.films.FilmFacade;
 import code.bookings.dto.BookScreeningTicketDTO;
 import code.bookings.dto.TicketDTO;
-import code.bookings.exception.BookingAlreadyCancelled;
+import code.bookings.exception.BookingAlreadyCancelledException;
 import code.bookings.exception.TooLateToCancelBookingException;
 import code.bookings.exception.TooLateToBookingException;
 import code.screenings.ScreeningFacade;
@@ -196,7 +196,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new BookingAlreadyCancelled(sampleTicket.ticketUuid()).getMessage()));
+                .andExpect(content().string(new BookingAlreadyCancelledException(sampleTicket.ticketUuid()).getMessage()));
     }
 
     @Test

@@ -1,7 +1,7 @@
 package code.bookings;
 
 import code.bookings.dto.TicketDTO;
-import code.bookings.exception.BookingAlreadyCancelled;
+import code.bookings.exception.BookingAlreadyCancelledException;
 import code.bookings.exception.TooLateToCancelBookingException;
 import code.bookings.exception.TooLateToBookingException;
 import code.screenings.exception.ScreeningNoFreeSeatsException;
@@ -66,7 +66,7 @@ class ScreeningTicket {
 
     void cancel(LocalDateTime screeningDate, Clock clock) {
         if (this.status.equals(ScreeningTicketStatus.CANCELLED)) {
-            throw new BookingAlreadyCancelled(this.uuid);
+            throw new BookingAlreadyCancelledException(this.uuid);
         }
         var differenceBetweenCurrentDateAndScreeningOneInHours = Duration
                 .between(LocalDateTime.now(clock), screeningDate)

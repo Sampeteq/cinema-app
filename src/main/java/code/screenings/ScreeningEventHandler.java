@@ -1,7 +1,7 @@
 package code.screenings;
 
-import code.reservations.dto.ScreeningTicketReservationCancelledEvent;
-import code.reservations.dto.ScreeningTicketReservedEvent;
+import code.bookings.dto.ScreeningTicketBookingCancelledEvent;
+import code.bookings.dto.ScreeningTicketBookedEvent;
 import code.screenings.exception.ScreeningNotFoundException;
 import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ class ScreeningEventHandler {
     private final ScreeningRepository screeningRepository;
 
     @Subscribe
-    void handle(ScreeningTicketReservedEvent event) {
+    void handle(ScreeningTicketBookedEvent event) {
         var screening = screeningRepository
                 .findById(event.screeningId())
                 .orElseThrow(() -> new ScreeningNotFoundException(event.screeningId()));
@@ -21,7 +21,7 @@ class ScreeningEventHandler {
     }
 
     @Subscribe
-    void handle(ScreeningTicketReservationCancelledEvent event) {
+    void handle(ScreeningTicketBookingCancelledEvent event) {
         var screening = screeningRepository
                 .findById(event.screeningId())
                 .orElseThrow(() -> new ScreeningNotFoundException(event.screeningId()));

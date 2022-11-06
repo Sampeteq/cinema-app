@@ -1,23 +1,21 @@
-package code.reservations;
+package code.bookings;
 
 import code.SpringIntegrationTests;
 import code.films.FilmFacade;
-import code.reservations.dto.ReserveScreeningTicketDTO;
-import code.reservations.dto.TicketDTO;
-import code.reservations.exception.ReservationAlreadyCancelled;
-import code.reservations.exception.TooLateToCancelReservationException;
-import code.reservations.exception.TooLateToReservationException;
+import code.bookings.dto.BookScreeningTicketDTO;
+import code.bookings.dto.TicketDTO;
+import code.bookings.exception.BookingAlreadyCancelled;
+import code.bookings.exception.TooLateToCancelBookingException;
+import code.bookings.exception.TooLateToBookingException;
 import code.screenings.ScreeningFacade;
 import code.screenings.dto.AddScreeningDTO;
 import code.screenings.exception.ScreeningNoFreeSeatsException;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
@@ -28,13 +26,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class ReservationIntegrationTests extends SpringIntegrationTests {
+class BookingIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private ReservationFacade reservationFacade;
+    private BookingFacade bookingFacade;
 
     @Autowired
     private ScreeningFacade screeningFacade;
@@ -45,10 +43,10 @@ class ReservationIntegrationTests extends SpringIntegrationTests {
     private final Clock clock = Clock.systemUTC();
 
     @Test
-    void should_reserved_ticket() throws Exception {
+    void should_booked_ticket() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleReserveTicketDTO = sampleReserveTicketDTO(sampleScreenings.get(0).id());
+        var sampleReserveTicketDTO = sampleBookTicketDTO(sampleScreenings.get(0).id());
 
         //when
         var result = mockMvc.perform(
@@ -83,7 +81,7 @@ class ReservationIntegrationTests extends SpringIntegrationTests {
                         .roomUuid(sampleRooms.get(0).uuid())
                         .build()
         );
-        var sampleReserveTicketDTO = sampleReserveTicketDTO(sampleScreenings.id());
+        var sampleReserveTicketDTO = sampleBookTicketDTO(sampleScreenings.id());
 
         //when
         var result = mockMvc.perform(
@@ -95,7 +93,7 @@ class ReservationIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new TooLateToReservationException().getMessage()));
+                .andExpect(content().string(new TooLateToBookingException().getMessage()));
     }
 
     @Test
@@ -113,7 +111,7 @@ class ReservationIntegrationTests extends SpringIntegrationTests {
                         .roomUuid(sampleRooms.get(0).uuid())
                         .build()
         );
-        var sampleReserveTicketDTO = sampleReserveTicketDTO(sampleScreening.id());
+        var sampleReserveTicketDTO = sampleBookTicketDTO(sampleScreening.id());
 
         //when
         var result = mockMvc.perform(
@@ -129,10 +127,10 @@ class ReservationIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
-    void should_reduce_screening_free_seats_by_one_after_ticket_reservation() throws Exception {
+    void should_reduce_screening_free_seats_by_one_after_ticket_booking() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleReserveTicketDTO = sampleReserveTicketDTO(sampleScreenings.get(0).id());
+        var sampleReserveTicketDTO = sampleBookTicketDTO(sampleScreenings.get(0).id());
 
         //when
         mockMvc.perform(
@@ -151,7 +149,7 @@ class ReservationIntegrationTests extends SpringIntegrationTests {
     void should_cancel_ticket() throws Exception {
         //give
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleTicket = reserveSampleTicket(sampleScreenings.get(0).id());
+        var sampleTicket = bookSampleTicket(sampleScreenings.get(0).id());
 
         //when
         var result = mockMvc.perform(
@@ -161,15 +159,15 @@ class ReservationIntegrationTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         assertThat(
-                reservationFacade.readTicket(sampleTicket.ticketUuid()).status()
+                bookingFacade.readTicket(sampleTicket.ticketUuid()).status()
         ).isEqualTo(ScreeningTicketStatus.CANCELLED);
     }
 
     @Test
-    void should_increase_screening_free_seats_by_one_after_ticket_reservation_cancelling() throws Exception {
+    void should_increase_screening_free_seats_by_one_after_ticket_booking_cancelling() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleTicket = reserveSampleTicket(sampleScreenings.get(0).id());
+        var sampleTicket = bookSampleTicket(sampleScreenings.get(0).id());
 
         //when
         var result = mockMvc.perform(
@@ -187,8 +185,8 @@ class ReservationIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_when_ticket_is_already_cancelled() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleTicket= reserveSampleTicket(sampleScreenings.get(0).id());
-        reservationFacade.cancelTicket(sampleTicket.ticketUuid(), clock);
+        var sampleTicket= bookSampleTicket(sampleScreenings.get(0).id());
+        bookingFacade.cancelTicket(sampleTicket.ticketUuid(), clock);
 
         //when
         var result = mockMvc.perform(
@@ -198,11 +196,11 @@ class ReservationIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new ReservationAlreadyCancelled(sampleTicket.ticketUuid()).getMessage()));
+                .andExpect(content().string(new BookingAlreadyCancelled(sampleTicket.ticketUuid()).getMessage()));
     }
 
     @Test
-    void should_canceling_reservation_be_impossible_when_less_than_24h_to_screening() throws Exception {
+    void should_canceling_booking_be_impossible_when_less_than_24h_to_screening() throws Exception {
         //given
         var hoursUntilReservation = 23;
         var sampleFilmId = addSampleFilms(filmFacade).get(0).id();
@@ -215,8 +213,8 @@ class ReservationIntegrationTests extends SpringIntegrationTests {
                 sampleScreeningDate.minusHours(hoursUntilReservation + 1).toInstant(ZoneOffset.UTC),
                 ZoneOffset.UTC
         );
-        var sampleTicket = reservationFacade.reserveTicket(
-                sampleReserveTicketDTO(sampleScreening.id()),
+        var sampleTicket = bookingFacade.bookTicket(
+                sampleBookTicketDTO(sampleScreening.id()),
                 timeDuringReservation
         );
 
@@ -229,12 +227,12 @@ class ReservationIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new TooLateToCancelReservationException(sampleTicket.ticketUuid()).getMessage()
+                        new TooLateToCancelBookingException(sampleTicket.ticketUuid()).getMessage()
                 ));
     }
 
-    private static ReserveScreeningTicketDTO sampleReserveTicketDTO(Long sampleScreeningId) {
-        return ReserveScreeningTicketDTO
+    private static BookScreeningTicketDTO sampleBookTicketDTO(Long sampleScreeningId) {
+        return BookScreeningTicketDTO
                 .builder()
                 .screeningId(sampleScreeningId)
                 .firstName("Name 1")
@@ -242,9 +240,9 @@ class ReservationIntegrationTests extends SpringIntegrationTests {
                 .build();
     }
 
-    private TicketDTO reserveSampleTicket(Long sampleScreeningId) {
-        return reservationFacade.reserveTicket(
-                ReserveScreeningTicketDTO
+    private TicketDTO bookSampleTicket(Long sampleScreeningId) {
+        return bookingFacade.bookTicket(
+                BookScreeningTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)
                         .firstName("Name")

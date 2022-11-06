@@ -1,8 +1,8 @@
-package code.reservations;
+package code.bookings;
 
-import code.reservations.dto.ReserveScreeningTicketDTO;
-import code.reservations.dto.TicketDTO;
-import code.reservations.exception.ScreeningTicketNotFoundException;
+import code.bookings.dto.BookScreeningTicketDTO;
+import code.bookings.dto.TicketDTO;
+import code.bookings.exception.ScreeningTicketNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class ReservationFacade {
+public class BookingFacade {
 
     private final ScreeningTicketRepository screeningTicketRepository;
 
-    private final ScreeningTicketReservationService screeningTicketReservationService;
+    private final ScreeningTicketBookingService screeningTicketBookingService;
 
     @Transactional
-    public TicketDTO reserveTicket(ReserveScreeningTicketDTO dto, Clock clock) {
-        var ticket = screeningTicketReservationService.reserve(dto, clock);
+    public TicketDTO bookTicket(BookScreeningTicketDTO dto, Clock clock) {
+        var ticket = screeningTicketBookingService.book(dto, clock);
         return screeningTicketRepository
                 .save(ticket)
                 .toDTO();
@@ -28,7 +28,7 @@ public class ReservationFacade {
     @Transactional
     public void cancelTicket(UUID ticketId, Clock clock) {
         var ticket = getTicketOrThrow(ticketId);
-        screeningTicketReservationService.cancelTicket(ticket, clock);
+        screeningTicketBookingService.cancel(ticket, clock);
     }
 
     public TicketDTO readTicket(UUID ticketId) {

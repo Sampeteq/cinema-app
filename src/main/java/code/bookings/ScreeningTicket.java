@@ -1,9 +1,9 @@
-package code.reservations;
+package code.bookings;
 
-import code.reservations.dto.TicketDTO;
-import code.reservations.exception.ReservationAlreadyCancelled;
-import code.reservations.exception.TooLateToCancelReservationException;
-import code.reservations.exception.TooLateToReservationException;
+import code.bookings.dto.TicketDTO;
+import code.bookings.exception.BookingAlreadyCancelled;
+import code.bookings.exception.TooLateToCancelBookingException;
+import code.bookings.exception.TooLateToBookingException;
 import code.screenings.exception.ScreeningNoFreeSeatsException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -50,13 +50,13 @@ class ScreeningTicket {
         this.screeningId = screeningId;
     }
 
-    void reserve(LocalDateTime screeningDate, int screeningFreeSeats, Clock clock) {
+    void book(LocalDateTime screeningDate, int screeningFreeSeats, Clock clock) {
         var differenceBetweenCurrentDateAndScreeningOneInHours = Duration
                 .between(LocalDateTime.now(clock), screeningDate)
                 .abs()
                 .toHours();
         if (differenceBetweenCurrentDateAndScreeningOneInHours < 24) {
-            throw new TooLateToReservationException();
+            throw new TooLateToBookingException();
         }
         if (screeningFreeSeats == 0) {
             throw new ScreeningNoFreeSeatsException(this.screeningId);
@@ -66,14 +66,14 @@ class ScreeningTicket {
 
     void cancel(LocalDateTime screeningDate, Clock clock) {
         if (this.status.equals(ScreeningTicketStatus.CANCELLED)) {
-            throw new ReservationAlreadyCancelled(this.uuid);
+            throw new BookingAlreadyCancelled(this.uuid);
         }
         var differenceBetweenCurrentDateAndScreeningOneInHours = Duration
                 .between(LocalDateTime.now(clock), screeningDate)
                 .abs()
                 .toHours();
         if (differenceBetweenCurrentDateAndScreeningOneInHours < 24) {
-            throw new TooLateToCancelReservationException(this.uuid);
+            throw new TooLateToCancelBookingException(this.uuid);
         }
         this.status = ScreeningTicketStatus.CANCELLED;
     }

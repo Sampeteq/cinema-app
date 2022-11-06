@@ -90,7 +90,7 @@ public class ScreeningFacade {
                 .toList();
     }
 
-    public ScreeningReservationData fetchReservationData(Long screeningId) {
+    public ScreeningBookingData fetchBookingData(Long screeningId) {
         return screeningRepository
                 .findByIdAsReservationData(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));

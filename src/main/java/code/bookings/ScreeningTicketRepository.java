@@ -1,4 +1,4 @@
-package code.reservations;
+package code.bookings;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

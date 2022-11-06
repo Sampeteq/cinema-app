@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record ScreeningReservationData(LocalDateTime screeningDate, int screeningFreeSeats) {
+public record ScreeningBookingData(LocalDateTime screeningDate, int screeningFreeSeats) {
 }

@@ -1,9 +1,9 @@
-package code.reservations.infrastructure;
+package code.bookings.infrastructure;
 
-import code.reservations.ReservationFacade;
-import code.reservations.dto.ReserveScreeningTicketDTO;
-import code.reservations.dto.TicketDTO;
-import code.reservations.exception.ReservationException;
+import code.bookings.BookingFacade;
+import code.bookings.dto.BookScreeningTicketDTO;
+import code.bookings.dto.TicketDTO;
+import code.bookings.exception.BookingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,33 +16,33 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-class ReservationController {
+class BookingController {
 
-    private final ReservationFacade reservationFacade;
+    private final BookingFacade bookingFacade;
 
     private final Clock clock = Clock.systemUTC();
 
     @PostMapping("/screenings-tickets")
-    TicketDTO reserveTicket(@RequestBody @Valid ReserveScreeningTicketDTO dto) {
-        return reservationFacade.reserveTicket(dto, clock);
+    TicketDTO bookTicket(@RequestBody @Valid BookScreeningTicketDTO dto) {
+        return bookingFacade.bookTicket(dto, clock);
     }
 
     @PatchMapping("/screenings-tickets/{ticketUUID}/cancel")
     void cancelTicket(@PathVariable UUID ticketUUID) {
-        reservationFacade.cancelTicket(ticketUUID, clock);
+        bookingFacade.cancelTicket(ticketUUID, clock);
     }
 
     @GetMapping("/screenings-tickets")
     List<TicketDTO> readAllTickets() {
-        return reservationFacade.readAllTickets();
+        return bookingFacade.readAllTickets();
     }
 }
 
 @RestControllerAdvice
-class ReservationExceptionHandler {
+class BookingExceptionHandler {
 
-    @ExceptionHandler(ReservationException.class)
-    ResponseEntity<?> handle(ReservationException exception) {
+    @ExceptionHandler(BookingException.class)
+    ResponseEntity<?> handle(BookingException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

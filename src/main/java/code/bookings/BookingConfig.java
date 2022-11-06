@@ -1,4 +1,4 @@
-package code.reservations;
+package code.bookings;
 
 import code.screenings.ScreeningFacade;
 import com.google.common.eventbus.EventBus;
@@ -6,15 +6,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-class ReservationConfig {
+class BookingConfig {
 
     @Bean
-    ReservationFacade reservationFacade(
+    BookingFacade bookingFacade(
             ScreeningFacade screeningFacade,
             ScreeningTicketRepository screeningTicketRepository,
             EventBus eventBus
     ) {
-        var screeningTicketReservationService = new ScreeningTicketReservationService(screeningFacade, eventBus);
-        return new ReservationFacade(screeningTicketRepository, screeningTicketReservationService);
+        var screeningTicketReservationService = new ScreeningTicketBookingService(screeningFacade, eventBus);
+        return new BookingFacade(screeningTicketRepository, screeningTicketReservationService);
     }
 }

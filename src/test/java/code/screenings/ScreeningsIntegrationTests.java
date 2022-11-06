@@ -2,7 +2,6 @@ package code.screenings;
 
 import code.SpringIntegrationTests;
 import code.films.FilmFacade;
-import code.films.FilmTestUtils;
 import code.screenings.dto.AddScreeningDTO;
 import code.screenings.exception.ScreeningFreeSeatsQuantityBiggerThanRoomOneException;
 import code.screenings.exception.ScreeningRoomAlreadyExistsException;
@@ -46,9 +45,9 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         var sampleAddScreeningDTO = sampleAddScreeningDTO(sampleFilmId, sampleRoomUuid);
         //when
         var result = mockMvc.perform(
-          post("/screenings")
-                  .content(toJson(sampleAddScreeningDTO))
-                  .contentType(MediaType.APPLICATION_JSON)
+                post("/screenings")
+                        .content(toJson(sampleAddScreeningDTO))
+                        .contentType(MediaType.APPLICATION_JSON)
         );
 
         //then
@@ -116,7 +115,7 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         //given
         var sampleFilmId = filmFacade.add(sampleAddFilmDTO()).id();
         var sampleAddRoomDTO = sampleAddRoomDTO();
-        var sampleRoomUuid= screeningFacade.addRoom(sampleAddRoomDTO).uuid();
+        var sampleRoomUuid = screeningFacade.addRoom(sampleAddRoomDTO).uuid();
         var sampleAddScreeningDTO = AddScreeningDTO
                 .builder()
                 .freeSeatsQuantity(sampleAddRoomDTO.freeSeats() + 1)
@@ -128,9 +127,9 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-          post("/screenings")
-                  .content(toJson(sampleAddScreeningDTO))
-                  .contentType(MediaType.APPLICATION_JSON)
+                post("/screenings")
+                        .content(toJson(sampleAddScreeningDTO))
+                        .contentType(MediaType.APPLICATION_JSON)
         );
 
         //then
@@ -146,7 +145,7 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-          get("/screenings")
+                get("/screenings")
         );
 
         //then
@@ -161,7 +160,7 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
         var filmId = sampleScreenings.get(0).filmId();
         var screeningDate = sampleScreenings.get(0).date();
-        var filteredScreening= sampleScreenings
+        var filteredScreening = sampleScreenings
                 .stream()
                 .filter(screening -> screening.id().equals(filmId))
                 .filter(screening -> screening.date().equals(screeningDate))
@@ -169,9 +168,9 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-          get("/screenings")
-                  .param("filmId", filmId.toString())
-                  .param("date", screeningDate.toString())
+                get("/screenings")
+                        .param("filmId", filmId.toString())
+                        .param("date", screeningDate.toString())
         );
 
         //then
@@ -196,8 +195,8 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         mockMvc.perform(
-                get("/screenings-rooms")
-        )
+                        get("/screenings-rooms")
+                )
                 .andExpect(jsonPath("$[0].number").value(sampleAddRoomDTO.number()))
                 .andExpect(jsonPath("$[0].freeSeats").value(sampleAddRoomDTO.freeSeats()));
     }

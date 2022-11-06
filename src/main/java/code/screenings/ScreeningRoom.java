@@ -1,7 +1,6 @@
 package code.screenings;
 
 import code.screenings.dto.ScreeningRoomDTO;
-import code.screenings.exception.ScreeningNoFreeSeatsException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;

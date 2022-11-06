@@ -34,8 +34,8 @@ class ScreeningController {
     List<ScreeningDTO> searchBy(@RequestParam(required = false) Long filmId,
                                 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime date) {
         var searchParams = new HashMap<String, Object>() {{
-           put("filmId", filmId);
-           put("date", date);
+            put("filmId", filmId);
+            put("date", date);
         }};
         return ticketFacade.searchBy(searchParams);
     }

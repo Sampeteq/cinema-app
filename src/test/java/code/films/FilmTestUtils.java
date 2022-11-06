@@ -8,7 +8,8 @@ import java.util.List;
 
 public abstract class FilmTestUtils {
 
-    private FilmTestUtils() {}
+    private FilmTestUtils() {
+    }
 
     public static AddFilmDTO sampleAddFilmDTO() {
         return AddFilmDTO

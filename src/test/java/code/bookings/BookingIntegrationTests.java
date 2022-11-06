@@ -1,12 +1,12 @@
 package code.bookings;
 
 import code.SpringIntegrationTests;
-import code.films.FilmFacade;
 import code.bookings.dto.BookScreeningTicketDTO;
 import code.bookings.dto.TicketDTO;
 import code.bookings.exception.BookingAlreadyCancelledException;
-import code.bookings.exception.TooLateToCancelBookingException;
 import code.bookings.exception.TooLateToBookingException;
+import code.bookings.exception.TooLateToCancelBookingException;
+import code.films.FilmFacade;
 import code.screenings.ScreeningFacade;
 import code.screenings.dto.AddScreeningDTO;
 import code.screenings.exception.ScreeningNoFreeSeatsException;
@@ -185,7 +185,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_when_ticket_is_already_cancelled() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleTicket= bookSampleTicket(sampleScreenings.get(0).id());
+        var sampleTicket = bookSampleTicket(sampleScreenings.get(0).id());
         bookingFacade.cancelTicket(sampleTicket.ticketUuid(), clock);
 
         //when

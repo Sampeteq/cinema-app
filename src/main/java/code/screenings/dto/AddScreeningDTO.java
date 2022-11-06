@@ -12,7 +12,7 @@ import java.util.UUID;
 @With
 public record AddScreeningDTO(
         @NotNull
-        @Schema(type="string" , example = "2022-01-01 16:30")  LocalDateTime date,
+        @Schema(type = "string", example = "2022-01-01 16:30") LocalDateTime date,
         @NotNull
         Integer freeSeatsQuantity,
         @NotNull

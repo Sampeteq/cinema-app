@@ -39,7 +39,6 @@ public class ScreeningTestUtils {
     }
 
 
-
     public static AddScreeningRoomDTO sampleAddRoomDTO() {
         return AddScreeningRoomDTO
                 .builder()

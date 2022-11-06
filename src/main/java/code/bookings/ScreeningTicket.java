@@ -2,8 +2,8 @@ package code.bookings;
 
 import code.bookings.dto.TicketDTO;
 import code.bookings.exception.BookingAlreadyCancelledException;
-import code.bookings.exception.TooLateToCancelBookingException;
 import code.bookings.exception.TooLateToBookingException;
+import code.bookings.exception.TooLateToCancelBookingException;
 import code.screenings.exception.ScreeningNoFreeSeatsException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -41,7 +41,7 @@ class FilmIntegrationTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         mockMvc.perform(
-          get("/films")
+                get("/films")
         ).andExpect(
                 jsonPath("$[0].title").value(sampleAddFilmDTO.title())
         ).andExpect(
@@ -60,9 +60,9 @@ class FilmIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-          post("/films")
-                  .content(toJson(dto))
-                  .contentType(MediaType.APPLICATION_JSON)
+                post("/films")
+                        .content(toJson(dto))
+                        .contentType(MediaType.APPLICATION_JSON)
         );
 
         //then
@@ -98,7 +98,7 @@ class FilmIntegrationTests extends SpringIntegrationTests {
                 .map(dto -> filmFacade.add(dto))
                 .toList();
         var category = sampleFilms.get(0).category();
-        var filteredFilms= sampleFilms
+        var filteredFilms = sampleFilms
                 .stream()
                 .filter(f -> f.category().equals(category))
                 .toList();

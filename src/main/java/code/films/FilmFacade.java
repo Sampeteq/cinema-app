@@ -14,11 +14,11 @@ public class FilmFacade {
 
     private final FilmRepository filmRepository;
 
-    public FilmDTO add(AddFilmDTO cmd) {
+    public FilmDTO add(AddFilmDTO dto) {
         var film = new Film(
-                cmd.title(),
-                cmd.filmCategory(),
-                FilmYear.of(cmd.year())
+                dto.title(),
+                dto.filmCategory(),
+                FilmYear.of(dto.year())
         );
         return filmRepository
                 .save(film)
@@ -39,7 +39,6 @@ public class FilmFacade {
                         .category((FilmCategory) parameters.get("category"))
                         .build()
         );
-        System.out.println(example.getProbe());
         return filmRepository
                 .findAll(example)
                 .stream()

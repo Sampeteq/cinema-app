@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -31,7 +32,7 @@ class ScreeningController {
     }
 
     @GetMapping("/screenings")
-    List<ScreeningDTO> searchBy(@RequestParam(required = false) Long filmId,
+    List<ScreeningDTO> searchBy(@RequestParam(required = false) UUID filmId,
                                 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime date) {
         var searchParams = new HashMap<String, Object>() {{
             put("filmId", filmId);

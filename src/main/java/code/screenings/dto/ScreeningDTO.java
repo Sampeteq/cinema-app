@@ -8,11 +8,11 @@ import java.util.UUID;
 
 @Builder
 public record ScreeningDTO(
-        Long id,
+        UUID id,
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         LocalDateTime date,
         int freeSeats,
         int minAge,
-        Long filmId,
+        UUID filmId,
         UUID roomUuid) {
 }

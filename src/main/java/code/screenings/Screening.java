@@ -12,16 +12,13 @@ import java.util.UUID;
 @Table(name = "SCREENINGS")
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "uuid")
+@EqualsAndHashCode(of = "id")
 @ToString
 class Screening {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
-    private Long id;
-
-    private UUID uuid = UUID.randomUUID();
+    private UUID id = UUID.randomUUID();
 
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "date"))
@@ -31,7 +28,7 @@ class Screening {
 
     private Integer freeSeatsQuantity;
 
-    private Long filmId;
+    private UUID filmId;
 
     @ManyToOne
     private ScreeningRoom room;
@@ -39,7 +36,7 @@ class Screening {
     protected Screening() {
     }
 
-    Screening(ScreeningDate date, int minAge, int freeSeatsQuantity, Long filmId, ScreeningRoom room) {
+    Screening(ScreeningDate date, int minAge, int freeSeatsQuantity, UUID filmId, ScreeningRoom room) {
         if (freeSeatsQuantity > room.getFreeSeats()) {
             throw new ScreeningFreeSeatsQuantityBiggerThanRoomOneException();
         }
@@ -70,7 +67,7 @@ class Screening {
                 .freeSeats(this.freeSeatsQuantity)
                 .minAge(this.minAge)
                 .filmId(this.filmId)
-                .roomUuid(this.room.getUuid())
+                .roomUuid(this.room.getId())
                 .build();
     }
 }

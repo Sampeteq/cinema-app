@@ -8,12 +8,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 import java.util.UUID;
 
-interface ScreeningRepository extends JpaRepository<Screening, Long> {
+interface ScreeningRepository extends JpaRepository<Screening, UUID> {
 
     @Query("select new code.screenings.dto.ScreeningBookingData(" +
             "s.date.value, " +
             "s.freeSeatsQuantity) from Screening s where s.id = :screeningId")
-    Optional<ScreeningBookingData> findByIdAsReservationData(@Param("screeningId") Long screeningId);
+    Optional<ScreeningBookingData> findByIdAsReservationData(@Param("screeningId") UUID screeningId);
 
-    boolean existsByDateAndRoom_uuid(ScreeningDate screeningDate, UUID roomUuid);
+    boolean existsByDateAndRoom_id(ScreeningDate screeningDate, UUID roomId);
 }

@@ -1,8 +1,10 @@
 package code.screenings.exception;
 
+import java.util.UUID;
+
 public class ScreeningNoFreeSeatsException extends ScreeningException {
 
-    public ScreeningNoFreeSeatsException(Long screeningId) {
+    public ScreeningNoFreeSeatsException(UUID screeningId) {
         super("No free seats for screening: " + screeningId);
     }
 }

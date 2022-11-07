@@ -13,15 +13,12 @@ import java.util.UUID;
 @Table(name = "FILMS")
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "uuid")
+@EqualsAndHashCode(of = "id")
 @ToString
 class Film {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private UUID uuid = UUID.randomUUID();
+    private UUID id = UUID.randomUUID();
 
     private String title;
 

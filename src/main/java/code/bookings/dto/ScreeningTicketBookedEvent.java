@@ -1,4 +1,6 @@
 package code.bookings.dto;
 
-public record ScreeningTicketBookedEvent(Long screeningId) {
+import java.util.UUID;
+
+public record ScreeningTicketBookedEvent(UUID screeningId) {
 }

@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 import static code.WebTestUtils.toJson;
 import static code.films.FilmTestUtils.addSampleFilms;
@@ -153,13 +154,13 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                patch("/screenings-tickets/" + sampleTicket.ticketUuid() + "/cancel")
+                patch("/screenings-tickets/" + sampleTicket.ticketId() + "/cancel")
         );
 
         //then
         result.andExpect(status().isOk());
         assertThat(
-                bookingFacade.readTicket(sampleTicket.ticketUuid()).status()
+                bookingFacade.readTicket(sampleTicket.ticketId()).status()
         ).isEqualTo(ScreeningTicketStatus.CANCELLED);
     }
 
@@ -171,7 +172,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                patch("/screenings-tickets/" + sampleTicket.ticketUuid() + "/cancel")
+                patch("/screenings-tickets/" + sampleTicket.ticketId() + "/cancel")
         );
 
         //then
@@ -186,17 +187,17 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
         var sampleTicket = bookSampleTicket(sampleScreenings.get(0).id());
-        bookingFacade.cancelTicket(sampleTicket.ticketUuid(), clock);
+        bookingFacade.cancelTicket(sampleTicket.ticketId(), clock);
 
         //when
         var result = mockMvc.perform(
-                patch("/screenings-tickets/" + sampleTicket.ticketUuid() + "/cancel")
+                patch("/screenings-tickets/" + sampleTicket.ticketId() + "/cancel")
         );
 
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new BookingAlreadyCancelledException(sampleTicket.ticketUuid()).getMessage()));
+                .andExpect(content().string(new BookingAlreadyCancelledException(sampleTicket.ticketId()).getMessage()));
     }
 
     @Test
@@ -220,18 +221,18 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                patch("/screenings-tickets/" + sampleTicket.ticketUuid() + "/cancel")
+                patch("/screenings-tickets/" + sampleTicket.ticketId() + "/cancel")
         );
 
         //then
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new TooLateToCancelBookingException(sampleTicket.ticketUuid()).getMessage()
+                        new TooLateToCancelBookingException(sampleTicket.ticketId()).getMessage()
                 ));
     }
 
-    private static BookScreeningTicketDTO sampleBookTicketDTO(Long sampleScreeningId) {
+    private static BookScreeningTicketDTO sampleBookTicketDTO(UUID sampleScreeningId) {
         return BookScreeningTicketDTO
                 .builder()
                 .screeningId(sampleScreeningId)
@@ -240,7 +241,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 .build();
     }
 
-    private TicketDTO bookSampleTicket(Long sampleScreeningId) {
+    private TicketDTO bookSampleTicket(UUID sampleScreeningId) {
         return bookingFacade.bookTicket(
                 BookScreeningTicketDTO
                         .builder()

@@ -18,17 +18,14 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "SCREENINGS_TICKETS")
-@EqualsAndHashCode(of = "uuid")
+@EqualsAndHashCode(of = "id")
 @ToString
 class ScreeningTicket {
 
     private static final BigDecimal TICKET_BASIC_PRIZE = new BigDecimal("10.0");
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private UUID uuid = UUID.randomUUID();
+    private UUID id = UUID.randomUUID();
 
     private String firstName;
 
@@ -39,12 +36,12 @@ class ScreeningTicket {
     private ScreeningTicketStatus status;
 
     @Getter
-    private Long screeningId;
+    private UUID screeningId;
 
     protected ScreeningTicket() {
     }
 
-    ScreeningTicket(String firstName, String lastName, Long screeningId) {
+    ScreeningTicket(String firstName, String lastName, UUID screeningId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.screeningId = screeningId;
@@ -66,14 +63,14 @@ class ScreeningTicket {
 
     void cancel(LocalDateTime screeningDate, Clock clock) {
         if (this.status.equals(ScreeningTicketStatus.CANCELLED)) {
-            throw new BookingAlreadyCancelledException(this.uuid);
+            throw new BookingAlreadyCancelledException(this.id);
         }
         var differenceBetweenCurrentDateAndScreeningOneInHours = Duration
                 .between(LocalDateTime.now(clock), screeningDate)
                 .abs()
                 .toHours();
         if (differenceBetweenCurrentDateAndScreeningOneInHours < 24) {
-            throw new TooLateToCancelBookingException(this.uuid);
+            throw new TooLateToCancelBookingException(this.id);
         }
         this.status = ScreeningTicketStatus.CANCELLED;
     }
@@ -81,7 +78,7 @@ class ScreeningTicket {
     TicketDTO toDTO() {
         return TicketDTO
                 .builder()
-                .ticketUuid(this.uuid)
+                .ticketId(this.id)
                 .firstName(this.firstName)
                 .lastName(this.lastName)
                 .prize(this.prize)

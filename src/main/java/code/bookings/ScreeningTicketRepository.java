@@ -7,5 +7,5 @@ import java.util.UUID;
 
 interface ScreeningTicketRepository extends JpaRepository<ScreeningTicket, Long> {
 
-    Optional<ScreeningTicket> findByUuid(UUID ticketId);
+    Optional<ScreeningTicket> findById(UUID ticketId);
 }

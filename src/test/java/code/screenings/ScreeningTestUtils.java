@@ -16,7 +16,7 @@ public class ScreeningTestUtils {
 
     public static final Year currentYear = Year.now();
 
-    public static AddScreeningDTO sampleAddScreeningDTO(Long filmId, UUID roomId) {
+    public static AddScreeningDTO sampleAddScreeningDTO(UUID filmId, UUID roomId) {
         return AddScreeningDTO
                 .builder()
                 .filmId(filmId)
@@ -27,7 +27,7 @@ public class ScreeningTestUtils {
                 .build();
     }
 
-    public static AddScreeningDTO sampleAddScreeningDTO(Long filmId, UUID roomId, int wrongScreeningYear) {
+    public static AddScreeningDTO sampleAddScreeningDTO(UUID filmId, UUID roomId, int wrongScreeningYear) {
         return AddScreeningDTO
                 .builder()
                 .filmId(filmId)
@@ -64,7 +64,7 @@ public class ScreeningTestUtils {
         );
     }
 
-    public static ScreeningDTO addSampleScreeningWithNoFreeSeats(Long sampleFilmId,
+    public static ScreeningDTO addSampleScreeningWithNoFreeSeats(UUID sampleFilmId,
                                                                  ScreeningFacade screeningFacade) {
         var screeningRoom = screeningFacade.addRoom(
                 AddScreeningRoomDTO

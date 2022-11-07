@@ -56,7 +56,7 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
                 .andExpect(jsonPath("$[0].date").value(sampleAddScreeningDTO.date().toString()))
                 .andExpect(jsonPath("$[0].minAge").value(sampleAddScreeningDTO.minAge()))
                 .andExpect(jsonPath("$[0].freeSeats").value(sampleAddScreeningDTO.freeSeatsQuantity()))
-                .andExpect(jsonPath("$[0].filmId").value(sampleAddScreeningDTO.filmId()))
+                .andExpect(jsonPath("$[0].filmId").value(sampleAddScreeningDTO.filmId().toString()))
                 .andExpect(jsonPath("$[0].roomUuid").value(sampleAddScreeningDTO.roomUuid().toString()));
     }
 
@@ -162,7 +162,7 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         var screeningDate = sampleScreenings.get(0).date();
         var filteredScreening = sampleScreenings
                 .stream()
-                .filter(screening -> screening.id().equals(filmId))
+                .filter(screening -> screening.filmId().equals(filmId))
                 .filter(screening -> screening.date().equals(screeningDate))
                 .toList();
 

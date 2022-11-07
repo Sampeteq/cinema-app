@@ -7,10 +7,10 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Builder
-public record TicketDTO(UUID ticketUuid,
+public record TicketDTO(UUID ticketId,
                         String firstName,
                         String lastName,
                         BigDecimal prize,
                         ScreeningTicketStatus status,
-                        Long screeningId) {
+                        UUID screeningId) {
 }

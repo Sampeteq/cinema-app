@@ -45,7 +45,7 @@ public class BookingFacade {
 
     private ScreeningTicket getTicketOrThrow(UUID ticketId) {
         return screeningTicketRepository
-                .findByUuid(ticketId)
+                .findById(ticketId)
                 .orElseThrow(() -> new ScreeningTicketNotFoundException(ticketId));
     }
 }

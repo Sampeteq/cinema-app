@@ -8,6 +8,7 @@ import org.springframework.data.domain.Example;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class FilmFacade {
@@ -25,7 +26,7 @@ public class FilmFacade {
                 .toDTO();
     }
 
-    public FilmDTO read(Long filmId) {
+    public FilmDTO read(UUID filmId) {
         return filmRepository
                 .findById(filmId)
                 .map(Film::toDTO)
@@ -46,7 +47,7 @@ public class FilmFacade {
                 .toList();
     }
 
-    public boolean isPresent(Long filmId) {
+    public boolean isPresent(UUID filmId) {
         return filmRepository.findById(filmId).isPresent();
     }
 }

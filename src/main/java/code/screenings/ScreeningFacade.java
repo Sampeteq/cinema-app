@@ -41,16 +41,16 @@ public class ScreeningFacade {
                 .toDTO();
     }
 
-    public ScreeningDTO read(Long screeningId) {
+    public ScreeningDTO read(UUID screeningId) {
         return getScreeningOrThrow(screeningId).toDTO();
     }
 
     public List<ScreeningDTO> searchBy(Map<String, Object> readParams) {
-        var filmId = (Long) readParams.get("filmId");
+        var filmId = (UUID) readParams.get("filmId");
         var date = (LocalDateTime) readParams.get("date");
         var screeningBuilder = Screening
                 .builder()
-                .id(filmId);
+                .filmId(filmId);
         if (date != null) {
             var screeningDate = ScreeningDate.of(date);
             screeningBuilder.date(screeningDate);
@@ -90,25 +90,25 @@ public class ScreeningFacade {
                 .toList();
     }
 
-    public ScreeningBookingData fetchBookingData(Long screeningId) {
+    public ScreeningBookingData fetchBookingData(UUID screeningId) {
         return screeningRepository
                 .findByIdAsReservationData(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
     }
 
-    public LocalDateTime fetchScreeningDate(Long screeningId) {
+    public LocalDateTime fetchScreeningDate(UUID screeningId) {
         return getScreeningOrThrow(screeningId)
                 .toDTO()
                 .date();
     }
 
-    private Screening getScreeningOrThrow(Long screeningId) {
+    private Screening getScreeningOrThrow(UUID screeningId) {
         return screeningRepository
                 .findById(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
     }
 
-    private void validateFilmExisting(Long filmId) {
+    private void validateFilmExisting(UUID filmId) {
         if (!filmFacade.isPresent(filmId)) {
             throw new FilmNotFoundException(filmId);
         }
@@ -121,7 +121,7 @@ public class ScreeningFacade {
     }
 
     private void validateScreeningRoomBeingBusy(ScreeningDate date, UUID roomUuid) {
-        if (screeningRepository.existsByDateAndRoom_uuid(date, roomUuid)) {
+        if (screeningRepository.existsByDateAndRoom_id(date, roomUuid)) {
             throw new ScreeningRoomBusyException(roomUuid);
         }
     }

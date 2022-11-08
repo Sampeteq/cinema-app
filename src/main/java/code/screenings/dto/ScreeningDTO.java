@@ -14,5 +14,5 @@ public record ScreeningDTO(
         int freeSeats,
         int minAge,
         UUID filmId,
-        UUID roomUuid) {
+        UUID roomId) {
 }

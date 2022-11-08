@@ -58,7 +58,7 @@ class ScreeningTicket {
         if (screeningFreeSeats == 0) {
             throw new ScreeningNoFreeSeatsException(this.screeningId);
         }
-        this.status = ScreeningTicketStatus.RESERVED;
+        this.status = ScreeningTicketStatus.BOOKED;
     }
 
     void cancel(LocalDateTime screeningDate, Clock clock) {

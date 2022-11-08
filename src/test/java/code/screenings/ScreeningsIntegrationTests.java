@@ -57,7 +57,7 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
                 .andExpect(jsonPath("$[0].minAge").value(sampleAddScreeningDTO.minAge()))
                 .andExpect(jsonPath("$[0].freeSeats").value(sampleAddScreeningDTO.freeSeatsQuantity()))
                 .andExpect(jsonPath("$[0].filmId").value(sampleAddScreeningDTO.filmId().toString()))
-                .andExpect(jsonPath("$[0].roomUuid").value(sampleAddScreeningDTO.roomUuid().toString()));
+                .andExpect(jsonPath("$[0].roomId").value(sampleAddScreeningDTO.roomId().toString()));
     }
 
     @ParameterizedTest
@@ -90,7 +90,7 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         var sampleAddScreeningDTO = AddScreeningDTO
                 .builder()
                 .filmId(sampleScreenings.get(0).filmId())
-                .roomUuid(sampleScreenings.get(0).roomUuid())
+                .roomId(sampleScreenings.get(0).roomId())
                 .date(sampleScreenings.get(0).date())
                 .minAge(13)
                 .freeSeatsQuantity(200)
@@ -106,7 +106,7 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new ScreeningRoomBusyException(sampleScreenings.get(0).roomUuid()).getMessage()));
+                .andExpect(content().string(new ScreeningRoomBusyException(sampleScreenings.get(0).roomId()).getMessage()));
     }
 
     @Test
@@ -119,7 +119,7 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         var sampleAddScreeningDTO = AddScreeningDTO
                 .builder()
                 .freeSeatsQuantity(sampleAddRoomDTO.freeSeats() + 1)
-                .roomUuid(sampleRoomUuid)
+                .roomId(sampleRoomUuid)
                 .minAge(13)
                 .date(LocalDateTime.parse("2022-05-05T16:30"))
                 .filmId(sampleFilmId)

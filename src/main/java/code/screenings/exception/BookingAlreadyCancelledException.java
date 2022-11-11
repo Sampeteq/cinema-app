@@ -1,4 +1,4 @@
-package code.bookings.exception;
+package code.screenings.exception;
 
 import java.util.UUID;
 

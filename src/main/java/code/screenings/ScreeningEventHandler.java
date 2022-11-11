@@ -1,7 +1,7 @@
 package code.screenings;
 
-import code.bookings.dto.ScreeningTicketBookedEvent;
-import code.bookings.dto.ScreeningTicketBookingCancelledEvent;
+import code.screenings.dto.ScreeningTicketBookedEvent;
+import code.screenings.dto.ScreeningTicketBookingCancelledEvent;
 import code.screenings.exception.ScreeningNotFoundException;
 import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;

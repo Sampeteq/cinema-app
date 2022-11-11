@@ -1,4 +1,4 @@
-package code.bookings.dto;
+package code.screenings.dto;
 
 import java.util.UUID;
 

@@ -1,8 +1,8 @@
-package code.bookings;
+package code.screenings;
 
-import code.bookings.dto.BookScreeningTicketDTO;
-import code.bookings.dto.TicketDTO;
-import code.bookings.exception.ScreeningTicketNotFoundException;
+import code.screenings.dto.BookScreeningTicketDTO;
+import code.screenings.dto.TicketDTO;
+import code.screenings.exception.ScreeningTicketNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

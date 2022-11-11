@@ -1,9 +1,9 @@
-package code.bookings.infrastructure;
+package code.screenings.infrastructure;
 
-import code.bookings.BookingFacade;
-import code.bookings.dto.BookScreeningTicketDTO;
-import code.bookings.dto.TicketDTO;
-import code.bookings.exception.BookingException;
+import code.screenings.BookingFacade;
+import code.screenings.dto.BookScreeningTicketDTO;
+import code.screenings.dto.TicketDTO;
+import code.screenings.exception.BookingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package code.bookings.exception;
+package code.screenings.exception;
 
 public class TooLateToBookingException extends BookingException {
 

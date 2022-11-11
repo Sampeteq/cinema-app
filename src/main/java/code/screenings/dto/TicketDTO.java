@@ -1,6 +1,6 @@
-package code.bookings.dto;
+package code.screenings.dto;
 
-import code.bookings.ScreeningTicketStatus;
+import code.screenings.ScreeningTicketStatus;
 import lombok.Builder;
 
 import java.math.BigDecimal;

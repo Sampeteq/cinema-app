@@ -1,6 +1,5 @@
-package code.bookings;
+package code.screenings;
 
-import code.screenings.ScreeningFacade;
 import com.google.common.eventbus.EventBus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,9 +1,8 @@
-package code.bookings;
+package code.screenings;
 
-import code.bookings.dto.BookScreeningTicketDTO;
-import code.bookings.dto.ScreeningTicketBookedEvent;
-import code.bookings.dto.ScreeningTicketBookingCancelledEvent;
-import code.screenings.ScreeningFacade;
+import code.screenings.dto.BookScreeningTicketDTO;
+import code.screenings.dto.ScreeningTicketBookedEvent;
+import code.screenings.dto.ScreeningTicketBookingCancelledEvent;
 import com.google.common.eventbus.EventBus;
 import lombok.AllArgsConstructor;
 

@@ -32,9 +32,6 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     private MockMvc mockMvc;
 
     @Autowired
-    private BookingFacade bookingFacade;
-
-    @Autowired
     private ScreeningFacade screeningFacade;
 
     @Autowired
@@ -78,7 +75,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                         .freeSeatsQuantity(200)
                         .minAge(13)
                         .filmId(sampleFilms.get(0).id())
-                        .roomId(sampleRooms.get(0).uuid())
+                        .roomId(sampleRooms.get(0).id())
                         .build()
         );
         var sampleBookTicketDTO = sampleBookTicketDTO(sampleScreenings.id());
@@ -108,7 +105,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                         .date(LocalDateTime.now().plusHours(24))
                         .minAge(13)
                         .filmId(sampleFilms.get(0).id())
-                        .roomId(sampleRooms.get(0).uuid())
+                        .roomId(sampleRooms.get(0).id())
                         .build()
         );
         var sampleBookTicketDTO = sampleBookTicketDTO(sampleScreening.id());
@@ -159,7 +156,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         assertThat(
-                bookingFacade.readTicket(sampleTicket.ticketId()).status()
+                screeningFacade.readTicket(sampleTicket.ticketId()).status()
         ).isEqualTo(ScreeningTicketStatus.CANCELLED);
     }
 
@@ -186,7 +183,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
         var sampleTicket = bookSampleTicket(sampleScreenings.get(0).id());
-        bookingFacade.cancelTicket(sampleTicket.ticketId(), clock);
+        screeningFacade.cancelTicket(sampleTicket.ticketId(), clock);
 
         //when
         var result = mockMvc.perform(
@@ -204,7 +201,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //given
         var hoursUntilBooking = 23;
         var sampleFilmId = addSampleFilms(filmFacade).get(0).id();
-        var sampleRoomUuid = addSampleScreeningRooms(screeningFacade).get(0).uuid();
+        var sampleRoomUuid = addSampleScreeningRooms(screeningFacade).get(0).id();
         var sampleScreeningDate = LocalDateTime.now().minusHours(hoursUntilBooking);
         var sampleScreening = screeningFacade.add(
                 sampleAddScreeningDTO(sampleFilmId, sampleRoomUuid).withDate(sampleScreeningDate)
@@ -213,7 +210,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 sampleScreeningDate.minusHours(hoursUntilBooking + 1).toInstant(ZoneOffset.UTC),
                 ZoneOffset.UTC
         );
-        var sampleTicket = bookingFacade.bookTicket(
+        var sampleTicket = screeningFacade.bookTicket(
                 sampleBookTicketDTO(sampleScreening.id()),
                 timeDuringBooking
         );
@@ -241,7 +238,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     }
 
     private TicketDTO bookSampleTicket(UUID sampleScreeningId) {
-        return bookingFacade.bookTicket(
+        return screeningFacade.bookTicket(
                 BookScreeningTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)

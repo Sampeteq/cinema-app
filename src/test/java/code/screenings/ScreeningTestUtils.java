@@ -78,7 +78,7 @@ public class ScreeningTestUtils {
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilmId)
-                        .roomId(screeningRoom.uuid())
+                        .roomId(screeningRoom.id())
                         .date(LocalDateTime.parse("2022-05-05T16:30"))
                         .minAge(13)
                         .freeSeatsQuantity(0)
@@ -93,7 +93,7 @@ public class ScreeningTestUtils {
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilms.get(0).id())
-                        .roomId(sampleRooms.get(0).uuid())
+                        .roomId(sampleRooms.get(0).id())
                         .date(LocalDateTime.parse("2022-05-05T16:00"))
                         .minAge(13)
                         .freeSeatsQuantity(200)
@@ -103,7 +103,7 @@ public class ScreeningTestUtils {
                 AddScreeningDTO
                         .builder()
                         .filmId(sampleFilms.get(1).id())
-                        .roomId(sampleRooms.get(1).uuid())
+                        .roomId(sampleRooms.get(1).id())
                         .date(LocalDateTime.parse("2022-06-09T17:30"))
                         .minAge(13)
                         .freeSeatsQuantity(200)

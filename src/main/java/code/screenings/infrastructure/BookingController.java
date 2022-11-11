@@ -1,6 +1,6 @@
 package code.screenings.infrastructure;
 
-import code.screenings.BookingFacade;
+import code.screenings.ScreeningFacade;
 import code.screenings.dto.BookScreeningTicketDTO;
 import code.screenings.dto.TicketDTO;
 import code.screenings.exception.BookingException;
@@ -18,23 +18,23 @@ import java.util.UUID;
 @AllArgsConstructor
 class BookingController {
 
-    private final BookingFacade bookingFacade;
+    private final ScreeningFacade screeningFacade;
 
     private final Clock clock = Clock.systemUTC();
 
     @PostMapping("/screenings-tickets")
     TicketDTO bookTicket(@RequestBody @Valid BookScreeningTicketDTO dto) {
-        return bookingFacade.bookTicket(dto, clock);
+        return screeningFacade.bookTicket(dto, clock);
     }
 
     @PatchMapping("/screenings-tickets/{ticketUUID}/cancel")
     void cancelTicket(@PathVariable UUID ticketUUID) {
-        bookingFacade.cancelTicket(ticketUUID, clock);
+        screeningFacade.cancelTicket(ticketUUID, clock);
     }
 
     @GetMapping("/screenings-tickets")
     List<TicketDTO> readAllTickets() {
-        return bookingFacade.readAllTickets();
+        return screeningFacade.readAllTickets();
     }
 }
 

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import java.time.Clock;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Year;
 
@@ -26,5 +28,12 @@ class ScreeningDate {
         } else {
             return new ScreeningDate(date);
         }
+    }
+
+    int differenceBetweenCurrentDateAndScreeningOneInHours(Clock clock) {
+        return (int) Duration
+                .between(LocalDateTime.now(clock), this.value)
+                .abs()
+                .toHours();
     }
 }

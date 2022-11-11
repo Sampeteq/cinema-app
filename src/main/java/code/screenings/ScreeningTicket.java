@@ -2,18 +2,18 @@ package code.screenings;
 
 import code.screenings.dto.TicketDTO;
 import code.screenings.exception.BookingAlreadyCancelledException;
+import code.screenings.exception.ScreeningNoFreeSeatsException;
 import code.screenings.exception.TooLateToBookingException;
 import code.screenings.exception.TooLateToCancelBookingException;
-import code.screenings.exception.ScreeningNoFreeSeatsException;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Clock;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -35,44 +35,38 @@ class ScreeningTicket {
 
     private ScreeningTicketStatus status;
 
-    @Getter
-    private UUID screeningId;
+    @ManyToOne
+    private Screening screening;
 
     protected ScreeningTicket() {
     }
 
-    ScreeningTicket(String firstName, String lastName, UUID screeningId) {
+    ScreeningTicket(String firstName, String lastName, Screening screening) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.screeningId = screeningId;
+        this.screening = screening;
     }
 
-    void book(LocalDateTime screeningDate, int screeningFreeSeats, Clock clock) {
-        var differenceBetweenCurrentDateAndScreeningOneInHours = Duration
-                .between(LocalDateTime.now(clock), screeningDate)
-                .abs()
-                .toHours();
-        if (differenceBetweenCurrentDateAndScreeningOneInHours < 24) {
+    void book(Clock clock) {
+        if (this.screening.differenceBetweenCurrentDateAndScreeningOneInHours(clock) < 24) {
             throw new TooLateToBookingException();
         }
-        if (screeningFreeSeats == 0) {
-            throw new ScreeningNoFreeSeatsException(this.screeningId);
+        if (!this.screening.hasFreeSeats()) {
+            throw new ScreeningNoFreeSeatsException(this.screening.getId());
         }
         this.status = ScreeningTicketStatus.BOOKED;
+        this.screening.decreaseFreeSeatsByOne();
     }
 
-    void cancel(LocalDateTime screeningDate, Clock clock) {
+    void cancel(Clock clock) {
         if (this.status.equals(ScreeningTicketStatus.CANCELLED)) {
             throw new BookingAlreadyCancelledException(this.id);
         }
-        var differenceBetweenCurrentDateAndScreeningOneInHours = Duration
-                .between(LocalDateTime.now(clock), screeningDate)
-                .abs()
-                .toHours();
-        if (differenceBetweenCurrentDateAndScreeningOneInHours < 24) {
+        if (this.screening.differenceBetweenCurrentDateAndScreeningOneInHours(clock) < 24) {
             throw new TooLateToCancelBookingException(this.id);
         }
         this.status = ScreeningTicketStatus.CANCELLED;
+        this.screening.increaseFreeSeatsByOne();
     }
 
     TicketDTO toDTO() {
@@ -83,7 +77,7 @@ class ScreeningTicket {
                 .lastName(this.lastName)
                 .prize(this.prize)
                 .status(this.status)
-                .screeningId(this.screeningId)
+                .screeningId(this.screening.getId())
                 .build();
     }
 }

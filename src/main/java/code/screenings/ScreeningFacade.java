@@ -3,13 +3,12 @@ package code.screenings;
 import code.films.FilmFacade;
 import code.films.exception.FilmNotFoundException;
 import code.screenings.dto.*;
-import code.screenings.exception.ScreeningNotFoundException;
-import code.screenings.exception.ScreeningRoomAlreadyExistsException;
-import code.screenings.exception.ScreeningRoomBusyException;
-import code.screenings.exception.ScreeningRoomNotFoundException;
+import code.screenings.exception.*;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Example;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,8 @@ public class ScreeningFacade {
     private final ScreeningRepository screeningRepository;
 
     private final ScreeningRoomRepository screeningRoomRepository;
+
+    private final ScreeningTicketRepository screeningTicketRepository;
 
     private final FilmFacade filmFacade;
 
@@ -90,16 +91,32 @@ public class ScreeningFacade {
                 .toList();
     }
 
-    public ScreeningBookingData fetchBookingData(UUID screeningId) {
-        return screeningRepository
-                .findByIdAsReservationData(screeningId)
-                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
+    @Transactional
+    public TicketDTO bookTicket(BookScreeningTicketDTO dto, Clock clock) {
+        var screening = getScreeningOrThrow(dto.screeningId());
+        var ticket = new ScreeningTicket(dto.firstName(), dto.lastName(), screening);
+        ticket.book(clock);
+        return screeningTicketRepository
+                .save(ticket)
+                .toDTO();
     }
 
-    public LocalDateTime fetchScreeningDate(UUID screeningId) {
-        return getScreeningOrThrow(screeningId)
-                .toDTO()
-                .date();
+    @Transactional
+    public void cancelTicket(UUID ticketId, Clock clock) {
+        var ticket = getTicketOrThrow(ticketId);
+        ticket.cancel(clock);
+    }
+
+    public TicketDTO readTicket(UUID ticketId) {
+        return getTicketOrThrow(ticketId).toDTO();
+    }
+
+    public List<TicketDTO> readAllTickets() {
+        return screeningTicketRepository
+                .findAll()
+                .stream()
+                .map(ScreeningTicket::toDTO)
+                .toList();
     }
 
     private Screening getScreeningOrThrow(UUID screeningId) {
@@ -124,5 +141,11 @@ public class ScreeningFacade {
         if (screeningRepository.existsByDateAndRoom_id(date, roomUuid)) {
             throw new ScreeningRoomBusyException(roomUuid);
         }
+    }
+
+    private ScreeningTicket getTicketOrThrow(UUID ticketId) {
+        return screeningTicketRepository
+                .findById(ticketId)
+                .orElseThrow(() -> new ScreeningTicketNotFoundException(ticketId));
     }
 }

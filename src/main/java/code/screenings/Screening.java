@@ -6,6 +6,9 @@ import code.screenings.exception.ScreeningNoFreeSeatsException;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -45,6 +48,14 @@ class Screening {
         this.freeSeatsQuantity = freeSeatsQuantity;
         this.filmId = filmId;
         this.room = room;
+    }
+
+    int differenceBetweenCurrentDateAndScreeningOneInHours(Clock clock) {
+        return this.date.differenceBetweenCurrentDateAndScreeningOneInHours(clock);
+    }
+
+    boolean hasFreeSeats() {
+        return this.freeSeatsQuantity > 0;
     }
 
     void decreaseFreeSeatsByOne() {

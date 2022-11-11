@@ -18,15 +18,13 @@ import java.time.Year;
 @Getter
 class ScreeningDate {
 
-    private static final int CURRENT_YEAR = Year.now().getValue();
-
     private LocalDateTime value;
 
     static ScreeningDate of(LocalDateTime date) {
-        if (date.getYear() != CURRENT_YEAR && date.getYear() != CURRENT_YEAR + 1) {
-            throw new ScreeningYearException(date.getYear());
-        } else {
+        if (isScreeningYearCurrentOrNextOne(date.getYear())) {
             return new ScreeningDate(date);
+        } else {
+            throw new ScreeningYearException(date.getYear());
         }
     }
 
@@ -35,5 +33,10 @@ class ScreeningDate {
                 .between(LocalDateTime.now(clock), this.value)
                 .abs()
                 .toHours();
+    }
+
+    private static boolean isScreeningYearCurrentOrNextOne(int year) {
+        var currentYear = Year.now().getValue();
+        return year == currentYear || year == currentYear + 1;
     }
 }

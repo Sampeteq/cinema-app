@@ -5,7 +5,9 @@ import code.screenings.exception.BookingAlreadyCancelledException;
 import code.screenings.exception.ScreeningNoFreeSeatsException;
 import code.screenings.exception.TooLateToBookingException;
 import code.screenings.exception.TooLateToCancelBookingException;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Entity;
@@ -18,6 +20,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "SCREENINGS_TICKETS")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @ToString
 class ScreeningTicket {
@@ -37,9 +40,6 @@ class ScreeningTicket {
 
     @ManyToOne
     private Screening screening;
-
-    protected ScreeningTicket() {
-    }
 
     ScreeningTicket(String firstName, String lastName, Screening screening) {
         this.firstName = firstName;

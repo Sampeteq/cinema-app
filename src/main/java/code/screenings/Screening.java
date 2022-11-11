@@ -7,13 +7,12 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Clock;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "SCREENINGS")
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @EqualsAndHashCode(of = "id")
 @ToString
@@ -21,7 +20,7 @@ class Screening {
 
     @Id
     @Getter
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "date"))
@@ -36,18 +35,24 @@ class Screening {
     @ManyToOne
     private ScreeningRoom room;
 
-    protected Screening() {
-    }
-
-    Screening(ScreeningDate date, int minAge, int freeSeatsQuantity, UUID filmId, ScreeningRoom room) {
+    static Screening of(
+            ScreeningDate date,
+            int minAge,
+            int freeSeatsQuantity,
+            UUID filmId,
+            ScreeningRoom room
+    ) {
         if (freeSeatsQuantity > room.getFreeSeats()) {
             throw new ScreeningFreeSeatsQuantityBiggerThanRoomOneException();
         }
-        this.date = date;
-        this.minAge = minAge;
-        this.freeSeatsQuantity = freeSeatsQuantity;
-        this.filmId = filmId;
-        this.room = room;
+        return new Screening(
+                UUID.randomUUID(),
+                date,
+                minAge,
+                freeSeatsQuantity,
+                filmId,
+                room
+        );
     }
 
     int differenceBetweenCurrentDateAndScreeningOneInHours(Clock clock) {
@@ -78,7 +83,7 @@ class Screening {
                 .freeSeats(this.freeSeatsQuantity)
                 .minAge(this.minAge)
                 .filmId(this.filmId)
-                .roomId(this.room.getId())
+                .roomId(this.room.toDTO().id())
                 .build();
     }
 }

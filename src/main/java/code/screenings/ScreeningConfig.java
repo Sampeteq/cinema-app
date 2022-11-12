@@ -15,7 +15,14 @@ class ScreeningConfig {
                                  ScreeningRoomRepository screeningRoomRepository,
                                  ScreeningTicketRepository screeningTicketRepository,
                                  FilmFacade filmFacade) {
-        return new ScreeningFacade(screeningRepository, screeningRoomRepository, screeningTicketRepository, filmFacade);
+        var screeningSearcher = new ScreeningSearcher(screeningRepository);
+        return new ScreeningFacade(
+                screeningRepository,
+                screeningRoomRepository,
+                screeningTicketRepository,
+                screeningSearcher,
+                filmFacade
+        );
     }
 
     @Bean

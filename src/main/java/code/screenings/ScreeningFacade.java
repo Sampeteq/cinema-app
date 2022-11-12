@@ -23,6 +23,8 @@ public class ScreeningFacade {
 
     private final ScreeningTicketRepository screeningTicketRepository;
 
+    private final ScreeningSearcher screeningSearcher;
+
     private final FilmFacade filmFacade;
 
     public ScreeningDTO add(AddScreeningDTO dto) {
@@ -47,23 +49,7 @@ public class ScreeningFacade {
     }
 
     public List<ScreeningDTO> searchBy(Map<String, Object> readParams) {
-        var filmId = (UUID) readParams.get("filmId");
-        var date = (LocalDateTime) readParams.get("date");
-        var screeningBuilder = Screening
-                .builder()
-                .filmId(filmId);
-        if (date != null) {
-            var screeningDate = ScreeningDate.of(date);
-            screeningBuilder.date(screeningDate);
-        }
-        var screening = screeningBuilder.build();
-        var example = Example.of(screening);
-
-        return screeningRepository
-                .findAll(example)
-                .stream()
-                .map(Screening::toDTO)
-                .toList();
+        return screeningSearcher.searchBy(readParams);
     }
 
     public ScreeningRoomDTO addRoom(AddScreeningRoomDTO dto) {

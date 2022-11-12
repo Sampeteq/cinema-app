@@ -14,9 +14,9 @@ class ScreeningSearcher {
 
     private final ScreeningRepository screeningRepository;
 
-    public List<ScreeningDTO> searchBy(Map<String, Object> readParams) {
-        var filmId = (UUID) readParams.get("filmId");
-        var date = (LocalDateTime) readParams.get("date");
+    public List<ScreeningDTO> searchBy(Map<String, Object> params) {
+        var filmId = (UUID) params.get("filmId");
+        var date = (LocalDateTime) params.get("date");
         var screeningBuilder = Screening
                 .builder()
                 .filmId(filmId);

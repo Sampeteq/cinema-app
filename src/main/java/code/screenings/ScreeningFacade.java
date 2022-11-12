@@ -48,8 +48,8 @@ public class ScreeningFacade {
         return getScreeningOrThrow(screeningId).toDTO();
     }
 
-    public List<ScreeningDTO> searchBy(Map<String, Object> readParams) {
-        return screeningSearcher.searchBy(readParams);
+    public List<ScreeningDTO> searchBy(Map<String, Object> params) {
+        return screeningSearcher.searchBy(params);
     }
 
     public ScreeningRoomDTO addRoom(AddScreeningRoomDTO dto) {

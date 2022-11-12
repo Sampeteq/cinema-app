@@ -34,11 +34,11 @@ class ScreeningController {
     @GetMapping("/screenings")
     List<ScreeningDTO> searchBy(@RequestParam(required = false) UUID filmId,
                                 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime date) {
-        var searchParams = new HashMap<String, Object>() {{
+        var params = new HashMap<String, Object>() {{
             put("filmId", filmId);
             put("date", date);
         }};
-        return ticketFacade.searchBy(searchParams);
+        return ticketFacade.searchBy(params);
     }
 
     @PostMapping("/screenings-rooms")

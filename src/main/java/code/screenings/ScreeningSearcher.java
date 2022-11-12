@@ -17,14 +17,12 @@ class ScreeningSearcher {
     public List<ScreeningDTO> searchBy(Map<String, Object> params) {
         var filmId = (UUID) params.get("filmId");
         var date = (LocalDateTime) params.get("date");
-        var screeningBuilder = Screening
+        var screeningDate = date != null ? ScreeningDate.of(date) : null;
+        var screening = Screening
                 .builder()
-                .filmId(filmId);
-        if (date != null) {
-            var screeningDate = ScreeningDate.of(date);
-            screeningBuilder.date(screeningDate);
-        }
-        var screening = screeningBuilder.build();
+                .date(screeningDate)
+                .filmId(filmId)
+                .build();
         var example = Example.of(screening);
         return screeningRepository
                 .findAll(example)

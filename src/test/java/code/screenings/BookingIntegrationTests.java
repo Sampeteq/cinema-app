@@ -56,7 +56,6 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.ticketId").exists())
-                .andExpect(jsonPath("$.prize").exists())
                 .andExpect(jsonPath("$.screeningId").value(sampleBookTicketDTO.screeningId().toString()))
                 .andExpect(jsonPath("$.firstName").value(sampleBookTicketDTO.firstName()))
                 .andExpect(jsonPath("$.lastName").value(sampleBookTicketDTO.lastName()))

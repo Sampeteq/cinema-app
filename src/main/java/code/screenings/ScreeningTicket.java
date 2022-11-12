@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.time.Clock;
 import java.util.UUID;
 
@@ -25,16 +24,12 @@ import java.util.UUID;
 @ToString
 class ScreeningTicket {
 
-    private static final BigDecimal TICKET_BASIC_PRIZE = new BigDecimal("10.0");
-
     @Id
     private UUID id = UUID.randomUUID();
 
     private String firstName;
 
     private String lastName;
-
-    private BigDecimal prize = TICKET_BASIC_PRIZE;
 
     private ScreeningTicketStatus status;
 
@@ -75,7 +70,6 @@ class ScreeningTicket {
                 .ticketId(this.id)
                 .firstName(this.firstName)
                 .lastName(this.lastName)
-                .prize(this.prize)
                 .status(this.status)
                 .screeningId(this.screening.getId())
                 .build();

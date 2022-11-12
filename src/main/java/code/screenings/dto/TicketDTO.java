@@ -10,7 +10,6 @@ import java.util.UUID;
 public record TicketDTO(UUID ticketId,
                         String firstName,
                         String lastName,
-                        BigDecimal prize,
                         ScreeningTicketStatus status,
                         UUID screeningId) {
 }

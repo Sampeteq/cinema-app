@@ -27,13 +27,23 @@ class ScreeningController {
     private final ScreeningFacade ticketFacade;
 
     @PostMapping("/screenings")
-    ScreeningDTO add(@RequestBody @Valid AddScreeningDTO dto) {
+    ScreeningDTO add(
+            @RequestBody
+            @Valid
+            AddScreeningDTO dto
+    ) {
         return ticketFacade.add(dto);
     }
 
     @GetMapping("/screenings")
-    List<ScreeningDTO> searchBy(@RequestParam(required = false) UUID filmId,
-                                @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime date) {
+    List<ScreeningDTO> searchBy(
+            @RequestParam(required = false)
+            UUID filmId,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+            LocalDateTime date
+    ) {
         var params = new HashMap<String, Object>() {{
             put("filmId", filmId);
             put("date", date);
@@ -42,7 +52,11 @@ class ScreeningController {
     }
 
     @PostMapping("/screenings-rooms")
-    ScreeningRoomDTO addRoom(@RequestBody @Valid AddScreeningRoomDTO dto) {
+    ScreeningRoomDTO addRoom(
+            @RequestBody
+            @Valid
+            AddScreeningRoomDTO dto
+    ) {
         return ticketFacade.addRoom(dto);
     }
 

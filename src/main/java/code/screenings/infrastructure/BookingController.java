@@ -23,12 +23,19 @@ class BookingController {
     private final Clock clock = Clock.systemUTC();
 
     @PostMapping("/screenings-tickets")
-    TicketDTO bookTicket(@RequestBody @Valid BookScreeningTicketDTO dto) {
+    TicketDTO bookTicket(
+            @RequestBody
+            @Valid
+            BookScreeningTicketDTO dto
+    ) {
         return screeningFacade.bookTicket(dto, clock);
     }
 
     @PatchMapping("/screenings-tickets/{ticketUUID}/cancel")
-    void cancelTicket(@PathVariable UUID ticketUUID) {
+    void cancelTicket(
+            @PathVariable
+            UUID ticketUUID
+    ) {
         screeningFacade.cancelTicket(ticketUUID, clock);
     }
 

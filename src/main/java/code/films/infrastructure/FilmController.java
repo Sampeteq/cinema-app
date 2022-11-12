@@ -22,12 +22,19 @@ class FilmController {
     private final FilmFacade filmFacade;
 
     @PostMapping("/films")
-    FilmDTO add(@RequestBody @Valid AddFilmDTO dto) {
+    FilmDTO add(
+            @RequestBody
+            @Valid
+            AddFilmDTO dto
+    ) {
         return filmFacade.add(dto);
     }
 
     @GetMapping("/films")
-    List<FilmDTO> readAll(@RequestParam(required = false) FilmCategory category) {
+    List<FilmDTO> readAll(
+            @RequestParam(required = false)
+            FilmCategory category
+    ) {
         var readParameters = new HashMap<String, Object>() {{
             put("category", category);
         }};

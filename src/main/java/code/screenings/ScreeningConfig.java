@@ -4,9 +4,6 @@ import code.films.FilmFacade;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.Clock;
-import java.time.Year;
-
 @Configuration
 class ScreeningConfig {
 
@@ -25,13 +22,4 @@ class ScreeningConfig {
         );
     }
 
-    @Bean
-    Year currentYear() {
-        return Year.now();
-    }
-
-    @Bean
-    Clock clock() {
-        return Clock.systemUTC();
-    }
 }

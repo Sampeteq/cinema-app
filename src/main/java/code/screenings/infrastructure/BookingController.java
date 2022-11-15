@@ -20,7 +20,7 @@ class BookingController {
 
     private final ScreeningFacade screeningFacade;
 
-    private final Clock clock = Clock.systemUTC();
+    private final Clock clock;
 
     @PostMapping("/screenings-tickets")
     TicketDTO bookTicket(

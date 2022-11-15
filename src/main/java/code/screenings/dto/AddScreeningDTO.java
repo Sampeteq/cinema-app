@@ -22,5 +22,4 @@ public record AddScreeningDTO(
         @NotNull
         UUID roomId
 ) {
-
 }

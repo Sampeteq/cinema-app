@@ -41,8 +41,8 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
     void should_add_screening() throws Exception {
         //given
         var sampleFilmId = filmFacade.add(sampleAddFilmDTO()).id();
-        var sampleRoomUuid = screeningFacade.addRoom(sampleAddRoomDTO()).id();
-        var sampleAddScreeningDTO = sampleAddScreeningDTO(sampleFilmId, sampleRoomUuid);
+        var sampleRoomId = screeningFacade.addRoom(sampleAddRoomDTO()).id();
+        var sampleAddScreeningDTO = sampleAddScreeningDTO(sampleFilmId, sampleRoomId);
         //when
         var result = mockMvc.perform(
                 post("/screenings")
@@ -66,10 +66,10 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(Integer wrongYear) throws Exception {
         //given
         var sampleFilmId = filmFacade.add(sampleAddFilmDTO()).id();
-        var sampleRoomUuid = screeningFacade.addRoom(sampleAddRoomDTO()).id();
+        var sampleRoomId = screeningFacade.addRoom(sampleAddRoomDTO()).id();
         var sampleAddScreeningDTO = sampleAddScreeningDTO(
                 sampleFilmId,
-                sampleRoomUuid,
+                sampleRoomId,
                 wrongYear
         );
 

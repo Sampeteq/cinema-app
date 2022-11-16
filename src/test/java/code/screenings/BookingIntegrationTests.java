@@ -200,10 +200,10 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //given
         var hoursUntilBooking = 23;
         var sampleFilmId = addSampleFilms(filmFacade).get(0).id();
-        var sampleRoomUuid = addSampleScreeningRooms(screeningFacade).get(0).id();
+        var sampleRoomId = addSampleScreeningRooms(screeningFacade).get(0).id();
         var sampleScreeningDate = LocalDateTime.now().minusHours(hoursUntilBooking);
         var sampleScreening = screeningFacade.add(
-                sampleAddScreeningDTO(sampleFilmId, sampleRoomUuid).withDate(sampleScreeningDate)
+                sampleAddScreeningDTO(sampleFilmId, sampleRoomId).withDate(sampleScreeningDate)
         );
         var timeDuringBooking = Clock.fixed(
                 sampleScreeningDate.minusHours(hoursUntilBooking + 1).toInstant(ZoneOffset.UTC),

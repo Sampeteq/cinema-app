@@ -63,11 +63,15 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
     @ParameterizedTest
     @MethodSource("code.screenings.ScreeningTestUtils#getWrongScreeningYears")
     @WithMockUser(roles = "ADMIN")
-    void should_throw_exception_when_screening_year_is_not_current_or_next_one(Integer wrongScreeningYear) throws Exception {
+    void should_throw_exception_when_screening_year_is_not_current_or_next_one(Integer wrongYear) throws Exception {
         //given
         var sampleFilmId = filmFacade.add(sampleAddFilmDTO()).id();
         var sampleRoomUuid = screeningFacade.addRoom(sampleAddRoomDTO()).id();
-        var sampleAddScreeningDTO = sampleAddScreeningDTO(sampleFilmId, sampleRoomUuid, wrongScreeningYear);
+        var sampleAddScreeningDTO = sampleAddScreeningDTO(
+                sampleFilmId,
+                sampleRoomUuid,
+                wrongYear
+        );
 
         //when
         var result = mockMvc.perform(
@@ -79,7 +83,9 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new ScreeningYearException(wrongScreeningYear).getMessage()));
+                .andExpect(content().string(
+                        new ScreeningYearException(wrongYear).getMessage()
+                ));
     }
 
     @Test
@@ -87,14 +93,10 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_when_screening_room_is_busy() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleAddScreeningDTO = AddScreeningDTO
-                .builder()
-                .filmId(sampleScreenings.get(0).filmId())
-                .roomId(sampleScreenings.get(0).roomId())
-                .date(sampleScreenings.get(0).date())
-                .minAge(13)
-                .freeSeatsQuantity(200)
-                .build();
+        var sampleAddScreeningDTO = sampleAddScreeningDTO(
+                sampleScreenings.get(0).filmId(),
+                sampleScreenings.get(0).roomId()
+        ).withDate(sampleScreenings.get(0).date());
 
         //when
         var result = mockMvc.perform(
@@ -106,7 +108,9 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new ScreeningRoomBusyException(sampleScreenings.get(0).roomId()).getMessage()));
+                .andExpect(content().string(
+                        new ScreeningRoomBusyException(sampleScreenings.get(0).roomId()).getMessage()
+                ));
     }
 
     @Test
@@ -114,16 +118,11 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_when_screening_free_seats_quantity_is_bigger_than_room_one() throws Exception {
         //given
         var sampleFilmId = filmFacade.add(sampleAddFilmDTO()).id();
-        var sampleAddRoomDTO = sampleAddRoomDTO();
-        var sampleRoomUuid = screeningFacade.addRoom(sampleAddRoomDTO).id();
-        var sampleAddScreeningDTO = AddScreeningDTO
-                .builder()
-                .freeSeatsQuantity(sampleAddRoomDTO.freeSeats() + 1)
-                .roomId(sampleRoomUuid)
-                .minAge(13)
-                .date(LocalDateTime.parse("2022-05-05T16:30"))
-                .filmId(sampleFilmId)
-                .build();
+        var sampleRoom = screeningFacade.addRoom(sampleAddRoomDTO());
+        var sampleAddScreeningDTO = sampleAddScreeningDTO(
+                sampleFilmId,
+                sampleRoom.id()
+        ).withFreeSeatsQuantity(sampleRoom.freeSeats() + 1);
 
         //when
         var result = mockMvc.perform(
@@ -135,7 +134,9 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new ScreeningFreeSeatsQuantityBiggerThanRoomOneException().getMessage()));
+                .andExpect(content().string(
+                        new ScreeningFreeSeatsQuantityBiggerThanRoomOneException().getMessage()
+                ));
     }
 
     @Test
@@ -218,7 +219,9 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new ScreeningRoomAlreadyExistsException(sampleAddRoomDTO.number()).getMessage()));
+                .andExpect(content().string(
+                        new ScreeningRoomAlreadyExistsException(sampleAddRoomDTO.number()).getMessage()
+                ));
     }
 }
 

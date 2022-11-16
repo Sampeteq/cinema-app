@@ -11,8 +11,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static code.WebTestUtils.toJson;
-import static code.films.FilmTestUtils.sampleAddFilmDTOWithWrongFilmYear;
-import static code.films.FilmTestUtils.sampleAddFilmDTOs;
+import static code.films.FilmTestUtils.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -29,12 +28,12 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user", roles = "ADMIN")
     void should_add_film() throws Exception {
         //given
-        var sampleAddFilmDTO = FilmTestUtils.sampleAddFilmDTO();
+        var sampleDTO = sampleAddFilmDTO();
 
         //when
         var result = mockMvc.perform(
                 post("/films")
-                        .content(toJson(sampleAddFilmDTO))
+                        .content(toJson(sampleDTO))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -43,11 +42,13 @@ class FilmIntegrationTests extends SpringIntegrationTests {
         mockMvc.perform(
                 get("/films")
         ).andExpect(
-                jsonPath("$[0].title").value(sampleAddFilmDTO.title())
+                jsonPath("$.size()").value(1)
         ).andExpect(
-                jsonPath("$[0].category").value(sampleAddFilmDTO.filmCategory().name())
+                jsonPath("$[0].title").value(sampleDTO.title())
         ).andExpect(
-                jsonPath("$[0].year").value(sampleAddFilmDTO.year())
+                jsonPath("$[0].category").value(sampleDTO.filmCategory().name())
+        ).andExpect(
+                jsonPath("$[0].year").value(sampleDTO.year())
         );
     }
 

@@ -64,28 +64,6 @@ public class ScreeningTestUtils {
         );
     }
 
-    public static ScreeningDTO addSampleScreeningWithNoFreeSeats(UUID sampleFilmId,
-                                                                 ScreeningFacade screeningFacade) {
-        var screeningRoom = screeningFacade.addRoom(
-                AddScreeningRoomDTO
-                        .builder()
-                        .number(5)
-                        .freeSeats(0)
-                        .build()
-        );
-
-        return screeningFacade.add(
-                AddScreeningDTO
-                        .builder()
-                        .filmId(sampleFilmId)
-                        .roomId(screeningRoom.id())
-                        .date(LocalDateTime.parse("2022-05-05T16:30"))
-                        .minAge(13)
-                        .freeSeatsQuantity(0)
-                        .build()
-        );
-    }
-
     public static List<ScreeningDTO> addSampleScreenings(ScreeningFacade screeningFacade, FilmFacade filmFacade) {
         var sampleFilms = FilmTestUtils.addSampleFilms(filmFacade);
         var sampleRooms = addSampleScreeningRooms(screeningFacade);

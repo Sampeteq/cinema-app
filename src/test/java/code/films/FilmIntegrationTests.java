@@ -94,25 +94,23 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_search_films_by_params() throws Exception {
         //given
-        var sampleFilms = sampleAddFilmDTOs()
-                .stream()
-                .map(dto -> filmFacade.add(dto))
-                .toList();
-        var category = sampleFilms.get(0).category();
-        var filteredFilms = sampleFilms
-                .stream()
-                .filter(f -> f.category().equals(category))
-                .toList();
+        var sampleFilm = filmFacade.add(
+                sampleAddFilmDTO().withFilmCategory(FilmCategory.COMEDY)
+        );
+        filmFacade.add(
+                sampleAddFilmDTO().withFilmCategory(FilmCategory.DRAMA)
+        );
 
         //when
         var result = mockMvc.perform(
                 get("/films")
-                        .param("category", category.name())
+                        .param("category", sampleFilm.category().name())
         );
 
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJson(filteredFilms)));
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(content().json(toJson(sampleFilm)));
     }
 }

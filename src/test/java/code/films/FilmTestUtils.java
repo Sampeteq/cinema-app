@@ -36,15 +36,6 @@ public abstract class FilmTestUtils {
         return List.of(dto1, dto2);
     }
 
-    public static AddFilmDTO sampleAddFilmDTOWithWrongFilmYear(int wrongFilmYear) {
-        return AddFilmDTO
-                .builder()
-                .title("Sample title")
-                .filmCategory(FilmCategory.COMEDY)
-                .year(wrongFilmYear)
-                .build();
-    }
-
     public static List<FilmDTO> addSampleFilms(FilmFacade filmFacade) {
         var sampleFilmDTO1 = filmFacade.add(
                 AddFilmDTO

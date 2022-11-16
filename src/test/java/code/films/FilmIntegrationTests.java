@@ -55,9 +55,9 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @ParameterizedTest
     @MethodSource("code.films.FilmTestUtils#wrongFilmYears")
     @WithMockUser(username = "user", roles = "ADMIN")
-    void should_throw_exception_when_film_year_is_neither_previous_nor_current_nor_next_one(Integer wrongFilmYear) throws Exception {
+    void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear) throws Exception {
         //given
-        var dto = sampleAddFilmDTOWithWrongFilmYear(wrongFilmYear);
+        var dto = sampleAddFilmDTO().withYear(wrongYear);
 
         //when
         var result = mockMvc.perform(

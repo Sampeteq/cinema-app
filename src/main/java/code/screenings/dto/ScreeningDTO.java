@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -14,6 +15,7 @@ public record ScreeningDTO(
         int freeSeats,
         int minAge,
         UUID filmId,
-        UUID roomId
+        UUID roomId,
+        List<ScreeningSeatDTO> seats
 ) {
 }

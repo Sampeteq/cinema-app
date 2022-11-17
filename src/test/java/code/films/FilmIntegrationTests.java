@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static code.WebTestUtils.toJson;
 import static code.films.FilmTestUtils.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -25,7 +27,7 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     private FilmFacade filmFacade;
 
     @Test
-    @WithMockUser(username = "user", roles = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     void should_add_film() throws Exception {
         //given
         var sampleDTO = sampleAddFilmDTO();
@@ -54,7 +56,7 @@ class FilmIntegrationTests extends SpringIntegrationTests {
 
     @ParameterizedTest
     @MethodSource("code.films.FilmTestUtils#wrongFilmYears")
-    @WithMockUser(username = "user", roles = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear) throws Exception {
         //given
         var dto = sampleAddFilmDTO().withYear(wrongYear);
@@ -111,6 +113,6 @@ class FilmIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(1))
-                .andExpect(content().json(toJson(sampleFilm)));
+                .andExpect(content().json(toJson(List.of(sampleFilm))));
     }
 }

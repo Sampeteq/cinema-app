@@ -8,17 +8,24 @@ import org.springframework.context.annotation.Configuration;
 class ScreeningConfig {
 
     @Bean
-    ScreeningFacade screeningAPI(ScreeningRepository screeningRepository,
-                                 ScreeningRoomRepository screeningRoomRepository,
-                                 ScreeningTicketRepository screeningTicketRepository,
-                                 FilmFacade filmFacade) {
+    ScreeningFacade screeningFacade(
+            ScreeningRepository screeningRepository,
+            ScreeningRoomRepository screeningRoomRepository,
+            ScreeningTicketRepository screeningTicketRepository,
+            FilmFacade filmFacade
+    ) {
+        var screeningCreator = new ScreeningCreator(
+                screeningRepository,
+                screeningRoomRepository,
+                filmFacade
+        );
         var screeningSearcher = new ScreeningSearcher(screeningRepository);
         return new ScreeningFacade(
                 screeningRepository,
                 screeningRoomRepository,
                 screeningTicketRepository,
                 screeningSearcher,
-                filmFacade
+                screeningCreator
         );
     }
 

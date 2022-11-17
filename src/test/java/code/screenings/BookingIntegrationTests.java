@@ -43,7 +43,10 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     void should_booked_ticket() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleBookTicketDTO = sampleBookTicketDTO(sampleScreenings.get(0).id());
+        var sampleBookTicketDTO = sampleBookTicketDTO(
+                sampleScreenings.get(0).id(),
+                sampleScreenings.get(0).seats().get(0).seatId()
+        );
 
         //when
         var result = mockMvc.perform(
@@ -57,6 +60,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.ticketId").exists())
                 .andExpect(jsonPath("$.screeningId").value(sampleBookTicketDTO.screeningId().toString()))
+                .andExpect(jsonPath("$.seatId").value(sampleBookTicketDTO.seatId().toString()))
                 .andExpect(jsonPath("$.firstName").value(sampleBookTicketDTO.firstName()))
                 .andExpect(jsonPath("$.lastName").value(sampleBookTicketDTO.lastName()))
                 .andExpect(jsonPath("$.status").value(ScreeningTicketStatus.BOOKED.name()));
@@ -71,13 +75,15 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 AddScreeningDTO
                         .builder()
                         .date(LocalDateTime.now().minusHours(23))
-                        .freeSeatsQuantity(200)
                         .minAge(13)
                         .filmId(sampleFilms.get(0).id())
                         .roomId(sampleRooms.get(0).id())
                         .build()
         );
-        var sampleBookTicketDTO = sampleBookTicketDTO(sampleScreenings.id());
+        var sampleBookTicketDTO = sampleBookTicketDTO(
+                sampleScreenings.id(),
+                sampleScreenings.seats().get(0).seatId()
+        );
 
         //when
         var result = mockMvc.perform(
@@ -95,19 +101,19 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_throw_exception_when_no_screening_free_seats() throws Exception {
         //given
-        var sampleFilms = addSampleFilms(filmFacade);
-        var sampleRooms = addSampleScreeningRooms(screeningFacade);
-        var sampleScreening = screeningFacade.add(
-                AddScreeningDTO
-                        .builder()
-                        .freeSeatsQuantity(0)
-                        .date(LocalDateTime.now().plusHours(24))
-                        .minAge(13)
-                        .filmId(sampleFilms.get(0).id())
-                        .roomId(sampleRooms.get(0).id())
-                        .build()
+        var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
+        sampleScreenings.forEach(
+                screening -> screening.seats().forEach(
+                        seat -> screeningFacade.bookTicket(
+                                sampleBookTicketDTO(screening.id(), seat.seatId()),
+                                clock
+                        )
+                )
         );
-        var sampleBookTicketDTO = sampleBookTicketDTO(sampleScreening.id());
+        var sampleBookTicketDTO = sampleBookTicketDTO(
+                sampleScreenings.get(0).id(),
+                sampleScreenings.get(0).seats().get(0).seatId()
+        );
 
         //when
         var result = mockMvc.perform(
@@ -119,14 +125,19 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new ScreeningNoFreeSeatsException(sampleScreening.id()).getMessage()));
+                .andExpect(content().string(
+                        new ScreeningNoFreeSeatsException(sampleBookTicketDTO.screeningId()).getMessage()
+                ));
     }
 
     @Test
     void should_reduce_screening_free_seats_by_one_after_ticket_booking() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleBookTicketDTO = sampleBookTicketDTO(sampleScreenings.get(0).id());
+        var sampleBookTicketDTO = sampleBookTicketDTO(
+                sampleScreenings.get(0).id(),
+                sampleScreenings.get(0).seats().get(0).seatId()
+        );
 
         //when
         mockMvc.perform(
@@ -145,7 +156,10 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     void should_cancel_ticket() throws Exception {
         //give
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleTicket = bookSampleTicket(sampleScreenings.get(0).id());
+        var sampleTicket = bookSampleTicket(
+                sampleScreenings.get(0).id(),
+                sampleScreenings.get(0).seats().get(0).seatId()
+        );
 
         //when
         var result = mockMvc.perform(
@@ -163,7 +177,10 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     void should_increase_screening_free_seats_by_one_after_ticket_booking_cancelling() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleTicket = bookSampleTicket(sampleScreenings.get(0).id());
+        var sampleTicket = bookSampleTicket(
+                sampleScreenings.get(0).id(),
+                sampleScreenings.get(0).seats().get(0).seatId()
+        );
 
         //when
         var result = mockMvc.perform(
@@ -181,7 +198,10 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_when_ticket_is_already_cancelled() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleTicket = bookSampleTicket(sampleScreenings.get(0).id());
+        var sampleTicket = bookSampleTicket(
+                sampleScreenings.get(0).id(),
+                sampleScreenings.get(0).seats().get(0).seatId()
+        );
         screeningFacade.cancelTicket(sampleTicket.ticketId(), clock);
 
         //when
@@ -200,17 +220,20 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //given
         var hoursUntilBooking = 23;
         var sampleFilmId = addSampleFilms(filmFacade).get(0).id();
-        var sampleRoomId = addSampleScreeningRooms(screeningFacade).get(0).id();
+        var sampleRoomId = addSampleScreeningRooms(screeningFacade).get(0);
         var sampleScreeningDate = LocalDateTime.now().minusHours(hoursUntilBooking);
         var sampleScreening = screeningFacade.add(
-                sampleAddScreeningDTO(sampleFilmId, sampleRoomId).withDate(sampleScreeningDate)
+                sampleAddScreeningDTO(
+                        sampleFilmId,
+                        sampleRoomId.id()
+                ).withDate(sampleScreeningDate)
         );
         var timeDuringBooking = Clock.fixed(
                 sampleScreeningDate.minusHours(hoursUntilBooking + 1).toInstant(ZoneOffset.UTC),
                 ZoneOffset.UTC
         );
         var sampleTicket = screeningFacade.bookTicket(
-                sampleBookTicketDTO(sampleScreening.id()),
+                sampleBookTicketDTO(sampleScreening.id(), sampleScreening.seats().get(0).seatId()),
                 timeDuringBooking
         );
 
@@ -227,20 +250,22 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 ));
     }
 
-    private static BookScreeningTicketDTO sampleBookTicketDTO(UUID sampleScreeningId) {
+    private static BookScreeningTicketDTO sampleBookTicketDTO(UUID sampleScreeningId, UUID sampleScreeningSeatId) {
         return BookScreeningTicketDTO
                 .builder()
                 .screeningId(sampleScreeningId)
+                .seatId(sampleScreeningSeatId)
                 .firstName("Name 1")
                 .lastName("Lastname 1")
                 .build();
     }
 
-    private TicketDTO bookSampleTicket(UUID sampleScreeningId) {
+    private TicketDTO bookSampleTicket(UUID sampleScreeningId, UUID sampleSeatId) {
         return screeningFacade.bookTicket(
                 BookScreeningTicketDTO
                         .builder()
                         .screeningId(sampleScreeningId)
+                        .seatId(sampleSeatId)
                         .firstName("Name")
                         .lastName("Lastname")
                         .build(),

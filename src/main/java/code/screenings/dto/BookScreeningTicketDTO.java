@@ -11,6 +11,9 @@ public record BookScreeningTicketDTO(
         UUID screeningId,
 
         @NotNull
+        UUID seatId,
+
+        @NotNull
         String firstName,
 
         @NotNull

@@ -3,30 +3,40 @@ package code.screenings;
 import code.screenings.dto.ScreeningRoomDTO;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "SCREENING_ROOMS")
+@Table(name = "SCREENINGS_ROOMS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
+@Getter
 @ToString
 class ScreeningRoom {
 
     @Id
-    @Builder.Default
     private UUID id = UUID.randomUUID();
 
     private int number;
 
-    @Getter
-    private int freeSeats;
+    private int rowsQuantity;
+
+    private int seatsInOneRowQuantity;
+
+    int seatsQuantity() {
+        return rowsQuantity * seatsInOneRowQuantity;
+    }
 
     ScreeningRoomDTO toDTO() {
-        return new ScreeningRoomDTO(this.id, number, freeSeats);
+        return ScreeningRoomDTO
+                .builder()
+                .id(this.id)
+                .number(this.number)
+                .rowsQuantity(this.rowsQuantity)
+                .seatsInOneRowQuantity(this.seatsInOneRowQuantity)
+                .seatsQuantity(this.rowsQuantity * this.seatsInOneRowQuantity)
+                .build();
     }
 }

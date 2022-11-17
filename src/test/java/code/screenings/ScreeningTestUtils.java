@@ -23,7 +23,6 @@ public class ScreeningTestUtils {
                 .roomId(roomId)
                 .date(LocalDateTime.parse("2022-05-05T16:30"))
                 .minAge(13)
-                .freeSeatsQuantity(200)
                 .build();
     }
 
@@ -34,7 +33,6 @@ public class ScreeningTestUtils {
                 .roomId(roomId)
                 .date(LocalDateTime.parse("2022-05-05T16:30").withYear(wrongScreeningYear))
                 .minAge(13)
-                .freeSeatsQuantity(200)
                 .build();
     }
 
@@ -42,8 +40,9 @@ public class ScreeningTestUtils {
     public static AddScreeningRoomDTO sampleAddRoomDTO() {
         return AddScreeningRoomDTO
                 .builder()
-                .freeSeats(200)
                 .number(1)
+                .rowsQuantity(9)
+                .seatsQuantityInOneRow(6)
                 .build();
     }
 
@@ -51,12 +50,14 @@ public class ScreeningTestUtils {
         var room1 = AddScreeningRoomDTO
                 .builder()
                 .number(1)
-                .freeSeats(200)
+                .rowsQuantity(9)
+                .seatsQuantityInOneRow(6)
                 .build();
         var room2 = AddScreeningRoomDTO
                 .builder()
                 .number(2)
-                .freeSeats(200)
+                .rowsQuantity(7)
+                .seatsQuantityInOneRow(5)
                 .build();
         return List.of(
                 screeningFacade.addRoom(room1),
@@ -74,7 +75,6 @@ public class ScreeningTestUtils {
                         .roomId(sampleRooms.get(0).id())
                         .date(LocalDateTime.parse("2022-05-05T16:00"))
                         .minAge(13)
-                        .freeSeatsQuantity(200)
                         .build()
         );
         var screening2 = screeningFacade.add(
@@ -84,13 +84,26 @@ public class ScreeningTestUtils {
                         .roomId(sampleRooms.get(1).id())
                         .date(LocalDateTime.parse("2022-06-09T17:30"))
                         .minAge(13)
-                        .freeSeatsQuantity(200)
                         .build()
         );
         return List.of(screening1, screening2);
     }
 
-    public static List<Integer> getWrongScreeningYears() {
-        return List.of(currentYear.getValue() - 1, currentYear.getValue() + 2);
+    public static List<LocalDateTime> wrongScreeningDates() {
+        var date1 = LocalDateTime.of(
+                currentYear.getValue() - 1,
+                2,
+                2,
+                16,
+                30
+        );
+        var date2= LocalDateTime.of(
+                currentYear.getValue() + 2,
+                2,
+                2,
+                16,
+                30
+        );
+        return List.of(date1, date2);
     }
 }

@@ -1,12 +1,14 @@
 package code.screenings;
 
 import code.screenings.dto.ScreeningDTO;
-import code.screenings.exception.ScreeningFreeSeatsQuantityBiggerThanRoomOneException;
 import code.screenings.exception.ScreeningNoFreeSeatsException;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.Clock;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -35,23 +37,26 @@ class Screening {
     @ManyToOne
     private ScreeningRoom room;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "screening_id")
+    @Getter
+    private List<ScreeningSeat> seats = new ArrayList<>();
+
     static Screening of(
             ScreeningDate date,
             int minAge,
-            int freeSeatsQuantity,
             UUID filmId,
-            ScreeningRoom room
+            ScreeningRoom room,
+            List<ScreeningSeat> seats
     ) {
-        if (freeSeatsQuantity > room.getFreeSeats()) {
-            throw new ScreeningFreeSeatsQuantityBiggerThanRoomOneException();
-        }
         return new Screening(
                 UUID.randomUUID(),
                 date,
                 minAge,
-                freeSeatsQuantity,
+                (int) seats.stream().filter(ScreeningSeat::isFree).count(),
                 filmId,
-                room
+                room,
+                seats
         );
     }
 
@@ -60,7 +65,10 @@ class Screening {
     }
 
     boolean hasFreeSeats() {
-        return this.freeSeatsQuantity > 0;
+        return this
+                .seats
+                .stream()
+                .anyMatch(ScreeningSeat::isFree);
     }
 
     void decreaseFreeSeatsByOne() {
@@ -75,6 +83,14 @@ class Screening {
         this.freeSeatsQuantity++;
     }
 
+    Optional<ScreeningSeat> getSeat(UUID seatId) {
+        return this
+                .seats
+                .stream()
+                .filter(seat -> seat.getId().equals(seatId))
+                .findFirst();
+    }
+
     ScreeningDTO toDTO() {
         return ScreeningDTO
                 .builder()
@@ -84,6 +100,7 @@ class Screening {
                 .minAge(this.minAge)
                 .filmId(this.filmId)
                 .roomId(this.room.toDTO().id())
+                .seats(seats.stream().map(ScreeningSeat::toDTO).toList())
                 .build();
     }
 }

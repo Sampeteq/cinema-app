@@ -1,19 +1,13 @@
 package code.screenings;
 
 import code.screenings.dto.TicketDTO;
-import code.screenings.exception.BookingAlreadyCancelledException;
-import code.screenings.exception.ScreeningNoFreeSeatsException;
-import code.screenings.exception.TooLateToBookingException;
-import code.screenings.exception.TooLateToCancelBookingException;
+import code.screenings.exception.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Clock;
 import java.util.UUID;
 
@@ -36,10 +30,14 @@ class ScreeningTicket {
     @ManyToOne
     private Screening screening;
 
-    ScreeningTicket(String firstName, String lastName, Screening screening) {
+    @OneToOne
+    private ScreeningSeat seat;
+
+    ScreeningTicket(String firstName, String lastName, Screening screening, ScreeningSeat seat) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.screening = screening;
+        this.seat = seat;
     }
 
     void book(Clock clock) {
@@ -49,7 +47,11 @@ class ScreeningTicket {
         if (!this.screening.hasFreeSeats()) {
             throw new ScreeningNoFreeSeatsException(this.screening.getId());
         }
+        if (!this.seat.isFree()) {
+            throw new ScreeningSeatBusyException(this.seat.getId());
+        }
         this.status = ScreeningTicketStatus.BOOKED;
+        this.seat.busy();
         this.screening.decreaseFreeSeatsByOne();
     }
 
@@ -61,6 +63,7 @@ class ScreeningTicket {
             throw new TooLateToCancelBookingException(this.id);
         }
         this.status = ScreeningTicketStatus.CANCELLED;
+        this.seat.free();
         this.screening.increaseFreeSeatsByOne();
     }
 
@@ -68,10 +71,11 @@ class ScreeningTicket {
         return TicketDTO
                 .builder()
                 .ticketId(this.id)
+                .screeningId(this.screening.getId())
+                .seatId(this.seat.getId())
                 .firstName(this.firstName)
                 .lastName(this.lastName)
                 .status(this.status)
-                .screeningId(this.screening.getId())
                 .build();
     }
 }

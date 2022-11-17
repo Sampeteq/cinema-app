@@ -5,11 +5,9 @@ import code.films.exception.FilmNotFoundException;
 import code.screenings.dto.*;
 import code.screenings.exception.*;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Example;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -25,23 +23,10 @@ public class ScreeningFacade {
 
     private final ScreeningSearcher screeningSearcher;
 
-    private final FilmFacade filmFacade;
+    private final ScreeningCreator screeningCreator;
 
     public ScreeningDTO add(AddScreeningDTO dto) {
-        var date = ScreeningDate.of(dto.date());
-        var room = getScreeningRoomOrThrow(dto.roomId());
-        validateScreeningRoomBeingBusy(date, dto.roomId());
-        validateFilmExisting(dto.filmId());
-        var screening = Screening.of(
-                date,
-                dto.minAge(),
-                dto.freeSeatsQuantity(),
-                dto.filmId(),
-                room
-        );
-        return screeningRepository
-                .save(screening)
-                .toDTO();
+        return screeningCreator.add(dto);
     }
 
     public ScreeningDTO read(UUID screeningId) {
@@ -58,8 +43,10 @@ public class ScreeningFacade {
         }
         var screeningRoom = ScreeningRoom
                 .builder()
+                .id(UUID.randomUUID())
                 .number(dto.number())
-                .freeSeats(dto.freeSeats())
+                .rowsQuantity(dto.rowsQuantity())
+                .seatsInOneRowQuantity(dto.seatsQuantityInOneRow())
                 .build();
         return screeningRoomRepository
                 .save(screeningRoom)
@@ -84,7 +71,10 @@ public class ScreeningFacade {
     @Transactional
     public TicketDTO bookTicket(BookScreeningTicketDTO dto, Clock clock) {
         var screening = getScreeningOrThrow(dto.screeningId());
-        var ticket = new ScreeningTicket(dto.firstName(), dto.lastName(), screening);
+        var seat = screening
+                .getSeat(dto.seatId())
+                .orElseThrow(() -> new ScreeningSeatNotFoundException(dto.seatId()));
+        var ticket = new ScreeningTicket(dto.firstName(), dto.lastName(), screening, seat);
         ticket.book(clock);
         return screeningTicketRepository
                 .save(ticket)
@@ -113,24 +103,6 @@ public class ScreeningFacade {
         return screeningRepository
                 .findById(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
-    }
-
-    private void validateFilmExisting(UUID filmId) {
-        if (!filmFacade.isPresent(filmId)) {
-            throw new FilmNotFoundException(filmId);
-        }
-    }
-
-    private ScreeningRoom getScreeningRoomOrThrow(UUID roomUuid) {
-        return screeningRoomRepository
-                .findById(roomUuid)
-                .orElseThrow(() -> new ScreeningRoomNotFoundException(roomUuid));
-    }
-
-    private void validateScreeningRoomBeingBusy(ScreeningDate date, UUID roomUuid) {
-        if (screeningRepository.existsByDateAndRoom_id(date, roomUuid)) {
-            throw new ScreeningRoomBusyException(roomUuid);
-        }
     }
 
     private ScreeningTicket getTicketOrThrow(UUID ticketId) {

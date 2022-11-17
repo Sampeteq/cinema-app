@@ -2,8 +2,6 @@ package code.screenings;
 
 import code.SpringIntegrationTests;
 import code.films.FilmFacade;
-import code.screenings.dto.AddScreeningDTO;
-import code.screenings.exception.ScreeningFreeSeatsQuantityBiggerThanRoomOneException;
 import code.screenings.exception.ScreeningRoomAlreadyExistsException;
 import code.screenings.exception.ScreeningRoomBusyException;
 import code.screenings.exception.ScreeningYearException;
@@ -18,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 
 import static code.WebTestUtils.toJson;
-import static code.films.FilmTestUtils.sampleAddFilmDTO;
+import static code.films.FilmTestUtils.addSampleFilms;
 import static code.screenings.ScreeningTestUtils.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -40,9 +38,13 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(roles = "ADMIN")
     void should_add_screening() throws Exception {
         //given
-        var sampleFilmId = filmFacade.add(sampleAddFilmDTO()).id();
-        var sampleRoomId = screeningFacade.addRoom(sampleAddRoomDTO()).id();
-        var sampleAddScreeningDTO = sampleAddScreeningDTO(sampleFilmId, sampleRoomId);
+        var sampleFilmId = addSampleFilms(filmFacade).get(0);
+        var sampleRoom = addSampleScreeningRooms(screeningFacade).get(0);
+        var sampleAddScreeningDTO = sampleAddScreeningDTO(
+                sampleFilmId.id(),
+                sampleRoom.id()
+        );
+
         //when
         var result = mockMvc.perform(
                 post("/screenings")
@@ -53,25 +55,25 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         mockMvc.perform(get("/screenings"))
+                .andExpect(jsonPath("[0].id").exists())
                 .andExpect(jsonPath("$[0].date").value(sampleAddScreeningDTO.date().toString()))
+                .andExpect(jsonPath("$[0].freeSeats").value(sampleRoom.seatsQuantity()))
                 .andExpect(jsonPath("$[0].minAge").value(sampleAddScreeningDTO.minAge()))
-                .andExpect(jsonPath("$[0].freeSeats").value(sampleAddScreeningDTO.freeSeatsQuantity()))
                 .andExpect(jsonPath("$[0].filmId").value(sampleAddScreeningDTO.filmId().toString()))
                 .andExpect(jsonPath("$[0].roomId").value(sampleAddScreeningDTO.roomId().toString()));
     }
 
     @ParameterizedTest
-    @MethodSource("code.screenings.ScreeningTestUtils#getWrongScreeningYears")
+    @MethodSource("code.screenings.ScreeningTestUtils#wrongScreeningDates")
     @WithMockUser(roles = "ADMIN")
-    void should_throw_exception_when_screening_year_is_not_current_or_next_one(Integer wrongYear) throws Exception {
+    void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate) throws Exception {
         //given
-        var sampleFilmId = filmFacade.add(sampleAddFilmDTO()).id();
-        var sampleRoomId = screeningFacade.addRoom(sampleAddRoomDTO()).id();
+        var sampleFilmId = addSampleFilms(filmFacade).get(0).id();
+        var sampleRoomId = addSampleScreeningRooms(screeningFacade).get(0).id();
         var sampleAddScreeningDTO = sampleAddScreeningDTO(
                 sampleFilmId,
-                sampleRoomId,
-                wrongYear
-        );
+                sampleRoomId
+        ).withDate(wrongDate);
 
         //when
         var result = mockMvc.perform(
@@ -84,7 +86,7 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new ScreeningYearException(wrongYear).getMessage()
+                        new ScreeningYearException(wrongDate.getYear()).getMessage()
                 ));
     }
 
@@ -110,32 +112,6 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
                         new ScreeningRoomBusyException(sampleScreenings.get(0).roomId()).getMessage()
-                ));
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    void should_throw_exception_when_screening_free_seats_quantity_is_bigger_than_room_one() throws Exception {
-        //given
-        var sampleFilmId = filmFacade.add(sampleAddFilmDTO()).id();
-        var sampleRoom = screeningFacade.addRoom(sampleAddRoomDTO());
-        var sampleAddScreeningDTO = sampleAddScreeningDTO(
-                sampleFilmId,
-                sampleRoom.id()
-        ).withFreeSeatsQuantity(sampleRoom.freeSeats() + 1);
-
-        //when
-        var result = mockMvc.perform(
-                post("/screenings")
-                        .content(toJson(sampleAddScreeningDTO))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
-
-        //then
-        result
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(
-                        new ScreeningFreeSeatsQuantityBiggerThanRoomOneException().getMessage()
                 ));
     }
 
@@ -198,16 +174,19 @@ class ScreeningsIntegrationTests extends SpringIntegrationTests {
         mockMvc.perform(
                         get("/screenings-rooms")
                 )
+                .andExpect(jsonPath("$[0].id").exists())
                 .andExpect(jsonPath("$[0].number").value(sampleAddRoomDTO.number()))
-                .andExpect(jsonPath("$[0].freeSeats").value(sampleAddRoomDTO.freeSeats()));
+                .andExpect(jsonPath("$[0].rowsQuantity").value(sampleAddRoomDTO.rowsQuantity()))
+                .andExpect(jsonPath("$[0].seatsInOneRowQuantity").value(sampleAddRoomDTO.seatsQuantityInOneRow()))
+                .andExpect(jsonPath("$[0].seatsQuantity").value(sampleAddRoomDTO.rowsQuantity() * sampleAddRoomDTO.seatsQuantityInOneRow()));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void should_throw_exception_when_room_number_is_not_unique() throws Exception {
         //given
-        var sampleAddRoomDTO = sampleAddRoomDTO();
-        screeningFacade.addRoom(sampleAddRoomDTO);
+        var sampleRoom= addSampleScreeningRooms(screeningFacade).get(0);
+        var sampleAddRoomDTO = sampleAddRoomDTO().withNumber(sampleRoom.number());
 
         //when
         var result = mockMvc.perform(

@@ -1,0 +1,77 @@
+package code.screenings;
+
+import code.films.FilmFacade;
+import code.films.exception.FilmNotFoundException;
+import code.screenings.dto.AddScreeningDTO;
+import code.screenings.dto.ScreeningDTO;
+import code.screenings.exception.ScreeningRoomBusyException;
+import code.screenings.exception.ScreeningRoomNotFoundException;
+import lombok.AllArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.UUID;
+
+@AllArgsConstructor
+class ScreeningCreator {
+
+    private final ScreeningRepository screeningRepository;
+
+    private final ScreeningRoomRepository screeningRoomRepository;
+
+    private final FilmFacade filmFacade;
+
+    public ScreeningDTO add(AddScreeningDTO dto) {
+        var date = ScreeningDate.of(dto.date());
+        var room = getScreeningRoomOrThrow(dto.roomId());
+        validateScreeningRoomBeingBusy(date, dto.roomId());
+        validateFilmExisting(dto.filmId());
+        var seats = new ArrayList<ScreeningSeat>();
+        var rowNumber = 1;
+        var seatNumber = 1;
+        var helpCounter = 1;
+        for (int i = 1; i <= room.seatsQuantity(); i++) {
+            if (helpCounter > room.getSeatsInOneRowQuantity()) {
+                rowNumber++;
+                seatNumber = 1;
+                helpCounter = 1;
+            }
+            var seat = ScreeningSeat
+                    .builder()
+                    .id(UUID.randomUUID())
+                    .rowNumber(rowNumber)
+                    .number(seatNumber++)
+                    .status(ScreeningSeatStatus.FREE)
+                    .build();
+            seats.add(seat);
+            helpCounter++;
+        }
+        var screening = Screening.of(
+                date,
+                dto.minAge(),
+                dto.filmId(),
+                room,
+                seats
+        );
+        return screeningRepository
+                .save(screening)
+                .toDTO();
+    }
+
+    private void validateScreeningRoomBeingBusy(ScreeningDate date, UUID roomUuid) {
+        if (screeningRepository.existsByDateAndRoom_id(date, roomUuid)) {
+            throw new ScreeningRoomBusyException(roomUuid);
+        }
+    }
+
+    private ScreeningRoom getScreeningRoomOrThrow(UUID roomUuid) {
+        return screeningRoomRepository
+                .findById(roomUuid)
+                .orElseThrow(() -> new ScreeningRoomNotFoundException(roomUuid));
+    }
+
+    private void validateFilmExisting(UUID filmId) {
+        if (!filmFacade.isPresent(filmId)) {
+            throw new FilmNotFoundException(filmId);
+        }
+    }
+}

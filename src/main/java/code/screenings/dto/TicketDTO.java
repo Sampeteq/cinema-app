@@ -10,12 +10,14 @@ import java.util.UUID;
 public record TicketDTO(
         UUID ticketId,
 
+        UUID screeningId,
+
+        UUID seatId,
+
         String firstName,
 
         String lastName,
 
-        ScreeningTicketStatus status,
-
-        UUID screeningId
+        ScreeningTicketStatus status
 ) {
 }

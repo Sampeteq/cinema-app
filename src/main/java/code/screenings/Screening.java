@@ -37,7 +37,7 @@ class Screening {
     @ManyToOne
     private ScreeningRoom room;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "screening_id")
     @Getter
     private List<ScreeningSeat> seats = new ArrayList<>();

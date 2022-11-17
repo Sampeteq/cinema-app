@@ -13,7 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static code.WebTestUtils.toJson;
-import static code.films.FilmTestUtils.*;
+import static code.films.FilmTestUtils.sampleAddFilmDTO;
+import static code.films.FilmTestUtils.sampleAddFilmDTOs;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

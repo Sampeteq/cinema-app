@@ -3,7 +3,9 @@ package code.screenings;
 import code.screenings.dto.ScreeningRoomDTO;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity

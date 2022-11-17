@@ -3,7 +3,6 @@ package code.screenings.dto;
 import code.screenings.ScreeningTicketStatus;
 import lombok.Builder;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Builder

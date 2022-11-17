@@ -1,7 +1,5 @@
 package code.screenings;
 
-import code.films.FilmFacade;
-import code.films.exception.FilmNotFoundException;
 import code.screenings.dto.*;
 import code.screenings.exception.*;
 import lombok.AllArgsConstructor;

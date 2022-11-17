@@ -1,14 +1,14 @@
 package code.screenings;
 
 import code.SpringIntegrationTests;
+import code.films.FilmFacade;
+import code.screenings.dto.AddScreeningDTO;
 import code.screenings.dto.BookScreeningTicketDTO;
 import code.screenings.dto.TicketDTO;
 import code.screenings.exception.BookingAlreadyCancelledException;
+import code.screenings.exception.ScreeningNoFreeSeatsException;
 import code.screenings.exception.TooLateToBookingException;
 import code.screenings.exception.TooLateToCancelBookingException;
-import code.films.FilmFacade;
-import code.screenings.dto.AddScreeningDTO;
-import code.screenings.exception.ScreeningNoFreeSeatsException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

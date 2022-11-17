@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS SCREENINGS (
     ID                  UUID PRIMARY KEY,
     MIN_AGE             INT,
     DATE                DATETIME,
-    FREE_SEATS_QUANTITY INT,
     FILM_ID             UUID,
     ROOM_ID             UUID,
     FOREIGN KEY (FILM_ID) REFERENCES FILMS (ID),

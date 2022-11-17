@@ -1,7 +1,6 @@
 package code.screenings;
 
 import code.screenings.dto.ScreeningDTO;
-import code.screenings.exception.ScreeningNoFreeSeatsException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,8 +29,6 @@ class Screening {
 
     private Integer minAge;
 
-    private Integer freeSeatsQuantity;
-
     private UUID filmId;
 
     @ManyToOne
@@ -53,7 +50,6 @@ class Screening {
                 UUID.randomUUID(),
                 date,
                 minAge,
-                (int) seats.stream().filter(ScreeningSeat::isFree).count(),
                 filmId,
                 room,
                 seats
@@ -71,18 +67,6 @@ class Screening {
                 .anyMatch(ScreeningSeat::isFree);
     }
 
-    void decreaseFreeSeatsByOne() {
-        if (this.freeSeatsQuantity < 0) {
-            throw new ScreeningNoFreeSeatsException(this.id);
-        } else {
-            this.freeSeatsQuantity--;
-        }
-    }
-
-    void increaseFreeSeatsByOne() {
-        this.freeSeatsQuantity++;
-    }
-
     Optional<ScreeningSeat> getSeat(UUID seatId) {
         return this
                 .seats
@@ -96,7 +80,7 @@ class Screening {
                 .builder()
                 .id(this.id)
                 .date(this.date.getValue())
-                .freeSeats(this.freeSeatsQuantity)
+                .freeSeats((int) seats.stream().filter(ScreeningSeat::isFree).count())
                 .minAge(this.minAge)
                 .filmId(this.filmId)
                 .roomId(this.room.toDTO().id())

@@ -52,7 +52,6 @@ class ScreeningTicket {
         }
         this.status = ScreeningTicketStatus.BOOKED;
         this.seat.busy();
-        this.screening.decreaseFreeSeatsByOne();
     }
 
     void cancel(Clock clock) {
@@ -64,7 +63,6 @@ class ScreeningTicket {
         }
         this.status = ScreeningTicketStatus.CANCELLED;
         this.seat.free();
-        this.screening.increaseFreeSeatsByOne();
     }
 
     TicketDTO toDTO() {

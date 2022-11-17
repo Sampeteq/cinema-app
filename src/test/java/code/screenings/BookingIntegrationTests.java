@@ -9,6 +9,7 @@ import code.screenings.exception.BookingAlreadyCancelledException;
 import code.screenings.exception.ScreeningNoFreeSeatsException;
 import code.screenings.exception.TooLateToBookingException;
 import code.screenings.exception.TooLateToCancelBookingException;
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static code.WebTestUtils.toJson;
+import static code.WebTestUtils.*;
 import static code.films.FilmTestUtils.addSampleFilms;
 import static code.screenings.ScreeningTestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,7 +57,11 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         );
 
         //then
-        result
+        result.andExpect(status().isOk());
+        var dto = fromResultActions(result, TicketDTO.class);
+        mockMvc.perform(
+          get("/screenings-tickets/" + dto.ticketId())
+        )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.ticketId").exists())
                 .andExpect(jsonPath("$.screeningId").value(sampleBookTicketDTO.screeningId().toString()))

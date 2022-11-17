@@ -28,7 +28,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and()
                 .authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/films/**", "/screenings/**").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/films/**", "/screenings/**", "/screenings-tickets/{id}").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/screenings-tickets").permitAll()
                 .mvcMatchers(HttpMethod.PATCH, "/screenings-tickets/{ticketId}/cancel").permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2/console/**").permitAll()

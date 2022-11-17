@@ -39,6 +39,11 @@ class BookingController {
         screeningFacade.cancelTicket(ticketUUID, clock);
     }
 
+    @GetMapping("/screenings-tickets/{id}")
+    TicketDTO readTicket(@PathVariable UUID id) {
+        return screeningFacade.readTicket(id);
+    }
+
     @GetMapping("/screenings-tickets")
     List<TicketDTO> readAllTickets() {
         return screeningFacade.readAllTickets();

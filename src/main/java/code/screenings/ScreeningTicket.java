@@ -44,9 +44,6 @@ class ScreeningTicket {
         if (this.screening.differenceBetweenCurrentDateAndScreeningOneInHours(clock) < 24) {
             throw new TooLateToBookingException();
         }
-        if (!this.screening.hasFreeSeats()) {
-            throw new ScreeningNoFreeSeatsException(this.screening.getId());
-        }
         if (!this.seat.isFree()) {
             throw new ScreeningSeatBusyException(this.seat.getId());
         }

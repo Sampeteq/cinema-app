@@ -101,38 +101,6 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
-    void should_throw_exception_when_no_screening_free_seats() throws Exception {
-        //given
-        var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        sampleScreenings.forEach(
-                screening -> screening.seats().forEach(
-                        seat -> screeningFacade.bookTicket(
-                                sampleBookTicketDTO(screening.id(), seat.seatId()),
-                                clock
-                        )
-                )
-        );
-        var sampleBookTicketDTO = sampleBookTicketDTO(
-                sampleScreenings.get(0).id(),
-                sampleScreenings.get(0).seats().get(0).seatId()
-        );
-
-        //when
-        var result = mockMvc.perform(
-                post("/screenings-tickets")
-                        .content(toJson(sampleBookTicketDTO))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
-
-        //then
-        result
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(
-                        new ScreeningNoFreeSeatsException(sampleBookTicketDTO.screeningId()).getMessage()
-                ));
-    }
-
-    @Test
     void should_reduce_screening_free_seats_by_one_after_ticket_booking() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);

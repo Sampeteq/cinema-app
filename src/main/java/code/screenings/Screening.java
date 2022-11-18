@@ -36,7 +36,6 @@ class Screening {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "screening_id")
-    @Getter
     private List<ScreeningSeat> seats = new ArrayList<>();
 
     static Screening of(

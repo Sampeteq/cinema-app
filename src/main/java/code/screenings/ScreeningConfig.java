@@ -20,12 +20,14 @@ class ScreeningConfig {
                 filmFacade
         );
         var screeningSearcher = new ScreeningSearcher(screeningRepository);
+        var screeningTicketBooker = new ScreeningTicketBooker(screeningRepository, screeningTicketRepository);
         return new ScreeningFacade(
                 screeningRepository,
                 screeningRoomRepository,
                 screeningTicketRepository,
                 screeningSearcher,
-                screeningCreator
+                screeningCreator,
+                screeningTicketBooker
         );
     }
 

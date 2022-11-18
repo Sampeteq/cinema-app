@@ -23,6 +23,8 @@ public class ScreeningFacade {
 
     private final ScreeningCreator screeningCreator;
 
+    private final ScreeningTicketBooker screeningTicketBooker;
+
     public ScreeningDTO add(AddScreeningDTO dto) {
         return screeningCreator.add(dto);
     }
@@ -68,21 +70,12 @@ public class ScreeningFacade {
 
     @Transactional
     public TicketDTO bookTicket(BookScreeningTicketDTO dto, Clock clock) {
-        var screening = getScreeningOrThrow(dto.screeningId());
-        var seat = screening
-                .getSeat(dto.seatId())
-                .orElseThrow(() -> new ScreeningSeatNotFoundException(dto.seatId()));
-        var ticket = new ScreeningTicket(dto.firstName(), dto.lastName(), screening, seat);
-        ticket.book(clock);
-        return screeningTicketRepository
-                .save(ticket)
-                .toDTO();
+        return screeningTicketBooker.bookTicket(dto, clock);
     }
 
     @Transactional
     public void cancelTicket(UUID ticketId, Clock clock) {
-        var ticket = getTicketOrThrow(ticketId);
-        ticket.cancel(clock);
+        screeningTicketBooker.cancelTicket(ticketId, clock);
     }
 
     public TicketDTO readTicket(UUID ticketId) {

@@ -34,7 +34,7 @@ public class FilmFacade {
                 .orElseThrow(() -> new FilmNotFoundException(filmId));
     }
 
-    public List<FilmDTO> readAll(Map<String, Object> parameters) {
+    public List<FilmDTO> search(Map<String, Object> parameters) {
         var categoryDTO = (FilmCategoryDTO) parameters.get("category");
         var category = categoryDTO != null ? FilmCategory.fromDTO(categoryDTO) : null;
         var example = Example.of(

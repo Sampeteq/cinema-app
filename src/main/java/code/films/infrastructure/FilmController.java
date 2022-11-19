@@ -38,7 +38,7 @@ class FilmController {
         var readParameters = new HashMap<String, Object>() {{
             put("category", category);
         }};
-        return filmFacade.readAll(readParameters);
+        return filmFacade.search(readParameters);
     }
 }
 

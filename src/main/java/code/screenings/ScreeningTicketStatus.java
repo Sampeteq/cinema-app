@@ -1,6 +1,6 @@
 package code.screenings;
 
-public enum ScreeningTicketStatus {
+enum ScreeningTicketStatus {
 
     BOOKED, CANCELLED
 }

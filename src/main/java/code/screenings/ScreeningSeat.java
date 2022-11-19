@@ -44,7 +44,7 @@ class ScreeningSeat {
                 .seatId(this.id)
                 .rowNumber(this.rowNumber)
                 .number(this.number)
-                .status(this.status)
+                .status(this.status.name())
                 .build();
     }
 }

@@ -140,7 +140,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         result.andExpect(status().isOk());
         assertThat(
                 screeningFacade.readTicket(sampleTicket.ticketId()).status()
-        ).isEqualTo(ScreeningTicketStatus.CANCELLED);
+        ).isEqualTo(ScreeningTicketStatus.CANCELLED.name());
     }
 
     @Test

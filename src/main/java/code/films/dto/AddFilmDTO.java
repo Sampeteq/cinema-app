@@ -1,6 +1,5 @@
 package code.films.dto;
 
-import code.films.FilmCategory;
 import lombok.Builder;
 import lombok.With;
 
@@ -13,7 +12,7 @@ public record AddFilmDTO(
         String title,
 
         @NotNull
-        FilmCategory filmCategory,
+        FilmCategoryDTO filmCategory,
         @NotNull
         Integer year
 ) {

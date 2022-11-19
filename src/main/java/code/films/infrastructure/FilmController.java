@@ -1,8 +1,8 @@
 package code.films.infrastructure;
 
-import code.films.FilmCategory;
 import code.films.FilmFacade;
 import code.films.dto.AddFilmDTO;
+import code.films.dto.FilmCategoryDTO;
 import code.films.dto.FilmDTO;
 import code.films.exception.FilmException;
 import code.films.exception.FilmNotFoundException;
@@ -33,7 +33,7 @@ class FilmController {
     @GetMapping("/films")
     List<FilmDTO> readAll(
             @RequestParam(required = false)
-            FilmCategory category
+            FilmCategoryDTO category
     ) {
         var readParameters = new HashMap<String, Object>() {{
             put("category", category);

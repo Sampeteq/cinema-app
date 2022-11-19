@@ -1,6 +1,7 @@
 package code.films;
 
 import code.films.dto.AddFilmDTO;
+import code.films.dto.FilmCategoryDTO;
 import code.films.dto.FilmDTO;
 import code.films.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ public class FilmFacade {
     public FilmDTO add(AddFilmDTO dto) {
         var film = new Film(
                 dto.title(),
-                dto.filmCategory(),
+                FilmCategory.fromDTO(dto.filmCategory()),
                 FilmYear.of(dto.year())
         );
         return filmRepository
@@ -34,10 +35,12 @@ public class FilmFacade {
     }
 
     public List<FilmDTO> readAll(Map<String, Object> parameters) {
+        var categoryDTO = (FilmCategoryDTO) parameters.get("category");
+        var category = categoryDTO != null ? FilmCategory.fromDTO(categoryDTO) : null;
         var example = Example.of(
                 Film
                         .builder()
-                        .category((FilmCategory) parameters.get("category"))
+                        .category(category)
                         .build()
         );
         return filmRepository

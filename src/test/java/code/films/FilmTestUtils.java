@@ -1,6 +1,7 @@
 package code.films;
 
 import code.films.dto.AddFilmDTO;
+import code.films.dto.FilmCategoryDTO;
 import code.films.dto.FilmDTO;
 
 import java.time.Year;
@@ -15,7 +16,7 @@ public abstract class FilmTestUtils {
         return AddFilmDTO
                 .builder()
                 .title("Sample title")
-                .filmCategory(FilmCategory.COMEDY)
+                .filmCategory(FilmCategoryDTO.COMEDY)
                 .year(Year.now().getValue())
                 .build();
     }
@@ -24,13 +25,13 @@ public abstract class FilmTestUtils {
         var dto1 = AddFilmDTO
                 .builder()
                 .title("Sample title 1")
-                .filmCategory(FilmCategory.COMEDY)
+                .filmCategory(FilmCategoryDTO.COMEDY)
                 .year(Year.now().getValue())
                 .build();
         var dto2 = AddFilmDTO
                 .builder()
                 .title("Sample title 1")
-                .filmCategory(FilmCategory.COMEDY)
+                .filmCategory(FilmCategoryDTO.COMEDY)
                 .year(Year.now().getValue())
                 .build();
         return List.of(dto1, dto2);
@@ -41,7 +42,7 @@ public abstract class FilmTestUtils {
                 AddFilmDTO
                         .builder()
                         .title("Sample title 1")
-                        .filmCategory(FilmCategory.COMEDY)
+                        .filmCategory(FilmCategoryDTO.COMEDY)
                         .year(Year.now().getValue())
                         .build()
         );
@@ -49,7 +50,7 @@ public abstract class FilmTestUtils {
                 AddFilmDTO
                         .builder()
                         .title("Sample title 2")
-                        .filmCategory(FilmCategory.DRAMA)
+                        .filmCategory(FilmCategoryDTO.DRAMA)
                         .year(Year.now().plusYears(1).getValue())
                         .build()
         );

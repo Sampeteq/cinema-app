@@ -1,6 +1,5 @@
 package code.screenings.dto;
 
-import code.screenings.ScreeningTicketStatus;
 import lombok.Builder;
 
 import java.util.UUID;
@@ -17,6 +16,6 @@ public record TicketDTO(
 
         String lastName,
 
-        ScreeningTicketStatus status
+        String status
 ) {
 }

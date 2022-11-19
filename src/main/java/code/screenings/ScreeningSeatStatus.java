@@ -1,6 +1,6 @@
 package code.screenings;
 
-public enum ScreeningSeatStatus {
+enum ScreeningSeatStatus {
 
     FREE,
     BUSY

@@ -39,6 +39,6 @@ class Film {
     }
 
     FilmDTO toDTO() {
-        return new FilmDTO(this.id, this.title, this.category, this.year.getValue());
+        return new FilmDTO(this.id, this.title, this.category.name(), this.year.getValue());
     }
 }

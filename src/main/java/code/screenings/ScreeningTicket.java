@@ -70,7 +70,7 @@ class ScreeningTicket {
                 .seatId(this.seat.getId())
                 .firstName(this.firstName)
                 .lastName(this.lastName)
-                .status(this.status)
+                .status(this.status.name())
                 .build();
     }
 }

@@ -1,6 +1,7 @@
 package code.films;
 
 import code.SpringIntegrationTests;
+import code.films.dto.FilmCategoryDTO;
 import code.films.exception.FilmYearException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -98,16 +99,16 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     void should_search_films_by_params() throws Exception {
         //given
         var sampleFilm = filmFacade.add(
-                sampleAddFilmDTO().withFilmCategory(FilmCategory.COMEDY)
+                sampleAddFilmDTO().withFilmCategory(FilmCategoryDTO.COMEDY)
         );
         filmFacade.add(
-                sampleAddFilmDTO().withFilmCategory(FilmCategory.DRAMA)
+                sampleAddFilmDTO().withFilmCategory(FilmCategoryDTO.DRAMA)
         );
 
         //when
         var result = mockMvc.perform(
                 get("/films")
-                        .param("category", sampleFilm.category().name())
+                        .param("category", sampleFilm.category())
         );
 
         //then

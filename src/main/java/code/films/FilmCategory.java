@@ -1,10 +1,16 @@
 package code.films;
 
-public enum FilmCategory {
+import code.films.dto.FilmCategoryDTO;
+
+enum FilmCategory {
     COMEDY,
     DRAMA,
     ACTION,
     THRILLER,
     HORROR,
-    FANTASY,
+    FANTASY;
+
+    static FilmCategory fromDTO(FilmCategoryDTO dto) {
+        return FilmCategory.valueOf(dto.name());
+    }
 }

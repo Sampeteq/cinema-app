@@ -3,6 +3,7 @@ package code.films;
 import code.films.dto.AddFilmDTO;
 import code.films.dto.FilmCategoryDTO;
 import code.films.dto.FilmDTO;
+import code.films.dto.FilmSearchParamDTO;
 import code.films.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Example;
@@ -34,8 +35,8 @@ public class FilmFacade {
                 .orElseThrow(() -> new FilmNotFoundException(filmId));
     }
 
-    public List<FilmDTO> search(Map<String, Object> parameters) {
-        var categoryDTO = (FilmCategoryDTO) parameters.get("category");
+    public List<FilmDTO> search(Map<FilmSearchParamDTO, Object> parameters) {
+        var categoryDTO = (FilmCategoryDTO) parameters.get(FilmSearchParamDTO.CATEGORY);
         var category = categoryDTO != null ? FilmCategory.fromDTO(categoryDTO) : null;
         var example = Example.of(
                 Film

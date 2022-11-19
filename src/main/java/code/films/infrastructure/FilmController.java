@@ -1,6 +1,7 @@
 package code.films.infrastructure;
 
 import code.films.FilmFacade;
+import code.films.dto.FilmSearchParamDTO;
 import code.films.dto.AddFilmDTO;
 import code.films.dto.FilmCategoryDTO;
 import code.films.dto.FilmDTO;
@@ -35,8 +36,8 @@ class FilmController {
             @RequestParam(required = false)
             FilmCategoryDTO category
     ) {
-        var readParameters = new HashMap<String, Object>() {{
-            put("category", category);
+        var readParameters = new HashMap<FilmSearchParamDTO, Object>() {{
+            put(FilmSearchParamDTO.CATEGORY, category);
         }};
         return filmFacade.search(readParameters);
     }

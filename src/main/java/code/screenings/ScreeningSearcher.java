@@ -25,7 +25,7 @@ class ScreeningSearcher {
                 .build();
         var example = Example.of(screening);
         return screeningRepository
-                .findAll(example)
+                .getAll(example)
                 .stream()
                 .map(Screening::toDTO)
                 .toList();

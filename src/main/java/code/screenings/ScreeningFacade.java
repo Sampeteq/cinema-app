@@ -49,20 +49,20 @@ public class ScreeningFacade {
                 .seatsInOneRowQuantity(dto.seatsQuantityInOneRow())
                 .build();
         return screeningRoomRepository
-                .save(screeningRoom)
+                .add(screeningRoom)
                 .toDTO();
     }
 
     public ScreeningRoomDTO readRoom(UUID roomUuid) {
         return screeningRoomRepository
-                .findById(roomUuid)
+                .getById(roomUuid)
                 .map(ScreeningRoom::toDTO)
                 .orElseThrow(() -> new ScreeningRoomNotFoundException(roomUuid));
     }
 
     public List<ScreeningRoomDTO> readAllRooms() {
         return screeningRoomRepository
-                .findAll()
+                .getAll()
                 .stream()
                 .map(ScreeningRoom::toDTO)
                 .toList();
@@ -84,7 +84,7 @@ public class ScreeningFacade {
 
     public List<TicketDTO> readAllTickets() {
         return screeningTicketRepository
-                .findAll()
+                .getAll()
                 .stream()
                 .map(ScreeningTicket::toDTO)
                 .toList();
@@ -92,13 +92,13 @@ public class ScreeningFacade {
 
     private Screening getScreeningOrThrow(UUID screeningId) {
         return screeningRepository
-                .findById(screeningId)
+                .getById(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
     }
 
     private ScreeningTicket getTicketOrThrow(UUID ticketId) {
         return screeningTicketRepository
-                .findById(ticketId)
+                .getById(ticketId)
                 .orElseThrow(() -> new ScreeningTicketNotFoundException(ticketId));
     }
 }

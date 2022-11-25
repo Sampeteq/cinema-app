@@ -26,7 +26,7 @@ class ScreeningTicketBooker {
         var ticket = new ScreeningTicket(dto.firstName(), dto.lastName(), screening, seat);
         ticket.book(clock);
         return screeningTicketRepository
-                .save(ticket)
+                .add(ticket)
                 .toDTO();
     }
 
@@ -38,13 +38,13 @@ class ScreeningTicketBooker {
 
     private Screening getScreeningOrThrow(UUID screeningId) {
         return screeningRepository
-                .findById(screeningId)
+                .getById(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
     }
 
     private ScreeningTicket getTicketOrThrow(UUID ticketId) {
         return screeningTicketRepository
-                .findById(ticketId)
+                .getById(ticketId)
                 .orElseThrow(() -> new ScreeningTicketNotFoundException(ticketId));
     }
 }

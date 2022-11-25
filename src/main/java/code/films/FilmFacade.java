@@ -24,13 +24,13 @@ public class FilmFacade {
                 FilmYear.of(dto.year())
         );
         return filmRepository
-                .save(film)
+                .add(film)
                 .toDTO();
     }
 
     public FilmDTO read(UUID filmId) {
         return filmRepository
-                .findById(filmId)
+                .getById(filmId)
                 .map(Film::toDTO)
                 .orElseThrow(() -> new FilmNotFoundException(filmId));
     }
@@ -45,13 +45,13 @@ public class FilmFacade {
                         .build()
         );
         return filmRepository
-                .findAll(example)
+                .getAll(example)
                 .stream()
                 .map(Film::toDTO)
                 .toList();
     }
 
     public boolean isPresent(UUID filmId) {
-        return filmRepository.findById(filmId).isPresent();
+        return filmRepository.getById(filmId).isPresent();
     }
 }

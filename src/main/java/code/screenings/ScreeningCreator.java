@@ -53,19 +53,19 @@ class ScreeningCreator {
                 seats
         );
         return screeningRepository
-                .save(screening)
+                .add(screening)
                 .toDTO();
     }
 
     private void validateScreeningRoomBeingBusy(ScreeningDate date, UUID roomUuid) {
-        if (screeningRepository.existsByDateAndRoom_id(date, roomUuid)) {
+        if (screeningRepository.existsByDateAndRoomId(date, roomUuid)) {
             throw new ScreeningRoomBusyException(roomUuid);
         }
     }
 
     private ScreeningRoom getScreeningRoomOrThrow(UUID roomUuid) {
         return screeningRoomRepository
-                .findById(roomUuid)
+                .getById(roomUuid)
                 .orElseThrow(() -> new ScreeningRoomNotFoundException(roomUuid));
     }
 

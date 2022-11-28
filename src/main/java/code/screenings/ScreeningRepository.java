@@ -14,7 +14,7 @@ interface ScreeningRepository {
 
     Optional<Screening> getById(UUID id);
 
-    List<Screening> getAll(Example<Screening> example);
+    List<Screening> getByExample(Screening example);
 
     boolean existsByDateAndRoomId(ScreeningDate screeningDate, UUID roomId);
 }
@@ -40,8 +40,10 @@ class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     @Override
-    public List<Screening> getAll(Example<Screening> example) {
-        return jpaScreeningRepository.findAll(example);
+    public List<Screening> getByExample(Screening example) {
+        return jpaScreeningRepository.findAll(
+                Example.of(example)
+        );
     }
 
     @Override

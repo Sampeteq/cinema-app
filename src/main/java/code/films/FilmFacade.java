@@ -38,14 +38,12 @@ public class FilmFacade {
     public List<FilmDTO> search(Map<FilmSearchParamDTO, Object> parameters) {
         var categoryDTO = (FilmCategoryDTO) parameters.get(FilmSearchParamDTO.CATEGORY);
         var category = categoryDTO != null ? FilmCategory.fromDTO(categoryDTO) : null;
-        var example = Example.of(
-                Film
+        var example = Film
                         .builder()
                         .category(category)
-                        .build()
-        );
+                        .build();
         return filmRepository
-                .getAll(example)
+                .getByExample(example)
                 .stream()
                 .map(Film::toDTO)
                 .toList();

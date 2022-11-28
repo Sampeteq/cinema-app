@@ -18,14 +18,13 @@ class ScreeningSearcher {
         var filmId = (UUID) params.get("filmId");
         var date = (LocalDateTime) params.get("date");
         var screeningDate = date != null ? ScreeningDate.of(date) : null;
-        var screening = Screening
+        var example = Screening
                 .builder()
                 .date(screeningDate)
                 .filmId(filmId)
                 .build();
-        var example = Example.of(screening);
         return screeningRepository
-                .getAll(example)
+                .getByExample(example)
                 .stream()
                 .map(Screening::toDTO)
                 .toList();

@@ -14,7 +14,7 @@ interface FilmRepository  {
 
     Optional<Film> getById(UUID id);
 
-    List<Film> getAll(Example<Film> example);
+    List<Film> getByExample(Film example);
 }
 
 interface JpaFilmRepository extends JpaRepository<Film, UUID> {
@@ -37,8 +37,10 @@ class JpaFilmRepositoryAdapter implements FilmRepository {
     }
 
     @Override
-    public List<Film> getAll(Example<Film> example) {
-        return jpaFilmRepository.findAll(example);
+    public List<Film> getByExample(Film example) {
+        return jpaFilmRepository.findAll(
+                Example.of(example)
+        );
     }
 }
 

@@ -30,7 +30,6 @@ class ScreeningTicketBooker {
                 .toDTO();
     }
 
-    @Transactional
     void cancelTicket(UUID ticketId, Clock clock) {
         var ticket = getTicketOrThrow(ticketId);
         ticket.cancel(clock);

@@ -25,6 +25,7 @@ class ScreeningTicket {
 
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
     private ScreeningTicketStatus status;
 
     @ManyToOne

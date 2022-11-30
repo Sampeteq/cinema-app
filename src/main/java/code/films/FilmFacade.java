@@ -4,7 +4,6 @@ import code.films.dto.AddFilmDTO;
 import code.films.dto.FilmCategoryDTO;
 import code.films.dto.FilmDTO;
 import code.films.dto.FilmSearchParamDTO;
-import code.films.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -25,13 +24,6 @@ public class FilmFacade {
         return filmRepository
                 .add(film)
                 .toDTO();
-    }
-
-    public FilmDTO read(UUID filmId) {
-        return filmRepository
-                .getById(filmId)
-                .map(Film::toDTO)
-                .orElseThrow(() -> new FilmNotFoundException(filmId));
     }
 
     public List<FilmDTO> search(Map<FilmSearchParamDTO, Object> parameters) {

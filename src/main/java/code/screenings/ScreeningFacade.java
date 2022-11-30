@@ -1,9 +1,7 @@
 package code.screenings;
 
 import code.screenings.dto.*;
-import code.screenings.exception.ScreeningNotFoundException;
 import code.screenings.exception.ScreeningRoomAlreadyExistsException;
-import code.screenings.exception.ScreeningRoomNotFoundException;
 import code.screenings.exception.ScreeningTicketNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +13,6 @@ import java.util.UUID;
 
 @AllArgsConstructor
 public class ScreeningFacade {
-
-    private final ScreeningRepository screeningRepository;
 
     private final ScreeningRoomRepository screeningRoomRepository;
 
@@ -30,10 +26,6 @@ public class ScreeningFacade {
 
     public ScreeningDTO add(AddScreeningDTO dto) {
         return screeningCreator.add(dto);
-    }
-
-    public ScreeningDTO read(UUID screeningId) {
-        return getScreeningOrThrow(screeningId).toDTO();
     }
 
     public List<ScreeningDTO> searchBy(Map<String, Object> params) {
@@ -54,13 +46,6 @@ public class ScreeningFacade {
         return screeningRoomRepository
                 .add(screeningRoom)
                 .toDTO();
-    }
-
-    public ScreeningRoomDTO readRoom(UUID roomUuid) {
-        return screeningRoomRepository
-                .getById(roomUuid)
-                .map(ScreeningRoom::toDTO)
-                .orElseThrow(() -> new ScreeningRoomNotFoundException(roomUuid));
     }
 
     public List<ScreeningRoomDTO> readAllRooms() {
@@ -91,12 +76,6 @@ public class ScreeningFacade {
                 .stream()
                 .map(ScreeningTicket::toDTO)
                 .toList();
-    }
-
-    private Screening getScreeningOrThrow(UUID screeningId) {
-        return screeningRepository
-                .getById(screeningId)
-                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
     }
 
     private ScreeningTicket getTicketOrThrow(UUID ticketId) {

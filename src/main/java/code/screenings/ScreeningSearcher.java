@@ -2,7 +2,6 @@ package code.screenings;
 
 import code.screenings.dto.ScreeningDTO;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Example;
 
 import java.time.LocalDateTime;
 import java.util.List;

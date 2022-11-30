@@ -6,7 +6,6 @@ import code.screenings.exception.ScreeningNotFoundException;
 import code.screenings.exception.ScreeningSeatNotFoundException;
 import code.screenings.exception.ScreeningTicketNotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.util.UUID;

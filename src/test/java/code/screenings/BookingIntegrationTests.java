@@ -2,14 +2,11 @@ package code.screenings;
 
 import code.SpringIntegrationTests;
 import code.films.FilmFacade;
-import code.screenings.dto.AddScreeningDTO;
 import code.screenings.dto.BookScreeningTicketDTO;
 import code.screenings.dto.TicketDTO;
 import code.screenings.exception.BookingAlreadyCancelledException;
-import code.screenings.exception.ScreeningNoFreeSeatsException;
 import code.screenings.exception.TooLateToBookingException;
 import code.screenings.exception.TooLateToCancelBookingException;
-import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,7 +17,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static code.WebTestUtils.*;
+import static code.WebTestUtils.fromResultActions;
+import static code.WebTestUtils.toJson;
 import static code.films.FilmTestUtils.addSampleFilms;
 import static code.screenings.ScreeningTestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;

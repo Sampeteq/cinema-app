@@ -1,7 +1,10 @@
 package code.screenings;
 
 import code.screenings.dto.*;
-import code.screenings.exception.*;
+import code.screenings.exception.ScreeningNotFoundException;
+import code.screenings.exception.ScreeningRoomAlreadyExistsException;
+import code.screenings.exception.ScreeningRoomNotFoundException;
+import code.screenings.exception.ScreeningTicketNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

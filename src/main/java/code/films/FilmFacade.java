@@ -6,7 +6,6 @@ import code.films.dto.FilmDTO;
 import code.films.dto.FilmSearchParamDTO;
 import code.films.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Example;
 
 import java.util.List;
 import java.util.Map;

@@ -1,7 +1,10 @@
 package code.screenings;
 
 import code.screenings.dto.TicketDTO;
-import code.screenings.exception.*;
+import code.screenings.exception.BookingAlreadyCancelledException;
+import code.screenings.exception.ScreeningSeatBusyException;
+import code.screenings.exception.TooLateToBookingException;
+import code.screenings.exception.TooLateToCancelBookingException;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

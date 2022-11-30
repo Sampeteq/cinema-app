@@ -57,7 +57,7 @@ public class ScreeningFacade {
     }
 
     @Transactional
-    public TicketDTO bookTicket(BookScreeningTicketDTO dto, Clock clock) {
+    public ScreeningTicketDTO bookTicket(BookScreeningTicketDTO dto, Clock clock) {
         return screeningTicketBooker.bookTicket(dto, clock);
     }
 
@@ -66,11 +66,11 @@ public class ScreeningFacade {
         screeningTicketBooker.cancelTicket(ticketId, clock);
     }
 
-    public TicketDTO readTicket(UUID ticketId) {
+    public ScreeningTicketDTO readTicket(UUID ticketId) {
         return getTicketOrThrow(ticketId).toDTO();
     }
 
-    public List<TicketDTO> readAllTickets() {
+    public List<ScreeningTicketDTO> readAllTickets() {
         return screeningTicketRepository
                 .getAll()
                 .stream()

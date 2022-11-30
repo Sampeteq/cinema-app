@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record TicketDTO(
+public record ScreeningTicketDTO(
         UUID ticketId,
 
         UUID screeningId,
@@ -16,6 +16,6 @@ public record TicketDTO(
 
         String lastName,
 
-        String status
+        ScreeningTicketStatusDTO status
 ) {
 }

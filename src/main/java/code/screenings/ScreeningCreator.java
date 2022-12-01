@@ -45,13 +45,15 @@ class ScreeningCreator {
             seats.add(seat);
             helpCounter++;
         }
-        var screening = Screening.of(
-                date,
-                dto.minAge(),
-                dto.filmId(),
-                room,
-                seats
-        );
+        var screening = Screening
+                .builder()
+                .id(UUID.randomUUID())
+                .date(date)
+                .minAge(dto.minAge())
+                .filmId(dto.filmId())
+                .room(room)
+                .seats(seats)
+                .build();
         return screeningRepository
                 .add(screening)
                 .toDTO();

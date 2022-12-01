@@ -14,7 +14,7 @@ import java.util.UUID;
 @Table(name = "SCREENINGS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
+@Builder(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @ToString
 class Screening {
@@ -37,23 +37,6 @@ class Screening {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "screening_id")
     private List<ScreeningSeat> seats = new ArrayList<>();
-
-    static Screening of(
-            ScreeningDate date,
-            int minAge,
-            UUID filmId,
-            ScreeningRoom room,
-            List<ScreeningSeat> seats
-    ) {
-        return new Screening(
-                UUID.randomUUID(),
-                date,
-                minAge,
-                filmId,
-                room,
-                seats
-        );
-    }
 
     int timeToScreeningStartInHours(Clock clock) {
         return this.date.timeToScreeningStart(clock);

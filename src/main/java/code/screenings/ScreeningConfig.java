@@ -30,7 +30,6 @@ class ScreeningConfig {
         var screeningSearcher = new ScreeningSearcher(screeningRepository);
         var screeningTicketBooker = new ScreeningTicketBooker(screeningRepository, ticketRepository);
         return new ScreeningFacade(
-                screeningRepository,
                 screeningRoomRepository,
                 ticketRepository,
                 screeningSearcher,

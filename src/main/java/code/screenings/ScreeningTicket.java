@@ -46,7 +46,7 @@ class ScreeningTicket {
     }
 
     void book(Clock clock) {
-        if (this.screening.differenceBetweenCurrentDateAndScreeningOneInHours(clock) < 24) {
+        if (this.screening.timeToScreeningStartInHours(clock) < 24) {
             throw new TooLateToBookingException();
         }
         if (!this.seat.isFree()) {
@@ -60,7 +60,7 @@ class ScreeningTicket {
         if (this.status.equals(ScreeningTicketStatus.CANCELLED)) {
             throw new BookingAlreadyCancelledException(this.id);
         }
-        if (this.screening.differenceBetweenCurrentDateAndScreeningOneInHours(clock) < 24) {
+        if (this.screening.timeToScreeningStartInHours(clock) < 24) {
             throw new TooLateToCancelBookingException(this.id);
         }
         this.status = ScreeningTicketStatus.CANCELLED;

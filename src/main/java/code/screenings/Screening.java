@@ -55,15 +55,8 @@ class Screening {
         );
     }
 
-    int differenceBetweenCurrentDateAndScreeningOneInHours(Clock clock) {
-        return this.date.differenceBetweenCurrentDateAndScreeningOneInHours(clock);
-    }
-
-    boolean hasFreeSeats() {
-        return this
-                .seats
-                .stream()
-                .anyMatch(ScreeningSeat::isFree);
+    int timeToScreeningStartInHours(Clock clock) {
+        return this.date.timeToScreeningStart(clock);
     }
 
     Optional<ScreeningSeat> getSeat(UUID seatId) {

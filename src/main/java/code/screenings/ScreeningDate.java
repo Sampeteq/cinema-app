@@ -28,7 +28,7 @@ class ScreeningDate {
         }
     }
 
-    int differenceBetweenCurrentDateAndScreeningOneInHours(Clock clock) {
+    int timeToScreeningStart(Clock clock) {
         return (int) Duration
                 .between(LocalDateTime.now(clock), this.value)
                 .abs()

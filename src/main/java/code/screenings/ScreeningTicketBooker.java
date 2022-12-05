@@ -22,7 +22,15 @@ class ScreeningTicketBooker {
         var seat = screening
                 .getSeat(dto.seatId())
                 .orElseThrow(() -> new ScreeningSeatNotFoundException(dto.seatId()));
-        var ticket = new ScreeningTicket(dto.firstName(), dto.lastName(), screening, seat);
+        var ticket = ScreeningTicket
+                .builder()
+                .id(UUID.randomUUID())
+                .firstName(dto.firstName())
+                .lastName(dto.lastName())
+                .screening(screening)
+                .seat(seat)
+                .status(null)
+                .build();
         ticket.book(clock);
         return screeningTicketRepository
                 .add(ticket)

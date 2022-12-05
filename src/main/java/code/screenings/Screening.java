@@ -36,6 +36,7 @@ class Screening {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "screening_id")
+    @ToString.Exclude
     private List<ScreeningSeat> seats = new ArrayList<>();
 
     int timeToScreeningStartInHours(Clock clock) {

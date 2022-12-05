@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-class ScreeningController {
+class ScreeningCrudController {
 
     private final ScreeningFacade ticketFacade;
 

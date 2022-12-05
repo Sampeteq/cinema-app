@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-class FilmController {
+class FilmCrudController {
 
     private final FilmFacade filmFacade;
 

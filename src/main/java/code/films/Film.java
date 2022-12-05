@@ -1,6 +1,6 @@
 package code.films;
 
-import code.films.dto.FilmDTO;
+import code.films.dto.FilmDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -38,7 +38,7 @@ class Film {
         this.year = year;
     }
 
-    FilmDTO toDTO() {
-        return new FilmDTO(this.id, this.title, this.category.name(), this.year.getValue());
+    FilmDto toDTO() {
+        return new FilmDto(this.id, this.title, this.category.name(), this.year.getValue());
     }
 }

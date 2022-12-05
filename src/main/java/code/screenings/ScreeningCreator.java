@@ -2,8 +2,8 @@ package code.screenings;
 
 import code.films.FilmFacade;
 import code.films.exception.FilmNotFoundException;
-import code.screenings.dto.AddScreeningDTO;
-import code.screenings.dto.ScreeningDTO;
+import code.screenings.dto.AddScreeningDto;
+import code.screenings.dto.ScreeningDto;
 import code.screenings.exception.ScreeningRoomBusyException;
 import code.screenings.exception.ScreeningRoomNotFoundException;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ class ScreeningCreator {
 
     private final FilmFacade filmFacade;
 
-    public ScreeningDTO add(AddScreeningDTO dto) {
+    public ScreeningDto add(AddScreeningDto dto) {
         var date = ScreeningDate.of(dto.date());
         var room = getScreeningRoomOrThrow(dto.roomId());
         validateScreeningRoomBeingBusy(date, dto.roomId());

@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Builder
 @With
-public record AddScreeningDTO(
+public record AddScreeningDto(
         @NotNull
         @Schema(type = "string", example = "2022-01-01T16:30")
         LocalDateTime date,

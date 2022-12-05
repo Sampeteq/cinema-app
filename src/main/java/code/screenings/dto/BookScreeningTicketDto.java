@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Builder
-public record BookScreeningTicketDTO(
+public record BookScreeningTicketDto(
         @NotNull
         UUID screeningId,
 

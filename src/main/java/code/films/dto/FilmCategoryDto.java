@@ -1,6 +1,6 @@
 package code.films.dto;
 
-public enum FilmCategoryDTO {
+public enum FilmCategoryDto {
 
     COMEDY,
     DRAMA,

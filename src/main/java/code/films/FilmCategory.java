@@ -1,6 +1,6 @@
 package code.films;
 
-import code.films.dto.FilmCategoryDTO;
+import code.films.dto.FilmCategoryDto;
 
 enum FilmCategory {
     COMEDY,
@@ -10,7 +10,7 @@ enum FilmCategory {
     HORROR,
     FANTASY;
 
-    static FilmCategory fromDTO(FilmCategoryDTO dto) {
+    static FilmCategory fromDTO(FilmCategoryDto dto) {
         return FilmCategory.valueOf(dto.name());
     }
 }

@@ -3,7 +3,7 @@ package code.films.dto;
 
 import java.util.UUID;
 
-public record FilmDTO(
+public record FilmDto(
         UUID id,
         String title,
         String category,

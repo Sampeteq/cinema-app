@@ -1,7 +1,7 @@
 package code.screenings;
 
-import code.screenings.dto.BookScreeningTicketDTO;
-import code.screenings.dto.ScreeningTicketDTO;
+import code.screenings.dto.BookScreeningTicketDto;
+import code.screenings.dto.ScreeningTicketDto;
 import code.screenings.exception.ScreeningNotFoundException;
 import code.screenings.exception.ScreeningSeatNotFoundException;
 import code.screenings.exception.ScreeningTicketNotFoundException;
@@ -17,7 +17,7 @@ class ScreeningTicketBooker {
 
     private final ScreeningTicketRepository screeningTicketRepository;
 
-    ScreeningTicketDTO bookTicket(BookScreeningTicketDTO dto, Clock clock) {
+    ScreeningTicketDto bookTicket(BookScreeningTicketDto dto, Clock clock) {
         var screening = getScreeningOrThrow(dto.screeningId());
         var seat = screening
                 .getSeat(dto.seatId())

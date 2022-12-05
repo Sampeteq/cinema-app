@@ -1,6 +1,6 @@
 package code.screenings.dto;
 
-public enum ScreeningTicketStatusDTO {
+public enum ScreeningTicketStatusDto {
 
     BOOKED,
     CANCELLED

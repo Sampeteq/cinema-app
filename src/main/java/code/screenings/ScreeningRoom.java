@@ -1,6 +1,6 @@
 package code.screenings;
 
-import code.screenings.dto.ScreeningRoomDTO;
+import code.screenings.dto.ScreeningRoomDto;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -31,8 +31,8 @@ class ScreeningRoom {
         return rowsQuantity * seatsInOneRowQuantity;
     }
 
-    ScreeningRoomDTO toDTO() {
-        return ScreeningRoomDTO
+    ScreeningRoomDto toDTO() {
+        return ScreeningRoomDto
                 .builder()
                 .id(this.id)
                 .number(this.number)

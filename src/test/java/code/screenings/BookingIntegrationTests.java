@@ -2,9 +2,9 @@ package code.screenings;
 
 import code.SpringIntegrationTests;
 import code.films.FilmFacade;
-import code.screenings.dto.BookScreeningTicketDTO;
-import code.screenings.dto.ScreeningTicketStatusDTO;
-import code.screenings.dto.ScreeningTicketDTO;
+import code.screenings.dto.BookScreeningTicketDto;
+import code.screenings.dto.ScreeningTicketStatusDto;
+import code.screenings.dto.ScreeningTicketDto;
 import code.screenings.exception.BookingAlreadyCancelledException;
 import code.screenings.exception.TooLateToBookingException;
 import code.screenings.exception.TooLateToCancelBookingException;
@@ -57,7 +57,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //then
         result.andExpect(status().isOk());
-        var dto = fromResultActions(result, ScreeningTicketDTO.class);
+        var dto = fromResultActions(result, ScreeningTicketDto.class);
         mockMvc.perform(
           get("/screenings-tickets/" + dto.ticketId())
         )
@@ -67,7 +67,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 .andExpect(jsonPath("$.seatId").value(sampleBookTicketDTO.seatId().toString()))
                 .andExpect(jsonPath("$.firstName").value(sampleBookTicketDTO.firstName()))
                 .andExpect(jsonPath("$.lastName").value(sampleBookTicketDTO.lastName()))
-                .andExpect(jsonPath("$.status").value(ScreeningTicketStatusDTO.BOOKED.name()));
+                .andExpect(jsonPath("$.status").value(ScreeningTicketStatusDto.BOOKED.name()));
     }
 
     @Test
@@ -139,7 +139,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         result.andExpect(status().isOk());
         assertThat(
                 screeningFacade.readTicket(sampleTicket.ticketId()).status()
-        ).isEqualTo(ScreeningTicketStatusDTO.CANCELLED);
+        ).isEqualTo(ScreeningTicketStatusDto.CANCELLED);
     }
 
     @Test
@@ -219,8 +219,8 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 ));
     }
 
-    private static BookScreeningTicketDTO sampleBookTicketDTO(UUID sampleScreeningId, UUID sampleScreeningSeatId) {
-        return BookScreeningTicketDTO
+    private static BookScreeningTicketDto sampleBookTicketDTO(UUID sampleScreeningId, UUID sampleScreeningSeatId) {
+        return BookScreeningTicketDto
                 .builder()
                 .screeningId(sampleScreeningId)
                 .seatId(sampleScreeningSeatId)
@@ -229,9 +229,9 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 .build();
     }
 
-    private ScreeningTicketDTO bookSampleTicket(UUID sampleScreeningId, UUID sampleSeatId) {
+    private ScreeningTicketDto bookSampleTicket(UUID sampleScreeningId, UUID sampleSeatId) {
         return screeningFacade.bookTicket(
-                BookScreeningTicketDTO
+                BookScreeningTicketDto
                         .builder()
                         .screeningId(sampleScreeningId)
                         .seatId(sampleSeatId)

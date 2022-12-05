@@ -1,8 +1,8 @@
 package code.films;
 
-import code.films.dto.AddFilmDTO;
-import code.films.dto.FilmCategoryDTO;
-import code.films.dto.FilmDTO;
+import code.films.dto.AddFilmDto;
+import code.films.dto.FilmCategoryDto;
+import code.films.dto.FilmDto;
 
 import java.time.Year;
 import java.util.List;
@@ -12,45 +12,45 @@ public abstract class FilmTestUtils {
     private FilmTestUtils() {
     }
 
-    public static AddFilmDTO sampleAddFilmDTO() {
-        return AddFilmDTO
+    public static AddFilmDto sampleAddFilmDTO() {
+        return AddFilmDto
                 .builder()
                 .title("Sample title")
-                .filmCategory(FilmCategoryDTO.COMEDY)
+                .filmCategory(FilmCategoryDto.COMEDY)
                 .year(Year.now().getValue())
                 .build();
     }
 
-    public static List<AddFilmDTO> sampleAddFilmDTOs() {
-        var dto1 = AddFilmDTO
+    public static List<AddFilmDto> sampleAddFilmDTOs() {
+        var dto1 = AddFilmDto
                 .builder()
                 .title("Sample title 1")
-                .filmCategory(FilmCategoryDTO.COMEDY)
+                .filmCategory(FilmCategoryDto.COMEDY)
                 .year(Year.now().getValue())
                 .build();
-        var dto2 = AddFilmDTO
+        var dto2 = AddFilmDto
                 .builder()
                 .title("Sample title 1")
-                .filmCategory(FilmCategoryDTO.COMEDY)
+                .filmCategory(FilmCategoryDto.COMEDY)
                 .year(Year.now().getValue())
                 .build();
         return List.of(dto1, dto2);
     }
 
-    public static List<FilmDTO> addSampleFilms(FilmFacade filmFacade) {
+    public static List<FilmDto> addSampleFilms(FilmFacade filmFacade) {
         var sampleFilmDTO1 = filmFacade.add(
-                AddFilmDTO
+                AddFilmDto
                         .builder()
                         .title("Sample title 1")
-                        .filmCategory(FilmCategoryDTO.COMEDY)
+                        .filmCategory(FilmCategoryDto.COMEDY)
                         .year(Year.now().getValue())
                         .build()
         );
         var sampleFilmDTO2 = filmFacade.add(
-                AddFilmDTO
+                AddFilmDto
                         .builder()
                         .title("Sample title 2")
-                        .filmCategory(FilmCategoryDTO.DRAMA)
+                        .filmCategory(FilmCategoryDto.DRAMA)
                         .year(Year.now().plusYears(1).getValue())
                         .build()
         );

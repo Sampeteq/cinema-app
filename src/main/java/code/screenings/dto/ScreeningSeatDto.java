@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record ScreeningSeatDTO(
+public record ScreeningSeatDto(
         UUID seatId,
         int rowNumber,
         int number,

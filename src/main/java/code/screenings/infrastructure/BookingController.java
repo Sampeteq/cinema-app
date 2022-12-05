@@ -1,8 +1,8 @@
 package code.screenings.infrastructure;
 
 import code.screenings.ScreeningFacade;
-import code.screenings.dto.BookScreeningTicketDTO;
-import code.screenings.dto.ScreeningTicketDTO;
+import code.screenings.dto.BookScreeningTicketDto;
+import code.screenings.dto.ScreeningTicketDto;
 import code.screenings.exception.BookingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,10 +23,10 @@ class BookingController {
     private final Clock clock;
 
     @PostMapping("/screenings-tickets")
-    ScreeningTicketDTO bookTicket(
+    ScreeningTicketDto bookTicket(
             @RequestBody
             @Valid
-            BookScreeningTicketDTO dto
+            BookScreeningTicketDto dto
     ) {
         return screeningFacade.bookTicket(dto, clock);
     }
@@ -40,12 +40,12 @@ class BookingController {
     }
 
     @GetMapping("/screenings-tickets/{id}")
-    ScreeningTicketDTO readTicket(@PathVariable UUID id) {
+    ScreeningTicketDto readTicket(@PathVariable UUID id) {
         return screeningFacade.readTicket(id);
     }
 
     @GetMapping("/screenings-tickets")
-    List<ScreeningTicketDTO> readAllTickets() {
+    List<ScreeningTicketDto> readAllTickets() {
         return screeningFacade.readAllTickets();
     }
 }

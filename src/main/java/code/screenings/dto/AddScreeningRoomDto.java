@@ -7,7 +7,7 @@ import javax.validation.constraints.Positive;
 
 @Builder
 @With
-public record AddScreeningRoomDTO(
+public record AddScreeningRoomDto(
         @Positive
         int number,
         @Positive

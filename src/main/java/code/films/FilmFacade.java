@@ -1,9 +1,9 @@
 package code.films;
 
-import code.films.dto.AddFilmDTO;
-import code.films.dto.FilmCategoryDTO;
-import code.films.dto.FilmDTO;
-import code.films.dto.FilmSearchParamDTO;
+import code.films.dto.AddFilmDto;
+import code.films.dto.FilmCategoryDto;
+import code.films.dto.FilmDto;
+import code.films.dto.FilmSearchParamDto;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class FilmFacade {
 
     private final FilmRepository filmRepository;
 
-    public FilmDTO add(AddFilmDTO dto) {
+    public FilmDto add(AddFilmDto dto) {
         var film = new Film(
                 dto.title(),
                 FilmCategory.fromDTO(dto.filmCategory()),
@@ -26,8 +26,8 @@ public class FilmFacade {
                 .toDTO();
     }
 
-    public List<FilmDTO> search(Map<FilmSearchParamDTO, Object> parameters) {
-        var categoryDTO = (FilmCategoryDTO) parameters.get(FilmSearchParamDTO.CATEGORY);
+    public List<FilmDto> search(Map<FilmSearchParamDto, Object> parameters) {
+        var categoryDTO = (FilmCategoryDto) parameters.get(FilmSearchParamDto.CATEGORY);
         var category = categoryDTO != null ? FilmCategory.fromDTO(categoryDTO) : null;
         var example = Film
                         .builder()

@@ -1,10 +1,10 @@
 package code.screenings.infrastructure;
 
 import code.screenings.ScreeningFacade;
-import code.screenings.dto.AddScreeningDTO;
-import code.screenings.dto.AddScreeningRoomDTO;
-import code.screenings.dto.ScreeningDTO;
-import code.screenings.dto.ScreeningRoomDTO;
+import code.screenings.dto.AddScreeningDto;
+import code.screenings.dto.AddScreeningRoomDto;
+import code.screenings.dto.ScreeningDto;
+import code.screenings.dto.ScreeningRoomDto;
 import code.screenings.exception.ScreeningException;
 import code.screenings.exception.ScreeningNotFoundException;
 import code.screenings.exception.ScreeningRoomNotFoundException;
@@ -27,16 +27,16 @@ class ScreeningController {
     private final ScreeningFacade ticketFacade;
 
     @PostMapping("/screenings")
-    ScreeningDTO add(
+    ScreeningDto add(
             @RequestBody
             @Valid
-            AddScreeningDTO dto
+            AddScreeningDto dto
     ) {
         return ticketFacade.add(dto);
     }
 
     @GetMapping("/screenings")
-    List<ScreeningDTO> searchBy(
+    List<ScreeningDto> searchBy(
             @RequestParam(required = false)
             UUID filmId,
 
@@ -52,16 +52,16 @@ class ScreeningController {
     }
 
     @PostMapping("/screenings-rooms")
-    ScreeningRoomDTO addRoom(
+    ScreeningRoomDto addRoom(
             @RequestBody
             @Valid
-            AddScreeningRoomDTO dto
+            AddScreeningRoomDto dto
     ) {
         return ticketFacade.addRoom(dto);
     }
 
     @GetMapping("/screenings-rooms")
-    List<ScreeningRoomDTO> readAllRooms() {
+    List<ScreeningRoomDto> readAllRooms() {
         return ticketFacade.readAllRooms();
     }
 }

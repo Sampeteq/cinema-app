@@ -24,15 +24,15 @@ public class ScreeningFacade {
 
     private final ScreeningTicketBooker screeningTicketBooker;
 
-    public ScreeningDTO add(AddScreeningDTO dto) {
+    public ScreeningDto add(AddScreeningDto dto) {
         return screeningCreator.add(dto);
     }
 
-    public List<ScreeningDTO> searchBy(Map<String, Object> params) {
+    public List<ScreeningDto> searchBy(Map<String, Object> params) {
         return screeningSearcher.searchBy(params);
     }
 
-    public ScreeningRoomDTO addRoom(AddScreeningRoomDTO dto) {
+    public ScreeningRoomDto addRoom(AddScreeningRoomDto dto) {
         if (screeningRoomRepository.existsByNumber(dto.number())) {
             throw new ScreeningRoomAlreadyExistsException(dto.number());
         }
@@ -48,7 +48,7 @@ public class ScreeningFacade {
                 .toDTO();
     }
 
-    public List<ScreeningRoomDTO> readAllRooms() {
+    public List<ScreeningRoomDto> readAllRooms() {
         return screeningRoomRepository
                 .getAll()
                 .stream()
@@ -57,7 +57,7 @@ public class ScreeningFacade {
     }
 
     @Transactional
-    public ScreeningTicketDTO bookTicket(BookScreeningTicketDTO dto, Clock clock) {
+    public ScreeningTicketDto bookTicket(BookScreeningTicketDto dto, Clock clock) {
         return screeningTicketBooker.bookTicket(dto, clock);
     }
 
@@ -66,11 +66,11 @@ public class ScreeningFacade {
         screeningTicketBooker.cancelTicket(ticketId, clock);
     }
 
-    public ScreeningTicketDTO readTicket(UUID ticketId) {
+    public ScreeningTicketDto readTicket(UUID ticketId) {
         return getTicketOrThrow(ticketId).toDTO();
     }
 
-    public List<ScreeningTicketDTO> readAllTickets() {
+    public List<ScreeningTicketDto> readAllTickets() {
         return screeningTicketRepository
                 .getAll()
                 .stream()

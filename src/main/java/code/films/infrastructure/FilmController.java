@@ -1,10 +1,10 @@
 package code.films.infrastructure;
 
 import code.films.FilmFacade;
-import code.films.dto.AddFilmDTO;
-import code.films.dto.FilmCategoryDTO;
-import code.films.dto.FilmDTO;
-import code.films.dto.FilmSearchParamDTO;
+import code.films.dto.AddFilmDto;
+import code.films.dto.FilmCategoryDto;
+import code.films.dto.FilmDto;
+import code.films.dto.FilmSearchParamDto;
 import code.films.exception.FilmException;
 import code.films.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
@@ -23,21 +23,21 @@ class FilmController {
     private final FilmFacade filmFacade;
 
     @PostMapping("/films")
-    FilmDTO add(
+    FilmDto add(
             @RequestBody
             @Valid
-            AddFilmDTO dto
+            AddFilmDto dto
     ) {
         return filmFacade.add(dto);
     }
 
     @GetMapping("/films")
-    List<FilmDTO> readAll(
+    List<FilmDto> readAll(
             @RequestParam(required = false)
-            FilmCategoryDTO category
+            FilmCategoryDto category
     ) {
-        var readParameters = new HashMap<FilmSearchParamDTO, Object>() {{
-            put(FilmSearchParamDTO.CATEGORY, category);
+        var readParameters = new HashMap<FilmSearchParamDto, Object>() {{
+            put(FilmSearchParamDto.CATEGORY, category);
         }};
         return filmFacade.search(readParameters);
     }

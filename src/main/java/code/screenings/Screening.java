@@ -1,6 +1,6 @@
 package code.screenings;
 
-import code.screenings.dto.ScreeningDTO;
+import code.screenings.dto.ScreeningDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -50,8 +50,8 @@ class Screening {
                 .findFirst();
     }
 
-    ScreeningDTO toDTO() {
-        return ScreeningDTO
+    ScreeningDto toDTO() {
+        return ScreeningDto
                 .builder()
                 .id(this.id)
                 .date(this.date.getValue())

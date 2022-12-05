@@ -1,6 +1,6 @@
 package code.screenings;
 
-import code.screenings.dto.ScreeningSeatDTO;
+import code.screenings.dto.ScreeningSeatDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,8 +38,8 @@ class ScreeningSeat {
         this.status = ScreeningSeatStatus.BUSY;
     }
 
-    ScreeningSeatDTO toDTO() {
-        return ScreeningSeatDTO
+    ScreeningSeatDto toDTO() {
+        return ScreeningSeatDto
                 .builder()
                 .seatId(this.id)
                 .rowNumber(this.rowNumber)

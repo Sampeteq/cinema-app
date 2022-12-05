@@ -1,7 +1,7 @@
 package code.screenings;
 
-import code.screenings.dto.ScreeningTicketStatusDTO;
-import code.screenings.dto.ScreeningTicketDTO;
+import code.screenings.dto.ScreeningTicketStatusDto;
+import code.screenings.dto.ScreeningTicketDto;
 import code.screenings.exception.BookingAlreadyCancelledException;
 import code.screenings.exception.ScreeningSeatBusyException;
 import code.screenings.exception.TooLateToBookingException;
@@ -67,15 +67,15 @@ class ScreeningTicket {
         this.seat.free();
     }
 
-    ScreeningTicketDTO toDTO() {
-        return ScreeningTicketDTO
+    ScreeningTicketDto toDTO() {
+        return ScreeningTicketDto
                 .builder()
                 .ticketId(this.id)
                 .screeningId(this.screening.getId())
                 .seatId(this.seat.getId())
                 .firstName(this.firstName)
                 .lastName(this.lastName)
-                .status(ScreeningTicketStatusDTO.valueOf(this.status.name()))
+                .status(ScreeningTicketStatusDto.valueOf(this.status.name()))
                 .build();
     }
 }

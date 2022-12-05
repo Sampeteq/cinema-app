@@ -1,6 +1,6 @@
 package code.films.dto;
 
-public enum FilmSearchParamDTO {
+public enum FilmSearchParamDto {
 
     CATEGORY
 }

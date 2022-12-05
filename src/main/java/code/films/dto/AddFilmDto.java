@@ -7,12 +7,12 @@ import javax.validation.constraints.NotNull;
 
 @Builder
 @With
-public record AddFilmDTO(
+public record AddFilmDto(
         @NotNull
         String title,
 
         @NotNull
-        FilmCategoryDTO filmCategory,
+        FilmCategoryDto filmCategory,
         @NotNull
         Integer year
 ) {

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Builder
-public record ScreeningDTO(
+public record ScreeningDto(
         UUID id,
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         LocalDateTime date,
@@ -16,6 +16,6 @@ public record ScreeningDTO(
         int minAge,
         UUID filmId,
         UUID roomId,
-        List<ScreeningSeatDTO> seats
+        List<ScreeningSeatDto> seats
 ) {
 }

@@ -108,7 +108,7 @@ class FilmIntegrationTests extends SpringIntegrationTests {
         //when
         var result = mockMvc.perform(
                 get("/films")
-                        .param("category", sampleFilm.category())
+                        .param("category", sampleFilm.category().name())
         );
 
         //then

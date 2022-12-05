@@ -1,24 +1,23 @@
 package code.films;
 
+import code.films.dto.FilmCategoryDto;
 import code.films.dto.FilmDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Table(name = "FILMS")
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @ToString
 class Film {
 
     @Id
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     private String title;
 
@@ -29,16 +28,13 @@ class Film {
     @AttributeOverride(name = "value", column = @Column(name = "year"))
     private FilmYear year;
 
-    protected Film() {
-    }
-
-    Film(String title, FilmCategory category, FilmYear year) {
-        this.title = title;
-        this.category = category;
-        this.year = year;
-    }
-
     FilmDto toDTO() {
-        return new FilmDto(this.id, this.title, this.category.name(), this.year.getValue());
+        return FilmDto
+                .builder()
+                .id(id)
+                .title(title)
+                .category(FilmCategoryDto.valueOf(category.name()))
+                .year(year.getValue())
+                .build();
     }
 }

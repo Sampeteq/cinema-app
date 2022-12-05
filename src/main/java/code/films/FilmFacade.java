@@ -16,11 +16,13 @@ public class FilmFacade {
     private final FilmRepository filmRepository;
 
     public FilmDto add(AddFilmDto dto) {
-        var film = new Film(
-                dto.title(),
-                FilmCategory.fromDTO(dto.filmCategory()),
-                FilmYear.of(dto.year())
-        );
+        var film = Film
+                .builder()
+                .id(UUID.randomUUID())
+                .title(dto.title())
+                .category(FilmCategory.fromDTO(dto.filmCategory()))
+                .year(FilmYear.of(dto.year()))
+                .build();
         return filmRepository
                 .add(film)
                 .toDTO();

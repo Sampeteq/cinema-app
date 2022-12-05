@@ -30,7 +30,7 @@ class ScreeningCreator {
         var seatNumber = 1;
         var helpCounter = 1;
         for (int i = 1; i <= room.seatsQuantity(); i++) {
-            if (helpCounter > room.getSeatsInOneRowQuantity()) {
+            if (helpCounter > room.toDTO().seatsInOneRowQuantity()) {
                 rowNumber++;
                 seatNumber = 1;
                 helpCounter = 1;

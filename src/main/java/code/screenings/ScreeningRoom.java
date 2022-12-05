@@ -11,15 +11,14 @@ import java.util.UUID;
 @Entity
 @Table(name = "SCREENINGS_ROOMS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
-@Getter
 @ToString
 class ScreeningRoom {
 
     @Id
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     private int number;
 

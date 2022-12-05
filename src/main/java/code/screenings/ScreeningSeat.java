@@ -10,9 +10,9 @@ import java.util.UUID;
 @Table(name = "SCREENINGS_SEATS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
-@ToString
+@Builder(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
+@ToString
 class ScreeningSeat {
 
     @Id

@@ -1,10 +1,7 @@
 package code.screenings.infrastructure;
 
 import code.screenings.ScreeningFacade;
-import code.screenings.dto.AddScreeningDto;
-import code.screenings.dto.AddScreeningRoomDto;
-import code.screenings.dto.ScreeningDto;
-import code.screenings.dto.ScreeningRoomDto;
+import code.screenings.dto.*;
 import code.screenings.exception.ScreeningException;
 import code.screenings.exception.ScreeningNotFoundException;
 import code.screenings.exception.ScreeningRoomNotFoundException;
@@ -44,11 +41,14 @@ class ScreeningCrudController {
             @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
             LocalDateTime date
     ) {
-        var params = new HashMap<String, Object>() {{
-            put("filmId", filmId);
-            put("date", date);
-        }};
-        return ticketFacade.searchBy(params);
+
+        var paramsDto = ScreeningSearchParamsDto
+                .builder()
+                .filmId(filmId)
+                .screeningDate(date)
+                .build();
+
+        return ticketFacade.searchBy(paramsDto);
     }
 
     @PostMapping("/screenings-rooms")

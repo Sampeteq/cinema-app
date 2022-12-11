@@ -28,8 +28,8 @@ public class ScreeningFacade {
         return screeningCreator.add(dto);
     }
 
-    public List<ScreeningDto> searchBy(Map<String, Object> params) {
-        return screeningSearcher.searchBy(params);
+    public List<ScreeningDto> searchBy(ScreeningSearchParamsDto paramsDto) {
+        return screeningSearcher.searchBy(paramsDto);
     }
 
     public ScreeningRoomDto addRoom(AddScreeningRoomDto dto) {

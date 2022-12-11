@@ -1,6 +1,7 @@
 package code.screenings;
 
 import code.screenings.dto.ScreeningDto;
+import code.screenings.dto.ScreeningSearchParamsDto;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -13,17 +14,12 @@ class ScreeningSearcher {
 
     private final ScreeningRepository screeningRepository;
 
-    public List<ScreeningDto> searchBy(Map<String, Object> params) {
-        var filmId = (UUID) params.get("filmId");
-        var date = (LocalDateTime) params.get("date");
-        var screeningDate = date != null ? ScreeningDate.of(date) : null;
-//        var example = Screening
-//                .builder()
-//                .date(screeningDate)
-//                .filmId(filmId)
-//                .build();
+    public List<ScreeningDto> searchBy(ScreeningSearchParamsDto paramsDto) {
+        var screeningDate = paramsDto.getScreeningDate()
+                != null ? ScreeningDate.of(paramsDto.getScreeningDate())
+                : null;
         return screeningRepository
-                .getBy(screeningDate, filmId)
+                .getBy(screeningDate, paramsDto.getFilmId())
                 .stream()
                 .map(Screening::toDTO)
                 .toList();

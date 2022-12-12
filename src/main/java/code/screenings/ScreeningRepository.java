@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,7 @@ interface ScreeningRepository {
 
     Optional<Screening> getById(UUID id);
 
-    List<Screening> getBy(ScreeningDate date, UUID filmId);
+    List<Screening> getBy(ScreeningSearchParams params);
 
     boolean existsByDateAndRoomId(ScreeningDate screeningDate, UUID roomId);
 }
@@ -26,9 +27,9 @@ interface JpaScreeningRepository extends JpaRepository<Screening, UUID> {
     @Query("SELECT s FROM Screening s " +
             "left join fetch s.seats " +
             "left join fetch s.room where " +
-            "(:date is null or s.date = :date) and " +
-            "(:filmId is null or s.filmId = : filmId)")
-    Set<Screening> findBy(ScreeningDate date, UUID filmId);
+            "(:#{#params?.date?.value} is null or s.date.value = :#{#params?.date?.value}) and " +
+            "(:#{#params.filmId} is null or s.filmId = :#{#params.filmId})")
+    Set<Screening> findBy(ScreeningSearchParams params);
 
     boolean existsByDateAndRoom_id(ScreeningDate screeningDate, UUID roomId);
 }
@@ -49,10 +50,11 @@ class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     @Override
-    public List<Screening> getBy(ScreeningDate date, UUID filmId) {
+    public List<Screening> getBy(ScreeningSearchParams params) {
         return jpaScreeningRepository
-                .findBy(date, filmId)
-                .stream().toList();
+                .findBy(params)
+                .stream()
+                .toList();
     }
 
     @Override

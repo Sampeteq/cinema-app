@@ -18,8 +18,13 @@ class ScreeningSearcher {
         var screeningDate = paramsDto.getScreeningDate()
                 != null ? ScreeningDate.of(paramsDto.getScreeningDate())
                 : null;
+        var params = ScreeningSearchParams
+                .builder()
+                .filmId(paramsDto.getFilmId())
+                .date(screeningDate)
+                .build();
         return screeningRepository
-                .getBy(screeningDate, paramsDto.getFilmId())
+                .getBy(params)
                 .stream()
                 .map(Screening::toDTO)
                 .toList();

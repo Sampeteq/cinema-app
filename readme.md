@@ -1,32 +1,52 @@
-This is a cinema-app to browse films, making reservations for their screenings and management for admins.
+This is web app to manage a cinema.
 
-Tech stack: Java 17, Spring Boot 2.6.7, Lombok, H2 DB, Open API
+Features:
 
-API available on localhost:8080/swagger-ui:
+1.Storing and searching films: 
 
-Films:
+Endpoints:
 
 /films (POST) - add a new film (admin only)
 
-/films (GET) - read all films
+/films (GET) - search all films
 
-/films/{category} - read all films by category
+/films?category={category} (GET) - search films by category
 
-Screenings:
+/////////////////////
 
-/screenings (POST) - add a new film's screening (admin only)
+2.Storing and searching screenings:
 
-/screenings (GET) - read all films screenings
+Endpoints:
 
-/screenings/{filmID} - read all screenings by film id
+/screenings (POST) - add a new screening (admin only)
 
-Tickets:
+/screenings (GET) - search all films screenings
 
-/tickets (POST) - reserve a new ticket for film's screening
+/screenings?{paramName}=paramValue - search screenings by params
 
-/tickets/{ticketId}/reservation/cancelled - cancel a ticket's reservation
+/screenings-rooms (POST) - add a new screening room (admin only)
 
-/tickets (GET) - read all tickets (admin only)
+/screenings-rooms (GET) - search all screenings room (admin only)
+
+/////////////////////
+
+3.Booking tickets
+
+Endpoints:
+
+/screening-tickets (POST) - book a new ticket for screening
+
+/screenings-tickets/{ticketId}/cancelled - cancel a ticket's booking
+
+/screenings-tickets (GET) - search all tickets (admin only)
+
+/////////////////////
+
+Tech stack:Java 17, Spring Boot 2.6.7, Lombok, H2 DB, Open API
+
+API available on localhost:8080/swagger-ui:
+
+
 
 
 

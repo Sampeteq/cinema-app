@@ -4,7 +4,7 @@ import code.films.FilmFacade;
 import code.films.dto.AddFilmDto;
 import code.films.dto.FilmCategoryDto;
 import code.films.dto.FilmDto;
-import code.films.dto.FilmSearchParamDto;
+import code.films.dto.FilmSearchParamsDto;
 import code.films.exception.FilmException;
 import code.films.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -32,14 +31,15 @@ class FilmCrudController {
     }
 
     @GetMapping("/films")
-    List<FilmDto> readAll(
+    List<FilmDto> search(
             @RequestParam(required = false)
             FilmCategoryDto category
     ) {
-        var readParameters = new HashMap<FilmSearchParamDto, Object>() {{
-            put(FilmSearchParamDto.CATEGORY, category);
-        }};
-        return filmFacade.search(readParameters);
+        var params = FilmSearchParamsDto
+                .builder()
+                .category(category)
+                .build();
+        return filmFacade.search(params);
     }
 }
 

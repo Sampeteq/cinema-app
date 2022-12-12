@@ -1,11 +1,12 @@
 package code.films;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 interface FilmRepository  {
@@ -14,11 +15,16 @@ interface FilmRepository  {
 
     Optional<Film> getById(UUID id);
 
-    List<Film> getByExample(Film example);
+    List<Film> getBy(FilmSearchParams params);
 }
 
 interface JpaFilmRepository extends JpaRepository<Film, UUID> {
 
+    @Query(
+            "SELECT f FROM Film f WHERE " +
+                    ":#{#params?.category} is null or f.category = :#{#params?.category}"
+    )
+    Set<Film> searchBy(FilmSearchParams params);
 }
 
 @AllArgsConstructor
@@ -37,10 +43,11 @@ class JpaFilmRepositoryAdapter implements FilmRepository {
     }
 
     @Override
-    public List<Film> getByExample(Film example) {
-        return jpaFilmRepository.findAll(
-                Example.of(example)
-        );
+    public List<Film> getBy(FilmSearchParams params) {
+        return jpaFilmRepository
+                .searchBy(params)
+                .stream()
+                .toList();
     }
 }
 

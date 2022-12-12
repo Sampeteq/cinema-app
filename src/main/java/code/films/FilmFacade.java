@@ -1,13 +1,11 @@
 package code.films;
 
 import code.films.dto.AddFilmDto;
-import code.films.dto.FilmCategoryDto;
 import code.films.dto.FilmDto;
-import code.films.dto.FilmSearchParamDto;
+import code.films.dto.FilmSearchParamsDto;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -28,15 +26,13 @@ public class FilmFacade {
                 .toDTO();
     }
 
-    public List<FilmDto> search(Map<FilmSearchParamDto, Object> parameters) {
-        var categoryDTO = (FilmCategoryDto) parameters.get(FilmSearchParamDto.CATEGORY);
-        var category = categoryDTO != null ? FilmCategory.fromDTO(categoryDTO) : null;
-        var example = Film
-                        .builder()
-                        .category(category)
-                        .build();
+    public List<FilmDto> search(FilmSearchParamsDto paramsDto) {
+        var params = FilmSearchParams
+                .builder()
+                .category(paramsDto.category == null ? null : FilmCategory.fromDTO(paramsDto.category))
+                .build();
         return filmRepository
-                .getByExample(example)
+                .getBy(params)
                 .stream()
                 .map(Film::toDTO)
                 .toList();

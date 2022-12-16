@@ -7,8 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -20,32 +20,25 @@ public class ScreeningFacade {
 
     private final ScreeningSearcher screeningSearcher;
 
+    private final ScreeningRoomCreator screeningRoomCreator;
+
     private final ScreeningCreator screeningCreator;
 
     private final ScreeningTicketBooker screeningTicketBooker;
 
+    @Transactional
     public ScreeningDto add(AddScreeningDto dto) {
         return screeningCreator.add(dto);
     }
 
+    @Transactional
     public List<ScreeningDto> searchBy(ScreeningSearchParamsDto paramsDto) {
         return screeningSearcher.searchBy(paramsDto);
     }
 
+    @Transactional
     public ScreeningRoomDto addRoom(AddScreeningRoomDto dto) {
-        if (screeningRoomRepository.existsByNumber(dto.number())) {
-            throw new ScreeningRoomAlreadyExistsException(dto.number());
-        }
-        var screeningRoom = ScreeningRoom
-                .builder()
-                .id(UUID.randomUUID())
-                .number(dto.number())
-                .rowsQuantity(dto.rowsQuantity())
-                .seatsInOneRowQuantity(dto.seatsQuantityInOneRow())
-                .build();
-        return screeningRoomRepository
-                .add(screeningRoom)
-                .toDTO();
+      return screeningRoomCreator.addRoom(dto);
     }
 
     public List<ScreeningRoomDto> readAllRooms() {

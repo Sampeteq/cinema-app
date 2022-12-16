@@ -5,8 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Clock;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,21 +32,12 @@ class Screening {
     @ManyToOne
     private ScreeningRoom room;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "screening_id")
-    @ToString.Exclude
-    private List<ScreeningSeat> seats = new ArrayList<>();
+    Optional<ScreeningRoomSeat> getSeat(UUID seatId) {
+        return room.getSeat(seatId);
+    }
 
     int timeToScreeningStartInHours(Clock clock) {
         return this.date.timeToScreeningStart(clock);
-    }
-
-    Optional<ScreeningSeat> getSeat(UUID seatId) {
-        return this
-                .seats
-                .stream()
-                .filter(seat -> seat.getId().equals(seatId))
-                .findFirst();
     }
 
     ScreeningDto toDTO() {
@@ -56,11 +45,11 @@ class Screening {
                 .builder()
                 .id(this.id)
                 .date(this.date.getValue())
-                .freeSeats((int) seats.stream().filter(ScreeningSeat::isFree).count())
                 .minAge(this.minAge)
                 .filmId(this.filmId)
                 .roomId(this.room.toDTO().id())
-                .seats(seats.stream().map(ScreeningSeat::toDTO).toList())
+                .freeSeats(this.room.freeSeatsQuantity())
+                .seats(this.room.getSeats().stream().map(ScreeningRoomSeat::toDTO).toList())
                 .build();
     }
 }

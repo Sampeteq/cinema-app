@@ -76,7 +76,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         var sampleFilms = addSampleFilms(filmFacade);
         var sampleRooms = addSampleScreeningRooms(screeningFacade);
         var sampleScreenings = screeningFacade.add(
-                sampleAddScreeningDTO(
+                sampleAddScreeningDto(
                         sampleFilms.get(0).id(),
                         sampleRooms.get(0).id()
                 ).withDate(LocalDateTime.now().minusHours(23))
@@ -192,7 +192,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         var sampleRoomId = addSampleScreeningRooms(screeningFacade).get(0);
         var sampleScreeningDate = LocalDateTime.now().minusHours(hoursUntilBooking);
         var sampleScreening = screeningFacade.add(
-                sampleAddScreeningDTO(
+                sampleAddScreeningDto(
                         sampleFilmId,
                         sampleRoomId.id()
                 ).withDate(sampleScreeningDate)

@@ -3,9 +3,9 @@ package code.screenings;
 import code.screenings.dto.ScreeningRoomDto;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -26,8 +26,23 @@ class ScreeningRoom {
 
     private int seatsInOneRowQuantity;
 
-    int seatsQuantity() {
-        return rowsQuantity * seatsInOneRowQuantity;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roomId")
+    @Getter
+    private List<ScreeningRoomSeat> seats;
+
+    Optional<ScreeningRoomSeat> getSeat(UUID seatId) {
+        return seats
+                .stream()
+                .filter(seat -> seat.getId().equals(seatId))
+                .findFirst();
+    }
+
+    int freeSeatsQuantity() {
+        return (int) this.seats
+                .stream()
+                .filter(ScreeningRoomSeat::isFree)
+                .count();
     }
 
     ScreeningRoomDto toDTO() {

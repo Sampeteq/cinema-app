@@ -25,26 +25,6 @@ class ScreeningCreator {
         var room = getScreeningRoomOrThrow(dto.roomId());
         validateScreeningRoomBeingBusy(date, dto.roomId());
         validateFilmExisting(dto.filmId());
-        var seats = new ArrayList<ScreeningSeat>();
-        var rowNumber = 1;
-        var seatNumber = 1;
-        var helpCounter = 1;
-        for (int i = 1; i <= room.seatsQuantity(); i++) {
-            if (helpCounter > room.toDTO().seatsInOneRowQuantity()) {
-                rowNumber++;
-                seatNumber = 1;
-                helpCounter = 1;
-            }
-            var seat = ScreeningSeat
-                    .builder()
-                    .id(UUID.randomUUID())
-                    .rowNumber(rowNumber)
-                    .number(seatNumber++)
-                    .status(ScreeningSeatStatus.FREE)
-                    .build();
-            seats.add(seat);
-            helpCounter++;
-        }
         var screening = Screening
                 .builder()
                 .id(UUID.randomUUID())
@@ -52,7 +32,6 @@ class ScreeningCreator {
                 .minAge(dto.minAge())
                 .filmId(dto.filmId())
                 .room(room)
-                .seats(seats)
                 .build();
         return screeningRepository
                 .add(screening)

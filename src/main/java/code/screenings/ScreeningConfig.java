@@ -22,6 +22,7 @@ class ScreeningConfig {
         var screeningRepository = new JpaScreeningRepositoryAdapter(jpaScreeningRepository);
         var screeningRoomRepository = new JpaScreeningRoomRepositoryAdapter(jpaScreeningRoomRepository);
         var ticketRepository = new JpaScreeningTicketRepositoryAdapter(jpaScreeningTicketRepository);
+        var screeningRoomCreator = new ScreeningRoomCreator(screeningRoomRepository);
         var screeningCreator = new ScreeningCreator(
                 screeningRepository,
                 screeningRoomRepository,
@@ -33,6 +34,7 @@ class ScreeningConfig {
                 screeningRoomRepository,
                 ticketRepository,
                 screeningSearcher,
+                screeningRoomCreator,
                 screeningCreator,
                 screeningTicketBooker
         );

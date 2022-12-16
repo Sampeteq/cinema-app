@@ -35,7 +35,7 @@ class ScreeningTicket {
     private Screening screening;
 
     @OneToOne
-    private ScreeningSeat seat;
+    private ScreeningRoomSeat seat;
 
     void book(Clock clock) {
         if (this.screening.timeToScreeningStartInHours(clock) < 24) {

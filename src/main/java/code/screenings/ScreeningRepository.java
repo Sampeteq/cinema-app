@@ -25,8 +25,8 @@ interface ScreeningRepository {
 interface JpaScreeningRepository extends JpaRepository<Screening, UUID> {
 
     @Query("SELECT s FROM Screening s " +
-            "left join fetch s.seats " +
-            "left join fetch s.room where " +
+            "left join fetch s.room " +
+            "where " +
             "(:#{#params?.date?.value} is null or s.date.value = :#{#params?.date?.value}) and " +
             "(:#{#params.filmId} is null or s.filmId = :#{#params.filmId})")
     Set<Screening> findBy(ScreeningSearchParams params);

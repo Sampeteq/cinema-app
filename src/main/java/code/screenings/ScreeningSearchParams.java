@@ -10,7 +10,7 @@ import java.util.UUID;
 @Builder(access = AccessLevel.PACKAGE)
 class ScreeningSearchParams {
 
-    final UUID filmId;
+    public final UUID filmId;
 
-    final ScreeningDate date;
+    public final ScreeningDate date;
 }

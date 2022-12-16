@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @ToString
-class ScreeningSeat {
+class ScreeningRoomSeat {
 
     @Id
     @Getter
@@ -25,6 +25,9 @@ class ScreeningSeat {
 
     @Enumerated(EnumType.STRING)
     private ScreeningSeatStatus status;
+
+//    @ManyToOne
+//    private ScreeningRoom room;
 
     boolean isFree() {
         return this.status.equals(ScreeningSeatStatus.FREE);

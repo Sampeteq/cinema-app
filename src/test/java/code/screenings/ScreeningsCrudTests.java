@@ -2,6 +2,7 @@ package code.screenings;
 
 import code.SpringIntegrationTests;
 import code.films.FilmFacade;
+import code.screenings.dto.ScreeningDto;
 import code.screenings.exception.ScreeningRoomAlreadyExistsException;
 import code.screenings.exception.ScreeningRoomBusyException;
 import code.screenings.exception.ScreeningYearException;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultHandler;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.time.LocalDateTime;
 
@@ -38,10 +41,10 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @WithMockUser(roles = "ADMIN")
     void should_add_screening() throws Exception {
         //given
-        var sampleFilmId = addSampleFilms(filmFacade).get(0);
+        var sampleFilm = addSampleFilms(filmFacade).get(0);
         var sampleRoom = addSampleScreeningRooms(screeningFacade).get(0);
-        var sampleAddScreeningDTO = sampleAddScreeningDTO(
-                sampleFilmId.id(),
+        var sampleAddScreeningDTO = sampleAddScreeningDto(
+                sampleFilm.id(),
                 sampleRoom.id()
         );
 
@@ -55,12 +58,14 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         mockMvc.perform(get("/screenings"))
-                .andExpect(jsonPath("[0].id").exists())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(jsonPath("$[0].id").exists())
                 .andExpect(jsonPath("$[0].date").value(sampleAddScreeningDTO.date().toString()))
                 .andExpect(jsonPath("$[0].freeSeats").value(sampleRoom.seatsQuantity()))
                 .andExpect(jsonPath("$[0].minAge").value(sampleAddScreeningDTO.minAge()))
                 .andExpect(jsonPath("$[0].filmId").value(sampleAddScreeningDTO.filmId().toString()))
-                .andExpect(jsonPath("$[0].roomId").value(sampleAddScreeningDTO.roomId().toString()));
+                .andExpect(jsonPath("$[0].roomId").value(sampleAddScreeningDTO.roomId().toString()))
+                .andExpect(jsonPath("$[0].seats.size()").value(sampleRoom.seatsQuantity()));
     }
 
     @ParameterizedTest
@@ -70,7 +75,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         //given
         var sampleFilmId = addSampleFilms(filmFacade).get(0).id();
         var sampleRoomId = addSampleScreeningRooms(screeningFacade).get(0).id();
-        var sampleAddScreeningDTO = sampleAddScreeningDTO(
+        var sampleAddScreeningDTO = sampleAddScreeningDto(
                 sampleFilmId,
                 sampleRoomId
         ).withDate(wrongDate);
@@ -95,7 +100,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     void should_throw_exception_when_screening_room_is_busy() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleAddScreeningDTO = sampleAddScreeningDTO(
+        var sampleAddScreeningDTO = sampleAddScreeningDto(
                 sampleScreenings.get(0).filmId(),
                 sampleScreenings.get(0).roomId()
         ).withDate(sampleScreenings.get(0).date());

@@ -16,7 +16,7 @@ public class ScreeningTestUtils {
 
     public static final Year currentYear = Year.now();
 
-    public static AddScreeningDto sampleAddScreeningDTO(UUID filmId, UUID roomId) {
+    public static AddScreeningDto sampleAddScreeningDto(UUID filmId, UUID roomId) {
         return AddScreeningDto
                 .builder()
                 .filmId(filmId)
@@ -26,7 +26,7 @@ public class ScreeningTestUtils {
                 .build();
     }
 
-    public static AddScreeningDto sampleAddScreeningDTO(UUID filmId, UUID roomId, int wrongScreeningYear) {
+    public static AddScreeningDto sampleAddScreeningDto(UUID filmId, UUID roomId, int wrongScreeningYear) {
         return AddScreeningDto
                 .builder()
                 .filmId(filmId)

@@ -25,14 +25,13 @@ class ScreeningCreator {
         var room = getScreeningRoomOrThrow(dto.roomId());
         validateScreeningRoomBeingBusy(date, dto.roomId());
         validateFilmExisting(dto.filmId());
-        var screening = Screening
-                .builder()
-                .id(UUID.randomUUID())
-                .date(date)
-                .minAge(dto.minAge())
-                .filmId(dto.filmId())
-                .room(room)
-                .build();
+        var screening = new Screening(
+                UUID.randomUUID(),
+                date,
+                dto.minAge(),
+                dto.filmId(),
+                room
+        );
         return screeningRepository
                 .add(screening)
                 .toDTO();

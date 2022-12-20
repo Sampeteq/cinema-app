@@ -60,14 +60,13 @@ class ScreeningTicket {
     }
 
     ScreeningTicketDto toDTO() {
-        return ScreeningTicketDto
-                .builder()
-                .ticketId(this.id)
-                .screeningId(this.screening.getId())
-                .seatId(this.seat.getId())
-                .firstName(this.firstName)
-                .lastName(this.lastName)
-                .status(ScreeningTicketStatusDto.valueOf(this.status.name()))
-                .build();
+        return new ScreeningTicketDto(
+                this.id,
+                this.screening.getId(),
+                this.seat.getId(),
+                this.firstName,
+                this.lastName,
+                ScreeningTicketStatusDto.valueOf(this.status.name())
+        );
     }
 }

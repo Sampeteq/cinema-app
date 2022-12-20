@@ -42,12 +42,11 @@ class ScreeningRoomSeat {
     }
 
     ScreeningSeatDto toDTO() {
-        return ScreeningSeatDto
-                .builder()
-                .seatId(this.id)
-                .rowNumber(this.rowNumber)
-                .number(this.number)
-                .status(this.status.name())
-                .build();
+        return new ScreeningSeatDto(
+                this.id,
+                this.rowNumber,
+                this.number,
+                this.status.name()
+        );
     }
 }

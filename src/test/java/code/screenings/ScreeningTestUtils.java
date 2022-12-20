@@ -17,48 +17,33 @@ public class ScreeningTestUtils {
     public static final Year currentYear = Year.now();
 
     public static AddScreeningDto sampleAddScreeningDto(UUID filmId, UUID roomId) {
-        return AddScreeningDto
-                .builder()
-                .filmId(filmId)
-                .roomId(roomId)
-                .date(LocalDateTime.parse("2022-05-05T16:30"))
-                .minAge(13)
-                .build();
+        return new AddScreeningDto(
+                LocalDateTime.parse("2022-05-05T16:30"),
+                13,
+                filmId,
+                roomId
+        );
     }
-
-    public static AddScreeningDto sampleAddScreeningDto(UUID filmId, UUID roomId, int wrongScreeningYear) {
-        return AddScreeningDto
-                .builder()
-                .filmId(filmId)
-                .roomId(roomId)
-                .date(LocalDateTime.parse("2022-05-05T16:30").withYear(wrongScreeningYear))
-                .minAge(13)
-                .build();
-    }
-
 
     public static AddScreeningRoomDto sampleAddRoomDTO() {
-        return AddScreeningRoomDto
-                .builder()
-                .number(1)
-                .rowsQuantity(9)
-                .seatsQuantityInOneRow(6)
-                .build();
+        return new AddScreeningRoomDto(
+                1,
+                6,
+                10
+        );
     }
 
     public static List<ScreeningRoomDto> addSampleScreeningRooms(ScreeningFacade screeningFacade) {
-        var room1 = AddScreeningRoomDto
-                .builder()
-                .number(1)
-                .rowsQuantity(9)
-                .seatsQuantityInOneRow(6)
-                .build();
-        var room2 = AddScreeningRoomDto
-                .builder()
-                .number(2)
-                .rowsQuantity(7)
-                .seatsQuantityInOneRow(5)
-                .build();
+        var room1 = new AddScreeningRoomDto(
+                1,
+                6,
+                10
+        );
+        var room2 = new AddScreeningRoomDto(
+                2,
+                8,
+                7
+        );
         return List.of(
                 screeningFacade.addRoom(room1),
                 screeningFacade.addRoom(room2)
@@ -69,22 +54,20 @@ public class ScreeningTestUtils {
         var sampleFilms = FilmTestUtils.addSampleFilms(filmFacade);
         var sampleRooms = addSampleScreeningRooms(screeningFacade);
         var screening1 = screeningFacade.add(
-                AddScreeningDto
-                        .builder()
-                        .filmId(sampleFilms.get(0).id())
-                        .roomId(sampleRooms.get(0).id())
-                        .date(LocalDateTime.parse("2022-05-05T16:00"))
-                        .minAge(13)
-                        .build()
+                new AddScreeningDto(
+                        LocalDateTime.parse("2022-05-05T16:30"),
+                        13,
+                        sampleFilms.get(0).id(),
+                        sampleRooms.get(0).id()
+                )
         );
         var screening2 = screeningFacade.add(
-                AddScreeningDto
-                        .builder()
-                        .filmId(sampleFilms.get(1).id())
-                        .roomId(sampleRooms.get(1).id())
-                        .date(LocalDateTime.parse("2022-06-09T17:30"))
-                        .minAge(13)
-                        .build()
+                new AddScreeningDto(
+                        LocalDateTime.parse("2022-06-10T18:30"),
+                        18,
+                        sampleFilms.get(1).id(),
+                        sampleRooms.get(1).id()
+                )
         );
         return List.of(screening1, screening2);
     }

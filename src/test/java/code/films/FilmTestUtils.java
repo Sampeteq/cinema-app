@@ -13,48 +13,32 @@ public abstract class FilmTestUtils {
     }
 
     public static AddFilmDto sampleAddFilmDTO() {
-        return AddFilmDto
-                .builder()
-                .title("Sample title")
-                .filmCategory(FilmCategoryDto.COMEDY)
-                .year(Year.now().getValue())
-                .build();
+        return new AddFilmDto(
+                "title 1",
+                FilmCategoryDto.COMEDY,
+                Year.now().getValue()
+        );
     }
 
     public static List<AddFilmDto> sampleAddFilmDTOs() {
-        var dto1 = AddFilmDto
-                .builder()
-                .title("Sample title 1")
-                .filmCategory(FilmCategoryDto.COMEDY)
-                .year(Year.now().getValue())
-                .build();
-        var dto2 = AddFilmDto
-                .builder()
-                .title("Sample title 1")
-                .filmCategory(FilmCategoryDto.COMEDY)
-                .year(Year.now().getValue())
-                .build();
+        var dto1 = new AddFilmDto(
+                "title 1",
+                FilmCategoryDto.COMEDY,
+                Year.now().getValue()
+        );
+        var dto2 = new AddFilmDto(
+                "title 2",
+                FilmCategoryDto.DRAMA,
+                Year.now().getValue() - 1
+        );
         return List.of(dto1, dto2);
     }
 
     public static List<FilmDto> addSampleFilms(FilmFacade filmFacade) {
-        var sampleFilmDTO1 = filmFacade.add(
-                AddFilmDto
-                        .builder()
-                        .title("Sample title 1")
-                        .filmCategory(FilmCategoryDto.COMEDY)
-                        .year(Year.now().getValue())
-                        .build()
-        );
-        var sampleFilmDTO2 = filmFacade.add(
-                AddFilmDto
-                        .builder()
-                        .title("Sample title 2")
-                        .filmCategory(FilmCategoryDto.DRAMA)
-                        .year(Year.now().plusYears(1).getValue())
-                        .build()
-        );
-        return List.of(sampleFilmDTO1, sampleFilmDTO2);
+        return sampleAddFilmDTOs()
+                .stream()
+                .map(filmFacade::add)
+                .toList();
     }
 
     public static List<Integer> wrongFilmYears() {

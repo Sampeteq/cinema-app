@@ -46,13 +46,12 @@ class ScreeningRoom {
     }
 
     ScreeningRoomDto toDTO() {
-        return ScreeningRoomDto
-                .builder()
-                .id(this.id)
-                .number(this.number)
-                .rowsQuantity(this.rowsQuantity)
-                .seatsInOneRowQuantity(this.seatsInOneRowQuantity)
-                .seatsQuantity(this.rowsQuantity * this.seatsInOneRowQuantity)
-                .build();
+        return new ScreeningRoomDto(
+                this.id,
+                this.number,
+                this.rowsQuantity,
+                this.seatsInOneRowQuantity,
+                this.seatsInOneRowQuantity * this.rowsQuantity
+        );
     }
 }

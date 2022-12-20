@@ -11,8 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "SCREENINGS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @ToString
 class Screening {
@@ -41,15 +40,14 @@ class Screening {
     }
 
     ScreeningDto toDTO() {
-        return ScreeningDto
-                .builder()
-                .id(this.id)
-                .date(this.date.getValue())
-                .minAge(this.minAge)
-                .filmId(this.filmId)
-                .roomId(this.room.toDTO().id())
-                .freeSeats(this.room.freeSeatsQuantity())
-                .seats(this.room.getSeats().stream().map(ScreeningRoomSeat::toDTO).toList())
-                .build();
+        return new ScreeningDto(
+                this.id,
+                this.date.getValue(),
+                this.room.freeSeatsQuantity(),
+                this.minAge,
+                this.filmId,
+                this.room.toDTO().id(),
+                this.room.getSeats().stream().map(ScreeningRoomSeat::toDTO).toList()
+        );
     }
 }

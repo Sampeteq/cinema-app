@@ -10,8 +10,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "FILMS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @ToString
 class Film {
@@ -29,12 +28,11 @@ class Film {
     private FilmYear year;
 
     FilmDto toDTO() {
-        return FilmDto
-                .builder()
-                .id(id)
-                .title(title)
-                .category(FilmCategoryDto.valueOf(category.name()))
-                .year(year.getValue())
-                .build();
+        return new FilmDto(
+          this.id,
+          this.title,
+          FilmCategoryDto.valueOf(this.category.name()),
+          this.year.getValue()
+        );
     }
 }

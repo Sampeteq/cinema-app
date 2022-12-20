@@ -220,24 +220,22 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     }
 
     private static BookScreeningTicketDto sampleBookTicketDTO(UUID sampleScreeningId, UUID sampleScreeningSeatId) {
-        return BookScreeningTicketDto
-                .builder()
-                .screeningId(sampleScreeningId)
-                .seatId(sampleScreeningSeatId)
-                .firstName("Name 1")
-                .lastName("Lastname 1")
-                .build();
+        return new BookScreeningTicketDto(
+                sampleScreeningId,
+                sampleScreeningSeatId,
+                "Name 1",
+                "Lastname 1"
+        );
     }
 
     private ScreeningTicketDto bookSampleTicket(UUID sampleScreeningId, UUID sampleSeatId) {
         return screeningFacade.bookTicket(
-                BookScreeningTicketDto
-                        .builder()
-                        .screeningId(sampleScreeningId)
-                        .seatId(sampleSeatId)
-                        .firstName("Name")
-                        .lastName("Lastname")
-                        .build(),
+                new BookScreeningTicketDto(
+                        sampleScreeningId,
+                        sampleSeatId,
+                        "Name 1",
+                        "Lastname 1"
+                ),
                 clock
         );
     }

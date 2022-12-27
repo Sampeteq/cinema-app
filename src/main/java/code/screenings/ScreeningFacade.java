@@ -20,13 +20,23 @@ public class ScreeningFacade {
 
     private final ScreeningRoomCreator screeningRoomCreator;
 
-    private final ScreeningCreator screeningCreator;
+    private final ScreeningFactory screeningFactory;
 
     private final ScreeningTicketBooker screeningTicketBooker;
 
+    private final ScreeningRepository screeningRepository;
+
     @Transactional
     public ScreeningDto add(AddScreeningDto dto) {
-        return screeningCreator.add(dto);
+        var screening = screeningFactory.createScreening(
+                dto.date(),
+                dto.minAge(),
+                dto.filmId(),
+                dto.roomId()
+        );
+        return screeningRepository
+                .add(screening)
+                .toDTO();
     }
 
     @Transactional

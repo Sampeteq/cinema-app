@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -12,5 +13,5 @@ class ScreeningSearchParams {
 
     public final UUID filmId;
 
-    public final ScreeningDate date;
+    public final LocalDateTime date;
 }

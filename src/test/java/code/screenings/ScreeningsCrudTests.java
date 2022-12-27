@@ -89,7 +89,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new ScreeningYearException(wrongDate.getYear()).getMessage()
+                        "A screening date year must be current or next one"
                 ));
     }
 

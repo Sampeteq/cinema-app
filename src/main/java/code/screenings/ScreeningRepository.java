@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-interface ScreeningRepository {
+sealed interface ScreeningRepository permits JpaScreeningRepositoryAdapter {
 
     Screening add(Screening screening);
 
@@ -17,7 +18,7 @@ interface ScreeningRepository {
 
     List<Screening> getBy(ScreeningSearchParams params);
 
-    boolean existsByDateAndRoomId(ScreeningDate screeningDate, UUID roomId);
+    boolean existsByDateAndRoomId(LocalDateTime screeningDate, UUID roomId);
 }
 
 interface JpaScreeningRepository extends JpaRepository<Screening, UUID> {
@@ -25,15 +26,15 @@ interface JpaScreeningRepository extends JpaRepository<Screening, UUID> {
     @Query("SELECT s FROM Screening s " +
             "left join fetch s.room " +
             "where " +
-            "(:#{#params?.date?.value} is null or s.date.value = :#{#params?.date?.value}) and " +
+            "(:#{#params?.date} is null or s.date = :#{#params?.date}) and " +
             "(:#{#params.filmId} is null or s.filmId = :#{#params.filmId})")
     Set<Screening> findBy(ScreeningSearchParams params);
 
-    boolean existsByDateAndRoom_id(ScreeningDate screeningDate, UUID roomId);
+    boolean existsByDateAndRoom_id(LocalDateTime screeningDate, UUID roomId);
 }
 
 @AllArgsConstructor
-class JpaScreeningRepositoryAdapter implements ScreeningRepository {
+final class JpaScreeningRepositoryAdapter implements ScreeningRepository {
 
     private final JpaScreeningRepository jpaScreeningRepository;
 
@@ -56,7 +57,7 @@ class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     @Override
-    public boolean existsByDateAndRoomId(ScreeningDate screeningDate, UUID roomId) {
+    public boolean existsByDateAndRoomId(LocalDateTime screeningDate, UUID roomId) {
         return jpaScreeningRepository.existsByDateAndRoom_id(screeningDate, roomId);
     }
 }

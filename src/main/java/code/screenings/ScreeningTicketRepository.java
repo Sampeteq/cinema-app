@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-interface ScreeningTicketRepository {
+sealed interface ScreeningTicketRepository permits JpaScreeningTicketRepositoryAdapter {
 
     ScreeningTicket add(ScreeningTicket ticket);
 
@@ -21,7 +21,7 @@ interface JpaScreeningTicketRepository extends JpaRepository<ScreeningTicket, UU
 }
 
 @AllArgsConstructor
-class JpaScreeningTicketRepositoryAdapter implements ScreeningTicketRepository {
+final class JpaScreeningTicketRepositoryAdapter implements ScreeningTicketRepository {
 
     private final JpaScreeningTicketRepository jpaScreeningTicketRepository;
 

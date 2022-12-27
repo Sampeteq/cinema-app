@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-interface ScreeningRoomRepository {
+sealed interface ScreeningRoomRepository permits JpaScreeningRoomRepositoryAdapter {
 
     ScreeningRoom add(ScreeningRoom room);
 
@@ -24,7 +24,7 @@ interface JpaScreeningRoomRepository extends JpaRepository<ScreeningRoom, UUID> 
 }
 
 @AllArgsConstructor
-class JpaScreeningRoomRepositoryAdapter implements ScreeningRoomRepository {
+final class JpaScreeningRoomRepositoryAdapter implements ScreeningRoomRepository {
 
     private final JpaScreeningRoomRepository jpaScreeningRoomRepository;
 

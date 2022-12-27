@@ -23,10 +23,12 @@ class ScreeningConfig {
         var screeningRoomRepository = new JpaScreeningRoomRepositoryAdapter(jpaScreeningRoomRepository);
         var ticketRepository = new JpaScreeningTicketRepositoryAdapter(jpaScreeningTicketRepository);
         var screeningRoomCreator = new ScreeningRoomCreator(screeningRoomRepository);
-        var screeningCreator = new ScreeningCreator(
+        var screeningDateSpecification = new CurrentOrNextOneYearScreeningDateSpecification();
+        var screeningFactory = new ScreeningFactory(
+                screeningDateSpecification,
+                filmFacade,
                 screeningRepository,
-                screeningRoomRepository,
-                filmFacade
+                screeningRoomRepository
         );
         var screeningSearcher = new ScreeningSearcher(screeningRepository);
         var screeningTicketBooker = new ScreeningTicketBooker(screeningRepository, ticketRepository);
@@ -35,8 +37,9 @@ class ScreeningConfig {
                 ticketRepository,
                 screeningSearcher,
                 screeningRoomCreator,
-                screeningCreator,
-                screeningTicketBooker
+                screeningFactory,
+                screeningTicketBooker,
+                screeningRepository
         );
     }
 

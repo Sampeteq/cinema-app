@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.Clock;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,9 +22,7 @@ class Screening {
     @Getter
     private UUID id;
 
-    @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "date"))
-    private ScreeningDate date;
+    private LocalDateTime date;
 
     private Integer minAge;
 
@@ -36,13 +36,16 @@ class Screening {
     }
 
     int timeToScreeningStartInHours(Clock clock) {
-        return this.date.timeToScreeningStart(clock);
+        return (int) Duration
+                .between(LocalDateTime.now(clock), this.date)
+                .abs()
+                .toHours();
     }
 
     ScreeningDto toDTO() {
         return new ScreeningDto(
                 this.id,
-                this.date.getValue(),
+                this.date,
                 this.room.freeSeatsQuantity(),
                 this.minAge,
                 this.filmId,

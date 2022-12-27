@@ -1,13 +1,11 @@
 package code.screenings;
 
 import code.screenings.dto.*;
-import code.screenings.exception.ScreeningRoomAlreadyExistsException;
 import code.screenings.exception.ScreeningTicketNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +36,7 @@ public class ScreeningFacade {
 
     @Transactional
     public ScreeningRoomDto addRoom(AddScreeningRoomDto dto) {
-      return screeningRoomCreator.addRoom(dto);
+        return screeningRoomCreator.addRoom(dto);
     }
 
     public List<ScreeningRoomDto> readAllRooms() {

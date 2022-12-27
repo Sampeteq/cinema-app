@@ -80,7 +80,7 @@ public class ScreeningTestUtils {
                 16,
                 30
         );
-        var date2= LocalDateTime.of(
+        var date2 = LocalDateTime.of(
                 currentYear.getValue() + 2,
                 2,
                 2,

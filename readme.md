@@ -2,7 +2,7 @@ This is web app to manage a cinema.
 
 Features:
 
-1.Storing and searching films: 
+1.Storing and searching films:
 
 Endpoints:
 

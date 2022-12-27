@@ -8,7 +8,6 @@ import code.screenings.exception.ScreeningRoomBusyException;
 import code.screenings.exception.ScreeningRoomNotFoundException;
 import lombok.AllArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 @AllArgsConstructor

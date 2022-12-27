@@ -2,7 +2,6 @@ package code.screenings;
 
 import code.SpringIntegrationTests;
 import code.films.FilmFacade;
-import code.screenings.dto.ScreeningDto;
 import code.screenings.exception.ScreeningRoomAlreadyExistsException;
 import code.screenings.exception.ScreeningRoomBusyException;
 import code.screenings.exception.ScreeningYearException;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.time.LocalDateTime;
@@ -190,7 +188,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @WithMockUser(roles = "ADMIN")
     void should_throw_exception_when_room_number_is_not_unique() throws Exception {
         //given
-        var sampleRoom= addSampleScreeningRooms(screeningFacade).get(0);
+        var sampleRoom = addSampleScreeningRooms(screeningFacade).get(0);
         var sampleAddRoomDTO = sampleAddRoomDTO().withNumber(sampleRoom.number());
 
         //when

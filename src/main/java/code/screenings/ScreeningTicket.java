@@ -1,7 +1,7 @@
 package code.screenings;
 
-import code.screenings.dto.ScreeningTicketStatusDto;
 import code.screenings.dto.ScreeningTicketDto;
+import code.screenings.dto.ScreeningTicketStatusDto;
 import code.screenings.exception.BookingAlreadyCancelledException;
 import code.screenings.exception.ScreeningSeatBusyException;
 import code.screenings.exception.TooLateToBookingException;

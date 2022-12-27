@@ -3,8 +3,8 @@ package code.screenings;
 import code.SpringIntegrationTests;
 import code.films.FilmFacade;
 import code.screenings.dto.BookScreeningTicketDto;
-import code.screenings.dto.ScreeningTicketStatusDto;
 import code.screenings.dto.ScreeningTicketDto;
+import code.screenings.dto.ScreeningTicketStatusDto;
 import code.screenings.exception.BookingAlreadyCancelledException;
 import code.screenings.exception.TooLateToBookingException;
 import code.screenings.exception.TooLateToCancelBookingException;
@@ -59,8 +59,8 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         result.andExpect(status().isOk());
         var dto = fromResultActions(result, ScreeningTicketDto.class);
         mockMvc.perform(
-          get("/screenings-tickets/" + dto.ticketId())
-        )
+                        get("/screenings-tickets/" + dto.ticketId())
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.ticketId").exists())
                 .andExpect(jsonPath("$.screeningId").value(sampleBookTicketDTO.screeningId().toString()))

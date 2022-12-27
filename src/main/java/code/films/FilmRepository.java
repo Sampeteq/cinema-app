@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-interface FilmRepository {
+sealed interface FilmRepository permits JpaFilmRepositoryAdapter {
 
     Film add(Film film);
 
@@ -28,7 +28,7 @@ interface JpaFilmRepository extends JpaRepository<Film, UUID> {
 }
 
 @AllArgsConstructor
-class JpaFilmRepositoryAdapter implements FilmRepository {
+final class JpaFilmRepositoryAdapter implements FilmRepository {
 
     private final JpaFilmRepository jpaFilmRepository;
 

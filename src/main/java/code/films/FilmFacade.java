@@ -11,14 +11,15 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FilmFacade {
 
+    private final FilmFactory filmFactory;
+
     private final FilmRepository filmRepository;
 
     public FilmDto add(AddFilmDto dto) {
-        var film = new Film(
-                UUID.randomUUID(),
+        var film = filmFactory.createFilm(
                 dto.title(),
                 FilmCategory.fromDTO(dto.filmCategory()),
-                FilmYear.of(dto.year())
+                dto.year()
         );
         return filmRepository
                 .add(film)

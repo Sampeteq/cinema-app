@@ -23,16 +23,14 @@ class Film {
     @Enumerated(EnumType.STRING)
     private FilmCategory category;
 
-    @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "year"))
-    private FilmYear year;
+    private int year;
 
     FilmDto toDTO() {
         return new FilmDto(
                 this.id,
                 this.title,
                 FilmCategoryDto.valueOf(this.category.name()),
-                this.year.getValue()
+                year
         );
     }
 }

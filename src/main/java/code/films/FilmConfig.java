@@ -12,7 +12,9 @@ class FilmConfig {
 
     @Bean
     FilmFacade filmAPI() {
+        var filmYearSpecification = new PreviousCurrentOrNextOneFilmYearSpecification();
+        var filmFactory = new FilmFactory(filmYearSpecification);
         var filmRepository = new JpaFilmRepositoryAdapter(jpaFilmRepository);
-        return new FilmFacade(filmRepository);
+        return new FilmFacade(filmFactory, filmRepository);
     }
 }

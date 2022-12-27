@@ -73,7 +73,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new FilmYearException(dto.year()).getMessage()));
+                .andExpect(content().string("A film year must be previous, current or next one"));
     }
 
     @Test

@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class BookingAlreadyCancelledException extends BookingException {
 
-    public BookingAlreadyCancelledException(UUID ticketId) {
-        super("Booking already cancelled: " + ticketId);
+    public BookingAlreadyCancelledException(UUID seatId) {
+        super("Seat booking already cancelled: " + seatId);
     }
 }

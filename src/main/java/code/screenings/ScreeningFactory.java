@@ -26,13 +26,15 @@ class ScreeningFactory {
        validateFilmExisting(filmId);
        validateScreeningRoomBeingBusy(date, roomId);
        var room = getScreeningRoomOrThrow(roomId);
-       return new Screening(
-               UUID.randomUUID(),
-               date,
-               minAge,
-               filmId,
-               room
-       );
+       var screening = new Screening(
+                UUID.randomUUID(),
+                date,
+                minAge,
+                filmId,
+                room
+        );
+       room.assignScreeningForSeats(screening);
+       return screening;
     }
 
     private void validateScreeningDate(LocalDateTime date) {

@@ -4,7 +4,6 @@ import code.SpringIntegrationTests;
 import code.films.FilmFacade;
 import code.screenings.dto.BookScreeningTicketDto;
 import code.screenings.dto.ScreeningTicketDto;
-import code.screenings.dto.ScreeningTicketStatusDto;
 import code.screenings.exception.BookingAlreadyCancelledException;
 import code.screenings.exception.TooLateToBookingException;
 import code.screenings.exception.TooLateToCancelBookingException;
@@ -63,11 +62,9 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.ticketId").exists())
-                .andExpect(jsonPath("$.screeningId").value(sampleBookTicketDTO.screeningId().toString()))
-                .andExpect(jsonPath("$.seatId").value(sampleBookTicketDTO.seatId().toString()))
                 .andExpect(jsonPath("$.firstName").value(sampleBookTicketDTO.firstName()))
                 .andExpect(jsonPath("$.lastName").value(sampleBookTicketDTO.lastName()))
-                .andExpect(jsonPath("$.status").value(ScreeningTicketStatusDto.BOOKED.name()));
+                .andExpect(jsonPath("$.seat.seatId").value(sampleBookTicketDTO.seatId().toString()));
     }
 
     @Test
@@ -138,8 +135,10 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         assertThat(
-                screeningFacade.readTicket(sampleTicket.ticketId()).status()
-        ).isEqualTo(ScreeningTicketStatusDto.CANCELLED);
+                screeningFacade.readTicket(sampleTicket.ticketId())
+                        .seat()
+                        .status()
+        ).isEqualTo(ScreeningSeatStatus.FREE.name());
     }
 
     @Test
@@ -181,7 +180,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new BookingAlreadyCancelledException(sampleTicket.ticketId()).getMessage()));
+                .andExpect(content().string(new BookingAlreadyCancelledException(sampleTicket.seat().seatId()).getMessage()));
     }
 
     @Test
@@ -215,7 +214,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new TooLateToCancelBookingException(sampleTicket.ticketId()).getMessage()
+                        new TooLateToCancelBookingException(sampleTicket.seat().seatId()).getMessage()
                 ));
     }
 

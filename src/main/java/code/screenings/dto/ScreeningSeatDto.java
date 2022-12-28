@@ -6,6 +6,7 @@ public record ScreeningSeatDto(
         UUID seatId,
         int rowNumber,
         int number,
-        String status
+        String status,
+        UUID screeningId
 ) {
 }

@@ -28,7 +28,7 @@ class Screening {
 
     private UUID filmId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private ScreeningRoom room;
 
     Optional<ScreeningRoomSeat> getSeat(UUID seatId) {

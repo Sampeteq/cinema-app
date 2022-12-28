@@ -22,24 +22,24 @@ class ScreeningTicketBooker {
         var seat = screening
                 .getSeat(dto.seatId())
                 .orElseThrow(() -> new ScreeningSeatNotFoundException(dto.seatId()));
+        seat.book(clock);
         var ticket = ScreeningTicket
                 .builder()
                 .id(UUID.randomUUID())
                 .firstName(dto.firstName())
                 .lastName(dto.lastName())
-                .screening(screening)
                 .seat(seat)
-                .status(null)
                 .build();
-        ticket.book(clock);
         return screeningTicketRepository
                 .add(ticket)
                 .toDTO();
     }
 
     void cancelTicket(UUID ticketId, Clock clock) {
-        var ticket = getTicketOrThrow(ticketId);
-        ticket.cancel(clock);
+        var ticket = getTicketOrThrow(ticketId).toDTO();
+        var screening = getScreeningOrThrow(ticket.seat().screeningId());
+        var seat = screening.getSeat(ticket.seat().seatId()).orElseThrow();
+        seat.cancelBooking(clock);
     }
 
     private Screening getScreeningOrThrow(UUID screeningId) {

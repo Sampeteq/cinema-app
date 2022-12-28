@@ -5,14 +5,14 @@ import java.util.UUID;
 public record ScreeningTicketDto(
         UUID ticketId,
 
-        UUID screeningId,
+//        UUID screeningId,
 
-        UUID seatId,
+//        UUID seatId,
 
         String firstName,
 
         String lastName,
 
-        ScreeningTicketStatusDto status
+        ScreeningSeatDto seat
 ) {
 }

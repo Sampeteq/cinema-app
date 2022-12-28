@@ -44,6 +44,12 @@ class ScreeningRoom {
                 .count();
     }
 
+    void assignScreeningForSeats(Screening screening) {
+        this
+                .seats
+                .forEach(seat -> seat.assignScreening(screening));
+    }
+
     ScreeningRoomDto toDTO() {
         return new ScreeningRoomDto(
                 this.id,

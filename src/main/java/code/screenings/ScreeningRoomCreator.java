@@ -31,7 +31,8 @@ class ScreeningRoomCreator {
                     UUID.randomUUID(),
                     rowNumber,
                     seatNumber++,
-                    ScreeningSeatStatus.FREE
+                    ScreeningSeatStatus.FREE,
+                    null
             );
             seats.add(seat);
             helpCounter++;

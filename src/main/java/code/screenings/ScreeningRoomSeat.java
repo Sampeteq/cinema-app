@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "SCREENINGS_SEATS")
+@Table(name = "SCREENINGS_ROOMS_SEATS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")

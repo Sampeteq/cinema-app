@@ -26,7 +26,7 @@ class ScreeningRoom {
     private int seatsInOneRowQuantity;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "roomId")
+    @JoinColumn(name = "room_id")
     @Getter
     private List<ScreeningRoomSeat> seats;
 

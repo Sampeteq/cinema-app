@@ -9,8 +9,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "SCREENINGS_SEATS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @ToString
 class ScreeningRoomSeat {
@@ -25,9 +24,6 @@ class ScreeningRoomSeat {
 
     @Enumerated(EnumType.STRING)
     private ScreeningSeatStatus status;
-
-//    @ManyToOne
-//    private ScreeningRoom room;
 
     boolean isFree() {
         return this.status.equals(ScreeningSeatStatus.FREE);

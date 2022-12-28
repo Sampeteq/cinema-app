@@ -27,24 +27,22 @@ class ScreeningRoomCreator {
                 seatNumber = 1;
                 helpCounter = 1;
             }
-            var seat = ScreeningRoomSeat
-                    .builder()
-                    .id(UUID.randomUUID())
-                    .rowNumber(rowNumber)
-                    .number(seatNumber++)
-                    .status(ScreeningSeatStatus.FREE)
-                    .build();
+            var seat = new ScreeningRoomSeat(
+                    UUID.randomUUID(),
+                    rowNumber,
+                    seatNumber++,
+                    ScreeningSeatStatus.FREE
+            );
             seats.add(seat);
             helpCounter++;
         }
-        var screeningRoom = ScreeningRoom
-                .builder()
-                .id(UUID.randomUUID())
-                .number(dto.number())
-                .rowsQuantity(dto.rowsQuantity())
-                .seatsInOneRowQuantity(dto.seatsQuantityInOneRow())
-                .seats(seats)
-                .build();
+        var screeningRoom = new ScreeningRoom(
+                UUID.randomUUID(),
+                dto.number(),
+                dto.rowsQuantity(),
+                dto.seatsQuantityInOneRow(),
+                seats
+        );
         return screeningRoomRepository
                 .add(screeningRoom)
                 .toDTO();

@@ -11,8 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "SCREENINGS_ROOMS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @ToString
 class ScreeningRoom {

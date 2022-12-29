@@ -11,7 +11,7 @@ class ScreeningSearcher {
 
     private final ScreeningRepository screeningRepository;
 
-    public List<ScreeningDto> searchBy(ScreeningSearchParamsDto paramsDto) {
+    List<ScreeningDto> searchBy(ScreeningSearchParamsDto paramsDto) {
         var screeningDate = paramsDto.getScreeningDate();
         var params = ScreeningSearchParams
                 .builder()

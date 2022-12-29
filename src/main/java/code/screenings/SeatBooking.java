@@ -1,6 +1,6 @@
 package code.screenings;
 
-import code.screenings.dto.ScreeningTicketDto;
+import code.screenings.dto.SeatBookingDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,13 +8,13 @@ import java.time.Clock;
 import java.util.UUID;
 
 @Entity
-@Table(name = "SCREENINGS_TICKETS")
+@Table(name = "SEATS_BOOKINGS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @ToString
-class ScreeningTicket {
+class SeatBooking {
 
     @Id
     private UUID id;
@@ -24,14 +24,14 @@ class ScreeningTicket {
     private String lastName;
 
     @OneToOne
-    private ScreeningRoomSeat seat;
+    private Seat seat;
 
-    void cancelSeatBooking(Clock clock) {
+    void cancel(Clock clock) {
         this.seat.cancelBooking(clock);
     }
 
-    ScreeningTicketDto toDTO() {
-        return new ScreeningTicketDto(
+    SeatBookingDto toDTO() {
+        return new SeatBookingDto(
                 this.id,
                 this.firstName,
                 this.lastName,

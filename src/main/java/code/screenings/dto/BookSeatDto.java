@@ -3,7 +3,7 @@ package code.screenings.dto;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
-public record BookScreeningTicketDto(
+public record BookSeatDto(
         @NotNull
         UUID screeningId,
 

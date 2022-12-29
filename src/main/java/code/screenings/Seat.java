@@ -1,10 +1,10 @@
 package code.screenings;
 
-import code.screenings.dto.ScreeningSeatDto;
+import code.screenings.dto.SeatDto;
 import code.screenings.exception.BookingAlreadyCancelledException;
-import code.screenings.exception.ScreeningSeatBusyException;
-import code.screenings.exception.TooLateToBookingException;
-import code.screenings.exception.TooLateToCancelBookingException;
+import code.screenings.exception.SeatBusyException;
+import code.screenings.exception.TooLateToSeatBookingException;
+import code.screenings.exception.TooLateToCancelSeatBookingException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,12 +12,12 @@ import java.time.Clock;
 import java.util.UUID;
 
 @Entity
-@Table(name = "SCREENINGS_ROOMS_SEATS")
+@Table(name = "SEATS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
 @ToString
-class ScreeningRoomSeat {
+class Seat {
 
     @Id
     @Getter
@@ -28,7 +28,7 @@ class ScreeningRoomSeat {
     private int number;
 
     @Enumerated(EnumType.STRING)
-    private ScreeningSeatStatus status;
+    private SeatStatus status;
 
     @ManyToOne
     private Screening screening;
@@ -38,31 +38,31 @@ class ScreeningRoomSeat {
     }
 
     boolean isFree() {
-        return this.status.equals(ScreeningSeatStatus.FREE);
+        return this.status.equals(SeatStatus.FREE);
     }
 
     void book(Clock clock) {
         if (this.screening.timeToScreeningStartInHours(clock) < 24) {
-            throw new TooLateToBookingException();
+            throw new TooLateToSeatBookingException();
         }
-        if (this.status.equals(ScreeningSeatStatus.BUSY)) {
-            throw new ScreeningSeatBusyException(this.screening.getId());
+        if (this.status.equals(SeatStatus.BUSY)) {
+            throw new SeatBusyException(this.screening.getId());
         }
-        this.status = ScreeningSeatStatus.BUSY;
+        this.status = SeatStatus.BUSY;
     }
 
     void cancelBooking(Clock clock) {
-        if (this.status.equals(ScreeningSeatStatus.FREE)) {
+        if (this.status.equals(SeatStatus.FREE)) {
             throw new BookingAlreadyCancelledException(this.id);
         }
         if (this.screening.timeToScreeningStartInHours(clock) < 24) {
-            throw new TooLateToCancelBookingException(this.id);
+            throw new TooLateToCancelSeatBookingException(this.id);
         }
-        this.status = ScreeningSeatStatus.FREE;
+        this.status = SeatStatus.FREE;
     }
 
-    ScreeningSeatDto toDTO() {
-        return new ScreeningSeatDto(
+    SeatDto toDTO() {
+        return new SeatDto(
                 this.id,
                 this.rowNumber,
                 this.number,

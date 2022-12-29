@@ -2,11 +2,11 @@ package code.screenings;
 
 import code.SpringIntegrationTests;
 import code.films.FilmFacade;
-import code.screenings.dto.BookScreeningTicketDto;
-import code.screenings.dto.ScreeningTicketDto;
+import code.screenings.dto.BookSeatDto;
+import code.screenings.dto.SeatBookingDto;
 import code.screenings.exception.BookingAlreadyCancelledException;
-import code.screenings.exception.TooLateToBookingException;
-import code.screenings.exception.TooLateToCancelBookingException;
+import code.screenings.exception.TooLateToSeatBookingException;
+import code.screenings.exception.TooLateToCancelSeatBookingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class BookingIntegrationTests extends SpringIntegrationTests {
+class SeatBookingIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,29 +39,29 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     private final Clock clock = Clock.systemUTC();
 
     @Test
-    void should_booked_ticket() throws Exception {
+    void should_booked_seat() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleBookTicketDTO = sampleBookTicketDTO(
+        var sampleBookTicketDTO = sampleBookSeatDTO(
                 sampleScreenings.get(0).id(),
                 sampleScreenings.get(0).seats().get(0).seatId()
         );
 
         //when
         var result = mockMvc.perform(
-                post("/screenings-tickets")
+                post("/seats-bookings")
                         .content(toJson(sampleBookTicketDTO))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
         //then
         result.andExpect(status().isOk());
-        var dto = fromResultActions(result, ScreeningTicketDto.class);
+        var dto = fromResultActions(result, SeatBookingDto.class);
         mockMvc.perform(
-                        get("/screenings-tickets/" + dto.ticketId())
+                        get("/seats-bookings/" + dto.id())
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.ticketId").exists())
+                .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.firstName").value(sampleBookTicketDTO.firstName()))
                 .andExpect(jsonPath("$.lastName").value(sampleBookTicketDTO.lastName()))
                 .andExpect(jsonPath("$.seat.seatId").value(sampleBookTicketDTO.seatId().toString()));
@@ -78,14 +78,14 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                         sampleRooms.get(0).id()
                 ).withDate(LocalDateTime.now().minusHours(23))
         );
-        var sampleBookTicketDTO = sampleBookTicketDTO(
+        var sampleBookTicketDTO = sampleBookSeatDTO(
                 sampleScreenings.id(),
                 sampleScreenings.seats().get(0).seatId()
         );
 
         //when
         var result = mockMvc.perform(
-                post("/screenings-tickets")
+                post("/seats-bookings")
                         .content(toJson(sampleBookTicketDTO))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -93,21 +93,21 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new TooLateToBookingException().getMessage()));
+                .andExpect(content().string(new TooLateToSeatBookingException().getMessage()));
     }
 
     @Test
-    void should_reduce_screening_free_seats_by_one_after_ticket_booking() throws Exception {
+    void should_reduce_screening_free_seats_by_one_after_booking() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleBookTicketDTO = sampleBookTicketDTO(
+        var sampleBookTicketDTO = sampleBookSeatDTO(
                 sampleScreenings.get(0).id(),
                 sampleScreenings.get(0).seats().get(0).seatId()
         );
 
         //when
         mockMvc.perform(
-                post("/screenings-tickets")
+                post("/seats-bookings")
                         .content(toJson(sampleBookTicketDTO))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -119,40 +119,40 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
-    void should_cancel_ticket() throws Exception {
+    void should_cancel_booking() throws Exception {
         //give
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleTicket = bookSampleTicket(
+        var sampleTicket = bookSampleSeat(
                 sampleScreenings.get(0).id(),
                 sampleScreenings.get(0).seats().get(0).seatId()
         );
 
         //when
         var result = mockMvc.perform(
-                patch("/screenings-tickets/" + sampleTicket.ticketId() + "/cancel")
+                patch("/seats-bookings/" + sampleTicket.id() + "/cancel")
         );
 
         //then
         result.andExpect(status().isOk());
         assertThat(
-                screeningFacade.readTicket(sampleTicket.ticketId())
+                screeningFacade.searchSeatBooking(sampleTicket.id())
                         .seat()
                         .status()
-        ).isEqualTo(ScreeningSeatStatus.FREE.name());
+        ).isEqualTo(SeatStatus.FREE.name());
     }
 
     @Test
-    void should_increase_screening_free_seats_by_one_after_ticket_booking_cancelling() throws Exception {
+    void should_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleTicket = bookSampleTicket(
+        var sampleTicket = bookSampleSeat(
                 sampleScreenings.get(0).id(),
                 sampleScreenings.get(0).seats().get(0).seatId()
         );
 
         //when
         var result = mockMvc.perform(
-                patch("/screenings-tickets/" + sampleTicket.ticketId() + "/cancel")
+                patch("/seats-bookings/" + sampleTicket.id() + "/cancel")
         );
 
         //then
@@ -163,18 +163,18 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
-    void should_throw_exception_when_ticket_is_already_cancelled() throws Exception {
+    void should_throw_exception_when_booking_is_already_cancelled() throws Exception {
         //given
         var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
-        var sampleTicket = bookSampleTicket(
+        var sampleTicket = bookSampleSeat(
                 sampleScreenings.get(0).id(),
                 sampleScreenings.get(0).seats().get(0).seatId()
         );
-        screeningFacade.cancelTicket(sampleTicket.ticketId(), clock);
+        screeningFacade.cancelSeatBooking(sampleTicket.id(), clock);
 
         //when
         var result = mockMvc.perform(
-                patch("/screenings-tickets/" + sampleTicket.ticketId() + "/cancel")
+                patch("/seats-bookings/" + sampleTicket.id() + "/cancel")
         );
 
         //then
@@ -200,36 +200,36 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 sampleScreeningDate.minusHours(hoursUntilBooking + 1).toInstant(ZoneOffset.UTC),
                 ZoneOffset.UTC
         );
-        var sampleTicket = screeningFacade.bookTicket(
-                sampleBookTicketDTO(sampleScreening.id(), sampleScreening.seats().get(0).seatId()),
+        var sampleTicket = screeningFacade.bookSeat(
+                sampleBookSeatDTO(sampleScreening.id(), sampleScreening.seats().get(0).seatId()),
                 timeDuringBooking
         );
 
         //when
         var result = mockMvc.perform(
-                patch("/screenings-tickets/" + sampleTicket.ticketId() + "/cancel")
+                patch("/seats-bookings/" + sampleTicket.id() + "/cancel")
         );
 
         //then
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new TooLateToCancelBookingException(sampleTicket.seat().seatId()).getMessage()
+                        new TooLateToCancelSeatBookingException(sampleTicket.seat().seatId()).getMessage()
                 ));
     }
 
-    private static BookScreeningTicketDto sampleBookTicketDTO(UUID sampleScreeningId, UUID sampleScreeningSeatId) {
-        return new BookScreeningTicketDto(
+    private static BookSeatDto sampleBookSeatDTO(UUID sampleScreeningId, UUID sampleSeatId) {
+        return new BookSeatDto(
                 sampleScreeningId,
-                sampleScreeningSeatId,
+                sampleSeatId,
                 "Name 1",
                 "Lastname 1"
         );
     }
 
-    private ScreeningTicketDto bookSampleTicket(UUID sampleScreeningId, UUID sampleSeatId) {
-        return screeningFacade.bookTicket(
-                new BookScreeningTicketDto(
+    private SeatBookingDto bookSampleSeat(UUID sampleScreeningId, UUID sampleSeatId) {
+        return screeningFacade.bookSeat(
+                new BookSeatDto(
                         sampleScreeningId,
                         sampleSeatId,
                         "Name 1",

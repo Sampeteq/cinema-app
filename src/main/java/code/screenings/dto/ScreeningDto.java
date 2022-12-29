@@ -14,6 +14,6 @@ public record ScreeningDto(
         int minAge,
         UUID filmId,
         UUID roomId,
-        List<ScreeningSeatDto> seats
+        List<SeatDto> seats
 ) {
 }

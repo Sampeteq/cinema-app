@@ -1,8 +1,8 @@
 package code.screenings.infrastructure;
 
 import code.screenings.ScreeningFacade;
-import code.screenings.dto.BookScreeningTicketDto;
-import code.screenings.dto.ScreeningTicketDto;
+import code.screenings.dto.BookSeatDto;
+import code.screenings.dto.SeatBookingDto;
 import code.screenings.exception.BookingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,42 +16,37 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-class BookingController {
+class SeatBookingController {
 
     private final ScreeningFacade screeningFacade;
 
     private final Clock clock;
 
-    @PostMapping("/screenings-tickets")
-    ScreeningTicketDto bookTicket(
+    @PostMapping("/seats-bookings")
+    SeatBookingDto bookSeat(
             @RequestBody
             @Valid
-            BookScreeningTicketDto dto
+            BookSeatDto dto
     ) {
-        return screeningFacade.bookTicket(dto, clock);
+        return screeningFacade.bookSeat(dto, clock);
     }
 
-    @PatchMapping("/screenings-tickets/{ticketUUID}/cancel")
-    void cancelTicket(
+    @PatchMapping("/seats-bookings/{bookingId}/cancel")
+    void cancelSeatBooking(
             @PathVariable
-            UUID ticketUUID
+            UUID bookingId
     ) {
-        screeningFacade.cancelTicket(ticketUUID, clock);
+        screeningFacade.cancelSeatBooking(bookingId, clock);
     }
 
-    @GetMapping("/screenings-tickets/{id}")
-    ScreeningTicketDto readTicket(@PathVariable UUID id) {
-        return screeningFacade.readTicket(id);
-    }
-
-    @GetMapping("/screenings-tickets")
-    List<ScreeningTicketDto> readAllTickets() {
-        return screeningFacade.readAllTickets();
+    @GetMapping("/seats-bookings/{bookingId}")
+    SeatBookingDto searchSeatBooking(@PathVariable UUID bookingId) {
+        return screeningFacade.searchSeatBooking(bookingId);
     }
 }
 
 @RestControllerAdvice
-class BookingExceptionHandler {
+class SeatBookingExceptionHandler {
 
     @ExceptionHandler(BookingException.class)
     ResponseEntity<?> handle(BookingException exception) {

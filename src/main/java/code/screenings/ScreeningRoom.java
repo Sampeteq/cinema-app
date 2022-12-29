@@ -28,9 +28,9 @@ class ScreeningRoom {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id")
     @Getter
-    private List<ScreeningRoomSeat> seats;
+    private List<Seat> seats;
 
-    Optional<ScreeningRoomSeat> getSeat(UUID seatId) {
+    Optional<Seat> getSeat(UUID seatId) {
         return seats
                 .stream()
                 .filter(seat -> seat.getId().equals(seatId))
@@ -40,7 +40,7 @@ class ScreeningRoom {
     int freeSeatsQuantity() {
         return (int) this.seats
                 .stream()
-                .filter(ScreeningRoomSeat::isFree)
+                .filter(Seat::isFree)
                 .count();
     }
 

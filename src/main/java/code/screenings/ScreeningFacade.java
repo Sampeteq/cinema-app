@@ -1,7 +1,7 @@
 package code.screenings;
 
 import code.screenings.dto.*;
-import code.screenings.exception.ScreeningTicketNotFoundException;
+import code.screenings.exception.SeatBookingNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +14,7 @@ public class ScreeningFacade {
 
     private final ScreeningRoomRepository screeningRoomRepository;
 
-    private final ScreeningTicketRepository screeningTicketRepository;
+    private final SeatBookingRepository seatBookingRepository;
 
     private final ScreeningSearcher screeningSearcher;
 
@@ -22,7 +22,7 @@ public class ScreeningFacade {
 
     private final ScreeningFactory screeningFactory;
 
-    private final ScreeningTicketBooker screeningTicketBooker;
+    private final SeatBooker seatBooker;
 
     private final ScreeningRepository screeningRepository;
 
@@ -58,30 +58,22 @@ public class ScreeningFacade {
     }
 
     @Transactional
-    public ScreeningTicketDto bookTicket(BookScreeningTicketDto dto, Clock clock) {
-        return screeningTicketBooker.bookTicket(dto, clock);
+    public SeatBookingDto bookSeat(BookSeatDto dto, Clock clock) {
+        return seatBooker.book(dto, clock);
     }
 
     @Transactional
-    public void cancelTicket(UUID ticketId, Clock clock) {
-        screeningTicketBooker.cancelTicket(ticketId, clock);
+    public void cancelSeatBooking(UUID bookingId, Clock clock) {
+        seatBooker.cancel(bookingId, clock);
     }
 
-    public ScreeningTicketDto readTicket(UUID ticketId) {
-        return getTicketOrThrow(ticketId).toDTO();
+    public SeatBookingDto searchSeatBooking(UUID bookingId) {
+        return getTicketOrThrow(bookingId).toDTO();
     }
 
-    public List<ScreeningTicketDto> readAllTickets() {
-        return screeningTicketRepository
-                .getAll()
-                .stream()
-                .map(ScreeningTicket::toDTO)
-                .toList();
-    }
-
-    private ScreeningTicket getTicketOrThrow(UUID ticketId) {
-        return screeningTicketRepository
+    private SeatBooking getTicketOrThrow(UUID ticketId) {
+        return seatBookingRepository
                 .getById(ticketId)
-                .orElseThrow(() -> new ScreeningTicketNotFoundException(ticketId));
+                .orElseThrow(() -> new SeatBookingNotFoundException(ticketId));
     }
 }

@@ -31,7 +31,7 @@ class Screening {
     @ManyToOne(cascade = CascadeType.ALL)
     private ScreeningRoom room;
 
-    Optional<ScreeningRoomSeat> getSeat(UUID seatId) {
+    Optional<Seat> getSeat(UUID seatId) {
         return room.getSeat(seatId);
     }
 
@@ -50,7 +50,7 @@ class Screening {
                 this.minAge,
                 this.filmId,
                 this.room.toDTO().id(),
-                this.room.getSeats().stream().map(ScreeningRoomSeat::toDTO).toList()
+                this.room.getSeats().stream().map(Seat::toDTO).toList()
         );
     }
 }

@@ -21,7 +21,7 @@ class ScreeningConfig {
     ) {
         var screeningRepository = new JpaScreeningRepositoryAdapter(jpaScreeningRepository);
         var screeningRoomRepository = new JpaScreeningRoomRepositoryAdapter(jpaScreeningRoomRepository);
-        var ticketRepository = new JpaScreeningTicketRepositoryAdapter(jpaScreeningTicketRepository);
+        var ticketRepository = new JpaSeatBookingRepositoryAdapter(jpaScreeningTicketRepository);
         var screeningRoomFactory = new ScreeningRoomFactory(screeningRoomRepository);
         var screeningDateSpecification = new CurrentOrNextOneYearScreeningDateSpecification();
         var screeningFactory = new ScreeningFactory(
@@ -31,7 +31,7 @@ class ScreeningConfig {
                 screeningRoomRepository
         );
         var screeningSearcher = new ScreeningSearcher(screeningRepository);
-        var screeningTicketBooker = new ScreeningTicketBooker(screeningRepository, ticketRepository);
+        var screeningTicketBooker = new SeatBooker(screeningRepository, ticketRepository);
         return new ScreeningFacade(
                 screeningRoomRepository,
                 ticketRepository,

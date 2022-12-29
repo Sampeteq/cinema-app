@@ -17,7 +17,7 @@ class ScreeningRoomFactory {
         if (screeningRoomRepository.existsByNumber(dto.number())) {
             throw new ScreeningRoomAlreadyExistsException(dto.number());
         }
-        var seats = new ArrayList<ScreeningRoomSeat>();
+        var seats = new ArrayList<Seat>();
         var rowNumber = 1;
         var seatNumber = 1;
         var helpCounter = 1;
@@ -27,11 +27,11 @@ class ScreeningRoomFactory {
                 seatNumber = 1;
                 helpCounter = 1;
             }
-            var seat = new ScreeningRoomSeat(
+            var seat = new Seat(
                     UUID.randomUUID(),
                     rowNumber,
                     seatNumber++,
-                    ScreeningSeatStatus.FREE,
+                    SeatStatus.FREE,
                     null
             );
             seats.add(seat);

@@ -13,8 +13,6 @@ class ScreeningSearcher {
 
     public List<ScreeningDto> searchBy(ScreeningSearchParamsDto paramsDto) {
         var screeningDate = paramsDto.getScreeningDate();
-//                != null ? ScreeningDate.of(paramsDto.getScreeningDate())
-//                : null;
         var params = ScreeningSearchParams
                 .builder()
                 .filmId(paramsDto.getFilmId())

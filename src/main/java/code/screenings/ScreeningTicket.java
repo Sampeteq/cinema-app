@@ -4,6 +4,7 @@ import code.screenings.dto.ScreeningTicketDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.Clock;
 import java.util.UUID;
 
 @Entity
@@ -24,6 +25,10 @@ class ScreeningTicket {
 
     @OneToOne
     private ScreeningRoomSeat seat;
+
+    void cancelSeatBooking(Clock clock) {
+        this.seat.cancelBooking(clock);
+    }
 
     ScreeningTicketDto toDTO() {
         return new ScreeningTicketDto(

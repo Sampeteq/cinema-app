@@ -36,10 +36,8 @@ class ScreeningTicketBooker {
     }
 
     void cancelTicket(UUID ticketId, Clock clock) {
-        var ticket = getTicketOrThrow(ticketId).toDTO();
-        var screening = getScreeningOrThrow(ticket.seat().screeningId());
-        var seat = screening.getSeat(ticket.seat().seatId()).orElseThrow();
-        seat.cancelBooking(clock);
+        var ticket = getTicketOrThrow(ticketId);
+        ticket.cancelSeatBooking(clock);
     }
 
     private Screening getScreeningOrThrow(UUID screeningId) {

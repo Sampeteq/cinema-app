@@ -19,17 +19,14 @@ class SeatBooker {
 
     SeatBookingDto book(BookSeatDto dto, Clock clock) {
         var screening = getScreeningOrThrow(dto.screeningId());
-        var seat = screening
-                .getSeat(dto.seatId())
-                .orElseThrow(() -> new SeatNotFoundException(dto.seatId()));
+        var seat = getSeatOrThrow(screening, dto.seatId());
         seat.book(clock);
-        var booking = SeatBooking
-                .builder()
-                .id(UUID.randomUUID())
-                .firstName(dto.firstName())
-                .lastName(dto.lastName())
-                .seat(seat)
-                .build();
+        var booking = new SeatBooking(
+                UUID.randomUUID(),
+                dto.firstName(),
+                dto.lastName(),
+                seat
+        );
         return seatBookingRepository
                 .add(booking)
                 .toDTO();
@@ -44,6 +41,12 @@ class SeatBooker {
         return screeningRepository
                 .getById(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
+    }
+
+    private Seat getSeatOrThrow(Screening screening, UUID seatId) {
+        return screening
+                .getSeat(seatId)
+                .orElseThrow(() -> new SeatNotFoundException(seatId));
     }
 
     private SeatBooking getBookingOrThrow(UUID ticketId) {

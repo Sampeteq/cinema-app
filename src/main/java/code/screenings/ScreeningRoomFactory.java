@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @AllArgsConstructor
-class ScreeningRoomCreator {
+class ScreeningRoomFactory {
 
     private final ScreeningRoomRepository screeningRoomRepository;
 

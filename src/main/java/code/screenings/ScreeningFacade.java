@@ -18,7 +18,7 @@ public class ScreeningFacade {
 
     private final ScreeningSearcher screeningSearcher;
 
-    private final ScreeningRoomCreator screeningRoomCreator;
+    private final ScreeningRoomFactory screeningRoomFactory;
 
     private final ScreeningFactory screeningFactory;
 
@@ -46,7 +46,7 @@ public class ScreeningFacade {
 
     @Transactional
     public ScreeningRoomDto addRoom(AddScreeningRoomDto dto) {
-        return screeningRoomCreator.addRoom(dto);
+        return screeningRoomFactory.addRoom(dto);
     }
 
     public List<ScreeningRoomDto> readAllRooms() {

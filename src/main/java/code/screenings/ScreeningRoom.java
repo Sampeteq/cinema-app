@@ -44,10 +44,16 @@ class ScreeningRoom {
                 .count();
     }
 
-    void assignScreeningForSeats(Screening screening) {
-        this
-                .seats
-                .forEach(seat -> seat.assignScreening(screening));
+    void assignNewScreening(Screening screening) {
+        if (this.seats.stream().allMatch(Seat::hasNoAssignedScreening)) {
+            this.seats.forEach(seat -> seat.assignScreening(screening));
+        } else {
+            var newSeats = this.seats
+                    .stream()
+                    .map(seat -> seat.copyWithNewScreening(screening))
+                    .toList();
+            this.seats.addAll(newSeats);
+        }
     }
 
     ScreeningRoomDto toDTO() {

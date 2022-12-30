@@ -33,7 +33,7 @@ class ScreeningFactory {
                 filmId,
                 room
         );
-       room.assignScreeningForSeats(screening);
+       room.assignNewScreening(screening);
        return screening;
     }
 

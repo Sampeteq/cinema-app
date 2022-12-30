@@ -24,7 +24,7 @@ class Screening {
 
     private LocalDateTime date;
 
-    private Integer minAge;
+    private int minAge;
 
     private UUID filmId;
 

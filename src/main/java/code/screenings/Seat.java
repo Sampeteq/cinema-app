@@ -1,10 +1,7 @@
 package code.screenings;
 
 import code.screenings.dto.SeatDto;
-import code.screenings.exception.BookingAlreadyCancelledException;
-import code.screenings.exception.SeatBusyException;
-import code.screenings.exception.TooLateToSeatBookingException;
-import code.screenings.exception.TooLateToCancelSeatBookingException;
+import code.screenings.exception.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -47,20 +44,20 @@ class Seat {
 
     void book(Clock clock) {
         if (this.screening.timeToScreeningStartInHours(clock) < 24) {
-            throw new TooLateToSeatBookingException();
+            throw new BookingException("Too late for seat booking: " + this.id);
         }
         if (this.status.equals(SeatStatus.BUSY)) {
-            throw new SeatBusyException(this.screening.getId());
+            throw new BookingException("Seat busy: " + this.id);
         }
         this.status = SeatStatus.BUSY;
     }
 
     void cancelBooking(Clock clock) {
         if (this.status.equals(SeatStatus.FREE)) {
-            throw new BookingAlreadyCancelledException(this.id);
+            throw new BookingException("Seat not booked yet: " + this.id);
         }
         if (this.screening.timeToScreeningStartInHours(clock) < 24) {
-            throw new TooLateToCancelSeatBookingException(this.id);
+            throw new BookingException("Too late for seat booking cancelling: " + this.id);
         }
         this.status = SeatStatus.FREE;
     }

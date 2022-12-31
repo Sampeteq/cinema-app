@@ -2,9 +2,9 @@ package code.screenings;
 
 import code.films.FilmFacade;
 import code.films.exception.FilmNotFoundException;
-import code.screenings.exception.ScreeningRoomBusyException;
+import code.screenings.exception.ScreeningRoomException;
 import code.screenings.exception.ScreeningRoomNotFoundException;
-import code.screenings.exception.ScreeningYearException;
+import code.screenings.exception.ScreeningDateException;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -40,7 +40,7 @@ class ScreeningFactory {
     private void validateScreeningDate(LocalDateTime date) {
         if (!dateSpecification.isSatisfyBy(date)) {
             if (dateSpecification instanceof CurrentOrNextOneYearScreeningDateSpecification) {
-                throw new ScreeningYearException("A screening date year must be current or next one");
+                throw new ScreeningDateException("A screening date year must be current or next one");
             } else {
                 throw new IllegalArgumentException("Unsupported screening date specification");
             }
@@ -55,7 +55,7 @@ class ScreeningFactory {
 
     private void validateScreeningRoomBeingBusy(LocalDateTime date, UUID roomUuid) {
         if (screeningRepository.existsByDateAndRoomId(date, roomUuid)) {
-            throw new ScreeningRoomBusyException(roomUuid);
+            throw new ScreeningRoomException("Screening room busy: " + roomUuid);
         }
     }
 

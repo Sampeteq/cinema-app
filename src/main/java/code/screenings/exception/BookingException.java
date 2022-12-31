@@ -1,6 +1,6 @@
 package code.screenings.exception;
 
-public abstract class BookingException extends RuntimeException {
+public class BookingException extends ScreeningException {
 
     public BookingException(String message) {
         super(message);

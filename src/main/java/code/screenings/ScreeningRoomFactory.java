@@ -2,7 +2,7 @@ package code.screenings;
 
 import code.screenings.dto.AddScreeningRoomDto;
 import code.screenings.dto.ScreeningRoomDto;
-import code.screenings.exception.ScreeningRoomAlreadyExistsException;
+import code.screenings.exception.ScreeningRoomException;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ class ScreeningRoomFactory {
 
     ScreeningRoomDto addRoom(AddScreeningRoomDto dto) {
         if (screeningRoomRepository.existsByNumber(dto.number())) {
-            throw new ScreeningRoomAlreadyExistsException(dto.number());
+            throw new ScreeningRoomException("Screening room already exists: " + dto.number());
         }
         var seats = new ArrayList<Seat>();
         var rowNumber = 1;

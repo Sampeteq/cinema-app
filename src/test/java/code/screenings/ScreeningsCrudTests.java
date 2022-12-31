@@ -2,9 +2,6 @@ package code.screenings;
 
 import code.SpringIntegrationTests;
 import code.films.FilmFacade;
-import code.screenings.exception.ScreeningRoomAlreadyExistsException;
-import code.screenings.exception.ScreeningRoomBusyException;
-import code.screenings.exception.ScreeningYearException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -114,7 +111,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new ScreeningRoomBusyException(sampleScreenings.get(0).roomId()).getMessage()
+                        "Screening room busy: " + sampleAddScreeningDTO.roomId()
                 ));
     }
 
@@ -202,7 +199,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new ScreeningRoomAlreadyExistsException(sampleAddRoomDTO.number()).getMessage()
+                        "Screening room already exists: " + sampleAddRoomDTO.number()
                 ));
     }
 }

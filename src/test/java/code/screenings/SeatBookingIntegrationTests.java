@@ -4,9 +4,6 @@ import code.SpringIntegrationTests;
 import code.films.FilmFacade;
 import code.screenings.dto.BookSeatDto;
 import code.screenings.dto.SeatBookingDto;
-import code.screenings.exception.BookingAlreadyCancelledException;
-import code.screenings.exception.TooLateToSeatBookingException;
-import code.screenings.exception.TooLateToCancelSeatBookingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -93,7 +90,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new TooLateToSeatBookingException().getMessage()));
+                .andExpect(content().string("Too late for seat booking: " + sampleBookTicketDTO.seatId()));
     }
 
     @Test
@@ -180,7 +177,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new BookingAlreadyCancelledException(sampleTicket.seat().seatId()).getMessage()));
+                .andExpect(content().string("Seat not booked yet: " + sampleScreenings.get(0).seats().get(0).seatId()));
     }
 
     @Test
@@ -214,7 +211,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new TooLateToCancelSeatBookingException(sampleTicket.seat().seatId()).getMessage()
+                        "Too late for seat booking cancelling: " + sampleScreening.seats().get(0).seatId()
                 ));
     }
 

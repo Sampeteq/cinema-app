@@ -6,19 +6,23 @@ import code.screenings.dto.AddScreeningDto;
 import code.screenings.dto.AddScreeningRoomDto;
 import code.screenings.dto.ScreeningDto;
 import code.screenings.dto.ScreeningRoomDto;
+import org.apache.tomcat.jni.Local;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
 import java.util.UUID;
 
+import static code.films.FilmTestUtils.addSampleFilm;
+
 public class ScreeningTestUtils {
 
-    public static final Year currentYear = Year.now();
+    private static final int currentYear = Year.now().getValue();
 
     public static AddScreeningDto sampleAddScreeningDto(UUID filmId, UUID roomId) {
         return new AddScreeningDto(
-                LocalDateTime.parse("2022-05-05T16:30"),
+                LocalDateTime.of(currentYear, 5, 10, 18, 30),
                 13,
                 filmId,
                 roomId
@@ -50,12 +54,45 @@ public class ScreeningTestUtils {
         );
     }
 
+    public static ScreeningDto addSampleScreening(FilmFacade filmFacade, ScreeningFacade screeningFacade) {
+        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleRoom = addSampleScreeningRoom(screeningFacade);
+        return screeningFacade.add(
+                sampleAddScreeningDto(
+                        sampleFilm.id(),
+                        sampleRoom.id()
+                )
+        );
+    }
+
+    public static ScreeningDto addSampleScreening(
+            FilmFacade filmFacade,
+            ScreeningFacade screeningFacade,
+            LocalDateTime screeningDate
+    ) {
+        var sampleFilm = addSampleFilm(filmFacade);
+        var sampleRoom = addSampleScreeningRoom(screeningFacade);
+        return screeningFacade.add(
+                sampleAddScreeningDto(
+                        sampleFilm.id(),
+                        sampleRoom.id()
+                ).withDate(screeningDate)
+        );
+    }
+
+    static ScreeningRoomDto addSampleScreeningRoom(ScreeningFacade screeningFacade) {
+        return screeningFacade.addRoom(
+                sampleAddRoomDTO()
+        );
+    }
+
     public static List<ScreeningDto> addSampleScreenings(ScreeningFacade screeningFacade, FilmFacade filmFacade) {
         var sampleFilms = FilmTestUtils.addSampleFilms(filmFacade);
         var sampleRooms = addSampleScreeningRooms(screeningFacade);
         var screening1 = screeningFacade.add(
                 new AddScreeningDto(
-                        LocalDateTime.parse("2022-05-05T16:30"),
+                        LocalDateTime
+                                .of(currentYear, 5, 5, 18, 30),
                         13,
                         sampleFilms.get(0).id(),
                         sampleRooms.get(0).id()
@@ -63,7 +100,7 @@ public class ScreeningTestUtils {
         );
         var screening2 = screeningFacade.add(
                 new AddScreeningDto(
-                        LocalDateTime.parse("2022-06-10T18:30"),
+                        LocalDateTime.of(currentYear, 7, 3, 20, 30),
                         18,
                         sampleFilms.get(1).id(),
                         sampleRooms.get(1).id()
@@ -72,21 +109,22 @@ public class ScreeningTestUtils {
         return List.of(screening1, screening2);
     }
 
-    public static List<LocalDateTime> wrongScreeningDates() {
+    public static List<String> wrongScreeningDates() {
         var date1 = LocalDateTime.of(
-                currentYear.getValue() - 1,
+                currentYear - 1,
                 2,
                 2,
                 16,
                 30
-        );
+        ).toString();
         var date2 = LocalDateTime.of(
-                currentYear.getValue() + 2,
+                currentYear + 2,
                 2,
                 2,
                 16,
                 30
-        );
+        ).toString();
         return List.of(date1, date2);
     }
+
 }

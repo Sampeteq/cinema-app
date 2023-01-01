@@ -48,4 +48,10 @@ public abstract class FilmTestUtils {
                 currentYear.plusYears(2).getValue()
         );
     }
+
+    public static FilmDto addSampleFilm(FilmFacade filmFacade) {
+        return filmFacade.add(
+                sampleAddFilmDTO()
+        );
+    }
 }

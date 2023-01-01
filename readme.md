@@ -30,19 +30,18 @@ Endpoints:
 
 /////////////////////
 
-3.Booking tickets
+3.Booking seats
 
 Endpoints:
 
-/screening-tickets (POST) - book a new ticket for screening
+/seats-bookings (POST) - book a seat for screening
 
-/screenings-tickets/{ticketId}/cancelled - cancel a ticket's booking
+/seats-bookings/{bookingId}/cancelled (PATCH) - cancel a seat booking
 
-/screenings-tickets (GET) - search all tickets (admin only)
-
+/seats-bookings/bookingId (GET) - search a seat booking by id
 /////////////////////
 
-Tech stack:Java 17, Spring Boot 2.6.7, Lombok, H2 DB, Open API
+Tech stack:Java 17, Spring Boot, Lombok, H2 DB, Open API
 
 API available on localhost:8080/swagger-ui:
 

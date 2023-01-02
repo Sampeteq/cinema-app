@@ -3,9 +3,9 @@ package code.screenings;
 import code.screenings.dto.ScreeningRoomDto;
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
+@Getter
 @ToString
 class ScreeningRoom {
 
@@ -25,35 +26,8 @@ class ScreeningRoom {
 
     private int seatsInOneRowQuantity;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "room_id")
-    @Getter
-    private List<Seat> seats;
-
-    Optional<Seat> getSeat(UUID seatId) {
-        return seats
-                .stream()
-                .filter(seat -> seat.getId().equals(seatId))
-                .findFirst();
-    }
-
-    int freeSeatsQuantity() {
-        return (int) this.seats
-                .stream()
-                .filter(Seat::isFree)
-                .count();
-    }
-
-    void assignNewScreening(Screening screening) {
-        if (this.seats.stream().allMatch(Seat::hasNoAssignedScreening)) {
-            this.seats.forEach(seat -> seat.assignScreening(screening));
-        } else {
-            var newSeats = this.seats
-                    .stream()
-                    .map(seat -> seat.copyWithNewScreening(screening))
-                    .toList();
-            this.seats.addAll(newSeats);
-        }
+    int seatsQuantity() {
+        return this.rowsQuantity * seatsInOneRowQuantity;
     }
 
     ScreeningRoomDto toDTO() {

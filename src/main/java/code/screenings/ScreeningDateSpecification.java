@@ -2,7 +2,9 @@ package code.screenings;
 
 import lombok.AllArgsConstructor;
 
-import java.time.*;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 sealed interface ScreeningDateSpecification permits CurrentOrNextOneYearScreeningDateSpecification {
     boolean isSatisfyBy(LocalDateTime date);

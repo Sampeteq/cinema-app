@@ -3,8 +3,8 @@ package code.screenings;
 import code.screenings.dto.BookSeatDto;
 import code.screenings.dto.SeatBookingDto;
 import code.screenings.exception.ScreeningNotFoundException;
-import code.screenings.exception.SeatNotFoundException;
 import code.screenings.exception.SeatBookingNotFoundException;
+import code.screenings.exception.SeatNotFoundException;
 import lombok.AllArgsConstructor;
 
 import java.time.Clock;

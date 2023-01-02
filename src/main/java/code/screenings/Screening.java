@@ -1,12 +1,14 @@
 package code.screenings;
 
 import code.screenings.dto.ScreeningDto;
+import code.screenings.exception.ScreeningRoomException;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,8 +33,22 @@ class Screening {
     @ManyToOne(cascade = CascadeType.ALL)
     private ScreeningRoom room;
 
+    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
+    private List<Seat> seats;
+
+    void addSeats(List<Seat> seats) {
+        if (seats.size() > room.seatsQuantity()) {
+            throw new ScreeningRoomException("Screening seats quantity cannot be bigger than room's one");
+        }
+        this.seats.addAll(seats);
+        this.seats.forEach(seat -> seat.assignScreening(this));
+    }
+
     Optional<Seat> getSeat(UUID seatId) {
-        return room.getSeat(seatId);
+        return this.seats
+                .stream()
+                .filter(seat -> seat.getId().equals(seatId))
+                .findFirst();
     }
 
     int timeToScreeningStartInHours(Clock clock) {
@@ -46,11 +62,11 @@ class Screening {
         return new ScreeningDto(
                 this.id,
                 this.date,
-                this.room.freeSeatsQuantity(),
+                (int) this.seats.stream().filter(Seat::isFree).count(),
                 this.minAge,
                 this.filmId,
                 this.room.toDTO().id(),
-                this.room.getSeats().stream().map(Seat::toDTO).toList()
+                this.seats.stream().map(Seat::toDTO).toList()
         );
     }
 }

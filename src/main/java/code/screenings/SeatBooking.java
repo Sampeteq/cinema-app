@@ -3,7 +3,10 @@ package code.screenings;
 import code.screenings.dto.SeatBookingDto;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.time.Clock;
 import java.util.UUID;
 

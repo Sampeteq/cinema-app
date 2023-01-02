@@ -165,8 +165,8 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         mockMvc.perform(
-                get("/screenings")
-        )
+                        get("/screenings")
+                )
                 .andExpect(jsonPath("$[0].seats[0].status").value(SeatStatus.FREE.name()))
                 .andExpect(jsonPath("$[0].freeSeats").value(sampleScreening.freeSeats()));
     }

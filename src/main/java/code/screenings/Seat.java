@@ -1,7 +1,7 @@
 package code.screenings;
 
 import code.screenings.dto.SeatDto;
-import code.screenings.exception.*;
+import code.screenings.exception.BookingException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,10 +29,6 @@ class Seat {
 
     @ManyToOne
     private Screening screening;
-
-    boolean hasNoAssignedScreening() {
-        return this.screening == null;
-    }
 
     void assignScreening(Screening screening) {
         this.screening = screening;
@@ -69,16 +65,6 @@ class Seat {
                 this.number,
                 this.status.name(),
                 this.screening.getId()
-        );
-    }
-
-    public Seat copyWithNewScreening(Screening newScreening) {
-        return new Seat(
-                UUID.randomUUID(),
-                this.rowNumber,
-                this.number,
-                this.status,
-                newScreening
         );
     }
 }

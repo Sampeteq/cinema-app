@@ -2,12 +2,14 @@ package code.screenings;
 
 import code.films.FilmFacade;
 import code.films.exception.FilmNotFoundException;
+import code.screenings.exception.ScreeningDateException;
 import code.screenings.exception.ScreeningRoomException;
 import code.screenings.exception.ScreeningRoomNotFoundException;
-import code.screenings.exception.ScreeningDateException;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -22,19 +24,21 @@ class ScreeningFactory {
     private final ScreeningRoomRepository screeningRoomRepository;
 
     Screening createScreening(LocalDateTime date, int minAge, UUID filmId, UUID roomId) {
-       validateScreeningDate(date);
-       validateFilmExisting(filmId);
-       validateScreeningRoomBeingBusy(date, roomId);
-       var room = getScreeningRoomOrThrow(roomId);
-       var screening = new Screening(
+        validateScreeningDate(date);
+        validateFilmExisting(filmId);
+        validateScreeningRoomBeingBusy(date, roomId);
+        var room = getScreeningRoomOrThrow(roomId);
+        var seats = createSeats(room.getSeatsInOneRowQuantity(), room.getRowsQuantity());
+        var screening = new Screening(
                 UUID.randomUUID(),
                 date,
                 minAge,
                 filmId,
-                room
+                room,
+                new ArrayList<>()
         );
-       room.assignNewScreening(screening);
-       return screening;
+        screening.addSeats(seats);
+        return screening;
     }
 
     private void validateScreeningDate(LocalDateTime date) {
@@ -63,5 +67,29 @@ class ScreeningFactory {
         return screeningRoomRepository
                 .getById(roomId)
                 .orElseThrow(() -> new ScreeningRoomNotFoundException(roomId));
+    }
+
+    private List<Seat> createSeats(int seatsInOneRowQuantity, int rowsQuantity) {
+        var seats = new ArrayList<Seat>();
+        var rowNumber = 1;
+        var seatNumber = 1;
+        var helpCounter = 1;
+        for (int i = 1; i <= seatsInOneRowQuantity * rowsQuantity; i++) {
+            if (helpCounter > seatsInOneRowQuantity) {
+                rowNumber++;
+                seatNumber = 1;
+                helpCounter = 1;
+            }
+            var seat = new Seat(
+                    UUID.randomUUID(),
+                    rowNumber,
+                    seatNumber++,
+                    SeatStatus.FREE,
+                    null
+            );
+            seats.add(seat);
+            helpCounter++;
+        }
+        return seats;
     }
 }

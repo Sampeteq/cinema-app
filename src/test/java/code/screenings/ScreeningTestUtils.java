@@ -6,9 +6,7 @@ import code.screenings.dto.AddScreeningDto;
 import code.screenings.dto.AddScreeningRoomDto;
 import code.screenings.dto.ScreeningDto;
 import code.screenings.dto.ScreeningRoomDto;
-import org.apache.tomcat.jni.Local;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;

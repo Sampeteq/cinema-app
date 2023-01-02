@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @With
-public record AddScreeningDto(
+public record CreateScreeningDto(
         @NotNull
         @Schema(type = "string", example = "2022-01-01T16:30")
         LocalDateTime date,

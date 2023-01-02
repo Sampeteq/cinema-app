@@ -1,7 +1,7 @@
 package code.films.infrastructure;
 
 import code.films.FilmFacade;
-import code.films.dto.AddFilmDto;
+import code.films.dto.CreateFilmDto;
 import code.films.dto.FilmCategoryDto;
 import code.films.dto.FilmDto;
 import code.films.dto.FilmSearchParamsDto;
@@ -22,16 +22,16 @@ class FilmCrudController {
     private final FilmFacade filmFacade;
 
     @PostMapping("/films")
-    FilmDto add(
+    FilmDto createFilm(
             @RequestBody
             @Valid
-            AddFilmDto dto
+            CreateFilmDto dto
     ) {
-        return filmFacade.add(dto);
+        return filmFacade.createFilm(dto);
     }
 
     @GetMapping("/films")
-    List<FilmDto> search(
+    List<FilmDto> searchFilms(
             @RequestParam(required = false)
             FilmCategoryDto category
     ) {
@@ -39,7 +39,7 @@ class FilmCrudController {
                 .builder()
                 .category(category)
                 .build();
-        return filmFacade.search(params);
+        return filmFacade.searchFilms(params);
     }
 }
 

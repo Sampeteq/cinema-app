@@ -2,8 +2,8 @@ package code.screenings;
 
 import code.films.FilmFacade;
 import code.films.FilmTestUtils;
-import code.screenings.dto.AddScreeningDto;
-import code.screenings.dto.AddScreeningRoomDto;
+import code.screenings.dto.CreateScreeningDto;
+import code.screenings.dto.CreateScreeningRoomDto;
 import code.screenings.dto.ScreeningDto;
 import code.screenings.dto.ScreeningRoomDto;
 
@@ -12,14 +12,14 @@ import java.time.Year;
 import java.util.List;
 import java.util.UUID;
 
-import static code.films.FilmTestUtils.addSampleFilm;
+import static code.films.FilmTestUtils.createSampleFilm;
 
 public class ScreeningTestUtils {
 
     private static final int currentYear = Year.now().getValue();
 
-    public static AddScreeningDto sampleAddScreeningDto(UUID filmId, UUID roomId) {
-        return new AddScreeningDto(
+    public static CreateScreeningDto sampleCreateScreeningDto(UUID filmId, UUID roomId) {
+        return new CreateScreeningDto(
                 LocalDateTime.of(currentYear, 5, 10, 18, 30),
                 13,
                 filmId,
@@ -27,68 +27,71 @@ public class ScreeningTestUtils {
         );
     }
 
-    public static AddScreeningRoomDto sampleAddRoomDTO() {
-        return new AddScreeningRoomDto(
+    public static CreateScreeningRoomDto sampleCreateRoomDto() {
+        return new CreateScreeningRoomDto(
                 1,
                 6,
                 10
         );
     }
 
-    public static List<ScreeningRoomDto> addSampleScreeningRooms(ScreeningFacade screeningFacade) {
-        var room1 = new AddScreeningRoomDto(
+    public static ScreeningRoomDto createSampleScreeningRoom(ScreeningFacade screeningFacade) {
+        return screeningFacade.createRoom(
+                sampleCreateRoomDto()
+        );
+    }
+
+    public static List<ScreeningRoomDto> createSampleScreeningRooms(ScreeningFacade screeningFacade) {
+        var room1 = new CreateScreeningRoomDto(
                 1,
                 6,
                 10
         );
-        var room2 = new AddScreeningRoomDto(
+        var room2 = new CreateScreeningRoomDto(
                 2,
                 8,
                 7
         );
         return List.of(
-                screeningFacade.addRoom(room1),
-                screeningFacade.addRoom(room2)
+                screeningFacade.createRoom(room1),
+                screeningFacade.createRoom(room2)
         );
     }
 
-    public static ScreeningDto addSampleScreening(FilmFacade filmFacade, ScreeningFacade screeningFacade) {
-        var sampleFilm = addSampleFilm(filmFacade);
-        var sampleRoom = addSampleScreeningRoom(screeningFacade);
-        return screeningFacade.add(
-                sampleAddScreeningDto(
+    public static ScreeningDto createSampleScreening(FilmFacade filmFacade, ScreeningFacade screeningFacade) {
+        var sampleFilm = createSampleFilm(filmFacade);
+        var sampleRoom = createSampleScreeningRoom(screeningFacade);
+        return screeningFacade.createScreening(
+                sampleCreateScreeningDto(
                         sampleFilm.id(),
                         sampleRoom.id()
                 )
         );
     }
 
-    public static ScreeningDto addSampleScreening(
+    public static ScreeningDto createSampleScreening(
             FilmFacade filmFacade,
             ScreeningFacade screeningFacade,
             LocalDateTime screeningDate
     ) {
-        var sampleFilm = addSampleFilm(filmFacade);
-        var sampleRoom = addSampleScreeningRoom(screeningFacade);
-        return screeningFacade.add(
-                sampleAddScreeningDto(
+        var sampleFilm = createSampleFilm(filmFacade);
+        var sampleRoom = createSampleScreeningRoom(screeningFacade);
+        return screeningFacade.createScreening(
+                sampleCreateScreeningDto(
                         sampleFilm.id(),
                         sampleRoom.id()
                 ).withDate(screeningDate)
         );
     }
 
-    static ScreeningRoomDto addSampleScreeningRoom(ScreeningFacade screeningFacade) {
-        return screeningFacade.addRoom(
-                sampleAddRoomDTO()
-        );
-    }
-
-    public static List<ScreeningDto> addSampleScreenings(ScreeningFacade screeningFacade, FilmFacade filmFacade) {
-        var sampleFilms = FilmTestUtils.addSampleFilms(filmFacade);
-        var sampleRooms = addSampleScreeningRooms(screeningFacade);
-        var screening1 = screeningFacade.add(
-                new AddScreeningDto(
+    public static List<ScreeningDto> createSampleScreenings(
+            ScreeningFacade screeningFacade,
+            FilmFacade filmFacade
+    ) {
+        var sampleFilms = FilmTestUtils.createSampleFilms(filmFacade);
+        var sampleRooms = createSampleScreeningRooms(screeningFacade);
+        var screening1 = screeningFacade.createScreening(
+                new CreateScreeningDto(
                         LocalDateTime
                                 .of(currentYear, 5, 5, 18, 30),
                         13,
@@ -96,8 +99,8 @@ public class ScreeningTestUtils {
                         sampleRooms.get(0).id()
                 )
         );
-        var screening2 = screeningFacade.add(
-                new AddScreeningDto(
+        var screening2 = screeningFacade.createScreening(
+                new CreateScreeningDto(
                         LocalDateTime.of(currentYear, 7, 3, 20, 30),
                         18,
                         sampleFilms.get(1).id(),

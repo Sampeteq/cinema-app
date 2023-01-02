@@ -13,8 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static code.WebTestUtils.toJson;
-import static code.films.FilmTestUtils.sampleAddFilmDTO;
-import static code.films.FilmTestUtils.sampleAddFilmDTOs;
+import static code.films.FilmTestUtils.sampleCreateFilmDto;
+import static code.films.FilmTestUtils.sampleCreateFilmDtos;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,7 +31,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @WithMockUser(roles = "ADMIN")
     void should_add_film() throws Exception {
         //given
-        var sampleDTO = sampleAddFilmDTO();
+        var sampleDTO = sampleCreateFilmDto();
 
         //when
         var result = mockMvc.perform(
@@ -60,7 +60,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @WithMockUser(roles = "ADMIN")
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear) throws Exception {
         //given
-        var dto = sampleAddFilmDTO().withYear(wrongYear);
+        var dto = sampleCreateFilmDto().withYear(wrongYear);
 
         //when
         var result = mockMvc.perform(
@@ -78,9 +78,9 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_all_films() throws Exception {
         //given
-        var sampleFilms = sampleAddFilmDTOs()
+        var sampleFilms = sampleCreateFilmDtos()
                 .stream()
-                .map(dto -> filmFacade.add(dto))
+                .map(dto -> filmFacade.createFilm(dto))
                 .toList();
 
         //when
@@ -97,11 +97,11 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_films_by_params() throws Exception {
         //given
-        var sampleFilm = filmFacade.add(
-                sampleAddFilmDTO().withFilmCategory(FilmCategoryDto.COMEDY)
+        var sampleFilm = filmFacade.createFilm(
+                sampleCreateFilmDto().withFilmCategory(FilmCategoryDto.COMEDY)
         );
-        filmFacade.add(
-                sampleAddFilmDTO().withFilmCategory(FilmCategoryDto.DRAMA)
+        filmFacade.createFilm(
+                sampleCreateFilmDto().withFilmCategory(FilmCategoryDto.DRAMA)
         );
 
         //when

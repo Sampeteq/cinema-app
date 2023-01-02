@@ -1,6 +1,6 @@
 package code.films;
 
-import code.films.dto.AddFilmDto;
+import code.films.dto.CreateFilmDto;
 import code.films.dto.FilmDto;
 import code.films.dto.FilmSearchParamsDto;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ public class FilmFacade {
 
     private final FilmRepository filmRepository;
 
-    public FilmDto add(AddFilmDto dto) {
+    public FilmDto createFilm(CreateFilmDto dto) {
         var film = filmFactory.createFilm(
                 dto.title(),
                 FilmCategory.fromDTO(dto.filmCategory()),
@@ -26,7 +26,7 @@ public class FilmFacade {
                 .toDTO();
     }
 
-    public List<FilmDto> search(FilmSearchParamsDto paramsDto) {
+    public List<FilmDto> searchFilms(FilmSearchParamsDto paramsDto) {
         var params = FilmSearchParams
                 .builder()
                 .category(paramsDto.category == null ? null : FilmCategory.fromDTO(paramsDto.category))

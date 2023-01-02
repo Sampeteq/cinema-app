@@ -5,7 +5,7 @@ import lombok.With;
 import javax.validation.constraints.NotNull;
 
 @With
-public record AddFilmDto(
+public record CreateFilmDto(
         @NotNull
         String title,
 

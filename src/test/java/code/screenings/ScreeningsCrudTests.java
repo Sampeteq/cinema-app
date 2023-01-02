@@ -15,7 +15,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 
 import static code.WebTestUtils.toJson;
-import static code.films.FilmTestUtils.addSampleFilm;
+import static code.films.FilmTestUtils.createSampleFilm;
 import static code.screenings.ScreeningTestUtils.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,11 +39,11 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void should_add_screening() throws Exception {
+    void should_create_screening() throws Exception {
         //given
-        var sampleFilm = addSampleFilm(filmFacade);
-        var sampleRoom = addSampleScreeningRoom(screeningFacade);
-        var sampleAddScreeningDTO = sampleAddScreeningDto(
+        var sampleFilm = createSampleFilm(filmFacade);
+        var sampleRoom = createSampleScreeningRoom(screeningFacade);
+        var sampleAddScreeningDTO = sampleCreateScreeningDto(
                 sampleFilm.id(),
                 sampleRoom.id()
         );
@@ -73,9 +73,9 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {
         //given
-        var sampleFilmId = addSampleFilm(filmFacade).id();
-        var sampleRoomId = addSampleScreeningRoom(screeningFacade).id();
-        var sampleAddScreeningDTO = sampleAddScreeningDto(
+        var sampleFilmId = createSampleFilm(filmFacade).id();
+        var sampleRoomId = createSampleScreeningRoom(screeningFacade).id();
+        var sampleAddScreeningDTO = sampleCreateScreeningDto(
                 sampleFilmId,
                 sampleRoomId
         ).withDate(wrongDate);
@@ -99,8 +99,8 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @WithMockUser(roles = "ADMIN")
     void should_throw_exception_when_screening_room_is_busy() throws Exception {
         //given
-        var sampleScreening = addSampleScreening(filmFacade, screeningFacade);
-        var sampleAddScreeningDTO = sampleAddScreeningDto(
+        var sampleScreening = createSampleScreening(filmFacade, screeningFacade);
+        var sampleAddScreeningDTO = sampleCreateScreeningDto(
                 sampleScreening.filmId(),
                 sampleScreening.roomId()
         ).withDate(sampleScreening.date());
@@ -123,7 +123,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_all_screenings() throws Exception {
         //given
-        var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
+        var sampleScreenings = createSampleScreenings(screeningFacade, filmFacade);
 
         //when
         var result = mockMvc.perform(
@@ -139,7 +139,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_screenings_by_search_params() throws Exception {
         //given
-        var sampleScreenings = addSampleScreenings(screeningFacade, filmFacade);
+        var sampleScreenings = createSampleScreenings(screeningFacade, filmFacade);
         var filmId = sampleScreenings.get(0).filmId();
         var screeningDate = sampleScreenings.get(0).date();
         var filteredScreening = sampleScreenings
@@ -163,9 +163,9 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void should_add_screening_room() throws Exception {
+    void should_create_screening_room() throws Exception {
         //given
-        var sampleAddRoomDTO = sampleAddRoomDTO();
+        var sampleAddRoomDTO = sampleCreateRoomDto();
 
         //when
         var result = mockMvc.perform(
@@ -190,8 +190,8 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @WithMockUser(roles = "ADMIN")
     void should_throw_exception_when_room_number_is_not_unique() throws Exception {
         //given
-        var sampleRoom = addSampleScreeningRoom(screeningFacade);
-        var sampleAddRoomDTO = sampleAddRoomDTO().withNumber(sampleRoom.number());
+        var sampleRoom = createSampleScreeningRoom(screeningFacade);
+        var sampleAddRoomDTO = sampleCreateRoomDto().withNumber(sampleRoom.number());
 
         //when
         var result = mockMvc.perform(

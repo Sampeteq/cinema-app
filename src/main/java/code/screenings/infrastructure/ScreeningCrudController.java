@@ -20,15 +20,15 @@ import java.util.UUID;
 @AllArgsConstructor
 class ScreeningCrudController {
 
-    private final ScreeningFacade ticketFacade;
+    private final ScreeningFacade screeningFacade;
 
     @PostMapping("/screenings")
     ScreeningDto add(
             @RequestBody
             @Valid
-            AddScreeningDto dto
+            CreateScreeningDto dto
     ) {
-        return ticketFacade.add(dto);
+        return screeningFacade.createScreening(dto);
     }
 
     @GetMapping("/screenings")
@@ -47,21 +47,21 @@ class ScreeningCrudController {
                 .screeningDate(date)
                 .build();
 
-        return ticketFacade.searchBy(paramsDto);
+        return screeningFacade.searchScreeningsBy(paramsDto);
     }
 
     @PostMapping("/screenings-rooms")
-    ScreeningRoomDto addRoom(
+    ScreeningRoomDto createRoom(
             @RequestBody
             @Valid
-            AddScreeningRoomDto dto
+            CreateScreeningRoomDto dto
     ) {
-        return ticketFacade.addRoom(dto);
+        return screeningFacade.createRoom(dto);
     }
 
     @GetMapping("/screenings-rooms")
-    List<ScreeningRoomDto> readAllRooms() {
-        return ticketFacade.readAllRooms();
+    List<ScreeningRoomDto> searchAllRooms() {
+        return screeningFacade.searchAllRooms();
     }
 }
 

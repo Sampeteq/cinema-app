@@ -1,6 +1,6 @@
 package code.screenings;
 
-import code.screenings.dto.AddScreeningRoomDto;
+import code.screenings.dto.CreateScreeningRoomDto;
 import code.screenings.dto.ScreeningRoomDto;
 import code.screenings.exception.ScreeningRoomException;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ class ScreeningRoomFactory {
 
     private final ScreeningRoomRepository screeningRoomRepository;
 
-    ScreeningRoomDto addRoom(AddScreeningRoomDto dto) {
+    ScreeningRoomDto createRoom(CreateScreeningRoomDto dto) {
         if (screeningRoomRepository.existsByNumber(dto.number())) {
             throw new ScreeningRoomException("Screening room already exists: " + dto.number());
         }

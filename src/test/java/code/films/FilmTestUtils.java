@@ -1,6 +1,6 @@
 package code.films;
 
-import code.films.dto.AddFilmDto;
+import code.films.dto.CreateFilmDto;
 import code.films.dto.FilmCategoryDto;
 import code.films.dto.FilmDto;
 
@@ -12,21 +12,21 @@ public abstract class FilmTestUtils {
     private FilmTestUtils() {
     }
 
-    public static AddFilmDto sampleAddFilmDTO() {
-        return new AddFilmDto(
+    public static CreateFilmDto sampleCreateFilmDto() {
+        return new CreateFilmDto(
                 "title 1",
                 FilmCategoryDto.COMEDY,
                 Year.now().getValue()
         );
     }
 
-    public static List<AddFilmDto> sampleAddFilmDTOs() {
-        var dto1 = new AddFilmDto(
+    public static List<CreateFilmDto> sampleCreateFilmDtos() {
+        var dto1 = new CreateFilmDto(
                 "title 1",
                 FilmCategoryDto.COMEDY,
                 Year.now().getValue()
         );
-        var dto2 = new AddFilmDto(
+        var dto2 = new CreateFilmDto(
                 "title 2",
                 FilmCategoryDto.DRAMA,
                 Year.now().getValue() - 1
@@ -34,10 +34,16 @@ public abstract class FilmTestUtils {
         return List.of(dto1, dto2);
     }
 
-    public static List<FilmDto> addSampleFilms(FilmFacade filmFacade) {
-        return sampleAddFilmDTOs()
+    public static FilmDto createSampleFilm(FilmFacade filmFacade) {
+        return filmFacade.createFilm(
+                sampleCreateFilmDto()
+        );
+    }
+
+    public static List<FilmDto> createSampleFilms(FilmFacade filmFacade) {
+        return sampleCreateFilmDtos()
                 .stream()
-                .map(filmFacade::add)
+                .map(filmFacade::createFilm)
                 .toList();
     }
 
@@ -46,12 +52,6 @@ public abstract class FilmTestUtils {
         return List.of(
                 currentYear.minusYears(2).getValue(),
                 currentYear.plusYears(2).getValue()
-        );
-    }
-
-    public static FilmDto addSampleFilm(FilmFacade filmFacade) {
-        return filmFacade.add(
-                sampleAddFilmDTO()
         );
     }
 }

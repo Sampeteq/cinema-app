@@ -27,7 +27,7 @@ public class ScreeningFacade {
     private final ScreeningRepository screeningRepository;
 
     @Transactional
-    public ScreeningDto add(AddScreeningDto dto) {
+    public ScreeningDto createScreening(CreateScreeningDto dto) {
         var screening = screeningFactory.createScreening(
                 dto.date(),
                 dto.minAge(),
@@ -40,16 +40,16 @@ public class ScreeningFacade {
     }
 
     @Transactional
-    public List<ScreeningDto> searchBy(ScreeningSearchParamsDto paramsDto) {
+    public List<ScreeningDto> searchScreeningsBy(ScreeningSearchParamsDto paramsDto) {
         return screeningSearcher.searchBy(paramsDto);
     }
 
     @Transactional
-    public ScreeningRoomDto addRoom(AddScreeningRoomDto dto) {
-        return screeningRoomFactory.addRoom(dto);
+    public ScreeningRoomDto createRoom(CreateScreeningRoomDto dto) {
+        return screeningRoomFactory.createRoom(dto);
     }
 
-    public List<ScreeningRoomDto> readAllRooms() {
+    public List<ScreeningRoomDto> searchAllRooms() {
         return screeningRoomRepository
                 .getAll()
                 .stream()

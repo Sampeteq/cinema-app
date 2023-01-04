@@ -14,10 +14,13 @@ sealed interface SeatBookingRepository permits JpaSeatBookingRepositoryAdapter {
     Optional<SeatBooking> getById(UUID ticketId);
 
     List<SeatBooking> getAll();
+
+    Optional<SeatBooking> getByIdAndUsername(UUID ticketId, String username);
 }
 
 interface JpaScreeningTicketRepository extends JpaRepository<SeatBooking, UUID> {
 
+    Optional<SeatBooking> getByIdAndUsername(UUID bookingId, String username);
 }
 
 @AllArgsConstructor
@@ -33,6 +36,11 @@ final class JpaSeatBookingRepositoryAdapter implements SeatBookingRepository {
     @Override
     public Optional<SeatBooking> getById(UUID ticketId) {
         return jpaScreeningTicketRepository.findById(ticketId);
+    }
+
+    @Override
+    public Optional<SeatBooking> getByIdAndUsername(UUID ticketId, String username) {
+        return jpaScreeningTicketRepository.getByIdAndUsername(ticketId, username);
     }
 
     @Override

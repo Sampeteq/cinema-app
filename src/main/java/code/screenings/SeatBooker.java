@@ -17,7 +17,7 @@ class SeatBooker {
 
     private final SeatBookingRepository seatBookingRepository;
 
-    SeatBookingDto book(BookSeatDto dto, Clock clock) {
+    SeatBookingDto book(BookSeatDto dto, String username, Clock clock) {
         var screening = getScreeningOrThrow(dto.screeningId());
         var seat = getSeatOrThrow(screening, dto.seatId());
         seat.book(clock);
@@ -25,7 +25,8 @@ class SeatBooker {
                 UUID.randomUUID(),
                 dto.firstName(),
                 dto.lastName(),
-                seat
+                seat,
+                username
         );
         return seatBookingRepository
                 .add(booking)

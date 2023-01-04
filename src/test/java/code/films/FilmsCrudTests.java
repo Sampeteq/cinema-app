@@ -28,7 +28,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     private FilmFacade filmFacade;
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(authorities = "ADMIN")
     void should_add_film() throws Exception {
         //given
         var sampleDTO = sampleCreateFilmDto();
@@ -57,7 +57,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
 
     @ParameterizedTest
     @MethodSource("code.films.FilmTestUtils#wrongFilmYears")
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear) throws Exception {
         //given
         var dto = sampleCreateFilmDto().withYear(wrongYear);

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.time.Clock;
 import java.util.UUID;
 
@@ -25,9 +26,10 @@ class SeatBookingController {
     SeatBookingDto bookSeat(
             @RequestBody
             @Valid
-            BookSeatDto dto
+            BookSeatDto dto,
+            Principal principal
     ) {
-        return screeningFacade.bookSeat(dto, clock);
+        return screeningFacade.bookSeat(dto, principal.getName(), clock);
     }
 
     @PatchMapping("/seats-bookings/{bookingId}/cancel")
@@ -39,8 +41,8 @@ class SeatBookingController {
     }
 
     @GetMapping("/seats-bookings/{bookingId}")
-    SeatBookingDto searchSeatBooking(@PathVariable UUID bookingId) {
-        return screeningFacade.searchSeatBooking(bookingId);
+    SeatBookingDto searchSeatBooking(@PathVariable UUID bookingId, Principal principal) {
+        return screeningFacade.searchSeatBooking(bookingId, principal.getName());
     }
 }
 

@@ -28,6 +28,8 @@ class SeatBooking {
     @OneToOne
     private Seat seat;
 
+    private String username;
+
     void cancel(Clock clock) {
         this.seat.cancelBooking(clock);
     }

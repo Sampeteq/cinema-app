@@ -38,7 +38,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(authorities = "ADMIN")
     void should_create_screening() throws Exception {
         //given
         var sampleFilm = createSampleFilm(filmFacade);
@@ -69,7 +69,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
     @ParameterizedTest
     @MethodSource("code.screenings.ScreeningTestUtils#wrongScreeningDates")
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {
         //given
@@ -96,7 +96,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_screening_room_is_busy() throws Exception {
         //given
         var sampleScreening = createSampleScreening(filmFacade, screeningFacade);
@@ -162,7 +162,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(authorities = "ADMIN")
     void should_create_screening_room() throws Exception {
         //given
         var sampleAddRoomDTO = sampleCreateRoomDto();
@@ -187,7 +187,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_room_number_is_not_unique() throws Exception {
         //given
         var sampleRoom = createSampleScreeningRoom(screeningFacade);

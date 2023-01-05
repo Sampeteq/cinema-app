@@ -15,7 +15,7 @@ class ScreeningConfig {
 
     private final JpaScreeningRoomRepository jpaScreeningRoomRepository;
 
-    private final JpaScreeningTicketRepository jpaScreeningTicketRepository;
+    private final JpaScreeningSeatBookingRepository jpaScreeningSeatBookingRepository;
 
     private final Clock clock;
 
@@ -25,7 +25,7 @@ class ScreeningConfig {
     ) {
         var screeningRepository = new JpaScreeningRepositoryAdapter(jpaScreeningRepository);
         var screeningRoomRepository = new JpaScreeningRoomRepositoryAdapter(jpaScreeningRoomRepository);
-        var ticketRepository = new JpaSeatBookingRepositoryAdapter(jpaScreeningTicketRepository);
+        var ticketRepository = new JpaSeatBookingRepositoryAdapter(jpaScreeningSeatBookingRepository);
         var screeningRoomFactory = new ScreeningRoomFactory(screeningRoomRepository);
         var screeningDateSpecification = new CurrentOrNextOneYearScreeningDateSpecification(clock);
         var screeningFactory = new ScreeningFactory(

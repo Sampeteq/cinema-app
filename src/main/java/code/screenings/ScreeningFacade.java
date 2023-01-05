@@ -5,7 +5,6 @@ import code.screenings.exception.SeatBookingNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Principal;
 import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
@@ -69,10 +68,10 @@ public class ScreeningFacade {
     }
 
     public SeatBookingDto searchSeatBooking(UUID bookingId, String username) {
-        return getTicketOrThrow(bookingId, username).toDTO();
+        return getBookingOrThrow(bookingId, username).toDTO();
     }
 
-    private SeatBooking getTicketOrThrow(UUID ticketId, String username) {
+    private SeatBooking getBookingOrThrow(UUID ticketId, String username) {
         return seatBookingRepository
                 .getByIdAndUsername(ticketId, username)
                 .orElseThrow(() -> new SeatBookingNotFoundException(ticketId));

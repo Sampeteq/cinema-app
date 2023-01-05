@@ -18,7 +18,7 @@ sealed interface SeatBookingRepository permits JpaSeatBookingRepositoryAdapter {
     Optional<SeatBooking> getByIdAndUsername(UUID ticketId, String username);
 }
 
-interface JpaScreeningTicketRepository extends JpaRepository<SeatBooking, UUID> {
+interface JpaScreeningSeatBookingRepository extends JpaRepository<SeatBooking, UUID> {
 
     Optional<SeatBooking> getByIdAndUsername(UUID bookingId, String username);
 }
@@ -26,25 +26,25 @@ interface JpaScreeningTicketRepository extends JpaRepository<SeatBooking, UUID> 
 @AllArgsConstructor
 final class JpaSeatBookingRepositoryAdapter implements SeatBookingRepository {
 
-    private final JpaScreeningTicketRepository jpaScreeningTicketRepository;
+    private final JpaScreeningSeatBookingRepository jpaScreeningSeatBookingRepository;
 
     @Override
     public SeatBooking add(SeatBooking ticket) {
-        return jpaScreeningTicketRepository.save(ticket);
+        return jpaScreeningSeatBookingRepository.save(ticket);
     }
 
     @Override
     public Optional<SeatBooking> getById(UUID ticketId) {
-        return jpaScreeningTicketRepository.findById(ticketId);
+        return jpaScreeningSeatBookingRepository.findById(ticketId);
     }
 
     @Override
     public Optional<SeatBooking> getByIdAndUsername(UUID ticketId, String username) {
-        return jpaScreeningTicketRepository.getByIdAndUsername(ticketId, username);
+        return jpaScreeningSeatBookingRepository.getByIdAndUsername(ticketId, username);
     }
 
     @Override
     public List<SeatBooking> getAll() {
-        return jpaScreeningTicketRepository.findAll();
+        return jpaScreeningSeatBookingRepository.findAll();
     }
 }

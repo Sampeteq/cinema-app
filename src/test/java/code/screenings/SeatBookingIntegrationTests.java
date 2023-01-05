@@ -136,6 +136,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
+    @WithMockUser(username = "user1")
     void should_cancel_booking() throws Exception {
         //give
         var sampleUsername = addSampleUser(userFacade);
@@ -162,6 +163,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
+    @WithMockUser(username = "user1")
     void should_make_seat_free_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
         var sampleUsername = addSampleUser(userFacade);
@@ -188,6 +190,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
+    @WithMockUser(username = "user1")
     void should_throw_exception_when_booking_is_already_cancelled() throws Exception {
         //given
         var sampleUsername = addSampleUser(userFacade);
@@ -214,6 +217,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
+    @WithMockUser(username = "user1")
     void should_canceling_booking_be_impossible_when_less_than_24h_to_screening() throws Exception {
         //given
         var sampleUsername = addSampleUser(userFacade);

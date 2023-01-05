@@ -16,7 +16,8 @@ public abstract class FilmTestUtils {
         return new CreateFilmDto(
                 "title 1",
                 FilmCategoryDto.COMEDY,
-                Year.now().getValue()
+                Year.now().getValue(),
+                120
         );
     }
 
@@ -24,12 +25,14 @@ public abstract class FilmTestUtils {
         var dto1 = new CreateFilmDto(
                 "title 1",
                 FilmCategoryDto.COMEDY,
-                Year.now().getValue()
+                Year.now().getValue(),
+                120
         );
         var dto2 = new CreateFilmDto(
                 "title 2",
                 FilmCategoryDto.DRAMA,
-                Year.now().getValue() - 1
+                Year.now().getValue() - 1,
+                90
         );
         return List.of(dto1, dto2);
     }

@@ -12,6 +12,8 @@ public record CreateFilmDto(
         @NotNull
         FilmCategoryDto filmCategory,
         @NotNull
-        Integer year
+        Integer year,
+        @NotNull
+        Integer durationInMinutes
 ) {
 }

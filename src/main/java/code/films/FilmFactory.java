@@ -10,13 +10,14 @@ class FilmFactory {
 
     private final FilmYearSpecification filmYearSpecification;
 
-    Film createFilm(String title, FilmCategory category, int year) {
+    Film createFilm(String title, FilmCategory category, int year, int durationInMinutes) {
         if (filmYearSpecification.isSatisfyBy(year)) {
             return new Film(
                     UUID.randomUUID(),
                     title,
                     category,
-                    year
+                    year,
+                    durationInMinutes
             );
         } else {
             if (filmYearSpecification instanceof PreviousCurrentOrNextOneFilmYearSpecification) {

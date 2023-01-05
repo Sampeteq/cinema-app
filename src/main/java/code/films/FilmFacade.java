@@ -19,7 +19,8 @@ public class FilmFacade {
         var film = filmFactory.createFilm(
                 dto.title(),
                 FilmCategory.fromDTO(dto.filmCategory()),
-                dto.year()
+                dto.year(),
+                dto.durationInMinutes()
         );
         return filmRepository
                 .add(film)

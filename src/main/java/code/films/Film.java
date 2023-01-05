@@ -25,12 +25,15 @@ class Film {
 
     private int year;
 
+    private int durationInMinutes;
+
     FilmDto toDTO() {
         return new FilmDto(
                 this.id,
                 this.title,
                 FilmCategoryDto.valueOf(this.category.name()),
-                year
+                year,
+                durationInMinutes
         );
     }
 }

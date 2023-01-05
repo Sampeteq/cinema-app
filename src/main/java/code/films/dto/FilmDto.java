@@ -7,6 +7,7 @@ public record FilmDto(
         UUID id,
         String title,
         FilmCategoryDto category,
-        int year
+        int year,
+        int durationInMinutes
 ) {
 }

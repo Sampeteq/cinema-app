@@ -52,7 +52,9 @@ class FilmsCrudTests extends SpringIntegrationTests {
                 jsonPath("$[0].category").value(sampleDTO.filmCategory().name())
         ).andExpect(
                 jsonPath("$[0].year").value(sampleDTO.year())
-        );
+        ).andExpect(
+                        jsonPath("$[0].durationInMinutes").value(sampleDTO.durationInMinutes())
+                );
     }
 
     @ParameterizedTest

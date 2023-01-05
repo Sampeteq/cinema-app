@@ -32,7 +32,7 @@ public class UserFacade {
                 passwordEncoder.encode(dto.password()),
                 UserRole.COMMON
         );
-        userRepository.save(user);
+        userRepository.add(user);
     }
 
     public void signIn(SignInDto dto) {
@@ -46,7 +46,7 @@ public class UserFacade {
     }
 
     public Optional<User> readUserDetails(String username) {
-        return userRepository.findById(username);
+        return userRepository.getById(username);
     }
 
 }

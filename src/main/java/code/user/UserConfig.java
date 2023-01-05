@@ -11,12 +11,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 class UserConfig {
 
-    private final UserRepository userRepository;
+    private final JpaUserRepository jpaUserRepository;
 
     private final AuthenticationManager authenticationManager;
 
     @Bean
     UserFacade authFacade(PasswordEncoder passwordEncoder) {
+        var userRepository = new JpaUserRepositoryAdapter(jpaUserRepository);
         return new UserFacade(
                 userRepository,
                 passwordEncoder,

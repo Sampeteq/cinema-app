@@ -30,7 +30,7 @@ class OnStartUp {
                     passwordEncoder.encode(MAIN_ADMIN_PASSWORD),
                     UserRole.ADMIN
             );
-            userRepository.save(mainAdmin);
+            userRepository.add(mainAdmin);
             log.info("Main admin added.Username: {}" + " .Password: {}", MAIN_ADMIN_USERNAME, MAIN_ADMIN_PASSWORD);
         }
     }

@@ -19,7 +19,7 @@ class ScreeningSearcher {
                 .date(screeningDate)
                 .build();
         return screeningRepository
-                .getBy(params)
+                .findBy(params)
                 .stream()
                 .map(Screening::toDTO)
                 .toList();

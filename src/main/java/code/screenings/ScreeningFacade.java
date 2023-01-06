@@ -35,7 +35,7 @@ public class ScreeningFacade {
                 dto.roomId()
         );
         return screeningRepository
-                .add(screening)
+                .save(screening)
                 .toDTO();
     }
 
@@ -51,7 +51,7 @@ public class ScreeningFacade {
 
     public List<ScreeningRoomDto> searchAllRooms() {
         return screeningRoomRepository
-                .getAll()
+                .findAll()
                 .stream()
                 .map(ScreeningRoom::toDTO)
                 .toList();
@@ -73,7 +73,7 @@ public class ScreeningFacade {
 
     private SeatBooking getBookingOrThrow(UUID ticketId, String username) {
         return seatBookingRepository
-                .getByIdAndUsername(ticketId, username)
+                .findByIdAndUsername(ticketId, username)
                 .orElseThrow(() -> new SeatBookingNotFoundException(ticketId));
     }
 }

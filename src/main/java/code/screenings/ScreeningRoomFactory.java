@@ -23,7 +23,7 @@ class ScreeningRoomFactory {
                 dto.seatsQuantityInOneRow()
         );
         return screeningRoomRepository
-                .add(screeningRoom)
+                .save(screeningRoom)
                 .toDTO();
     }
 }

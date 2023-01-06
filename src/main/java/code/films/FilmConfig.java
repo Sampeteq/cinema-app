@@ -8,13 +8,10 @@ import org.springframework.context.annotation.Configuration;
 @AllArgsConstructor
 class FilmConfig {
 
-    private final JpaFilmRepository jpaFilmRepository;
-
     @Bean
-    FilmFacade filmAPI() {
+    FilmFacade filmAPI(FilmRepository filmRepository) {
         var filmYearSpecification = new PreviousCurrentOrNextOneFilmYearSpecification();
         var filmFactory = new FilmFactory(filmYearSpecification);
-        var filmRepository = new JpaFilmRepositoryAdapter(jpaFilmRepository);
         return new FilmFacade(filmFactory, filmRepository);
     }
 }

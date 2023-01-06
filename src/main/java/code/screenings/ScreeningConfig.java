@@ -11,21 +11,15 @@ import java.time.Clock;
 @AllArgsConstructor
 class ScreeningConfig {
 
-    private final JpaScreeningRepository jpaScreeningRepository;
-
-    private final JpaScreeningRoomRepository jpaScreeningRoomRepository;
-
-    private final JpaScreeningSeatBookingRepository jpaScreeningSeatBookingRepository;
-
     private final Clock clock;
 
     @Bean
     ScreeningFacade screeningFacade(
-            FilmFacade filmFacade
+            FilmFacade filmFacade,
+            ScreeningRepository screeningRepository,
+            ScreeningRoomRepository screeningRoomRepository,
+            SeatBookingRepository seatBookingRepository
     ) {
-        var screeningRepository = new JpaScreeningRepositoryAdapter(jpaScreeningRepository);
-        var screeningRoomRepository = new JpaScreeningRoomRepositoryAdapter(jpaScreeningRoomRepository);
-        var ticketRepository = new JpaSeatBookingRepositoryAdapter(jpaScreeningSeatBookingRepository);
         var screeningRoomFactory = new ScreeningRoomFactory(screeningRoomRepository);
         var screeningDateSpecification = new CurrentOrNextOneYearScreeningDateSpecification(clock);
         var screeningFactory = new ScreeningFactory(
@@ -35,10 +29,10 @@ class ScreeningConfig {
                 screeningRoomRepository
         );
         var screeningSearcher = new ScreeningSearcher(screeningRepository);
-        var screeningTicketBooker = new SeatBooker(screeningRepository, ticketRepository);
+        var screeningTicketBooker = new SeatBooker(screeningRepository, seatBookingRepository);
         return new ScreeningFacade(
                 screeningRoomRepository,
-                ticketRepository,
+                seatBookingRepository,
                 screeningSearcher,
                 screeningRoomFactory,
                 screeningFactory,

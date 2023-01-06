@@ -65,7 +65,7 @@ class ScreeningFactory {
 
     private ScreeningRoom getScreeningRoomOrThrow(UUID roomId) {
         return screeningRoomRepository
-                .getById(roomId)
+                .findById(roomId)
                 .orElseThrow(() -> new ScreeningRoomNotFoundException(roomId));
     }
 

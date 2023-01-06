@@ -23,7 +23,7 @@ public class FilmFacade {
                 dto.durationInMinutes()
         );
         return filmRepository
-                .add(film)
+                .save(film)
                 .toDTO();
     }
 
@@ -33,13 +33,13 @@ public class FilmFacade {
                 .category(paramsDto.category == null ? null : FilmCategory.fromDTO(paramsDto.category))
                 .build();
         return filmRepository
-                .getBy(params)
+                .findBy(params)
                 .stream()
                 .map(Film::toDTO)
                 .toList();
     }
 
     public boolean isPresent(UUID filmId) {
-        return filmRepository.getById(filmId).isPresent();
+        return filmRepository.findById(filmId).isPresent();
     }
 }

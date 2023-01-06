@@ -29,7 +29,7 @@ class SeatBooker {
                 username
         );
         return seatBookingRepository
-                .add(booking)
+                .save(booking)
                 .toDTO();
     }
 
@@ -40,7 +40,7 @@ class SeatBooker {
 
     private Screening getScreeningOrThrow(UUID screeningId) {
         return screeningRepository
-                .getById(screeningId)
+                .findById(screeningId)
                 .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
     }
 
@@ -52,7 +52,7 @@ class SeatBooker {
 
     private SeatBooking getBookingOrThrow(UUID ticketId) {
         return seatBookingRepository
-                .getById(ticketId)
+                .findById(ticketId)
                 .orElseThrow(() -> new SeatBookingNotFoundException(ticketId));
     }
 }

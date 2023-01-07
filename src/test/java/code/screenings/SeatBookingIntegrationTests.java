@@ -1,9 +1,10 @@
 package code.screenings;
 
-import code.SpringIntegrationTests;
+import code.utils.SpringIntegrationTests;
 import code.screenings.dto.BookSeatDto;
 import code.screenings.dto.SeatBookingDto;
 import code.user.UserFacade;
+import code.utils.ScreeningTestUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,10 +17,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static code.WebTestUtils.fromResultActions;
-import static code.WebTestUtils.toJson;
-import static code.screenings.ScreeningTestUtils.createSampleScreening;
-import static code.user.UserTestUtils.addSampleUser;
+import static code.utils.WebTestUtils.fromResultActions;
+import static code.utils.WebTestUtils.toJson;
+import static code.utils.ScreeningTestUtils.createSampleScreening;
+import static code.utils.UserTestUtils.addSampleUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

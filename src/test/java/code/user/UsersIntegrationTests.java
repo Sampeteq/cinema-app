@@ -1,17 +1,15 @@
 package code.user;
 
-import code.SpringIntegrationTests;
+import code.utils.SpringIntegrationTests;
 import code.user.dto.SignInDto;
-import code.user.dto.SignUpDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static code.WebTestUtils.toJson;
-import static code.user.UserTestUtils.addSampleUser;
-import static code.user.UserTestUtils.sampleSignUpDto;
+import static code.utils.WebTestUtils.toJson;
+import static code.utils.UserTestUtils.addSampleUser;
+import static code.utils.UserTestUtils.sampleSignUpDto;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

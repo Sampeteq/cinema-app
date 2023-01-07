@@ -1,5 +1,6 @@
-package code.screenings;
+package code.utils;
 
+import code.screenings.ScreeningFacade;
 import code.screenings.dto.CreateScreeningDto;
 import code.screenings.dto.CreateScreeningRoomDto;
 import code.screenings.dto.ScreeningDto;
@@ -10,7 +11,7 @@ import java.time.Year;
 import java.util.List;
 import java.util.UUID;
 
-import static code.screenings.FilmTestUtils.createSampleFilm;
+import static code.utils.FilmTestUtils.createSampleFilm;
 
 public class ScreeningTestUtils {
 

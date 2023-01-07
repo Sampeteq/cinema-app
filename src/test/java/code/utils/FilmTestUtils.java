@@ -1,5 +1,6 @@
-package code.screenings;
+package code.utils;
 
+import code.screenings.ScreeningFacade;
 import code.screenings.dto.CreateFilmDto;
 import code.screenings.dto.FilmCategoryDto;
 import code.screenings.dto.FilmDto;

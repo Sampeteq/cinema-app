@@ -1,5 +1,6 @@
-package code.user;
+package code.utils;
 
+import code.user.UserFacade;
 import code.user.dto.SignUpDto;
 
 public class UserTestUtils {

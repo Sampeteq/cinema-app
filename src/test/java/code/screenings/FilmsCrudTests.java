@@ -1,6 +1,6 @@
 package code.screenings;
 
-import code.SpringIntegrationTests;
+import code.utils.SpringIntegrationTests;
 import code.screenings.dto.FilmCategoryDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,9 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static code.WebTestUtils.toJson;
-import static code.screenings.FilmTestUtils.sampleCreateFilmDto;
-import static code.screenings.FilmTestUtils.sampleCreateFilmDtos;
+import static code.utils.WebTestUtils.toJson;
+import static code.utils.FilmTestUtils.sampleCreateFilmDto;
+import static code.utils.FilmTestUtils.sampleCreateFilmDtos;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -58,7 +58,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     }
 
     @ParameterizedTest
-    @MethodSource("code.screenings.FilmTestUtils#wrongFilmYears")
+    @MethodSource("code.utils.FilmTestUtils#wrongFilmYears")
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear) throws Exception {
         //given

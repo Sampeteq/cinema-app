@@ -1,7 +1,6 @@
 package code.screenings;
 
-import code.SpringIntegrationTests;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,9 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-import static code.WebTestUtils.toJson;
-import static code.screenings.FilmTestUtils.createSampleFilm;
-import static code.screenings.ScreeningTestUtils.*;
+import static code.utils.WebTestUtils.toJson;
+import static code.utils.FilmTestUtils.createSampleFilm;
+import static code.utils.ScreeningTestUtils.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -65,7 +64,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     }
 
     @ParameterizedTest
-    @MethodSource("code.screenings.ScreeningTestUtils#wrongScreeningDates")
+    @MethodSource("code.utils.ScreeningTestUtils#wrongScreeningDates")
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {

@@ -1,7 +1,6 @@
 package code.screenings;
 
 import code.SpringIntegrationTests;
-import code.films.FilmFacade;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -15,7 +14,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 
 import static code.WebTestUtils.toJson;
-import static code.films.FilmTestUtils.createSampleFilm;
+import static code.screenings.FilmTestUtils.createSampleFilm;
 import static code.screenings.ScreeningTestUtils.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,9 +29,6 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     private ScreeningFacade screeningFacade;
 
     @Autowired
-    private FilmFacade filmFacade;
-
-    @Autowired
     @Qualifier("testClock")
     private Clock clock;
 
@@ -41,7 +37,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_create_screening() throws Exception {
         //given
-        var sampleFilm = createSampleFilm(filmFacade);
+        var sampleFilm = createSampleFilm(screeningFacade);
         var sampleRoom = createSampleScreeningRoom(screeningFacade);
         var sampleAddScreeningDTO = sampleCreateScreeningDto(
                 sampleFilm.id(),
@@ -73,7 +69,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {
         //given
-        var sampleFilmId = createSampleFilm(filmFacade).id();
+        var sampleFilmId = createSampleFilm(screeningFacade).id();
         var sampleRoomId = createSampleScreeningRoom(screeningFacade).id();
         var sampleAddScreeningDTO = sampleCreateScreeningDto(
                 sampleFilmId,
@@ -99,7 +95,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_screening_room_is_busy() throws Exception {
         //given
-        var sampleScreening = createSampleScreening(filmFacade, screeningFacade);
+        var sampleScreening = createSampleScreening(screeningFacade);
         var sampleAddScreeningDTO = sampleCreateScreeningDto(
                 sampleScreening.filmId(),
                 sampleScreening.roomId()
@@ -123,7 +119,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_all_screenings() throws Exception {
         //given
-        var sampleScreenings = createSampleScreenings(screeningFacade, filmFacade);
+        var sampleScreenings = createSampleScreenings(screeningFacade);
 
         //when
         var result = mockMvc.perform(
@@ -139,7 +135,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_screenings_by_search_params() throws Exception {
         //given
-        var sampleScreenings = createSampleScreenings(screeningFacade, filmFacade);
+        var sampleScreenings = createSampleScreenings(screeningFacade);
         var filmId = sampleScreenings.get(0).filmId();
         var screeningDate = sampleScreenings.get(0).date();
         var filteredScreening = sampleScreenings

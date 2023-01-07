@@ -1,7 +1,6 @@
 package code.screenings;
 
-import code.films.FilmFacade;
-import code.films.exception.FilmNotFoundException;
+import code.screenings.exception.FilmNotFoundException;
 import code.screenings.exception.ScreeningDateException;
 import code.screenings.exception.ScreeningRoomException;
 import code.screenings.exception.ScreeningRoomNotFoundException;
@@ -17,7 +16,7 @@ class ScreeningFactory {
 
     private final ScreeningDateSpecification dateSpecification;
 
-    private final FilmFacade filmFacade;
+    private final FilmRepository filmRepository;
 
     private final ScreeningRepository screeningRepository;
 
@@ -52,7 +51,7 @@ class ScreeningFactory {
     }
 
     private void validateFilmExisting(UUID filmId) {
-        if (!filmFacade.isPresent(filmId)) {
+        if (!filmRepository.existsById(filmId)) {
             throw new FilmNotFoundException(filmId);
         }
     }

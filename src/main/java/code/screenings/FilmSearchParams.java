@@ -1,4 +1,4 @@
-package code.films;
+package code.screenings;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

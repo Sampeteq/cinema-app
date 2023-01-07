@@ -1,6 +1,5 @@
 package code.screenings;
 
-import code.films.FilmFacade;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,21 +14,23 @@ class ScreeningConfig {
 
     @Bean
     ScreeningFacade screeningFacade(
-            FilmFacade filmFacade,
             ScreeningRepository screeningRepository,
             ScreeningRoomRepository screeningRoomRepository,
-            SeatBookingRepository seatBookingRepository
+            SeatBookingRepository seatBookingRepository,
+            FilmRepository filmRepository
     ) {
         var screeningRoomFactory = new ScreeningRoomFactory(screeningRoomRepository);
         var screeningDateSpecification = new CurrentOrNextOneYearScreeningDateSpecification(clock);
         var screeningFactory = new ScreeningFactory(
                 screeningDateSpecification,
-                filmFacade,
+                filmRepository,
                 screeningRepository,
                 screeningRoomRepository
         );
         var screeningSearcher = new ScreeningSearcher(screeningRepository);
         var screeningTicketBooker = new SeatBooker(screeningRepository, seatBookingRepository);
+        var filmYearSpecification = new PreviousCurrentOrNextOneFilmYearSpecification();
+        var filmFactory = new FilmFactory(filmYearSpecification);
         return new ScreeningFacade(
                 screeningRoomRepository,
                 seatBookingRepository,
@@ -37,7 +38,9 @@ class ScreeningConfig {
                 screeningRoomFactory,
                 screeningFactory,
                 screeningTicketBooker,
-                screeningRepository
+                screeningRepository,
+                filmFactory,
+                filmRepository
         );
     }
 

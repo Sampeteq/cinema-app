@@ -1,6 +1,6 @@
-package code.films;
+package code.screenings;
 
-import code.films.dto.FilmCategoryDto;
+import code.screenings.dto.FilmCategoryDto;
 
 enum FilmCategory {
     COMEDY,

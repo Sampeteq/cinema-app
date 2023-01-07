@@ -26,6 +26,34 @@ public class ScreeningFacade {
 
     private final ScreeningRepository screeningRepository;
 
+    private final FilmFactory filmFactory;
+
+    private final FilmRepository filmRepository;
+
+    public FilmDto createFilm(CreateFilmDto dto) {
+        var film = filmFactory.createFilm(
+                dto.title(),
+                FilmCategory.fromDTO(dto.filmCategory()),
+                dto.year(),
+                dto.durationInMinutes()
+        );
+        return filmRepository
+                .save(film)
+                .toDTO();
+    }
+
+    public List<FilmDto> searchFilms(FilmSearchParamsDto paramsDto) {
+        var params = FilmSearchParams
+                .builder()
+                .category(paramsDto.category == null ? null : FilmCategory.fromDTO(paramsDto.category))
+                .build();
+        return filmRepository
+                .findBy(params)
+                .stream()
+                .map(Film::toDTO)
+                .toList();
+    }
+
     @Transactional
     public ScreeningDto createScreening(CreateScreeningDto dto) {
         var screening = screeningFactory.createScreening(

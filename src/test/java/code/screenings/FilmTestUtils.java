@@ -1,8 +1,8 @@
-package code.films;
+package code.screenings;
 
-import code.films.dto.CreateFilmDto;
-import code.films.dto.FilmCategoryDto;
-import code.films.dto.FilmDto;
+import code.screenings.dto.CreateFilmDto;
+import code.screenings.dto.FilmCategoryDto;
+import code.screenings.dto.FilmDto;
 
 import java.time.Year;
 import java.util.List;
@@ -37,16 +37,16 @@ public abstract class FilmTestUtils {
         return List.of(dto1, dto2);
     }
 
-    public static FilmDto createSampleFilm(FilmFacade filmFacade) {
-        return filmFacade.createFilm(
+    public static FilmDto createSampleFilm(ScreeningFacade screeningFacade) {
+        return screeningFacade.createFilm(
                 sampleCreateFilmDto()
         );
     }
 
-    public static List<FilmDto> createSampleFilms(FilmFacade filmFacade) {
+    public static List<FilmDto> createSampleFilms(ScreeningFacade screeningFacade) {
         return sampleCreateFilmDtos()
                 .stream()
-                .map(filmFacade::createFilm)
+                .map(screeningFacade::createFilm)
                 .toList();
     }
 

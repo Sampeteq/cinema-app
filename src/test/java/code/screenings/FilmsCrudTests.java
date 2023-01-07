@@ -1,7 +1,7 @@
-package code.films;
+package code.screenings;
 
 import code.SpringIntegrationTests;
-import code.films.dto.FilmCategoryDto;
+import code.screenings.dto.FilmCategoryDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -13,8 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static code.WebTestUtils.toJson;
-import static code.films.FilmTestUtils.sampleCreateFilmDto;
-import static code.films.FilmTestUtils.sampleCreateFilmDtos;
+import static code.screenings.FilmTestUtils.sampleCreateFilmDto;
+import static code.screenings.FilmTestUtils.sampleCreateFilmDtos;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -25,7 +25,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     private MockMvc mockMvc;
 
     @Autowired
-    private FilmFacade filmFacade;
+    private ScreeningFacade screeningFacade;
 
     @Test
     @WithMockUser(authorities = "ADMIN")
@@ -58,7 +58,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     }
 
     @ParameterizedTest
-    @MethodSource("code.films.FilmTestUtils#wrongFilmYears")
+    @MethodSource("code.screenings.FilmTestUtils#wrongFilmYears")
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear) throws Exception {
         //given
@@ -82,7 +82,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
         //given
         var sampleFilms = sampleCreateFilmDtos()
                 .stream()
-                .map(dto -> filmFacade.createFilm(dto))
+                .map(dto -> screeningFacade.createFilm(dto))
                 .toList();
 
         //when
@@ -99,10 +99,10 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_films_by_params() throws Exception {
         //given
-        var sampleFilm = filmFacade.createFilm(
+        var sampleFilm = screeningFacade.createFilm(
                 sampleCreateFilmDto().withFilmCategory(FilmCategoryDto.COMEDY)
         );
-        filmFacade.createFilm(
+        screeningFacade.createFilm(
                 sampleCreateFilmDto().withFilmCategory(FilmCategoryDto.DRAMA)
         );
 

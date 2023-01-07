@@ -1,7 +1,6 @@
 package code.screenings;
 
 import code.SpringIntegrationTests;
-import code.films.FilmFacade;
 import code.screenings.dto.BookSeatDto;
 import code.screenings.dto.SeatBookingDto;
 import code.user.UserFacade;
@@ -34,9 +33,6 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     private ScreeningFacade screeningFacade;
 
     @Autowired
-    private FilmFacade filmFacade;
-
-    @Autowired
     private UserFacade userFacade;
 
     @Autowired
@@ -48,7 +44,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     void should_booked_seat() throws Exception {
         //given
         addSampleUser(userFacade);
-        var sampleScreening = ScreeningTestUtils.createSampleScreening(filmFacade, screeningFacade);
+        var sampleScreening = ScreeningTestUtils.createSampleScreening(screeningFacade);
         var sampleSeat = sampleScreening.seats().get(0);
         var sampleBookSeatDTO = sampleBookSeatDTO(
                 sampleScreening.id(),
@@ -82,7 +78,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         addSampleUser(userFacade);
         var currentDate = getCurrentDate(clock);
         var screeningDate = currentDate.minusHours(23);
-        var sampleScreening = createSampleScreening(filmFacade, screeningFacade, screeningDate);
+        var sampleScreening = createSampleScreening(screeningFacade, screeningDate);
         var sampleSeat = sampleScreening.seats().get(0);
         var sampleBookSeatDTO = sampleBookSeatDTO(
                 sampleScreening.id(),
@@ -109,7 +105,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     void should_make_seat_busy_and_reduce_screening_free_seats_by_one_after_booking() throws Exception {
         //given
         addSampleUser(userFacade);
-        var sampleScreening = ScreeningTestUtils.createSampleScreening(filmFacade, screeningFacade);
+        var sampleScreening = ScreeningTestUtils.createSampleScreening(screeningFacade);
         var sampleSeats = sampleScreening.seats().get(0);
         var sampleBookSeatDTO = sampleBookSeatDTO(
                 sampleScreening.id(),
@@ -140,7 +136,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     void should_cancel_booking() throws Exception {
         //give
         var sampleUsername = addSampleUser(userFacade);
-        var sampleScreening = ScreeningTestUtils.createSampleScreening(filmFacade, screeningFacade);
+        var sampleScreening = ScreeningTestUtils.createSampleScreening(screeningFacade);
         var sampleSeat = sampleScreening.seats().get(0);
         var sampleSeatBooking = bookSampleSeat(
                 sampleScreening.id(),
@@ -167,7 +163,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     void should_make_seat_free_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
         var sampleUsername = addSampleUser(userFacade);
-        var sampleScreening = ScreeningTestUtils.createSampleScreening(filmFacade, screeningFacade);
+        var sampleScreening = ScreeningTestUtils.createSampleScreening(screeningFacade);
         var seat = sampleScreening.seats().get(0);
         var sampleSeatBooking = bookSampleSeat(
                 sampleScreening.id(),
@@ -194,7 +190,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_when_booking_is_already_cancelled() throws Exception {
         //given
         var sampleUsername = addSampleUser(userFacade);
-        var sampleScreening = ScreeningTestUtils.createSampleScreening(filmFacade, screeningFacade);
+        var sampleScreening = ScreeningTestUtils.createSampleScreening(screeningFacade);
         var seat = sampleScreening.seats().get(0);
         var sampleSeatBooking = bookSampleSeat(
                 sampleScreening.id(),
@@ -224,7 +220,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         var currentDate = getCurrentDate(clock);
         var hoursUntilBooking = 23;
         var sampleScreeningDate = currentDate.minusHours(hoursUntilBooking);
-        var sampleScreening = createSampleScreening(filmFacade, screeningFacade, sampleScreeningDate);
+        var sampleScreening = createSampleScreening(screeningFacade, sampleScreeningDate);
         var sampleSeat = sampleScreening.seats().get(0);
         var timeDuringBooking = Clock.fixed(
                 sampleScreeningDate.minusHours(hoursUntilBooking + 1).toInstant(ZoneOffset.UTC),

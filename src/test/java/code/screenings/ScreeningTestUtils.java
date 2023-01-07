@@ -1,7 +1,5 @@
 package code.screenings;
 
-import code.films.FilmFacade;
-import code.films.FilmTestUtils;
 import code.screenings.dto.CreateScreeningDto;
 import code.screenings.dto.CreateScreeningRoomDto;
 import code.screenings.dto.ScreeningDto;
@@ -12,7 +10,7 @@ import java.time.Year;
 import java.util.List;
 import java.util.UUID;
 
-import static code.films.FilmTestUtils.createSampleFilm;
+import static code.screenings.FilmTestUtils.createSampleFilm;
 
 public class ScreeningTestUtils {
 
@@ -58,8 +56,8 @@ public class ScreeningTestUtils {
         );
     }
 
-    public static ScreeningDto createSampleScreening(FilmFacade filmFacade, ScreeningFacade screeningFacade) {
-        var sampleFilm = createSampleFilm(filmFacade);
+    public static ScreeningDto createSampleScreening(ScreeningFacade screeningFacade) {
+        var sampleFilm = createSampleFilm(screeningFacade);
         var sampleRoom = createSampleScreeningRoom(screeningFacade);
         return screeningFacade.createScreening(
                 sampleCreateScreeningDto(
@@ -70,11 +68,10 @@ public class ScreeningTestUtils {
     }
 
     public static ScreeningDto createSampleScreening(
-            FilmFacade filmFacade,
             ScreeningFacade screeningFacade,
             LocalDateTime screeningDate
     ) {
-        var sampleFilm = createSampleFilm(filmFacade);
+        var sampleFilm = createSampleFilm(screeningFacade);
         var sampleRoom = createSampleScreeningRoom(screeningFacade);
         return screeningFacade.createScreening(
                 sampleCreateScreeningDto(
@@ -84,11 +81,8 @@ public class ScreeningTestUtils {
         );
     }
 
-    public static List<ScreeningDto> createSampleScreenings(
-            ScreeningFacade screeningFacade,
-            FilmFacade filmFacade
-    ) {
-        var sampleFilms = FilmTestUtils.createSampleFilms(filmFacade);
+    public static List<ScreeningDto> createSampleScreenings(ScreeningFacade screeningFacade) {
+        var sampleFilms = FilmTestUtils.createSampleFilms(screeningFacade);
         var sampleRooms = createSampleScreeningRooms(screeningFacade);
         var screening1 = screeningFacade.createScreening(
                 new CreateScreeningDto(

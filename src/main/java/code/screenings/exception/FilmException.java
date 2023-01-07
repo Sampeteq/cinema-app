@@ -1,4 +1,4 @@
-package code.films.exception;
+package code.screenings.exception;
 
 public class FilmException extends RuntimeException {
 

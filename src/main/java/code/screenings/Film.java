@@ -1,7 +1,7 @@
-package code.films;
+package code.screenings;
 
-import code.films.dto.FilmCategoryDto;
-import code.films.dto.FilmDto;
+import code.screenings.dto.FilmCategoryDto;
+import code.screenings.dto.FilmDto;
 import lombok.*;
 
 import javax.persistence.*;

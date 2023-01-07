@@ -1,6 +1,6 @@
-package code.films;
+package code.screenings;
 
-import code.films.exception.FilmYearException;
+import code.screenings.exception.FilmYearException;
 import lombok.AllArgsConstructor;
 
 import java.util.UUID;

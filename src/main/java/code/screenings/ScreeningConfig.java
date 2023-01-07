@@ -19,6 +19,8 @@ class ScreeningConfig {
             SeatBookingRepository seatBookingRepository,
             FilmRepository filmRepository
     ) {
+        var filmYearSpecification = new PreviousCurrentOrNextOneFilmYearSpecification();
+        var filmFactory = new FilmFactory(filmYearSpecification);
         var screeningRoomFactory = new ScreeningRoomFactory(screeningRoomRepository);
         var screeningDateSpecification = new CurrentOrNextOneYearScreeningDateSpecification(clock);
         var screeningFactory = new ScreeningFactory(
@@ -28,19 +30,17 @@ class ScreeningConfig {
                 screeningRoomRepository
         );
         var screeningSearcher = new ScreeningSearcher(screeningRepository);
-        var screeningTicketBooker = new SeatBooker(screeningRepository, seatBookingRepository);
-        var filmYearSpecification = new PreviousCurrentOrNextOneFilmYearSpecification();
-        var filmFactory = new FilmFactory(filmYearSpecification);
+        var seatBooker = new SeatBooker(screeningRepository, seatBookingRepository);
         return new ScreeningFacade(
+                filmFactory,
+                filmRepository,
+                screeningRoomFactory,
                 screeningRoomRepository,
+                screeningFactory,
+                screeningRepository,
                 seatBookingRepository,
                 screeningSearcher,
-                screeningRoomFactory,
-                screeningFactory,
-                screeningTicketBooker,
-                screeningRepository,
-                filmFactory,
-                filmRepository
+                seatBooker
         );
     }
 

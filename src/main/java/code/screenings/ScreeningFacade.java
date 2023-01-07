@@ -12,23 +12,23 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ScreeningFacade {
 
+    private final FilmFactory filmFactory;
+
+    private final FilmRepository filmRepository;
+
+    private final ScreeningRoomFactory screeningRoomFactory;
+
     private final ScreeningRoomRepository screeningRoomRepository;
+
+    private final ScreeningFactory screeningFactory;
+
+    private final ScreeningRepository screeningRepository;
 
     private final SeatBookingRepository seatBookingRepository;
 
     private final ScreeningSearcher screeningSearcher;
 
-    private final ScreeningRoomFactory screeningRoomFactory;
-
-    private final ScreeningFactory screeningFactory;
-
     private final SeatBooker seatBooker;
-
-    private final ScreeningRepository screeningRepository;
-
-    private final FilmFactory filmFactory;
-
-    private final FilmRepository filmRepository;
 
     public FilmDto createFilm(CreateFilmDto dto) {
         var film = filmFactory.createFilm(
@@ -55,6 +55,19 @@ public class ScreeningFacade {
     }
 
     @Transactional
+    public ScreeningRoomDto createRoom(CreateScreeningRoomDto dto) {
+        return screeningRoomFactory.createRoom(dto);
+    }
+
+    public List<ScreeningRoomDto> searchAllRooms() {
+        return screeningRoomRepository
+                .findAll()
+                .stream()
+                .map(ScreeningRoom::toDTO)
+                .toList();
+    }
+
+    @Transactional
     public ScreeningDto createScreening(CreateScreeningDto dto) {
         var screening = screeningFactory.createScreening(
                 dto.date(),
@@ -70,19 +83,6 @@ public class ScreeningFacade {
     @Transactional
     public List<ScreeningDto> searchScreeningsBy(ScreeningSearchParamsDto paramsDto) {
         return screeningSearcher.searchBy(paramsDto);
-    }
-
-    @Transactional
-    public ScreeningRoomDto createRoom(CreateScreeningRoomDto dto) {
-        return screeningRoomFactory.createRoom(dto);
-    }
-
-    public List<ScreeningRoomDto> searchAllRooms() {
-        return screeningRoomRepository
-                .findAll()
-                .stream()
-                .map(ScreeningRoom::toDTO)
-                .toList();
     }
 
     @Transactional

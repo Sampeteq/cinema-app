@@ -27,7 +27,7 @@ class ScreeningFactory {
         validateScreeningDate(dto.date());
         validateScreeningRoomBeingBusy(dto.date(), dto.roomId());
         var film = getFilmOrThrow(dto.filmId());
-        validateTimeAndRoomCollisionBetweenScreenings(dto.date(), dto.roomId(), film);
+        validateTimeAndRoomCollisionBetweenScreenings(dto.date(), film.getDurationInMinutes(), dto.roomId());
         var room = getScreeningRoomOrThrow(dto.roomId());
         var seats = createSeats(room.getSeatsInOneRowQuantity(), room.getRowsQuantity());
         var screening = Screening.of(
@@ -56,8 +56,18 @@ class ScreeningFactory {
         }
     }
 
-    private void validateTimeAndRoomCollisionBetweenScreenings(LocalDateTime date, UUID roomId, Film film) {
-        if (screeningRepository.existsByFinishDateGreaterThanAndDateLessThanAndRoomId(date, date.plusMinutes(film.getDurationInMinutes()), roomId)) {
+    private void validateTimeAndRoomCollisionBetweenScreenings(
+            LocalDateTime screeningDate,
+            int filmDurationInMinutes,
+            UUID roomId
+    ) {
+        var screeningFinishDate = screeningDate.plusMinutes(filmDurationInMinutes);
+        var isTimeAndRoomCollision = screeningRepository.existsByFinishDateGreaterThanAndDateLessThanAndRoomId(
+                screeningDate,
+                screeningFinishDate,
+                roomId
+        );
+        if (isTimeAndRoomCollision) {
             throw new ScreeningRoomException("Time and room collision between screenings");
         }
     }

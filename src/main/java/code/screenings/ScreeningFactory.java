@@ -28,13 +28,11 @@ class ScreeningFactory {
         var film = getFilmOrThrow(filmId);
         var room = getScreeningRoomOrThrow(roomId);
         var seats = createSeats(room.getSeatsInOneRowQuantity(), room.getRowsQuantity());
-        var screening = new Screening(
-                UUID.randomUUID(),
+        var screening = Screening.of(
                 date,
                 minAge,
                 film,
-                room,
-                new ArrayList<>()
+                room
         );
         screening.addSeats(seats);
         return screening;

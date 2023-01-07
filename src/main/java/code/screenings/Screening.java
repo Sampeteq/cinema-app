@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "SCREENINGS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @ToString
 class Screening {
@@ -25,6 +26,8 @@ class Screening {
     private UUID id;
 
     private LocalDateTime date;
+
+    private LocalDateTime finishDate;
 
     private int minAge;
 
@@ -36,6 +39,18 @@ class Screening {
 
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
     private List<Seat> seats;
+
+    static Screening of(LocalDateTime date, int minAge, Film film, ScreeningRoom room) {
+        return new Screening(
+                UUID.randomUUID(),
+                date,
+                date.plusMinutes(film.getDurationInMinutes()),
+                minAge,
+                film,
+                room,
+                new ArrayList<>()
+        );
+    }
 
     void addSeats(List<Seat> seats) {
         if (seats.size() > room.seatsQuantity()) {

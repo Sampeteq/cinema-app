@@ -21,8 +21,7 @@ class FilmFactory {
                     dto.title(),
                     FilmCategory.fromDTO(dto.filmCategory()),
                     dto.year(),
-                    dto.durationInMinutes(),
-                    new ArrayList<>()
+                    dto.durationInMinutes()
             );
             return filmRepository.save(film);
         } else {

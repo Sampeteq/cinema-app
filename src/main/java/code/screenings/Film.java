@@ -29,9 +29,6 @@ class Film {
 
     private int durationInMinutes;
 
-    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
-    private List<Screening> screenings;
-
     FilmDto toDTO() {
         return new FilmDto(
                 this.id,

@@ -1,5 +1,6 @@
 package code.screenings;
 
+import code.screenings.dto.CreateScreeningDto;
 import code.screenings.exception.FilmNotFoundException;
 import code.screenings.exception.ScreeningDateException;
 import code.screenings.exception.ScreeningRoomException;
@@ -22,21 +23,21 @@ class ScreeningFactory {
 
     private final ScreeningRoomRepository screeningRoomRepository;
 
-    Screening createScreening(LocalDateTime date, int minAge, UUID filmId, UUID roomId) {
-        validateScreeningDate(date);
-        validateScreeningRoomBeingBusy(date, roomId);
-        var film = getFilmOrThrow(filmId);
-        validateTimeAndRoomCollisionBetweenScreenings(date, roomId, film);
-        var room = getScreeningRoomOrThrow(roomId);
+    Screening createScreening(CreateScreeningDto dto) {
+        validateScreeningDate(dto.date());
+        validateScreeningRoomBeingBusy(dto.date(), dto.roomId());
+        var film = getFilmOrThrow(dto.filmId());
+        validateTimeAndRoomCollisionBetweenScreenings(dto.date(), dto.roomId(), film);
+        var room = getScreeningRoomOrThrow(dto.roomId());
         var seats = createSeats(room.getSeatsInOneRowQuantity(), room.getRowsQuantity());
         var screening = Screening.of(
-                date,
-                minAge,
+                dto.date(),
+                dto.minAge(),
                 film,
                 room
         );
         screening.addSeats(seats);
-        return screening;
+        return screeningRepository.save(screening);
     }
 
     private void validateScreeningDate(LocalDateTime date) {

@@ -14,44 +14,26 @@ public class ScreeningFacade {
 
     private final FilmFactory filmFactory;
 
-    private final FilmRepository filmRepository;
+    private final FilmSearcher filmSearcher;
 
     private final ScreeningRoomFactory screeningRoomFactory;
 
-    private final ScreeningRoomRepository screeningRoomRepository;
+    private final ScreeningRoomSearcher screeningRoomSearcher;
 
     private final ScreeningFactory screeningFactory;
-
-    private final ScreeningRepository screeningRepository;
-
-    private final SeatBookingRepository seatBookingRepository;
 
     private final ScreeningSearcher screeningSearcher;
 
     private final SeatBooker seatBooker;
 
+    private final SeatBookingSearcher seatBookingSearcher;
+
     public FilmDto createFilm(CreateFilmDto dto) {
-        var film = filmFactory.createFilm(
-                dto.title(),
-                FilmCategory.fromDTO(dto.filmCategory()),
-                dto.year(),
-                dto.durationInMinutes()
-        );
-        return filmRepository
-                .save(film)
-                .toDTO();
+        return filmFactory.createFilm(dto).toDTO();
     }
 
     public List<FilmDto> searchFilms(FilmSearchParamsDto paramsDto) {
-        var params = FilmSearchParams
-                .builder()
-                .category(paramsDto.category == null ? null : FilmCategory.fromDTO(paramsDto.category))
-                .build();
-        return filmRepository
-                .findBy(params)
-                .stream()
-                .map(Film::toDTO)
-                .toList();
+        return filmSearcher.searchFilms(paramsDto);
     }
 
     @Transactional
@@ -60,23 +42,13 @@ public class ScreeningFacade {
     }
 
     public List<ScreeningRoomDto> searchAllRooms() {
-        return screeningRoomRepository
-                .findAll()
-                .stream()
-                .map(ScreeningRoom::toDTO)
-                .toList();
+        return screeningRoomSearcher.searchAllRooms();
     }
 
     @Transactional
     public ScreeningDto createScreening(CreateScreeningDto dto) {
-        var screening = screeningFactory.createScreening(
-                dto.date(),
-                dto.minAge(),
-                dto.filmId(),
-                dto.roomId()
-        );
-        return screeningRepository
-                .save(screening)
+        return screeningFactory
+                .createScreening(dto)
                 .toDTO();
     }
 
@@ -96,12 +68,6 @@ public class ScreeningFacade {
     }
 
     public SeatBookingDto searchSeatBooking(UUID bookingId, String username) {
-        return getBookingOrThrow(bookingId, username).toDTO();
-    }
-
-    private SeatBooking getBookingOrThrow(UUID ticketId, String username) {
-        return seatBookingRepository
-                .findByIdAndUsername(ticketId, username)
-                .orElseThrow(() -> new SeatBookingNotFoundException(ticketId));
+        return seatBookingSearcher.searchSeatBooking(bookingId, username);
     }
 }

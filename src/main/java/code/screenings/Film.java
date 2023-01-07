@@ -5,6 +5,7 @@ import code.screenings.dto.FilmDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -26,6 +27,9 @@ class Film {
     private int year;
 
     private int durationInMinutes;
+
+    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
+    private List<Screening> screenings;
 
     FilmDto toDTO() {
         return new FilmDto(

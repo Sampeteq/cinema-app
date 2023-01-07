@@ -24,15 +24,15 @@ class ScreeningFactory {
 
     Screening createScreening(LocalDateTime date, int minAge, UUID filmId, UUID roomId) {
         validateScreeningDate(date);
-        validateFilmExisting(filmId);
         validateScreeningRoomBeingBusy(date, roomId);
+        var film = getFilmOrThrow(filmId);
         var room = getScreeningRoomOrThrow(roomId);
         var seats = createSeats(room.getSeatsInOneRowQuantity(), room.getRowsQuantity());
         var screening = new Screening(
                 UUID.randomUUID(),
                 date,
                 minAge,
-                filmId,
+                film,
                 room,
                 new ArrayList<>()
         );
@@ -50,10 +50,10 @@ class ScreeningFactory {
         }
     }
 
-    private void validateFilmExisting(UUID filmId) {
-        if (!filmRepository.existsById(filmId)) {
-            throw new FilmNotFoundException(filmId);
-        }
+    private Film getFilmOrThrow(UUID filmId) {
+        return filmRepository
+                .findById(filmId)
+                .orElseThrow(() -> new FilmNotFoundException(filmId));
     }
 
     private void validateScreeningRoomBeingBusy(LocalDateTime date, UUID roomUuid) {

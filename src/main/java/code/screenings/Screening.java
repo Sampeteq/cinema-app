@@ -28,7 +28,8 @@ class Screening {
 
     private int minAge;
 
-    private UUID filmId;
+    @ManyToOne
+    private Film film;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private ScreeningRoom room;
@@ -64,7 +65,7 @@ class Screening {
                 this.date,
                 (int) this.seats.stream().filter(Seat::isFree).count(),
                 this.minAge,
-                this.filmId,
+                this.film.toDTO().id(),
                 this.room.toDTO().id(),
                 this.seats.stream().map(Seat::toDTO).toList()
         );

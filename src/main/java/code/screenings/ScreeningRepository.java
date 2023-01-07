@@ -13,7 +13,7 @@ interface ScreeningRepository extends JpaRepository<Screening, UUID> {
             "left join fetch s.room " +
             "where " +
             "(:#{#params?.date} is null or s.date = :#{#params?.date}) and " +
-            "(:#{#params.filmId} is null or s.filmId = :#{#params.filmId})")
+            "(:#{#params.filmId} is null or s.film.id = :#{#params.filmId})")
     List<Screening> findBy(ScreeningSearchParams params);
 
     boolean existsByDateAndRoomId(LocalDateTime screeningDate, UUID roomId);

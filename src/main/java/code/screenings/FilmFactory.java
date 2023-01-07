@@ -3,6 +3,7 @@ package code.screenings;
 import code.screenings.exception.FilmYearException;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -17,7 +18,8 @@ class FilmFactory {
                     title,
                     category,
                     year,
-                    durationInMinutes
+                    durationInMinutes,
+                    new ArrayList<>()
             );
         } else {
             if (filmYearSpecification instanceof PreviousCurrentOrNextOneFilmYearSpecification) {

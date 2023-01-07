@@ -86,31 +86,6 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void should_throw_exception_when_screening_room_is_busy() throws Exception {
-        //given
-        var sampleScreening = createSampleScreening(screeningFacade);
-        var sampleAddScreeningDTO = sampleCreateScreeningDto(
-                sampleScreening.filmId(),
-                sampleScreening.roomId()
-        ).withDate(sampleScreening.date());
-
-        //when
-        var result = mockMvc.perform(
-                post("/screenings")
-                        .content(toJson(sampleAddScreeningDTO))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
-
-        //then
-        result
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(
-                        "Screening room busy: " + sampleAddScreeningDTO.roomId()
-                ));
-    }
-
-    @Test
-    @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_there_is_time_and_room_collision_between_screenings() throws Exception {
         //given
         var sampleScreening = createSampleScreening(screeningFacade);

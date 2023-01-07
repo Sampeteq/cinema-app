@@ -16,8 +16,6 @@ interface ScreeningRepository extends JpaRepository<Screening, UUID> {
             "(:#{#params.filmId} is null or s.film.id = :#{#params.filmId})")
     List<Screening> findBy(ScreeningSearchParams params);
 
-    boolean existsByDateAndRoomId(LocalDateTime screeningDate, UUID roomId);
-
     boolean existsByFinishDateGreaterThanAndDateLessThanAndRoomId(
             LocalDateTime date,
             LocalDateTime finishDate,

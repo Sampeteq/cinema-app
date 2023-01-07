@@ -25,7 +25,6 @@ class ScreeningFactory {
 
     Screening createScreening(CreateScreeningDto dto) {
         validateScreeningDate(dto.date());
-        validateScreeningRoomBeingBusy(dto.date(), dto.roomId());
         var film = getFilmOrThrow(dto.filmId());
         validateTimeAndRoomCollisionBetweenScreenings(dto.date(), film.getDurationInMinutes(), dto.roomId());
         var room = getScreeningRoomOrThrow(dto.roomId());
@@ -47,12 +46,6 @@ class ScreeningFactory {
             } else {
                 throw new IllegalArgumentException("Unsupported screening date specification");
             }
-        }
-    }
-
-    private void validateScreeningRoomBeingBusy(LocalDateTime date, UUID roomUuid) {
-        if (screeningRepository.existsByDateAndRoomId(date, roomUuid)) {
-            throw new ScreeningRoomException("Screening room busy: " + roomUuid);
         }
     }
 

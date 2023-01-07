@@ -5,17 +5,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 
-import static code.utils.WebTestUtils.toJson;
 import static code.utils.FilmTestUtils.createSampleFilm;
 import static code.utils.ScreeningTestUtils.*;
+import static code.utils.WebTestUtils.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -27,11 +25,6 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
     @Autowired
     private ScreeningFacade screeningFacade;
-
-    @Autowired
-    @Qualifier("testClock")
-    private Clock clock;
-
 
     @Test
     @WithMockUser(authorities = "ADMIN")

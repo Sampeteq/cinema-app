@@ -25,6 +25,19 @@ public class ScreeningTestUtils {
         );
     }
 
+    public static CreateScreeningDto sampleCreateScreeningDto(
+            UUID filmId,
+            UUID roomId,
+            LocalDateTime screeningDate
+    ) {
+        return new CreateScreeningDto(
+                screeningDate,
+                13,
+                filmId,
+                roomId
+        );
+    }
+
     public static CreateScreeningRoomDto sampleCreateRoomDto() {
         return new CreateScreeningRoomDto(
                 1,

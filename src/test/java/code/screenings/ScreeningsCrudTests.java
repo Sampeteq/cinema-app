@@ -1,6 +1,7 @@
 package code.screenings;
 
 import code.SpringIntegrationTests;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -114,6 +115,30 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
                 .andExpect(content().string(
                         "Screening room busy: " + sampleAddScreeningDTO.roomId()
                 ));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void should_throw_exception_when_there_is_time_and_room_collision_between_screenings() throws Exception {
+        //given
+        var sampleScreening = createSampleScreening(screeningFacade);
+        var sampleDto = sampleCreateScreeningDto(
+                sampleScreening.filmId(),
+                sampleScreening.roomId(),
+                sampleScreening.date().plusMinutes(10)
+        );
+
+        //when
+        var result = mockMvc.perform(
+                post("/screenings")
+                        .content(toJson(sampleDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Time and room collision between screenings"));
     }
 
     @Test

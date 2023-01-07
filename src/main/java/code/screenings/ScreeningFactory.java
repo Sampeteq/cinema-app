@@ -26,6 +26,7 @@ class ScreeningFactory {
         validateScreeningDate(date);
         validateScreeningRoomBeingBusy(date, roomId);
         var film = getFilmOrThrow(filmId);
+        validateTimeAndRoomCollisionBetweenScreenings(date, roomId, film);
         var room = getScreeningRoomOrThrow(roomId);
         var seats = createSeats(room.getSeatsInOneRowQuantity(), room.getRowsQuantity());
         var screening = Screening.of(
@@ -48,16 +49,22 @@ class ScreeningFactory {
         }
     }
 
-    private Film getFilmOrThrow(UUID filmId) {
-        return filmRepository
-                .findById(filmId)
-                .orElseThrow(() -> new FilmNotFoundException(filmId));
-    }
-
     private void validateScreeningRoomBeingBusy(LocalDateTime date, UUID roomUuid) {
         if (screeningRepository.existsByDateAndRoomId(date, roomUuid)) {
             throw new ScreeningRoomException("Screening room busy: " + roomUuid);
         }
+    }
+
+    private void validateTimeAndRoomCollisionBetweenScreenings(LocalDateTime date, UUID roomId, Film film) {
+        if (screeningRepository.existsByFinishDateGreaterThanAndDateLessThanAndRoomId(date, date.plusMinutes(film.getDurationInMinutes()), roomId)) {
+            throw new ScreeningRoomException("Time and room collision between screenings");
+        }
+    }
+
+    private Film getFilmOrThrow(UUID filmId) {
+        return filmRepository
+                .findById(filmId)
+                .orElseThrow(() -> new FilmNotFoundException(filmId));
     }
 
     private ScreeningRoom getScreeningRoomOrThrow(UUID roomId) {

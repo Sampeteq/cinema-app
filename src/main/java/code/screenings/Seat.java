@@ -63,8 +63,7 @@ class Seat {
                 this.id,
                 this.rowNumber,
                 this.number,
-                this.status.name(),
-                this.screening.getId()
+                this.status.name()
         );
     }
 }

@@ -78,10 +78,10 @@ class Screening {
         return new ScreeningDto(
                 this.id,
                 this.date,
-                (int) this.seats.stream().filter(Seat::isFree).count(),
                 this.minAge,
                 this.film.toDTO().id(),
                 this.room.toDTO().id(),
+                (int) this.seats.stream().filter(Seat::isFree).count(),
                 this.seats.stream().map(Seat::toDTO).toList()
         );
     }

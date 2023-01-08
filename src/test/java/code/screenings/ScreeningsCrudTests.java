@@ -49,10 +49,10 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         mockMvc.perform(get("/screenings"))
                 .andExpect(jsonPath("$[0].id").exists())
                 .andExpect(jsonPath("$[0].date").value(sampleAddScreeningDTO.date().toString()))
-                .andExpect(jsonPath("$[0].freeSeats").value(sampleRoom.seatsQuantity()))
                 .andExpect(jsonPath("$[0].minAge").value(sampleAddScreeningDTO.minAge()))
                 .andExpect(jsonPath("$[0].filmId").value(sampleAddScreeningDTO.filmId().toString()))
                 .andExpect(jsonPath("$[0].roomId").value(sampleAddScreeningDTO.roomId().toString()))
+                .andExpect(jsonPath("$[0].freeSeats").value(sampleRoom.seatsQuantity()))
                 .andExpect(jsonPath("$[0].seats.size()").value(sampleRoom.seatsQuantity()));
     }
 

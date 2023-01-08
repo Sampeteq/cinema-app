@@ -10,10 +10,10 @@ public record ScreeningDto(
         UUID id,
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         LocalDateTime date,
-        int freeSeats,
         int minAge,
         UUID filmId,
         UUID roomId,
+        int freeSeats,
         List<SeatDto> seats
 ) {
 }

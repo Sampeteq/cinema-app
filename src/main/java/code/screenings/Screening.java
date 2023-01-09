@@ -86,7 +86,7 @@ class Screening {
         );
     }
 
-    public List<SeatDto> seatsDto() {
+    List<SeatDto> seatsDto() {
         return this
                 .seats
                 .stream()

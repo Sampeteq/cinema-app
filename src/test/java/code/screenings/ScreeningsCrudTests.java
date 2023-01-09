@@ -125,6 +125,23 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     }
 
     @Test
+    void should_search_seats_for_screening() throws Exception {
+        //given
+        var sampleScreening = createSampleScreening(screeningFacade);
+        var sampleSeats = searchSampleScreeningSeats(sampleScreening.id(), screeningFacade);
+
+        //when
+        var result = mockMvc.perform(
+                get("/screenings/" + sampleScreening.id() + "/seats")
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(sampleSeats)));
+    }
+
+    @Test
     void should_search_screenings_by_search_params() throws Exception {
         //given
         var sampleScreenings = createSampleScreenings(screeningFacade);

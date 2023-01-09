@@ -1,10 +1,7 @@
 package code.utils;
 
 import code.screenings.ScreeningFacade;
-import code.screenings.dto.CreateScreeningDto;
-import code.screenings.dto.CreateScreeningRoomDto;
-import code.screenings.dto.ScreeningDto;
-import code.screenings.dto.ScreeningRoomDto;
+import code.screenings.dto.*;
 
 import java.time.LocalDateTime;
 import java.time.Year;
@@ -79,6 +76,13 @@ public class ScreeningTestUtils {
                         sampleRoom.id()
                 )
         );
+    }
+
+    public static List<SeatDto> searchSampleScreeningSeats(
+            UUID screeningId,
+            ScreeningFacade screeningFacade
+    ) {
+        return screeningFacade.searchScreeningSeats(screeningId);
     }
 
     public static ScreeningDto createSampleScreening(

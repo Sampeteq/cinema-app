@@ -1,6 +1,7 @@
 package code.screenings;
 
 import code.screenings.dto.ScreeningDto;
+import code.screenings.dto.SeatDto;
 import code.screenings.exception.ScreeningRoomException;
 import lombok.*;
 
@@ -81,8 +82,15 @@ class Screening {
                 this.minAge,
                 this.film.toDTO().id(),
                 this.room.toDTO().id(),
-                (int) this.seats.stream().filter(Seat::isFree).count(),
-                this.seats.stream().map(Seat::toDTO).toList()
+                (int) this.seats.stream().filter(Seat::isFree).count()
         );
+    }
+
+    public List<SeatDto> seatsDto() {
+        return this
+                .seats
+                .stream()
+                .map(Seat::toDTO)
+                .toList();
     }
 }

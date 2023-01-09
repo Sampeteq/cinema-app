@@ -1,7 +1,6 @@
 package code.screenings;
 
 import code.screenings.dto.*;
-import code.screenings.exception.SeatBookingNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +54,11 @@ public class ScreeningFacade {
     @Transactional
     public List<ScreeningDto> searchScreeningsBy(ScreeningSearchParamsDto paramsDto) {
         return screeningSearcher.searchBy(paramsDto);
+    }
+
+    @Transactional
+    public List<SeatDto> searchScreeningSeats(UUID screeningId) {
+        return screeningSearcher.searchSeatsByScreeningId(screeningId);
     }
 
     @Transactional

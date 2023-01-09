@@ -2,9 +2,12 @@ package code.screenings;
 
 import code.screenings.dto.ScreeningDto;
 import code.screenings.dto.ScreeningSearchParamsDto;
+import code.screenings.dto.SeatDto;
+import code.screenings.exception.ScreeningNotFoundException;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 class ScreeningSearcher {
@@ -23,5 +26,12 @@ class ScreeningSearcher {
                 .stream()
                 .map(Screening::toDTO)
                 .toList();
+    }
+
+    List<SeatDto> searchSeatsByScreeningId(UUID screeningId) {
+        return screeningRepository
+                .findById(screeningId)
+                .map(Screening::seatsDto)
+                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
     }
 }

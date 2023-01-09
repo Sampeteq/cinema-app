@@ -3,7 +3,6 @@ package code.screenings.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 public record ScreeningDto(
@@ -13,7 +12,6 @@ public record ScreeningDto(
         int minAge,
         UUID filmId,
         UUID roomId,
-        int freeSeats,
-        List<SeatDto> seats
+        int freeSeats
 ) {
 }

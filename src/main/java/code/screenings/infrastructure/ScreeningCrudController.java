@@ -50,6 +50,11 @@ class ScreeningCrudController {
         return screeningFacade.searchScreeningsBy(paramsDto);
     }
 
+    @GetMapping("/screenings/{screeningId}/seats")
+    List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
+        return screeningFacade.searchScreeningSeats(screeningId);
+    }
+
     @PostMapping("/screenings-rooms")
     ScreeningRoomDto createRoom(
             @RequestBody

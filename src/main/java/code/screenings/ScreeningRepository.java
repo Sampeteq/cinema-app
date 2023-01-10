@@ -9,7 +9,7 @@ import java.util.UUID;
 
 interface ScreeningRepository extends JpaRepository<Screening, UUID> {
 
-    @Query("SELECT s FROM Screening s " +
+    @Query("SELECT DISTINCT s FROM Screening s " +
             "left join fetch s.room " +
             "left join fetch s.film " +
             "left join fetch s.seats " +

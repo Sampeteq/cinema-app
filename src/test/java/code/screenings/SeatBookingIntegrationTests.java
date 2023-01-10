@@ -229,23 +229,8 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     void should_canceling_booking_be_impossible_when_less_than_24h_to_screening() throws Exception {
         //given
         var username = signUpUser(userFacade);
-        var currentDate = getCurrentDate(clock);
-        var hoursUntilBooking = 23;
-        var screeningDate = currentDate.minusHours(hoursUntilBooking);
-        var screening = createScreening(screeningFacade, screeningDate);
-        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
-        var timeDuringBooking = Clock.fixed(
-                screeningDate.minusHours(hoursUntilBooking + 1).toInstant(ZoneOffset.UTC),
-                ZoneOffset.UTC
-        );
-        var seatBooking = screeningFacade.bookSeat(
-                createSeatBookingRequest(
-                        screening.id(),
-                        seat.id()
-                ),
-                username,
-                timeDuringBooking
-        );
+        var hoursToScreening = 23;
+        var seatBooking = bookSeat(username, hoursToScreening);
 
         //when
         var result = mockMvc.perform(
@@ -256,7 +241,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Too late for seat booking cancelling: " + seat.id()
+                        "Too late for seat booking cancelling: " + seatBooking.seat().id()
                 ));
     }
 
@@ -279,6 +264,25 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
                 ),
                 username,
                 clock
+        );
+    }
+
+    private SeatBookingView bookSeat(String username, int hoursToScreening) {
+        var currentDate = getCurrentDate(clock);
+        var screeningDate = currentDate.minusHours(hoursToScreening);
+        var screening = createScreening(screeningFacade, screeningDate);
+        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        var timeDuringBooking = Clock.fixed(
+                screeningDate.minusHours(hoursToScreening + 1).toInstant(ZoneOffset.UTC),
+                ZoneOffset.UTC
+        );
+        return screeningFacade.bookSeat(
+                createSeatBookingRequest(
+                        screening.id(),
+                        seat.id()
+                ),
+                username,
+                timeDuringBooking
         );
     }
 

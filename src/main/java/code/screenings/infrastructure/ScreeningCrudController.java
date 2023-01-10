@@ -31,9 +31,9 @@ class ScreeningCrudController {
     ScreeningView add(
             @RequestBody
             @Valid
-            ScreeningCreatingRequest dto
+            ScreeningCreatingRequest request
     ) {
-        return screeningFacade.createScreening(dto);
+        return screeningFacade.createScreening(request);
     }
 
     @GetMapping("/screenings")
@@ -64,9 +64,9 @@ class ScreeningCrudController {
     ScreeningRoomView createRoom(
             @RequestBody
             @Valid
-            ScreeningRoomCreatingRequest dto
+            ScreeningRoomCreatingRequest request
     ) {
-        return screeningFacade.createRoom(dto);
+        return screeningFacade.createRoom(request);
     }
 
     @GetMapping("/screenings-rooms")

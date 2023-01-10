@@ -18,14 +18,14 @@ class UserController {
     private final UserFacade userFacade;
 
     @PostMapping("/signup")
-    ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest dto) {
-        userFacade.signUp(dto);
+    ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest request) {
+        userFacade.signUp(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
-    ResponseEntity<?> signIn(@RequestBody SignInRequest dto) {
-        userFacade.signIn(dto);
+    ResponseEntity<?> signIn(@RequestBody SignInRequest request) {
+        userFacade.signIn(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -26,10 +26,10 @@ class SeatBookingController {
     SeatBookingView bookSeat(
             @RequestBody
             @Valid
-            SeatBookingRequest dto,
+            SeatBookingRequest request,
             Principal principal
     ) {
-        return screeningFacade.bookSeat(dto, principal.getName(), clock);
+        return screeningFacade.bookSeat(request, principal.getName(), clock);
     }
 
     @PatchMapping("/seats-bookings/{bookingId}/cancel")

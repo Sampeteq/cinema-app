@@ -25,9 +25,9 @@ class FilmCrudController {
     FilmView createFilm(
             @RequestBody
             @Valid
-            FilmCreatingRequest dto
+            FilmCreatingRequest request
     ) {
-        return screeningFacade.createFilm(dto);
+        return screeningFacade.createFilm(request);
     }
 
     @GetMapping("/films")

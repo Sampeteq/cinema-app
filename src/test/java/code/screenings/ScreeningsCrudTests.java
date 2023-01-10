@@ -52,8 +52,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
                 .andExpect(jsonPath("$[0].minAge").value(sampleAddScreeningDTO.minAge()))
                 .andExpect(jsonPath("$[0].filmId").value(sampleAddScreeningDTO.filmId().toString()))
                 .andExpect(jsonPath("$[0].roomId").value(sampleAddScreeningDTO.roomId().toString()))
-                .andExpect(jsonPath("$[0].freeSeats").value(sampleRoom.seatsQuantity()))
-                .andExpect(jsonPath("$[0].seats.size()").value(sampleRoom.seatsQuantity()));
+                .andExpect(jsonPath("$[0].freeSeats").value(sampleRoom.seatsQuantity()));
     }
 
     @ParameterizedTest

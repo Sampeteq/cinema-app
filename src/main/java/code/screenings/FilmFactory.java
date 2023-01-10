@@ -1,10 +1,9 @@
 package code.screenings;
 
-import code.screenings.dto.CreateFilmDto;
+import code.screenings.dto.FilmCreatingRequest;
 import code.screenings.exception.FilmYearException;
 import lombok.AllArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -14,7 +13,7 @@ class FilmFactory {
 
     private final FilmRepository filmRepository;
 
-    Film createFilm(CreateFilmDto dto) {
+    Film createFilm(FilmCreatingRequest dto) {
         if (filmYearSpecification.isSatisfyBy(dto.year())) {
             var film = new Film(
                     UUID.randomUUID(),

@@ -27,42 +27,42 @@ public class ScreeningFacade {
 
     private final SeatBookingSearcher seatBookingSearcher;
 
-    public FilmDto createFilm(CreateFilmDto dto) {
-        return filmFactory.createFilm(dto).toDTO();
+    public FilmView createFilm(FilmCreatingRequest dto) {
+        return filmFactory.createFilm(dto).toView();
     }
 
-    public List<FilmDto> searchFilms(FilmSearchParamsDto paramsDto) {
+    public List<FilmView> searchFilms(FilmSearchParamsView paramsDto) {
         return filmSearcher.searchFilms(paramsDto);
     }
 
     @Transactional
-    public ScreeningRoomDto createRoom(CreateScreeningRoomDto dto) {
+    public ScreeningRoomView createRoom(ScreeningRoomCreatingRequest dto) {
         return screeningRoomFactory.createRoom(dto);
     }
 
-    public List<ScreeningRoomDto> searchAllRooms() {
+    public List<ScreeningRoomView> searchAllRooms() {
         return screeningRoomSearcher.searchAllRooms();
     }
 
     @Transactional
-    public ScreeningDto createScreening(CreateScreeningDto dto) {
+    public ScreeningView createScreening(ScreeningCreatingRequest dto) {
         return screeningFactory
                 .createScreening(dto)
-                .toDTO();
+                .toView();
     }
 
     @Transactional
-    public List<ScreeningDto> searchScreeningsBy(ScreeningSearchParamsDto paramsDto) {
+    public List<ScreeningView> searchScreeningsBy(ScreeningSearchParamsView paramsDto) {
         return screeningSearcher.searchBy(paramsDto);
     }
 
     @Transactional
-    public List<SeatDto> searchScreeningSeats(UUID screeningId) {
+    public List<SeatView> searchScreeningSeats(UUID screeningId) {
         return screeningSearcher.searchSeatsByScreeningId(screeningId);
     }
 
     @Transactional
-    public SeatBookingDto bookSeat(BookSeatDto dto, String username, Clock clock) {
+    public SeatBookingView bookSeat(SeatBookingRequest dto, String username, Clock clock) {
         return seatBooker.book(dto, username, clock);
     }
 
@@ -71,7 +71,7 @@ public class ScreeningFacade {
         seatBooker.cancel(bookingId, clock);
     }
 
-    public SeatBookingDto searchSeatBooking(UUID bookingId, String username) {
+    public SeatBookingView searchSeatBooking(UUID bookingId, String username) {
         return seatBookingSearcher.searchSeatBooking(bookingId, username);
     }
 }

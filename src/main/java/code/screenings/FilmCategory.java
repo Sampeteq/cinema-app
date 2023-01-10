@@ -1,6 +1,6 @@
 package code.screenings;
 
-import code.screenings.dto.FilmCategoryDto;
+import code.screenings.dto.FilmCategoryView;
 
 enum FilmCategory {
     COMEDY,
@@ -10,7 +10,7 @@ enum FilmCategory {
     HORROR,
     FANTASY;
 
-    static FilmCategory fromDTO(FilmCategoryDto dto) {
+    static FilmCategory fromDTO(FilmCategoryView dto) {
         return FilmCategory.valueOf(dto.name());
     }
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class ScreeningSearchParamsDto {
+public class ScreeningSearchParamsView {
 
     private final UUID filmId;
 

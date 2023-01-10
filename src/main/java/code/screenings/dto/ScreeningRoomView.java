@@ -2,7 +2,7 @@ package code.screenings.dto;
 
 import java.util.UUID;
 
-public record ScreeningRoomDto(
+public record ScreeningRoomView(
         UUID id,
         int number,
         int rowsQuantity,

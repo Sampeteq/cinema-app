@@ -1,7 +1,7 @@
 package code.screenings;
 
 import code.utils.SpringIntegrationTests;
-import code.screenings.dto.FilmCategoryDto;
+import code.screenings.dto.FilmCategoryView;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,9 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static code.utils.FilmTestUtils.*;
 import static code.utils.WebTestUtils.toJson;
-import static code.utils.FilmTestUtils.sampleCreateFilmDto;
-import static code.utils.FilmTestUtils.sampleCreateFilmDtos;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,12 +30,12 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_add_film() throws Exception {
         //given
-        var sampleDTO = sampleCreateFilmDto();
+        var filmCreatingRequest = createFilmCreatingRequest();
 
         //when
         var result = mockMvc.perform(
                 post("/films")
-                        .content(toJson(sampleDTO))
+                        .content(toJson(filmCreatingRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -47,27 +46,28 @@ class FilmsCrudTests extends SpringIntegrationTests {
         ).andExpect(
                 jsonPath("$.size()").value(1)
         ).andExpect(
-                jsonPath("$[0].title").value(sampleDTO.title())
+                jsonPath("$[0].title").value(filmCreatingRequest.title())
         ).andExpect(
-                jsonPath("$[0].category").value(sampleDTO.filmCategory().name())
+                jsonPath("$[0].category").value(filmCreatingRequest.filmCategory().name())
         ).andExpect(
-                jsonPath("$[0].year").value(sampleDTO.year())
+                jsonPath("$[0].year").value(filmCreatingRequest.year())
         ).andExpect(
-                        jsonPath("$[0].durationInMinutes").value(sampleDTO.durationInMinutes())
-                );
+                jsonPath("$[0].durationInMinutes").value(filmCreatingRequest.durationInMinutes())
+        );
     }
 
     @ParameterizedTest
-    @MethodSource("code.utils.FilmTestUtils#wrongFilmYears")
+    @MethodSource("code.utils.FilmTestUtils#getWrongFilmYears")
     @WithMockUser(authorities = "ADMIN")
-    void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear) throws Exception {
+    void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
+            throws Exception {
         //given
-        var dto = sampleCreateFilmDto().withYear(wrongYear);
+        var filmCreatingRequest = createFilmCreatingRequest().withYear(wrongYear);
 
         //when
         var result = mockMvc.perform(
                 post("/films")
-                        .content(toJson(dto))
+                        .content(toJson(filmCreatingRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -80,10 +80,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_all_films() throws Exception {
         //given
-        var sampleFilms = sampleCreateFilmDtos()
-                .stream()
-                .map(dto -> screeningFacade.createFilm(dto))
-                .toList();
+        var sampleFilms = createFilms(screeningFacade);
 
         //when
         var result = mockMvc.perform(
@@ -100,10 +97,10 @@ class FilmsCrudTests extends SpringIntegrationTests {
     void should_search_films_by_params() throws Exception {
         //given
         var sampleFilm = screeningFacade.createFilm(
-                sampleCreateFilmDto().withFilmCategory(FilmCategoryDto.COMEDY)
+                createFilmCreatingRequest().withFilmCategory(FilmCategoryView.COMEDY)
         );
         screeningFacade.createFilm(
-                sampleCreateFilmDto().withFilmCategory(FilmCategoryDto.DRAMA)
+                createFilmCreatingRequest().withFilmCategory(FilmCategoryView.DRAMA)
         );
 
         //when

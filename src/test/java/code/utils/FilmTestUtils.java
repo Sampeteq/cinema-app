@@ -1,9 +1,9 @@
 package code.utils;
 
 import code.screenings.ScreeningFacade;
-import code.screenings.dto.CreateFilmDto;
-import code.screenings.dto.FilmCategoryDto;
-import code.screenings.dto.FilmDto;
+import code.screenings.dto.FilmCreatingRequest;
+import code.screenings.dto.FilmCategoryView;
+import code.screenings.dto.FilmView;
 
 import java.time.Year;
 import java.util.List;
@@ -13,45 +13,44 @@ public abstract class FilmTestUtils {
     private FilmTestUtils() {
     }
 
-    public static CreateFilmDto sampleCreateFilmDto() {
-        return new CreateFilmDto(
+    public static FilmCreatingRequest createFilmCreatingRequest() {
+        return new FilmCreatingRequest(
                 "title 1",
-                FilmCategoryDto.COMEDY,
+                FilmCategoryView.COMEDY,
                 Year.now().getValue(),
                 120
         );
     }
 
-    public static List<CreateFilmDto> sampleCreateFilmDtos() {
-        var dto1 = new CreateFilmDto(
+    public static List<FilmCreatingRequest> createFilmCreatingRequests() {
+        var dto1 = new FilmCreatingRequest(
                 "title 1",
-                FilmCategoryDto.COMEDY,
+                FilmCategoryView.COMEDY,
                 Year.now().getValue(),
                 120
         );
-        var dto2 = new CreateFilmDto(
+        var dto2 = new FilmCreatingRequest(
                 "title 2",
-                FilmCategoryDto.DRAMA,
+                FilmCategoryView.DRAMA,
                 Year.now().getValue() - 1,
                 90
         );
         return List.of(dto1, dto2);
     }
 
-    public static FilmDto createSampleFilm(ScreeningFacade screeningFacade) {
-        return screeningFacade.createFilm(
-                sampleCreateFilmDto()
-        );
+    public static FilmView createFilm(ScreeningFacade screeningFacade) {
+        var filmCreatingRequest = createFilmCreatingRequest();
+        return screeningFacade.createFilm(filmCreatingRequest);
     }
 
-    public static List<FilmDto> createSampleFilms(ScreeningFacade screeningFacade) {
-        return sampleCreateFilmDtos()
+    public static List<FilmView> createFilms(ScreeningFacade screeningFacade) {
+        return createFilmCreatingRequests()
                 .stream()
                 .map(screeningFacade::createFilm)
                 .toList();
     }
 
-    public static List<Integer> wrongFilmYears() {
+    public static List<Integer> getWrongFilmYears() {
         var currentYear = Year.now();
         return List.of(
                 currentYear.minusYears(2).getValue(),

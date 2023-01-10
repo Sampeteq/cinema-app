@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
-import static code.utils.FilmTestUtils.createSampleFilm;
+import static code.utils.FilmTestUtils.createFilm;
 import static code.utils.ScreeningTestUtils.*;
 import static code.utils.WebTestUtils.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,17 +30,17 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_create_screening() throws Exception {
         //given
-        var sampleFilm = createSampleFilm(screeningFacade);
-        var sampleRoom = createSampleScreeningRoom(screeningFacade);
-        var sampleAddScreeningDTO = sampleCreateScreeningDto(
-                sampleFilm.id(),
-                sampleRoom.id()
+        var film = createFilm(screeningFacade);
+        var room = createScreeningRoom(screeningFacade);
+        var screeningCreatingRequest = createScreeningCreatingRequest(
+                film.id(),
+                room.id()
         );
 
         //when
         var result = mockMvc.perform(
                 post("/screenings")
-                        .content(toJson(sampleAddScreeningDTO))
+                        .content(toJson(screeningCreatingRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -48,30 +48,30 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         result.andExpect(status().isOk());
         mockMvc.perform(get("/screenings"))
                 .andExpect(jsonPath("$[0].id").exists())
-                .andExpect(jsonPath("$[0].date").value(sampleAddScreeningDTO.date().toString()))
-                .andExpect(jsonPath("$[0].minAge").value(sampleAddScreeningDTO.minAge()))
-                .andExpect(jsonPath("$[0].filmId").value(sampleAddScreeningDTO.filmId().toString()))
-                .andExpect(jsonPath("$[0].roomId").value(sampleAddScreeningDTO.roomId().toString()))
-                .andExpect(jsonPath("$[0].freeSeats").value(sampleRoom.seatsQuantity()));
+                .andExpect(jsonPath("$[0].date").value(screeningCreatingRequest.date().toString()))
+                .andExpect(jsonPath("$[0].minAge").value(screeningCreatingRequest.minAge()))
+                .andExpect(jsonPath("$[0].filmId").value(screeningCreatingRequest.filmId().toString()))
+                .andExpect(jsonPath("$[0].roomId").value(screeningCreatingRequest.roomId().toString()))
+                .andExpect(jsonPath("$[0].freeSeats").value(room.seatsQuantity()));
     }
 
     @ParameterizedTest
-    @MethodSource("code.utils.ScreeningTestUtils#wrongScreeningDates")
+    @MethodSource("code.utils.ScreeningTestUtils#getWrongScreeningDates")
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {
         //given
-        var sampleFilmId = createSampleFilm(screeningFacade).id();
-        var sampleRoomId = createSampleScreeningRoom(screeningFacade).id();
-        var sampleAddScreeningDTO = sampleCreateScreeningDto(
-                sampleFilmId,
-                sampleRoomId
+        var filmId = createFilm(screeningFacade).id();
+        var roomId = createScreeningRoom(screeningFacade).id();
+        var screeningCreatingRequest = createScreeningCreatingRequest(
+                filmId,
+                roomId
         ).withDate(wrongDate);
 
         //when
         var result = mockMvc.perform(
                 post("/screenings")
-                        .content(toJson(sampleAddScreeningDTO))
+                        .content(toJson(screeningCreatingRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -87,17 +87,17 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_there_is_time_and_room_collision_between_screenings() throws Exception {
         //given
-        var sampleScreening = createSampleScreening(screeningFacade);
-        var sampleDto = sampleCreateScreeningDto(
-                sampleScreening.filmId(),
-                sampleScreening.roomId(),
-                sampleScreening.date().plusMinutes(10)
+        var screening = createScreening(screeningFacade);
+        var screeningCreatingRequest = createScreeningCreatingRequest(
+                screening.filmId(),
+                screening.roomId(),
+                screening.date().plusMinutes(10)
         );
 
         //when
         var result = mockMvc.perform(
                 post("/screenings")
-                        .content(toJson(sampleDto))
+                        .content(toJson(screeningCreatingRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -110,7 +110,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_all_screenings() throws Exception {
         //given
-        var sampleScreenings = createSampleScreenings(screeningFacade);
+        var screenings = createScreenings(screeningFacade);
 
         //when
         var result = mockMvc.perform(
@@ -120,33 +120,33 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJson(sampleScreenings)));
+                .andExpect(content().json(toJson(screenings)));
     }
 
     @Test
     void should_search_seats_for_screening() throws Exception {
         //given
-        var sampleScreening = createSampleScreening(screeningFacade);
-        var sampleSeats = searchSampleScreeningSeats(sampleScreening.id(), screeningFacade);
+        var screening = createScreening(screeningFacade);
+        var seats = searchScreeningSeats(screening.id(), screeningFacade);
 
         //when
         var result = mockMvc.perform(
-                get("/screenings/" + sampleScreening.id() + "/seats")
+                get("/screenings/" + screening.id() + "/seats")
         );
 
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJson(sampleSeats)));
+                .andExpect(content().json(toJson(seats)));
     }
 
     @Test
     void should_search_screenings_by_search_params() throws Exception {
         //given
-        var sampleScreenings = createSampleScreenings(screeningFacade);
-        var filmId = sampleScreenings.get(0).filmId();
-        var screeningDate = sampleScreenings.get(0).date();
-        var filteredScreening = sampleScreenings
+        var screenings = createScreenings(screeningFacade);
+        var filmId = screenings.get(0).filmId();
+        var screeningDate = screenings.get(0).date();
+        var filteredScreening = screenings
                 .stream()
                 .filter(screening -> screening.filmId().equals(filmId))
                 .filter(screening -> screening.date().equals(screeningDate))
@@ -169,12 +169,12 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_create_screening_room() throws Exception {
         //given
-        var sampleAddRoomDTO = sampleCreateRoomDto();
+        var roomCreatingRequest = createRoomCreatingRequest();
 
         //when
         var result = mockMvc.perform(
                 post("/screenings-rooms")
-                        .content(toJson(sampleAddRoomDTO))
+                        .content(toJson(roomCreatingRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -184,23 +184,23 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
                         get("/screenings-rooms")
                 )
                 .andExpect(jsonPath("$[0].id").exists())
-                .andExpect(jsonPath("$[0].number").value(sampleAddRoomDTO.number()))
-                .andExpect(jsonPath("$[0].rowsQuantity").value(sampleAddRoomDTO.rowsQuantity()))
-                .andExpect(jsonPath("$[0].seatsInOneRowQuantity").value(sampleAddRoomDTO.seatsQuantityInOneRow()))
-                .andExpect(jsonPath("$[0].seatsQuantity").value(sampleAddRoomDTO.rowsQuantity() * sampleAddRoomDTO.seatsQuantityInOneRow()));
+                .andExpect(jsonPath("$[0].number").value(roomCreatingRequest.number()))
+                .andExpect(jsonPath("$[0].rowsQuantity").value(roomCreatingRequest.rowsQuantity()))
+                .andExpect(jsonPath("$[0].seatsInOneRowQuantity").value(roomCreatingRequest.seatsQuantityInOneRow()))
+                .andExpect(jsonPath("$[0].seatsQuantity").value(roomCreatingRequest.rowsQuantity() * roomCreatingRequest.seatsQuantityInOneRow()));
     }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_room_number_is_not_unique() throws Exception {
         //given
-        var sampleRoom = createSampleScreeningRoom(screeningFacade);
-        var sampleAddRoomDTO = sampleCreateRoomDto().withNumber(sampleRoom.number());
+        var room = createScreeningRoom(screeningFacade);
+        var screeningRoomCreatingRequest = createRoomCreatingRequest().withNumber(room.number());
 
         //when
         var result = mockMvc.perform(
                 post("/screenings-rooms")
-                        .content(toJson(sampleAddRoomDTO))
+                        .content(toJson(screeningRoomCreatingRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -208,7 +208,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Screening room already exists: " + sampleAddRoomDTO.number()
+                        "Screening room already exists: " + screeningRoomCreatingRequest.number()
                 ));
     }
 }

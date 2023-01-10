@@ -1,7 +1,7 @@
 package code.user;
 
-import code.user.dto.SignInDto;
-import code.user.dto.SignUpDto;
+import code.user.dto.SignInRequest;
+import code.user.dto.SignUpRequest;
 import code.user.exception.UserException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +20,7 @@ public class UserFacade {
 
     private final AuthenticationManager authenticationManager;
 
-    public void signUp(SignUpDto dto) {
+    public void signUp(SignUpRequest dto) {
         if (userRepository.existsById(dto.username())) {
             throw new UserException("Not unique username");
         }
@@ -35,7 +35,7 @@ public class UserFacade {
         userRepository.add(user);
     }
 
-    public void signIn(SignInDto dto) {
+    public void signIn(SignInRequest dto) {
         var token = new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
         var checkedToken = authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(checkedToken);

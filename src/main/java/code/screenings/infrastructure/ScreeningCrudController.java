@@ -1,10 +1,15 @@
 package code.screenings.infrastructure;
 
 import code.screenings.ScreeningFacade;
-import code.screenings.dto.*;
 import code.screenings.exception.ScreeningException;
 import code.screenings.exception.ScreeningNotFoundException;
 import code.screenings.exception.ScreeningRoomNotFoundException;
+import code.screenings.dto.ScreeningCreatingRequest;
+import code.screenings.dto.ScreeningRoomCreatingRequest;
+import code.screenings.dto.ScreeningRoomView;
+import code.screenings.dto.ScreeningSearchParamsView;
+import code.screenings.dto.ScreeningView;
+import code.screenings.dto.SeatView;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -23,16 +28,16 @@ class ScreeningCrudController {
     private final ScreeningFacade screeningFacade;
 
     @PostMapping("/screenings")
-    ScreeningDto add(
+    ScreeningView add(
             @RequestBody
             @Valid
-            CreateScreeningDto dto
+            ScreeningCreatingRequest dto
     ) {
         return screeningFacade.createScreening(dto);
     }
 
     @GetMapping("/screenings")
-    List<ScreeningDto> searchBy(
+    List<ScreeningView> searchBy(
             @RequestParam(required = false)
             UUID filmId,
 
@@ -41,7 +46,7 @@ class ScreeningCrudController {
             LocalDateTime date
     ) {
 
-        var paramsDto = ScreeningSearchParamsDto
+        var paramsDto = ScreeningSearchParamsView
                 .builder()
                 .filmId(filmId)
                 .screeningDate(date)
@@ -51,21 +56,21 @@ class ScreeningCrudController {
     }
 
     @GetMapping("/screenings/{screeningId}/seats")
-    List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
+    List<SeatView> searchSeats(@PathVariable UUID screeningId) {
         return screeningFacade.searchScreeningSeats(screeningId);
     }
 
     @PostMapping("/screenings-rooms")
-    ScreeningRoomDto createRoom(
+    ScreeningRoomView createRoom(
             @RequestBody
             @Valid
-            CreateScreeningRoomDto dto
+            ScreeningRoomCreatingRequest dto
     ) {
         return screeningFacade.createRoom(dto);
     }
 
     @GetMapping("/screenings-rooms")
-    List<ScreeningRoomDto> searchAllRooms() {
+    List<ScreeningRoomView> searchAllRooms() {
         return screeningFacade.searchAllRooms();
     }
 }

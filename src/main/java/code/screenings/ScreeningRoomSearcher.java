@@ -1,6 +1,6 @@
 package code.screenings;
 
-import code.screenings.dto.ScreeningRoomDto;
+import code.screenings.dto.ScreeningRoomView;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -10,11 +10,11 @@ class ScreeningRoomSearcher {
 
     private final ScreeningRoomRepository screeningRoomRepository;
 
-    public List<ScreeningRoomDto> searchAllRooms() {
+    public List<ScreeningRoomView> searchAllRooms() {
         return screeningRoomRepository
                 .findAll()
                 .stream()
-                .map(ScreeningRoom::toDTO)
+                .map(ScreeningRoom::toView)
                 .toList();
     }
 }

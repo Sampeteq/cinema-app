@@ -1,11 +1,10 @@
 package code.screenings;
 
-import code.screenings.dto.FilmCategoryDto;
-import code.screenings.dto.FilmDto;
+import code.screenings.dto.FilmCategoryView;
+import code.screenings.dto.FilmView;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,11 +28,11 @@ class Film {
 
     private int durationInMinutes;
 
-    FilmDto toDTO() {
-        return new FilmDto(
+    FilmView toView() {
+        return new FilmView(
                 this.id,
                 this.title,
-                FilmCategoryDto.valueOf(this.category.name()),
+                FilmCategoryView.valueOf(this.category.name()),
                 year,
                 durationInMinutes
         );

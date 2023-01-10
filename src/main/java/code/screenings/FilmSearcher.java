@@ -1,7 +1,7 @@
 package code.screenings;
 
-import code.screenings.dto.FilmDto;
-import code.screenings.dto.FilmSearchParamsDto;
+import code.screenings.dto.FilmView;
+import code.screenings.dto.FilmSearchParamsView;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -11,7 +11,7 @@ class FilmSearcher {
 
     private final FilmRepository filmRepository;
 
-    public List<FilmDto> searchFilms(FilmSearchParamsDto paramsDto) {
+    public List<FilmView> searchFilms(FilmSearchParamsView paramsDto) {
         var params = FilmSearchParams
                 .builder()
                 .category(paramsDto.category == null ? null : FilmCategory.fromDTO(paramsDto.category))
@@ -19,7 +19,7 @@ class FilmSearcher {
         return filmRepository
                 .findBy(params)
                 .stream()
-                .map(Film::toDTO)
+                .map(Film::toView)
                 .toList();
     }
 }

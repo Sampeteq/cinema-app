@@ -1,9 +1,9 @@
 package code.screenings;
 
-import code.screenings.dto.SeatDto;
+import code.screenings.dto.SeatView;
 import code.utils.SpringIntegrationTests;
-import code.screenings.dto.BookSeatDto;
-import code.screenings.dto.SeatBookingDto;
+import code.screenings.dto.SeatBookingRequest;
+import code.screenings.dto.SeatBookingView;
 import code.user.UserFacade;
 import code.utils.ScreeningTestUtils;
 import org.junit.jupiter.api.Test;
@@ -19,11 +19,11 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.UUID;
 
-import static code.utils.ScreeningTestUtils.searchSampleScreeningSeats;
+import static code.utils.ScreeningTestUtils.searchScreeningSeats;
 import static code.utils.WebTestUtils.fromResultActions;
 import static code.utils.WebTestUtils.toJson;
-import static code.utils.ScreeningTestUtils.createSampleScreening;
-import static code.utils.UserTestUtils.addSampleUser;
+import static code.utils.ScreeningTestUtils.createScreening;
+import static code.utils.UserTestUtils.signUpUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -47,52 +47,52 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_booked_seat() throws Exception {
         //given
-        addSampleUser(userFacade);
-        var sampleScreening = createSampleScreening(screeningFacade);
-        var sampleSeat = searchSampleScreeningSeats(sampleScreening.id(), screeningFacade).get(0);
-        var sampleBookSeatDTO = sampleBookSeatDTO(
-                sampleScreening.id(),
-                sampleSeat.id()
+        signUpUser(userFacade);
+        var screening = createScreening(screeningFacade);
+        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        var seatBookingRequest = createSeatBookingRequest(
+                screening.id(),
+                seat.id()
         );
 
         //when
         var result = mockMvc.perform(
                 post("/seats-bookings")
-                        .content(toJson(sampleBookSeatDTO))
+                        .content(toJson(seatBookingRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
         //then
         result.andExpect(status().isOk());
-        var dto = fromResultActions(result, SeatBookingDto.class);
+        var seatBookingView = fromResultActions(result, SeatBookingView.class);
         mockMvc.perform(
-                        get("/seats-bookings/" + dto.id())
+                        get("/seats-bookings/" + seatBookingView.id())
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.firstName").value(sampleBookSeatDTO.firstName()))
-                .andExpect(jsonPath("$.lastName").value(sampleBookSeatDTO.lastName()))
-                .andExpect(jsonPath("$.seat.id").value(sampleBookSeatDTO.seatId().toString()));
+                .andExpect(jsonPath("$.firstName").value(seatBookingRequest.firstName()))
+                .andExpect(jsonPath("$.lastName").value(seatBookingRequest.lastName()))
+                .andExpect(jsonPath("$.seat.id").value(seatBookingRequest.seatId().toString()));
     }
 
     @Test
     @WithMockUser(username = "user1")
     void should_throw_exception_during_booking_when_less_than_24h_to_screening() throws Exception {
         //given
-        addSampleUser(userFacade);
+        signUpUser(userFacade);
         var currentDate = getCurrentDate(clock);
         var screeningDate = currentDate.minusHours(23);
-        var sampleScreening = createSampleScreening(screeningFacade, screeningDate);
-        var sampleSeat = searchSampleScreeningSeats(sampleScreening.id(), screeningFacade).get(0);
-        var sampleBookSeatDTO = sampleBookSeatDTO(
-                sampleScreening.id(),
-                sampleSeat.id()
+        var screening = createScreening(screeningFacade, screeningDate);
+        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        var seatBookingRequest = createSeatBookingRequest(
+                screening.id(),
+                seat.id()
         );
 
         //when
         var result = mockMvc.perform(
                 post("/seats-bookings")
-                        .content(toJson(sampleBookSeatDTO))
+                        .content(toJson(seatBookingRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -100,7 +100,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Too late for seat booking: " + sampleBookSeatDTO.seatId()
+                        "Too late for seat booking: " + seatBookingRequest.seatId()
                 ));
     }
 
@@ -108,57 +108,57 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_make_seat_busy_and_reduce_screening_free_seats_by_one_after_booking() throws Exception {
         //given
-        addSampleUser(userFacade);
-        var sampleScreening = ScreeningTestUtils.createSampleScreening(screeningFacade);
-        var sampleSeat = searchSampleScreeningSeats(sampleScreening.id(), screeningFacade).get(0);
-        var sampleBookSeatDTO = sampleBookSeatDTO(
-                sampleScreening.id(),
-                sampleSeat.id()
+        signUpUser(userFacade);
+        var screening = ScreeningTestUtils.createScreening(screeningFacade);
+        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        var seatBookingRequest = createSeatBookingRequest(
+                screening.id(),
+                seat.id()
         );
 
         //when
         mockMvc.perform(
                 post("/seats-bookings")
-                        .content(toJson(sampleBookSeatDTO))
+                        .content(toJson(seatBookingRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
         //then
         var searchSeatsResult = mockMvc.perform(
-                        get("/screenings/" + sampleScreening.id() + "/seats")
+                        get("/screenings/" + screening.id() + "/seats")
                 );
         var isSeatBusy = Arrays
-                .stream(fromResultActions(searchSeatsResult, SeatDto[].class))
-                .anyMatch(it -> it.id().equals(sampleSeat.id()) && it.status().equals("BUSY"));
+                .stream(fromResultActions(searchSeatsResult, SeatView[].class))
+                .anyMatch(it -> it.id().equals(seat.id()) && it.status().equals("BUSY"));
         assertThat(isSeatBusy).isTrue();
         mockMvc.perform(
                         get("/screenings")
                 )
-                .andExpect(jsonPath("$[0].freeSeats").value(sampleScreening.freeSeats() - 1));
+                .andExpect(jsonPath("$[0].freeSeats").value(screening.freeSeats() - 1));
     }
 
     @Test
     @WithMockUser(username = "user1")
     void should_cancel_booking() throws Exception {
         //give
-        var sampleUsername = addSampleUser(userFacade);
-        var sampleScreening = ScreeningTestUtils.createSampleScreening(screeningFacade);
-        var sampleSeat = searchSampleScreeningSeats(sampleScreening.id(), screeningFacade).get(0);
-        var sampleSeatBooking = bookSampleSeat(
-                sampleScreening.id(),
-                sampleSeat.id(),
-                sampleUsername
+        var username = signUpUser(userFacade);
+        var screening = createScreening(screeningFacade);
+        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        var seatBooking = bookSeat(
+                screening.id(),
+                seat.id(),
+                username
         );
 
         //when
         var result = mockMvc.perform(
-                patch("/seats-bookings/" + sampleSeatBooking.id() + "/cancel")
+                patch("/seats-bookings/" + seatBooking.id() + "/cancel")
         );
 
         //then
         result.andExpect(status().isOk());
         assertThat(
-                screeningFacade.searchSeatBooking(sampleSeatBooking.id(), sampleUsername)
+                screeningFacade.searchSeatBooking(seatBooking.id(), username)
                         .seat()
                         .status()
         ).isEqualTo(SeatStatus.FREE.name());
@@ -168,52 +168,52 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_make_seat_free_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
-        var sampleUsername = addSampleUser(userFacade);
-        var sampleScreening = ScreeningTestUtils.createSampleScreening(screeningFacade);
-        var seat = searchSampleScreeningSeats(sampleScreening.id(), screeningFacade).get(0);
-        var sampleSeatBooking = bookSampleSeat(
-                sampleScreening.id(),
+        var username = signUpUser(userFacade);
+        var screening = ScreeningTestUtils.createScreening(screeningFacade);
+        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        var seatBooking = bookSeat(
+                screening.id(),
                 seat.id(),
-                sampleUsername
+                username
         );
 
         //when
         var result = mockMvc.perform(
-                patch("/seats-bookings/" + sampleSeatBooking.id() + "/cancel")
+                patch("/seats-bookings/" + seatBooking.id() + "/cancel")
         );
 
         //then
         result.andExpect(status().isOk());
         var searchSeatsResult = mockMvc.perform(
-                get("/screenings/" + sampleScreening.id() + "/seats")
+                get("/screenings/" + screening.id() + "/seats")
         );
         var isSeatFreeAgain = Arrays
-                .stream(fromResultActions(searchSeatsResult, SeatDto[].class))
+                .stream(fromResultActions(searchSeatsResult, SeatView[].class))
                 .anyMatch(it -> it.id().equals(seat.id()) && it.status().equals("FREE"));
         assertThat(isSeatFreeAgain).isTrue();
         mockMvc.perform(
                         get("/screenings")
                 )
-                .andExpect(jsonPath("$[0].freeSeats").value(sampleScreening.freeSeats()));
+                .andExpect(jsonPath("$[0].freeSeats").value(screening.freeSeats()));
     }
 
     @Test
     @WithMockUser(username = "user1")
     void should_throw_exception_when_booking_is_already_cancelled() throws Exception {
         //given
-        var sampleUsername = addSampleUser(userFacade);
-        var sampleScreening = ScreeningTestUtils.createSampleScreening(screeningFacade);
-        var seat = searchSampleScreeningSeats(sampleScreening.id(), screeningFacade).get(0);
-        var sampleSeatBooking = bookSampleSeat(
-                sampleScreening.id(),
+        var username = signUpUser(userFacade);
+        var screening = ScreeningTestUtils.createScreening(screeningFacade);
+        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        var seatBooking = bookSeat(
+                screening.id(),
                 seat.id(),
-                sampleUsername
+                username
         );
-        screeningFacade.cancelSeatBooking(sampleSeatBooking.id(), clock);
+        screeningFacade.cancelSeatBooking(seatBooking.id(), clock);
 
         //when
         var result = mockMvc.perform(
-                patch("/seats-bookings/" + sampleSeatBooking.id() + "/cancel")
+                patch("/seats-bookings/" + seatBooking.id() + "/cancel")
         );
 
         //then
@@ -228,52 +228,52 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_canceling_booking_be_impossible_when_less_than_24h_to_screening() throws Exception {
         //given
-        var sampleUsername = addSampleUser(userFacade);
+        var username = signUpUser(userFacade);
         var currentDate = getCurrentDate(clock);
         var hoursUntilBooking = 23;
-        var sampleScreeningDate = currentDate.minusHours(hoursUntilBooking);
-        var sampleScreening = createSampleScreening(screeningFacade, sampleScreeningDate);
-        var sampleSeat = searchSampleScreeningSeats(sampleScreening.id(), screeningFacade).get(0);
+        var screeningDate = currentDate.minusHours(hoursUntilBooking);
+        var screening = createScreening(screeningFacade, screeningDate);
+        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
         var timeDuringBooking = Clock.fixed(
-                sampleScreeningDate.minusHours(hoursUntilBooking + 1).toInstant(ZoneOffset.UTC),
+                screeningDate.minusHours(hoursUntilBooking + 1).toInstant(ZoneOffset.UTC),
                 ZoneOffset.UTC
         );
-        var sampleSeatBooking = screeningFacade.bookSeat(
-                sampleBookSeatDTO(
-                        sampleScreening.id(),
-                        sampleSeat.id()
+        var seatBooking = screeningFacade.bookSeat(
+                createSeatBookingRequest(
+                        screening.id(),
+                        seat.id()
                 ),
-                sampleUsername,
+                username,
                 timeDuringBooking
         );
 
         //when
         var result = mockMvc.perform(
-                patch("/seats-bookings/" + sampleSeatBooking.id() + "/cancel")
+                patch("/seats-bookings/" + seatBooking.id() + "/cancel")
         );
 
         //then
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Too late for seat booking cancelling: " + sampleSeat.id()
+                        "Too late for seat booking cancelling: " + seat.id()
                 ));
     }
 
-    private static BookSeatDto sampleBookSeatDTO(UUID sampleScreeningId, UUID sampleSeatId) {
-        return new BookSeatDto(
-                sampleScreeningId,
-                sampleSeatId,
+    private static SeatBookingRequest createSeatBookingRequest(UUID screeningId, UUID seatId) {
+        return new SeatBookingRequest(
+                screeningId,
+                seatId,
                 "Name 1",
                 "Lastname 1"
         );
     }
 
-    private SeatBookingDto bookSampleSeat(UUID sampleScreeningId, UUID sampleSeatId, String username) {
+    private SeatBookingView bookSeat(UUID screeningId, UUID seatId, String username) {
         return screeningFacade.bookSeat(
-                new BookSeatDto(
-                        sampleScreeningId,
-                        sampleSeatId,
+                new SeatBookingRequest(
+                        screeningId,
+                        seatId,
                         "Name 1",
                         "Lastname 1"
                 ),

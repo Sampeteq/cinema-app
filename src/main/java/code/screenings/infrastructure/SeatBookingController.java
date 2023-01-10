@@ -1,8 +1,8 @@
 package code.screenings.infrastructure;
 
 import code.screenings.ScreeningFacade;
-import code.screenings.dto.BookSeatDto;
-import code.screenings.dto.SeatBookingDto;
+import code.screenings.dto.SeatBookingRequest;
+import code.screenings.dto.SeatBookingView;
 import code.screenings.exception.BookingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,10 +23,10 @@ class SeatBookingController {
     private final Clock clock;
 
     @PostMapping("/seats-bookings")
-    SeatBookingDto bookSeat(
+    SeatBookingView bookSeat(
             @RequestBody
             @Valid
-            BookSeatDto dto,
+            SeatBookingRequest dto,
             Principal principal
     ) {
         return screeningFacade.bookSeat(dto, principal.getName(), clock);
@@ -41,7 +41,7 @@ class SeatBookingController {
     }
 
     @GetMapping("/seats-bookings/{bookingId}")
-    SeatBookingDto searchSeatBooking(@PathVariable UUID bookingId, Principal principal) {
+    SeatBookingView searchSeatBooking(@PathVariable UUID bookingId, Principal principal) {
         return screeningFacade.searchSeatBooking(bookingId, principal.getName());
     }
 }

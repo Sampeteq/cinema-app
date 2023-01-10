@@ -1,6 +1,6 @@
 package code.screenings.dto;
 
-public enum FilmCategoryDto {
+public enum FilmCategoryView {
 
     COMEDY,
     DRAMA,

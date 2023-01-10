@@ -1,34 +1,34 @@
 package code.utils;
 
 import code.user.UserFacade;
-import code.user.dto.SignUpDto;
+import code.user.dto.SignUpRequest;
 
 public class UserTestUtils {
 
-    public static String addSampleUser(UserFacade userFacade) {
-        var sampleDto = sampleSignUpDto();
-        userFacade.signUp(sampleDto);
-        return sampleDto.username();
+    public static String signUpUser(UserFacade userFacade) {
+        var signUpRequest = createSignUpRequest();
+        userFacade.signUp(signUpRequest);
+        return signUpRequest.username();
     }
 
-    public static SignUpDto sampleSignUpDto() {
-        return new SignUpDto(
+    public static SignUpRequest createSignUpRequest() {
+        return new SignUpRequest(
                 "user1",
                 "password1",
                 "password1"
         );
     }
 
-    public static SignUpDto sampleSignUpDto(String username) {
-        return new SignUpDto(
+    public static SignUpRequest createSignUpRequest(String username) {
+        return new SignUpRequest(
                 username,
                 "password1",
                 "password1"
         );
     }
 
-    public static SignUpDto sampleSignUpDto(String password, String repeatedPassword) {
-        return new SignUpDto(
+    public static SignUpRequest createSignUpRequest(String password, String repeatedPassword) {
+        return new SignUpRequest(
                 "user1",
                 password,
                 repeatedPassword

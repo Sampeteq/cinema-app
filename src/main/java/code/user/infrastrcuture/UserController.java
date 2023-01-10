@@ -1,8 +1,8 @@
 package code.user.infrastrcuture;
 
 import code.user.UserFacade;
-import code.user.dto.SignInDto;
-import code.user.dto.SignUpDto;
+import code.user.dto.SignInRequest;
+import code.user.dto.SignUpRequest;
 import code.user.exception.UserException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,13 +18,13 @@ class UserController {
     private final UserFacade userFacade;
 
     @PostMapping("/signup")
-    ResponseEntity<?> signUp(@RequestBody @Valid SignUpDto dto) {
+    ResponseEntity<?> signUp(@RequestBody @Valid SignUpRequest dto) {
         userFacade.signUp(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
-    ResponseEntity<?> signIn(@RequestBody SignInDto dto) {
+    ResponseEntity<?> signIn(@RequestBody SignInRequest dto) {
         userFacade.signIn(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

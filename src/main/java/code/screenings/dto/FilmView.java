@@ -3,10 +3,10 @@ package code.screenings.dto;
 
 import java.util.UUID;
 
-public record FilmDto(
+public record FilmView(
         UUID id,
         String title,
-        FilmCategoryDto category,
+        FilmCategoryView category,
         int year,
         int durationInMinutes
 ) {

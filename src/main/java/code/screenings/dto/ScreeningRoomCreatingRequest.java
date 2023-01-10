@@ -5,7 +5,7 @@ import lombok.With;
 import javax.validation.constraints.Positive;
 
 @With
-public record CreateScreeningRoomDto(
+public record ScreeningRoomCreatingRequest(
         @Positive
         int number,
         @Positive

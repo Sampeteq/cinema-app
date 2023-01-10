@@ -1,6 +1,6 @@
 package code.screenings;
 
-import code.screenings.dto.CreateScreeningDto;
+import code.screenings.dto.ScreeningCreatingRequest;
 import code.screenings.exception.FilmNotFoundException;
 import code.screenings.exception.ScreeningDateException;
 import code.screenings.exception.ScreeningRoomException;
@@ -23,7 +23,7 @@ class ScreeningFactory {
 
     private final ScreeningRoomRepository screeningRoomRepository;
 
-    Screening createScreening(CreateScreeningDto dto) {
+    Screening createScreening(ScreeningCreatingRequest dto) {
         validateScreeningDate(dto.date());
         var film = getFilmOrThrow(dto.filmId());
         validateTimeAndRoomCollisionBetweenScreenings(dto.date(), film.getDurationInMinutes(), dto.roomId());

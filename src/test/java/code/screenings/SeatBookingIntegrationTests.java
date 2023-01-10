@@ -226,7 +226,8 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
 
     @Test
     @WithMockUser(username = "user1")
-    void should_canceling_booking_be_impossible_when_less_than_24h_to_screening() throws Exception {
+    void should_throw_exception_during_seat_booking_cancelling_when_less_than_24h_to_screening()
+            throws Exception {
         //given
         var username = signUpUser(userFacade);
         var hoursToScreening = 23;

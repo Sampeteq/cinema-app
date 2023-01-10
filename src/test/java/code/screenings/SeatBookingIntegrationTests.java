@@ -1,5 +1,6 @@
 package code.screenings;
 
+import code.screenings.dto.SeatDto;
 import code.utils.SpringIntegrationTests;
 import code.screenings.dto.BookSeatDto;
 import code.screenings.dto.SeatBookingDto;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.UUID;
 
 import static code.utils.ScreeningTestUtils.searchSampleScreeningSeats;
@@ -108,10 +110,10 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         //given
         addSampleUser(userFacade);
         var sampleScreening = ScreeningTestUtils.createSampleScreening(screeningFacade);
-        var sampleSeats = searchSampleScreeningSeats(sampleScreening.id(), screeningFacade).get(0);
+        var sampleSeat = searchSampleScreeningSeats(sampleScreening.id(), screeningFacade).get(0);
         var sampleBookSeatDTO = sampleBookSeatDTO(
                 sampleScreening.id(),
-                sampleSeats.id()
+                sampleSeat.id()
         );
 
         //when
@@ -122,15 +124,17 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         );
 
         //then
+        var searchSeatsResult = mockMvc.perform(
+                        get("/screenings/" + sampleScreening.id() + "/seats")
+                );
+        var isSeatBusy = Arrays
+                .stream(fromResultActions(searchSeatsResult, SeatDto[].class))
+                .anyMatch(it -> it.id().equals(sampleSeat.id()) && it.status().equals("BUSY"));
+        assertThat(isSeatBusy).isTrue();
         mockMvc.perform(
                         get("/screenings")
                 )
-                .andExpect(
-                        jsonPath("$[0].seats[0].status").value(SeatStatus.BUSY.name())
-                )
-                .andExpect(
-                        jsonPath("$[0].freeSeats").value(sampleScreening.freeSeats() - 1)
-                );
+                .andExpect(jsonPath("$[0].freeSeats").value(sampleScreening.freeSeats() - 1));
     }
 
     @Test
@@ -180,10 +184,16 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
 
         //then
         result.andExpect(status().isOk());
+        var searchSeatsResult = mockMvc.perform(
+                get("/screenings/" + sampleScreening.id() + "/seats")
+        );
+        var isSeatFreeAgain = Arrays
+                .stream(fromResultActions(searchSeatsResult, SeatDto[].class))
+                .anyMatch(it -> it.id().equals(seat.id()) && it.status().equals("FREE"));
+        assertThat(isSeatFreeAgain).isTrue();
         mockMvc.perform(
                         get("/screenings")
                 )
-                .andExpect(jsonPath("$[0].seats[0].status").value(SeatStatus.FREE.name()))
                 .andExpect(jsonPath("$[0].freeSeats").value(sampleScreening.freeSeats()));
     }
 

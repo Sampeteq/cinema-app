@@ -48,7 +48,9 @@ Endpoints:
 
 /signup (POST) - create a new user account
 
-/signin (POST) - logging into a user account
+/signin (POST) - logg into a user account
+
+/signout (POST) - logg out a user account
 
 Tech stack:Java 17, Spring Boot, Lombok, H2 DB, Open API
 

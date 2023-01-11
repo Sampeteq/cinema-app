@@ -30,10 +30,6 @@ class Seat {
     @ManyToOne
     private Screening screening;
 
-    void assignScreening(Screening screening) {
-        this.screening = screening;
-    }
-
     boolean isFree() {
         return this.status.equals(SeatStatus.FREE);
     }

@@ -2,19 +2,24 @@ package code.user;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("prod")
 @AllArgsConstructor
 @Slf4j
 class OnStartUp {
 
-    private static final String MAIN_ADMIN_USERNAME = "MainAdmin";
+    @Value("${onStartUp.mainAdminUsername}")
+    private final String mainAdminUsername;
 
-    private static final String MAIN_ADMIN_PASSWORD = "12345";
+    @Value("${onStartUp.mainAdminPassword}")
+    private final String mainAdminPassword;
 
     private final UserRepository userRepository;
 
@@ -22,16 +27,16 @@ class OnStartUp {
 
     @EventListener(ContextRefreshedEvent.class)
     public void createMainAdmin() {
-        if (userRepository.existsById(MAIN_ADMIN_USERNAME)) {
+        if (userRepository.existsById(mainAdminUsername)) {
             log.info("Main admin already exists");
         } else {
             var mainAdmin = new User(
-                    MAIN_ADMIN_USERNAME,
-                    passwordEncoder.encode(MAIN_ADMIN_PASSWORD),
+                    mainAdminUsername,
+                    passwordEncoder.encode(mainAdminPassword),
                     UserRole.ADMIN
             );
             userRepository.add(mainAdmin);
-            log.info("Main admin added.Username: {}" + " .Password: {}", MAIN_ADMIN_USERNAME, MAIN_ADMIN_PASSWORD);
+            log.info("Main admin added.Username: {}" + " .Password: {}", mainAdminUsername, mainAdminPassword);
         }
     }
 }

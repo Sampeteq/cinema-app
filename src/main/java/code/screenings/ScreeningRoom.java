@@ -6,6 +6,8 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -13,7 +15,6 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
-@Getter
 @ToString
 class ScreeningRoom {
 
@@ -26,8 +27,28 @@ class ScreeningRoom {
 
     private int seatsInOneRowQuantity;
 
-    int seatsQuantity() {
-        return this.rowsQuantity * seatsInOneRowQuantity;
+    List<Seat> createSeats(Screening screening) {
+        var seats = new ArrayList<Seat>();
+        var rowNumber = 1;
+        var seatNumber = 1;
+        var helpCounter = 1;
+        for (int i = 1; i <= seatsInOneRowQuantity * rowsQuantity; i++) {
+            if (helpCounter > seatsInOneRowQuantity) {
+                rowNumber++;
+                seatNumber = 1;
+                helpCounter = 1;
+            }
+            var seat = new Seat(
+                    UUID.randomUUID(),
+                    rowNumber,
+                    seatNumber++,
+                    SeatStatus.FREE,
+                    screening
+            );
+            seats.add(seat);
+            helpCounter++;
+        }
+        return seats;
     }
 
     ScreeningRoomView toView() {

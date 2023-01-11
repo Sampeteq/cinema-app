@@ -2,7 +2,6 @@ package code.screenings;
 
 import code.screenings.dto.ScreeningView;
 import code.screenings.dto.SeatView;
-import code.screenings.exception.ScreeningRoomException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -42,7 +41,7 @@ class Screening {
     private List<Seat> seats;
 
     static Screening of(LocalDateTime date, int minAge, Film film, ScreeningRoom room) {
-        return new Screening(
+        var screening = new Screening(
                 UUID.randomUUID(),
                 date,
                 date.plusMinutes(film.getDurationInMinutes()),
@@ -51,14 +50,8 @@ class Screening {
                 room,
                 new ArrayList<>()
         );
-    }
-
-    void addSeats(List<Seat> seats) {
-        if (seats.size() > room.seatsQuantity()) {
-            throw new ScreeningRoomException("Screening seats quantity cannot be bigger than room's one");
-        }
-        this.seats.addAll(seats);
-        this.seats.forEach(seat -> seat.assignScreening(this));
+        screening.seats = room.createSeats(screening);
+        return screening;
     }
 
     Optional<Seat> getSeat(UUID seatId) {

@@ -17,6 +17,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import static code.utils.ScreeningTestUtils.searchScreeningSeats;
@@ -66,7 +67,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         result.andExpect(status().isOk());
         var seatBookingView = fromResultActions(result, SeatBookingView.class);
         mockMvc.perform(
-                        get("/seats-bookings/" + seatBookingView.id())
+                        get("/seats-bookings/my/" + seatBookingView.id())
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
@@ -244,6 +245,34 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
                 .andExpect(content().string(
                         "Too late for seat booking cancelling: " + seatBooking.seat().id()
                 ));
+    }
+
+    @Test
+    @WithMockUser(username = "user1")
+    void should_return_all_user_seats_bookings() throws Exception {
+        //given
+        var username = signUpUser(userFacade);
+        var userBookings = bookSeats(username);
+
+        //when
+        var result = mockMvc.perform(
+                get("/seats-bookings/my")
+        );
+
+        //then
+        result.andExpect(status().isOk());
+        var bookingsFromResult = Arrays
+                .stream(fromResultActions(result, SeatBookingView[].class))
+                .toList();
+        assertThat(bookingsFromResult).isEqualTo(userBookings);
+    }
+
+    private List<SeatBookingView> bookSeats(String username) {
+        var screening = createScreening(screeningFacade);
+        var seats  = searchScreeningSeats(screening.id(), screeningFacade);
+        var booking1 = bookSeat(screening.id(), seats.get(0).id(), username);
+        var booking2 = bookSeat(screening.id(), seats.get(1).id(), username);
+        return List.of(booking1, booking2);
     }
 
     private static SeatBookingRequest createSeatBookingRequest(UUID screeningId, UUID seatId) {

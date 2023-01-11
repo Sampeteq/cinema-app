@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.Clock;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -40,9 +41,14 @@ class SeatBookingController {
         screeningFacade.cancelSeatBooking(bookingId, clock);
     }
 
-    @GetMapping("/seats-bookings/{bookingId}")
+    @GetMapping("/seats-bookings/my/{bookingId}")
     SeatBookingView searchSeatBooking(@PathVariable UUID bookingId, Principal principal) {
         return screeningFacade.searchSeatBooking(bookingId, principal.getName());
+    }
+
+    @GetMapping("/seats-bookings/my")
+    List<SeatBookingView> searchSeatBookingsByUsername(Principal principal) {
+        return screeningFacade.searchSeatBookingsByUsername(principal.getName());
     }
 }
 

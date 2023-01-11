@@ -74,4 +74,8 @@ public class ScreeningFacade {
     public SeatBookingView searchSeatBooking(UUID bookingId, String username) {
         return seatBookingSearcher.searchSeatBooking(bookingId, username);
     }
+
+    public List<SeatBookingView> searchSeatBookingsByUsername(String username) {
+        return seatBookingSearcher.searchAllByUsername(username);
+    }
 }

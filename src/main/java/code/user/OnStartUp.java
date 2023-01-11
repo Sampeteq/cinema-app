@@ -1,6 +1,5 @@
 package code.user;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -11,19 +10,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Profile("prod")
-@AllArgsConstructor
 @Slf4j
 class OnStartUp {
 
     @Value("${onStartUp.mainAdminUsername}")
-    private final String mainAdminUsername;
+    private String mainAdminUsername;
 
     @Value("${onStartUp.mainAdminPassword}")
-    private final String mainAdminPassword;
+    private String mainAdminPassword;
 
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    OnStartUp(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @EventListener(ContextRefreshedEvent.class)
     public void createMainAdmin() {

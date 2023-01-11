@@ -39,7 +39,16 @@ Endpoints:
 /seats-bookings/{bookingId}/cancelled (PATCH) - cancel a seat booking
 
 /seats-bookings/bookingId (GET) - search a seat booking by id
+
 /////////////////////
+
+4.User account:
+
+Endpoints:
+
+/signup (POST) - create a new user account
+
+/signin (POST) - logging into a user account
 
 Tech stack:Java 17, Spring Boot, Lombok, H2 DB, Open API
 

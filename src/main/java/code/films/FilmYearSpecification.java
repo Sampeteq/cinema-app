@@ -1,4 +1,4 @@
-package code.screenings;
+package code.films;
 
 import java.time.Year;
 

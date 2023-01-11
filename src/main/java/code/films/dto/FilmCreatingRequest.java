@@ -1,4 +1,4 @@
-package code.screenings.dto;
+package code.films.dto;
 
 import lombok.With;
 

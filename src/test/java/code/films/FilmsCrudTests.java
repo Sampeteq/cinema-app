@@ -1,7 +1,7 @@
-package code.screenings;
+package code.films;
 
+import code.films.dto.FilmCategoryView;
 import code.utils.SpringIntegrationTests;
-import code.screenings.dto.FilmCategoryView;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,7 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static code.utils.FilmTestUtils.*;
+import static code.utils.FilmTestUtils.createFilmCreatingRequest;
+import static code.utils.FilmTestUtils.createFilms;
 import static code.utils.WebTestUtils.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -24,7 +25,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     private MockMvc mockMvc;
 
     @Autowired
-    private ScreeningFacade screeningFacade;
+    private FilmFacade filmFacade;
 
     @Test
     @WithMockUser(authorities = "ADMIN")
@@ -80,7 +81,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_all_films() throws Exception {
         //given
-        var sampleFilms = createFilms(screeningFacade);
+        var sampleFilms = createFilms(filmFacade);
 
         //when
         var result = mockMvc.perform(
@@ -96,10 +97,10 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_films_by_params() throws Exception {
         //given
-        var sampleFilm = screeningFacade.createFilm(
+        var sampleFilm = filmFacade.createFilm(
                 createFilmCreatingRequest().withFilmCategory(FilmCategoryView.COMEDY)
         );
-        screeningFacade.createFilm(
+        filmFacade.createFilm(
                 createFilmCreatingRequest().withFilmCategory(FilmCategoryView.DRAMA)
         );
 

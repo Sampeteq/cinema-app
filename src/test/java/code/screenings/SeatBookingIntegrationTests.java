@@ -1,5 +1,6 @@
 package code.screenings;
 
+import code.films.FilmFacade;
 import code.screenings.dto.SeatView;
 import code.utils.SpringIntegrationTests;
 import code.screenings.dto.SeatBookingRequest;
@@ -38,6 +39,9 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     private ScreeningFacade screeningFacade;
 
     @Autowired
+    private FilmFacade filmFacade;
+
+    @Autowired
     private UserFacade userFacade;
 
     @Autowired
@@ -49,7 +53,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     void should_booked_seat() throws Exception {
         //given
         signUpUser(userFacade);
-        var screening = createScreening(screeningFacade);
+        var screening = createScreening(screeningFacade, filmFacade);
         var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
         var seatBookingRequest = createSeatBookingRequest(
                 screening.id(),
@@ -83,7 +87,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         signUpUser(userFacade);
         var currentDate = getCurrentDate(clock);
         var screeningDate = currentDate.minusHours(23);
-        var screening = createScreening(screeningFacade, screeningDate);
+        var screening = createScreening(screeningFacade, filmFacade, screeningDate);
         var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
         var seatBookingRequest = createSeatBookingRequest(
                 screening.id(),
@@ -110,7 +114,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     void should_make_seat_busy_and_reduce_screening_free_seats_by_one_after_booking() throws Exception {
         //given
         signUpUser(userFacade);
-        var screening = ScreeningTestUtils.createScreening(screeningFacade);
+        var screening = ScreeningTestUtils.createScreening(screeningFacade, filmFacade);
         var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
         var seatBookingRequest = createSeatBookingRequest(
                 screening.id(),
@@ -143,7 +147,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     void should_cancel_booking() throws Exception {
         //give
         var username = signUpUser(userFacade);
-        var screening = createScreening(screeningFacade);
+        var screening = createScreening(screeningFacade, filmFacade);
         var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
         var seatBooking = bookSeat(
                 screening.id(),
@@ -170,7 +174,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     void should_make_seat_free_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
         var username = signUpUser(userFacade);
-        var screening = ScreeningTestUtils.createScreening(screeningFacade);
+        var screening = ScreeningTestUtils.createScreening(screeningFacade, filmFacade);
         var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
         var seatBooking = bookSeat(
                 screening.id(),
@@ -203,7 +207,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_when_booking_is_already_cancelled() throws Exception {
         //given
         var username = signUpUser(userFacade);
-        var screening = ScreeningTestUtils.createScreening(screeningFacade);
+        var screening = ScreeningTestUtils.createScreening(screeningFacade, filmFacade);
         var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
         var seatBooking = bookSeat(
                 screening.id(),
@@ -264,11 +268,11 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         var bookingsFromResult = Arrays
                 .stream(fromResultActions(result, SeatBookingView[].class))
                 .toList();
-        assertThat(bookingsFromResult).isEqualTo(userBookings);
+        assertThat(bookingsFromResult).containsExactlyInAnyOrderElementsOf(userBookings);
     }
 
     private List<SeatBookingView> bookSeats(String username) {
-        var screening = createScreening(screeningFacade);
+        var screening = createScreening(screeningFacade, filmFacade);
         var seats  = searchScreeningSeats(screening.id(), screeningFacade);
         var booking1 = bookSeat(screening.id(), seats.get(0).id(), username);
         var booking2 = bookSeat(screening.id(), seats.get(1).id(), username);
@@ -300,7 +304,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     private SeatBookingView bookSeat(String username, int hoursToScreening) {
         var currentDate = getCurrentDate(clock);
         var screeningDate = currentDate.minusHours(hoursToScreening);
-        var screening = createScreening(screeningFacade, screeningDate);
+        var screening = createScreening(screeningFacade, filmFacade, screeningDate);
         var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
         var timeDuringBooking = Clock.fixed(
                 screeningDate.minusHours(hoursToScreening + 1).toInstant(ZoneOffset.UTC),

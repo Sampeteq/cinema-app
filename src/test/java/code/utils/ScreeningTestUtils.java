@@ -1,5 +1,6 @@
 package code.utils;
 
+import code.films.FilmFacade;
 import code.screenings.ScreeningFacade;
 import code.screenings.dto.ScreeningCreatingRequest;
 import code.screenings.dto.ScreeningRoomCreatingRequest;
@@ -71,8 +72,8 @@ public class ScreeningTestUtils {
         );
     }
 
-    public static ScreeningView createScreening(ScreeningFacade screeningFacade) {
-        var sampleFilm = createFilm(screeningFacade);
+    public static ScreeningView createScreening(ScreeningFacade screeningFacade, FilmFacade filmFacade) {
+        var sampleFilm = createFilm(filmFacade);
         var sampleRoom = createScreeningRoom(screeningFacade);
         return screeningFacade.createScreening(
                 createScreeningCreatingRequest(
@@ -91,9 +92,10 @@ public class ScreeningTestUtils {
 
     public static ScreeningView createScreening(
             ScreeningFacade screeningFacade,
+            FilmFacade filmFacade,
             LocalDateTime screeningDate
     ) {
-        var sampleFilm = createFilm(screeningFacade);
+        var sampleFilm = createFilm(filmFacade);
         var sampleRoom = createScreeningRoom(screeningFacade);
         return screeningFacade.createScreening(
                 createScreeningCreatingRequest(
@@ -103,8 +105,8 @@ public class ScreeningTestUtils {
         );
     }
 
-    public static List<ScreeningView> createScreenings(ScreeningFacade screeningFacade) {
-        var sampleFilms = FilmTestUtils.createFilms(screeningFacade);
+    public static List<ScreeningView> createScreenings(ScreeningFacade screeningFacade, FilmFacade filmFacade) {
+        var sampleFilms = FilmTestUtils.createFilms(filmFacade);
         var sampleRooms = createScreeningRooms(screeningFacade);
         var screening1 = screeningFacade.createScreening(
                 new ScreeningCreatingRequest(

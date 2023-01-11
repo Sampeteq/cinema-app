@@ -11,10 +11,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ScreeningFacade {
 
-    private final FilmFactory filmFactory;
-
-    private final FilmSearcher filmSearcher;
-
     private final ScreeningRoomFactory screeningRoomFactory;
 
     private final ScreeningRoomSearcher screeningRoomSearcher;
@@ -26,14 +22,6 @@ public class ScreeningFacade {
     private final SeatBooker seatBooker;
 
     private final SeatBookingSearcher seatBookingSearcher;
-
-    public FilmView createFilm(FilmCreatingRequest dto) {
-        return filmFactory.createFilm(dto).toView();
-    }
-
-    public List<FilmView> searchFilms(FilmSearchParamsView paramsDto) {
-        return filmSearcher.searchFilms(paramsDto);
-    }
 
     @Transactional
     public ScreeningRoomView createRoom(ScreeningRoomCreatingRequest dto) {

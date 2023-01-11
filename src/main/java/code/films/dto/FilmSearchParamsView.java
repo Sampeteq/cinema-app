@@ -1,12 +1,12 @@
-package code.screenings;
+package code.films.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(access = AccessLevel.PACKAGE)
-class FilmSearchParams {
+@Builder
+public class FilmSearchParamsView {
 
-    public final FilmCategory category;
+    public final FilmCategoryView category;
 }

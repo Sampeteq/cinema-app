@@ -1,12 +1,12 @@
-package code.screenings.infrastructure;
+package code.films.infrastructure;
 
-import code.screenings.ScreeningFacade;
-import code.screenings.dto.FilmCreatingRequest;
-import code.screenings.dto.FilmCategoryView;
-import code.screenings.dto.FilmView;
-import code.screenings.dto.FilmSearchParamsView;
-import code.screenings.exception.FilmException;
-import code.screenings.exception.FilmNotFoundException;
+import code.films.FilmFacade;
+import code.films.dto.FilmCreatingRequest;
+import code.films.dto.FilmCategoryView;
+import code.films.dto.FilmView;
+import code.films.dto.FilmSearchParamsView;
+import code.films.exception.FilmException;
+import code.films.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 class FilmCrudController {
 
-    private final ScreeningFacade screeningFacade;
+    private final FilmFacade filmFacade;
 
     @PostMapping("/films")
     FilmView createFilm(
@@ -27,7 +27,7 @@ class FilmCrudController {
             @Valid
             FilmCreatingRequest request
     ) {
-        return screeningFacade.createFilm(request);
+        return filmFacade.createFilm(request);
     }
 
     @GetMapping("/films")
@@ -39,7 +39,7 @@ class FilmCrudController {
                 .builder()
                 .category(category)
                 .build();
-        return screeningFacade.searchFilms(params);
+        return filmFacade.searchFilms(params);
     }
 }
 

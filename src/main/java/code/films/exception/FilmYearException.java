@@ -1,4 +1,4 @@
-package code.screenings.exception;
+package code.films.exception;
 
 public class FilmYearException extends FilmException {
 

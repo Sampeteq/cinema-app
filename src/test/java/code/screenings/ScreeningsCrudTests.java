@@ -1,5 +1,6 @@
 package code.screenings;
 
+import code.films.FilmFacade;
 import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,11 +27,14 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @Autowired
     private ScreeningFacade screeningFacade;
 
+    @Autowired
+    private FilmFacade filmFacade;
+
     @Test
     @WithMockUser(authorities = "ADMIN")
     void should_create_screening() throws Exception {
         //given
-        var film = createFilm(screeningFacade);
+        var film = createFilm(filmFacade);
         var room = createScreeningRoom(screeningFacade);
         var screeningCreatingRequest = createScreeningCreatingRequest(
                 film.id(),
@@ -61,7 +65,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {
         //given
-        var filmId = createFilm(screeningFacade).id();
+        var filmId = createFilm(filmFacade).id();
         var roomId = createScreeningRoom(screeningFacade).id();
         var screeningCreatingRequest = createScreeningCreatingRequest(
                 filmId,
@@ -87,7 +91,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_there_is_time_and_room_collision_between_screenings() throws Exception {
         //given
-        var screening = createScreening(screeningFacade);
+        var screening = createScreening(screeningFacade, filmFacade);
         var screeningCreatingRequest = createScreeningCreatingRequest(
                 screening.filmId(),
                 screening.roomId(),
@@ -110,7 +114,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_all_screenings() throws Exception {
         //given
-        var screenings = createScreenings(screeningFacade);
+        var screenings = createScreenings(screeningFacade, filmFacade);
 
         //when
         var result = mockMvc.perform(
@@ -126,7 +130,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_seats_for_screening() throws Exception {
         //given
-        var screening = createScreening(screeningFacade);
+        var screening = createScreening(screeningFacade, filmFacade);
         var seats = searchScreeningSeats(screening.id(), screeningFacade);
 
         //when
@@ -143,7 +147,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_screenings_by_search_params() throws Exception {
         //given
-        var screenings = createScreenings(screeningFacade);
+        var screenings = createScreenings(screeningFacade, filmFacade);
         var filmId = screenings.get(0).filmId();
         var screeningDate = screenings.get(0).date();
         var filteredScreening = screenings

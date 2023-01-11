@@ -1,4 +1,4 @@
-package code.screenings.dto;
+package code.films.dto;
 
 public enum FilmCategoryView {
 

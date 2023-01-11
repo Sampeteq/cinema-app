@@ -31,8 +31,7 @@ class Screening {
 
     private int minAge;
 
-    @ManyToOne
-    private Film film;
+    private UUID filmId;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private ScreeningRoom room;
@@ -40,13 +39,13 @@ class Screening {
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
-    static Screening of(LocalDateTime date, int minAge, Film film, ScreeningRoom room) {
+    static Screening of(LocalDateTime date, int minAge, UUID filmId, int filmDuration, ScreeningRoom room) {
         var screening = new Screening(
                 UUID.randomUUID(),
                 date,
-                date.plusMinutes(film.getDurationInMinutes()),
+                date.plusMinutes(filmDuration),
                 minAge,
-                film,
+                filmId,
                 room,
                 new ArrayList<>()
         );
@@ -73,7 +72,7 @@ class Screening {
                 this.id,
                 this.date,
                 this.minAge,
-                this.film.toView().id(),
+                this.filmId,
                 this.room.toView().id(),
                 (int) this.seats.stream().filter(Seat::isFree).count()
         );

@@ -1,4 +1,4 @@
-package code.screenings.exception;
+package code.films.exception;
 
 import java.util.UUID;
 

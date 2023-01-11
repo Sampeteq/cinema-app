@@ -1,16 +1,15 @@
 package code.user;
 
-import code.utils.SpringIntegrationTests;
 import code.user.dto.SignInRequest;
-import code.utils.UserTestUtils;
+import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static code.utils.WebTestUtils.toJson;
-import static code.utils.UserTestUtils.signUpUser;
 import static code.utils.UserTestUtils.createSignUpRequest;
+import static code.utils.UserTestUtils.signUpUser;
+import static code.utils.WebTestUtils.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

@@ -1,7 +1,7 @@
 package code.screenings;
 
+import code.films.FilmFacade;
 import code.screenings.dto.ScreeningCreatingRequest;
-import code.screenings.exception.FilmNotFoundException;
 import code.screenings.exception.ScreeningDateException;
 import code.screenings.exception.ScreeningRoomException;
 import code.screenings.exception.ScreeningRoomNotFoundException;
@@ -15,21 +15,22 @@ class ScreeningFactory {
 
     private final ScreeningDateSpecification dateSpecification;
 
-    private final FilmRepository filmRepository;
-
     private final ScreeningRepository screeningRepository;
 
     private final ScreeningRoomRepository screeningRoomRepository;
 
+    private final FilmFacade filmFacade;
+
     Screening createScreening(ScreeningCreatingRequest dto) {
         validateScreeningDate(dto.date());
-        var film = getFilmOrThrow(dto.filmId());
-        validateTimeAndRoomCollisionBetweenScreenings(dto.date(), film.getDurationInMinutes(), dto.roomId());
+        var filmDuration = filmFacade.searchFilmDuration(dto.filmId());
+        validateTimeAndRoomCollisionBetweenScreenings(dto.date(), dto.roomId(), filmDuration);
         var room = getScreeningRoomOrThrow(dto.roomId());
         var screening = Screening.of(
                 dto.date(),
                 dto.minAge(),
-                film,
+                dto.filmId(),
+                filmDuration,
                 room
         );
         return screeningRepository.save(screening);
@@ -47,8 +48,8 @@ class ScreeningFactory {
 
     private void validateTimeAndRoomCollisionBetweenScreenings(
             LocalDateTime screeningDate,
-            int filmDurationInMinutes,
-            UUID roomId
+            UUID roomId,
+            int filmDurationInMinutes
     ) {
         var screeningFinishDate = screeningDate.plusMinutes(filmDurationInMinutes);
         var isTimeAndRoomCollision = screeningRepository.existsByFinishDateGreaterThanAndDateLessThanAndRoomId(
@@ -59,12 +60,6 @@ class ScreeningFactory {
         if (isTimeAndRoomCollision) {
             throw new ScreeningRoomException("Time and room collision between screenings");
         }
-    }
-
-    private Film getFilmOrThrow(UUID filmId) {
-        return filmRepository
-                .findById(filmId)
-                .orElseThrow(() -> new FilmNotFoundException(filmId));
     }
 
     private ScreeningRoom getScreeningRoomOrThrow(UUID roomId) {

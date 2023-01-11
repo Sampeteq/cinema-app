@@ -1,9 +1,9 @@
 package code.utils;
 
-import code.screenings.ScreeningFacade;
-import code.screenings.dto.FilmCreatingRequest;
-import code.screenings.dto.FilmCategoryView;
-import code.screenings.dto.FilmView;
+import code.films.FilmFacade;
+import code.films.dto.FilmCategoryView;
+import code.films.dto.FilmCreatingRequest;
+import code.films.dto.FilmView;
 
 import java.time.Year;
 import java.util.List;
@@ -38,15 +38,15 @@ public abstract class FilmTestUtils {
         return List.of(dto1, dto2);
     }
 
-    public static FilmView createFilm(ScreeningFacade screeningFacade) {
+    public static FilmView createFilm(FilmFacade filmFacade) {
         var filmCreatingRequest = createFilmCreatingRequest();
-        return screeningFacade.createFilm(filmCreatingRequest);
+        return filmFacade.createFilm(filmCreatingRequest);
     }
 
-    public static List<FilmView> createFilms(ScreeningFacade screeningFacade) {
+    public static List<FilmView> createFilms(FilmFacade filmFacade) {
         return createFilmCreatingRequests()
                 .stream()
-                .map(screeningFacade::createFilm)
+                .map(filmFacade::createFilm)
                 .toList();
     }
 

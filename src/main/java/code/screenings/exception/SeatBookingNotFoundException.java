@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class SeatBookingNotFoundException extends BookingException {
 
-    public SeatBookingNotFoundException(UUID ticketId) {
-        super("Ticket not found: " + ticketId);
+    public SeatBookingNotFoundException(UUID bookingId) {
+        super("Booking not found: " + bookingId);
     }
 }

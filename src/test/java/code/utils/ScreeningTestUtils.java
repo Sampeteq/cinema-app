@@ -2,11 +2,7 @@ package code.utils;
 
 import code.films.FilmFacade;
 import code.screenings.ScreeningFacade;
-import code.screenings.dto.ScreeningCreatingRequest;
-import code.screenings.dto.ScreeningRoomCreatingRequest;
-import code.screenings.dto.ScreeningRoomView;
-import code.screenings.dto.ScreeningView;
-import code.screenings.dto.SeatView;
+import code.screenings.dto.*;
 
 import java.time.LocalDateTime;
 import java.time.Year;

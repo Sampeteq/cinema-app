@@ -1,18 +1,17 @@
 package code.screenings;
 
 import code.films.FilmFacade;
-import code.screenings.dto.SeatView;
-import code.utils.SpringIntegrationTests;
 import code.screenings.dto.SeatBookingRequest;
 import code.screenings.dto.SeatBookingView;
+import code.screenings.dto.SeatView;
 import code.user.UserFacade;
 import code.utils.ScreeningTestUtils;
+import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -21,19 +20,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static code.utils.ScreeningTestUtils.createScreening;
 import static code.utils.ScreeningTestUtils.searchScreeningSeats;
+import static code.utils.UserTestUtils.signUpUser;
 import static code.utils.WebTestUtils.fromResultActions;
 import static code.utils.WebTestUtils.toJson;
-import static code.utils.ScreeningTestUtils.createScreening;
-import static code.utils.UserTestUtils.signUpUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class SeatBookingIntegrationTests extends SpringIntegrationTests {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Autowired
     private ScreeningFacade screeningFacade;
@@ -130,8 +126,8 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
 
         //then
         var searchSeatsResult = mockMvc.perform(
-                        get("/screenings/" + screening.id() + "/seats")
-                );
+                get("/screenings/" + screening.id() + "/seats")
+        );
         var isSeatBusy = Arrays
                 .stream(fromResultActions(searchSeatsResult, SeatView[].class))
                 .anyMatch(it -> it.id().equals(seat.id()) && it.status().equals("BUSY"));
@@ -273,7 +269,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
 
     private List<SeatBookingView> bookSeats(String username) {
         var screening = createScreening(screeningFacade, filmFacade);
-        var seats  = searchScreeningSeats(screening.id(), screeningFacade);
+        var seats = searchScreeningSeats(screening.id(), screeningFacade);
         var booking1 = bookSeat(screening.id(), seats.get(0).id(), username);
         var booking2 = bookSeat(screening.id(), seats.get(1).id(), username);
         return List.of(booking1, booking2);

@@ -1,15 +1,10 @@
 package code.screenings.infrastructure;
 
 import code.screenings.ScreeningFacade;
+import code.screenings.dto.*;
 import code.screenings.exception.ScreeningException;
 import code.screenings.exception.ScreeningNotFoundException;
 import code.screenings.exception.ScreeningRoomNotFoundException;
-import code.screenings.dto.ScreeningCreatingRequest;
-import code.screenings.dto.ScreeningRoomCreatingRequest;
-import code.screenings.dto.ScreeningRoomView;
-import code.screenings.dto.ScreeningSearchParamsView;
-import code.screenings.dto.ScreeningView;
-import code.screenings.dto.SeatView;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;

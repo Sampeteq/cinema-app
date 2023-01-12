@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @AllArgsConstructor
 public class FilmFacade {
+
     private final FilmFactory filmFactory;
 
     private final FilmSearcher filmSearcher;

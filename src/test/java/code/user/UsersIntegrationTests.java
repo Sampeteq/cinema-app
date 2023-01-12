@@ -5,7 +5,6 @@ import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static code.utils.UserTestUtils.createSignUpRequest;
 import static code.utils.UserTestUtils.signUpUser;
@@ -15,9 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UsersIntegrationTests extends SpringIntegrationTests {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Autowired
     private UserFacade userFacade;

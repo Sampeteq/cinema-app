@@ -17,8 +17,8 @@ class UserConfig {
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager
     ) {
-        var authService = new AuthService(userRepository, passwordEncoder, authenticationManager);
-        return new UserFacade(authService, userRepository);
+        var authManager = new AuthManager(userRepository, passwordEncoder, authenticationManager);
+        return new UserFacade(authManager, userRepository);
     }
 
     @Bean

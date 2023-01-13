@@ -9,20 +9,20 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserFacade {
 
-    private final AuthService authService;
+    private final AuthManager authManager;
 
     private final UserRepository userRepository;
 
     public void signUp(SignUpRequest request) {
-        authService.signUp(request);
+        authManager.signUp(request);
     }
 
     public void signIn(SignInRequest request) {
-        authService.signIn(request);
+        authManager.signIn(request);
     }
 
     public void signOut() {
-        authService.signOut();
+        authManager.signOut();
     }
 
     public Optional<User> readUserDetails(String username) {

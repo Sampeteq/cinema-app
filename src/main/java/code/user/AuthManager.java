@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @AllArgsConstructor
-class AuthService {
+class AuthManager {
 
     private final UserRepository userRepository;
 

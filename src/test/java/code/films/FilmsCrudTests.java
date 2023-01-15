@@ -1,6 +1,7 @@
 package code.films;
 
 import code.films.dto.FilmCategoryView;
+import code.utils.FilmTestHelper;
 import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,9 +12,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 
-import static code.utils.FilmTestUtils.createFilmCreatingRequest;
-import static code.utils.FilmTestUtils.createFilms;
-import static code.utils.WebTestUtils.toJson;
+import static code.utils.FilmTestHelper.createFilmCreatingRequest;
+import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -22,6 +22,9 @@ class FilmsCrudTests extends SpringIntegrationTests {
 
     @Autowired
     private FilmFacade filmFacade;
+
+    @Autowired
+    private FilmTestHelper filmTestHelper;
 
     @Test
     @WithMockUser(authorities = "ADMIN")
@@ -54,7 +57,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     }
 
     @ParameterizedTest
-    @MethodSource("code.utils.FilmTestUtils#getWrongFilmYears")
+    @MethodSource("code.utils.FilmTestHelper#getWrongFilmYears")
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
             throws Exception {
@@ -77,7 +80,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_all_films() throws Exception {
         //given
-        var sampleFilms = createFilms(filmFacade);
+        var sampleFilms = filmTestHelper.createFilms();
 
         //when
         var result = mockMvc.perform(

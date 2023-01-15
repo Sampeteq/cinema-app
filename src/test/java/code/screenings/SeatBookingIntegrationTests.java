@@ -1,12 +1,11 @@
 package code.screenings;
 
-import code.films.FilmFacade;
 import code.screenings.dto.SeatBookingRequest;
 import code.screenings.dto.SeatBookingView;
 import code.screenings.dto.SeatView;
-import code.user.UserFacade;
-import code.utils.ScreeningTestUtils;
+import code.utils.ScreeningTestHelper;
 import code.utils.SpringIntegrationTests;
+import code.utils.UserTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,11 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static code.utils.ScreeningTestUtils.createScreening;
-import static code.utils.ScreeningTestUtils.searchScreeningSeats;
-import static code.utils.UserTestUtils.signUpUser;
-import static code.utils.WebTestUtils.fromResultActions;
-import static code.utils.WebTestUtils.toJson;
+import static code.utils.WebTestHelper.fromResultActions;
+import static code.utils.WebTestHelper.toJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -35,10 +31,10 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     private ScreeningFacade screeningFacade;
 
     @Autowired
-    private FilmFacade filmFacade;
+    private ScreeningTestHelper screeningTestHelper;
 
     @Autowired
-    private UserFacade userFacade;
+    private UserTestHelper userTestHelper;
 
     @Autowired
     @Qualifier("testClock")
@@ -48,9 +44,9 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_booked_seat() throws Exception {
         //given
-        signUpUser(userFacade);
-        var screening = createScreening(screeningFacade, filmFacade);
-        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        userTestHelper.signUpUser();
+        var screening = screeningTestHelper.createScreening();
+        var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
         var seatBookingRequest = createSeatBookingRequest(
                 screening.id(),
                 seat.id()
@@ -80,11 +76,11 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_throw_exception_during_booking_when_less_than_24h_to_screening() throws Exception {
         //given
-        signUpUser(userFacade);
+        userTestHelper.signUpUser();
         var currentDate = getCurrentDate(clock);
         var screeningDate = currentDate.minusHours(23);
-        var screening = createScreening(screeningFacade, filmFacade, screeningDate);
-        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        var screening = screeningTestHelper.createScreening(screeningDate);
+        var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
         var seatBookingRequest = createSeatBookingRequest(
                 screening.id(),
                 seat.id()
@@ -109,9 +105,9 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_make_seat_busy_and_reduce_screening_free_seats_by_one_after_booking() throws Exception {
         //given
-        signUpUser(userFacade);
-        var screening = ScreeningTestUtils.createScreening(screeningFacade, filmFacade);
-        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        userTestHelper.signUpUser();
+        var screening = screeningTestHelper.createScreening();
+        var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
         var seatBookingRequest = createSeatBookingRequest(
                 screening.id(),
                 seat.id()
@@ -142,9 +138,9 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_cancel_booking() throws Exception {
         //give
-        var username = signUpUser(userFacade);
-        var screening = createScreening(screeningFacade, filmFacade);
-        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        var username = userTestHelper.signUpUser();
+        var screening = screeningTestHelper.createScreening();
+        var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
         var seatBooking = bookSeat(
                 screening.id(),
                 seat.id(),
@@ -169,9 +165,9 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_make_seat_free_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
-        var username = signUpUser(userFacade);
-        var screening = ScreeningTestUtils.createScreening(screeningFacade, filmFacade);
-        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        var username = userTestHelper.signUpUser();
+        var screening = screeningTestHelper.createScreening();
+        var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
         var seatBooking = bookSeat(
                 screening.id(),
                 seat.id(),
@@ -202,9 +198,9 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_throw_exception_when_booking_is_already_cancelled() throws Exception {
         //given
-        var username = signUpUser(userFacade);
-        var screening = ScreeningTestUtils.createScreening(screeningFacade, filmFacade);
-        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        var username = userTestHelper.signUpUser();
+        var screening = screeningTestHelper.createScreening();
+        var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
         var seatBooking = bookSeat(
                 screening.id(),
                 seat.id(),
@@ -230,7 +226,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_during_seat_booking_cancelling_when_less_than_24h_to_screening()
             throws Exception {
         //given
-        var username = signUpUser(userFacade);
+        var username = userTestHelper.signUpUser();
         var hoursToScreening = 23;
         var seatBooking = bookSeat(username, hoursToScreening);
 
@@ -251,7 +247,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_return_all_user_seats_bookings() throws Exception {
         //given
-        var username = signUpUser(userFacade);
+        var username = userTestHelper.signUpUser();
         var userBookings = bookSeats(username);
 
         //when
@@ -268,8 +264,8 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     }
 
     private List<SeatBookingView> bookSeats(String username) {
-        var screening = createScreening(screeningFacade, filmFacade);
-        var seats = searchScreeningSeats(screening.id(), screeningFacade);
+        var screening = screeningTestHelper.createScreening();
+        var seats = screeningTestHelper.searchScreeningSeats(screening.id());
         var booking1 = bookSeat(screening.id(), seats.get(0).id(), username);
         var booking2 = bookSeat(screening.id(), seats.get(1).id(), username);
         return List.of(booking1, booking2);
@@ -300,8 +296,8 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
     private SeatBookingView bookSeat(String username, int hoursToScreening) {
         var currentDate = getCurrentDate(clock);
         var screeningDate = currentDate.minusHours(hoursToScreening);
-        var screening = createScreening(screeningFacade, filmFacade, screeningDate);
-        var seat = searchScreeningSeats(screening.id(), screeningFacade).get(0);
+        var screening = screeningTestHelper.createScreening(screeningDate);
+        var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
         var timeDuringBooking = Clock.fixed(
                 screeningDate.minusHours(hoursToScreening + 1).toInstant(ZoneOffset.UTC),
                 ZoneOffset.UTC

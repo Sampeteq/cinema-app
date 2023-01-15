@@ -7,7 +7,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.UnsupportedEncodingException;
 
-public abstract class WebTestUtils {
+public abstract class WebTestHelper {
 
     private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 

@@ -4,14 +4,17 @@ import code.films.FilmFacade;
 import code.films.dto.FilmCategoryView;
 import code.films.dto.FilmCreatingRequest;
 import code.films.dto.FilmView;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.time.Year;
 import java.util.List;
 
-public abstract class FilmTestUtils {
+@AllArgsConstructor
+@Component
+public class FilmTestHelper {
 
-    private FilmTestUtils() {
-    }
+    private final FilmFacade filmFacade;
 
     public static FilmCreatingRequest createFilmCreatingRequest() {
         return new FilmCreatingRequest(
@@ -38,23 +41,23 @@ public abstract class FilmTestUtils {
         return List.of(dto1, dto2);
     }
 
-    public static FilmView createFilm(FilmFacade filmFacade) {
-        var filmCreatingRequest = createFilmCreatingRequest();
-        return filmFacade.createFilm(filmCreatingRequest);
-    }
-
-    public static List<FilmView> createFilms(FilmFacade filmFacade) {
-        return createFilmCreatingRequests()
-                .stream()
-                .map(filmFacade::createFilm)
-                .toList();
-    }
-
     public static List<Integer> getWrongFilmYears() {
         var currentYear = Year.now();
         return List.of(
                 currentYear.minusYears(2).getValue(),
                 currentYear.plusYears(2).getValue()
         );
+    }
+
+    public FilmView createFilm() {
+        var filmCreatingRequest = createFilmCreatingRequest();
+        return filmFacade.createFilm(filmCreatingRequest);
+    }
+
+    public List<FilmView> createFilms() {
+        return createFilmCreatingRequests()
+                .stream()
+                .map(filmFacade::createFilm)
+                .toList();
     }
 }

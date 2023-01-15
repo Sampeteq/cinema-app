@@ -2,13 +2,13 @@ package code.user;
 
 import code.user.dto.SignInRequest;
 import code.utils.SpringIntegrationTests;
+import code.utils.UserTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-import static code.utils.UserTestUtils.createSignUpRequest;
-import static code.utils.UserTestUtils.signUpUser;
-import static code.utils.WebTestUtils.toJson;
+import static code.utils.UserTestHelper.createSignUpRequest;
+import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UsersIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
-    private UserFacade userFacade;
+    private UserTestHelper userTestHelper;
 
     @Test
     void should_sign_up_and_sing_in() throws Exception {
@@ -46,7 +46,7 @@ class UsersIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_throw_exception_when_username_is_not_unique() throws Exception {
         //given
-        var username = signUpUser(userFacade);
+        var username = userTestHelper.signUpUser();
         var signUpRequest = createSignUpRequest(username);
 
         //when

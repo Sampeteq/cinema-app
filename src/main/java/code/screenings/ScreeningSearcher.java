@@ -32,6 +32,6 @@ class ScreeningSearcher {
         return screeningRepository
                 .findById(screeningId)
                 .map(Screening::seatsViews)
-                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
+                .orElseThrow(ScreeningNotFoundException::new);
     }
 }

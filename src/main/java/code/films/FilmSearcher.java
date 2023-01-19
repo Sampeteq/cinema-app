@@ -30,6 +30,6 @@ class FilmSearcher {
                 .findById(filmId)
                 .map(Film::toView)
                 .map(FilmView::durationInMinutes)
-                .orElseThrow(() -> new FilmNotFoundException(filmId));
+                .orElseThrow(FilmNotFoundException::new);
     }
 }

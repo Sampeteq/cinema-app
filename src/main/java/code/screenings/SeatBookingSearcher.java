@@ -19,7 +19,7 @@ class SeatBookingSearcher {
     private SeatBooking getBookingOrThrow(UUID ticketId, String username) {
         return seatBookingRepository
                 .findByIdAndUsername(ticketId, username)
-                .orElseThrow(() -> new SeatBookingNotFoundException(ticketId));
+                .orElseThrow(SeatBookingNotFoundException::new);
     }
 
     public List<SeatBookingView> searchAllByUsername(String username) {

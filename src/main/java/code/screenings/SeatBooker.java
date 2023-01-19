@@ -41,18 +41,18 @@ class SeatBooker {
     private Screening getScreeningOrThrow(UUID screeningId) {
         return screeningRepository
                 .findById(screeningId)
-                .orElseThrow(() -> new ScreeningNotFoundException(screeningId));
+                .orElseThrow(ScreeningNotFoundException::new);
     }
 
     private Seat getSeatOrThrow(Screening screening, UUID seatId) {
         return screening
                 .getSeat(seatId)
-                .orElseThrow(() -> new SeatNotFoundException(seatId));
+                .orElseThrow(SeatNotFoundException::new);
     }
 
     private SeatBooking getBookingOrThrow(UUID ticketId) {
         return seatBookingRepository
                 .findById(ticketId)
-                .orElseThrow(() -> new SeatBookingNotFoundException(ticketId));
+                .orElseThrow(SeatBookingNotFoundException::new);
     }
 }

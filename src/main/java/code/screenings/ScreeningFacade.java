@@ -24,11 +24,11 @@ public class ScreeningFacade {
     private final SeatBookingSearcher seatBookingSearcher;
 
     @Transactional
-    public ScreeningRoomView createRoom(ScreeningRoomCreatingRequest dto) {
+    public ScreeningRoomView createScreeningsRoom(ScreeningRoomCreatingRequest dto) {
         return screeningRoomFactory.createRoom(dto);
     }
 
-    public List<ScreeningRoomView> searchAllRooms() {
+    public List<ScreeningRoomView> searchScreeningsRooms() {
         return screeningRoomSearcher.searchAllRooms();
     }
 

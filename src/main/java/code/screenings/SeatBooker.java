@@ -50,9 +50,9 @@ class SeatBooker {
                 .orElseThrow(SeatNotFoundException::new);
     }
 
-    private SeatBooking getBookingOrThrow(UUID ticketId) {
+    private SeatBooking getBookingOrThrow(UUID bookingId) {
         return seatBookingRepository
-                .findById(ticketId)
+                .findById(bookingId)
                 .orElseThrow(SeatBookingNotFoundException::new);
     }
 }

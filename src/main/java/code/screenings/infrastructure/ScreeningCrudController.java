@@ -23,7 +23,7 @@ class ScreeningCrudController {
     private final ScreeningFacade screeningFacade;
 
     @PostMapping("/screenings")
-    ScreeningView add(
+    ScreeningView createScreening(
             @RequestBody
             @Valid
             ScreeningCreatingRequest request
@@ -32,7 +32,7 @@ class ScreeningCrudController {
     }
 
     @GetMapping("/screenings")
-    List<ScreeningView> searchBy(
+    List<ScreeningView> searchScreeningsBy(
             @RequestParam(required = false)
             UUID filmId,
 
@@ -51,22 +51,22 @@ class ScreeningCrudController {
     }
 
     @GetMapping("/screenings/{screeningId}/seats")
-    List<SeatView> searchSeats(@PathVariable UUID screeningId) {
+    List<SeatView> searchScreeningSeats(@PathVariable UUID screeningId) {
         return screeningFacade.searchScreeningSeats(screeningId);
     }
 
     @PostMapping("/screenings-rooms")
-    ScreeningRoomView createRoom(
+    ScreeningRoomView createScreeningsRoom(
             @RequestBody
             @Valid
             ScreeningRoomCreatingRequest request
     ) {
-        return screeningFacade.createRoom(request);
+        return screeningFacade.createScreeningsRoom(request);
     }
 
     @GetMapping("/screenings-rooms")
-    List<ScreeningRoomView> searchAllRooms() {
-        return screeningFacade.searchAllRooms();
+    List<ScreeningRoomView> searchScreeningsRooms() {
+        return screeningFacade.searchScreeningsRooms();
     }
 }
 

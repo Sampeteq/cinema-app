@@ -115,7 +115,7 @@ public class ScreeningTestHelper {
     }
 
     public ScreeningRoomView createScreeningRoom() {
-        return screeningFacade.createRoom(
+        return screeningFacade.createScreeningsRoom(
                 createRoomCreatingRequest()
         );
     }
@@ -132,8 +132,8 @@ public class ScreeningTestHelper {
                 7
         );
         return List.of(
-                screeningFacade.createRoom(room1),
-                screeningFacade.createRoom(room2)
+                screeningFacade.createScreeningsRoom(room1),
+                screeningFacade.createScreeningsRoom(room2)
         );
     }
 

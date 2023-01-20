@@ -12,7 +12,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDateTime;
 
-import static code.utils.ScreeningTestHelper.*;
+import static code.utils.ScreeningTestHelper.createCreateScreeningDto;
+import static code.utils.ScreeningTestHelper.createScreeningRoomDto;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

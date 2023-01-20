@@ -38,6 +38,7 @@ class AuthManager {
         var checkedToken = authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(checkedToken);
     }
+
     void signOut() {
         SecurityContextHolder.clearContext();
     }

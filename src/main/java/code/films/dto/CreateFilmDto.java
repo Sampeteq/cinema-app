@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 public record CreateFilmDto(
         @NotNull
         String title,
-
         @NotNull
         FilmCategoryDto filmCategory,
         @NotNull

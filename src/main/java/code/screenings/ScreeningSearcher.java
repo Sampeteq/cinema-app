@@ -1,7 +1,7 @@
 package code.screenings;
 
-import code.screenings.dto.ScreeningSearchParamsDto;
 import code.screenings.dto.ScreeningDto;
+import code.screenings.dto.ScreeningSearchParamsDto;
 import code.screenings.dto.SeatDto;
 import code.screenings.exception.ScreeningNotFoundException;
 import lombok.AllArgsConstructor;

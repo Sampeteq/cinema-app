@@ -1,7 +1,7 @@
 package code.user;
 
-import code.user.dto.SignInRequest;
-import code.user.dto.SignUpRequest;
+import code.user.dto.SignInDto;
+import code.user.dto.SignUpDto;
 import lombok.AllArgsConstructor;
 
 import java.util.Optional;
@@ -13,12 +13,12 @@ public class UserFacade {
 
     private final UserRepository userRepository;
 
-    public void signUp(SignUpRequest request) {
-        authManager.signUp(request);
+    public void signUp(SignUpDto dto) {
+        authManager.signUp(dto);
     }
 
-    public void signIn(SignInRequest request) {
-        authManager.signIn(request);
+    public void signIn(SignInDto dto) {
+        authManager.signIn(dto);
     }
 
     public void signOut() {

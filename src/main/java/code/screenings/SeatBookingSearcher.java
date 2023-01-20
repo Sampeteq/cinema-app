@@ -1,6 +1,6 @@
 package code.screenings;
 
-import code.screenings.dto.SeatBookingView;
+import code.screenings.dto.SeatBookingDto;
 import code.screenings.exception.SeatBookingNotFoundException;
 import lombok.AllArgsConstructor;
 
@@ -12,8 +12,8 @@ class SeatBookingSearcher {
 
     private final SeatBookingRepository seatBookingRepository;
 
-    SeatBookingView searchSeatBooking(UUID bookingId, String username) {
-        return getBookingOrThrow(bookingId, username).toView();
+    SeatBookingDto searchSeatBooking(UUID bookingId, String username) {
+        return getBookingOrThrow(bookingId, username).toDto();
     }
 
     private SeatBooking getBookingOrThrow(UUID ticketId, String username) {
@@ -22,11 +22,11 @@ class SeatBookingSearcher {
                 .orElseThrow(SeatBookingNotFoundException::new);
     }
 
-    public List<SeatBookingView> searchAllByUsername(String username) {
+    public List<SeatBookingDto> searchAllByUsername(String username) {
         return seatBookingRepository
                 .findByUsername(username)
                 .stream()
-                .map(SeatBooking::toView)
+                .map(SeatBooking::toDto)
                 .toList();
     }
 }

@@ -1,7 +1,7 @@
 package code.screenings;
 
-import code.screenings.dto.SeatBookingRequest;
-import code.screenings.dto.SeatBookingView;
+import code.screenings.dto.BookSeatDto;
+import code.screenings.dto.SeatBookingDto;
 import code.screenings.exception.ScreeningNotFoundException;
 import code.screenings.exception.SeatBookingNotFoundException;
 import code.screenings.exception.SeatNotFoundException;
@@ -17,7 +17,7 @@ class SeatBooker {
 
     private final SeatBookingRepository seatBookingRepository;
 
-    SeatBookingView book(SeatBookingRequest dto, String username, Clock clock) {
+    SeatBookingDto book(BookSeatDto dto, String username, Clock clock) {
         var screening = getScreeningOrThrow(dto.screeningId());
         var seat = getSeatOrThrow(screening, dto.seatId());
         seat.book(clock);
@@ -30,7 +30,7 @@ class SeatBooker {
         );
         return seatBookingRepository
                 .save(booking)
-                .toView();
+                .toDto();
     }
 
     void cancel(UUID seatId, Clock clock) {

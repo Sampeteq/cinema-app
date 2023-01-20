@@ -1,8 +1,8 @@
 package code.screenings;
 
-import code.screenings.dto.SeatBookingRequest;
-import code.screenings.dto.SeatBookingView;
-import code.screenings.dto.SeatView;
+import code.screenings.dto.BookSeatDto;
+import code.screenings.dto.SeatBookingDto;
+import code.screenings.dto.SeatDto;
 import code.utils.ScreeningTestHelper;
 import code.utils.SpringIntegrationTests;
 import code.utils.UserTestHelper;
@@ -47,7 +47,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         userTestHelper.signUpUser();
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var seatBookingRequest = createSeatBookingRequest(
+        var seatBookingRequest = createBookSeatDto(
                 screening.id(),
                 seat.id()
         );
@@ -61,7 +61,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
 
         //then
         result.andExpect(status().isOk());
-        var seatBookingView = fromResultActions(result, SeatBookingView.class);
+        var seatBookingView = fromResultActions(result, SeatBookingDto.class);
         mockMvc.perform(
                         get("/seats-bookings/my/" + seatBookingView.id())
                 )
@@ -81,7 +81,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         var screeningDate = currentDate.minusHours(23);
         var screening = screeningTestHelper.createScreening(screeningDate);
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var seatBookingRequest = createSeatBookingRequest(
+        var seatBookingRequest = createBookSeatDto(
                 screening.id(),
                 seat.id()
         );
@@ -108,7 +108,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         userTestHelper.signUpUser();
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var seatBookingRequest = createSeatBookingRequest(
+        var seatBookingRequest = createBookSeatDto(
                 screening.id(),
                 seat.id()
         );
@@ -125,7 +125,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
                 get("/screenings/" + screening.id() + "/seats")
         );
         var isSeatBusy = Arrays
-                .stream(fromResultActions(searchSeatsResult, SeatView[].class))
+                .stream(fromResultActions(searchSeatsResult, SeatDto[].class))
                 .anyMatch(it -> it.id().equals(seat.id()) && it.status().equals("BUSY"));
         assertThat(isSeatBusy).isTrue();
         mockMvc.perform(
@@ -185,7 +185,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
                 get("/screenings/" + screening.id() + "/seats")
         );
         var isSeatFreeAgain = Arrays
-                .stream(fromResultActions(searchSeatsResult, SeatView[].class))
+                .stream(fromResultActions(searchSeatsResult, SeatDto[].class))
                 .anyMatch(it -> it.id().equals(seat.id()) && it.status().equals("FREE"));
         assertThat(isSeatFreeAgain).isTrue();
         mockMvc.perform(
@@ -258,12 +258,12 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         var bookingsFromResult = Arrays
-                .stream(fromResultActions(result, SeatBookingView[].class))
+                .stream(fromResultActions(result, SeatBookingDto[].class))
                 .toList();
         assertThat(bookingsFromResult).containsExactlyInAnyOrderElementsOf(userBookings);
     }
 
-    private List<SeatBookingView> bookSeats(String username) {
+    private List<SeatBookingDto> bookSeats(String username) {
         var screening = screeningTestHelper.createScreening();
         var seats = screeningTestHelper.searchScreeningSeats(screening.id());
         var booking1 = bookSeat(screening.id(), seats.get(0).id(), username);
@@ -271,8 +271,8 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         return List.of(booking1, booking2);
     }
 
-    private static SeatBookingRequest createSeatBookingRequest(UUID screeningId, UUID seatId) {
-        return new SeatBookingRequest(
+    private static BookSeatDto createBookSeatDto(UUID screeningId, UUID seatId) {
+        return new BookSeatDto(
                 screeningId,
                 seatId,
                 "Name 1",
@@ -280,9 +280,9 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         );
     }
 
-    private SeatBookingView bookSeat(UUID screeningId, UUID seatId, String username) {
+    private SeatBookingDto bookSeat(UUID screeningId, UUID seatId, String username) {
         return screeningFacade.bookSeat(
-                new SeatBookingRequest(
+                new BookSeatDto(
                         screeningId,
                         seatId,
                         "Name 1",
@@ -293,7 +293,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
         );
     }
 
-    private SeatBookingView bookSeat(String username, int hoursToScreening) {
+    private SeatBookingDto bookSeat(String username, int hoursToScreening) {
         var currentDate = getCurrentDate(clock);
         var screeningDate = currentDate.minusHours(hoursToScreening);
         var screening = screeningTestHelper.createScreening(screeningDate);
@@ -303,7 +303,7 @@ class SeatBookingIntegrationTests extends SpringIntegrationTests {
                 ZoneOffset.UTC
         );
         return screeningFacade.bookSeat(
-                createSeatBookingRequest(
+                createBookSeatDto(
                         screening.id(),
                         seat.id()
                 ),

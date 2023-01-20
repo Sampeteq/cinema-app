@@ -1,7 +1,7 @@
 package code.utils;
 
 import code.user.UserFacade;
-import code.user.dto.SignUpRequest;
+import code.user.dto.SignUpDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,24 +11,24 @@ public class UserTestHelper {
 
     private final UserFacade userFacade;
 
-    public static SignUpRequest createSignUpRequest() {
-        return new SignUpRequest(
+    public static SignUpDto createSignUpDto() {
+        return new SignUpDto(
                 "user1",
                 "password1",
                 "password1"
         );
     }
 
-    public static SignUpRequest createSignUpRequest(String username) {
-        return new SignUpRequest(
+    public static SignUpDto createSignUpDto(String username) {
+        return new SignUpDto(
                 username,
                 "password1",
                 "password1"
         );
     }
 
-    public static SignUpRequest createSignUpRequest(String password, String repeatedPassword) {
-        return new SignUpRequest(
+    public static SignUpDto createSignUpDto(String password, String repeatedPassword) {
+        return new SignUpDto(
                 "user1",
                 password,
                 repeatedPassword
@@ -36,7 +36,7 @@ public class UserTestHelper {
     }
 
     public String signUpUser() {
-        var signUpRequest = createSignUpRequest();
+        var signUpRequest = createSignUpDto();
         userFacade.signUp(signUpRequest);
         return signUpRequest.username();
     }

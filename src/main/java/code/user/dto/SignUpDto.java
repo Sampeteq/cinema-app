@@ -2,7 +2,7 @@ package code.user.dto;
 
 import javax.validation.constraints.Size;
 
-public record SignUpRequest(
+public record SignUpDto(
 
         @Size(min = 3, max = 15)
         String username,

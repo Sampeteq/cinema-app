@@ -35,7 +35,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         //given
         var film = filmTestHelper.createFilm();
         var room = screeningTestHelper.createScreeningRoom();
-        var screeningCreatingRequest = createScreeningCreatingRequest(
+        var screeningCreatingRequest = createCreateScreeningDto(
                 film.id(),
                 room.id()
         );
@@ -66,7 +66,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         //given
         var filmId = filmTestHelper.createFilm().id();
         var roomId = screeningTestHelper.createScreeningRoom().id();
-        var screeningCreatingRequest = createScreeningCreatingRequest(
+        var screeningCreatingRequest = createCreateScreeningDto(
                 filmId,
                 roomId
         ).withDate(wrongDate);
@@ -91,7 +91,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     void should_throw_exception_when_there_is_time_and_room_collision_between_screenings() throws Exception {
         //given
         var screening = screeningTestHelper.createScreening();
-        var screeningCreatingRequest = createScreeningCreatingRequest(
+        var screeningCreatingRequest = createCreateScreeningDto(
                 screening.filmId(),
                 screening.roomId(),
                 screening.date().plusMinutes(10)
@@ -172,7 +172,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_create_screening_room() throws Exception {
         //given
-        var roomCreatingRequest = createRoomCreatingRequest();
+        var roomCreatingRequest = createScreeningRoomDto();
 
         //when
         var result = mockMvc.perform(
@@ -198,7 +198,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     void should_throw_exception_when_room_number_is_not_unique() throws Exception {
         //given
         var room = screeningTestHelper.createScreeningRoom();
-        var screeningRoomCreatingRequest = createRoomCreatingRequest().withNumber(room.number());
+        var screeningRoomCreatingRequest = createScreeningRoomDto().withNumber(room.number());
 
         //when
         var result = mockMvc.perform(

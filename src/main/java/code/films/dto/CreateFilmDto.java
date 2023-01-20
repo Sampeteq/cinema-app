@@ -5,12 +5,12 @@ import lombok.With;
 import javax.validation.constraints.NotNull;
 
 @With
-public record FilmCreatingRequest(
+public record CreateFilmDto(
         @NotNull
         String title,
 
         @NotNull
-        FilmCategoryView filmCategory,
+        FilmCategoryDto filmCategory,
         @NotNull
         Integer year,
         @NotNull

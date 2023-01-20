@@ -2,7 +2,7 @@ package code.screenings.dto;
 
 import java.util.UUID;
 
-public record SeatView(
+public record SeatDto(
         UUID id,
         int rowNumber,
         int number,

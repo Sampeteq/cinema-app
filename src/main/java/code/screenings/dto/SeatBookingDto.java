@@ -2,13 +2,13 @@ package code.screenings.dto;
 
 import java.util.UUID;
 
-public record SeatBookingView(
+public record SeatBookingDto(
         UUID id,
 
         String firstName,
 
         String lastName,
 
-        SeatView seat
+        SeatDto seat
 ) {
 }

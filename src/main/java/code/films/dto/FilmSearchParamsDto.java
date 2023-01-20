@@ -6,7 +6,7 @@ import lombok.Builder;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class FilmSearchParamsView {
+public class FilmSearchParamsDto {
 
-    public final FilmCategoryView category;
+    public final FilmCategoryDto category;
 }

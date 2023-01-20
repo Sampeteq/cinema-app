@@ -1,8 +1,8 @@
 package code.screenings;
 
-import code.screenings.dto.ScreeningSearchParamsView;
-import code.screenings.dto.ScreeningView;
-import code.screenings.dto.SeatView;
+import code.screenings.dto.ScreeningSearchParamsDto;
+import code.screenings.dto.ScreeningDto;
+import code.screenings.dto.SeatDto;
 import code.screenings.exception.ScreeningNotFoundException;
 import lombok.AllArgsConstructor;
 
@@ -14,7 +14,7 @@ class ScreeningSearcher {
 
     private final ScreeningRepository screeningRepository;
 
-    List<ScreeningView> searchBy(ScreeningSearchParamsView paramsDto) {
+    List<ScreeningDto> searchBy(ScreeningSearchParamsDto paramsDto) {
         var screeningDate = paramsDto.getScreeningDate();
         var params = ScreeningSearchParams
                 .builder()
@@ -24,14 +24,14 @@ class ScreeningSearcher {
         return screeningRepository
                 .findBy(params)
                 .stream()
-                .map(Screening::toView)
+                .map(Screening::toDto)
                 .toList();
     }
 
-    List<SeatView> searchSeatsByScreeningId(UUID screeningId) {
+    List<SeatDto> searchSeatsByScreeningId(UUID screeningId) {
         return screeningRepository
                 .findById(screeningId)
-                .map(Screening::seatsViews)
+                .map(Screening::seatsDtos)
                 .orElseThrow(ScreeningNotFoundException::new);
     }
 }

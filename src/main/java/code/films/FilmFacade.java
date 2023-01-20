@@ -1,8 +1,8 @@
 package code.films;
 
-import code.films.dto.FilmCreatingRequest;
-import code.films.dto.FilmSearchParamsView;
-import code.films.dto.FilmView;
+import code.films.dto.CreateFilmDto;
+import code.films.dto.FilmSearchParamsDto;
+import code.films.dto.FilmDto;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -15,11 +15,11 @@ public class FilmFacade {
 
     private final FilmSearcher filmSearcher;
 
-    public FilmView createFilm(FilmCreatingRequest dto) {
-        return filmFactory.createFilm(dto).toView();
+    public FilmDto createFilm(CreateFilmDto dto) {
+        return filmFactory.createFilm(dto).toDto();
     }
 
-    public List<FilmView> searchFilms(FilmSearchParamsView paramsDto) {
+    public List<FilmDto> searchFilms(FilmSearchParamsDto paramsDto) {
         return filmSearcher.searchFilms(paramsDto);
     }
 

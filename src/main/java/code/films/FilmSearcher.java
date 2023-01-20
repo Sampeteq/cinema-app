@@ -1,7 +1,7 @@
 package code.films;
 
-import code.films.dto.FilmSearchParamsView;
-import code.films.dto.FilmView;
+import code.films.dto.FilmSearchParamsDto;
+import code.films.dto.FilmDto;
 import code.films.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
 
@@ -13,7 +13,7 @@ class FilmSearcher {
 
     private final FilmRepository filmRepository;
 
-    List<FilmView> searchFilms(FilmSearchParamsView paramsDto) {
+    List<FilmDto> searchFilms(FilmSearchParamsDto paramsDto) {
         var params = FilmSearchParams
                 .builder()
                 .category(paramsDto.category == null ? null : FilmCategory.fromDTO(paramsDto.category))
@@ -21,15 +21,15 @@ class FilmSearcher {
         return filmRepository
                 .findBy(params)
                 .stream()
-                .map(Film::toView)
+                .map(Film::toDto)
                 .toList();
     }
 
     int searchFilmDuration(UUID filmId) {
         return filmRepository
                 .findById(filmId)
-                .map(Film::toView)
-                .map(FilmView::durationInMinutes)
+                .map(Film::toDto)
+                .map(FilmDto::durationInMinutes)
                 .orElseThrow(FilmNotFoundException::new);
     }
 }

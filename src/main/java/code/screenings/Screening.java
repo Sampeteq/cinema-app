@@ -1,7 +1,7 @@
 package code.screenings;
 
-import code.screenings.dto.ScreeningView;
-import code.screenings.dto.SeatView;
+import code.screenings.dto.ScreeningDto;
+import code.screenings.dto.SeatDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -67,22 +67,22 @@ class Screening {
                 .toHours();
     }
 
-    ScreeningView toView() {
-        return new ScreeningView(
+    ScreeningDto toDto() {
+        return new ScreeningDto(
                 this.id,
                 this.date,
                 this.minAge,
                 this.filmId,
-                this.room.toView().id(),
+                this.room.toDto().id(),
                 (int) this.seats.stream().filter(Seat::isFree).count()
         );
     }
 
-    List<SeatView> seatsViews() {
+    List<SeatDto> seatsDtos() {
         return this
                 .seats
                 .stream()
-                .map(Seat::toView)
+                .map(Seat::toDto)
                 .toList();
     }
 }

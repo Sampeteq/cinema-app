@@ -1,7 +1,7 @@
 package code.films;
 
-import code.films.dto.FilmCategoryView;
-import code.films.dto.FilmView;
+import code.films.dto.FilmCategoryDto;
+import code.films.dto.FilmDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,11 +28,11 @@ class Film {
 
     private int durationInMinutes;
 
-    FilmView toView() {
-        return new FilmView(
+    FilmDto toDto() {
+        return new FilmDto(
                 this.id,
                 this.title,
-                FilmCategoryView.valueOf(this.category.name()),
+                FilmCategoryDto.valueOf(this.category.name()),
                 year,
                 durationInMinutes
         );

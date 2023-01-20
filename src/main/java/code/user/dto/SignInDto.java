@@ -1,6 +1,6 @@
 package code.user.dto;
 
-public record SignInRequest(
+public record SignInDto(
         String username,
         String password
 ) {

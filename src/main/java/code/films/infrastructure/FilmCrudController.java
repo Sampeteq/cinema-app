@@ -1,10 +1,10 @@
 package code.films.infrastructure;
 
 import code.films.FilmFacade;
-import code.films.dto.FilmCategoryView;
-import code.films.dto.FilmCreatingRequest;
-import code.films.dto.FilmSearchParamsView;
-import code.films.dto.FilmView;
+import code.films.dto.FilmCategoryDto;
+import code.films.dto.CreateFilmDto;
+import code.films.dto.FilmSearchParamsDto;
+import code.films.dto.FilmDto;
 import code.films.exception.FilmException;
 import code.films.exception.FilmNotFoundException;
 import lombok.AllArgsConstructor;
@@ -22,20 +22,20 @@ class FilmCrudController {
     private final FilmFacade filmFacade;
 
     @PostMapping("/films")
-    FilmView createFilm(
+    FilmDto createFilm(
             @RequestBody
             @Valid
-            FilmCreatingRequest request
+            CreateFilmDto dto
     ) {
-        return filmFacade.createFilm(request);
+        return filmFacade.createFilm(dto);
     }
 
     @GetMapping("/films")
-    List<FilmView> searchFilms(
+    List<FilmDto> searchFilms(
             @RequestParam(required = false)
-            FilmCategoryView category
+            FilmCategoryDto category
     ) {
-        var params = FilmSearchParamsView
+        var params = FilmSearchParamsDto
                 .builder()
                 .category(category)
                 .build();

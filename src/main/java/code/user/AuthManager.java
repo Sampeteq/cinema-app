@@ -1,7 +1,7 @@
 package code.user;
 
-import code.user.dto.SignInRequest;
-import code.user.dto.SignUpRequest;
+import code.user.dto.SignInDto;
+import code.user.dto.SignUpDto;
 import code.user.exception.UserException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,23 +18,23 @@ class AuthManager {
 
     private final AuthenticationManager authenticationManager;
 
-    void signUp(SignUpRequest request) {
-        if (userRepository.existsById(request.username())) {
+    void signUp(SignUpDto dto) {
+        if (userRepository.existsById(dto.username())) {
             throw new UserException("Not unique username");
         }
-        if (!(request.password().equals(request.repeatedPassword()))) {
+        if (!(dto.password().equals(dto.repeatedPassword()))) {
             throw new UserException("Passwords must be the same");
         }
         var user = new User(
-                request.username(),
-                passwordEncoder.encode(request.password()),
+                dto.username(),
+                passwordEncoder.encode(dto.password()),
                 UserRole.COMMON
         );
         userRepository.add(user);
     }
 
-    void signIn(SignInRequest request) {
-        var token = new UsernamePasswordAuthenticationToken(request.username(), request.password());
+    void signIn(SignInDto dto) {
+        var token = new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
         var checkedToken = authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(checkedToken);
     }

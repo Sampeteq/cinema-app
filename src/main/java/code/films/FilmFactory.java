@@ -1,6 +1,6 @@
 package code.films;
 
-import code.films.dto.FilmCreatingRequest;
+import code.films.dto.CreateFilmDto;
 import code.films.exception.FilmYearException;
 import lombok.AllArgsConstructor;
 
@@ -13,7 +13,7 @@ class FilmFactory {
 
     private final FilmRepository filmRepository;
 
-    Film createFilm(FilmCreatingRequest dto) {
+    Film createFilm(CreateFilmDto dto) {
         if (filmYearSpecification.isSatisfyBy(dto.year())) {
             var film = new Film(
                     UUID.randomUUID(),

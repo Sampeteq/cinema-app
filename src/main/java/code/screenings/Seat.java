@@ -1,6 +1,6 @@
 package code.screenings;
 
-import code.screenings.dto.SeatView;
+import code.screenings.dto.SeatDto;
 import code.screenings.exception.BookingException;
 import lombok.*;
 
@@ -54,8 +54,8 @@ class Seat {
         this.status = SeatStatus.FREE;
     }
 
-    SeatView toView() {
-        return new SeatView(
+    SeatDto toDto() {
+        return new SeatDto(
                 this.id,
                 this.rowNumber,
                 this.number,

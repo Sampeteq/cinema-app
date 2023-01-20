@@ -23,16 +23,16 @@ class ScreeningCrudController {
     private final ScreeningFacade screeningFacade;
 
     @PostMapping("/screenings")
-    ScreeningView createScreening(
+    ScreeningDto createScreening(
             @RequestBody
             @Valid
-            ScreeningCreatingRequest request
+            CreateScreeningDto request
     ) {
         return screeningFacade.createScreening(request);
     }
 
     @GetMapping("/screenings")
-    List<ScreeningView> searchScreeningsBy(
+    List<ScreeningDto> searchScreeningsBy(
             @RequestParam(required = false)
             UUID filmId,
 
@@ -41,7 +41,7 @@ class ScreeningCrudController {
             LocalDateTime date
     ) {
 
-        var paramsDto = ScreeningSearchParamsView
+        var paramsDto = ScreeningSearchParamsDto
                 .builder()
                 .filmId(filmId)
                 .screeningDate(date)
@@ -51,21 +51,21 @@ class ScreeningCrudController {
     }
 
     @GetMapping("/screenings/{screeningId}/seats")
-    List<SeatView> searchScreeningSeats(@PathVariable UUID screeningId) {
+    List<SeatDto> searchScreeningSeats(@PathVariable UUID screeningId) {
         return screeningFacade.searchScreeningSeats(screeningId);
     }
 
     @PostMapping("/screenings-rooms")
-    ScreeningRoomView createScreeningsRoom(
+    ScreeningRoomDto createScreeningsRoom(
             @RequestBody
             @Valid
-            ScreeningRoomCreatingRequest request
+            CreateScreeningRoomDto dto
     ) {
-        return screeningFacade.createScreeningsRoom(request);
+        return screeningFacade.createScreeningsRoom(dto);
     }
 
     @GetMapping("/screenings-rooms")
-    List<ScreeningRoomView> searchScreeningsRooms() {
+    List<ScreeningRoomDto> searchScreeningsRooms() {
         return screeningFacade.searchScreeningsRooms();
     }
 }

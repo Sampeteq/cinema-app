@@ -21,16 +21,16 @@ public class ScreeningTestHelper {
 
     private static final int currentYear = Year.now().getValue();
 
-    public static ScreeningRoomCreatingRequest createRoomCreatingRequest() {
-        return new ScreeningRoomCreatingRequest(
+    public static CreateScreeningRoomDto createScreeningRoomDto() {
+        return new CreateScreeningRoomDto(
                 1,
                 6,
                 10
         );
     }
 
-    public static ScreeningCreatingRequest createScreeningCreatingRequest(UUID filmId, UUID roomId) {
-        return new ScreeningCreatingRequest(
+    public static CreateScreeningDto createCreateScreeningDto(UUID filmId, UUID roomId) {
+        return new CreateScreeningDto(
                 LocalDateTime.of(currentYear, 5, 10, 18, 30),
                 13,
                 filmId,
@@ -38,12 +38,12 @@ public class ScreeningTestHelper {
         );
     }
 
-    public static ScreeningCreatingRequest createScreeningCreatingRequest(
+    public static CreateScreeningDto createCreateScreeningDto(
             UUID filmId,
             UUID roomId,
             LocalDateTime screeningDate
     ) {
-        return new ScreeningCreatingRequest(
+        return new CreateScreeningDto(
                 screeningDate,
                 13,
                 filmId,
@@ -69,33 +69,33 @@ public class ScreeningTestHelper {
         return List.of(date1, date2);
     }
 
-    public ScreeningView createScreening() {
+    public ScreeningDto createScreening() {
         var sampleFilm = filmTestHelper.createFilm();
         var sampleRoom = createScreeningRoom();
         return screeningFacade.createScreening(
-                createScreeningCreatingRequest(
+                createCreateScreeningDto(
                         sampleFilm.id(),
                         sampleRoom.id()
                 )
         );
     }
 
-    public ScreeningView createScreening(LocalDateTime screeningDate) {
+    public ScreeningDto createScreening(LocalDateTime screeningDate) {
         var sampleFilm = filmTestHelper.createFilm();
         var sampleRoom = createScreeningRoom();
         return screeningFacade.createScreening(
-                createScreeningCreatingRequest(
+                createCreateScreeningDto(
                         sampleFilm.id(),
                         sampleRoom.id()
                 ).withDate(screeningDate)
         );
     }
 
-    public List<ScreeningView> createScreenings() {
+    public List<ScreeningDto> createScreenings() {
         var sampleFilms = filmTestHelper.createFilms();
         var sampleRooms = createScreeningRooms();
         var screening1 = screeningFacade.createScreening(
-                new ScreeningCreatingRequest(
+                new CreateScreeningDto(
                         LocalDateTime
                                 .of(currentYear, 5, 5, 18, 30),
                         13,
@@ -104,7 +104,7 @@ public class ScreeningTestHelper {
                 )
         );
         var screening2 = screeningFacade.createScreening(
-                new ScreeningCreatingRequest(
+                new CreateScreeningDto(
                         LocalDateTime.of(currentYear, 7, 3, 20, 30),
                         18,
                         sampleFilms.get(1).id(),
@@ -114,19 +114,19 @@ public class ScreeningTestHelper {
         return List.of(screening1, screening2);
     }
 
-    public ScreeningRoomView createScreeningRoom() {
+    public ScreeningRoomDto createScreeningRoom() {
         return screeningFacade.createScreeningsRoom(
-                createRoomCreatingRequest()
+                createScreeningRoomDto()
         );
     }
 
-    public List<ScreeningRoomView> createScreeningRooms() {
-        var room1 = new ScreeningRoomCreatingRequest(
+    public List<ScreeningRoomDto> createScreeningRooms() {
+        var room1 = new CreateScreeningRoomDto(
                 1,
                 6,
                 10
         );
-        var room2 = new ScreeningRoomCreatingRequest(
+        var room2 = new CreateScreeningRoomDto(
                 2,
                 8,
                 7
@@ -138,7 +138,7 @@ public class ScreeningTestHelper {
     }
 
 
-    public List<SeatView> searchScreeningSeats(UUID screeningId) {
+    public List<SeatDto> searchScreeningSeats(UUID screeningId) {
         return screeningFacade.searchScreeningSeats(screeningId);
     }
 }

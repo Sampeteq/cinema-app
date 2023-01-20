@@ -1,6 +1,6 @@
 package code.films;
 
-import code.films.dto.FilmCategoryView;
+import code.films.dto.FilmCategoryDto;
 import code.utils.FilmTestHelper;
 import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 
-import static code.utils.FilmTestHelper.createFilmCreatingRequest;
+import static code.utils.FilmTestHelper.createCreateFilmDto;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,7 +30,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_add_film() throws Exception {
         //given
-        var filmCreatingRequest = createFilmCreatingRequest();
+        var filmCreatingRequest = createCreateFilmDto();
 
         //when
         var result = mockMvc.perform(
@@ -62,7 +62,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
             throws Exception {
         //given
-        var filmCreatingRequest = createFilmCreatingRequest().withYear(wrongYear);
+        var filmCreatingRequest = createCreateFilmDto().withYear(wrongYear);
 
         //when
         var result = mockMvc.perform(
@@ -97,10 +97,10 @@ class FilmsCrudTests extends SpringIntegrationTests {
     void should_search_films_by_params() throws Exception {
         //given
         var sampleFilm = filmFacade.createFilm(
-                createFilmCreatingRequest().withFilmCategory(FilmCategoryView.COMEDY)
+                createCreateFilmDto().withFilmCategory(FilmCategoryDto.COMEDY)
         );
         filmFacade.createFilm(
-                createFilmCreatingRequest().withFilmCategory(FilmCategoryView.DRAMA)
+                createCreateFilmDto().withFilmCategory(FilmCategoryDto.DRAMA)
         );
 
         //when

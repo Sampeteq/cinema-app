@@ -1,9 +1,9 @@
 package code.utils;
 
 import code.films.FilmFacade;
-import code.films.dto.FilmCategoryView;
-import code.films.dto.FilmCreatingRequest;
-import code.films.dto.FilmView;
+import code.films.dto.FilmCategoryDto;
+import code.films.dto.CreateFilmDto;
+import code.films.dto.FilmDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,25 +16,25 @@ public class FilmTestHelper {
 
     private final FilmFacade filmFacade;
 
-    public static FilmCreatingRequest createFilmCreatingRequest() {
-        return new FilmCreatingRequest(
+    public static CreateFilmDto createCreateFilmDto() {
+        return new CreateFilmDto(
                 "title 1",
-                FilmCategoryView.COMEDY,
+                FilmCategoryDto.COMEDY,
                 Year.now().getValue(),
                 120
         );
     }
 
-    public static List<FilmCreatingRequest> createFilmCreatingRequests() {
-        var dto1 = new FilmCreatingRequest(
+    public static List<CreateFilmDto> createCreateFilmDtos() {
+        var dto1 = new CreateFilmDto(
                 "title 1",
-                FilmCategoryView.COMEDY,
+                FilmCategoryDto.COMEDY,
                 Year.now().getValue(),
                 120
         );
-        var dto2 = new FilmCreatingRequest(
+        var dto2 = new CreateFilmDto(
                 "title 2",
-                FilmCategoryView.DRAMA,
+                FilmCategoryDto.DRAMA,
                 Year.now().getValue() - 1,
                 90
         );
@@ -49,13 +49,13 @@ public class FilmTestHelper {
         );
     }
 
-    public FilmView createFilm() {
-        var filmCreatingRequest = createFilmCreatingRequest();
+    public FilmDto createFilm() {
+        var filmCreatingRequest = createCreateFilmDto();
         return filmFacade.createFilm(filmCreatingRequest);
     }
 
-    public List<FilmView> createFilms() {
-        return createFilmCreatingRequests()
+    public List<FilmDto> createFilms() {
+        return createCreateFilmDtos()
                 .stream()
                 .map(filmFacade::createFilm)
                 .toList();

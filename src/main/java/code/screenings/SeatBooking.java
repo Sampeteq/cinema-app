@@ -1,6 +1,6 @@
 package code.screenings;
 
-import code.screenings.dto.SeatBookingView;
+import code.screenings.dto.SeatBookingDto;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -34,12 +34,12 @@ class SeatBooking {
         this.seat.cancelBooking(clock);
     }
 
-    SeatBookingView toView() {
-        return new SeatBookingView(
+    SeatBookingDto toDto() {
+        return new SeatBookingDto(
                 this.id,
                 this.firstName,
                 this.lastName,
-                this.seat.toView()
+                this.seat.toDto()
         );
     }
 }

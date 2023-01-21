@@ -13,7 +13,7 @@ interface ScreeningRepository extends JpaRepository<Screening, UUID> {
             "left join fetch s.room " +
             "left join fetch s.seats " +
             "where " +
-            "(:#{#params?.date} is null or s.date = :#{#params?.date}) and " +
+            "(:#{#params.date} is null or s.date = :#{#params.date}) and " +
             "(:#{#params.filmId} is null or s.film.id = :#{#params.filmId})")
     List<Screening> findBy(ScreeningSearchParams params);
 

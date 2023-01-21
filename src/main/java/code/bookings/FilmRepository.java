@@ -8,10 +8,7 @@ import java.util.UUID;
 
 interface FilmRepository extends JpaRepository<Film, UUID> {
 
-    @Query(
-            "SELECT f FROM Film f WHERE " +
-                    ":#{#params?.category} is null or f.category = :#{#params?.category}"
-    )
+    @Query("SELECT f FROM Film f WHERE :#{#params.category} is null or f.category = :#{#params.category}")
     List<Film> findBy(FilmSearchParams params);
 }
 

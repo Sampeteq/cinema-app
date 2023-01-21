@@ -1,7 +1,7 @@
 package code.utils;
 
-import code.films.FilmFacade;
-import code.films.dto.*;
+import code.bookings.BookingFacade;
+import code.bookings.dto.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,14 +15,14 @@ import java.util.UUID;
 @Component
 public class ScreeningTestHelper {
 
-    private final FilmFacade filmFacade;
+    private final BookingFacade bookingFacade;
 
     private final FilmTestHelper filmTestHelper;
 
     private static final int currentYear = Year.now().getValue();
 
-    public static CreateScreeningRoomDto createScreeningRoomDto() {
-        return new CreateScreeningRoomDto(
+    public static CreateRoomDto createScreeningRoomDto() {
+        return new CreateRoomDto(
                 1,
                 6,
                 10
@@ -72,7 +72,7 @@ public class ScreeningTestHelper {
     public ScreeningDto createScreening() {
         var sampleFilm = filmTestHelper.createFilm();
         var sampleRoom = createScreeningRoom();
-        return filmFacade.createScreening(
+        return bookingFacade.createScreening(
                 createCreateScreeningDto(
                         sampleFilm.id(),
                         sampleRoom.id()
@@ -83,7 +83,7 @@ public class ScreeningTestHelper {
     public ScreeningDto createScreening(LocalDateTime screeningDate) {
         var sampleFilm = filmTestHelper.createFilm();
         var sampleRoom = createScreeningRoom();
-        return filmFacade.createScreening(
+        return bookingFacade.createScreening(
                 createCreateScreeningDto(
                         sampleFilm.id(),
                         sampleRoom.id()
@@ -94,7 +94,7 @@ public class ScreeningTestHelper {
     public List<ScreeningDto> createScreenings() {
         var sampleFilms = filmTestHelper.createFilms();
         var sampleRooms = createScreeningRooms();
-        var screening1 = filmFacade.createScreening(
+        var screening1 = bookingFacade.createScreening(
                 new CreateScreeningDto(
                         LocalDateTime
                                 .of(currentYear, 5, 5, 18, 30),
@@ -103,7 +103,7 @@ public class ScreeningTestHelper {
                         sampleRooms.get(0).id()
                 )
         );
-        var screening2 = filmFacade.createScreening(
+        var screening2 = bookingFacade.createScreening(
                 new CreateScreeningDto(
                         LocalDateTime.of(currentYear, 7, 3, 20, 30),
                         18,
@@ -114,31 +114,31 @@ public class ScreeningTestHelper {
         return List.of(screening1, screening2);
     }
 
-    public ScreeningRoomDto createScreeningRoom() {
-        return filmFacade.createScreeningsRoom(
+    public RoomDto createScreeningRoom() {
+        return bookingFacade.createScreeningsRoom(
                 createScreeningRoomDto()
         );
     }
 
-    public List<ScreeningRoomDto> createScreeningRooms() {
-        var room1 = new CreateScreeningRoomDto(
+    public List<RoomDto> createScreeningRooms() {
+        var room1 = new CreateRoomDto(
                 1,
                 6,
                 10
         );
-        var room2 = new CreateScreeningRoomDto(
+        var room2 = new CreateRoomDto(
                 2,
                 8,
                 7
         );
         return List.of(
-                filmFacade.createScreeningsRoom(room1),
-                filmFacade.createScreeningsRoom(room2)
+                bookingFacade.createScreeningsRoom(room1),
+                bookingFacade.createScreeningsRoom(room2)
         );
     }
 
 
     public List<SeatDto> searchScreeningSeats(UUID screeningId) {
-        return filmFacade.searchScreeningSeats(screeningId);
+        return bookingFacade.searchScreeningSeats(screeningId);
     }
 }

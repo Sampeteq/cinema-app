@@ -1,9 +1,9 @@
 package code.utils;
 
-import code.films.FilmFacade;
-import code.films.dto.CreateFilmDto;
-import code.films.dto.FilmCategoryDto;
-import code.films.dto.FilmDto;
+import code.bookings.BookingFacade;
+import code.bookings.dto.CreateFilmDto;
+import code.bookings.dto.FilmCategoryDto;
+import code.bookings.dto.FilmDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public class FilmTestHelper {
 
-    private final FilmFacade filmFacade;
+    private final BookingFacade bookingFacade;
 
     public static CreateFilmDto createCreateFilmDto() {
         return new CreateFilmDto(
@@ -51,13 +51,13 @@ public class FilmTestHelper {
 
     public FilmDto createFilm() {
         var filmCreatingRequest = createCreateFilmDto();
-        return filmFacade.createFilm(filmCreatingRequest);
+        return bookingFacade.createFilm(filmCreatingRequest);
     }
 
     public List<FilmDto> createFilms() {
         return createCreateFilmDtos()
                 .stream()
-                .map(filmFacade::createFilm)
+                .map(bookingFacade::createFilm)
                 .toList();
     }
 }

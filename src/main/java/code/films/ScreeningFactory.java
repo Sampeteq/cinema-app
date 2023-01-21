@@ -23,16 +23,13 @@ class ScreeningFactory {
 
     Screening createScreening(CreateScreeningDto dto) {
         validateScreeningDate(dto.date());
-        var film = filmRepository
-                .findById(dto.filmId())
-                .orElseThrow(FilmNotFoundException::new);
-        validateTimeAndRoomCollisionBetweenScreenings(dto.date(), dto.roomId(), film.getDurationInMinutes());
+        var film = getFilmOrThrow(dto);
+        validateTimeAndRoomCollisionBetweenScreenings(dto.date(),  film.getDurationInMinutes(), dto.roomId());
         var room = getScreeningRoomOrThrow(dto.roomId());
         var screening = Screening.of(
                 dto.date(),
                 dto.minAge(),
-                dto.filmId(),
-                film.getDurationInMinutes(),
+                film,
                 room
         );
         return screeningRepository.save(screening);
@@ -48,17 +45,22 @@ class ScreeningFactory {
         }
     }
 
+    private Film getFilmOrThrow(CreateScreeningDto dto) {
+        return filmRepository
+                .findById(dto.filmId())
+                .orElseThrow(FilmNotFoundException::new);
+    }
+
     private void validateTimeAndRoomCollisionBetweenScreenings(
             LocalDateTime screeningDate,
-            UUID roomId,
-            int filmDurationInMinutes
+            int filmDurationInMinutes,
+            UUID roomId
     ) {
         var screeningFinishDate = screeningDate.plusMinutes(filmDurationInMinutes);
-        var isTimeAndRoomCollision = screeningRepository.existsByFinishDateGreaterThanAndDateLessThanAndRoomId(
-                screeningDate,
-                screeningFinishDate,
-                roomId
-        );
+        var isTimeAndRoomCollision = screeningRepository
+                .findByRoomId(roomId)
+                .stream()
+                .anyMatch(screening -> screening.IsTimeCollision(screeningDate, screeningFinishDate));
         if (isTimeAndRoomCollision) {
             throw new ScreeningRoomException("Time and room collision between screenings");
         }

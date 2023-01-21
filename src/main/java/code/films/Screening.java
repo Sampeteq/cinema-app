@@ -27,11 +27,10 @@ class Screening {
 
     private LocalDateTime date;
 
-    private LocalDateTime finishDate;
-
     private int minAge;
 
-    private UUID filmId;
+    @ManyToOne
+    private Film film;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private ScreeningRoom room;
@@ -39,13 +38,12 @@ class Screening {
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
-    static Screening of(LocalDateTime date, int minAge, UUID filmId, int filmDuration, ScreeningRoom room) {
+    static Screening of(LocalDateTime date, int minAge, Film film, ScreeningRoom room) {
         var screening = new Screening(
                 UUID.randomUUID(),
                 date,
-                date.plusMinutes(filmDuration),
                 minAge,
-                filmId,
+                film,
                 room,
                 new ArrayList<>()
         );
@@ -67,12 +65,17 @@ class Screening {
                 .toHours();
     }
 
+    boolean IsTimeCollision(LocalDateTime start, LocalDateTime finish) {
+        var screeningFinishDate = this.date.plusMinutes(film.getDurationInMinutes());
+        return screeningFinishDate.isAfter(start) && this.date.isBefore(finish);
+    }
+
     ScreeningDto toDto() {
         return new ScreeningDto(
                 this.id,
                 this.date,
                 this.minAge,
-                this.filmId,
+                this.film.getId(),
                 this.room.toDto().id(),
                 (int) this.seats.stream().filter(Seat::isFree).count()
         );

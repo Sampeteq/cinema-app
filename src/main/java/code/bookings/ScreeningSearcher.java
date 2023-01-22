@@ -14,7 +14,7 @@ class ScreeningSearcher {
 
     private final ScreeningRepository screeningRepository;
 
-    List<ScreeningDto> searchBy(ScreeningSearchParamsDto paramsDto) {
+    List<ScreeningDto> searchScreeningsBy(ScreeningSearchParamsDto paramsDto) {
         var screeningDate = paramsDto.getScreeningDate();
         var params = ScreeningSearchParams
                 .builder()
@@ -28,7 +28,7 @@ class ScreeningSearcher {
                 .toList();
     }
 
-    List<SeatDto> searchSeatsByScreeningId(UUID screeningId) {
+    List<SeatDto> searchSeats(UUID screeningId) {
         return screeningRepository
                 .findById(screeningId)
                 .map(Screening::seatsDtos)

@@ -12,7 +12,7 @@ class BookingSearcher {
 
     private final BookingRepository bookingRepository;
 
-    BookingDto searchSeatBooking(UUID bookingId, String username) {
+    BookingDto searchBookingById(UUID bookingId, String username) {
         return getBookingOrThrow(bookingId, username).toDto();
     }
 
@@ -22,7 +22,7 @@ class BookingSearcher {
                 .orElseThrow(SeatBookingNotFoundException::new);
     }
 
-    public List<BookingDto> searchAllByUsername(String username) {
+    public List<BookingDto> searchAllBookings(String username) {
         return bookingRepository
                 .findByUsername(username)
                 .stream()

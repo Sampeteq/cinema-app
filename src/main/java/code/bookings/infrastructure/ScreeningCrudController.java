@@ -26,9 +26,9 @@ class ScreeningCrudController {
     ScreeningDto createScreening(
             @RequestBody
             @Valid
-            CreateScreeningDto request
+            CreateScreeningDto dto
     ) {
-        return bookingFacade.createScreening(request);
+        return bookingFacade.createScreening(dto);
     }
 
     @GetMapping("/screenings")
@@ -51,22 +51,22 @@ class ScreeningCrudController {
     }
 
     @GetMapping("/screenings/{screeningId}/seats")
-    List<SeatDto> searchScreeningSeats(@PathVariable UUID screeningId) {
-        return bookingFacade.searchScreeningSeats(screeningId);
+    List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
+        return bookingFacade.searchSeats(screeningId);
     }
 
     @PostMapping("/rooms")
-    RoomDto createScreeningsRoom(
+    RoomDto createRoom(
             @RequestBody
             @Valid
             CreateRoomDto dto
     ) {
-        return bookingFacade.createScreeningsRoom(dto);
+        return bookingFacade.createRoom(dto);
     }
 
     @GetMapping("/rooms")
-    List<RoomDto> searchScreeningsRooms() {
-        return bookingFacade.searchScreeningsRooms();
+    List<RoomDto> searchAllRooms() {
+        return bookingFacade.searchAllRooms();
     }
 }
 

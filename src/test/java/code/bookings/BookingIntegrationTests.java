@@ -155,7 +155,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         assertThat(
-                bookingFacade.searchSeatBooking(booking.id(), username)
+                bookingFacade.searchBookingById(booking.id(), username)
                         .seat()
                         .status()
         ).isEqualTo(SeatStatus.FREE.name());
@@ -206,7 +206,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 seat.id(),
                 username
         );
-        bookingFacade.cancelSeatBooking(booking.id(), clock);
+        bookingFacade.cancelBooking(booking.id(), clock);
 
         //when
         var result = mockMvc.perform(

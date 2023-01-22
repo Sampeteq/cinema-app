@@ -31,16 +31,16 @@ public class BookingFacade {
         return filmFactory.createFilm(dto).toDto();
     }
 
-    public List<FilmDto> searchFilms(FilmSearchParamsDto paramsDto) {
-        return filmSearcher.searchFilms(paramsDto);
+    public List<FilmDto> searchFilmsBy(FilmSearchParamsDto paramsDto) {
+        return filmSearcher.searchFilmsBy(paramsDto);
     }
 
     @Transactional
-    public RoomDto createScreeningsRoom(CreateRoomDto dto) {
+    public RoomDto createRoom(CreateRoomDto dto) {
         return roomFactory.createRoom(dto);
     }
 
-    public List<RoomDto> searchScreeningsRooms() {
+    public List<RoomDto> searchAllRooms() {
         return roomSearcher.searchAllRooms();
     }
 
@@ -53,29 +53,29 @@ public class BookingFacade {
 
     @Transactional
     public List<ScreeningDto> searchScreeningsBy(ScreeningSearchParamsDto paramsDto) {
-        return screeningSearcher.searchBy(paramsDto);
+        return screeningSearcher.searchScreeningsBy(paramsDto);
     }
 
     @Transactional
-    public List<SeatDto> searchScreeningSeats(UUID screeningId) {
-        return screeningSearcher.searchSeatsByScreeningId(screeningId);
+    public List<SeatDto> searchSeats(UUID screeningId) {
+        return screeningSearcher.searchSeats(screeningId);
     }
 
     @Transactional
     public BookingDto bookSeat(BookDto dto, String username, Clock clock) {
-        return booker.book(dto, username, clock);
+        return booker.bookSeat(dto, username, clock);
     }
 
     @Transactional
-    public void cancelSeatBooking(UUID bookingId, Clock clock) {
-        booker.cancel(bookingId, clock);
+    public void cancelBooking(UUID bookingId, Clock clock) {
+        booker.cancelSeat(bookingId, clock);
     }
 
-    public BookingDto searchSeatBooking(UUID bookingId, String username) {
-        return bookingSearcher.searchSeatBooking(bookingId, username);
+    public BookingDto searchBookingById(UUID bookingId, String username) {
+        return bookingSearcher.searchBookingById(bookingId, username);
     }
 
-    public List<BookingDto> searchSeatBookingsByUsername(String username) {
-        return bookingSearcher.searchAllByUsername(username);
+    public List<BookingDto> searchAllBookings(String username) {
+        return bookingSearcher.searchAllBookings(username);
     }
 }

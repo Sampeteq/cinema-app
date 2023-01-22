@@ -11,7 +11,7 @@ class FilmSearcher {
 
     private final FilmRepository filmRepository;
 
-    List<FilmDto> searchFilms(FilmSearchParamsDto paramsDto) {
+    List<FilmDto> searchFilmsBy(FilmSearchParamsDto paramsDto) {
         var params = FilmSearchParams
                 .builder()
                 .category(paramsDto.category == null ? null : FilmCategory.fromDTO(paramsDto.category))

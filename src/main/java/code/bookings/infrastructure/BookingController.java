@@ -28,28 +28,28 @@ class BookingController {
     BookingDto bookSeat(
             @RequestBody
             @Valid
-            BookDto request,
+            BookDto dto,
             Principal principal
     ) {
-        return bookingFacade.bookSeat(request, principal.getName(), clock);
+        return bookingFacade.bookSeat(dto, principal.getName(), clock);
     }
 
     @PatchMapping("/{bookingId}/cancel")
-    void cancelSeatBooking(
+    void cancelBooking(
             @PathVariable
             UUID bookingId
     ) {
-        bookingFacade.cancelSeatBooking(bookingId, clock);
-    }
-
-    @GetMapping("/my/{bookingId}")
-    BookingDto searchSeatBooking(@PathVariable UUID bookingId, Principal principal) {
-        return bookingFacade.searchSeatBooking(bookingId, principal.getName());
+        bookingFacade.cancelBooking(bookingId, clock);
     }
 
     @GetMapping("/my")
-    List<BookingDto> searchSeatBookingsByUsername(Principal principal) {
-        return bookingFacade.searchSeatBookingsByUsername(principal.getName());
+    List<BookingDto> searchAllBookings(Principal principal) {
+        return bookingFacade.searchAllBookings(principal.getName());
+    }
+
+    @GetMapping("/my/{bookingId}")
+    BookingDto searchBookingById(@PathVariable UUID bookingId, Principal principal) {
+        return bookingFacade.searchBookingById(bookingId, principal.getName());
     }
 }
 

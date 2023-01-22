@@ -115,7 +115,7 @@ public class ScreeningTestHelper {
     }
 
     public RoomDto createScreeningRoom() {
-        return bookingFacade.createScreeningsRoom(
+        return bookingFacade.createRoom(
                 createScreeningRoomDto()
         );
     }
@@ -132,13 +132,13 @@ public class ScreeningTestHelper {
                 7
         );
         return List.of(
-                bookingFacade.createScreeningsRoom(room1),
-                bookingFacade.createScreeningsRoom(room2)
+                bookingFacade.createRoom(room1),
+                bookingFacade.createRoom(room2)
         );
     }
 
 
     public List<SeatDto> searchScreeningSeats(UUID screeningId) {
-        return bookingFacade.searchScreeningSeats(screeningId);
+        return bookingFacade.searchSeats(screeningId);
     }
 }

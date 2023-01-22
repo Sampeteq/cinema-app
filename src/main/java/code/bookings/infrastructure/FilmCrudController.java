@@ -31,7 +31,7 @@ class FilmCrudController {
     }
 
     @GetMapping("/films")
-    List<FilmDto> searchFilms(
+    List<FilmDto> searchFilmsBy(
             @RequestParam(required = false)
             FilmCategoryDto category
     ) {
@@ -39,7 +39,7 @@ class FilmCrudController {
                 .builder()
                 .category(category)
                 .build();
-        return bookingFacade.searchFilms(params);
+        return bookingFacade.searchFilmsBy(params);
     }
 }
 

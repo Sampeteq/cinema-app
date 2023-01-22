@@ -17,7 +17,7 @@ class Booker {
 
     private final BookingRepository bookingRepository;
 
-    BookingDto book(BookDto dto, String username, Clock clock) {
+    BookingDto bookSeat(BookDto dto, String username, Clock clock) {
         var screening = getScreeningOrThrow(dto.screeningId());
         var seat = getSeatOrThrow(screening, dto.seatId());
         seat.book(clock);
@@ -33,7 +33,7 @@ class Booker {
                 .toDto();
     }
 
-    void cancel(UUID seatId, Clock clock) {
+    void cancelSeat(UUID seatId, Clock clock) {
         var booking = getBookingOrThrow(seatId);
         booking.cancel(clock);
     }

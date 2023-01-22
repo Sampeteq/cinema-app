@@ -33,7 +33,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         //given
         var film = filmTestHelper.createFilm();
         var room = screeningTestHelper.createScreeningRoom();
-        var screeningCreatingRequest = createCreateScreeningDto(
+        var dto = createCreateScreeningDto(
                 film.id(),
                 room.id()
         );
@@ -41,7 +41,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         //when
         var result = mockMvc.perform(
                 post("/screenings")
-                        .content(toJson(screeningCreatingRequest))
+                        .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -49,10 +49,10 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         result.andExpect(status().isOk());
         mockMvc.perform(get("/screenings"))
                 .andExpect(jsonPath("$[0].id").exists())
-                .andExpect(jsonPath("$[0].date").value(screeningCreatingRequest.date().toString()))
-                .andExpect(jsonPath("$[0].minAge").value(screeningCreatingRequest.minAge()))
-                .andExpect(jsonPath("$[0].filmId").value(screeningCreatingRequest.filmId().toString()))
-                .andExpect(jsonPath("$[0].roomId").value(screeningCreatingRequest.roomId().toString()))
+                .andExpect(jsonPath("$[0].date").value(dto.date().toString()))
+                .andExpect(jsonPath("$[0].minAge").value(dto.minAge()))
+                .andExpect(jsonPath("$[0].filmId").value(dto.filmId().toString()))
+                .andExpect(jsonPath("$[0].roomId").value(dto.roomId().toString()))
                 .andExpect(jsonPath("$[0].freeSeats").value(room.seatsQuantity()));
     }
 
@@ -64,7 +64,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         //given
         var filmId = filmTestHelper.createFilm().id();
         var roomId = screeningTestHelper.createScreeningRoom().id();
-        var screeningCreatingRequest = createCreateScreeningDto(
+        var dto = createCreateScreeningDto(
                 filmId,
                 roomId
         ).withDate(wrongDate);
@@ -72,7 +72,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         //when
         var result = mockMvc.perform(
                 post("/screenings")
-                        .content(toJson(screeningCreatingRequest))
+                        .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -89,7 +89,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     void should_throw_exception_when_there_is_time_and_room_collision_between_screenings() throws Exception {
         //given
         var screening = screeningTestHelper.createScreening();
-        var screeningCreatingRequest = createCreateScreeningDto(
+        var dto = createCreateScreeningDto(
                 screening.filmId(),
                 screening.roomId(),
                 screening.date().plusMinutes(10)
@@ -98,7 +98,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         //when
         var result = mockMvc.perform(
                 post("/screenings")
-                        .content(toJson(screeningCreatingRequest))
+                        .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -170,12 +170,12 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_create_screening_room() throws Exception {
         //given
-        var roomCreatingRequest = createScreeningRoomDto();
+        var dto = createScreeningRoomDto();
 
         //when
         var result = mockMvc.perform(
                 post("/screenings-rooms")
-                        .content(toJson(roomCreatingRequest))
+                        .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -185,10 +185,10 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
                         get("/screenings-rooms")
                 )
                 .andExpect(jsonPath("$[0].id").exists())
-                .andExpect(jsonPath("$[0].number").value(roomCreatingRequest.number()))
-                .andExpect(jsonPath("$[0].rowsQuantity").value(roomCreatingRequest.rowsQuantity()))
-                .andExpect(jsonPath("$[0].seatsInOneRowQuantity").value(roomCreatingRequest.seatsQuantityInOneRow()))
-                .andExpect(jsonPath("$[0].seatsQuantity").value(roomCreatingRequest.rowsQuantity() * roomCreatingRequest.seatsQuantityInOneRow()));
+                .andExpect(jsonPath("$[0].number").value(dto.number()))
+                .andExpect(jsonPath("$[0].rowsQuantity").value(dto.rowsQuantity()))
+                .andExpect(jsonPath("$[0].seatsInOneRowQuantity").value(dto.seatsQuantityInOneRow()))
+                .andExpect(jsonPath("$[0].seatsQuantity").value(dto.rowsQuantity() * dto.seatsQuantityInOneRow()));
     }
 
     @Test
@@ -196,12 +196,12 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
     void should_throw_exception_when_room_number_is_not_unique() throws Exception {
         //given
         var room = screeningTestHelper.createScreeningRoom();
-        var screeningRoomCreatingRequest = createScreeningRoomDto().withNumber(room.number());
+        var dto = createScreeningRoomDto().withNumber(room.number());
 
         //when
         var result = mockMvc.perform(
                 post("/screenings-rooms")
-                        .content(toJson(screeningRoomCreatingRequest))
+                        .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -209,7 +209,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Screening room already exists: " + screeningRoomCreatingRequest.number()
+                        "Screening room already exists: " + dto.number()
                 ));
     }
 }

@@ -47,7 +47,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         userTestHelper.signUpUser();
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var seatBookingRequest = createBookSeatDto(
+        var bookSeatDto = createBookSeatDto(
                 screening.id(),
                 seat.id()
         );
@@ -55,21 +55,21 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //when
         var result = mockMvc.perform(
                 post("/seats-bookings")
-                        .content(toJson(seatBookingRequest))
+                        .content(toJson(bookSeatDto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
         //then
         result.andExpect(status().isOk());
-        var seatBookingView = fromResultActions(result, BookingDto.class);
+        var bookingDto = fromResultActions(result, BookingDto.class);
         mockMvc.perform(
-                        get("/seats-bookings/my/" + seatBookingView.id())
+                        get("/seats-bookings/my/" + bookingDto.id())
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.firstName").value(seatBookingRequest.firstName()))
-                .andExpect(jsonPath("$.lastName").value(seatBookingRequest.lastName()))
-                .andExpect(jsonPath("$.seat.id").value(seatBookingRequest.seatId().toString()));
+                .andExpect(jsonPath("$.firstName").value(bookSeatDto.firstName()))
+                .andExpect(jsonPath("$.lastName").value(bookSeatDto.lastName()))
+                .andExpect(jsonPath("$.seat.id").value(bookSeatDto.seatId().toString()));
     }
 
     @Test
@@ -81,7 +81,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         var screeningDate = currentDate.minusHours(23);
         var screening = screeningTestHelper.createScreening(screeningDate);
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var seatBookingRequest = createBookSeatDto(
+        var dto = createBookSeatDto(
                 screening.id(),
                 seat.id()
         );
@@ -89,7 +89,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //when
         var result = mockMvc.perform(
                 post("/seats-bookings")
-                        .content(toJson(seatBookingRequest))
+                        .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -97,7 +97,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Too late for seat booking: " + seatBookingRequest.seatId()
+                        "Too late for seat booking: " + dto.seatId()
                 ));
     }
 
@@ -108,7 +108,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         userTestHelper.signUpUser();
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var seatBookingRequest = createBookSeatDto(
+        var bookSeatDto = createBookSeatDto(
                 screening.id(),
                 seat.id()
         );
@@ -116,7 +116,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //when
         mockMvc.perform(
                 post("/seats-bookings")
-                        .content(toJson(seatBookingRequest))
+                        .content(toJson(bookSeatDto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -141,7 +141,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         var username = userTestHelper.signUpUser();
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var seatBooking = bookSeat(
+        var booking = bookSeat(
                 screening.id(),
                 seat.id(),
                 username
@@ -149,13 +149,13 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                patch("/seats-bookings/" + seatBooking.id() + "/cancel")
+                patch("/seats-bookings/" + booking.id() + "/cancel")
         );
 
         //then
         result.andExpect(status().isOk());
         assertThat(
-                bookingFacade.searchSeatBooking(seatBooking.id(), username)
+                bookingFacade.searchSeatBooking(booking.id(), username)
                         .seat()
                         .status()
         ).isEqualTo(SeatStatus.FREE.name());
@@ -168,7 +168,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         var username = userTestHelper.signUpUser();
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var seatBooking = bookSeat(
+        var booking = bookSeat(
                 screening.id(),
                 seat.id(),
                 username
@@ -176,7 +176,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                patch("/seats-bookings/" + seatBooking.id() + "/cancel")
+                patch("/seats-bookings/" + booking.id() + "/cancel")
         );
 
         //then
@@ -201,16 +201,16 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         var username = userTestHelper.signUpUser();
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var seatBooking = bookSeat(
+        var booking = bookSeat(
                 screening.id(),
                 seat.id(),
                 username
         );
-        bookingFacade.cancelSeatBooking(seatBooking.id(), clock);
+        bookingFacade.cancelSeatBooking(booking.id(), clock);
 
         //when
         var result = mockMvc.perform(
-                patch("/seats-bookings/" + seatBooking.id() + "/cancel")
+                patch("/seats-bookings/" + booking.id() + "/cancel")
         );
 
         //then
@@ -228,18 +228,18 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //given
         var username = userTestHelper.signUpUser();
         var hoursToScreening = 23;
-        var seatBooking = bookSeat(username, hoursToScreening);
+        var booking = bookSeat(username, hoursToScreening);
 
         //when
         var result = mockMvc.perform(
-                patch("/seats-bookings/" + seatBooking.id() + "/cancel")
+                patch("/seats-bookings/" + booking.id() + "/cancel")
         );
 
         //then
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Too late for seat booking cancelling: " + seatBooking.seat().id()
+                        "Too late for seat booking cancelling: " + booking.seat().id()
                 ));
     }
 

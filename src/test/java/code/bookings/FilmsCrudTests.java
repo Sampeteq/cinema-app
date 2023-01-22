@@ -30,12 +30,12 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_add_film() throws Exception {
         //given
-        var filmCreatingRequest = createCreateFilmDto();
+        var dto = createCreateFilmDto();
 
         //when
         var result = mockMvc.perform(
                 post("/films")
-                        .content(toJson(filmCreatingRequest))
+                        .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -46,13 +46,13 @@ class FilmsCrudTests extends SpringIntegrationTests {
         ).andExpect(
                 jsonPath("$.size()").value(1)
         ).andExpect(
-                jsonPath("$[0].title").value(filmCreatingRequest.title())
+                jsonPath("$[0].title").value(dto.title())
         ).andExpect(
-                jsonPath("$[0].category").value(filmCreatingRequest.filmCategory().name())
+                jsonPath("$[0].category").value(dto.filmCategory().name())
         ).andExpect(
-                jsonPath("$[0].year").value(filmCreatingRequest.year())
+                jsonPath("$[0].year").value(dto.year())
         ).andExpect(
-                jsonPath("$[0].durationInMinutes").value(filmCreatingRequest.durationInMinutes())
+                jsonPath("$[0].durationInMinutes").value(dto.durationInMinutes())
         );
     }
 
@@ -62,12 +62,12 @@ class FilmsCrudTests extends SpringIntegrationTests {
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
             throws Exception {
         //given
-        var filmCreatingRequest = createCreateFilmDto().withYear(wrongYear);
+        var dto = createCreateFilmDto().withYear(wrongYear);
 
         //when
         var result = mockMvc.perform(
                 post("/films")
-                        .content(toJson(filmCreatingRequest))
+                        .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 

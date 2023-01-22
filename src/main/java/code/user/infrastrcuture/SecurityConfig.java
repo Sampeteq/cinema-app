@@ -45,7 +45,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService(UserFacade userFacade) {
         return username -> userFacade
-                .readUserDetails(username)
+                .searchUserDetails(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 

@@ -1,40 +1,12 @@
 package code.user;
 
-import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
-interface UserRepository {
 
-    void add(User user);
+interface UserRepository extends JpaRepository<User, String> {
 
-    Optional<User> getById(String username);
-
-    boolean existsById(String username);
-}
-
-interface JpaUserRepository extends JpaRepository<User, String> {
-
-}
-
-@AllArgsConstructor
-class JpaUserRepositoryAdapter implements UserRepository {
-
-    private final JpaUserRepository jpaUserRepository;
-
-    @Override
-    public void add(User user) {
-        jpaUserRepository.save(user);
-    }
-
-    @Override
-    public Optional<User> getById(String username) {
-        return jpaUserRepository.findById(username);
-    }
-
-    @Override
-    public boolean existsById(String username) {
-        return jpaUserRepository.existsById(username);
-    }
+    Optional<UserDetails> searchUserDetailsByUsername(String username);
 }

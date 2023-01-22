@@ -22,11 +22,6 @@ class UserConfig {
     }
 
     @Bean
-    UserRepository userRepository(JpaUserRepository jpaUserRepository) {
-        return new JpaUserRepositoryAdapter(jpaUserRepository);
-    }
-
-    @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

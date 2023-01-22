@@ -30,7 +30,7 @@ class AuthManager {
                 passwordEncoder.encode(dto.password()),
                 UserRole.COMMON
         );
-        userRepository.add(user);
+        userRepository.save(user);
     }
 
     void signIn(SignInDto dto) {

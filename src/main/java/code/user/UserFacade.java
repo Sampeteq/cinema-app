@@ -3,6 +3,7 @@ package code.user;
 import code.user.dto.SignInDto;
 import code.user.dto.SignUpDto;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
@@ -25,8 +26,7 @@ public class UserFacade {
         authManager.signOut();
     }
 
-    public Optional<User> readUserDetails(String username) {
-        return userRepository.getById(username);
+    public Optional<UserDetails> searchUserDetails(String username) {
+        return userRepository.searchUserDetailsByUsername(username);
     }
-
 }

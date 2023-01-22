@@ -174,7 +174,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                post("/screenings-rooms")
+                post("/rooms")
                         .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -182,7 +182,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         mockMvc.perform(
-                        get("/screenings-rooms")
+                        get("/rooms")
                 )
                 .andExpect(jsonPath("$[0].id").exists())
                 .andExpect(jsonPath("$[0].number").value(dto.number()))
@@ -200,7 +200,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                post("/screenings-rooms")
+                post("/rooms")
                         .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );

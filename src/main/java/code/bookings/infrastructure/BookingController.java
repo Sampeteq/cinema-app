@@ -16,14 +16,15 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/bookings")
 @AllArgsConstructor
-class SeatBookingController {
+class BookingController {
 
     private final BookingFacade bookingFacade;
 
     private final Clock clock;
 
-    @PostMapping("/seats-bookings")
+    @PostMapping
     BookingDto bookSeat(
             @RequestBody
             @Valid
@@ -33,7 +34,7 @@ class SeatBookingController {
         return bookingFacade.bookSeat(request, principal.getName(), clock);
     }
 
-    @PatchMapping("/seats-bookings/{bookingId}/cancel")
+    @PatchMapping("/{bookingId}/cancel")
     void cancelSeatBooking(
             @PathVariable
             UUID bookingId
@@ -41,12 +42,12 @@ class SeatBookingController {
         bookingFacade.cancelSeatBooking(bookingId, clock);
     }
 
-    @GetMapping("/seats-bookings/my/{bookingId}")
+    @GetMapping("/my/{bookingId}")
     BookingDto searchSeatBooking(@PathVariable UUID bookingId, Principal principal) {
         return bookingFacade.searchSeatBooking(bookingId, principal.getName());
     }
 
-    @GetMapping("/seats-bookings/my")
+    @GetMapping("/my")
     List<BookingDto> searchSeatBookingsByUsername(Principal principal) {
         return bookingFacade.searchSeatBookingsByUsername(principal.getName());
     }

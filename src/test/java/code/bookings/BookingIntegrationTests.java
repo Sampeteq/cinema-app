@@ -54,7 +54,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                post("/seats-bookings")
+                post("/bookings")
                         .content(toJson(bookSeatDto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -63,7 +63,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         result.andExpect(status().isOk());
         var bookingDto = fromResultActions(result, BookingDto.class);
         mockMvc.perform(
-                        get("/seats-bookings/my/" + bookingDto.id())
+                        get("/bookings/my/" + bookingDto.id())
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
@@ -88,7 +88,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                post("/seats-bookings")
+                post("/bookings")
                         .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -115,7 +115,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         mockMvc.perform(
-                post("/seats-bookings")
+                post("/bookings")
                         .content(toJson(bookSeatDto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -149,7 +149,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                patch("/seats-bookings/" + booking.id() + "/cancel")
+                patch("/bookings/" + booking.id() + "/cancel")
         );
 
         //then
@@ -176,7 +176,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                patch("/seats-bookings/" + booking.id() + "/cancel")
+                patch("/bookings/" + booking.id() + "/cancel")
         );
 
         //then
@@ -210,7 +210,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                patch("/seats-bookings/" + booking.id() + "/cancel")
+                patch("/bookings/" + booking.id() + "/cancel")
         );
 
         //then
@@ -232,7 +232,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                patch("/seats-bookings/" + booking.id() + "/cancel")
+                patch("/bookings/" + booking.id() + "/cancel")
         );
 
         //then
@@ -252,7 +252,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                get("/seats-bookings/my")
+                get("/bookings/my")
         );
 
         //then

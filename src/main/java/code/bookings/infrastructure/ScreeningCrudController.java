@@ -55,7 +55,7 @@ class ScreeningCrudController {
         return bookingFacade.searchScreeningSeats(screeningId);
     }
 
-    @PostMapping("/screenings-rooms")
+    @PostMapping("/rooms")
     RoomDto createScreeningsRoom(
             @RequestBody
             @Valid
@@ -64,7 +64,7 @@ class ScreeningCrudController {
         return bookingFacade.createScreeningsRoom(dto);
     }
 
-    @GetMapping("/screenings-rooms")
+    @GetMapping("/rooms")
     List<RoomDto> searchScreeningsRooms() {
         return bookingFacade.searchScreeningsRooms();
     }

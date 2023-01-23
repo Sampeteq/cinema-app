@@ -35,8 +35,8 @@ public class UserTestHelper {
         );
     }
 
-    public String signUpUser() {
-        var signUpRequest = createSignUpDto();
+    public String signUpUser(String username) {
+        var signUpRequest = createSignUpDto(username);
         userFacade.signUp(signUpRequest);
         return signUpRequest.username();
     }

@@ -46,7 +46,7 @@ class UsersIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_throw_exception_when_username_is_not_unique() throws Exception {
         //given
-        var username = userTestHelper.signUpUser();
+        var username = userTestHelper.signUpUser("user1");
         var signUpRequest = UserTestHelper.createSignUpDto(username);
 
         //when

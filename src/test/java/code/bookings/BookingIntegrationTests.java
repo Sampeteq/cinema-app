@@ -7,6 +7,7 @@ import code.screenings.dto.SeatDto;
 import code.utils.ScreeningTestHelper;
 import code.utils.SpringIntegrationTests;
 import code.utils.UserTestHelper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,11 +45,15 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     @Qualifier("testClock")
     private Clock clock;
 
+    @BeforeEach
+    void setUp() {
+        userTestHelper.signUpUser("user1");
+    }
+
     @Test
     @WithMockUser(username = "user1")
     void should_booked_seat() throws Exception {
         //given
-        userTestHelper.signUpUser();
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
         var bookSeatDto = createBookSeatDto(
@@ -82,7 +87,6 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_throw_exception_during_booking_when_less_than_24h_to_screening() throws Exception {
         //given
-        userTestHelper.signUpUser();
         var currentDate = getCurrentDate(clock);
         var screeningDate = currentDate.minusHours(23);
         var screening = screeningTestHelper.createScreening(screeningDate);
@@ -111,7 +115,6 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_make_seat_busy_and_reduce_screening_free_seats_by_one_after_booking() throws Exception {
         //given
-        userTestHelper.signUpUser();
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
         var bookSeatDto = createBookSeatDto(
@@ -144,13 +147,12 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_cancel_booking() throws Exception {
         //give
-        var username = userTestHelper.signUpUser();
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
         var booking = bookSeat(
                 screening.id(),
                 seat.id(),
-                username
+                "user1"
         );
 
         //when
@@ -174,13 +176,12 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_make_seat_free_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
-        var username = userTestHelper.signUpUser();
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
         var booking = bookSeat(
                 screening.id(),
                 seat.id(),
-                username
+                "user1"
         );
 
         //when
@@ -207,13 +208,12 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_throw_exception_when_booking_is_already_cancelled() throws Exception {
         //given
-        var username = userTestHelper.signUpUser();
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
         var booking = bookSeat(
                 screening.id(),
                 seat.id(),
-                username
+                "user1"
         );
         bookingFacade.cancelBooking(booking.id(), clock);
 
@@ -235,9 +235,8 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_during_booking_cancelling_when_less_than_24h_to_screening()
             throws Exception {
         //given
-        var username = userTestHelper.signUpUser();
         var hoursToScreening = 23;
-        var booking = bookSeat(username, hoursToScreening);
+        var booking = bookSeat("user1", hoursToScreening);
 
         //when
         var result = mockMvc.perform(
@@ -256,8 +255,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_return_all_user_bookings() throws Exception {
         //given
-        var username = userTestHelper.signUpUser();
-        var userBookings = bookSeats(username);
+        var userBookings = bookSeats("user1");
 
         //when
         var result = mockMvc.perform(

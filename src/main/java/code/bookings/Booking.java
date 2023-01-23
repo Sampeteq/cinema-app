@@ -5,7 +5,6 @@ import code.bookings.exception.BookingException;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.Clock;
 import java.util.UUID;
 
 @Entity
@@ -13,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @EqualsAndHashCode(of = "id")
+@Getter
 @ToString
 class Booking {
 
@@ -26,17 +26,17 @@ class Booking {
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
-    @OneToOne
-    private Seat seat;
+    private UUID screeningId;
+
+    private UUID seatId;
 
     private String username;
 
-    void cancel(Clock clock) {
-        if (this.status.equals(BookingStatus.CANCELLED)) {
+    void changeStatus(BookingStatus newStatus) {
+        if (newStatus.equals(BookingStatus.CANCELLED) && this.status.equals(BookingStatus.CANCELLED)) {
             throw new BookingException("Booking already cancelled");
         }
-        this.seat.cancelBooking(clock);
-        this.status = BookingStatus.CANCELLED;
+        this.status = newStatus;
     }
 
     BookingDto toDto() {
@@ -45,7 +45,8 @@ class Booking {
                 this.firstName,
                 this.lastName,
                 this.status.name(),
-                this.seat.toDto()
+                this.screeningId,
+                this.seatId
         );
     }
 }

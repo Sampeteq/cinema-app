@@ -11,6 +11,8 @@ public record BookingDto(
 
         String status,
 
-        SeatDto seat
+        UUID screeningId,
+
+        UUID seatId
 ) {
 }

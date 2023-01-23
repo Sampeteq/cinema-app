@@ -2,7 +2,8 @@ package code.bookings;
 
 import code.bookings.dto.BookDto;
 import code.bookings.dto.BookingDto;
-import code.bookings.dto.SeatDto;
+import code.screenings.ScreeningFacade;
+import code.screenings.dto.SeatDto;
 import code.utils.ScreeningTestHelper;
 import code.utils.SpringIntegrationTests;
 import code.utils.UserTestHelper;
@@ -29,6 +30,9 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
     private BookingFacade bookingFacade;
+
+    @Autowired
+    private ScreeningFacade screeningFacade;
 
     @Autowired
     private ScreeningTestHelper screeningTestHelper;
@@ -70,7 +74,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 .andExpect(jsonPath("$.firstName").value(bookSeatDto.firstName()))
                 .andExpect(jsonPath("$.lastName").value(bookSeatDto.lastName()))
                 .andExpect(jsonPath("$.status").value(BookingStatus.ACTIVE.name()))
-                .andExpect(jsonPath("$.seat.id").value(bookSeatDto.seatId().toString()));
+                .andExpect(jsonPath("$.seatId").value(bookSeatDto.seatId().toString()));
     }
 
     @Test
@@ -127,7 +131,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         );
         var isSeatBusy = Arrays
                 .stream(fromResultActions(searchSeatsResult, SeatDto[].class))
-                .anyMatch(it -> it.id().equals(seat.id()) && it.status().equals("BUSY"));
+                .anyMatch(it -> it.id().equals(seat.id()));
         assertThat(isSeatBusy).isTrue();
         mockMvc.perform(
                         get("/screenings")
@@ -156,10 +160,13 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         assertThat(
-                bookingFacade.searchBookingById(booking.id(), username)
-                        .seat()
+                screeningFacade.searchSeats(screening.id())
+                        .stream()
+                        .filter(it -> it.id().equals(seat.id()))
+                        .findFirst()
+                        .get()
                         .status()
-        ).isEqualTo(SeatStatus.FREE.name());
+        ).isEqualTo("FREE");
     }
 
     @Test

@@ -1,10 +1,13 @@
 package code.bookings;
 
 import code.bookings.dto.BookDto;
+import code.bookings.dto.BookingCancelledEvent;
 import code.bookings.dto.BookingDto;
-import code.bookings.exception.ScreeningNotFoundException;
+import code.bookings.dto.SeatBookedEvent;
+import code.bookings.exception.BookingException;
 import code.bookings.exception.BookingNotFoundException;
-import code.bookings.exception.SeatNotFoundException;
+import code.screenings.ScreeningFacade;
+import com.google.common.eventbus.EventBus;
 import lombok.AllArgsConstructor;
 
 import java.time.Clock;
@@ -13,20 +16,34 @@ import java.util.UUID;
 @AllArgsConstructor
 class Booker {
 
-    private final ScreeningRepository screeningRepository;
-
     private final BookingRepository bookingRepository;
 
+    private final ScreeningFacade screeningFacade;
+
+    private final EventBus eventBus;
+
     BookingDto bookSeat(BookDto dto, String username, Clock clock) {
-        var screening = getScreeningOrThrow(dto.screeningId());
-        var seat = getSeatOrThrow(screening, dto.seatId());
-        seat.book(clock);
+        var screeningDetails = screeningFacade.getScreeningDetails(
+                dto.screeningId(),
+                dto.seatId(),
+                clock
+        );
+        if (screeningDetails.timeToScreeningInHours() < 24) {
+            throw new BookingException("Too late to booking");
+        }
+        if (!screeningDetails.isSeatAvailable()) {
+            throw new BookingException("Seat not available");
+        }
+        eventBus.post(
+                new SeatBookedEvent(dto.screeningId(), dto.seatId())
+        );
         var booking = new Booking(
                 UUID.randomUUID(),
                 dto.firstName(),
                 dto.lastName(),
                 BookingStatus.ACTIVE,
-                seat,
+                dto.screeningId(),
+                dto.seatId(),
                 username
         );
         return bookingRepository
@@ -34,21 +51,21 @@ class Booker {
                 .toDto();
     }
 
-    void cancelSeat(UUID seatId, Clock clock) {
-        var booking = getBookingOrThrow(seatId);
-        booking.cancel(clock);
-    }
-
-    private Screening getScreeningOrThrow(UUID screeningId) {
-        return screeningRepository
-                .findById(screeningId)
-                .orElseThrow(ScreeningNotFoundException::new);
-    }
-
-    private Seat getSeatOrThrow(Screening screening, UUID seatId) {
-        return screening
-                .getSeat(seatId)
-                .orElseThrow(SeatNotFoundException::new);
+    void cancelSeat(UUID bookingId, Clock clock) {
+        var booking = getBookingOrThrow(bookingId);
+        var screeningId = booking.getScreeningId();
+        var seatId = booking.getSeatId();
+        var screeningDetails = screeningFacade.getScreeningDetails(screeningId, seatId, clock);
+        if (screeningDetails.timeToScreeningInHours() < 24) {
+            throw new BookingException("Too late to cancel booking");
+        }
+        booking.changeStatus(BookingStatus.CANCELLED);
+        eventBus.post(
+                new BookingCancelledEvent(
+                        screeningId,
+                        seatId
+                )
+        );
     }
 
     private Booking getBookingOrThrow(UUID bookingId) {

@@ -28,7 +28,7 @@ public class ScreeningFacade {
 
     private final ScreeningSearcher screeningSearcher;
 
-    private final ScreeningRepository screeningRepository;
+    private final ScreeningEventHandler screeningEventHandler;
 
     public FilmDto createFilm(CreateFilmDto dto) {
         return filmFactory.createFilm(dto).toDto();
@@ -64,40 +64,19 @@ public class ScreeningFacade {
         return screeningSearcher.searchSeats(screeningId);
     }
 
-    public ScreeningDetails getScreeningDetails(UUID screeningId, UUID seatId, Clock clock) {
-        var screening = screeningRepository
-                .findById(screeningId)
-                .orElseThrow(ScreeningNotFoundException::new);
-        var timeToScreeningStartInHours = screening.timeToScreeningStartInHours(clock);
-        var isFree = screening
-                .getSeat(seatId)
-                .orElseThrow(SeatNotFoundException::new)
-                .isFree();
-        return new ScreeningDetails(
-                timeToScreeningStartInHours,
-                isFree
-        );
+    public ScreeningDetails searchScreeningDetails(UUID screeningId, UUID seatId, Clock clock) {
+        return screeningSearcher.searchScreeningDetails(screeningId, seatId, clock);
     }
 
     @Subscribe
     @Transactional
     public void handle(SeatBookedEvent event) {
-        screeningRepository
-                .findById(event.screeningId())
-                .orElseThrow(ScreeningNotFoundException::new)
-                .getSeat(event.seatId())
-                .orElseThrow(SeatNotFoundException::new)
-                .changeStatus(SeatStatus.BUSY);
+        screeningEventHandler.handle(event);
     }
 
     @Subscribe
     @Transactional
     public void handle(BookingCancelledEvent event) {
-        screeningRepository
-                .findById(event.screeningId())
-                .orElseThrow(ScreeningNotFoundException::new)
-                .getSeat(event.seatId())
-                .orElseThrow(SeatNotFoundException::new)
-                .changeStatus(SeatStatus.FREE);
+        screeningEventHandler.handle(event);
     }
 }

@@ -33,6 +33,7 @@ class ScreeningConfig {
                 filmRepository
         );
         var screeningSearcher = new ScreeningSearcher(screeningRepository);
+        var screeningEventHandler = new ScreeningEventHandler(screeningRepository);
         var screeningFacade = new ScreeningFacade(
                 filmFactory,
                 filmSearcher,
@@ -40,7 +41,7 @@ class ScreeningConfig {
                 roomSearcher,
                 screeningFactory,
                 screeningSearcher,
-                screeningRepository
+                screeningEventHandler
         );
         eventBus.register(screeningFacade);
         return screeningFacade;

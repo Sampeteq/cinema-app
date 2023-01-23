@@ -23,7 +23,7 @@ class Booker {
     private final EventBus eventBus;
 
     BookingDto bookSeat(BookDto dto, String username, Clock clock) {
-        var screeningDetails = screeningFacade.getScreeningDetails(
+        var screeningDetails = screeningFacade.searchScreeningDetails(
                 dto.screeningId(),
                 dto.seatId(),
                 clock
@@ -55,7 +55,7 @@ class Booker {
         var booking = getBookingOrThrow(bookingId);
         var screeningId = booking.getScreeningId();
         var seatId = booking.getSeatId();
-        var screeningDetails = screeningFacade.getScreeningDetails(screeningId, seatId, clock);
+        var screeningDetails = screeningFacade.searchScreeningDetails(screeningId, seatId, clock);
         if (screeningDetails.timeToScreeningInHours() < 24) {
             throw new BookingException("Too late to cancel booking");
         }

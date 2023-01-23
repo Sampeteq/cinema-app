@@ -6,6 +6,7 @@ import code.screenings.exception.ScreeningNotFoundException;
 import code.screenings.exception.SeatNotFoundException;
 import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
@@ -16,13 +17,22 @@ class ScreeningEventHandler {
     private final ScreeningRepository screeningRepository;
 
     @Subscribe
-    void handle(SeatBookedEvent event) {
-        searchSeatByIdOrThrow(event.screeningId(), event.seatId()).changeStatus(SeatStatus.BUSY);
-    }
-
-    @Subscribe
-    void handle(BookingCancelledEvent event) {
-        searchSeatByIdOrThrow(event.screeningId(), event.seatId()).changeStatus(SeatStatus.FREE);
+    void handle(Object event) {
+        if (event instanceof SeatBookedEvent seatBookedEvent) {
+            searchSeatByIdOrThrow(
+                    seatBookedEvent.screeningId(),
+                    seatBookedEvent.seatId()
+            ).changeStatus(SeatStatus.BUSY);
+        }
+        else if (event instanceof BookingCancelledEvent bookingCancelledEvent) {
+            searchSeatByIdOrThrow(
+                    bookingCancelledEvent.screeningId(),
+                    bookingCancelledEvent.seatId()
+            ).changeStatus(SeatStatus.FREE);
+        }
+        else {
+            throw new IllegalArgumentException("Not supported event type");
+        }
     }
 
     private Seat searchSeatByIdOrThrow(UUID screeningId, UUID seatId) {

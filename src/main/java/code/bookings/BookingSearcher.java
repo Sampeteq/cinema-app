@@ -1,7 +1,7 @@
 package code.bookings;
 
 import code.bookings.dto.BookingDto;
-import code.bookings.exception.SeatBookingNotFoundException;
+import code.bookings.exception.BookingNotFoundException;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -19,7 +19,7 @@ class BookingSearcher {
     private Booking getBookingOrThrow(UUID ticketId, String username) {
         return bookingRepository
                 .findByIdAndUsername(ticketId, username)
-                .orElseThrow(SeatBookingNotFoundException::new);
+                .orElseThrow(BookingNotFoundException::new);
     }
 
     public List<BookingDto> searchAllBookings(String username) {

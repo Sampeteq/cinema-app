@@ -3,8 +3,8 @@ package code.bookings;
 import code.bookings.dto.CreateScreeningDto;
 import code.bookings.exception.FilmNotFoundException;
 import code.bookings.exception.ScreeningDateException;
-import code.bookings.exception.ScreeningRoomException;
-import code.bookings.exception.ScreeningRoomNotFoundException;
+import code.bookings.exception.RoomException;
+import code.bookings.exception.RoomNotFoundException;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -62,13 +62,13 @@ class ScreeningFactory {
                 .stream()
                 .anyMatch(screening -> screening.IsTimeCollision(screeningDate, screeningFinishDate));
         if (isTimeAndRoomCollision) {
-            throw new ScreeningRoomException("Time and room collision between screenings");
+            throw new RoomException("Time and room collision between screenings");
         }
     }
 
     private Room getScreeningRoomOrThrow(UUID roomId) {
         return roomRepository
                 .findById(roomId)
-                .orElseThrow(ScreeningRoomNotFoundException::new);
+                .orElseThrow(RoomNotFoundException::new);
     }
 }

@@ -4,7 +4,7 @@ import code.bookings.BookingFacade;
 import code.bookings.dto.*;
 import code.bookings.exception.ScreeningException;
 import code.bookings.exception.ScreeningNotFoundException;
-import code.bookings.exception.ScreeningRoomNotFoundException;
+import code.bookings.exception.RoomNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -75,7 +75,7 @@ class ScreeningExceptionHandler {
 
     @ExceptionHandler(ScreeningException.class)
     ResponseEntity<String> handle(ScreeningException exception) {
-        if (exception instanceof ScreeningNotFoundException || exception instanceof ScreeningRoomNotFoundException) {
+        if (exception instanceof ScreeningNotFoundException || exception instanceof RoomNotFoundException) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);

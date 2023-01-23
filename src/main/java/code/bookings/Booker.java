@@ -3,7 +3,7 @@ package code.bookings;
 import code.bookings.dto.BookDto;
 import code.bookings.dto.BookingDto;
 import code.bookings.exception.ScreeningNotFoundException;
-import code.bookings.exception.SeatBookingNotFoundException;
+import code.bookings.exception.BookingNotFoundException;
 import code.bookings.exception.SeatNotFoundException;
 import lombok.AllArgsConstructor;
 
@@ -54,6 +54,6 @@ class Booker {
     private Booking getBookingOrThrow(UUID bookingId) {
         return bookingRepository
                 .findById(bookingId)
-                .orElseThrow(SeatBookingNotFoundException::new);
+                .orElseThrow(BookingNotFoundException::new);
     }
 }

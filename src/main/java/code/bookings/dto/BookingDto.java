@@ -1,7 +1,10 @@
 package code.bookings.dto;
 
+import lombok.With;
+
 import java.util.UUID;
 
+@With
 public record BookingDto(
         UUID id,
 

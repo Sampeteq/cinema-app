@@ -2,7 +2,6 @@ package code.bookings;
 
 import code.bookings.dto.BookDto;
 import code.bookings.dto.BookingDto;
-import code.screenings.ScreeningFacade;
 import code.screenings.dto.SeatDto;
 import code.utils.ScreeningTestHelper;
 import code.utils.SpringIntegrationTests;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -20,6 +20,7 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
@@ -31,9 +32,6 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
     private BookingFacade bookingFacade;
-
-    @Autowired
-    private ScreeningFacade screeningFacade;
 
     @Autowired
     private ScreeningTestHelper screeningTestHelper;
@@ -113,7 +111,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
     @Test
     @WithMockUser(username = "user1")
-    void should_make_seat_busy_and_reduce_screening_free_seats_by_one_after_booking() throws Exception {
+    void should_seat_be_busy_and_reduce_screening_free_seats_by_one_after_booking() throws Exception {
         //given
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
@@ -133,9 +131,9 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         var searchSeatsResult = mockMvc.perform(
                 get("/screenings/" + screening.id() + "/seats")
         );
-        var isSeatBusy = Arrays
-                .stream(fromResultActions(searchSeatsResult, SeatDto[].class))
-                .anyMatch(it -> it.id().equals(seat.id()));
+        var isSeatBusy = getSeatsFromResult(searchSeatsResult).anyMatch(
+                s -> s.equals(seat.withStatus("BUSY"))
+        );
         assertThat(isSeatBusy).isTrue();
         mockMvc.perform(
                         get("/screenings")
@@ -162,19 +160,18 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //then
         result.andExpect(status().isOk());
-        assertThat(
-                screeningFacade.searchSeats(screening.id())
-                        .stream()
-                        .filter(it -> it.id().equals(seat.id()))
-                        .findFirst()
-                        .get()
-                        .status()
-        ).isEqualTo("FREE");
+        var searchBookingsResult = mockMvc.perform(
+                get("/bookings/my")
+        );
+        var isBookingCancelled = getBookingsFromResult(searchBookingsResult).anyMatch(
+                b -> b.equals(booking.withStatus("CANCELLED"))
+        );
+        assertThat(isBookingCancelled).isTrue();
     }
 
     @Test
     @WithMockUser(username = "user1")
-    void should_make_seat_free_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
+    void should_seat_be_free_again_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
@@ -194,9 +191,8 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         var searchSeatsResult = mockMvc.perform(
                 get("/screenings/" + screening.id() + "/seats")
         );
-        var isSeatFreeAgain = Arrays
-                .stream(fromResultActions(searchSeatsResult, SeatDto[].class))
-                .anyMatch(it -> it.id().equals(seat.id()) && it.status().equals("FREE"));
+        var isSeatFreeAgain = getSeatsFromResult(searchSeatsResult)
+                .anyMatch(it -> it.equals(seat.withStatus("FREE")));
         assertThat(isSeatFreeAgain).isTrue();
         mockMvc.perform(
                         get("/screenings")
@@ -206,7 +202,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
     @Test
     @WithMockUser(username = "user1")
-    void should_throw_exception_when_booking_is_already_cancelled() throws Exception {
+    void should_throw_exception_during_booking_when_booking_is_already_cancelled() throws Exception {
         //given
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
@@ -264,9 +260,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //then
         result.andExpect(status().isOk());
-        var bookingsFromResult = Arrays
-                .stream(fromResultActions(result, BookingDto[].class))
-                .toList();
+        var bookingsFromResult = getBookingsFromResult(result).toList();
         assertThat(bookingsFromResult).containsExactlyInAnyOrderElementsOf(userBookings);
     }
 
@@ -284,6 +278,18 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 seatId,
                 "Name 1",
                 "Lastname 1"
+        );
+    }
+
+    private Stream<SeatDto> getSeatsFromResult(ResultActions searchSeatsResult) throws Exception {
+        return Arrays.stream(
+                fromResultActions(searchSeatsResult, SeatDto[].class)
+        );
+    }
+
+    private Stream<BookingDto> getBookingsFromResult(ResultActions searchSeatsResult) throws Exception {
+        return Arrays.stream(
+                fromResultActions(searchSeatsResult, BookingDto[].class)
         );
     }
 

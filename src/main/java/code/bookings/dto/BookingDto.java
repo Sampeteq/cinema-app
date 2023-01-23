@@ -9,6 +9,8 @@ public record BookingDto(
 
         String lastName,
 
+        String status,
+
         SeatDto seat
 ) {
 }

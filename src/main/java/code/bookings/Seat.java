@@ -36,20 +36,17 @@ class Seat {
 
     void book(Clock clock) {
         if (this.screening.timeToScreeningStartInHours(clock) < 24) {
-            throw new BookingException("Too late for seat booking: " + this.id);
+            throw new BookingException("Too late to booking");
         }
         if (this.status.equals(SeatStatus.BUSY)) {
-            throw new BookingException("Seat busy: " + this.id);
+            throw new BookingException("Seat busy");
         }
         this.status = SeatStatus.BUSY;
     }
 
     void cancelBooking(Clock clock) {
-        if (this.status.equals(SeatStatus.FREE)) {
-            throw new BookingException("Seat not booked yet: " + this.id);
-        }
         if (this.screening.timeToScreeningStartInHours(clock) < 24) {
-            throw new BookingException("Too late for seat booking cancelling: " + this.id);
+            throw new BookingException("Too late to cancel booking");
         }
         this.status = SeatStatus.FREE;
     }

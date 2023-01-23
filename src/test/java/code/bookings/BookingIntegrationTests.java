@@ -69,6 +69,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.firstName").value(bookSeatDto.firstName()))
                 .andExpect(jsonPath("$.lastName").value(bookSeatDto.lastName()))
+                .andExpect(jsonPath("$.status").value(BookingStatus.ACTIVE.name()))
                 .andExpect(jsonPath("$.seat.id").value(bookSeatDto.seatId().toString()));
     }
 
@@ -97,7 +98,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Too late for seat booking: " + dto.seatId()
+                        "Too late to booking"
                 ));
     }
 
@@ -217,13 +218,13 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Seat not booked yet: " + seat.id()
+                        "Booking already cancelled"
                 ));
     }
 
     @Test
     @WithMockUser(username = "user1")
-    void should_throw_exception_during_seat_booking_cancelling_when_less_than_24h_to_screening()
+    void should_throw_exception_during_booking_cancelling_when_less_than_24h_to_screening()
             throws Exception {
         //given
         var username = userTestHelper.signUpUser();
@@ -239,13 +240,13 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Too late for seat booking cancelling: " + booking.seat().id()
+                        "Too late to cancel booking"
                 ));
     }
 
     @Test
     @WithMockUser(username = "user1")
-    void should_return_all_user_seats_bookings() throws Exception {
+    void should_return_all_user_bookings() throws Exception {
         //given
         var username = userTestHelper.signUpUser();
         var userBookings = bookSeats(username);

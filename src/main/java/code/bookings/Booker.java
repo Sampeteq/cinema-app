@@ -25,6 +25,7 @@ class Booker {
                 UUID.randomUUID(),
                 dto.firstName(),
                 dto.lastName(),
+                BookingStatus.ACTIVE,
                 seat,
                 username
         );

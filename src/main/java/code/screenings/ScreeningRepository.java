@@ -10,7 +10,6 @@ import java.util.UUID;
 interface ScreeningRepository extends JpaRepository<Screening, UUID> {
 
     @Query("SELECT DISTINCT s FROM Screening s " +
-            "left join fetch s.room " +
             "left join fetch s.seats " +
             "where " +
             "(:#{#params.date} is null or s.date = :#{#params.date}) and " +

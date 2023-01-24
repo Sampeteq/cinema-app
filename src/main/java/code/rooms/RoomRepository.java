@@ -1,4 +1,4 @@
-package code.screenings;
+package code.rooms;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

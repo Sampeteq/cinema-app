@@ -165,52 +165,5 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
                 .andExpect(status().isOk())
                 .andExpect(content().json(toJson(filteredScreening)));
     }
-
-    @Test
-    @WithMockUser(authorities = "ADMIN")
-    void should_create_screening_room() throws Exception {
-        //given
-        var dto = createScreeningRoomDto();
-
-        //when
-        var result = mockMvc.perform(
-                post("/rooms")
-                        .content(toJson(dto))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
-
-        //then
-        result.andExpect(status().isOk());
-        mockMvc.perform(
-                        get("/rooms")
-                )
-                .andExpect(jsonPath("$[0].id").exists())
-                .andExpect(jsonPath("$[0].number").value(dto.number()))
-                .andExpect(jsonPath("$[0].rowsQuantity").value(dto.rowsQuantity()))
-                .andExpect(jsonPath("$[0].seatsInOneRowQuantity").value(dto.seatsQuantityInOneRow()))
-                .andExpect(jsonPath("$[0].seatsQuantity").value(dto.rowsQuantity() * dto.seatsQuantityInOneRow()));
-    }
-
-    @Test
-    @WithMockUser(authorities = "ADMIN")
-    void should_throw_exception_when_room_number_is_not_unique() throws Exception {
-        //given
-        var room = screeningTestHelper.createScreeningRoom();
-        var dto = createScreeningRoomDto().withNumber(room.number());
-
-        //when
-        var result = mockMvc.perform(
-                post("/rooms")
-                        .content(toJson(dto))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
-
-        //then
-        result
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(
-                        "Screening room already exists: " + dto.number()
-                ));
-    }
 }
 

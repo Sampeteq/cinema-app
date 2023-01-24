@@ -1,11 +1,12 @@
 package code.screenings;
 
-import code.bookings.*;
+import code.rooms.RoomFacade;
+import code.rooms.dto.RoomDetails;
 import code.screenings.dto.CreateScreeningDto;
 import code.screenings.exception.FilmNotFoundException;
 import code.screenings.exception.ScreeningDateException;
-import code.screenings.exception.RoomException;
-import code.screenings.exception.RoomNotFoundException;
+import code.rooms.exception.RoomException;
+import code.rooms.exception.RoomNotFoundException;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -18,20 +19,21 @@ class ScreeningFactory {
 
     private final ScreeningRepository screeningRepository;
 
-    private final RoomRepository roomRepository;
-
     private final FilmRepository filmRepository;
+
+    private final RoomFacade roomFacade;
 
     Screening createScreening(CreateScreeningDto dto) {
         validateScreeningDate(dto.date());
         var film = getFilmOrThrow(dto);
         validateTimeAndRoomCollisionBetweenScreenings(dto.date(),  film.getDurationInMinutes(), dto.roomId());
-        var room = getScreeningRoomOrThrow(dto.roomId());
+        var roomDetails = getRoomDetailsOrThrow(dto.roomId());
         var screening = Screening.of(
                 dto.date(),
                 dto.minAge(),
                 film,
-                room
+                dto.roomId(),
+                roomDetails
         );
         return screeningRepository.save(screening);
     }
@@ -67,9 +69,9 @@ class ScreeningFactory {
         }
     }
 
-    private Room getScreeningRoomOrThrow(UUID roomId) {
-        return roomRepository
-                .findById(roomId)
+    private RoomDetails getRoomDetailsOrThrow(UUID roomId) {
+        return roomFacade
+                .searchRoomDetails(roomId)
                 .orElseThrow(RoomNotFoundException::new);
     }
 }

@@ -1,10 +1,12 @@
 package code.screenings.infrastructure;
 
 import code.screenings.ScreeningFacade;
+import code.screenings.dto.CreateScreeningDto;
+import code.screenings.dto.ScreeningDto;
+import code.screenings.dto.ScreeningSearchParamsDto;
+import code.screenings.dto.SeatDto;
 import code.screenings.exception.ScreeningException;
 import code.screenings.exception.ScreeningNotFoundException;
-import code.screenings.exception.RoomNotFoundException;
-import code.screenings.dto.*;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -54,20 +56,6 @@ class ScreeningCrudController {
     List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
         return screeningFacade.searchSeats(screeningId);
     }
-
-    @PostMapping("/rooms")
-    RoomDto createRoom(
-            @RequestBody
-            @Valid
-            CreateRoomDto dto
-    ) {
-        return screeningFacade.createRoom(dto);
-    }
-
-    @GetMapping("/rooms")
-    List<RoomDto> searchAllRooms() {
-        return screeningFacade.searchAllRooms();
-    }
 }
 
 @RestControllerAdvice
@@ -75,7 +63,7 @@ class ScreeningExceptionHandler {
 
     @ExceptionHandler(ScreeningException.class)
     ResponseEntity<String> handle(ScreeningException exception) {
-        if (exception instanceof ScreeningNotFoundException || exception instanceof RoomNotFoundException) {
+        if (exception instanceof ScreeningNotFoundException) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);

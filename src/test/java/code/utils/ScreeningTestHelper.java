@@ -1,5 +1,8 @@
 package code.utils;
 
+import code.rooms.RoomFacade;
+import code.rooms.dto.CreateRoomDto;
+import code.rooms.dto.RoomDto;
 import code.screenings.ScreeningFacade;
 import code.screenings.dto.*;
 import lombok.AllArgsConstructor;
@@ -16,6 +19,8 @@ import java.util.UUID;
 public class ScreeningTestHelper {
 
     private final ScreeningFacade screeningFacade;
+
+    private final RoomFacade roomFacade;
 
     private final FilmTestHelper filmTestHelper;
 
@@ -115,7 +120,7 @@ public class ScreeningTestHelper {
     }
 
     public RoomDto createScreeningRoom() {
-        return screeningFacade.createRoom(
+        return roomFacade.createRoom(
                 createScreeningRoomDto()
         );
     }
@@ -132,8 +137,8 @@ public class ScreeningTestHelper {
                 7
         );
         return List.of(
-                screeningFacade.createRoom(room1),
-                screeningFacade.createRoom(room2)
+                roomFacade.createRoom(room1),
+                roomFacade.createRoom(room2)
         );
     }
 

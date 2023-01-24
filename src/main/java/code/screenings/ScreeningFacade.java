@@ -3,8 +3,6 @@ package code.screenings;
 import code.bookings.dto.BookingCancelledEvent;
 import code.bookings.dto.SeatBookedEvent;
 import code.screenings.dto.*;
-import code.screenings.exception.ScreeningNotFoundException;
-import code.screenings.exception.SeatNotFoundException;
 import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +18,6 @@ public class ScreeningFacade {
 
     private final FilmSearcher filmSearcher;
 
-    private final RoomFactory roomFactory;
-
-    private final RoomSearcher roomSearcher;
-
     private final ScreeningFactory screeningFactory;
 
     private final ScreeningSearcher screeningSearcher;
@@ -36,15 +30,6 @@ public class ScreeningFacade {
 
     public List<FilmDto> searchFilmsBy(FilmSearchParamsDto paramsDto) {
         return filmSearcher.searchFilmsBy(paramsDto);
-    }
-
-    @Transactional
-    public RoomDto createRoom(CreateRoomDto dto) {
-        return roomFactory.createRoom(dto);
-    }
-
-    public List<RoomDto> searchAllRooms() {
-        return roomSearcher.searchAllRooms();
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package code.screenings;
 
+import code.rooms.RoomFacade;
 import com.google.common.eventbus.EventBus;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -15,30 +16,26 @@ class ScreeningConfig {
 
     @Bean
     ScreeningFacade screeningFacade(
-            FilmRepository filmRepository,
-            RoomRepository roomRepository,
             ScreeningRepository screeningRepository,
+            FilmRepository filmRepository,
+            RoomFacade roomFacade,
             EventBus eventBus
     ) {
         var filmYearSpecification = new PreviousCurrentOrNextOneFilmYearSpecification();
         var filmFactory = new FilmFactory(filmYearSpecification, filmRepository);
         var filmSearcher = new FilmSearcher(filmRepository);
-        var roomFactory = new RoomFactory(roomRepository);
-        var roomSearcher = new RoomSearcher(roomRepository);
         var screeningDateSpecification = new CurrentOrNextOneYearScreeningDateSpecification(clock);
         var screeningFactory = new ScreeningFactory(
                 screeningDateSpecification,
                 screeningRepository,
-                roomRepository,
-                filmRepository
+                filmRepository,
+                roomFacade
         );
         var screeningSearcher = new ScreeningSearcher(screeningRepository);
         var screeningEventHandler = new ScreeningEventHandler(screeningRepository);
         var screeningFacade = new ScreeningFacade(
                 filmFactory,
                 filmSearcher,
-                roomFactory,
-                roomSearcher,
                 screeningFactory,
                 screeningSearcher,
                 screeningEventHandler

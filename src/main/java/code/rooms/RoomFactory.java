@@ -1,8 +1,8 @@
-package code.screenings;
+package code.rooms;
 
-import code.screenings.dto.CreateRoomDto;
-import code.screenings.dto.RoomDto;
-import code.screenings.exception.RoomException;
+import code.rooms.dto.CreateRoomDto;
+import code.rooms.dto.RoomDto;
+import code.rooms.exception.RoomException;
 import lombok.AllArgsConstructor;
 
 import java.util.UUID;

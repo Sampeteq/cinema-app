@@ -11,22 +11,22 @@ import java.time.Year;
 import java.time.ZoneOffset;
 
 @Configuration
-class SharedConfig {
+public class SharedConfig {
 
     @Bean
-    EventBus eventBus() {
+    public EventBus eventBus() {
         return new EventBus();
     }
 
     @Bean
     @Profile("prod")
-    Clock prodClock() {
+    public Clock prodClock() {
         return Clock.systemUTC();
     }
 
     @Bean
     @Profile("test")
-    Clock testClock() {
+    public Clock testClock() {
         var currentYear = Year.now().getValue();
         var testDateAsInstant = LocalDateTime
                 .of(currentYear, 5, 8, 18, 30)

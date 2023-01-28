@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-class SharedExceptionHandler {
+public class SharedExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity<?> handle(MethodArgumentNotValidException exception) {
+    public ResponseEntity<?> handle(MethodArgumentNotValidException exception) {
         var errors = exception
                 .getBindingResult()
                 .getFieldErrors()

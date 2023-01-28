@@ -1,12 +1,14 @@
 package code.screenings.domain.dto;
 
 
+import code.screenings.domain.FilmCategory;
+
 import java.util.UUID;
 
 public record FilmDto(
         UUID id,
         String title,
-        FilmCategoryDto category,
+        FilmCategory category,
         int year,
         int durationInMinutes
 ) {

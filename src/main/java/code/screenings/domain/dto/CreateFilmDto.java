@@ -1,5 +1,6 @@
 package code.screenings.domain.dto;
 
+import code.screenings.domain.FilmCategory;
 import lombok.With;
 
 import javax.validation.constraints.NotNull;
@@ -9,7 +10,7 @@ public record CreateFilmDto(
         @NotNull
         String title,
         @NotNull
-        FilmCategoryDto filmCategory,
+        FilmCategory filmCategory,
         @NotNull
         Integer year,
         @NotNull

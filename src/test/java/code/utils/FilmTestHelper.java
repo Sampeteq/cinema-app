@@ -1,8 +1,8 @@
 package code.utils;
 
 import code.screenings.application.ScreeningFacade;
+import code.screenings.domain.FilmCategory;
 import code.screenings.domain.dto.CreateFilmDto;
-import code.screenings.domain.dto.FilmCategoryDto;
 import code.screenings.domain.dto.FilmDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class FilmTestHelper {
     public static CreateFilmDto createCreateFilmDto() {
         return new CreateFilmDto(
                 "title 1",
-                FilmCategoryDto.COMEDY,
+                FilmCategory.COMEDY,
                 Year.now().getValue(),
                 120
         );
@@ -28,13 +28,13 @@ public class FilmTestHelper {
     public static List<CreateFilmDto> createCreateFilmDtos() {
         var dto1 = new CreateFilmDto(
                 "title 1",
-                FilmCategoryDto.COMEDY,
+                FilmCategory.COMEDY,
                 Year.now().getValue(),
                 120
         );
         var dto2 = new CreateFilmDto(
                 "title 2",
-                FilmCategoryDto.DRAMA,
+                FilmCategory.DRAMA,
                 Year.now().getValue() - 1,
                 90
         );

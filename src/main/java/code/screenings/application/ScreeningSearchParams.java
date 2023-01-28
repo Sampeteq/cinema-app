@@ -8,9 +8,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(access = AccessLevel.PACKAGE)
-public
-class ScreeningSearchParams {
+@Builder
+public class ScreeningSearchParams {
 
     public final UUID filmId;
 

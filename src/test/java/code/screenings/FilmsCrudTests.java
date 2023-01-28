@@ -1,7 +1,7 @@
 package code.screenings;
 
 import code.screenings.application.ScreeningFacade;
-import code.screenings.domain.dto.FilmCategoryDto;
+import code.screenings.domain.FilmCategory;
 import code.utils.FilmTestHelper;
 import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.Test;
@@ -98,10 +98,10 @@ class FilmsCrudTests extends SpringIntegrationTests {
     void should_search_films_by_params() throws Exception {
         //given
         var sampleFilm = screeningFacade.createFilm(
-                createCreateFilmDto().withFilmCategory(FilmCategoryDto.COMEDY)
+                createCreateFilmDto().withFilmCategory(FilmCategory.COMEDY)
         );
         screeningFacade.createFilm(
-                createCreateFilmDto().withFilmCategory(FilmCategoryDto.DRAMA)
+                createCreateFilmDto().withFilmCategory(FilmCategory.DRAMA)
         );
 
         //when

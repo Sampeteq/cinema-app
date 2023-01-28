@@ -1,6 +1,5 @@
 package code.screenings.domain;
 
-import code.screenings.domain.dto.FilmCategoryDto;
 import code.screenings.domain.dto.FilmDto;
 import lombok.*;
 
@@ -32,7 +31,7 @@ public class Film {
         return new FilmDto(
                 this.id,
                 this.title,
-                FilmCategoryDto.valueOf(this.category.name()),
+                this.category,
                 year,
                 durationInMinutes
         );

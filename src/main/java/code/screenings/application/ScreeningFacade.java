@@ -28,8 +28,8 @@ public class ScreeningFacade {
         return filmFactory.createFilm(dto).toDto();
     }
 
-    public List<FilmDto> searchFilmsBy(FilmSearchParamsDto paramsDto) {
-        return filmSearcher.searchFilmsBy(paramsDto);
+    public List<FilmDto> searchFilmsBy(FilmSearchParams params) {
+        return filmSearcher.searchFilmsBy(params);
     }
 
     @Transactional
@@ -40,8 +40,8 @@ public class ScreeningFacade {
     }
 
     @Transactional
-    public List<ScreeningDto> searchScreeningsBy(ScreeningSearchParamsDto paramsDto) {
-        return screeningSearcher.searchScreeningsBy(paramsDto);
+    public List<ScreeningDto> searchScreeningsBy(ScreeningSearchParams params) {
+        return screeningSearcher.searchScreeningsBy(params);
     }
 
     @Transactional

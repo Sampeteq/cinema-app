@@ -19,7 +19,7 @@ public class FilmFactory {
             var film = new Film(
                     UUID.randomUUID(),
                     dto.title(),
-                    FilmCategory.fromDTO(dto.filmCategory()),
+                    dto.filmCategory(),
                     dto.year(),
                     dto.durationInMinutes()
             );

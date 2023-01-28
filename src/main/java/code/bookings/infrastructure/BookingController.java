@@ -1,12 +1,9 @@
 package code.bookings.infrastructure;
 
-import code.bookings.BookingFacade;
-import code.bookings.dto.BookDto;
-import code.bookings.dto.BookingDto;
-import code.bookings.exception.BookingException;
+import code.bookings.application.BookingFacade;
+import code.bookings.domain.dto.BookDto;
+import code.bookings.domain.dto.BookingDto;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,14 +15,14 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/bookings")
 @AllArgsConstructor
-class BookingController {
+public class BookingController {
 
     private final BookingFacade bookingFacade;
 
     private final Clock clock;
 
     @PostMapping
-    BookingDto bookSeat(
+    public BookingDto bookSeat(
             @RequestBody
             @Valid
             BookDto dto,
@@ -35,7 +32,7 @@ class BookingController {
     }
 
     @PatchMapping("/{bookingId}/cancel")
-    void cancelBooking(
+    public void cancelBooking(
             @PathVariable
             UUID bookingId
     ) {
@@ -43,21 +40,13 @@ class BookingController {
     }
 
     @GetMapping("/my")
-    List<BookingDto> searchAllBookings(Principal principal) {
+    public List<BookingDto> searchAllBookings(Principal principal) {
         return bookingFacade.searchAllBookings(principal.getName());
     }
 
     @GetMapping("/my/{bookingId}")
-    BookingDto searchBookingById(@PathVariable UUID bookingId, Principal principal) {
+    public BookingDto searchBookingById(@PathVariable UUID bookingId, Principal principal) {
         return bookingFacade.searchBookingById(bookingId, principal.getName());
     }
 }
 
-@RestControllerAdvice
-class SeatBookingExceptionHandler {
-
-    @ExceptionHandler(BookingException.class)
-    ResponseEntity<?> handle(BookingException exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-}

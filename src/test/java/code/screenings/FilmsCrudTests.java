@@ -1,6 +1,7 @@
 package code.screenings;
 
-import code.screenings.dto.FilmCategoryDto;
+import code.screenings.application.ScreeningFacade;
+import code.screenings.domain.dto.FilmCategoryDto;
 import code.utils.FilmTestHelper;
 import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.Test;

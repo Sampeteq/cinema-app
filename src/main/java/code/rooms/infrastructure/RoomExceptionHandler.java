@@ -1,17 +1,17 @@
 package code.rooms.infrastructure;
 
-import code.rooms.exception.RoomException;
-import code.rooms.exception.RoomNotFoundException;
+import code.rooms.domain.exception.RoomException;
+import code.rooms.domain.exception.RoomNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-class RoomExceptionHandler {
+public class RoomExceptionHandler {
 
     @ExceptionHandler(RoomException.class)
-    ResponseEntity<?> handle(RoomException exception) {
+    public ResponseEntity<?> handle(RoomException exception) {
         if (exception instanceof RoomNotFoundException) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         } else {

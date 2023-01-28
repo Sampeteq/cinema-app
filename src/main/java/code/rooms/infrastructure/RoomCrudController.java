@@ -1,8 +1,8 @@
 package code.rooms.infrastructure;
 
-import code.rooms.RoomFacade;
-import code.rooms.dto.CreateRoomDto;
-import code.rooms.dto.RoomDto;
+import code.rooms.application.RoomFacade;
+import code.rooms.domain.dto.CreateRoomDto;
+import code.rooms.domain.dto.RoomDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,12 +14,12 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-class RoomCrudController {
+public class RoomCrudController {
 
     private final RoomFacade roomFacade;
 
     @PostMapping("/rooms")
-    RoomDto createRoom(
+    public RoomDto createRoom(
             @RequestBody
             @Valid
             CreateRoomDto dto
@@ -28,7 +28,7 @@ class RoomCrudController {
     }
 
     @GetMapping("/rooms")
-    List<RoomDto> searchAllRooms() {
+    public List<RoomDto> searchAllRooms() {
         return roomFacade.searchAllRooms();
     }
 }

@@ -1,10 +1,12 @@
 package code.utils;
 
-import code.rooms.RoomFacade;
-import code.rooms.dto.CreateRoomDto;
-import code.rooms.dto.RoomDto;
-import code.screenings.ScreeningFacade;
-import code.screenings.dto.*;
+import code.rooms.application.RoomFacade;
+import code.rooms.domain.dto.CreateRoomDto;
+import code.rooms.domain.dto.RoomDto;
+import code.screenings.application.ScreeningFacade;
+import code.screenings.domain.dto.CreateScreeningDto;
+import code.screenings.domain.dto.ScreeningDto;
+import code.screenings.domain.dto.SeatDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

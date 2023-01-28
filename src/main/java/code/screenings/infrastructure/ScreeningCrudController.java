@@ -1,16 +1,12 @@
 package code.screenings.infrastructure;
 
-import code.screenings.ScreeningFacade;
-import code.screenings.dto.CreateScreeningDto;
-import code.screenings.dto.ScreeningDto;
-import code.screenings.dto.ScreeningSearchParamsDto;
-import code.screenings.dto.SeatDto;
-import code.screenings.exception.ScreeningException;
-import code.screenings.exception.ScreeningNotFoundException;
+import code.screenings.application.ScreeningFacade;
+import code.screenings.domain.dto.CreateScreeningDto;
+import code.screenings.domain.dto.ScreeningDto;
+import code.screenings.domain.dto.ScreeningSearchParamsDto;
+import code.screenings.domain.dto.SeatDto;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,12 +16,12 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-class ScreeningCrudController {
+public class ScreeningCrudController {
 
     private final ScreeningFacade screeningFacade;
 
     @PostMapping("/screenings")
-    ScreeningDto createScreening(
+    public ScreeningDto createScreening(
             @RequestBody
             @Valid
             CreateScreeningDto dto
@@ -34,7 +30,7 @@ class ScreeningCrudController {
     }
 
     @GetMapping("/screenings")
-    List<ScreeningDto> searchScreeningsBy(
+    public List<ScreeningDto> searchScreeningsBy(
             @RequestParam(required = false)
             UUID filmId,
 
@@ -53,21 +49,8 @@ class ScreeningCrudController {
     }
 
     @GetMapping("/screenings/{screeningId}/seats")
-    List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
+    public List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
         return screeningFacade.searchSeats(screeningId);
-    }
-}
-
-@RestControllerAdvice
-class ScreeningExceptionHandler {
-
-    @ExceptionHandler(ScreeningException.class)
-    ResponseEntity<String> handle(ScreeningException exception) {
-        if (exception instanceof ScreeningNotFoundException) {
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-        }
     }
 }
 

@@ -1,6 +1,6 @@
 package code.user.infrastrcuture;
 
-import code.user.UserFacade;
+import code.user.application.UserFacade;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 @Configuration
 @AllArgsConstructor
 @Log4j2
-class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

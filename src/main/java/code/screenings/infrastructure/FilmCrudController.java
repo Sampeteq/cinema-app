@@ -1,15 +1,11 @@
 package code.screenings.infrastructure;
 
-import code.screenings.ScreeningFacade;
-import code.screenings.dto.CreateFilmDto;
-import code.screenings.dto.FilmCategoryDto;
-import code.screenings.dto.FilmDto;
-import code.screenings.dto.FilmSearchParamsDto;
-import code.screenings.exception.FilmException;
-import code.screenings.exception.FilmNotFoundException;
+import code.screenings.application.ScreeningFacade;
+import code.screenings.domain.dto.CreateFilmDto;
+import code.screenings.domain.dto.FilmCategoryDto;
+import code.screenings.domain.dto.FilmDto;
+import code.screenings.domain.dto.FilmSearchParamsDto;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,12 +13,12 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-class FilmCrudController {
+public class FilmCrudController {
 
     private final ScreeningFacade screeningFacade;
 
     @PostMapping("/films")
-    FilmDto createFilm(
+    public FilmDto createFilm(
             @RequestBody
             @Valid
             CreateFilmDto dto
@@ -31,7 +27,7 @@ class FilmCrudController {
     }
 
     @GetMapping("/films")
-    List<FilmDto> searchFilmsBy(
+    public List<FilmDto> searchFilmsBy(
             @RequestParam(required = false)
             FilmCategoryDto category
     ) {
@@ -43,15 +39,3 @@ class FilmCrudController {
     }
 }
 
-@RestControllerAdvice
-class FilmExceptionHandler {
-
-    @ExceptionHandler(FilmException.class)
-    ResponseEntity<String> handle(FilmException exception) {
-        if (exception instanceof FilmNotFoundException) {
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-}

@@ -1,6 +1,6 @@
 package code.user;
 
-import code.user.dto.SignInDto;
+import code.user.domain.dto.SignInDto;
 import code.utils.SpringIntegrationTests;
 import code.utils.UserTestHelper;
 import org.junit.jupiter.api.Test;

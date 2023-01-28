@@ -1,8 +1,10 @@
 package code.bookings;
 
-import code.bookings.dto.BookDto;
-import code.bookings.dto.BookingDto;
-import code.screenings.dto.SeatDto;
+import code.bookings.application.BookingFacade;
+import code.bookings.domain.BookingStatus;
+import code.bookings.domain.dto.BookDto;
+import code.bookings.domain.dto.BookingDto;
+import code.screenings.domain.dto.SeatDto;
 import code.utils.ScreeningTestHelper;
 import code.utils.SpringIntegrationTests;
 import code.utils.UserTestHelper;

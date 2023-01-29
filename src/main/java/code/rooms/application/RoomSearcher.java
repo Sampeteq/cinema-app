@@ -5,11 +5,13 @@ import code.rooms.domain.RoomRepository;
 import code.rooms.application.dto.RoomDetails;
 import code.rooms.application.dto.RoomDto;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Component
 @AllArgsConstructor
 public class RoomSearcher {
 

@@ -1,11 +1,13 @@
 package code.screenings.domain;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+@Component
 @AllArgsConstructor
 public final class CurrentOrNextOneYearScreeningDateSpecification implements ScreeningDateSpecification {
 

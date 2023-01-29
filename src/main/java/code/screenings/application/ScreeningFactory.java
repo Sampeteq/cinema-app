@@ -9,10 +9,12 @@ import code.screenings.domain.exceptions.TimeAndRoomCollisionException;
 import code.screenings.infrastructure.exceptions.FilmNotFoundException;
 import code.screenings.domain.exceptions.ScreeningDateException;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Component
 @AllArgsConstructor
 public class ScreeningFactory {
 

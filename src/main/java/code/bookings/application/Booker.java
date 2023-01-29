@@ -14,13 +14,14 @@ import code.bookings.domain.exception.TooLateToBookingException;
 import code.screenings.application.ScreeningFacade;
 import com.google.common.eventbus.EventBus;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.time.Clock;
 import java.util.UUID;
 
+@Component
 @AllArgsConstructor
-public
-class Booker {
+public class Booker {
 
     private final BookingRepository bookingRepository;
 

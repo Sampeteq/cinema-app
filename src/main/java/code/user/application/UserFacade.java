@@ -5,9 +5,11 @@ import code.user.application.dto.SignInDto;
 import code.user.application.dto.SignUpDto;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 @AllArgsConstructor
 public class UserFacade {
 

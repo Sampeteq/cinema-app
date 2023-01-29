@@ -3,12 +3,14 @@ package code.bookings.application;
 import code.bookings.domain.dto.BookDto;
 import code.bookings.domain.dto.BookingDto;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
 
+@Component
 @AllArgsConstructor
 public class BookingFacade {
 

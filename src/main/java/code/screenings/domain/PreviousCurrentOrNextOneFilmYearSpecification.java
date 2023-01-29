@@ -1,6 +1,10 @@
 package code.screenings.domain;
 
+import org.springframework.stereotype.Component;
+
 import java.time.Year;
+
+@Component
 
 public final class PreviousCurrentOrNextOneFilmYearSpecification implements FilmYearSpecification {
 

@@ -6,9 +6,11 @@ import code.rooms.application.dto.CreateRoomDto;
 import code.rooms.application.dto.RoomDto;
 import code.rooms.infrastructure.exception.RoomNumberAlreadyExistsException;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
 @AllArgsConstructor
 public class RoomFactory {
 

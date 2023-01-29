@@ -4,12 +4,14 @@ import code.rooms.application.dto.CreateRoomDto;
 import code.rooms.application.dto.RoomDetails;
 import code.rooms.application.dto.RoomDto;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Component
 @AllArgsConstructor
 public class RoomFacade {
 

@@ -4,9 +4,11 @@ import code.screenings.domain.Film;
 import code.screenings.domain.FilmRepository;
 import code.screenings.application.dto.FilmDto;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 @AllArgsConstructor
 public class FilmSearcher {
 

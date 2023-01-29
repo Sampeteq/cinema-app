@@ -4,9 +4,11 @@ import code.screenings.domain.*;
 import code.screenings.application.dto.CreateFilmDto;
 import code.screenings.domain.exceptions.FilmYearException;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
 @AllArgsConstructor
 public class FilmFactory {
 

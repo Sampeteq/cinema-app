@@ -5,12 +5,14 @@ import code.bookings.domain.dto.SeatBookedEvent;
 import code.screenings.application.dto.*;
 import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
 
+@Component
 @AllArgsConstructor
 public class ScreeningFacade {
 

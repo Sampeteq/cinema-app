@@ -1,6 +1,6 @@
 package code.bookings.domain;
 
-import code.bookings.domain.dto.BookingDto;
+import code.bookings.application.dto.BookingDto;
 import code.bookings.domain.exception.BookingException;
 import lombok.*;
 

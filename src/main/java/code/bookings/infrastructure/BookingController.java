@@ -1,8 +1,8 @@
 package code.bookings.infrastructure;
 
 import code.bookings.application.BookingFacade;
-import code.bookings.domain.dto.BookDto;
-import code.bookings.domain.dto.BookingDto;
+import code.bookings.application.dto.BookDto;
+import code.bookings.application.dto.BookingDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

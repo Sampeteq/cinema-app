@@ -1,4 +1,4 @@
-package code.bookings.domain.dto;
+package code.bookings.application.dto;
 
 import javax.validation.constraints.NotNull;
 import java.util.UUID;

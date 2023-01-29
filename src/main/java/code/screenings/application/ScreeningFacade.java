@@ -1,7 +1,7 @@
 package code.screenings.application;
 
-import code.bookings.domain.dto.BookingCancelledEvent;
-import code.bookings.domain.dto.SeatBookedEvent;
+import code.bookings.application.dto.BookingCancelledEvent;
+import code.bookings.application.dto.SeatBookedEvent;
 import code.screenings.application.dto.*;
 import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;

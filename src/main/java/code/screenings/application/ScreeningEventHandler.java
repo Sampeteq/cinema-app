@@ -1,18 +1,15 @@
 package code.screenings.application;
 
-import code.bookings.domain.dto.BookingCancelledEvent;
-import code.bookings.domain.dto.SeatBookedEvent;
+import code.bookings.application.dto.BookingCancelledEvent;
+import code.bookings.application.dto.SeatBookedEvent;
 import code.screenings.domain.ScreeningRepository;
 import code.screenings.domain.Seat;
 import code.screenings.domain.SeatStatus;
 import code.screenings.infrastructure.exceptions.ScreeningNotFoundException;
 import code.screenings.infrastructure.exceptions.SeatNotFoundException;
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.UUID;
 
 @AllArgsConstructor

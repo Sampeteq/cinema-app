@@ -20,17 +20,17 @@ public class BookingSearcher {
         return getBookingOrThrow(bookingId, username).toDto();
     }
 
-    private Booking getBookingOrThrow(UUID ticketId, String username) {
-        return bookingRepository
-                .findByIdAndUsername(ticketId, username)
-                .orElseThrow(BookingNotFoundException::new);
-    }
-
     public List<BookingDto> searchAllBookings(String username) {
         return bookingRepository
                 .findByUsername(username)
                 .stream()
                 .map(Booking::toDto)
                 .toList();
+    }
+
+    private Booking getBookingOrThrow(UUID ticketId, String username) {
+        return bookingRepository
+                .findByIdAndUsername(ticketId, username)
+                .orElseThrow(BookingNotFoundException::new);
     }
 }

@@ -18,19 +18,12 @@ public class FilmCrudController {
     private final ScreeningFacade screeningFacade;
 
     @PostMapping("/films")
-    public FilmDto createFilm(
-            @RequestBody
-            @Valid
-            CreateFilmDto dto
-    ) {
+    public FilmDto createFilm(@RequestBody @Valid CreateFilmDto dto) {
         return screeningFacade.createFilm(dto);
     }
 
     @GetMapping("/films")
-    public List<FilmDto> searchFilmsBy(
-            @RequestParam(required = false)
-            FilmCategory category
-    ) {
+    public List<FilmDto> searchFilmsBy(@RequestParam(required = false) FilmCategory category) {
         var params = FilmSearchParams
                 .builder()
                 .category(category)

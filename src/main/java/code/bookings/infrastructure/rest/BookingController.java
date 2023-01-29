@@ -22,20 +22,12 @@ public class BookingController {
     private final Clock clock;
 
     @PostMapping
-    public BookingDto bookSeat(
-            @RequestBody
-            @Valid
-            BookDto dto,
-            Principal principal
-    ) {
+    public BookingDto bookSeat(@RequestBody @Valid BookDto dto, Principal principal) {
         return bookingFacade.bookSeat(dto, principal.getName(), clock);
     }
 
     @PatchMapping("/{bookingId}/cancel")
-    public void cancelBooking(
-            @PathVariable
-            UUID bookingId
-    ) {
+    public void cancelBooking(@PathVariable UUID bookingId) {
         bookingFacade.cancelBooking(bookingId, clock);
     }
 

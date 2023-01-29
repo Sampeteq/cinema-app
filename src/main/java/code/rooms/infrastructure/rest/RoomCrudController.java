@@ -19,11 +19,7 @@ public class RoomCrudController {
     private final RoomFacade roomFacade;
 
     @PostMapping("/rooms")
-    public RoomDto createRoom(
-            @RequestBody
-            @Valid
-            CreateRoomDto dto
-    ) {
+    public RoomDto createRoom(@RequestBody @Valid CreateRoomDto dto) {
         return roomFacade.createRoom(dto);
     }
 

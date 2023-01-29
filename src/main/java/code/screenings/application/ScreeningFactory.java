@@ -1,13 +1,13 @@
 package code.screenings.application;
 
 import code.rooms.application.RoomFacade;
-import code.rooms.domain.dto.RoomDetails;
-import code.rooms.domain.exception.RoomException;
-import code.rooms.domain.exception.RoomNotFoundException;
+import code.rooms.application.dto.RoomDetails;
+import code.rooms.infrastructure.exception.RoomNotFoundException;
 import code.screenings.domain.*;
-import code.screenings.domain.dto.CreateScreeningDto;
-import code.screenings.domain.exception.FilmNotFoundException;
-import code.screenings.domain.exception.ScreeningDateException;
+import code.screenings.application.dto.CreateScreeningDto;
+import code.screenings.domain.exceptions.TimeAndRoomCollisionException;
+import code.screenings.infrastructure.exceptions.FilmNotFoundException;
+import code.screenings.domain.exceptions.ScreeningDateException;
 import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -66,7 +66,7 @@ public class ScreeningFactory {
                 .stream()
                 .anyMatch(screening -> screening.IsTimeCollision(screeningDate, screeningFinishDate));
         if (isTimeAndRoomCollision) {
-            throw new RoomException("Time and room collision between screenings");
+            throw new TimeAndRoomCollisionException();
         }
     }
 

@@ -1,6 +1,6 @@
 package code.user;
 
-import code.user.domain.dto.SignInDto;
+import code.user.application.dto.SignInDto;
 import code.utils.SpringIntegrationTests;
 import code.utils.UserTestHelper;
 import org.junit.jupiter.api.Test;
@@ -59,7 +59,7 @@ class UsersIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Not unique username"));
+                .andExpect(content().string("Username already exists"));
     }
 
     @Test
@@ -77,6 +77,6 @@ class UsersIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Passwords must be the same"));
+                .andExpect(content().string("Not same passwords"));
     }
 }

@@ -1,7 +1,7 @@
 package code.rooms.domain;
 
-import code.rooms.domain.dto.RoomDetails;
-import code.rooms.domain.dto.RoomDto;
+import code.rooms.application.dto.RoomDetails;
+import code.rooms.application.dto.RoomDto;
 import lombok.*;
 
 import javax.persistence.Entity;

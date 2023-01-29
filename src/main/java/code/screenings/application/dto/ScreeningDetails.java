@@ -1,4 +1,4 @@
-package code.screenings.domain.dto;
+package code.screenings.application.dto;
 
 public record ScreeningDetails(
         int timeToScreeningInHours,

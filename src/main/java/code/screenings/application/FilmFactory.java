@@ -1,8 +1,8 @@
 package code.screenings.application;
 
 import code.screenings.domain.*;
-import code.screenings.domain.dto.CreateFilmDto;
-import code.screenings.domain.exception.FilmYearException;
+import code.screenings.application.dto.CreateFilmDto;
+import code.screenings.domain.exceptions.FilmYearException;
 import lombok.AllArgsConstructor;
 
 import java.util.UUID;

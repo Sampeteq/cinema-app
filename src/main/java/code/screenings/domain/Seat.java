@@ -1,6 +1,6 @@
 package code.screenings.domain;
 
-import code.screenings.domain.dto.SeatDto;
+import code.screenings.application.dto.SeatDto;
 import lombok.*;
 
 import javax.persistence.*;

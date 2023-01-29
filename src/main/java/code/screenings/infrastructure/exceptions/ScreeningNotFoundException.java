@@ -1,4 +1,6 @@
-package code.screenings.domain.exception;
+package code.screenings.infrastructure.exceptions;
+
+import code.screenings.domain.exceptions.ScreeningException;
 
 public class ScreeningNotFoundException extends ScreeningException {
 

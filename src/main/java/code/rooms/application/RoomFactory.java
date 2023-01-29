@@ -2,9 +2,9 @@ package code.rooms.application;
 
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
-import code.rooms.domain.dto.CreateRoomDto;
-import code.rooms.domain.dto.RoomDto;
-import code.rooms.domain.exception.RoomException;
+import code.rooms.application.dto.CreateRoomDto;
+import code.rooms.application.dto.RoomDto;
+import code.rooms.infrastructure.exception.RoomNumberAlreadyExistsException;
 import lombok.AllArgsConstructor;
 
 import java.util.UUID;
@@ -16,7 +16,7 @@ public class RoomFactory {
 
     public RoomDto createRoom(CreateRoomDto dto) {
         if (roomRepository.existsByNumber(dto.number())) {
-            throw new RoomException("Screening room already exists: " + dto.number());
+            throw new RoomNumberAlreadyExistsException();
         }
         var screeningRoom = new Room(
                 UUID.randomUUID(),

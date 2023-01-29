@@ -1,4 +1,4 @@
-package code.user.domain.dto;
+package code.user.application.dto;
 
 import javax.validation.constraints.Size;
 

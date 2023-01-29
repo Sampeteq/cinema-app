@@ -2,11 +2,11 @@ package code.screenings.application;
 
 import code.screenings.domain.Screening;
 import code.screenings.domain.ScreeningRepository;
-import code.screenings.domain.dto.ScreeningDetails;
-import code.screenings.domain.dto.ScreeningDto;
-import code.screenings.domain.dto.SeatDto;
-import code.screenings.domain.exception.ScreeningNotFoundException;
-import code.screenings.domain.exception.SeatNotFoundException;
+import code.screenings.application.dto.ScreeningDetails;
+import code.screenings.application.dto.ScreeningDto;
+import code.screenings.application.dto.SeatDto;
+import code.screenings.infrastructure.exceptions.ScreeningNotFoundException;
+import code.screenings.infrastructure.exceptions.SeatNotFoundException;
 import lombok.AllArgsConstructor;
 
 import java.time.Clock;

@@ -1,7 +1,7 @@
 package code.screenings.infrastructure;
 
-import code.screenings.domain.exception.ScreeningException;
-import code.screenings.domain.exception.ScreeningNotFoundException;
+import code.screenings.domain.exceptions.ScreeningException;
+import code.screenings.infrastructure.exceptions.ScreeningNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

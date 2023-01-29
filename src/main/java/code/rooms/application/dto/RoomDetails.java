@@ -1,4 +1,4 @@
-package code.rooms.domain.dto;
+package code.rooms.application.dto;
 
 public record RoomDetails(
         int rowsQuantity,

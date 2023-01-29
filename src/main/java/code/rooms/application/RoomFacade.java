@@ -1,8 +1,8 @@
 package code.rooms.application;
 
-import code.rooms.domain.dto.CreateRoomDto;
-import code.rooms.domain.dto.RoomDetails;
-import code.rooms.domain.dto.RoomDto;
+import code.rooms.application.dto.CreateRoomDto;
+import code.rooms.application.dto.RoomDetails;
+import code.rooms.application.dto.RoomDto;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

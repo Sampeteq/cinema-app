@@ -1,8 +1,8 @@
 package code.rooms.infrastructure;
 
 import code.rooms.application.RoomFacade;
-import code.rooms.domain.dto.CreateRoomDto;
-import code.rooms.domain.dto.RoomDto;
+import code.rooms.application.dto.CreateRoomDto;
+import code.rooms.application.dto.RoomDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

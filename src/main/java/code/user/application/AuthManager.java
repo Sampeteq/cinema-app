@@ -3,9 +3,10 @@ package code.user.application;
 import code.user.domain.User;
 import code.user.domain.UserRepository;
 import code.user.domain.UserRole;
-import code.user.domain.dto.SignInDto;
-import code.user.domain.dto.SignUpDto;
-import code.user.domain.exception.UserException;
+import code.user.application.dto.SignInDto;
+import code.user.application.dto.SignUpDto;
+import code.user.infrastrcuture.exceptions.NotSamePasswordsException;
+import code.user.infrastrcuture.exceptions.UsernameAlreadyExistsException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,10 +24,10 @@ public class AuthManager {
 
     public void signUp(SignUpDto dto) {
         if (userRepository.existsById(dto.username())) {
-            throw new UserException("Not unique username");
+            throw new UsernameAlreadyExistsException();
         }
         if (!(dto.password().equals(dto.repeatedPassword()))) {
-            throw new UserException("Passwords must be the same");
+            throw new NotSamePasswordsException();
         }
         var user = new User(
                 dto.username(),

@@ -2,8 +2,8 @@ package code.rooms.application;
 
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
-import code.rooms.domain.dto.RoomDetails;
-import code.rooms.domain.dto.RoomDto;
+import code.rooms.application.dto.RoomDetails;
+import code.rooms.application.dto.RoomDto;
 import lombok.AllArgsConstructor;
 
 import java.util.List;

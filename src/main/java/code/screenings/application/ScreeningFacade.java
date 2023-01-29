@@ -2,7 +2,7 @@ package code.screenings.application;
 
 import code.bookings.domain.dto.BookingCancelledEvent;
 import code.bookings.domain.dto.SeatBookedEvent;
-import code.screenings.domain.dto.*;
+import code.screenings.application.dto.*;
 import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;

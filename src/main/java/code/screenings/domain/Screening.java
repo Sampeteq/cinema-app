@@ -1,8 +1,8 @@
 package code.screenings.domain;
 
-import code.rooms.domain.dto.RoomDetails;
-import code.screenings.domain.dto.ScreeningDto;
-import code.screenings.domain.dto.SeatDto;
+import code.rooms.application.dto.RoomDetails;
+import code.screenings.application.dto.ScreeningDto;
+import code.screenings.application.dto.SeatDto;
 import lombok.*;
 
 import javax.persistence.*;

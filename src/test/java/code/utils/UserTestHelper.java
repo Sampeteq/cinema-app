@@ -1,7 +1,7 @@
 package code.utils;
 
 import code.user.application.UserFacade;
-import code.user.domain.dto.SignUpDto;
+import code.user.application.dto.SignUpDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

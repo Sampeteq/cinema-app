@@ -61,7 +61,7 @@ class RoomsCrudTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Screening room already exists: " + dto.number()
+                        "A room number already exists"
                 ));
     }
 }

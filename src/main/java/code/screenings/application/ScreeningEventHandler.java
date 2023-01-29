@@ -5,8 +5,8 @@ import code.bookings.domain.dto.SeatBookedEvent;
 import code.screenings.domain.ScreeningRepository;
 import code.screenings.domain.Seat;
 import code.screenings.domain.SeatStatus;
-import code.screenings.domain.exception.ScreeningNotFoundException;
-import code.screenings.domain.exception.SeatNotFoundException;
+import code.screenings.infrastructure.exceptions.ScreeningNotFoundException;
+import code.screenings.infrastructure.exceptions.SeatNotFoundException;
 import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;
 

@@ -1,8 +1,8 @@
 package code.user.application;
 
 import code.user.domain.UserRepository;
-import code.user.domain.dto.SignInDto;
-import code.user.domain.dto.SignUpDto;
+import code.user.application.dto.SignInDto;
+import code.user.application.dto.SignUpDto;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 

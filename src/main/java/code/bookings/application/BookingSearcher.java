@@ -3,7 +3,7 @@ package code.bookings.application;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.dto.BookingDto;
-import code.bookings.domain.exception.BookingNotFoundException;
+import code.bookings.infrastructure.exception.BookingNotFoundException;
 import lombok.AllArgsConstructor;
 
 import java.util.List;

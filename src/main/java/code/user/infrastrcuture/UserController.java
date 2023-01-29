@@ -1,8 +1,8 @@
 package code.user.infrastrcuture;
 
 import code.user.application.UserFacade;
-import code.user.domain.dto.SignInDto;
-import code.user.domain.dto.SignUpDto;
+import code.user.application.dto.SignInDto;
+import code.user.application.dto.SignUpDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

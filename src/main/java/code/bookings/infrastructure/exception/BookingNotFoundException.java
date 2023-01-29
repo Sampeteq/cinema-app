@@ -1,4 +1,6 @@
-package code.bookings.domain.exception;
+package code.bookings.infrastructure.exception;
+
+import code.bookings.domain.exception.BookingException;
 
 public class BookingNotFoundException extends BookingException {
 

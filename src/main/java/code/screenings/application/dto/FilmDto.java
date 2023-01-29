@@ -1,4 +1,4 @@
-package code.screenings.domain.dto;
+package code.screenings.application.dto;
 
 
 import code.screenings.domain.FilmCategory;

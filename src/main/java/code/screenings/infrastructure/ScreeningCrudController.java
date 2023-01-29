@@ -2,9 +2,9 @@ package code.screenings.infrastructure;
 
 import code.screenings.application.ScreeningFacade;
 import code.screenings.application.ScreeningSearchParams;
-import code.screenings.domain.dto.CreateScreeningDto;
-import code.screenings.domain.dto.ScreeningDto;
-import code.screenings.domain.dto.SeatDto;
+import code.screenings.application.dto.CreateScreeningDto;
+import code.screenings.application.dto.ScreeningDto;
+import code.screenings.application.dto.SeatDto;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;

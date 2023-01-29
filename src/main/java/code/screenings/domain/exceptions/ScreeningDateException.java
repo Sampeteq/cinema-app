@@ -1,4 +1,4 @@
-package code.screenings.domain.exception;
+package code.screenings.domain.exceptions;
 
 public class ScreeningDateException extends ScreeningException {
 

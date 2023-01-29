@@ -2,8 +2,8 @@ package code.utils;
 
 import code.screenings.application.ScreeningFacade;
 import code.screenings.domain.FilmCategory;
-import code.screenings.domain.dto.CreateFilmDto;
-import code.screenings.domain.dto.FilmDto;
+import code.screenings.application.dto.CreateFilmDto;
+import code.screenings.application.dto.FilmDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

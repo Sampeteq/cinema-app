@@ -1,7 +1,7 @@
 package code.screenings.infrastructure;
 
-import code.screenings.domain.exception.FilmException;
-import code.screenings.domain.exception.FilmNotFoundException;
+import code.screenings.domain.exceptions.FilmException;
+import code.screenings.infrastructure.exceptions.FilmNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

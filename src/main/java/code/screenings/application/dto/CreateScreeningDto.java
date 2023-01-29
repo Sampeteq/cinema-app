@@ -1,4 +1,4 @@
-package code.screenings.domain.dto;
+package code.screenings.application.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.With;

@@ -1,6 +1,6 @@
 package code.screenings.domain;
 
-import code.screenings.domain.dto.FilmDto;
+import code.screenings.application.dto.FilmDto;
 import lombok.*;
 
 import javax.persistence.*;

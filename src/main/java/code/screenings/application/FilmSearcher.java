@@ -2,7 +2,7 @@ package code.screenings.application;
 
 import code.screenings.domain.Film;
 import code.screenings.domain.FilmRepository;
-import code.screenings.domain.dto.FilmDto;
+import code.screenings.application.dto.FilmDto;
 import lombok.AllArgsConstructor;
 
 import java.util.List;

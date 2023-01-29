@@ -8,7 +8,9 @@ import code.bookings.domain.dto.BookingCancelledEvent;
 import code.bookings.domain.dto.BookingDto;
 import code.bookings.domain.dto.SeatBookedEvent;
 import code.bookings.domain.exception.BookingException;
-import code.bookings.domain.exception.BookingNotFoundException;
+import code.bookings.infrastructure.exception.BookingNotFoundException;
+import code.bookings.domain.exception.SeatNotAvailableException;
+import code.bookings.domain.exception.TooLateToBookingException;
 import code.screenings.application.ScreeningFacade;
 import com.google.common.eventbus.EventBus;
 import lombok.AllArgsConstructor;
@@ -33,10 +35,10 @@ class Booker {
                 clock
         );
         if (screeningDetails.timeToScreeningInHours() < 24) {
-            throw new BookingException("Too late to booking");
+            throw new TooLateToBookingException();
         }
         if (!screeningDetails.isSeatAvailable()) {
-            throw new BookingException("Seat not available");
+            throw new SeatNotAvailableException();
         }
         eventBus.post(
                 new SeatBookedEvent(dto.screeningId(), dto.seatId())

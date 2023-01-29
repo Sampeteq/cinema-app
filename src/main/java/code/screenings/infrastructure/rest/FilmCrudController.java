@@ -1,4 +1,4 @@
-package code.screenings.infrastructure;
+package code.screenings.infrastructure.rest;
 
 import code.screenings.application.FilmSearchParams;
 import code.screenings.application.ScreeningFacade;

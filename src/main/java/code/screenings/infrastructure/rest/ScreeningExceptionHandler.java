@@ -1,4 +1,4 @@
-package code.screenings.infrastructure;
+package code.screenings.infrastructure.rest;
 
 import code.screenings.domain.exceptions.ScreeningException;
 import code.screenings.infrastructure.exceptions.ScreeningNotFoundException;

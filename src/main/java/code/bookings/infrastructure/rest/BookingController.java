@@ -1,4 +1,4 @@
-package code.bookings.infrastructure;
+package code.bookings.infrastructure.rest;
 
 import code.bookings.application.BookingFacade;
 import code.bookings.application.dto.BookDto;

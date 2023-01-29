@@ -1,4 +1,4 @@
-package code.user.infrastrcuture;
+package code.user.infrastrcuture.rest;
 
 import code.user.domain.exception.UserException;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package code.rooms.infrastructure;
+package code.rooms.infrastructure.rest;
 
 import code.rooms.application.RoomFacade;
 import code.rooms.application.dto.CreateRoomDto;

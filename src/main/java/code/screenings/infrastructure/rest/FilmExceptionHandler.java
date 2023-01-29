@@ -1,4 +1,4 @@
-package code.screenings.infrastructure;
+package code.screenings.infrastructure.rest;
 
 import code.screenings.domain.exceptions.FilmException;
 import code.screenings.infrastructure.exceptions.FilmNotFoundException;

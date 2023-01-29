@@ -1,4 +1,4 @@
-package code.rooms.infrastructure;
+package code.rooms.infrastructure.rest;
 
 import code.rooms.domain.exception.RoomException;
 import code.rooms.infrastructure.exception.RoomNotFoundException;

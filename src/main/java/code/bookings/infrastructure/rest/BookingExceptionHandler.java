@@ -1,4 +1,4 @@
-package code.bookings.infrastructure;
+package code.bookings.infrastructure.rest;
 
 import code.bookings.domain.exception.BookingException;
 import org.springframework.http.HttpStatus;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class SeatBookingExceptionHandler {
+public class BookingExceptionHandler {
 
     @ExceptionHandler(BookingException.class)
     public ResponseEntity<?> handle(BookingException exception) {

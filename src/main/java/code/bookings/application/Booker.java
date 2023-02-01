@@ -66,7 +66,7 @@ public class Booker {
         if (screeningDetails.timeToScreeningInHours() < 24) {
             throw new BookingException("Too late to cancel booking");
         }
-        booking.changeStatus(BookingStatus.CANCELLED);
+        booking.cancel();
         eventBus.post(
                 new BookingCancelledEvent(
                         screeningId,

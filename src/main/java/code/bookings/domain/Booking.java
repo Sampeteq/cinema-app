@@ -32,11 +32,11 @@ public class Booking {
 
     private String username;
 
-    public void changeStatus(BookingStatus newStatus) {
-        if (newStatus.equals(BookingStatus.CANCELLED) && this.status.equals(BookingStatus.CANCELLED)) {
+    public void cancel() {
+        if (this.status.equals(BookingStatus.CANCELLED)) {
             throw new BookingException("Booking already cancelled");
         }
-        this.status = newStatus;
+        this.status = BookingStatus.CANCELLED;
     }
 
     public BookingDto toDto() {

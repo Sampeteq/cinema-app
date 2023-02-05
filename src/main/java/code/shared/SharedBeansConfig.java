@@ -12,7 +12,7 @@ import java.time.Year;
 import java.time.ZoneOffset;
 
 @Configuration
-public class SharedConfig {
+public class SharedBeansConfig {
 
     @Bean
     public EventBus eventBus(ScreeningEventHandler screeningEventHandler) {

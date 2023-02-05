@@ -1,5 +1,6 @@
 package code.shared;
 
+import code.screenings.application.ScreeningEventHandler;
 import com.google.common.eventbus.EventBus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +15,10 @@ import java.time.ZoneOffset;
 public class SharedConfig {
 
     @Bean
-    public EventBus eventBus() {
-        return new EventBus();
+    public EventBus eventBus(ScreeningEventHandler screeningEventHandler) {
+        var eventBus = new EventBus();
+        eventBus.register(screeningEventHandler);
+        return eventBus;
     }
 
     @Bean

@@ -1,9 +1,6 @@
 package code.screenings.application;
 
-import code.bookings.application.dto.BookingCancelledEvent;
-import code.bookings.application.dto.SeatBookedEvent;
 import code.screenings.application.dto.*;
-import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +20,6 @@ public class ScreeningFacade {
     private final ScreeningFactory screeningFactory;
 
     private final ScreeningSearcher screeningSearcher;
-
-    private final ScreeningEventHandler screeningEventHandler;
 
     public FilmDto createFilm(CreateFilmDto dto) {
         return filmFactory.createFilm(dto).toDto();
@@ -53,17 +48,5 @@ public class ScreeningFacade {
 
     public ScreeningDetails searchScreeningDetails(UUID screeningId, UUID seatId, Clock clock) {
         return screeningSearcher.searchScreeningDetails(screeningId, seatId, clock);
-    }
-
-    @Subscribe
-    @Transactional
-    public void handle(SeatBookedEvent event) {
-        screeningEventHandler.handle(event);
-    }
-
-    @Subscribe
-    @Transactional
-    public void handle(BookingCancelledEvent event) {
-        screeningEventHandler.handle(event);
     }
 }

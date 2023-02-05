@@ -9,10 +9,12 @@ import code.screenings.infrastructure.exceptions.ScreeningNotFoundException;
 import code.screenings.infrastructure.exceptions.SeatNotFoundException;
 import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @AllArgsConstructor
+@Component
 public class ScreeningEventHandler {
 
     private final ScreeningRepository screeningRepository;

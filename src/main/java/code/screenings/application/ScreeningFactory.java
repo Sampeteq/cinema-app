@@ -11,20 +11,22 @@ import code.screenings.domain.exceptions.ScreeningDateException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Component
 @AllArgsConstructor
 public class ScreeningFactory {
 
-    private final ScreeningDateSpecification dateSpecification;
-
     private final ScreeningRepository screeningRepository;
 
     private final FilmRepository filmRepository;
 
     private final RoomFacade roomFacade;
+
+    private final Clock clock;
 
     public Screening createScreening(CreateScreeningDto dto) {
         validateScreeningDate(dto.date());
@@ -42,12 +44,11 @@ public class ScreeningFactory {
     }
 
     private void validateScreeningDate(LocalDateTime date) {
-        if (!dateSpecification.isSatisfyBy(date)) {
-            if (dateSpecification instanceof CurrentOrNextOneYearScreeningDateSpecification) {
-                throw new ScreeningDateException("A screening date year must be current or next one");
-            } else {
-                throw new IllegalArgumentException("Unsupported screening date specification");
-            }
+        var currentDate = LocalDateTime.ofInstant(this.clock.instant(), ZoneOffset.UTC);
+        var currentYear = currentDate.getYear();
+        var isYearCurrentOrNextOne = date.getYear() == currentYear || date.getYear() == currentYear + 1;
+        if (!isYearCurrentOrNextOne) {
+            throw new ScreeningDateException("A screening date year must be current or next one");
         }
     }
 

@@ -46,8 +46,6 @@ public class Booker {
         );
         var booking = new Booking(
                 UUID.randomUUID(),
-                dto.firstName(),
-                dto.lastName(),
                 BookingStatus.ACTIVE,
                 dto.screeningId(),
                 dto.seatId(),

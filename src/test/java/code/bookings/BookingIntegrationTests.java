@@ -76,8 +76,6 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(bookingDto.id().toString()))
-                .andExpect(jsonPath("$.firstName").value(bookSeatDto.firstName()))
-                .andExpect(jsonPath("$.lastName").value(bookSeatDto.lastName()))
                 .andExpect(jsonPath("$.status").value(BookingStatus.ACTIVE.name()))
                 .andExpect(jsonPath("$.screeningId").value(bookSeatDto.screeningId().toString()))
                 .andExpect(jsonPath("$.seatId").value(bookSeatDto.seatId().toString()));
@@ -277,9 +275,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     private static BookDto createBookSeatDto(UUID screeningId, UUID seatId) {
         return new BookDto(
                 screeningId,
-                seatId,
-                "Name 1",
-                "Lastname 1"
+                seatId
         );
     }
 
@@ -299,9 +295,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         return bookingFacade.bookSeat(
                 new BookDto(
                         screeningId,
-                        seatId,
-                        "Name 1",
-                        "Lastname 1"
+                        seatId
                 ),
                 username,
                 clock

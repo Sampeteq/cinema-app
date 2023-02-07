@@ -8,12 +8,6 @@ public record BookDto(
         UUID screeningId,
 
         @NotNull
-        UUID seatId,
-
-        @NotNull
-        String firstName,
-
-        @NotNull
-        String lastName
+        UUID seatId
 ) {
 }

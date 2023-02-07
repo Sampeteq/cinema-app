@@ -19,10 +19,6 @@ public class Booking {
     @Id
     private UUID id;
 
-    private String firstName;
-
-    private String lastName;
-
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
@@ -42,8 +38,6 @@ public class Booking {
     public BookingDto toDto() {
         return new BookingDto(
                 this.id,
-                this.firstName,
-                this.lastName,
                 this.status.name(),
                 this.screeningId,
                 this.seatId

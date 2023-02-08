@@ -2,7 +2,6 @@ package code.screenings.domain;
 
 import code.rooms.application.dto.RoomDetails;
 import code.screenings.application.dto.ScreeningDto;
-import code.screenings.application.dto.SeatDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +10,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -71,13 +69,6 @@ public class Screening {
         return screening;
     }
 
-    public Optional<Seat> getSeat(UUID seatId) {
-        return this.seats
-                .stream()
-                .filter(seat -> seat.getId().equals(seatId))
-                .findFirst();
-    }
-
     public int timeToScreeningStartInHours(Clock clock) {
         return (int) Duration
                 .between(LocalDateTime.now(clock), this.date)
@@ -99,13 +90,5 @@ public class Screening {
                 this.roomId,
                 (int) this.seats.stream().filter(Seat::isFree).count()
         );
-    }
-
-    public List<SeatDto> seatsDtos() {
-        return this
-                .seats
-                .stream()
-                .map(Seat::toDto)
-                .toList();
     }
 }

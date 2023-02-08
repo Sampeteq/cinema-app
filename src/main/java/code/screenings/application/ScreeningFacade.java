@@ -46,7 +46,7 @@ public class ScreeningFacade {
         return screeningSearcher.searchSeats(screeningId);
     }
 
-    public ScreeningDetails searchScreeningDetails(UUID screeningId, UUID seatId, Clock clock) {
-        return screeningSearcher.searchScreeningDetails(screeningId, seatId, clock);
+    public ScreeningDetails searchSeatDetails(UUID seatId, Clock clock) {
+        return screeningSearcher.searchScreeningDetails(seatId, clock);
     }
 }

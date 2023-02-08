@@ -1,11 +1,12 @@
 package code.screenings.application;
 
-import code.screenings.domain.Screening;
-import code.screenings.domain.ScreeningRepository;
 import code.screenings.application.dto.ScreeningDetails;
 import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.SeatDto;
-import code.screenings.infrastructure.exceptions.ScreeningNotFoundException;
+import code.screenings.domain.Screening;
+import code.screenings.domain.ScreeningRepository;
+import code.screenings.domain.Seat;
+import code.screenings.domain.SeatRepository;
 import code.screenings.infrastructure.exceptions.SeatNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,13 +15,13 @@ import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
 
-
-
 @Component
 @AllArgsConstructor
 public class ScreeningSearcher {
 
     private final ScreeningRepository screeningRepository;
+
+    private final SeatRepository seatRepository;
 
     public List<ScreeningDto> searchScreeningsBy(ScreeningSearchParams params) {
         return screeningRepository
@@ -31,21 +32,20 @@ public class ScreeningSearcher {
     }
 
     List<SeatDto> searchSeats(UUID screeningId) {
-        return screeningRepository
-                .findById(screeningId)
-                .map(Screening::seatsDtos)
-                .orElseThrow(ScreeningNotFoundException::new);
+        return this.seatRepository
+                .findByScreening_Id(screeningId)
+                .stream()
+                .map(Seat::toDto)
+                .toList();
     }
 
-    ScreeningDetails searchScreeningDetails(UUID screeningId, UUID seatId, Clock clock) {
-        var screening = screeningRepository
-                .findById(screeningId)
-                .orElseThrow(ScreeningNotFoundException::new);
+    ScreeningDetails searchScreeningDetails(UUID seatId, Clock clock) {
+        var seat = this.seatRepository
+                .findById(seatId)
+                .orElseThrow(SeatNotFoundException::new);
+        var screening = seat.getScreening();
         var timeToScreeningStartInHours = screening.timeToScreeningStartInHours(clock);
-        var isFree = screening
-                .getSeat(seatId)
-                .orElseThrow(SeatNotFoundException::new)
-                .isFree();
+        var isFree = seat.isFree();
         return new ScreeningDetails(
                 timeToScreeningStartInHours,
                 isFree

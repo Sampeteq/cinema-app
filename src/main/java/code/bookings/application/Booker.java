@@ -3,7 +3,6 @@ package code.bookings.application;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingStatus;
-import code.bookings.application.dto.BookSeatDto;
 import code.bookings.application.dto.BookingCancelledEvent;
 import code.bookings.application.dto.BookingDto;
 import code.bookings.application.dto.SeatBookedEvent;
@@ -27,12 +26,8 @@ public class Booker {
 
     private final EventBus eventBus;
 
-    BookingDto bookSeat(BookSeatDto dto, String username, Clock clock) {
-        var screeningDetails = screeningFacade.searchScreeningDetails(
-                dto.screeningId(),
-                dto.seatId(),
-                clock
-        );
+    BookingDto bookSeat(UUID seatId, String username, Clock clock) {
+        var screeningDetails = screeningFacade.searchSeatDetails(seatId, clock);
         if (screeningDetails.timeToScreeningInHours() < 24) {
             throw new BookingException("Too late to booking");
         }
@@ -40,13 +35,12 @@ public class Booker {
             throw new BookingException("Seat not available");
         }
         eventBus.post(
-                new SeatBookedEvent(dto.screeningId(), dto.seatId())
+                new SeatBookedEvent(seatId)
         );
         var booking = new Booking(
                 UUID.randomUUID(),
                 BookingStatus.ACTIVE,
-                dto.screeningId(),
-                dto.seatId(),
+                seatId,
                 username
         );
         return bookingRepository
@@ -56,18 +50,14 @@ public class Booker {
 
     void cancelSeat(UUID bookingId, Clock clock) {
         var booking = getBookingOrThrow(bookingId);
-        var screeningId = booking.getScreeningId();
         var seatId = booking.getSeatId();
-        var screeningDetails = screeningFacade.searchScreeningDetails(screeningId, seatId, clock);
+        var screeningDetails = screeningFacade.searchSeatDetails(seatId, clock);
         if (screeningDetails.timeToScreeningInHours() < 24) {
             throw new BookingException("Too late to cancel booking");
         }
         booking.cancel();
         eventBus.post(
-                new BookingCancelledEvent(
-                        screeningId,
-                        seatId
-                )
+                new BookingCancelledEvent(seatId)
         );
     }
 

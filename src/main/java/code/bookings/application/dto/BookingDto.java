@@ -10,8 +10,6 @@ public record BookingDto(
 
         String status,
 
-        UUID screeningId,
-
         UUID seatId
 ) {
 }

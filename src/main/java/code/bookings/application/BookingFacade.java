@@ -1,6 +1,5 @@
 package code.bookings.application;
 
-import code.bookings.application.dto.BookSeatDto;
 import code.bookings.application.dto.BookingDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,8 +18,8 @@ public class BookingFacade {
     private final BookingSearcher bookingSearcher;
 
     @Transactional
-    public BookingDto bookSeat(BookSeatDto dto, String username, Clock clock) {
-        return booker.bookSeat(dto, username, clock);
+    public BookingDto bookSeat(UUID seatId, String username, Clock clock) {
+        return booker.bookSeat(seatId, username, clock);
     }
 
     @Transactional

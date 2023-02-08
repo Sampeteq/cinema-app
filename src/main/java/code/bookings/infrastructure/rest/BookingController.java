@@ -1,12 +1,10 @@
 package code.bookings.infrastructure.rest;
 
 import code.bookings.application.BookingFacade;
-import code.bookings.application.dto.BookSeatDto;
 import code.bookings.application.dto.BookingDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.time.Clock;
 import java.util.List;
@@ -21,9 +19,9 @@ public class BookingController {
 
     private final Clock clock;
 
-    @PostMapping
-    public BookingDto bookSeat(@RequestBody @Valid BookSeatDto dto, Principal principal) {
-        return bookingFacade.bookSeat(dto, principal.getName(), clock);
+    @PostMapping("/{seatId}")
+    public BookingDto bookSeat(@PathVariable UUID seatId, Principal principal) {
+        return bookingFacade.bookSeat(seatId, principal.getName(), clock);
     }
 
     @PatchMapping("/{bookingId}/cancel")

@@ -1,9 +1,8 @@
 package code.bookings;
 
 import code.bookings.application.BookingFacade;
-import code.bookings.domain.BookingStatus;
-import code.bookings.application.dto.BookSeatDto;
 import code.bookings.application.dto.BookingDto;
+import code.bookings.domain.BookingStatus;
 import code.screenings.application.dto.SeatDto;
 import code.utils.ScreeningTestHelper;
 import code.utils.SpringIntegrationTests;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -25,7 +23,6 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static code.utils.WebTestHelper.fromResultActions;
-import static code.utils.WebTestHelper.toJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -56,16 +53,11 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //given
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var bookSeatDto = createBookSeatDto(
-                screening.id(),
-                seat.id()
-        );
+        var seatId = seat.id();
 
         //when
         var result = mockMvc.perform(
-                post("/bookings")
-                        .content(toJson(bookSeatDto))
-                        .contentType(MediaType.APPLICATION_JSON)
+                post("/bookings/" + seatId)
         );
 
         //then
@@ -77,8 +69,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(bookingDto.id().toString()))
                 .andExpect(jsonPath("$.status").value(BookingStatus.ACTIVE.name()))
-                .andExpect(jsonPath("$.screeningId").value(bookSeatDto.screeningId().toString()))
-                .andExpect(jsonPath("$.seatId").value(bookSeatDto.seatId().toString()));
+                .andExpect(jsonPath("$.seatId").value(seatId.toString()));
     }
 
     @Test
@@ -89,16 +80,11 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         var screeningDate = currentDate.minusHours(23);
         var screening = screeningTestHelper.createScreening(screeningDate);
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var dto = createBookSeatDto(
-                screening.id(),
-                seat.id()
-        );
+        var seatId = seat.id();
 
         //when
         var result = mockMvc.perform(
-                post("/bookings")
-                        .content(toJson(dto))
-                        .contentType(MediaType.APPLICATION_JSON)
+                post("/bookings/" + seatId)
         );
 
         //then
@@ -115,16 +101,11 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //given
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var bookSeatDto = createBookSeatDto(
-                screening.id(),
-                seat.id()
-        );
+        var seatId = seat.id();
 
         //when
         mockMvc.perform(
-                post("/bookings")
-                        .content(toJson(bookSeatDto))
-                        .contentType(MediaType.APPLICATION_JSON)
+                post("/bookings/" + seatId)
         );
 
         //then
@@ -147,11 +128,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //give
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var booking = bookSeat(
-                screening.id(),
-                seat.id(),
-                "user1"
-        );
+        var booking = bookSeat(seat.id(), "user1");
 
         //when
         var result = mockMvc.perform(
@@ -175,11 +152,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //given
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var booking = bookSeat(
-                screening.id(),
-                seat.id(),
-                "user1"
-        );
+        var booking = bookSeat(seat.id(), "user1");
 
         //when
         var result = mockMvc.perform(
@@ -206,11 +179,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //given
         var screening = screeningTestHelper.createScreening();
         var seat = screeningTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var booking = bookSeat(
-                screening.id(),
-                seat.id(),
-                "user1"
-        );
+        var booking = bookSeat(seat.id(), "user1");
         bookingFacade.cancelBooking(booking.id(), clock);
 
         //when
@@ -267,16 +236,9 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     private List<BookingDto> bookSeats(String username) {
         var screening = screeningTestHelper.createScreening();
         var seats = screeningTestHelper.searchScreeningSeats(screening.id());
-        var booking1 = bookSeat(screening.id(), seats.get(0).id(), username);
-        var booking2 = bookSeat(screening.id(), seats.get(1).id(), username);
+        var booking1 = bookSeat(seats.get(0).id(), username);
+        var booking2 = bookSeat(seats.get(1).id(), username);
         return List.of(booking1, booking2);
-    }
-
-    private static BookSeatDto createBookSeatDto(UUID screeningId, UUID seatId) {
-        return new BookSeatDto(
-                screeningId,
-                seatId
-        );
     }
 
     private Stream<SeatDto> getSeatsFromResult(ResultActions searchSeatsResult) throws Exception {
@@ -291,12 +253,9 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         );
     }
 
-    private BookingDto bookSeat(UUID screeningId, UUID seatId, String username) {
+    private BookingDto bookSeat(UUID seatId, String username) {
         return bookingFacade.bookSeat(
-                new BookSeatDto(
-                        screeningId,
-                        seatId
-                ),
+                seatId,
                 username,
                 clock
         );
@@ -312,10 +271,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
                 ZoneOffset.UTC
         );
         return bookingFacade.bookSeat(
-                createBookSeatDto(
-                        screening.id(),
-                        seat.id()
-                ),
+                seat.id(),
                 username,
                 timeDuringBooking
         );

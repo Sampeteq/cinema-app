@@ -1,6 +1,6 @@
 package code.screenings.application;
 
-import code.screenings.application.dto.ScreeningDetails;
+import code.screenings.application.dto.SeatDetails;
 import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.SeatDto;
 import code.screenings.domain.Screening;
@@ -39,16 +39,16 @@ public class ScreeningSearcher {
                 .toList();
     }
 
-    ScreeningDetails searchScreeningDetails(UUID seatId, Clock clock) {
+    SeatDetails searchScreeningDetails(UUID seatId, Clock clock) {
         var seat = this.seatRepository
                 .findById(seatId)
                 .orElseThrow(SeatNotFoundException::new);
         var screening = seat.getScreening();
         var timeToScreeningStartInHours = screening.timeToScreeningStartInHours(clock);
         var isFree = seat.isFree();
-        return new ScreeningDetails(
-                timeToScreeningStartInHours,
-                isFree
+        return new SeatDetails(
+                isFree,
+                timeToScreeningStartInHours
         );
     }
 }

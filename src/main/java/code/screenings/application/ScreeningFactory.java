@@ -2,7 +2,7 @@ package code.screenings.application;
 
 import code.rooms.application.RoomFacade;
 import code.rooms.application.dto.RoomDetails;
-import code.rooms.infrastructure.exception.RoomNotFoundException;
+import code.rooms.infrastructure.exceptions.RoomNotFoundException;
 import code.screenings.domain.*;
 import code.screenings.application.dto.CreateScreeningDto;
 import code.screenings.domain.exceptions.TimeAndRoomCollisionException;

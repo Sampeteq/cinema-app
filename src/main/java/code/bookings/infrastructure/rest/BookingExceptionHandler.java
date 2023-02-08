@@ -1,6 +1,6 @@
 package code.bookings.infrastructure.rest;
 
-import code.bookings.domain.exception.BookingException;
+import code.bookings.domain.exceptions.BookingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

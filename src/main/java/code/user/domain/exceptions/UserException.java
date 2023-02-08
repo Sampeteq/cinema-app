@@ -1,4 +1,4 @@
-package code.user.domain.exception;
+package code.user.domain.exceptions;
 
 public abstract class UserException extends RuntimeException {
 

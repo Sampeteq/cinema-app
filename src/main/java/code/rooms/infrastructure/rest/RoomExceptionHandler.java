@@ -1,7 +1,7 @@
 package code.rooms.infrastructure.rest;
 
-import code.rooms.domain.exception.RoomException;
-import code.rooms.infrastructure.exception.RoomNotFoundException;
+import code.rooms.domain.exceptions.RoomException;
+import code.rooms.infrastructure.exceptions.RoomNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

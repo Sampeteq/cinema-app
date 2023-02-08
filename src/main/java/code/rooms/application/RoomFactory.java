@@ -4,7 +4,7 @@ import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
 import code.rooms.application.dto.CreateRoomDto;
 import code.rooms.application.dto.RoomDto;
-import code.rooms.infrastructure.exception.RoomNumberAlreadyExistsException;
+import code.rooms.infrastructure.exceptions.RoomNumberAlreadyExistsException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

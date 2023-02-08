@@ -1,6 +1,6 @@
 package code.user.infrastrcuture.exceptions;
 
-import code.user.domain.exception.UserException;
+import code.user.domain.exceptions.UserException;
 
 public class NotSamePasswordsException extends UserException {
 

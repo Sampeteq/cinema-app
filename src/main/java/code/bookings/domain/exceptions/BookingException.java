@@ -1,4 +1,4 @@
-package code.bookings.domain.exception;
+package code.bookings.domain.exceptions;
 
 public class BookingException extends RuntimeException {
 

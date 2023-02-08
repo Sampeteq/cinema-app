@@ -3,7 +3,7 @@ package code.bookings.application;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.application.dto.BookingDto;
-import code.bookings.infrastructure.exception.BookingNotFoundException;
+import code.bookings.infrastructure.exceptions.BookingNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

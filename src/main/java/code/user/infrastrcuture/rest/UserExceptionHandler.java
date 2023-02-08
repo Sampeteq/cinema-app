@@ -1,6 +1,6 @@
 package code.user.infrastrcuture.rest;
 
-import code.user.domain.exception.UserException;
+import code.user.domain.exceptions.UserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;

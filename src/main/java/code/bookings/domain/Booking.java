@@ -1,7 +1,7 @@
 package code.bookings.domain;
 
 import code.bookings.application.dto.BookingDto;
-import code.bookings.domain.exception.BookingException;
+import code.bookings.domain.exceptions.BookingException;
 import lombok.*;
 
 import javax.persistence.*;

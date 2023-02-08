@@ -3,7 +3,7 @@ package code.bookings;
 import code.bookings.application.BookingFacade;
 import code.bookings.application.dto.BookingDto;
 import code.bookings.domain.BookingStatus;
-import code.screenings.application.dto.SeatDto;
+import code.films.application.dto.SeatDto;
 import code.utils.ScreeningTestHelper;
 import code.utils.SpringIntegrationTests;
 import code.utils.UserTestHelper;

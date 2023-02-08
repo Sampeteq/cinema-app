@@ -85,7 +85,7 @@ public class Screening {
                 .toHours();
     }
 
-    public boolean IsTimeCollision(LocalDateTime start, LocalDateTime finish) {
+    public boolean isTimeCollision(LocalDateTime start, LocalDateTime finish) {
         var screeningFinishDate = this.date.plusMinutes(film.getDurationInMinutes());
         return screeningFinishDate.isAfter(start) && this.date.isBefore(finish);
     }

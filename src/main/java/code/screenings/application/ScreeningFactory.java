@@ -67,7 +67,7 @@ public class ScreeningFactory {
         var isTimeAndRoomCollision = screeningRepository
                 .findByRoomId(roomId)
                 .stream()
-                .anyMatch(screening -> screening.IsTimeCollision(screeningDate, screeningFinishDate));
+                .anyMatch(screening -> screening.isTimeCollision(screeningDate, screeningFinishDate));
         if (isTimeAndRoomCollision) {
             throw new TimeAndRoomCollisionException();
         }

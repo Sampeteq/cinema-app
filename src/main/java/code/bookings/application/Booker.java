@@ -27,11 +27,11 @@ public class Booker {
     private final EventBus eventBus;
 
     BookingDto bookSeat(UUID seatId, String username, Clock clock) {
-        var screeningDetails = screeningFacade.searchSeatDetails(seatId, clock);
-        if (screeningDetails.timeToScreeningInHours() < 24) {
+        var seatDetails = screeningFacade.searchSeatDetails(seatId, clock);
+        if (seatDetails.timeToScreeningInHours() < 24) {
             throw new BookingException("Too late to booking");
         }
-        if (!screeningDetails.isSeatAvailable()) {
+        if (!seatDetails.isSeatAvailable()) {
             throw new BookingException("Seat not available");
         }
         eventBus.post(
@@ -51,8 +51,8 @@ public class Booker {
     void cancelSeat(UUID bookingId, Clock clock) {
         var booking = getBookingOrThrow(bookingId);
         var seatId = booking.getSeatId();
-        var screeningDetails = screeningFacade.searchSeatDetails(seatId, clock);
-        if (screeningDetails.timeToScreeningInHours() < 24) {
+        var seatDetails = screeningFacade.searchSeatDetails(seatId, clock);
+        if (seatDetails.timeToScreeningInHours() < 24) {
             throw new BookingException("Too late to cancel booking");
         }
         booking.cancel();

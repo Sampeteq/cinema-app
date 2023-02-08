@@ -3,7 +3,7 @@ package code.bookings.application;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingStatus;
-import code.bookings.application.dto.BookDto;
+import code.bookings.application.dto.BookSeatDto;
 import code.bookings.application.dto.BookingCancelledEvent;
 import code.bookings.application.dto.BookingDto;
 import code.bookings.application.dto.SeatBookedEvent;
@@ -29,7 +29,7 @@ public class Booker {
 
     private final EventBus eventBus;
 
-    BookingDto bookSeat(BookDto dto, String username, Clock clock) {
+    BookingDto bookSeat(BookSeatDto dto, String username, Clock clock) {
         var screeningDetails = screeningFacade.searchScreeningDetails(
                 dto.screeningId(),
                 dto.seatId(),

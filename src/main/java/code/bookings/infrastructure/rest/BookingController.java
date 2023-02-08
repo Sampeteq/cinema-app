@@ -1,7 +1,7 @@
 package code.bookings.infrastructure.rest;
 
 import code.bookings.application.BookingFacade;
-import code.bookings.application.dto.BookDto;
+import code.bookings.application.dto.BookSeatDto;
 import code.bookings.application.dto.BookingDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class BookingController {
     private final Clock clock;
 
     @PostMapping
-    public BookingDto bookSeat(@RequestBody @Valid BookDto dto, Principal principal) {
+    public BookingDto bookSeat(@RequestBody @Valid BookSeatDto dto, Principal principal) {
         return bookingFacade.bookSeat(dto, principal.getName(), clock);
     }
 

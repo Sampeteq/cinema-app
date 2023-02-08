@@ -2,7 +2,7 @@ package code.bookings;
 
 import code.bookings.application.BookingFacade;
 import code.bookings.domain.BookingStatus;
-import code.bookings.application.dto.BookDto;
+import code.bookings.application.dto.BookSeatDto;
 import code.bookings.application.dto.BookingDto;
 import code.screenings.application.dto.SeatDto;
 import code.utils.ScreeningTestHelper;
@@ -272,8 +272,8 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         return List.of(booking1, booking2);
     }
 
-    private static BookDto createBookSeatDto(UUID screeningId, UUID seatId) {
-        return new BookDto(
+    private static BookSeatDto createBookSeatDto(UUID screeningId, UUID seatId) {
+        return new BookSeatDto(
                 screeningId,
                 seatId
         );
@@ -293,7 +293,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
     private BookingDto bookSeat(UUID screeningId, UUID seatId, String username) {
         return bookingFacade.bookSeat(
-                new BookDto(
+                new BookSeatDto(
                         screeningId,
                         seatId
                 ),

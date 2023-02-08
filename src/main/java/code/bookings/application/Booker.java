@@ -1,12 +1,10 @@
 package code.bookings.application;
 
-import code.bookings.domain.Booking;
-import code.bookings.domain.BookingRepository;
-import code.bookings.domain.BookingStatus;
 import code.bookings.application.dto.BookingCancelledEvent;
 import code.bookings.application.dto.BookingDto;
 import code.bookings.application.dto.SeatBookedEvent;
-import code.bookings.domain.exceptions.BookingException;
+import code.bookings.domain.Booking;
+import code.bookings.domain.BookingRepository;
 import code.bookings.infrastructure.exceptions.BookingNotFoundException;
 import code.screenings.application.ScreeningFacade;
 import com.google.common.eventbus.EventBus;
@@ -28,20 +26,9 @@ public class Booker {
 
     BookingDto bookSeat(UUID seatId, String username, Clock clock) {
         var seatDetails = screeningFacade.searchSeatDetails(seatId, clock);
-        if (seatDetails.timeToScreeningInHours() < 24) {
-            throw new BookingException("Too late to booking");
-        }
-        if (!seatDetails.isSeatAvailable()) {
-            throw new BookingException("Seat not available");
-        }
+        var booking = Booking.make(seatId, seatDetails, username);
         eventBus.post(
                 new SeatBookedEvent(seatId)
-        );
-        var booking = new Booking(
-                UUID.randomUUID(),
-                BookingStatus.ACTIVE,
-                seatId,
-                username
         );
         return bookingRepository
                 .save(booking)
@@ -52,10 +39,7 @@ public class Booker {
         var booking = getBookingOrThrow(bookingId);
         var seatId = booking.getSeatId();
         var seatDetails = screeningFacade.searchSeatDetails(seatId, clock);
-        if (seatDetails.timeToScreeningInHours() < 24) {
-            throw new BookingException("Too late to cancel booking");
-        }
-        booking.cancel();
+        booking.cancel(seatDetails);
         eventBus.post(
                 new BookingCancelledEvent(seatId)
         );

@@ -2,6 +2,7 @@ package code.bookings.domain;
 
 import code.bookings.application.dto.BookingDto;
 import code.bookings.domain.exceptions.BookingException;
+import code.screenings.application.dto.SeatDetails;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,9 +27,27 @@ public class Booking {
 
     private String username;
 
-    public void cancel() {
+    public static Booking make(UUID seatId, SeatDetails seatDetails, String username) {
+        if (seatDetails.timeToScreeningInHours() < 24) {
+            throw new BookingException("Too late to booking");
+        }
+        if (!seatDetails.isSeatAvailable()) {
+            throw new BookingException("Seat not available");
+        }
+        return new Booking(
+                UUID.randomUUID(),
+                BookingStatus.ACTIVE,
+                seatId,
+                username
+        );
+    }
+
+    public void cancel(SeatDetails seatDetails) {
         if (this.status.equals(BookingStatus.CANCELLED)) {
             throw new BookingException("Booking already cancelled");
+        }
+        if (seatDetails.timeToScreeningInHours() < 24) {
+            throw new BookingException("Too late to cancel booking");
         }
         this.status = BookingStatus.CANCELLED;
     }

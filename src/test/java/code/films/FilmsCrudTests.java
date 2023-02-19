@@ -29,7 +29,7 @@ class FilmsCrudTests extends SpringIntegrationTests {
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void should_add_film() throws Exception {
+    void should_create_film() throws Exception {
         //given
         var dto = createCreateFilmDto();
 

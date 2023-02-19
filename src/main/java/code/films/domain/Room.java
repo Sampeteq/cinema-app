@@ -1,7 +1,6 @@
-package code.rooms.domain;
+package code.films.domain;
 
-import code.rooms.application.dto.RoomDetails;
-import code.rooms.application.dto.RoomDto;
+import code.films.application.dto.RoomDto;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -14,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+@Getter
 @ToString
 public class Room {
 
@@ -25,13 +25,6 @@ public class Room {
     private int rowsQuantity;
 
     private int seatsInOneRowQuantity;
-
-    public RoomDetails toDetails() {
-        return new RoomDetails(
-                this.rowsQuantity,
-                this.seatsInOneRowQuantity
-        );
-    }
 
     public RoomDto toDto() {
         return new RoomDto(

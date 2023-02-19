@@ -1,6 +1,5 @@
 package code.films.domain;
 
-import code.rooms.application.dto.RoomDetails;
 import code.films.application.dto.ScreeningDto;
 import lombok.*;
 
@@ -31,26 +30,28 @@ public class Screening {
     @ManyToOne
     private Film film;
 
-    private UUID roomId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roomId")
+    private Room room;
 
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
-    public static Screening of(LocalDateTime date, int minAge, Film film, UUID roomId, RoomDetails roomDetails) {
+    public static Screening of(LocalDateTime date, int minAge, Film film, Room room) {
         var screening = new Screening(
                 UUID.randomUUID(),
                 date,
                 minAge,
                 film,
-                roomId,
+                room,
                 new ArrayList<>()
         );
         var seats = new ArrayList<Seat>();
         var rowNumber = 1;
         var seatNumber = 1;
         var helpCounter = 1;
-        for (int i = 1; i <= roomDetails.rowsQuantity() * roomDetails.seatsInOneRowQuantity(); i++) {
-            if (helpCounter > roomDetails.seatsInOneRowQuantity()) {
+        for (int i = 1; i <= room.getRowsQuantity() * room.getSeatsInOneRowQuantity(); i++) {
+            if (helpCounter > room.getSeatsInOneRowQuantity()) {
                 rowNumber++;
                 seatNumber = 1;
                 helpCounter = 1;
@@ -87,7 +88,7 @@ public class Screening {
                 this.date,
                 this.minAge,
                 this.film.getId(),
-                this.roomId,
+                this.room.getId(),
                 (int) this.seats.stream().filter(Seat::isFree).count()
         );
     }

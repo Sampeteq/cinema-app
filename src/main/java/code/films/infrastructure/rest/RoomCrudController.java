@@ -1,8 +1,8 @@
-package code.rooms.infrastructure.rest;
+package code.films.infrastructure.rest;
 
-import code.rooms.application.RoomFacade;
-import code.rooms.application.dto.CreateRoomDto;
-import code.rooms.application.dto.RoomDto;
+import code.films.application.FilmFacade;
+import code.films.application.dto.CreateRoomDto;
+import code.films.application.dto.RoomDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,15 +16,15 @@ import java.util.List;
 @RestController
 public class RoomCrudController {
 
-    private final RoomFacade roomFacade;
+    private final FilmFacade filmFacade;
 
     @PostMapping("/rooms")
     public RoomDto createRoom(@RequestBody @Valid CreateRoomDto dto) {
-        return roomFacade.createRoom(dto);
+        return filmFacade.createRoom(dto);
     }
 
     @GetMapping("/rooms")
     public List<RoomDto> searchAllRooms() {
-        return roomFacade.searchAllRooms();
+        return filmFacade.searchAllRooms();
     }
 }

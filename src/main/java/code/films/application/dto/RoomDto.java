@@ -1,4 +1,4 @@
-package code.rooms.application.dto;
+package code.films.application.dto;
 
 import java.util.UUID;
 

@@ -21,6 +21,10 @@ public class FilmFacade {
 
     private final ScreeningSearcher screeningSearcher;
 
+    private final RoomFactory roomFactory;
+
+    private final RoomSearcher roomSearcher;
+
     public FilmDto createFilm(CreateFilmDto dto) {
         return filmFactory.createFilm(dto).toDto();
     }
@@ -48,5 +52,14 @@ public class FilmFacade {
 
     public SeatDetails searchSeatDetails(UUID seatId, Clock clock) {
         return screeningSearcher.searchScreeningDetails(seatId, clock);
+    }
+
+    @Transactional
+    public RoomDto createRoom(CreateRoomDto dto) {
+        return roomFactory.createRoom(dto);
+    }
+
+    public List<RoomDto> searchAllRooms() {
+        return roomSearcher.searchAllRooms();
     }
 }

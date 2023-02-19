@@ -1,8 +1,7 @@
 package code.utils;
 
-import code.rooms.application.RoomFacade;
-import code.rooms.application.dto.CreateRoomDto;
-import code.rooms.application.dto.RoomDto;
+import code.films.application.dto.CreateRoomDto;
+import code.films.application.dto.RoomDto;
 import code.films.application.FilmFacade;
 import code.films.application.dto.CreateScreeningDto;
 import code.films.application.dto.ScreeningDto;
@@ -21,8 +20,6 @@ import java.util.UUID;
 public class ScreeningTestHelper {
 
     private final FilmFacade filmFacade;
-
-    private final RoomFacade roomFacade;
 
     private final FilmTestHelper filmTestHelper;
 
@@ -122,7 +119,7 @@ public class ScreeningTestHelper {
     }
 
     public RoomDto createScreeningRoom() {
-        return roomFacade.createRoom(
+        return filmFacade.createRoom(
                 createScreeningRoomDto()
         );
     }
@@ -139,8 +136,8 @@ public class ScreeningTestHelper {
                 7
         );
         return List.of(
-                roomFacade.createRoom(room1),
-                roomFacade.createRoom(room2)
+                filmFacade.createRoom(room1),
+                filmFacade.createRoom(room2)
         );
     }
 

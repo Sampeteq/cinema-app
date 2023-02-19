@@ -1,4 +1,4 @@
-package code.rooms;
+package code.films;
 
 import code.utils.ScreeningTestHelper;
 import code.utils.SpringIntegrationTests;

@@ -26,7 +26,9 @@ public class Booker {
 
     BookingDto bookSeat(UUID seatId, String username, Clock clock) {
         var seatDetails = filmFacade.searchSeatDetails(seatId, clock);
+        System.out.println(seatDetails);
         var booking = Booking.make(seatId, seatDetails, username);
+        System.out.println(booking);
         eventBus.post(
                 new SeatBookedEvent(seatId)
         );

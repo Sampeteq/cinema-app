@@ -1,13 +1,11 @@
 package code.films.application;
 
-import code.rooms.application.RoomFacade;
-import code.rooms.application.dto.RoomDetails;
-import code.rooms.infrastructure.exceptions.RoomNotFoundException;
-import code.films.domain.*;
 import code.films.application.dto.CreateScreeningDto;
+import code.films.domain.*;
+import code.films.domain.exceptions.ScreeningDateException;
 import code.films.domain.exceptions.TimeAndRoomCollisionException;
 import code.films.infrastructure.exceptions.FilmNotFoundException;
-import code.films.domain.exceptions.ScreeningDateException;
+import code.films.infrastructure.exceptions.RoomNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +22,7 @@ public class ScreeningFactory {
 
     private final FilmRepository filmRepository;
 
-    private final RoomFacade roomFacade;
+    private final RoomRepository roomRepository;
 
     private final Clock clock;
 
@@ -32,13 +30,12 @@ public class ScreeningFactory {
         validateScreeningDate(dto.date());
         var film = getFilmOrThrow(dto);
         validateTimeAndRoomCollisionBetweenScreenings(dto.date(), film.getDurationInMinutes(), dto.roomId());
-        var roomDetails = getRoomDetailsOrThrow(dto.roomId());
+        var room = getRoomOrThrow(dto.roomId());
         var screening = Screening.of(
                 dto.date(),
                 dto.minAge(),
                 film,
-                dto.roomId(),
-                roomDetails
+                room
         );
         return screeningRepository.save(screening);
     }
@@ -73,9 +70,9 @@ public class ScreeningFactory {
         }
     }
 
-    private RoomDetails getRoomDetailsOrThrow(UUID roomId) {
-        return roomFacade
-                .searchRoomDetails(roomId)
+    private Room getRoomOrThrow(UUID roomId) {
+        return roomRepository
+                .findById(roomId)
                 .orElseThrow(RoomNotFoundException::new);
     }
 }

@@ -1,6 +1,6 @@
-package code.rooms.infrastructure.exceptions;
+package code.films.infrastructure.exceptions;
 
-import code.rooms.domain.exceptions.RoomException;
+import code.films.domain.exceptions.RoomException;
 
 public class RoomNotFoundException extends RoomException {
 

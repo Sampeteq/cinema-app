@@ -1,4 +1,4 @@
-package code.rooms.domain.exceptions;
+package code.films.domain.exceptions;
 
 public abstract class RoomException extends RuntimeException {
 

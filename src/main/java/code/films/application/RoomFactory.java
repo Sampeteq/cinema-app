@@ -1,10 +1,10 @@
-package code.rooms.application;
+package code.films.application;
 
-import code.rooms.domain.Room;
-import code.rooms.domain.RoomRepository;
-import code.rooms.application.dto.CreateRoomDto;
-import code.rooms.application.dto.RoomDto;
-import code.rooms.infrastructure.exceptions.RoomNumberAlreadyExistsException;
+import code.films.application.dto.CreateRoomDto;
+import code.films.application.dto.RoomDto;
+import code.films.domain.Room;
+import code.films.domain.RoomRepository;
+import code.films.infrastructure.exceptions.RoomNumberAlreadyExistsException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

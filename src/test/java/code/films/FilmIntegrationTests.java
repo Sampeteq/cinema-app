@@ -133,7 +133,7 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_room_number_is_not_unique() throws Exception {
         //given
-        var room = this.filmTestHelper.createScreeningRoom();
+        var room = filmTestHelper.createScreeningRoom();
         var dto = FilmTestHelper.createScreeningRoomDto().withNumber(room.number());
 
         //when
@@ -209,7 +209,7 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_there_is_time_and_room_collision_between_screenings() throws Exception {
         //given
-        var screening = this.filmTestHelper.createScreening();
+        var screening = filmTestHelper.createScreening();
         var dto = FilmTestHelper.createCreateScreeningDto(
                 screening.filmId(),
                 screening.roomId(),
@@ -232,7 +232,7 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_search_all_screenings() throws Exception {
         //given
-        var screenings = this.filmTestHelper.createScreenings();
+        var screenings = filmTestHelper.createScreenings();
 
         //when
         var result = mockMvc.perform(
@@ -248,8 +248,8 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_search_seats_for_screening() throws Exception {
         //given
-        var screening = this.filmTestHelper.createScreening();
-        var seats = this.filmTestHelper.searchScreeningSeats(screening.id());
+        var screening = filmTestHelper.createScreening();
+        var seats = filmTestHelper.searchScreeningSeats(screening.id());
 
         //when
         var result = mockMvc.perform(
@@ -265,7 +265,7 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_search_screenings_by_search_params() throws Exception {
         //given
-        var screenings = this.filmTestHelper.createScreenings();
+        var screenings = filmTestHelper.createScreenings();
         var filmId = screenings.get(0).filmId();
         var screeningDate = screenings.get(0).date();
         var filteredScreening = screenings

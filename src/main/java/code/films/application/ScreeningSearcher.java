@@ -33,7 +33,7 @@ public class ScreeningSearcher {
     }
 
     List<SeatDto> searchSeats(UUID screeningId) {
-        return this.seatRepository
+        return seatRepository
                 .findByScreening_Id(screeningId)
                 .stream()
                 .map(Seat::toDto)
@@ -41,7 +41,7 @@ public class ScreeningSearcher {
     }
 
     SeatDetails searchScreeningDetails(UUID seatId, Clock clock) {
-        var seat = this.seatRepository
+        var seat = seatRepository
                 .findById(seatId)
                 .orElseThrow(SeatNotFoundException::new);
         var screening = seat.getScreening();

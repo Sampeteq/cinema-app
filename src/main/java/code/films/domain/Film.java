@@ -29,9 +29,9 @@ public class Film {
 
     public FilmDto toDto() {
         return new FilmDto(
-                this.id,
-                this.title,
-                this.category,
+                id,
+                title,
+                category,
                 year,
                 durationInMinutes
         );

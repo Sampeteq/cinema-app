@@ -51,7 +51,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_booked_seat() throws Exception {
         //given
-        var screening = this.filmTestHelper.createScreening();
+        var screening = filmTestHelper.createScreening();
         var seat = filmTestHelper.searchScreeningSeats(screening.id()).get(0);
         var seatId = seat.id();
 

@@ -72,24 +72,24 @@ public class Screening {
 
     public int timeToScreeningStartInHours(Clock clock) {
         return (int) Duration
-                .between(LocalDateTime.now(clock), this.date)
+                .between(LocalDateTime.now(clock), date)
                 .abs()
                 .toHours();
     }
 
     public boolean isTimeCollision(LocalDateTime start, LocalDateTime finish) {
-        var screeningFinishDate = this.date.plusMinutes(film.getDurationInMinutes());
-        return screeningFinishDate.isAfter(start) && this.date.isBefore(finish);
+        var screeningFinishDate = date.plusMinutes(film.getDurationInMinutes());
+        return screeningFinishDate.isAfter(start) && date.isBefore(finish);
     }
 
     public ScreeningDto toDto() {
         return new ScreeningDto(
-                this.id,
-                this.date,
-                this.minAge,
-                this.film.getId(),
-                this.room.getId(),
-                (int) this.seats.stream().filter(Seat::isFree).count()
+                id,
+                date,
+                minAge,
+                film.getId(),
+                room.getId(),
+                (int) seats.stream().filter(Seat::isFree).count()
         );
     }
 }

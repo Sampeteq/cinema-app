@@ -41,7 +41,7 @@ public class ScreeningFactory {
     }
 
     private void validateScreeningDate(LocalDateTime date) {
-        var currentDate = LocalDateTime.ofInstant(this.clock.instant(), ZoneOffset.UTC);
+        var currentDate = LocalDateTime.ofInstant(clock.instant(), ZoneOffset.UTC);
         var currentYear = currentDate.getYear();
         var isYearCurrentOrNextOne = date.getYear() == currentYear || date.getYear() == currentYear + 1;
         if (!isYearCurrentOrNextOne) {

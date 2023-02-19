@@ -43,7 +43,7 @@ public class Booking {
     }
 
     public void cancel(SeatDetails seatDetails) {
-        if (this.status.equals(BookingStatus.CANCELLED)) {
+        if (status.equals(BookingStatus.CANCELLED)) {
             throw new BookingException("Booking already cancelled");
         }
         if (seatDetails.timeToScreeningInHours() < 24) {

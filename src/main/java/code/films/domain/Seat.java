@@ -30,19 +30,19 @@ public class Seat {
     private Screening screening;
 
     public boolean isFree() {
-        return this.status.equals(SeatStatus.FREE);
+        return status.equals(SeatStatus.FREE);
     }
 
     public void changeStatus(SeatStatus newStatus) {
-        this.status = newStatus;
+        status = newStatus;
     }
 
     public SeatDto toDto() {
         return new SeatDto(
-                this.id,
-                this.rowNumber,
-                this.number,
-                this.status.name()
+                id,
+                rowNumber,
+                number,
+                status.name()
         );
     }
 }

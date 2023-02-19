@@ -28,11 +28,11 @@ public class Room {
 
     public RoomDto toDto() {
         return new RoomDto(
-                this.id,
-                this.number,
-                this.rowsQuantity,
-                this.seatsInOneRowQuantity,
-                this.seatsInOneRowQuantity * this.rowsQuantity
+                id,
+                number,
+                rowsQuantity,
+                seatsInOneRowQuantity,
+                seatsInOneRowQuantity * rowsQuantity
         );
     }
 }

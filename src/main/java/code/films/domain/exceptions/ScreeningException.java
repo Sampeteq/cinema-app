@@ -1,8 +1,8 @@
 package code.films.domain.exceptions;
 
-public abstract class ScreeningException extends RuntimeException {
+public abstract class ScreeningException extends FilmException {
 
-    public ScreeningException(String message) {
+    protected ScreeningException(String message) {
         super(message);
     }
 }

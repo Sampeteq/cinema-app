@@ -1,8 +1,8 @@
 package code.films.domain.exceptions;
 
-public class FilmException extends RuntimeException {
+public abstract class FilmException extends RuntimeException {
 
-    public FilmException(String message) {
+    protected FilmException(String message) {
         super(message);
     }
 }

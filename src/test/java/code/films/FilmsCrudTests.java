@@ -1,6 +1,5 @@
 package code.films;
 
-import code.films.application.FilmFacade;
 import code.films.application.dto.FilmDto;
 import code.films.domain.FilmCategory;
 import code.utils.FilmTestHelper;
@@ -22,9 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class FilmsCrudTests extends SpringIntegrationTests {
-
-    @Autowired
-    private FilmFacade filmFacade;
 
     @Autowired
     private FilmTestHelper filmTestHelper;
@@ -90,23 +86,19 @@ class FilmsCrudTests extends SpringIntegrationTests {
     @Test
     void should_search_films_by_params() throws Exception {
         //given
-        var sampleFilm = filmFacade.createFilm(
-                createCreateFilmDto().withFilmCategory(FilmCategory.COMEDY)
-        );
-        filmFacade.createFilm(
-                createCreateFilmDto().withFilmCategory(FilmCategory.DRAMA)
-        );
+        var filmWithParams = filmTestHelper.createFilm(FilmCategory.COMEDY);
+        filmTestHelper.createFilm(FilmCategory.DRAMA);
 
         //when
         var result = mockMvc.perform(
                 get("/films")
-                        .param("category", sampleFilm.category().name())
+                        .param("category", filmWithParams.category().name())
         );
 
         //then
         result
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(1))
-                .andExpect(content().json(toJson(List.of(sampleFilm))));
+                .andExpect(content().json(toJson(List.of(filmWithParams))));
     }
 }

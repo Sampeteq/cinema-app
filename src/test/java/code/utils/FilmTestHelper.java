@@ -54,6 +54,11 @@ public class FilmTestHelper {
         return filmFacade.createFilm(filmCreatingRequest);
     }
 
+    public FilmDto createFilm(FilmCategory category) {
+        var filmCreatingRequest = createCreateFilmDto().withFilmCategory(category);
+        return filmFacade.createFilm(filmCreatingRequest);
+    }
+
     public List<FilmDto> createFilms() {
         return createCreateFilmDtos()
                 .stream()

@@ -11,7 +11,7 @@ public class UserTestHelper {
 
     private final UserFacade userFacade;
 
-    public static SignUpDto createSignUpDto() {
+    public static SignUpDto sampleSignUpDto() {
         return new SignUpDto(
                 "user1",
                 "password1",
@@ -19,7 +19,7 @@ public class UserTestHelper {
         );
     }
 
-    public static SignUpDto createSignUpDto(String username) {
+    public static SignUpDto sampleSignUpDto(String username) {
         return new SignUpDto(
                 username,
                 "password1",
@@ -27,7 +27,7 @@ public class UserTestHelper {
         );
     }
 
-    public static SignUpDto createSignUpDto(String password, String repeatedPassword) {
+    public static SignUpDto sampleSignUpDto(String password, String repeatedPassword) {
         return new SignUpDto(
                 "user1",
                 password,
@@ -36,7 +36,7 @@ public class UserTestHelper {
     }
 
     public String signUpUser(String username) {
-        var signUpRequest = createSignUpDto(username);
+        var signUpRequest = sampleSignUpDto(username);
         userFacade.signUp(signUpRequest);
         return signUpRequest.username();
     }

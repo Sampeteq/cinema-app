@@ -4,7 +4,6 @@ import code.films.application.dto.FilmDto;
 import code.films.application.dto.ScreeningDto;
 import code.films.domain.FilmCategory;
 import code.utils.FilmTestHelper;
-import code.utils.ScreeningTestHelper;
 import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,8 +16,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static code.utils.FilmTestHelper.createCreateFilmDto;
-import static code.utils.ScreeningTestHelper.createCreateScreeningDto;
-import static code.utils.ScreeningTestHelper.createScreeningRoomDto;
 import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,9 +26,6 @@ class FilmIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
     private FilmTestHelper filmTestHelper;
-
-    @Autowired
-    private ScreeningTestHelper screeningTestHelper;
 
     @Test
     @WithMockUser(authorities = "ADMIN")
@@ -114,7 +108,7 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_create_screening_room() throws Exception {
         //given
-        var dto = createScreeningRoomDto();
+        var dto = FilmTestHelper.createScreeningRoomDto();
 
         //when
         var result = mockMvc.perform(
@@ -139,8 +133,8 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_room_number_is_not_unique() throws Exception {
         //given
-        var room = screeningTestHelper.createScreeningRoom();
-        var dto = createScreeningRoomDto().withNumber(room.number());
+        var room = this.filmTestHelper.createScreeningRoom();
+        var dto = FilmTestHelper.createScreeningRoomDto().withNumber(room.number());
 
         //when
         var result = mockMvc.perform(
@@ -162,8 +156,8 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     void should_create_screening() throws Exception {
         //given
         var film = filmTestHelper.createFilm();
-        var room = screeningTestHelper.createScreeningRoom();
-        var dto = createCreateScreeningDto(
+        var room = filmTestHelper.createScreeningRoom();
+        var dto = FilmTestHelper.createCreateScreeningDto(
                 film.id(),
                 room.id()
         );
@@ -184,14 +178,14 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     }
 
     @ParameterizedTest
-    @MethodSource("code.utils.ScreeningTestHelper#getWrongScreeningDates")
+    @MethodSource("code.utils.FilmTestHelper#getWrongScreeningDates")
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {
         //given
         var filmId = filmTestHelper.createFilm().id();
-        var roomId = screeningTestHelper.createScreeningRoom().id();
-        var dto = createCreateScreeningDto(
+        var roomId = filmTestHelper.createScreeningRoom().id();
+        var dto = FilmTestHelper.createCreateScreeningDto(
                 filmId,
                 roomId
         ).withDate(wrongDate);
@@ -215,8 +209,8 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_there_is_time_and_room_collision_between_screenings() throws Exception {
         //given
-        var screening = screeningTestHelper.createScreening();
-        var dto = createCreateScreeningDto(
+        var screening = this.filmTestHelper.createScreening();
+        var dto = FilmTestHelper.createCreateScreeningDto(
                 screening.filmId(),
                 screening.roomId(),
                 screening.date().plusMinutes(10)
@@ -238,7 +232,7 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_search_all_screenings() throws Exception {
         //given
-        var screenings = screeningTestHelper.createScreenings();
+        var screenings = this.filmTestHelper.createScreenings();
 
         //when
         var result = mockMvc.perform(
@@ -254,8 +248,8 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_search_seats_for_screening() throws Exception {
         //given
-        var screening = screeningTestHelper.createScreening();
-        var seats = screeningTestHelper.searchScreeningSeats(screening.id());
+        var screening = this.filmTestHelper.createScreening();
+        var seats = this.filmTestHelper.searchScreeningSeats(screening.id());
 
         //when
         var result = mockMvc.perform(
@@ -271,7 +265,7 @@ class FilmIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_search_screenings_by_search_params() throws Exception {
         //given
-        var screenings = screeningTestHelper.createScreenings();
+        var screenings = this.filmTestHelper.createScreenings();
         var filmId = screenings.get(0).filmId();
         var screeningDate = screenings.get(0).date();
         var filteredScreening = screenings

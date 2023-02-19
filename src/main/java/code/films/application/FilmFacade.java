@@ -1,6 +1,9 @@
 package code.films.application;
 
 import code.films.application.dto.*;
+import code.films.domain.FilmFactory;
+import code.films.domain.RoomFactory;
+import code.films.domain.ScreeningFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

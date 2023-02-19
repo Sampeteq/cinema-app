@@ -1,4 +1,4 @@
-package code.films.application;
+package code.films.domain;
 
 import code.films.application.dto.CreateScreeningDto;
 import code.films.domain.*;

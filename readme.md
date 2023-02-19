@@ -2,7 +2,7 @@ This is web app to manage a cinema.
 
 Features:
 
-1.Storing and searching films:
+1.Storing and searching films and screenings:
 
 Endpoints:
 
@@ -12,37 +12,31 @@ Endpoints:
 
 /films?category={category} (GET) - search films by category
 
+/films/screenings (POST) - add a new screening (admin only)
+
+/films/screenings (GET) - search all films screenings
+
+/films/screenings?{paramName}=paramValue - search screenings by params
+
+/films/screenings/rooms (POST) - add a new screening room (admin only)
+
+/films/screenings/rooms (GET) - search all screenings room (admin only)
+
 /////////////////////
 
-2.Storing and searching screenings:
+2.Booking seats
 
 Endpoints:
 
-/screenings (POST) - add a new screening (admin only)
+/bookings (POST) - book a seat for screening
 
-/screenings (GET) - search all films screenings
+/bookings/{bookingId}/cancelled (PATCH) - cancel a seat booking
 
-/screenings?{paramName}=paramValue - search screenings by params
-
-/screenings-rooms (POST) - add a new screening room (admin only)
-
-/screenings-rooms (GET) - search all screenings room (admin only)
+/bookings/bookingId (GET) - search a seat booking by id
 
 /////////////////////
 
-3.Booking seats
-
-Endpoints:
-
-/seats-bookings (POST) - book a seat for screening
-
-/seats-bookings/{bookingId}/cancelled (PATCH) - cancel a seat booking
-
-/seats-bookings/bookingId (GET) - search a seat booking by id
-
-/////////////////////
-
-4.User account:
+3.User account:
 
 Endpoints:
 

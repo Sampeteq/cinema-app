@@ -1,3 +1,6 @@
+--liquibase formatted sql
+--changeset sampeteq:1
+
 CREATE TABLE IF NOT EXISTS USERS
 (
     USERNAME VARCHAR PRIMARY KEY,

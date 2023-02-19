@@ -1,5 +1,6 @@
 package code.films;
 
+import code.films.application.dto.ScreeningDto;
 import code.utils.FilmTestHelper;
 import code.utils.ScreeningTestHelper;
 import code.utils.SpringIntegrationTests;
@@ -11,8 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static code.utils.ScreeningTestHelper.createCreateScreeningDto;
+import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -45,14 +48,11 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         );
 
         //then
-        result.andExpect(status().isOk());
-        mockMvc.perform(get("/screenings"))
-                .andExpect(jsonPath("$[0].id").exists())
-                .andExpect(jsonPath("$[0].date").value(dto.date().toString()))
-                .andExpect(jsonPath("$[0].minAge").value(dto.minAge()))
-                .andExpect(jsonPath("$[0].filmId").value(dto.filmId().toString()))
-                .andExpect(jsonPath("$[0].roomId").value(dto.roomId().toString()))
-                .andExpect(jsonPath("$[0].freeSeats").value(room.seatsQuantity()));
+        result.andExpect(status().isCreated());
+        var createdScreening = fromResultActions(result, ScreeningDto.class);
+        mockMvc
+                .perform(get("/screenings"))
+                .andExpect(content().json(toJson(List.of(createdScreening))));
     }
 
     @ParameterizedTest

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-public class FilmCrudController {
+public class FilmController {
 
     private final FilmFacade filmFacade;
 

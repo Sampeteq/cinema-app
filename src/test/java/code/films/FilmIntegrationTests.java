@@ -1,6 +1,8 @@
 package code.films;
 
+import code.films.application.dto.FilmDto;
 import code.films.application.dto.ScreeningDto;
+import code.films.domain.FilmCategory;
 import code.utils.FilmTestHelper;
 import code.utils.ScreeningTestHelper;
 import code.utils.SpringIntegrationTests;
@@ -14,20 +16,146 @@ import org.springframework.security.test.context.support.WithMockUser;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static code.utils.FilmTestHelper.createCreateFilmDto;
 import static code.utils.ScreeningTestHelper.createCreateScreeningDto;
+import static code.utils.ScreeningTestHelper.createScreeningRoomDto;
 import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class ScreeningsCrudTests extends SpringIntegrationTests {
+class FilmIntegrationTests extends SpringIntegrationTests {
+
+    @Autowired
+    private FilmTestHelper filmTestHelper;
 
     @Autowired
     private ScreeningTestHelper screeningTestHelper;
 
-    @Autowired
-    private FilmTestHelper filmTestHelper;
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void should_create_film() throws Exception {
+        //given
+        var dto = createCreateFilmDto();
+
+        //when
+        var result = mockMvc.perform(
+                post("/films")
+                        .content(toJson(dto))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result.andExpect(status().isCreated());
+        var createdFilm = fromResultActions(result, FilmDto.class);
+        mockMvc
+                .perform(get("/films"))
+                .andExpect(content().json(toJson(List.of(createdFilm))));
+    }
+
+    @ParameterizedTest
+    @MethodSource("code.utils.FilmTestHelper#getWrongFilmYears")
+    @WithMockUser(authorities = "ADMIN")
+    void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
+            throws Exception {
+        //given
+        var dto = createCreateFilmDto().withYear(wrongYear);
+
+        //when
+        var result = mockMvc.perform(
+                post("/films")
+                        .content(toJson(dto))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("A film year must be previous, current or next one"));
+    }
+
+    @Test
+    void should_search_all_films() throws Exception {
+        //given
+        var sampleFilms = filmTestHelper.createFilms();
+
+        //when
+        var result = mockMvc.perform(
+                get("/films")
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(sampleFilms)));
+    }
+
+    @Test
+    void should_search_films_by_params() throws Exception {
+        //given
+        var filmWithParams = filmTestHelper.createFilm(FilmCategory.COMEDY);
+        filmTestHelper.createFilm(FilmCategory.DRAMA);
+
+        //when
+        var result = mockMvc.perform(
+                get("/films")
+                        .param("category", filmWithParams.category().name())
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(content().json(toJson(List.of(filmWithParams))));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void should_create_screening_room() throws Exception {
+        //given
+        var dto = createScreeningRoomDto();
+
+        //when
+        var result = mockMvc.perform(
+                post("/films/screenings/rooms")
+                        .content(toJson(dto))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result.andExpect(status().isOk());
+        mockMvc.perform(
+                        get("/films/screenings/rooms")
+                )
+                .andExpect(jsonPath("$[0].id").exists())
+                .andExpect(jsonPath("$[0].number").value(dto.number()))
+                .andExpect(jsonPath("$[0].rowsQuantity").value(dto.rowsQuantity()))
+                .andExpect(jsonPath("$[0].seatsInOneRowQuantity").value(dto.seatsQuantityInOneRow()))
+                .andExpect(jsonPath("$[0].seatsQuantity").value(dto.rowsQuantity() * dto.seatsQuantityInOneRow()));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void should_throw_exception_when_room_number_is_not_unique() throws Exception {
+        //given
+        var room = screeningTestHelper.createScreeningRoom();
+        var dto = createScreeningRoomDto().withNumber(room.number());
+
+        //when
+        var result = mockMvc.perform(
+                post("/films/screenings/rooms")
+                        .content(toJson(dto))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(
+                        "A room number already exists"
+                ));
+    }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
@@ -165,4 +293,3 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
                 .andExpect(content().json(toJson(filteredScreening)));
     }
 }
-

@@ -1,6 +1,6 @@
 package code.films.infrastructure.rest;
 
-import code.films.application.FilmSearchParams;
+import code.films.application.dto.FilmSearchParams;
 import code.films.application.FilmFacade;
 import code.films.domain.FilmCategory;
 import code.films.application.dto.CreateFilmDto;

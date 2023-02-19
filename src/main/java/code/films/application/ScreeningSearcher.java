@@ -1,5 +1,6 @@
 package code.films.application;
 
+import code.films.application.dto.ScreeningSearchParams;
 import code.films.application.dto.SeatDetails;
 import code.films.application.dto.ScreeningDto;
 import code.films.application.dto.SeatDto;

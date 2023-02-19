@@ -1,7 +1,7 @@
 package code.films.infrastructure.rest;
 
 import code.films.application.FilmFacade;
-import code.films.application.ScreeningSearchParams;
+import code.films.application.dto.ScreeningSearchParams;
 import code.films.application.dto.CreateScreeningDto;
 import code.films.application.dto.ScreeningDto;
 import code.films.application.dto.SeatDto;

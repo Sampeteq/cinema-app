@@ -1,5 +1,6 @@
 package code.films.application;
 
+import code.films.application.dto.FilmSearchParams;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import code.films.application.dto.FilmDto;

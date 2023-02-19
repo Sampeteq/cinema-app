@@ -1,6 +1,6 @@
 package code.films.domain;
 
-import code.films.application.FilmSearchParams;
+import code.films.application.dto.FilmSearchParams;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

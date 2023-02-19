@@ -1,4 +1,4 @@
-package code.films.application;
+package code.films.application.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

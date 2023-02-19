@@ -1,4 +1,4 @@
-package code.films.application;
+package code.films.application.dto;
 
 import code.films.domain.FilmCategory;
 import lombok.AccessLevel;

@@ -6,6 +6,8 @@ import code.films.domain.FilmCategory;
 import code.films.application.dto.CreateFilmDto;
 import code.films.application.dto.FilmDto;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,8 +20,9 @@ public class FilmCrudController {
     private final FilmFacade filmFacade;
 
     @PostMapping("/films")
-    public FilmDto createFilm(@RequestBody @Valid CreateFilmDto dto) {
-        return filmFacade.createFilm(dto);
+    public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid CreateFilmDto dto) {
+        var createdFilm = filmFacade.createFilm(dto);
+        return new ResponseEntity<>(createdFilm, HttpStatus.CREATED);
     }
 
     @GetMapping("/films")

@@ -1,6 +1,7 @@
 package code.films;
 
 import code.films.application.FilmFacade;
+import code.films.application.dto.FilmDto;
 import code.films.domain.FilmCategory;
 import code.utils.FilmTestHelper;
 import code.utils.SpringIntegrationTests;
@@ -14,6 +15,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import java.util.List;
 
 import static code.utils.FilmTestHelper.createCreateFilmDto;
+import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -41,20 +43,11 @@ class FilmsCrudTests extends SpringIntegrationTests {
         );
 
         //then
-        result.andExpect(status().isOk());
-        mockMvc.perform(
-                get("/films")
-        ).andExpect(
-                jsonPath("$.size()").value(1)
-        ).andExpect(
-                jsonPath("$[0].title").value(dto.title())
-        ).andExpect(
-                jsonPath("$[0].category").value(dto.filmCategory().name())
-        ).andExpect(
-                jsonPath("$[0].year").value(dto.year())
-        ).andExpect(
-                jsonPath("$[0].durationInMinutes").value(dto.durationInMinutes())
-        );
+        result.andExpect(status().isCreated());
+        var createdFilm = fromResultActions(result, FilmDto.class);
+        mockMvc
+                .perform(get("/films"))
+                .andExpect(content().json(toJson(List.of(createdFilm))));
     }
 
     @ParameterizedTest

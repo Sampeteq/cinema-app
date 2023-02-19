@@ -42,7 +42,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                post("/screenings")
+                post("/films/screenings")
                         .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -51,7 +51,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
         result.andExpect(status().isCreated());
         var createdScreening = fromResultActions(result, ScreeningDto.class);
         mockMvc
-                .perform(get("/screenings"))
+                .perform(get("/films/screenings"))
                 .andExpect(content().json(toJson(List.of(createdScreening))));
     }
 
@@ -70,7 +70,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                post("/screenings")
+                post("/films/screenings")
                         .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -96,7 +96,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                post("/screenings")
+                post("/films/screenings")
                         .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -114,7 +114,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                get("/screenings")
+                get("/films/screenings")
         );
 
         //then
@@ -131,7 +131,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                get("/screenings/" + screening.id() + "/seats")
+                get("/films/screenings/" + screening.id() + "/seats")
         );
 
         //then
@@ -154,7 +154,7 @@ class ScreeningsCrudTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                get("/screenings")
+                get("/films/screenings")
                         .param("filmId", filmId.toString())
                         .param("date", screeningDate.toString())
         );

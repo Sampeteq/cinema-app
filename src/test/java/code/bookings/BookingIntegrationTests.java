@@ -110,14 +110,14 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //then
         var searchSeatsResult = mockMvc.perform(
-                get("/screenings/" + screening.id() + "/seats")
+                get("/films/screenings/" + screening.id() + "/seats")
         );
         var isSeatBusy = getSeatsFromResult(searchSeatsResult).anyMatch(
                 s -> s.equals(seat.withStatus("BUSY"))
         );
         assertThat(isSeatBusy).isTrue();
         mockMvc.perform(
-                        get("/screenings")
+                        get("/films/screenings")
                 )
                 .andExpect(jsonPath("$[0].freeSeats").value(screening.freeSeats() - 1));
     }
@@ -162,13 +162,13 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         var searchSeatsResult = mockMvc.perform(
-                get("/screenings/" + screening.id() + "/seats")
+                get("/films/screenings/" + screening.id() + "/seats")
         );
         var isSeatFreeAgain = getSeatsFromResult(searchSeatsResult)
                 .anyMatch(it -> it.equals(seat.withStatus("FREE")));
         assertThat(isSeatFreeAgain).isTrue();
         mockMvc.perform(
-                        get("/screenings")
+                        get("/films/screenings")
                 )
                 .andExpect(jsonPath("$[0].freeSeats").value(screening.freeSeats()));
     }

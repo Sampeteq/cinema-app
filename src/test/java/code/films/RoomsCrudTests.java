@@ -26,7 +26,7 @@ class RoomsCrudTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                post("/rooms")
+                post("/films/screenings/rooms")
                         .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -34,7 +34,7 @@ class RoomsCrudTests extends SpringIntegrationTests {
         //then
         result.andExpect(status().isOk());
         mockMvc.perform(
-                        get("/rooms")
+                        get("/films/screenings/rooms")
                 )
                 .andExpect(jsonPath("$[0].id").exists())
                 .andExpect(jsonPath("$[0].number").value(dto.number()))
@@ -52,7 +52,7 @@ class RoomsCrudTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                post("/rooms")
+                post("/films/screenings/rooms")
                         .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );

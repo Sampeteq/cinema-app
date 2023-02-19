@@ -19,7 +19,7 @@ public class FilmTestHelper {
 
     private static final int currentYear = Year.now().getValue();
 
-    public static CreateFilmDto createCreateFilmDto() {
+    public static CreateFilmDto sampleCreateFilmDto() {
         return new CreateFilmDto(
                 "title 1",
                 FilmCategory.COMEDY,
@@ -28,7 +28,25 @@ public class FilmTestHelper {
         );
     }
 
-    public static List<CreateFilmDto> createCreateFilmDtos() {
+    public static List<Integer> sampleWrongFilmYears() {
+        var currentYear = Year.now();
+        return List.of(
+                currentYear.minusYears(2).getValue(),
+                currentYear.plusYears(2).getValue()
+        );
+    }
+
+    public FilmDto sampleFilm() {
+        var filmCreatingRequest = sampleCreateFilmDto();
+        return filmFacade.createFilm(filmCreatingRequest);
+    }
+
+    public FilmDto sampleFilm(FilmCategory category) {
+        var filmCreatingRequest = sampleCreateFilmDto().withFilmCategory(category);
+        return filmFacade.createFilm(filmCreatingRequest);
+    }
+
+    public List<FilmDto> sampleFilms() {
         var dto1 = new CreateFilmDto(
                 "title 1",
                 FilmCategory.COMEDY,
@@ -41,35 +59,12 @@ public class FilmTestHelper {
                 Year.now().getValue() - 1,
                 90
         );
-        return List.of(dto1, dto2);
+        var sampleFilm1 = filmFacade.createFilm(dto1);
+        var sampleFilm2 = filmFacade.createFilm(dto2);
+        return List.of(sampleFilm1, sampleFilm2);
     }
 
-    public static List<Integer> getWrongFilmYears() {
-        var currentYear = Year.now();
-        return List.of(
-                currentYear.minusYears(2).getValue(),
-                currentYear.plusYears(2).getValue()
-        );
-    }
-
-    public FilmDto createFilm() {
-        var filmCreatingRequest = createCreateFilmDto();
-        return filmFacade.createFilm(filmCreatingRequest);
-    }
-
-    public FilmDto createFilm(FilmCategory category) {
-        var filmCreatingRequest = createCreateFilmDto().withFilmCategory(category);
-        return filmFacade.createFilm(filmCreatingRequest);
-    }
-
-    public List<FilmDto> createFilms() {
-        return createCreateFilmDtos()
-                .stream()
-                .map(filmFacade::createFilm)
-                .toList();
-    }
-
-    public static CreateRoomDto createScreeningRoomDto() {
+    public static CreateRoomDto sampleScreeningRoomDto() {
         return new CreateRoomDto(
                 1,
                 6,
@@ -77,7 +72,7 @@ public class FilmTestHelper {
         );
     }
 
-    public static CreateScreeningDto createCreateScreeningDto(UUID filmId, UUID roomId) {
+    public static CreateScreeningDto sampleCreateScreeningDto(UUID filmId, UUID roomId) {
         return new CreateScreeningDto(
                 LocalDateTime.of(currentYear, 5, 10, 18, 30),
                 13,
@@ -86,7 +81,7 @@ public class FilmTestHelper {
         );
     }
 
-    public static CreateScreeningDto createCreateScreeningDto(
+    public static CreateScreeningDto sampleCreateScreeningDto(
             UUID filmId,
             UUID roomId,
             LocalDateTime screeningDate
@@ -99,7 +94,7 @@ public class FilmTestHelper {
         );
     }
 
-    public static List<String> getWrongScreeningDates() {
+    public static List<String> sampleWrongScreeningDates() {
         var date1 = LocalDateTime.of(
                 currentYear - 1,
                 2,
@@ -117,31 +112,31 @@ public class FilmTestHelper {
         return List.of(date1, date2);
     }
 
-    public ScreeningDto createScreening() {
-        var sampleFilm = createFilm();
-        var sampleRoom = createScreeningRoom();
+    public ScreeningDto sampleScreening() {
+        var sampleFilm = sampleFilm();
+        var sampleRoom = sampleScreeningRoom();
         return filmFacade.createScreening(
-                createCreateScreeningDto(
+                sampleCreateScreeningDto(
                         sampleFilm.id(),
                         sampleRoom.id()
                 )
         );
     }
 
-    public ScreeningDto createScreening(LocalDateTime screeningDate) {
-        var sampleFilm = createFilm();
-        var sampleRoom = createScreeningRoom();
+    public ScreeningDto sampleScreening(LocalDateTime screeningDate) {
+        var sampleFilm = sampleFilm();
+        var sampleRoom = sampleScreeningRoom();
         return filmFacade.createScreening(
-                createCreateScreeningDto(
+                sampleCreateScreeningDto(
                         sampleFilm.id(),
                         sampleRoom.id()
                 ).withDate(screeningDate)
         );
     }
 
-    public List<ScreeningDto> createScreenings() {
-        var sampleFilms = createFilms();
-        var sampleRooms = createScreeningRooms();
+    public List<ScreeningDto> sampleScreenings() {
+        var sampleFilms = sampleFilms();
+        var sampleRooms = sampleScreeningRooms();
         var screening1 = filmFacade.createScreening(
                 new CreateScreeningDto(
                         LocalDateTime
@@ -162,13 +157,13 @@ public class FilmTestHelper {
         return List.of(screening1, screening2);
     }
 
-    public RoomDto createScreeningRoom() {
+    public RoomDto sampleScreeningRoom() {
         return filmFacade.createRoom(
-                createScreeningRoomDto()
+                sampleScreeningRoomDto()
         );
     }
 
-    public List<RoomDto> createScreeningRooms() {
+    public List<RoomDto> sampleScreeningRooms() {
         var room1 = new CreateRoomDto(
                 1,
                 6,
@@ -184,7 +179,6 @@ public class FilmTestHelper {
                 filmFacade.createRoom(room2)
         );
     }
-
 
     public List<SeatDto> searchScreeningSeats(UUID screeningId) {
         return filmFacade.searchSeats(screeningId);

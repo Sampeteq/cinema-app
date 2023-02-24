@@ -1,7 +1,9 @@
 package code.utils;
 
-import code.user.application.UserFacade;
 import code.user.application.dto.SignUpDto;
+import code.user.domain.User;
+import code.user.domain.UserRepository;
+import code.user.domain.UserRole;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserTestHelper {
 
-    private final UserFacade userFacade;
+    private final UserRepository userRepository;
 
     public static SignUpDto sampleSignUpDto() {
         return new SignUpDto(
@@ -36,8 +38,8 @@ public class UserTestHelper {
     }
 
     public String signUpUser(String username) {
-        var signUpRequest = sampleSignUpDto(username);
-        userFacade.signUp(signUpRequest);
-        return signUpRequest.username();
+        var user = new User(username, "12345", UserRole.COMMON);
+        userRepository.save(user);
+        return username;
     }
 }

@@ -1,9 +1,17 @@
 package code.films.domain;
 
-import code.films.application.dto.FilmDto;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
@@ -26,14 +34,4 @@ public class Film {
     private int year;
 
     private int durationInMinutes;
-
-    public FilmDto toDto() {
-        return new FilmDto(
-                id,
-                title,
-                category,
-                year,
-                durationInMinutes
-        );
-    }
 }

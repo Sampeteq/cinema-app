@@ -20,6 +20,8 @@ public class FilmFacade {
 
     private final FilmSearcher filmSearcher;
 
+    private final FilmMapper filmMapper;
+
     private final ScreeningFactory screeningFactory;
 
     private final ScreeningSearcher screeningSearcher;
@@ -29,7 +31,8 @@ public class FilmFacade {
     private final RoomSearcher roomSearcher;
 
     public FilmDto createFilm(CreateFilmDto dto) {
-        return filmFactory.createFilm(dto).toDto();
+        var film = filmFactory.createFilm(dto);
+        return filmMapper.mapToDto(film);
     }
 
     public List<FilmDto> searchFilmsBy(FilmSearchParams params) {

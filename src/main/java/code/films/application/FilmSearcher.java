@@ -15,11 +15,13 @@ public class FilmSearcher {
 
     private final FilmRepository filmRepository;
 
+    private final FilmMapper filmMapper;
+
     public List<FilmDto> searchFilmsBy(FilmSearchParams params) {
         return filmRepository
                 .findBy(params)
                 .stream()
-                .map(Film::toDto)
+                .map(filmMapper::mapToDto)
                 .toList();
     }
 }

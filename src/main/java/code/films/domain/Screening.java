@@ -16,11 +16,11 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
+@Getter
 @ToString
 public class Screening {
 
     @Id
-    @Getter
     private UUID id;
 
     private LocalDateTime date;
@@ -80,16 +80,5 @@ public class Screening {
     public boolean isTimeCollision(LocalDateTime start, LocalDateTime finish) {
         var screeningFinishDate = date.plusMinutes(film.getDurationInMinutes());
         return screeningFinishDate.isAfter(start) && date.isBefore(finish);
-    }
-
-    public ScreeningDto toDto() {
-        return new ScreeningDto(
-                id,
-                date,
-                minAge,
-                film.getId(),
-                room.getId(),
-                (int) seats.stream().filter(Seat::isFree).count()
-        );
     }
 }

@@ -26,6 +26,8 @@ public class FilmFacade {
 
     private final ScreeningSearcher screeningSearcher;
 
+    private final ScreeningMapper screeningMapper;
+
     private final RoomFactory roomFactory;
 
     private final RoomSearcher roomSearcher;
@@ -41,9 +43,8 @@ public class FilmFacade {
 
     @Transactional
     public ScreeningDto createScreening(CreateScreeningDto dto) {
-        return screeningFactory
-                .createScreening(dto)
-                .toDto();
+        var screening = screeningFactory.createScreening(dto);
+        return screeningMapper.mapToDto(screening);
     }
 
     @Transactional

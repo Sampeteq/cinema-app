@@ -1,10 +1,9 @@
 package code.films.application;
 
+import code.films.application.dto.ScreeningDto;
 import code.films.application.dto.ScreeningSearchParams;
 import code.films.application.dto.SeatDetails;
-import code.films.application.dto.ScreeningDto;
 import code.films.application.dto.SeatDto;
-import code.films.domain.Screening;
 import code.films.domain.ScreeningRepository;
 import code.films.domain.Seat;
 import code.films.domain.SeatRepository;
@@ -24,11 +23,13 @@ public class ScreeningSearcher {
 
     private final SeatRepository seatRepository;
 
+    private final ScreeningMapper screeningMapper;
+
     public List<ScreeningDto> searchScreeningsBy(ScreeningSearchParams params) {
         return screeningRepository
                 .findBy(params)
                 .stream()
-                .map(Screening::toDto)
+                .map(screeningMapper::mapToDto)
                 .toList();
     }
 

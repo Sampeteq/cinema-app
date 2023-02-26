@@ -1,7 +1,6 @@
-package code.films.application;
+package code.films.application.internal;
 
 import code.films.application.dto.FilmSearchParams;
-import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import code.films.application.dto.FilmDto;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package code.films.application;
+package code.films.application.internal;
 
 import code.bookings.application.dto.BookingCancelledEvent;
 import code.bookings.application.dto.SeatBookedEvent;

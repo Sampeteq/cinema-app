@@ -1,4 +1,4 @@
-package code.films.application;
+package code.films.application.internal;
 
 import code.films.application.dto.RoomDto;
 import code.films.domain.Room;

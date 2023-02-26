@@ -1,4 +1,4 @@
-package code.bookings.application;
+package code.bookings.application.internal;
 
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;

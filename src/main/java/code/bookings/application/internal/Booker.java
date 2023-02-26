@@ -1,4 +1,4 @@
-package code.bookings.application;
+package code.bookings.application.internal;
 
 import code.bookings.application.dto.BookingCancelledEvent;
 import code.bookings.application.dto.BookingDto;
@@ -24,7 +24,7 @@ public class Booker {
 
     private final EventBus eventBus;
 
-    BookingDto bookSeat(UUID seatId, String username, Clock clock) {
+    public BookingDto bookSeat(UUID seatId, String username, Clock clock) {
         var seatDetails = filmFacade.searchSeatDetails(seatId, clock);
         System.out.println(seatDetails);
         var booking = Booking.make(seatId, seatDetails, username);
@@ -37,7 +37,7 @@ public class Booker {
                 .toDto();
     }
 
-    void cancelSeat(UUID bookingId, Clock clock) {
+    public void cancelSeat(UUID bookingId, Clock clock) {
         var booking = getBookingOrThrow(bookingId);
         var seatId = booking.getSeatId();
         var seatDetails = filmFacade.searchSeatDetails(seatId, clock);

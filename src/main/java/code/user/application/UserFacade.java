@@ -1,5 +1,6 @@
 package code.user.application;
 
+import code.user.application.internal.AuthManager;
 import code.user.domain.UserRepository;
 import code.user.application.dto.SignInDto;
 import code.user.application.dto.SignUpDto;

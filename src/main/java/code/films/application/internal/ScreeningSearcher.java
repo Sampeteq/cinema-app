@@ -1,4 +1,4 @@
-package code.films.application;
+package code.films.application.internal;
 
 import code.films.application.dto.ScreeningDto;
 import code.films.application.dto.ScreeningSearchParams;
@@ -33,7 +33,7 @@ public class ScreeningSearcher {
                 .toList();
     }
 
-    List<SeatDto> searchSeats(UUID screeningId) {
+    public List<SeatDto> searchSeats(UUID screeningId) {
         return seatRepository
                 .findByScreening_Id(screeningId)
                 .stream()
@@ -41,7 +41,7 @@ public class ScreeningSearcher {
                 .toList();
     }
 
-    SeatDetails searchScreeningDetails(UUID seatId, Clock clock) {
+    public SeatDetails searchScreeningDetails(UUID seatId, Clock clock) {
         var seat = seatRepository
                 .findById(seatId)
                 .orElseThrow(SeatNotFoundException::new);

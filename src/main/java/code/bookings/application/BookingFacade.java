@@ -1,6 +1,8 @@
 package code.bookings.application;
 
 import code.bookings.application.dto.BookingDto;
+import code.bookings.application.internal.Booker;
+import code.bookings.application.internal.BookingSearcher;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

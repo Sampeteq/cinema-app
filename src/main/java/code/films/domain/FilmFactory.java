@@ -1,8 +1,6 @@
 package code.films.domain;
 
 import code.films.application.dto.CreateFilmDto;
-import code.films.domain.Film;
-import code.films.domain.FilmRepository;
 import code.films.domain.exceptions.FilmYearException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,18 +17,17 @@ public class FilmFactory {
     private final FilmRepository filmRepository;
 
     public Film createFilm(CreateFilmDto dto) {
-        if (isFilmYearCorrect(dto.year())) {
-            var film = new Film(
-                    UUID.randomUUID(),
-                    dto.title(),
-                    dto.filmCategory(),
-                    dto.year(),
-                    dto.durationInMinutes()
-            );
-            return filmRepository.save(film);
-        } else {
+        if (!isFilmYearCorrect(dto.year())) {
             throw new FilmYearException("A film year must be previous, current or next one");
         }
+        var film = new Film(
+                UUID.randomUUID(),
+                dto.title(),
+                dto.filmCategory(),
+                dto.year(),
+                dto.durationInMinutes()
+        );
+        return filmRepository.save(film);
     }
 
     private static boolean isFilmYearCorrect(Integer year) {

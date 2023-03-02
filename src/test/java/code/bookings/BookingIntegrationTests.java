@@ -2,6 +2,8 @@ package code.bookings;
 
 import code.bookings.application.BookingFacade;
 import code.bookings.application.dto.BookingDto;
+import code.bookings.domain.Booking;
+import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingStatus;
 import code.films.application.dto.SeatDto;
 import code.utils.FilmTestHelper;
@@ -16,7 +18,6 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BookingIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
-    private BookingFacade bookingFacade;
+    private BookingRepository bookingRepository;
 
     @Autowired
     private FilmTestHelper filmTestHelper;
@@ -128,7 +129,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //give
         var screening = filmTestHelper.sampleScreening();
         var seat = filmTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var booking = bookSeat(seat.id(), "user1");
+        var booking = addBooking(seat.id(), "user1");
 
         //when
         var result = mockMvc.perform(
@@ -152,7 +153,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //given
         var screening = filmTestHelper.sampleScreening();
         var seat = filmTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var booking = bookSeat(seat.id(), "user1");
+        var booking = addBooking(seat.id(), "user1");
 
         //when
         var result = mockMvc.perform(
@@ -179,8 +180,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         //given
         var screening = filmTestHelper.sampleScreening();
         var seat = filmTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var booking = bookSeat(seat.id(), "user1");
-        bookingFacade.cancelBooking(booking.id(), clock);
+        var booking = addBooking(seat.id(), "user1", BookingStatus.CANCELLED);
 
         //when
         var result = mockMvc.perform(
@@ -201,7 +201,7 @@ class BookingIntegrationTests extends SpringIntegrationTests {
             throws Exception {
         //given
         var hoursToScreening = 23;
-        var booking = bookSeat("user1", hoursToScreening);
+        var booking = addBooking("user1", hoursToScreening);
 
         //when
         var result = mockMvc.perform(
@@ -236,8 +236,8 @@ class BookingIntegrationTests extends SpringIntegrationTests {
     private List<BookingDto> bookSeats(String username) {
         var screening = filmTestHelper.sampleScreening();
         var seats = filmTestHelper.searchScreeningSeats(screening.id());
-        var booking1 = bookSeat(seats.get(0).id(), username);
-        var booking2 = bookSeat(seats.get(1).id(), username);
+        var booking1 = addBooking(seats.get(0).id(), username);
+        var booking2 = addBooking(seats.get(1).id(), username);
         return List.of(booking1, booking2);
     }
 
@@ -253,28 +253,48 @@ class BookingIntegrationTests extends SpringIntegrationTests {
         );
     }
 
-    private BookingDto bookSeat(UUID seatId, String username) {
-        return bookingFacade.bookSeat(
+    private BookingDto addBooking(UUID seatId, String username) {
+        var booking = new Booking(
+                UUID.randomUUID(),
+                BookingStatus.ACTIVE,
                 seatId,
-                username,
-                clock
+                username
         );
+        return bookingRepository.save(booking).toDto();
     }
 
-    private BookingDto bookSeat(String username, int hoursToScreening) {
+    private BookingDto addBooking(UUID seatId, String username, BookingStatus status) {
+        var booking = new Booking(
+                UUID.randomUUID(),
+                status,
+                seatId,
+                username
+        );
+        return bookingRepository.save(booking).toDto();
+    }
+
+    private BookingDto addBooking(String username, int hoursToScreening) {
         var currentDate = getCurrentDate(clock);
         var screeningDate = currentDate.minusHours(hoursToScreening);
         var screening = filmTestHelper.sampleScreening(screeningDate);
         var seat = filmTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var timeDuringBooking = Clock.fixed(
-                screeningDate.minusHours(hoursToScreening + 1).toInstant(ZoneOffset.UTC),
-                ZoneOffset.UTC
-        );
-        return bookingFacade.bookSeat(
+        var booking = new Booking(
+                UUID.randomUUID(),
+                BookingStatus.ACTIVE,
                 seat.id(),
-                username,
-                timeDuringBooking
+                username
         );
+        bookingRepository.save(booking);
+        return booking.toDto();
+//        var timeDuringBooking = Clock.fixed(
+//                screeningDate.minusHours(hoursToScreening + 1).toInstant(ZoneOffset.UTC),
+//                ZoneOffset.UTC
+//        );
+//        return bookingFacade.bookSeat(
+//                seat.id(),
+//                username,
+//                timeDuringBooking
+//        );
     }
 
     private LocalDateTime getCurrentDate(Clock clock) {

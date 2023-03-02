@@ -20,13 +20,13 @@ public class BookingFacade {
     private final BookingSearcher bookingSearcher;
 
     @Transactional
-    public BookingDto bookSeat(UUID seatId, String username, Clock clock) {
-        return booker.bookSeat(seatId, username, clock);
+    public BookingDto bookSeat(UUID seatId, String username) {
+        return booker.bookSeat(seatId, username);
     }
 
     @Transactional
-    public void cancelBooking(UUID bookingId, Clock clock) {
-        booker.cancelSeat(bookingId, clock);
+    public void cancelBooking(UUID bookingId) {
+        booker.cancelSeat(bookingId);
     }
 
     public BookingDto searchBookingById(UUID bookingId, String username) {

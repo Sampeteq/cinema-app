@@ -24,7 +24,9 @@ public class Booker {
 
     private final EventBus eventBus;
 
-    public BookingDto bookSeat(UUID seatId, String username, Clock clock) {
+    private final Clock clock;
+
+    public BookingDto bookSeat(UUID seatId, String username) {
         var seatDetails = filmFacade.searchSeatDetails(seatId, clock);
         System.out.println(seatDetails);
         var booking = Booking.make(seatId, seatDetails, username);
@@ -37,7 +39,7 @@ public class Booker {
                 .toDto();
     }
 
-    public void cancelSeat(UUID bookingId, Clock clock) {
+    public void cancelSeat(UUID bookingId) {
         var booking = getBookingOrThrow(bookingId);
         var seatId = booking.getSeatId();
         var seatDetails = filmFacade.searchSeatDetails(seatId, clock);

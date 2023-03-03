@@ -1,7 +1,6 @@
 package code.films.domain;
 
 import code.films.application.dto.CreateScreeningDto;
-import code.films.domain.*;
 import code.films.domain.exceptions.ScreeningDateException;
 import code.films.domain.exceptions.TimeAndRoomCollisionException;
 import code.films.infrastructure.exceptions.FilmNotFoundException;
@@ -29,7 +28,7 @@ public class ScreeningFactory {
     public Screening createScreening(CreateScreeningDto dto) {
         validateScreeningDate(dto.date());
         var film = getFilmOrThrow(dto);
-        validateTimeAndRoomCollisionBetweenScreenings(dto.date(), film.getDurationInMinutes(), dto.roomId());
+        validateScreeningsCollision(dto.date(), film.getDurationInMinutes(), dto.roomId());
         var room = getRoomOrThrow(dto.roomId());
         var screening = Screening.of(
                 dto.date(),
@@ -55,7 +54,7 @@ public class ScreeningFactory {
                 .orElseThrow(FilmNotFoundException::new);
     }
 
-    private void validateTimeAndRoomCollisionBetweenScreenings(
+    private void validateScreeningsCollision(
             LocalDateTime screeningDate,
             int filmDurationInMinutes,
             UUID roomId

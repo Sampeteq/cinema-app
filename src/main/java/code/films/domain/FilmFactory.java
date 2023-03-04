@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Component
@@ -25,7 +26,8 @@ public class FilmFactory {
                 dto.title(),
                 dto.filmCategory(),
                 dto.year(),
-                dto.durationInMinutes()
+                dto.durationInMinutes(),
+                new ArrayList<>()
         );
         return filmRepository.save(film);
     }

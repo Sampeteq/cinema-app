@@ -81,4 +81,12 @@ public class Screening {
         var screeningFinishDate = date.plusMinutes(film.getDurationInMinutes());
         return screeningFinishDate.isAfter(start) && date.isBefore(finish);
     }
+
+    public LocalDateTime finishDate() {
+        return date.plusMinutes(film.getDurationInMinutes());
+    }
+
+    public boolean hasRoom(Room room) {
+        return this.room.equals(room);
+    }
 }

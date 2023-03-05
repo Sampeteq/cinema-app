@@ -58,7 +58,8 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                post("/bookings/" + seatId)
+                post("/bookings/")
+                        .param("seatId", seatId.toString())
         );
 
         //then
@@ -85,7 +86,8 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         var result = mockMvc.perform(
-                post("/bookings/" + seatId)
+                post("/bookings/")
+                        .param("seatId", seatId.toString())
         );
 
         //then
@@ -106,7 +108,8 @@ class BookingIntegrationTests extends SpringIntegrationTests {
 
         //when
         mockMvc.perform(
-                post("/bookings/" + seatId)
+                post("/bookings/")
+                        .param("seatId", seatId.toString())
         );
 
         //then

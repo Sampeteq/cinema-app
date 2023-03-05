@@ -35,11 +35,6 @@ public class FilmController {
         return filmFacade.searchFilmsBy(params);
     }
 
-    @PostMapping("/films/screenings/rooms")
-    public RoomDto createRoom(@RequestBody @Valid CreateRoomDto dto) {
-        return filmFacade.createRoom(dto);
-    }
-
     @GetMapping("/films/screenings/rooms")
     public List<RoomDto> searchAllRooms() {
         return filmFacade.searchAllRooms();

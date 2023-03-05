@@ -26,7 +26,7 @@ public class BookingController {
         return bookingFacade.bookSeat(seatId, principal.getName());
     }
 
-    @PatchMapping("/{bookingId}/cancel")
+    @PostMapping("/{bookingId}/cancel")
     public void cancelBooking(@PathVariable UUID bookingId) {
         bookingFacade.cancelBooking(bookingId);
     }

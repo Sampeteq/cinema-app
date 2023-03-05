@@ -1,6 +1,5 @@
 package code.bookings;
 
-import code.bookings.application.BookingFacade;
 import code.bookings.application.dto.BookingDto;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
@@ -28,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class BookingIntegrationTests extends SpringIntegrationTests {
+class BookingsIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
     private BookingRepository bookingRepository;

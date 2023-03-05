@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class FilmIntegrationTests extends SpringIntegrationTests {
+class FilmsIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
     private FilmTestHelper filmTestHelper;

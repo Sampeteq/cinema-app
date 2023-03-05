@@ -1,4 +1,4 @@
-package code.films.application.internal;
+package code.films.application.internal.mappers;
 
 import code.films.application.dto.FilmDto;
 import code.films.domain.Film;

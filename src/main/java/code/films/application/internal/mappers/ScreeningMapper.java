@@ -1,4 +1,4 @@
-package code.films.application.internal;
+package code.films.application.internal.mappers;
 
 import code.films.application.dto.ScreeningDto;
 import code.films.domain.Screening;

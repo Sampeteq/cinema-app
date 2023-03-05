@@ -1,10 +1,10 @@
 package code.films.application;
 
 import code.films.application.dto.*;
-import code.films.application.internal.FilmMapper;
+import code.films.application.internal.mappers.FilmMapper;
 import code.films.application.internal.FilmSearcher;
 import code.films.application.internal.RoomSearcher;
-import code.films.application.internal.ScreeningMapper;
+import code.films.application.internal.mappers.ScreeningMapper;
 import code.films.application.internal.ScreeningSearcher;
 import code.films.domain.FilmFactory;
 import code.films.domain.RoomFactory;

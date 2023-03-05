@@ -4,6 +4,7 @@ import code.films.application.dto.ScreeningDto;
 import code.films.application.dto.ScreeningSearchParams;
 import code.films.application.dto.SeatDetails;
 import code.films.application.dto.SeatDto;
+import code.films.application.internal.mappers.ScreeningMapper;
 import code.films.domain.ScreeningRepository;
 import code.films.domain.Seat;
 import code.films.domain.SeatRepository;

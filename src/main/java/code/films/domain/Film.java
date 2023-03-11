@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.With;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -27,6 +28,7 @@ import java.util.UUID;
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString
+@With
 public class Film {
 
     @Id
@@ -41,7 +43,7 @@ public class Film {
 
     private int durationInMinutes;
 
-    @OneToMany(mappedBy = "film", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
     private List<Screening> screenings;
 
     public void addScreening(Screening newScreening) {

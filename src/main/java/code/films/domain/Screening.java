@@ -18,6 +18,7 @@ import java.util.UUID;
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString
+@With
 public class Screening {
 
     @Id

@@ -2,6 +2,7 @@ package code.films.domain;
 
 import code.films.application.dto.SeatDto;
 import lombok.*;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 import javax.persistence.*;
 import java.util.UUID;

@@ -2,10 +2,22 @@ package code.bookings.domain;
 
 import code.bookings.application.dto.BookingDto;
 import code.bookings.domain.exceptions.BookingException;
-import code.films.application.dto.SeatDetails;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.With;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
@@ -13,6 +25,7 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+@With
 @Getter
 @ToString
 public class Booking {
@@ -23,32 +36,27 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
-    private UUID seatId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "seatId")
+    private BookingSeat seat;
 
     private String username;
 
-    public static Booking make(UUID seatId, SeatDetails seatDetails, String username) {
-        if (seatDetails.timeToScreeningInHours() < 24) {
-            throw new BookingException("Too late to booking");
-        }
-        if (!seatDetails.isSeatAvailable()) {
-            throw new BookingException("Seat not available");
-        }
+    public static Booking make(BookingSeat seat, String username) {
+        seat.book();
         return new Booking(
                 UUID.randomUUID(),
                 BookingStatus.ACTIVE,
-                seatId,
+                seat,
                 username
         );
     }
 
-    public void cancel(SeatDetails seatDetails) {
+    public void cancel() {
         if (status.equals(BookingStatus.CANCELLED)) {
             throw new BookingException("Booking already cancelled");
         }
-        if (seatDetails.timeToScreeningInHours() < 24) {
-            throw new BookingException("Too late to cancel booking");
-        }
+        seat.cancelBooking();
         this.status = BookingStatus.CANCELLED;
     }
 
@@ -56,7 +64,7 @@ public class Booking {
         return new BookingDto(
                 this.id,
                 this.status.name(),
-                this.seatId
+                this.seat.getId()
         );
     }
 }

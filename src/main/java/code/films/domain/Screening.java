@@ -2,6 +2,7 @@ package code.films.domain;
 
 import code.films.application.dto.ScreeningDto;
 import lombok.*;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 import javax.persistence.*;
 import java.time.Clock;
@@ -29,6 +30,7 @@ public class Screening {
     private int minAge;
 
     @ManyToOne
+    @ToStringExclude
     private Film film;
 
     @OneToOne(cascade = CascadeType.ALL)

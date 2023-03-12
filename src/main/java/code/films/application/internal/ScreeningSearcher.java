@@ -51,7 +51,8 @@ public class ScreeningSearcher {
         var isFree = seat.isFree();
         return new SeatDetails(
                 isFree,
-                timeToScreeningStartInHours
+                timeToScreeningStartInHours,
+                screening.getId()
         );
     }
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.With;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

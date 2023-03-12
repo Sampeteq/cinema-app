@@ -5,6 +5,8 @@ import code.bookings.application.dto.BookingDto;
 import code.bookings.application.dto.SeatBookedEvent;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
+import code.bookings.domain.BookingScreening;
+import code.bookings.domain.BookingSeat;
 import code.bookings.infrastructure.exceptions.BookingNotFoundException;
 import code.films.application.FilmFacade;
 import com.google.common.eventbus.EventBus;
@@ -28,9 +30,18 @@ public class Booker {
 
     public BookingDto bookSeat(UUID seatId, String username) {
         var seatDetails = filmFacade.searchSeatDetails(seatId, clock);
-        System.out.println(seatDetails);
-        var booking = Booking.make(seatId, seatDetails, username);
-        System.out.println(booking);
+        var bookingScreening = BookingScreening
+                .builder()
+                .id(seatDetails.screeningId())
+                .timeToScreeningInHours(seatDetails.timeToScreeningInHours())
+                .build();
+        var seatBooking = BookingSeat
+                .builder()
+                .id(seatId)
+                .isAvailable(seatDetails.isSeatAvailable())
+                .screening(bookingScreening)
+                .build();
+        var booking = Booking.make(seatBooking, username);
         eventBus.post(
                 new SeatBookedEvent(seatId)
         );
@@ -41,11 +52,9 @@ public class Booker {
 
     public void cancelSeat(UUID bookingId) {
         var booking = getBookingOrThrow(bookingId);
-        var seatId = booking.getSeatId();
-        var seatDetails = filmFacade.searchSeatDetails(seatId, clock);
-        booking.cancel(seatDetails);
+        booking.cancel();
         eventBus.post(
-                new BookingCancelledEvent(seatId)
+                new BookingCancelledEvent(booking.getSeat().getId())
         );
     }
 

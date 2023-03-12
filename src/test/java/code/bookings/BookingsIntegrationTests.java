@@ -3,8 +3,11 @@ package code.bookings;
 import code.bookings.application.dto.BookingDto;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
+import code.bookings.domain.BookingScreening;
+import code.bookings.domain.BookingSeat;
 import code.bookings.domain.BookingStatus;
 import code.films.application.dto.SeatDto;
+import code.films.domain.SeatRepository;
 import code.utils.FilmTestHelper;
 import code.utils.SpringIntegrationTests;
 import code.utils.UserTestHelper;
@@ -31,6 +34,9 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired
+    private SeatRepository seatRepository;
 
     @Autowired
     private FilmTestHelper filmTestHelper;
@@ -255,23 +261,37 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
         );
     }
 
-    private BookingDto addBooking(UUID seatId, String username) {
-        var booking = new Booking(
+    private Booking createBooking(UUID seatId, String username) {
+        var seat = seatRepository.findById(seatId).get();
+        var screening = seat.getScreening();
+        var bookingScreening = BookingScreening
+                .builder()
+                .id(screening.getId())
+                .timeToScreeningInHours(screening.timeToScreeningStartInHours(clock))
+                .build();
+        var bookingSeat = BookingSeat
+                .builder()
+                .id(seatId)
+                .isAvailable(true)
+                .screening(bookingScreening)
+                .build();
+        return new Booking(
                 UUID.randomUUID(),
                 BookingStatus.ACTIVE,
-                seatId,
+                bookingSeat,
                 username
         );
-        return bookingRepository.save(booking).toDto();
+    }
+
+    private BookingDto addBooking(UUID seatId, String username) {
+        var booking = createBooking(seatId, username);
+        return bookingRepository
+                .save(booking)
+                .toDto();
     }
 
     private BookingDto addBooking(UUID seatId, String username, BookingStatus status) {
-        var booking = new Booking(
-                UUID.randomUUID(),
-                status,
-                seatId,
-                username
-        );
+        var booking = createBooking(seatId, username).withStatus(status);
         return bookingRepository.save(booking).toDto();
     }
 
@@ -280,26 +300,14 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
         var screeningDate = currentDate.minusHours(hoursToScreening);
         var screening = filmTestHelper.addSampleScreening(screeningDate);
         var seat = filmTestHelper.searchScreeningSeats(screening.id()).get(0);
-        var booking = new Booking(
-                UUID.randomUUID(),
-                BookingStatus.ACTIVE,
-                seat.id(),
-                username
-        );
-        bookingRepository.save(booking);
-        return booking.toDto();
-//        var timeDuringBooking = Clock.fixed(
-//                screeningDate.minusHours(hoursToScreening + 1).toInstant(ZoneOffset.UTC),
-//                ZoneOffset.UTC
-//        );
-//        return bookingFacade.bookSeat(
-//                seat.id(),
-//                username,
-//                timeDuringBooking
-//        );
+        var booking = createBooking(seat.id(), username);
+        return bookingRepository
+                .save(booking)
+                .toDto();
     }
 
     private LocalDateTime getCurrentDate(Clock clock) {
         return LocalDateTime.now(clock);
     }
+
 }

@@ -19,14 +19,13 @@ public class ScreeningEventHandler {
     private final SeatRepository seatRepository;
 
     @Subscribe
-    public void handle(Object event) {
-        if (event instanceof SeatBookedEvent seatBookedEvent) {
-            searchSeatByIdOrThrow(seatBookedEvent.seatId()).changeStatus(SeatStatus.BUSY);
-        } else if (event instanceof BookingCancelledEvent bookingCancelledEvent) {
-            searchSeatByIdOrThrow(bookingCancelledEvent.seatId()).changeStatus(SeatStatus.FREE);
-        } else {
-            throw new IllegalArgumentException("Not supported event type");
-        }
+    public void handle(SeatBookedEvent event) {
+        searchSeatByIdOrThrow(event.seatId()).changeStatus(SeatStatus.BUSY);
+    }
+
+    @Subscribe
+    public void handle(BookingCancelledEvent event) {
+        searchSeatByIdOrThrow(event.seatId()).changeStatus(SeatStatus.FREE);
     }
 
     private Seat searchSeatByIdOrThrow(UUID seatId) {

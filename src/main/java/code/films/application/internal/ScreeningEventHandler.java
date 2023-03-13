@@ -1,7 +1,7 @@
 package code.films.application.internal;
 
-import code.bookings.application.dto.BookingCancelledEvent;
-import code.bookings.application.dto.SeatBookedEvent;
+import code.bookings.application.events.BookingCancelledEvent;
+import code.bookings.application.events.SeatBookedEvent;
 import code.films.domain.Seat;
 import code.films.domain.SeatRepository;
 import code.films.domain.SeatStatus;

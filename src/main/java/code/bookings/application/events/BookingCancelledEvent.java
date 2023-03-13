@@ -1,4 +1,4 @@
-package code.bookings.application.dto;
+package code.bookings.application.events;
 
 import java.util.UUID;
 

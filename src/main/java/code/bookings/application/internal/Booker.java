@@ -1,8 +1,8 @@
 package code.bookings.application.internal;
 
-import code.bookings.application.dto.BookingCancelledEvent;
+import code.bookings.application.events.BookingCancelledEvent;
 import code.bookings.application.dto.BookingDto;
-import code.bookings.application.dto.SeatBookedEvent;
+import code.bookings.application.events.SeatBookedEvent;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingScreening;

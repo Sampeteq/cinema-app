@@ -105,7 +105,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
 
     @Test
     @WithMockUser(username = "user1")
-    void should_seat_be_busy_and_reduce_screening_free_seats_by_one_after_booking() throws Exception {
+    void should_seat_be_busy_after_booking() throws Exception {
         //given
         var screening = filmTestHelper.addSampleScreening();
         var seat = filmTestHelper.searchScreeningSeats(screening.id()).get(0);
@@ -122,9 +122,26 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
                 get("/films/screenings/" + screening.id() + "/seats")
         );
         var isSeatBusy = getSeatsFromResult(searchSeatsResult).anyMatch(
-                s -> s.equals(seat.withStatus("BUSY"))
+                s -> s.id().equals(seatId) && s.status().equals("BUSY")
         );
         assertThat(isSeatBusy).isTrue();
+    }
+
+    @Test
+    @WithMockUser(username = "user1")
+    void should_reduce_screening_free_seats_by_one_after_booking() throws Exception {
+        //given
+        var screening = filmTestHelper.addSampleScreening();
+        var seat = filmTestHelper.searchScreeningSeats(screening.id()).get(0);
+        var seatId = seat.id();
+
+        //when
+        mockMvc.perform(
+                post("/bookings/")
+                        .param("seatId", seatId.toString())
+        );
+
+        //then
         mockMvc.perform(
                         get("/films/screenings")
                 )

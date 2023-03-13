@@ -9,8 +9,8 @@ import code.bookings.domain.BookingScreening;
 import code.bookings.domain.BookingSeat;
 import code.bookings.infrastructure.exceptions.BookingNotFoundException;
 import code.films.application.FilmFacade;
-import com.google.common.eventbus.EventBus;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
@@ -24,7 +24,7 @@ public class Booker {
 
     private final FilmFacade filmFacade;
 
-    private final EventBus eventBus;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     private final Clock clock;
 
@@ -42,7 +42,7 @@ public class Booker {
                 .screening(bookingScreening)
                 .build();
         var booking = Booking.make(seatBooking, username);
-        eventBus.post(
+        applicationEventPublisher.publishEvent(
                 new SeatBookedEvent(seatId)
         );
         return bookingRepository
@@ -53,7 +53,7 @@ public class Booker {
     public void cancelSeat(UUID bookingId) {
         var booking = getBookingOrThrow(bookingId);
         booking.cancel();
-        eventBus.post(
+        applicationEventPublisher.publishEvent(
                 new BookingCancelledEvent(booking.getSeat().getId())
         );
     }

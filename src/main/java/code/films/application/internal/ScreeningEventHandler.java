@@ -6,9 +6,10 @@ import code.films.domain.Seat;
 import code.films.domain.SeatRepository;
 import code.films.domain.SeatStatus;
 import code.films.infrastructure.exceptions.SeatNotFoundException;
-import com.google.common.eventbus.Subscribe;
 import lombok.AllArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.UUID;
 
@@ -18,12 +19,12 @@ public class ScreeningEventHandler {
 
     private final SeatRepository seatRepository;
 
-    @Subscribe
+    @EventListener
     public void handle(SeatBookedEvent event) {
         searchSeatByIdOrThrow(event.seatId()).changeStatus(SeatStatus.BUSY);
     }
 
-    @Subscribe
+    @EventListener
     public void handle(BookingCancelledEvent event) {
         searchSeatByIdOrThrow(event.seatId()).changeStatus(SeatStatus.FREE);
     }

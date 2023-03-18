@@ -14,8 +14,8 @@ import code.films.application.services.ScreeningSearchService;
 import code.films.application.services.mappers.FilmMapper;
 import code.films.application.services.mappers.ScreeningMapper;
 import code.films.domain.FilmCategory;
-import code.films.domain.FilmFactory;
-import code.films.domain.ScreeningFactory;
+import code.films.application.services.FilmCreateService;
+import code.films.application.services.ScreeningCreateService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -36,7 +36,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FilmController {
 
-    private final FilmFactory filmFactory;
+    private final FilmCreateService filmCreateService;
 
     private final FilmMapper filmMapper;
 
@@ -44,7 +44,7 @@ public class FilmController {
 
     private final RoomSearchService roomSearchService;
 
-    private final ScreeningFactory screeningFactory;
+    private final ScreeningCreateService screeningCreateService;
 
     private final ScreeningMapper screeningMapper;
 
@@ -52,7 +52,7 @@ public class FilmController {
 
     @PostMapping("/films")
     public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid CreateFilmDto dto) {
-        var createdFilm = filmFactory.createFilm(dto);
+        var createdFilm = filmCreateService.createFilm(dto);
         return new ResponseEntity<>(filmMapper.mapToDto(createdFilm), HttpStatus.CREATED);
     }
 
@@ -76,7 +76,7 @@ public class FilmController {
             @Valid
             CreateScreeningDto dto
     ) {
-        var createdScreening = screeningFactory.createScreening(dto);
+        var createdScreening = screeningCreateService.createScreening(dto);
         return new ResponseEntity<>(screeningMapper.mapToDto(createdScreening), HttpStatus.CREATED);
     }
 

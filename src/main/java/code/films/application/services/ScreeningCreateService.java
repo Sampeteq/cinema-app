@@ -1,6 +1,11 @@
-package code.films.domain;
+package code.films.application.services;
 
 import code.films.application.dto.CreateScreeningDto;
+import code.films.domain.Film;
+import code.films.domain.FilmRepository;
+import code.films.domain.Room;
+import code.films.domain.RoomRepository;
+import code.films.domain.Screening;
 import code.films.domain.exceptions.ScreeningDateException;
 import code.films.infrastructure.exceptions.FilmNotFoundException;
 import code.films.infrastructure.exceptions.RoomNotFoundException;
@@ -14,7 +19,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class ScreeningFactory {
+public class ScreeningCreateService {
 
     private final FilmRepository filmRepository;
 

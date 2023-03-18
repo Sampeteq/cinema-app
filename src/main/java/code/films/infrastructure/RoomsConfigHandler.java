@@ -2,7 +2,7 @@ package code.films.infrastructure;
 
 import code.films.application.dto.CreateRoomDto;
 import code.films.application.services.RoomSearchService;
-import code.films.domain.RoomFactory;
+import code.films.application.services.RoomCreateService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class RoomsConfigHandler {
 
     private final RoomSearchService roomSearchService;
 
-    private final RoomFactory roomFactory;
+    private final RoomCreateService roomCreateService;
 
     @Value("${roomsConfigHandler.pathToRoomsConfig}")
     private String pathToRoomsConfig;
@@ -66,7 +66,7 @@ public class RoomsConfigHandler {
         var roomsFromConfig = new ObjectMapper().readValue(json, RoomsConfigDto.class);
         roomsFromConfig
                 .rooms()
-                .forEach(roomFactory::createRoom);
+                .forEach(roomCreateService::createRoom);
     }
 }
 

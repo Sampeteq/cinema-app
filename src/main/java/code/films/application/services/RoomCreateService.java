@@ -1,4 +1,4 @@
-package code.films.domain;
+package code.films.application.services;
 
 import code.films.application.dto.CreateRoomDto;
 import code.films.application.dto.RoomDto;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class RoomFactory {
+public class RoomCreateService {
 
     private final RoomRepository roomRepository;
 

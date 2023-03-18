@@ -1,6 +1,8 @@
-package code.films.domain;
+package code.films.application.services;
 
 import code.films.application.dto.CreateFilmDto;
+import code.films.domain.Film;
+import code.films.domain.FilmRepository;
 import code.films.domain.exceptions.FilmYearException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,7 +13,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class FilmFactory {
+public class FilmCreateService {
 
     private static final int CURRENT_YEAR = Year.now().getValue();
 

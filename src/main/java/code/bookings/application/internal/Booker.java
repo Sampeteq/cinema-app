@@ -19,9 +19,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Booker {
 
-    private final BookingRepository bookingRepository;
-
     private final FilmFacade filmFacade;
+
+    private final BookingRepository bookingRepository;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 

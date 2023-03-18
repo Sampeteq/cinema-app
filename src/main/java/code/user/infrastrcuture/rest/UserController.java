@@ -1,8 +1,8 @@
 package code.user.infrastrcuture.rest;
 
-import code.user.application.UserFacade;
 import code.user.application.dto.SignInDto;
 import code.user.application.dto.SignUpDto;
+import code.user.application.services.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,23 +16,23 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class UserController {
 
-    private final UserFacade userFacade;
+    private final AuthService authService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody @Valid SignUpDto dto) {
-        userFacade.signUp(dto);
+        authService.signUp(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody SignInDto dto) {
-        userFacade.signIn(dto);
+        authService.signIn(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/signout")
     public ResponseEntity<?> signOut() {
-        userFacade.signOut();
+        authService.signOut();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,13 +1,31 @@
 package code.films.infrastructure.rest;
 
-import code.films.application.dto.*;
-import code.films.application.FilmFacade;
+import code.films.application.dto.CreateFilmDto;
+import code.films.application.dto.CreateScreeningDto;
+import code.films.application.dto.FilmDto;
+import code.films.application.dto.FilmSearchParams;
+import code.films.application.dto.RoomDto;
+import code.films.application.dto.ScreeningDto;
+import code.films.application.dto.ScreeningSearchParams;
+import code.films.application.dto.SeatDto;
+import code.films.application.services.FilmSearchService;
+import code.films.application.services.RoomSearchService;
+import code.films.application.services.ScreeningSearchService;
+import code.films.application.services.mappers.FilmMapper;
+import code.films.application.services.mappers.ScreeningMapper;
 import code.films.domain.FilmCategory;
+import code.films.domain.FilmFactory;
+import code.films.domain.ScreeningFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -18,12 +36,24 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FilmController {
 
-    private final FilmFacade filmFacade;
+    private final FilmFactory filmFactory;
+
+    private final FilmMapper filmMapper;
+
+    private final FilmSearchService filmSearchService;
+
+    private final RoomSearchService roomSearchService;
+
+    private final ScreeningFactory screeningFactory;
+
+    private final ScreeningMapper screeningMapper;
+
+    private final ScreeningSearchService screeningSearchService;
 
     @PostMapping("/films")
     public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid CreateFilmDto dto) {
-        var createdFilm = filmFacade.createFilm(dto);
-        return new ResponseEntity<>(createdFilm, HttpStatus.CREATED);
+        var createdFilm = filmFactory.createFilm(dto);
+        return new ResponseEntity<>(filmMapper.mapToDto(createdFilm), HttpStatus.CREATED);
     }
 
     @GetMapping("/films")
@@ -32,12 +62,12 @@ public class FilmController {
                 .builder()
                 .category(category)
                 .build();
-        return filmFacade.searchFilmsBy(params);
+        return filmSearchService.searchFilmsBy(params);
     }
 
     @GetMapping("/films/screenings/rooms")
     public List<RoomDto> searchAllRooms() {
-        return filmFacade.searchAllRooms();
+        return roomSearchService.searchAllRooms();
     }
 
     @PostMapping("/films/screenings")
@@ -46,8 +76,8 @@ public class FilmController {
             @Valid
             CreateScreeningDto dto
     ) {
-        var createdScreening = filmFacade.createScreening(dto);
-        return new ResponseEntity<>(createdScreening, HttpStatus.CREATED);
+        var createdScreening = screeningFactory.createScreening(dto);
+        return new ResponseEntity<>(screeningMapper.mapToDto(createdScreening), HttpStatus.CREATED);
     }
 
     @GetMapping("/films/screenings")
@@ -66,12 +96,12 @@ public class FilmController {
                 .date(date)
                 .build();
 
-        return filmFacade.searchScreeningsBy(params);
+        return screeningSearchService.searchScreeningsBy(params);
     }
 
     @GetMapping("/films/screenings/{screeningId}/seats")
     public List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
-        return filmFacade.searchSeats(screeningId);
+        return screeningSearchService.searchSeats(screeningId);
     }
 }
 

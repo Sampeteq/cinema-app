@@ -1,10 +1,10 @@
-package code.films.application.internal;
+package code.films.application.services;
 
 import code.films.application.dto.ScreeningDto;
 import code.films.application.dto.ScreeningSearchParams;
 import code.films.application.dto.SeatDetails;
 import code.films.application.dto.SeatDto;
-import code.films.application.internal.mappers.ScreeningMapper;
+import code.films.application.services.mappers.ScreeningMapper;
 import code.films.domain.ScreeningRepository;
 import code.films.domain.Seat;
 import code.films.domain.SeatRepository;
@@ -26,6 +26,8 @@ public class ScreeningSearchService {
 
     private final ScreeningMapper screeningMapper;
 
+    private final Clock clock;
+
     public List<ScreeningDto> searchScreeningsBy(ScreeningSearchParams params) {
         return screeningRepository
                 .findBy(params)
@@ -42,7 +44,7 @@ public class ScreeningSearchService {
                 .toList();
     }
 
-    public SeatDetails searchScreeningDetails(UUID seatId, Clock clock) {
+    public SeatDetails searchScreeningDetails(UUID seatId) {
         var seat = seatRepository
                 .findById(seatId)
                 .orElseThrow(SeatNotFoundException::new);

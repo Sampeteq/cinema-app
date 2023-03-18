@@ -1,6 +1,6 @@
 package code.user.infrastrcuture;
 
-import code.user.application.UserFacade;
+import code.user.domain.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -50,9 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserFacade userFacade) {
-        return username -> userFacade
-                .searchUserDetails(username)
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+        return username -> userRepository
+                .searchUserDetailsByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 

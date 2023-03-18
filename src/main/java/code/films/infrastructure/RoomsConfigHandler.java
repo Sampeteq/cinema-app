@@ -1,7 +1,8 @@
 package code.films.infrastructure;
 
-import code.films.application.FilmFacade;
 import code.films.application.dto.CreateRoomDto;
+import code.films.application.services.RoomSearchService;
+import code.films.domain.RoomFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +24,16 @@ import java.util.List;
 @Profile("prod")
 public class RoomsConfigHandler {
 
-    private final FilmFacade filmFacade;
+    private final RoomSearchService roomSearchService;
+
+    private final RoomFactory roomFactory;
 
     @Value("${roomsConfigHandler.pathToRoomsConfig}")
     private String pathToRoomsConfig;
 
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {
-        if(filmFacade.searchAllRooms().isEmpty()) {
+        if(roomSearchService.searchAllRooms().isEmpty()) {
             try {
                 logIfFileNotExists();
                 var json = readConfig();
@@ -63,7 +66,7 @@ public class RoomsConfigHandler {
         var roomsFromConfig = new ObjectMapper().readValue(json, RoomsConfigDto.class);
         roomsFromConfig
                 .rooms()
-                .forEach(filmFacade::createRoom);
+                .forEach(roomFactory::createRoom);
     }
 }
 

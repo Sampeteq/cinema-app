@@ -1,8 +1,8 @@
 package code.utils;
 
 import code.films.application.dto.*;
-import code.films.application.internal.mappers.FilmMapper;
-import code.films.application.internal.mappers.ScreeningMapper;
+import code.films.application.services.mappers.FilmMapper;
+import code.films.application.services.mappers.ScreeningMapper;
 import code.films.domain.Film;
 import code.films.domain.FilmCategory;
 import code.films.domain.FilmRepository;
@@ -13,7 +13,6 @@ import code.films.domain.ScreeningRepository;
 import code.films.domain.Seat;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.Year;

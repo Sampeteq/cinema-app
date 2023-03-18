@@ -1,4 +1,4 @@
-package code.films.application.internal;
+package code.films.application;
 
 import code.bookings.application.events.BookingCancelledEvent;
 import code.bookings.application.events.SeatBookedEvent;
@@ -9,7 +9,6 @@ import code.films.infrastructure.exceptions.SeatNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.UUID;
 

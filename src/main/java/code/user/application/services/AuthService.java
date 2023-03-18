@@ -1,4 +1,4 @@
-package code.user.application.internal;
+package code.user.application.services;
 
 import code.user.domain.User;
 import code.user.domain.UserRepository;

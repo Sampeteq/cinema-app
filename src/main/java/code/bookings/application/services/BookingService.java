@@ -1,4 +1,4 @@
-package code.bookings.application.internal;
+package code.bookings.application.services;
 
 import code.bookings.application.dto.BookingDto;
 import code.bookings.application.events.BookingCancelledEvent;
@@ -8,7 +8,7 @@ import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingScreening;
 import code.bookings.domain.BookingSeat;
 import code.bookings.infrastructure.exceptions.BookingNotFoundException;
-import code.films.application.FilmFacade;
+import code.films.application.services.ScreeningSearchService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -19,14 +19,14 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BookingService {
 
-    private final FilmFacade filmFacade;
+    private final ScreeningSearchService screeningSearchService;
 
     private final BookingRepository bookingRepository;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
     public BookingDto make(UUID seatId, String username) {
-        var seatDetails = filmFacade.searchSeatDetails(seatId);
+        var seatDetails = screeningSearchService.searchScreeningDetails(seatId);
         var bookingScreening = BookingScreening
                 .builder()
                 .id(seatDetails.screeningId())

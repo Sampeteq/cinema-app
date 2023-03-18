@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class AuthManager {
+public class AuthService {
 
     private final UserRepository userRepository;
 

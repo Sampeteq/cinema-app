@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class RoomSearcher {
+public class RoomSearchService {
 
     private final RoomRepository roomRepository;
 

@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class Booker {
+public class BookingService {
 
     private final FilmFacade filmFacade;
 

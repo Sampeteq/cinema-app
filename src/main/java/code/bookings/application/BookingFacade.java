@@ -1,13 +1,12 @@
 package code.bookings.application;
 
 import code.bookings.application.dto.BookingDto;
-import code.bookings.application.internal.Booker;
-import code.bookings.application.internal.BookingSearcher;
+import code.bookings.application.internal.BookingService;
+import code.bookings.application.internal.BookingSearchService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,25 +14,25 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BookingFacade {
 
-    private final Booker booker;
+    private final BookingService bookingService;
 
-    private final BookingSearcher bookingSearcher;
+    private final BookingSearchService bookingSearchService;
 
     @Transactional
     public BookingDto bookSeat(UUID seatId, String username) {
-        return booker.bookSeat(seatId, username);
+        return bookingService.bookSeat(seatId, username);
     }
 
     @Transactional
     public void cancelBooking(UUID bookingId) {
-        booker.cancelSeat(bookingId);
+        bookingService.cancelSeat(bookingId);
     }
 
     public BookingDto searchBookingById(UUID bookingId, String username) {
-        return bookingSearcher.searchBookingById(bookingId, username);
+        return bookingSearchService.searchBookingById(bookingId, username);
     }
 
     public List<BookingDto> searchAllBookings(String username) {
-        return bookingSearcher.searchAllBookings(username);
+        return bookingSearchService.searchAllBookings(username);
     }
 }

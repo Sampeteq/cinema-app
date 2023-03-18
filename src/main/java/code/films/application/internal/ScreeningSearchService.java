@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class ScreeningSearcher {
+public class ScreeningSearchService {
 
     private final ScreeningRepository screeningRepository;
 

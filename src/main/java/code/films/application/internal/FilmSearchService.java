@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class FilmSearcher {
+public class FilmSearchService {
 
     private final FilmRepository filmRepository;
 

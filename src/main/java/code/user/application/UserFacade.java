@@ -1,6 +1,6 @@
 package code.user.application;
 
-import code.user.application.internal.AuthManager;
+import code.user.application.internal.AuthService;
 import code.user.domain.UserRepository;
 import code.user.application.dto.SignInDto;
 import code.user.application.dto.SignUpDto;
@@ -14,20 +14,20 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserFacade {
 
-    private final AuthManager authManager;
+    private final AuthService authService;
 
     private final UserRepository userRepository;
 
     public void signUp(SignUpDto dto) {
-        authManager.signUp(dto);
+        authService.signUp(dto);
     }
 
     public void signIn(SignInDto dto) {
-        authManager.signIn(dto);
+        authService.signIn(dto);
     }
 
     public void signOut() {
-        authManager.signOut();
+        authService.signOut();
     }
 
     public Optional<UserDetails> searchUserDetails(String username) {

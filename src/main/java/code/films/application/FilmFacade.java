@@ -2,10 +2,10 @@ package code.films.application;
 
 import code.films.application.dto.*;
 import code.films.application.internal.mappers.FilmMapper;
-import code.films.application.internal.FilmSearcher;
-import code.films.application.internal.RoomSearcher;
+import code.films.application.internal.FilmSearchService;
+import code.films.application.internal.RoomSearchService;
 import code.films.application.internal.mappers.ScreeningMapper;
-import code.films.application.internal.ScreeningSearcher;
+import code.films.application.internal.ScreeningSearchService;
 import code.films.domain.FilmFactory;
 import code.films.domain.RoomFactory;
 import code.films.domain.ScreeningFactory;
@@ -23,19 +23,19 @@ public class FilmFacade {
 
     private final FilmFactory filmFactory;
 
-    private final FilmSearcher filmSearcher;
+    private final FilmSearchService filmSearchService;
 
     private final FilmMapper filmMapper;
 
     private final ScreeningFactory screeningFactory;
 
-    private final ScreeningSearcher screeningSearcher;
+    private final ScreeningSearchService screeningSearchService;
 
     private final ScreeningMapper screeningMapper;
 
     private final RoomFactory roomFactory;
 
-    private final RoomSearcher roomSearcher;
+    private final RoomSearchService roomSearchService;
 
     private final Clock clock;
 
@@ -45,7 +45,7 @@ public class FilmFacade {
     }
 
     public List<FilmDto> searchFilmsBy(FilmSearchParams params) {
-        return filmSearcher.searchFilmsBy(params);
+        return filmSearchService.searchFilmsBy(params);
     }
 
     @Transactional
@@ -56,16 +56,16 @@ public class FilmFacade {
 
     @Transactional
     public List<ScreeningDto> searchScreeningsBy(ScreeningSearchParams params) {
-        return screeningSearcher.searchScreeningsBy(params);
+        return screeningSearchService.searchScreeningsBy(params);
     }
 
     @Transactional
     public List<SeatDto> searchSeats(UUID screeningId) {
-        return screeningSearcher.searchSeats(screeningId);
+        return screeningSearchService.searchSeats(screeningId);
     }
 
     public SeatDetails searchSeatDetails(UUID seatId) {
-        return screeningSearcher.searchScreeningDetails(seatId, clock);
+        return screeningSearchService.searchScreeningDetails(seatId, clock);
     }
 
     @Transactional
@@ -74,6 +74,6 @@ public class FilmFacade {
     }
 
     public List<RoomDto> searchAllRooms() {
-        return roomSearcher.searchAllRooms();
+        return roomSearchService.searchAllRooms();
     }
 }

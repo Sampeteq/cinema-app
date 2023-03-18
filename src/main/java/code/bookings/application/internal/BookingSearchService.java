@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class BookingSearcher {
+public class BookingSearchService {
 
     private final BookingRepository bookingRepository;
 

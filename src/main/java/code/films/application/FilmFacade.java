@@ -37,6 +37,8 @@ public class FilmFacade {
 
     private final RoomSearcher roomSearcher;
 
+    private final Clock clock;
+
     public FilmDto createFilm(CreateFilmDto dto) {
         var film = filmFactory.createFilm(dto);
         return filmMapper.mapToDto(film);
@@ -62,7 +64,7 @@ public class FilmFacade {
         return screeningSearcher.searchSeats(screeningId);
     }
 
-    public SeatDetails searchSeatDetails(UUID seatId, Clock clock) {
+    public SeatDetails searchSeatDetails(UUID seatId) {
         return screeningSearcher.searchScreeningDetails(seatId, clock);
     }
 

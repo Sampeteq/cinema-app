@@ -1,7 +1,7 @@
 package code.bookings.application.internal;
 
-import code.bookings.application.events.BookingCancelledEvent;
 import code.bookings.application.dto.BookingDto;
+import code.bookings.application.events.BookingCancelledEvent;
 import code.bookings.application.events.SeatBookedEvent;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-import java.time.Clock;
 import java.util.UUID;
 
 @Component
@@ -26,10 +25,8 @@ public class Booker {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    private final Clock clock;
-
     public BookingDto bookSeat(UUID seatId, String username) {
-        var seatDetails = filmFacade.searchSeatDetails(seatId, clock);
+        var seatDetails = filmFacade.searchSeatDetails(seatId);
         var bookingScreening = BookingScreening
                 .builder()
                 .id(seatDetails.screeningId())

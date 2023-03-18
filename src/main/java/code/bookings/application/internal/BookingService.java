@@ -25,7 +25,7 @@ public class BookingService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public BookingDto bookSeat(UUID seatId, String username) {
+    public BookingDto make(UUID seatId, String username) {
         var seatDetails = filmFacade.searchSeatDetails(seatId);
         var bookingScreening = BookingScreening
                 .builder()
@@ -47,7 +47,7 @@ public class BookingService {
                 .toDto();
     }
 
-    public void cancelSeat(UUID bookingId) {
+    public void cancel(UUID bookingId) {
         var booking = getBookingOrThrow(bookingId);
         booking.cancel();
         applicationEventPublisher.publishEvent(

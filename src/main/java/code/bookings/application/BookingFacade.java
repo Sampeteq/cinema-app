@@ -20,12 +20,12 @@ public class BookingFacade {
 
     @Transactional
     public BookingDto bookSeat(UUID seatId, String username) {
-        return bookingService.bookSeat(seatId, username);
+        return bookingService.make(seatId, username);
     }
 
     @Transactional
     public void cancelBooking(UUID bookingId) {
-        bookingService.cancelSeat(bookingId);
+        bookingService.cancel(bookingId);
     }
 
     public BookingDto searchBookingById(UUID bookingId, String username) {

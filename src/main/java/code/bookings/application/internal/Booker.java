@@ -35,13 +35,13 @@ public class Booker {
                 .id(seatDetails.screeningId())
                 .timeToScreeningInHours(seatDetails.timeToScreeningInHours())
                 .build();
-        var seatBooking = BookingSeat
+        var bookingSeat = BookingSeat
                 .builder()
                 .id(seatId)
                 .isAvailable(seatDetails.isSeatAvailable())
                 .screening(bookingScreening)
                 .build();
-        var booking = Booking.make(seatBooking, username);
+        var booking = Booking.make(bookingSeat, username);
         applicationEventPublisher.publishEvent(
                 new SeatBookedEvent(seatId)
         );

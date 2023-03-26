@@ -1,16 +1,21 @@
 package code.utils;
 
-import code.films.application.dto.*;
-import code.films.application.services.mappers.FilmMapper;
-import code.films.application.services.mappers.ScreeningMapper;
-import code.films.domain.Film;
-import code.films.domain.FilmCategory;
-import code.films.domain.FilmRepository;
-import code.films.domain.Room;
-import code.films.domain.RoomRepository;
-import code.films.domain.Screening;
-import code.films.domain.ScreeningRepository;
-import code.films.domain.Seat;
+import code.bookings.application.dto.CreateFilmDto;
+import code.bookings.application.dto.CreateScreeningDto;
+import code.bookings.application.dto.FilmDto;
+import code.bookings.application.dto.RoomDto;
+import code.bookings.application.dto.ScreeningDto;
+import code.bookings.application.dto.SeatDto;
+import code.bookings.application.services.mappers.FilmMapper;
+import code.bookings.application.services.mappers.ScreeningMapper;
+import code.bookings.domain.Film;
+import code.bookings.domain.FilmCategory;
+import code.bookings.domain.FilmRepository;
+import code.bookings.domain.Room;
+import code.bookings.domain.RoomRepository;
+import code.bookings.domain.Screening;
+import code.bookings.domain.ScreeningRepository;
+import code.bookings.domain.Seat;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

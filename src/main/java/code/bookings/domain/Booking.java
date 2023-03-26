@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.time.Clock;
 import java.util.UUID;
 
 @Entity
@@ -38,12 +39,12 @@ public class Booking {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "seatId")
-    private BookingSeat seat;
+    private Seat seat;
 
     private String username;
 
-    public static Booking make(BookingSeat seat, String username) {
-        seat.book();
+    public static Booking make(Seat seat, String username, Clock clock) {
+        seat.book(clock);
         return new Booking(
                 UUID.randomUUID(),
                 BookingStatus.ACTIVE,
@@ -52,11 +53,11 @@ public class Booking {
         );
     }
 
-    public void cancel() {
+    public void cancel(Clock clock) {
         if (status.equals(BookingStatus.CANCELLED)) {
             throw new BookingException("Booking already cancelled");
         }
-        seat.cancelBooking();
+        seat.cancelBooking(clock);
         this.status = BookingStatus.CANCELLED;
     }
 

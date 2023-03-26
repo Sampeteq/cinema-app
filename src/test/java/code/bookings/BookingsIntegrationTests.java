@@ -3,11 +3,9 @@ package code.bookings;
 import code.bookings.application.dto.BookingDto;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
-import code.bookings.domain.BookingScreening;
-import code.bookings.domain.BookingSeat;
 import code.bookings.domain.BookingStatus;
-import code.films.application.dto.SeatDto;
-import code.films.domain.SeatRepository;
+import code.bookings.application.dto.SeatDto;
+import code.bookings.domain.SeatRepository;
 import code.utils.FilmTestHelper;
 import code.utils.SpringIntegrationTests;
 import code.utils.UserTestHelper;
@@ -27,8 +25,11 @@ import java.util.stream.Stream;
 
 import static code.utils.WebTestHelper.fromResultActions;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class BookingsIntegrationTests extends SpringIntegrationTests {
 
@@ -280,22 +281,10 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
 
     private Booking createBooking(UUID seatId, String username) {
         var seat = seatRepository.findById(seatId).get();
-        var screening = seat.getScreening();
-        var bookingScreening = BookingScreening
-                .builder()
-                .id(screening.getId())
-                .timeToScreeningInHours(screening.timeToScreeningStartInHours(clock))
-                .build();
-        var bookingSeat = BookingSeat
-                .builder()
-                .id(seatId)
-                .isAvailable(true)
-                .screening(bookingScreening)
-                .build();
         return new Booking(
                 UUID.randomUUID(),
                 BookingStatus.ACTIVE,
-                bookingSeat,
+                seat,
                 username
         );
     }

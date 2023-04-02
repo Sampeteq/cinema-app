@@ -47,12 +47,7 @@ public class Film {
     public void addScreening(Screening newScreening) {
         var isScreeningsCollision = screenings
                 .stream()
-                .filter(screening -> screening.hasRoom(newScreening.getRoom()))
-                .anyMatch(screening -> screening.isTimeCollision(
-                        newScreening.getDate(),
-                        newScreening.finishDate()
-                        )
-                );
+                .anyMatch(screening -> screening.isCollisionWith(newScreening));
         if (isScreeningsCollision) {
             throw new TimeAndRoomCollisionException();
         }

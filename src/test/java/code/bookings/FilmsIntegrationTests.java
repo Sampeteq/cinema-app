@@ -161,7 +161,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void should_throw_exception_when_there_is_time_and_room_collision_between_screenings() throws Exception {
+    void should_throw_exception_when_there_is_collision_between_screenings() throws Exception {
         //given
         var screening = filmTestHelper.addSampleScreening();
         var dto = FilmTestHelper.sampleCreateScreeningDto(

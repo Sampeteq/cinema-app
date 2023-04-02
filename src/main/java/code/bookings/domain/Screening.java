@@ -72,6 +72,12 @@ public class Screening {
         return screening;
     }
 
+    public boolean isCollisionWith(Screening other) {
+        var hasSameRoom = other.hasRoom(this.room);
+        var isTimeCollision = other.startBefore(this.finishDate()) && other.endAfter(this.date);
+        return hasSameRoom && isTimeCollision;
+    }
+
     public int timeToScreeningStartInHours(Clock clock) {
         return (int) Duration
                 .between(LocalDateTime.now(clock), date)
@@ -79,16 +85,19 @@ public class Screening {
                 .toHours();
     }
 
-    public boolean isTimeCollision(LocalDateTime start, LocalDateTime finish) {
-        var screeningFinishDate = date.plusMinutes(film.getDurationInMinutes());
-        return screeningFinishDate.isAfter(start) && date.isBefore(finish);
-    }
-
-    public LocalDateTime finishDate() {
-        return date.plusMinutes(film.getDurationInMinutes());
-    }
-
-    public boolean hasRoom(Room room) {
+    private boolean hasRoom(Room room) {
         return this.room.equals(room);
+    }
+
+    private boolean startBefore(LocalDateTime date) {
+        return this.date.isBefore(date);
+    }
+
+    private boolean endAfter(LocalDateTime date) {
+        return this.finishDate().isAfter(date);
+    }
+
+    private LocalDateTime finishDate() {
+        return date.plusMinutes(film.getDurationInMinutes());
     }
 }

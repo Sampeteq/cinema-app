@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Profile("prod")
 @Slf4j
-public class OnStartUp {
+public class OnStartUpUserService {
 
     @Value("${onStartUp.mainAdminUsername}")
     private String mainAdminUsername;
@@ -26,7 +26,7 @@ public class OnStartUp {
 
     private final PasswordEncoder passwordEncoder;
 
-    public OnStartUp(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public OnStartUpUserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }

@@ -2,6 +2,7 @@ package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingException;
 import code.bookings.application.dto.SeatDto;
+import code.films.domain.Screening;
 import lombok.*;
 
 import javax.persistence.*;

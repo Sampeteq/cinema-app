@@ -1,6 +1,6 @@
 package code.utils;
 
-import code.user.application.dto.SignUpDto;
+import code.user.domain.commands.SignUpCommand;
 import code.user.domain.User;
 import code.user.domain.UserRepository;
 import code.user.domain.UserRole;
@@ -13,24 +13,24 @@ public class UserTestHelper {
 
     private final UserRepository userRepository;
 
-    public static SignUpDto sampleSignUpDto() {
-        return new SignUpDto(
+    public static SignUpCommand sampleSignUpDto() {
+        return new SignUpCommand(
                 "user1",
                 "password1",
                 "password1"
         );
     }
 
-    public static SignUpDto sampleSignUpDto(String username) {
-        return new SignUpDto(
+    public static SignUpCommand sampleSignUpDto(String username) {
+        return new SignUpCommand(
                 username,
                 "password1",
                 "password1"
         );
     }
 
-    public static SignUpDto sampleSignUpDto(String password, String repeatedPassword) {
-        return new SignUpDto(
+    public static SignUpCommand sampleSignUpDto(String password, String repeatedPassword) {
+        return new SignUpCommand(
                 "user1",
                 password,
                 repeatedPassword

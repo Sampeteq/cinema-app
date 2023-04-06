@@ -1,8 +1,9 @@
-package code.user.application.services;
+package code.user.infrastrcuture;
 
 import code.user.domain.User;
 import code.user.domain.UserRepository;
 import code.user.domain.UserRole;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -12,9 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 @Profile("prod")
 @Slf4j
-public class OnStartUpUserService {
+public class OnStartUpMainAdminCreateHandler {
 
     @Value("${onStartUp.mainAdminUsername}")
     private String mainAdminUsername;
@@ -26,13 +28,8 @@ public class OnStartUpUserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public OnStartUpUserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @EventListener(ContextRefreshedEvent.class)
-    public void createMainAdmin() {
+    public void handle() {
         if (userRepository.existsById(mainAdminUsername)) {
             log.info("Main admin already exists");
         } else {

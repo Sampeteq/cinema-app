@@ -1,8 +1,8 @@
-package code.user.application.dto;
+package code.user.domain.commands;
 
 import javax.validation.constraints.Size;
 
-public record SignUpDto(
+public record SignUpCommand(
 
         @Size(min = 3, max = 15)
         String username,

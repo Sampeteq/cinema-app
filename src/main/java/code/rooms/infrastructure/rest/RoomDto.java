@@ -1,4 +1,4 @@
-package code.rooms.application.dto;
+package code.rooms.infrastructure.rest;
 
 import java.util.UUID;
 

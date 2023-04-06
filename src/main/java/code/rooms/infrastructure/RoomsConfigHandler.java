@@ -1,8 +1,7 @@
 package code.rooms.infrastructure;
 
-import code.rooms.application.dto.CreateRoomDto;
-import code.rooms.application.services.RoomSearchService;
-import code.rooms.application.services.RoomCreateService;
+import code.rooms.domain.commands.handlers.RoomCreateCommandHandler;
+import code.rooms.domain.queries.RoomsSearchAllQueryHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -24,16 +22,16 @@ import java.util.List;
 @Profile("prod")
 public class RoomsConfigHandler {
 
-    private final RoomSearchService roomSearchService;
+    private final RoomsSearchAllQueryHandler roomsSearchAllQueryHandler;
 
-    private final RoomCreateService roomCreateService;
+    private final RoomCreateCommandHandler roomCreateCommandHandler;
 
     @Value("${roomsConfigHandler.pathToRoomsConfig}")
     private String pathToRoomsConfig;
 
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {
-        if(roomSearchService.searchAllRooms().isEmpty()) {
+        if(roomsSearchAllQueryHandler.handle().isEmpty()) {
             try {
                 logIfFileNotExists();
                 var json = readConfig();
@@ -66,10 +64,7 @@ public class RoomsConfigHandler {
         var roomsFromConfig = new ObjectMapper().readValue(json, RoomsConfigDto.class);
         roomsFromConfig
                 .rooms()
-                .forEach(roomCreateService::createRoom);
+                .forEach(roomCreateCommandHandler::handle);
     }
-}
-
-record RoomsConfigDto(List<CreateRoomDto> rooms) {
 }
 

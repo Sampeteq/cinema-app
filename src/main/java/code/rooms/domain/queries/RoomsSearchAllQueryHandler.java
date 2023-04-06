@@ -1,6 +1,6 @@
-package code.rooms.application.services;
+package code.rooms.domain.queries;
 
-import code.rooms.application.dto.RoomDto;
+import code.rooms.infrastructure.rest.RoomDto;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,11 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class RoomSearchService {
+public class RoomsSearchAllQueryHandler {
 
     private final RoomRepository roomRepository;
 
-    public List<RoomDto> searchAllRooms() {
+    public List<RoomDto> handle() {
         return roomRepository
                 .findAll()
                 .stream()

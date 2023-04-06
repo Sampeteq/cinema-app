@@ -1,11 +1,11 @@
-package code.rooms.application.dto;
+package code.rooms.domain.commands;
 
 import lombok.With;
 
 import javax.validation.constraints.Positive;
 
 @With
-public record CreateRoomDto(
+public record RoomCreateCommand(
         @Positive
         int number,
         @Positive

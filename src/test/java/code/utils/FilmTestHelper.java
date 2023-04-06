@@ -3,7 +3,7 @@ package code.utils;
 import code.films.applications.dto.CreateFilmDto;
 import code.films.applications.dto.CreateScreeningDto;
 import code.films.applications.dto.FilmDto;
-import code.rooms.application.dto.RoomDto;
+import code.rooms.infrastructure.rest.RoomDto;
 import code.films.applications.dto.ScreeningDto;
 import code.bookings.application.dto.SeatDto;
 import code.films.applications.services.mappers.FilmMapper;

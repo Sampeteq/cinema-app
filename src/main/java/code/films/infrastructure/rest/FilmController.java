@@ -1,21 +1,19 @@
 package code.films.infrastructure.rest;
 
+import code.bookings.application.dto.SeatDto;
 import code.films.applications.dto.CreateFilmDto;
 import code.films.applications.dto.CreateScreeningDto;
 import code.films.applications.dto.FilmDto;
 import code.films.applications.dto.FilmSearchParams;
-import code.rooms.application.dto.RoomDto;
 import code.films.applications.dto.ScreeningDto;
 import code.films.applications.dto.ScreeningSearchParams;
-import code.bookings.application.dto.SeatDto;
+import code.films.applications.services.FilmCreateService;
 import code.films.applications.services.FilmSearchService;
-import code.rooms.application.services.RoomSearchService;
+import code.films.applications.services.ScreeningCreateService;
 import code.films.applications.services.ScreeningSearchService;
 import code.films.applications.services.mappers.FilmMapper;
 import code.films.applications.services.mappers.ScreeningMapper;
 import code.films.domain.FilmCategory;
-import code.films.applications.services.FilmCreateService;
-import code.films.applications.services.ScreeningCreateService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -42,8 +40,6 @@ public class FilmController {
 
     private final FilmSearchService filmSearchService;
 
-    private final RoomSearchService roomSearchService;
-
     private final ScreeningCreateService screeningCreateService;
 
     private final ScreeningMapper screeningMapper;
@@ -63,11 +59,6 @@ public class FilmController {
                 .category(category)
                 .build();
         return filmSearchService.searchFilmsBy(params);
-    }
-
-    @GetMapping("/films/screenings/rooms")
-    public List<RoomDto> searchAllRooms() {
-        return roomSearchService.searchAllRooms();
     }
 
     @PostMapping("/films/screenings")

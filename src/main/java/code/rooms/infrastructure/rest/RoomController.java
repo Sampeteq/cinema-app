@@ -1,5 +1,6 @@
 package code.rooms.infrastructure.rest;
 
+import code.rooms.domain.Room;
 import code.rooms.domain.queries.RoomsSearchAllQueryHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,10 @@ public class RoomController {
 
     @GetMapping("/films/screenings/rooms")
     public List<RoomDto> searchAllRooms() {
-        return roomsSearchAllQueryHandler.handle();
+        return roomsSearchAllQueryHandler
+                .handle()
+                .stream()
+                .map(Room::toDto)
+                .toList();
     }
 }

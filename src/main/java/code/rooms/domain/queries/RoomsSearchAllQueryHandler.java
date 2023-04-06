@@ -1,6 +1,5 @@
 package code.rooms.domain.queries;
 
-import code.rooms.infrastructure.rest.RoomDto;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
 import lombok.AllArgsConstructor;
@@ -14,11 +13,7 @@ public class RoomsSearchAllQueryHandler {
 
     private final RoomRepository roomRepository;
 
-    public List<RoomDto> handle() {
-        return roomRepository
-                .findAll()
-                .stream()
-                .map(Room::toDto)
-                .toList();
+    public List<Room> handle() {
+        return roomRepository.findAll();
     }
 }

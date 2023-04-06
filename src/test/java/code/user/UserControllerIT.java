@@ -1,6 +1,6 @@
 package code.user;
 
-import code.user.application.dto.SignInDto;
+import code.user.domain.commands.SignInCommand;
 import code.utils.SpringIntegrationTests;
 import code.utils.UserTestHelper;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class UsersIntegrationTests extends SpringIntegrationTests {
+class UserControllerIT extends SpringIntegrationTests {
 
     @Autowired
     private UserTestHelper userTestHelper;
@@ -32,7 +32,7 @@ class UsersIntegrationTests extends SpringIntegrationTests {
 
         //then
         result.andExpect(status().isCreated());
-        var signInDto = new SignInDto(
+        var signInDto = new SignInCommand(
                 signUpRequest.username(),
                 signUpRequest.password()
         );

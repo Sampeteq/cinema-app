@@ -1,4 +1,4 @@
-package code.films.applications.dto;
+package code.films.domain.queries;
 
 import code.films.domain.FilmCategory;
 import lombok.AccessLevel;
@@ -7,7 +7,7 @@ import lombok.Builder;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class FilmSearchParams {
+public class SearchFilmsQuery {
 
     public final FilmCategory category;
 }

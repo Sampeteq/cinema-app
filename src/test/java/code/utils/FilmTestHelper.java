@@ -1,13 +1,13 @@
 package code.utils;
 
-import code.films.applications.dto.CreateFilmDto;
-import code.films.applications.dto.CreateScreeningDto;
-import code.films.applications.dto.FilmDto;
+import code.films.domain.commands.CreateFilmCommand;
+import code.films.domain.commands.CreateScreeningCommand;
+import code.films.infrastructure.rest.dto.FilmDto;
 import code.rooms.infrastructure.rest.RoomDto;
-import code.films.applications.dto.ScreeningDto;
+import code.films.infrastructure.rest.dto.ScreeningDto;
 import code.bookings.application.dto.SeatDto;
-import code.films.applications.services.mappers.FilmMapper;
-import code.films.applications.services.mappers.ScreeningMapper;
+import code.films.infrastructure.rest.mappers.FilmMapper;
+import code.films.infrastructure.rest.mappers.ScreeningMapper;
 import code.films.domain.Film;
 import code.films.domain.FilmCategory;
 import code.films.domain.FilmRepository;
@@ -42,8 +42,8 @@ public class FilmTestHelper {
 
     private static final int currentYear = Year.now().getValue();
 
-    public static CreateFilmDto sampleCreateFilmDto() {
-        return new CreateFilmDto(
+    public static CreateFilmCommand sampleCreateFilmDto() {
+        return new CreateFilmCommand(
                 "title 1",
                 FilmCategory.COMEDY,
                 Year.now().getValue(),
@@ -109,8 +109,8 @@ public class FilmTestHelper {
                 .toList();
     }
 
-    public static CreateScreeningDto sampleCreateScreeningDto(UUID filmId, UUID roomId) {
-        return new CreateScreeningDto(
+    public static CreateScreeningCommand sampleCreateScreeningDto(UUID filmId, UUID roomId) {
+        return new CreateScreeningCommand(
                 LocalDateTime.of(currentYear, 5, 10, 18, 30),
                 13,
                 filmId,
@@ -118,12 +118,12 @@ public class FilmTestHelper {
         );
     }
 
-    public static CreateScreeningDto sampleCreateScreeningDto(
+    public static CreateScreeningCommand sampleCreateScreeningDto(
             UUID filmId,
             UUID roomId,
             LocalDateTime screeningDate
     ) {
-        return new CreateScreeningDto(
+        return new CreateScreeningCommand(
                 screeningDate,
                 13,
                 filmId,

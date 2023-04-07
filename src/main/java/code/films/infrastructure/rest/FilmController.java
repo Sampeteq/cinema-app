@@ -1,19 +1,19 @@
 package code.films.infrastructure.rest;
 
 import code.bookings.application.dto.SeatDto;
-import code.films.applications.dto.CreateFilmDto;
-import code.films.applications.dto.CreateScreeningDto;
-import code.films.applications.dto.FilmDto;
-import code.films.applications.dto.FilmSearchParams;
-import code.films.applications.dto.ScreeningDto;
-import code.films.applications.dto.ScreeningSearchParams;
-import code.films.applications.services.FilmCreateService;
-import code.films.applications.services.FilmSearchService;
-import code.films.applications.services.ScreeningCreateService;
-import code.films.applications.services.ScreeningSearchService;
-import code.films.applications.services.mappers.FilmMapper;
-import code.films.applications.services.mappers.ScreeningMapper;
+import code.films.domain.commands.CreateFilmCommand;
+import code.films.domain.commands.CreateScreeningCommand;
+import code.films.domain.queries.SearchFilmsQuery;
+import code.films.domain.queries.SearchScreeningQuery;
+import code.films.domain.commands.handlers.CreateFilmCommandHandler;
+import code.films.domain.queries.handlers.SearchFilmsQueryHandler;
+import code.films.domain.commands.handlers.CreateScreeningCommandHandler;
+import code.films.domain.queries.handlers.SearchScreeningQueryHandler;
+import code.films.infrastructure.rest.mappers.FilmMapper;
+import code.films.infrastructure.rest.mappers.ScreeningMapper;
 import code.films.domain.FilmCategory;
+import code.films.infrastructure.rest.dto.FilmDto;
+import code.films.infrastructure.rest.dto.ScreeningDto;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -34,40 +34,40 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FilmController {
 
-    private final FilmCreateService filmCreateService;
+    private final CreateFilmCommandHandler createFilmCommandHandler;
 
     private final FilmMapper filmMapper;
 
-    private final FilmSearchService filmSearchService;
+    private final SearchFilmsQueryHandler searchFilmsQueryHandler;
 
-    private final ScreeningCreateService screeningCreateService;
+    private final CreateScreeningCommandHandler createScreeningCommandHandler;
 
     private final ScreeningMapper screeningMapper;
 
-    private final ScreeningSearchService screeningSearchService;
+    private final SearchScreeningQueryHandler searchScreeningQueryHandler;
 
     @PostMapping("/films")
-    public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid CreateFilmDto dto) {
-        var createdFilm = filmCreateService.createFilm(dto);
+    public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid CreateFilmCommand dto) {
+        var createdFilm = createFilmCommandHandler.handle(dto);
         return new ResponseEntity<>(filmMapper.mapToDto(createdFilm), HttpStatus.CREATED);
     }
 
     @GetMapping("/films")
     public List<FilmDto> searchFilmsBy(@RequestParam(required = false) FilmCategory category) {
-        var params = FilmSearchParams
+        var params = SearchFilmsQuery
                 .builder()
                 .category(category)
                 .build();
-        return filmSearchService.searchFilmsBy(params);
+        return searchFilmsQueryHandler.searchFilmsBy(params);
     }
 
     @PostMapping("/films/screenings")
     public ResponseEntity<ScreeningDto> createScreening(
             @RequestBody
             @Valid
-            CreateScreeningDto dto
+            CreateScreeningCommand dto
     ) {
-        var createdScreening = screeningCreateService.createScreening(dto);
+        var createdScreening = createScreeningCommandHandler.createScreening(dto);
         return new ResponseEntity<>(screeningMapper.mapToDto(createdScreening), HttpStatus.CREATED);
     }
 
@@ -81,18 +81,18 @@ public class FilmController {
             LocalDateTime date
     ) {
 
-        var params = ScreeningSearchParams
+        var params = SearchScreeningQuery
                 .builder()
                 .filmId(filmId)
                 .date(date)
                 .build();
 
-        return screeningSearchService.searchScreeningsBy(params);
+        return searchScreeningQueryHandler.searchScreeningsBy(params);
     }
 
     @GetMapping("/films/screenings/{screeningId}/seats")
     public List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
-        return screeningSearchService.searchSeats(screeningId);
+        return searchScreeningQueryHandler.searchSeats(screeningId);
     }
 }
 

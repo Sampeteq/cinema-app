@@ -1,6 +1,6 @@
-package code.films.applications.services.mappers;
+package code.films.infrastructure.rest.mappers;
 
-import code.films.applications.dto.FilmDto;
+import code.films.infrastructure.rest.dto.FilmDto;
 import code.films.domain.Film;
 import org.springframework.stereotype.Component;
 

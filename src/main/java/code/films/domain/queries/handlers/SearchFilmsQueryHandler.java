@@ -1,9 +1,9 @@
-package code.films.applications.services;
+package code.films.domain.queries.handlers;
 
-import code.films.applications.dto.FilmSearchParams;
-import code.films.applications.services.mappers.FilmMapper;
+import code.films.domain.queries.SearchFilmsQuery;
+import code.films.infrastructure.rest.mappers.FilmMapper;
 import code.films.domain.FilmRepository;
-import code.films.applications.dto.FilmDto;
+import code.films.infrastructure.rest.dto.FilmDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +11,13 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class FilmSearchService {
+public class SearchFilmsQueryHandler {
 
     private final FilmRepository filmRepository;
 
     private final FilmMapper filmMapper;
 
-    public List<FilmDto> searchFilmsBy(FilmSearchParams params) {
+    public List<FilmDto> searchFilmsBy(SearchFilmsQuery params) {
         return filmRepository
                 .findBy(params)
                 .stream()

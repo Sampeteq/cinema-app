@@ -1,6 +1,6 @@
-package code.films.applications.services.mappers;
+package code.films.infrastructure.rest.mappers;
 
-import code.films.applications.dto.ScreeningDto;
+import code.films.infrastructure.rest.dto.ScreeningDto;
 import code.films.domain.Screening;
 import code.bookings.domain.Seat;
 import org.springframework.stereotype.Component;

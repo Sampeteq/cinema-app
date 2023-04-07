@@ -1,4 +1,4 @@
-package code.films.applications.dto;
+package code.films.domain.commands;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.With;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @With
-public record CreateScreeningDto(
+public record CreateScreeningCommand(
         @NotNull
         @Schema(type = "string", example = "2022-01-01T16:30")
         LocalDateTime date,

@@ -1,6 +1,6 @@
-package code.films.applications.services;
+package code.films.domain.commands.handlers;
 
-import code.films.applications.dto.CreateFilmDto;
+import code.films.domain.commands.CreateFilmCommand;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import code.films.domain.exceptions.FilmYearException;
@@ -13,22 +13,22 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class FilmCreateService {
+public class CreateFilmCommandHandler {
 
     private static final int CURRENT_YEAR = Year.now().getValue();
 
     private final FilmRepository filmRepository;
 
-    public Film createFilm(CreateFilmDto dto) {
-        if (!isFilmYearCorrect(dto.year())) {
+    public Film handle(CreateFilmCommand command) {
+        if (!isFilmYearCorrect(command.year())) {
             throw new FilmYearException("A film year must be previous, current or next one");
         }
         var film = new Film(
                 UUID.randomUUID(),
-                dto.title(),
-                dto.filmCategory(),
-                dto.year(),
-                dto.durationInMinutes(),
+                command.title(),
+                command.filmCategory(),
+                command.year(),
+                command.durationInMinutes(),
                 new ArrayList<>()
         );
         return filmRepository.save(film);

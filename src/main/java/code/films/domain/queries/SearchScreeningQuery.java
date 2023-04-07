@@ -1,4 +1,4 @@
-package code.films.applications.dto;
+package code.films.domain.queries;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class ScreeningSearchParams {
+public class SearchScreeningQuery {
 
     public final UUID filmId;
 

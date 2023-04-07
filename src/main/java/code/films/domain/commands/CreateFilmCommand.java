@@ -1,4 +1,4 @@
-package code.films.applications.dto;
+package code.films.domain.commands;
 
 import code.films.domain.FilmCategory;
 import lombok.With;
@@ -6,7 +6,7 @@ import lombok.With;
 import javax.validation.constraints.NotNull;
 
 @With
-public record CreateFilmDto(
+public record CreateFilmCommand(
         @NotNull
         String title,
         @NotNull

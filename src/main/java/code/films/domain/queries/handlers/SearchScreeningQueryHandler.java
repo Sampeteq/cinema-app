@@ -1,9 +1,9 @@
-package code.films.applications.services;
+package code.films.domain.queries.handlers;
 
-import code.films.applications.dto.ScreeningDto;
-import code.films.applications.dto.ScreeningSearchParams;
+import code.films.infrastructure.rest.dto.ScreeningDto;
+import code.films.domain.queries.SearchScreeningQuery;
 import code.bookings.application.dto.SeatDto;
-import code.films.applications.services.mappers.ScreeningMapper;
+import code.films.infrastructure.rest.mappers.ScreeningMapper;
 import code.films.domain.ScreeningRepository;
 import code.bookings.domain.Seat;
 import code.bookings.domain.SeatRepository;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class ScreeningSearchService {
+public class SearchScreeningQueryHandler {
 
     private final ScreeningRepository screeningRepository;
 
@@ -23,7 +23,7 @@ public class ScreeningSearchService {
 
     private final ScreeningMapper screeningMapper;
 
-    public List<ScreeningDto> searchScreeningsBy(ScreeningSearchParams params) {
+    public List<ScreeningDto> searchScreeningsBy(SearchScreeningQuery params) {
         return screeningRepository
                 .findBy(params)
                 .stream()

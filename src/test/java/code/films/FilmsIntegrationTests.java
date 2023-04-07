@@ -1,7 +1,7 @@
 package code.films;
 
-import code.films.applications.dto.FilmDto;
-import code.films.applications.dto.ScreeningDto;
+import code.films.infrastructure.rest.dto.FilmDto;
+import code.films.infrastructure.rest.dto.ScreeningDto;
 import code.films.domain.FilmCategory;
 import code.utils.FilmTestHelper;
 import code.utils.SpringIntegrationTests;

@@ -1,6 +1,6 @@
-package code.films.applications.services;
+package code.films.domain.commands.handlers;
 
-import code.films.applications.dto.CreateScreeningDto;
+import code.films.domain.commands.CreateScreeningCommand;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import code.rooms.domain.Room;
@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class ScreeningCreateService {
+public class CreateScreeningCommandHandler {
 
     private final FilmRepository filmRepository;
 
@@ -27,7 +27,7 @@ public class ScreeningCreateService {
 
     private final Clock clock;
 
-    public Screening createScreening(CreateScreeningDto dto) {
+    public Screening createScreening(CreateScreeningCommand dto) {
         validateScreeningDate(dto.date());
         var film = getFilmOrThrow(dto);
         var room = getRoomOrThrow(dto.roomId());
@@ -50,7 +50,7 @@ public class ScreeningCreateService {
         }
     }
 
-    private Film getFilmOrThrow(CreateScreeningDto dto) {
+    private Film getFilmOrThrow(CreateScreeningCommand dto) {
         return filmRepository
                 .findById(dto.filmId())
                 .orElseThrow(FilmNotFoundException::new);

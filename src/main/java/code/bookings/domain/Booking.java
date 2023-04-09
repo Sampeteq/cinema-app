@@ -1,6 +1,6 @@
 package code.bookings.domain;
 
-import code.bookings.application.dto.BookingDto;
+import code.bookings.infrastructure.rest.dto.BookingDto;
 import code.bookings.domain.exceptions.BookingException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

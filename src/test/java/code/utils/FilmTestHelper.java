@@ -5,7 +5,7 @@ import code.films.domain.commands.CreateScreeningCommand;
 import code.films.infrastructure.rest.dto.FilmDto;
 import code.rooms.infrastructure.rest.RoomDto;
 import code.films.infrastructure.rest.dto.ScreeningDto;
-import code.bookings.application.dto.SeatDto;
+import code.bookings.infrastructure.rest.dto.SeatDto;
 import code.films.infrastructure.rest.mappers.FilmMapper;
 import code.films.infrastructure.rest.mappers.ScreeningMapper;
 import code.films.domain.Film;

@@ -1,6 +1,6 @@
 package code.films.infrastructure.rest;
 
-import code.bookings.application.dto.SeatDto;
+import code.bookings.infrastructure.rest.dto.SeatDto;
 import code.films.domain.commands.CreateFilmCommand;
 import code.films.domain.commands.CreateScreeningCommand;
 import code.films.domain.queries.SearchFilmsQuery;

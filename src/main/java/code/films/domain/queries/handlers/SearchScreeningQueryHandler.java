@@ -2,7 +2,7 @@ package code.films.domain.queries.handlers;
 
 import code.films.infrastructure.rest.dto.ScreeningDto;
 import code.films.domain.queries.SearchScreeningQuery;
-import code.bookings.application.dto.SeatDto;
+import code.bookings.infrastructure.rest.dto.SeatDto;
 import code.films.infrastructure.rest.mappers.ScreeningMapper;
 import code.films.domain.ScreeningRepository;
 import code.bookings.domain.Seat;

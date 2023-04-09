@@ -1,4 +1,4 @@
-package code.bookings.application.dto;
+package code.bookings.infrastructure.rest.dto;
 
 import lombok.With;
 

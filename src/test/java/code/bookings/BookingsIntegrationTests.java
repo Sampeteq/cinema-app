@@ -1,10 +1,10 @@
 package code.bookings;
 
-import code.bookings.application.dto.BookingDto;
+import code.bookings.infrastructure.rest.dto.BookingDto;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingStatus;
-import code.bookings.application.dto.SeatDto;
+import code.bookings.infrastructure.rest.dto.SeatDto;
 import code.bookings.domain.SeatRepository;
 import code.utils.FilmTestHelper;
 import code.utils.SpringIntegrationTests;

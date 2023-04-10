@@ -3,7 +3,7 @@ package code.films.domain.commands.handlers;
 import code.films.domain.commands.CreateFilmCommand;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
-import code.films.domain.exceptions.FilmYearException;
+import code.films.domain.exceptions.WrongFilmYearException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ public class CreateFilmCommandHandler {
 
     public Film handle(CreateFilmCommand command) {
         if (!isFilmYearCorrect(command.year())) {
-            throw new FilmYearException("A film year must be previous, current or next one");
+            throw new WrongFilmYearException();
         }
         var film = new Film(
                 UUID.randomUUID(),

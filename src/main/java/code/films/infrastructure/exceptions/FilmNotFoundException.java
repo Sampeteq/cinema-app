@@ -1,9 +1,6 @@
 package code.films.infrastructure.exceptions;
 
-import code.films.domain.exceptions.FilmException;
+import code.shared.EntityNotFoundException;
 
-public class FilmNotFoundException extends FilmException {
-    public FilmNotFoundException() {
-        super("Film not found");
-    }
+public class FilmNotFoundException extends EntityNotFoundException {
 }

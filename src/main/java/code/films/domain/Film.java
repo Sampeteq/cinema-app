@@ -1,6 +1,6 @@
 package code.films.domain;
 
-import code.films.domain.exceptions.TimeAndRoomCollisionException;
+import code.films.domain.exceptions.ScreeningCollisionException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -49,7 +49,7 @@ public class Film {
                 .stream()
                 .anyMatch(screening -> screening.isCollisionWith(newScreening));
         if (isScreeningsCollision) {
-            throw new TimeAndRoomCollisionException();
+            throw new ScreeningCollisionException();
         }
         screenings.add(newScreening);
     }

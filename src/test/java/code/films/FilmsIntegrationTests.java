@@ -1,8 +1,11 @@
 package code.films;
 
+import code.films.domain.FilmCategory;
+import code.films.domain.exceptions.ScreeningCollisionException;
+import code.films.domain.exceptions.WrongFilmYearException;
+import code.films.domain.exceptions.WrongScreeningDateException;
 import code.films.infrastructure.rest.dto.FilmDto;
 import code.films.infrastructure.rest.dto.ScreeningDto;
-import code.films.domain.FilmCategory;
 import code.utils.FilmTestHelper;
 import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.Test;
@@ -20,8 +23,9 @@ import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class FilmsIntegrationTests extends SpringIntegrationTests {
 
@@ -67,7 +71,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("A film year must be previous, current or next one"));
+                .andExpect(content().string(new WrongFilmYearException().getMessage()));
     }
 
     @Test
@@ -154,9 +158,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(
-                        "A screening date year must be current or next one"
-                ));
+                .andExpect(content().string(new WrongScreeningDateException().getMessage()));
     }
 
     @Test
@@ -180,7 +182,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Time and room collision between screenings"));
+                .andExpect(content().string(new ScreeningCollisionException().getMessage()));
     }
 
     @Test

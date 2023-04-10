@@ -6,7 +6,7 @@ import code.films.domain.FilmRepository;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
 import code.films.domain.Screening;
-import code.films.domain.exceptions.ScreeningDateException;
+import code.films.domain.exceptions.WrongScreeningDateException;
 import code.films.infrastructure.exceptions.FilmNotFoundException;
 import code.rooms.infrastructure.exceptions.RoomNotFoundException;
 import lombok.AllArgsConstructor;
@@ -46,7 +46,7 @@ public class CreateScreeningCommandHandler {
         var currentYear = currentDate.getYear();
         var isYearCurrentOrNextOne = date.getYear() == currentYear || date.getYear() == currentYear + 1;
         if (!isYearCurrentOrNextOne) {
-            throw new ScreeningDateException("A screening date year must be current or next one");
+            throw new WrongScreeningDateException();
         }
     }
 

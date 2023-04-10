@@ -1,10 +1,9 @@
 package code.films.infrastructure.exceptions;
 
-import code.films.domain.exceptions.ScreeningException;
+import code.shared.EntityNotFoundException;
 
-public class ScreeningNotFoundException extends ScreeningException {
+public class ScreeningNotFoundException extends EntityNotFoundException {
 
     public ScreeningNotFoundException() {
-        super("Screening not found");
     }
 }

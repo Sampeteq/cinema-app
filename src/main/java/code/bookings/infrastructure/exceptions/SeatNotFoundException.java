@@ -1,10 +1,8 @@
 package code.bookings.infrastructure.exceptions;
 
-import code.films.domain.exceptions.ScreeningException;
 
-public class SeatNotFoundException extends ScreeningException {
+import code.shared.EntityNotFoundException;
 
-    public SeatNotFoundException() {
-        super("Seat not found");
-    }
+public class SeatNotFoundException extends EntityNotFoundException {
+
 }

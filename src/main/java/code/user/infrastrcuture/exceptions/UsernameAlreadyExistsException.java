@@ -1,8 +1,8 @@
 package code.user.infrastrcuture.exceptions;
 
-import code.user.domain.exceptions.UserException;
+import code.shared.ValidationException;
 
-public class UsernameAlreadyExistsException extends UserException {
+public class UsernameAlreadyExistsException extends ValidationException {
 
     public UsernameAlreadyExistsException() {
         super("Username already exists");

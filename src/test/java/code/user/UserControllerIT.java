@@ -1,6 +1,8 @@
 package code.user;
 
 import code.user.domain.commands.SignInCommand;
+import code.user.domain.exceptions.NotSamePasswordsException;
+import code.user.infrastrcuture.exceptions.UsernameAlreadyExistsException;
 import code.utils.SpringIntegrationTests;
 import code.utils.UserTestHelper;
 import org.junit.jupiter.api.Test;
@@ -59,7 +61,7 @@ class UserControllerIT extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Username already exists"));
+                .andExpect(content().string(new UsernameAlreadyExistsException().getMessage()));
     }
 
     @Test
@@ -77,6 +79,6 @@ class UserControllerIT extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Not same passwords"));
+                .andExpect(content().string(new NotSamePasswordsException().getMessage()));
     }
 }

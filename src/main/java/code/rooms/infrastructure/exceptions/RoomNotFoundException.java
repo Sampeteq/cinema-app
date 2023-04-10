@@ -1,10 +1,7 @@
 package code.rooms.infrastructure.exceptions;
 
-import code.rooms.domain.exceptions.RoomException;
+import code.shared.EntityNotFoundException;
 
-public class RoomNotFoundException extends RoomException {
+public class RoomNotFoundException extends EntityNotFoundException {
 
-    public RoomNotFoundException() {
-        super("Room not found");
-    }
 }

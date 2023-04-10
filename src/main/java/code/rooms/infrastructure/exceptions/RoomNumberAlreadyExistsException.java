@@ -1,8 +1,8 @@
 package code.rooms.infrastructure.exceptions;
 
-import code.rooms.domain.exceptions.RoomException;
+import code.shared.ValidationException;
 
-public class RoomNumberAlreadyExistsException extends RoomException {
+public class RoomNumberAlreadyExistsException extends ValidationException {
 
     public RoomNumberAlreadyExistsException() {
         super("A room number already exists");

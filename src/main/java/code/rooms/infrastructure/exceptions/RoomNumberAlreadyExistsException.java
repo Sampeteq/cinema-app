@@ -1,6 +1,6 @@
 package code.rooms.infrastructure.exceptions;
 
-import code.bookings.domain.exceptions.RoomException;
+import code.rooms.domain.exceptions.RoomException;
 
 public class RoomNumberAlreadyExistsException extends RoomException {
 

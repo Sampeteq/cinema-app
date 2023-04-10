@@ -1,5 +1,8 @@
 package code.bookings;
 
+import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
+import code.bookings.domain.exceptions.TooLateToBookingException;
+import code.bookings.domain.exceptions.TooLateToCancelBookingException;
 import code.bookings.infrastructure.rest.dto.BookingDto;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
@@ -100,7 +103,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Too late to booking"
+                        new TooLateToBookingException().getMessage()
                 ));
     }
 
@@ -217,7 +220,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Booking already cancelled"
+                        new BookingAlreadyCancelledException().getMessage()
                 ));
     }
 
@@ -238,7 +241,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        "Too late to cancel booking"
+                        new TooLateToCancelBookingException().getMessage()
                 ));
     }
 

@@ -1,10 +1,7 @@
 package code.bookings.infrastructure.exceptions;
 
-import code.bookings.domain.exceptions.BookingException;
+import code.shared.EntityNotFoundException;
 
-public class BookingNotFoundException extends BookingException {
+public class BookingNotFoundException extends EntityNotFoundException {
 
-    public BookingNotFoundException() {
-        super("Booking not found");
-    }
 }

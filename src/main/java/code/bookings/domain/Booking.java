@@ -1,7 +1,8 @@
 package code.bookings.domain;
 
+import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
+import code.bookings.domain.exceptions.TooLateToCancelBookingException;
 import code.bookings.infrastructure.rest.dto.BookingDto;
-import code.bookings.domain.exceptions.BookingException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -55,7 +56,7 @@ public class Booking {
 
     public void cancel(Clock clock) {
         if (status.equals(BookingStatus.CANCELLED)) {
-            throw new BookingException("Booking already cancelled");
+            throw new BookingAlreadyCancelledException();
         }
         seat.cancelBooking(clock);
         this.status = BookingStatus.CANCELLED;

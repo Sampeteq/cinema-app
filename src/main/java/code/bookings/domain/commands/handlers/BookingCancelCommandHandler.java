@@ -6,6 +6,7 @@ import code.bookings.domain.commands.BookingCancelCommand;
 import code.bookings.infrastructure.exceptions.BookingNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.util.UUID;
@@ -18,6 +19,7 @@ public class BookingCancelCommandHandler {
 
     private final Clock clock;
 
+    @Transactional
     public void handle(BookingCancelCommand command) {
         var booking = getBookingOrThrow(command.bookingId());
         booking.cancel(clock);

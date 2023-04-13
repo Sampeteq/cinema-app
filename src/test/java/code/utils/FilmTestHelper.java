@@ -18,6 +18,7 @@ import code.films.domain.ScreeningRepository;
 import code.bookings.domain.Seat;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.Year;
@@ -188,6 +189,7 @@ public class FilmTestHelper {
         return room.toDto();
     }
 
+    @Transactional
     public List<SeatDto> searchScreeningSeats(UUID screeningId) {
         return screeningRepository
                 .findById(screeningId)

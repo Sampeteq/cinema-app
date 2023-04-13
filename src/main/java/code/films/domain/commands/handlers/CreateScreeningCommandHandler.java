@@ -11,6 +11,7 @@ import code.films.infrastructure.exceptions.FilmNotFoundException;
 import code.rooms.infrastructure.exceptions.RoomNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class CreateScreeningCommandHandler {
 
     private final Clock clock;
 
+    @Transactional
     public Screening createScreening(CreateScreeningCommand dto) {
         validateScreeningDate(dto.date());
         var film = getFilmOrThrow(dto);

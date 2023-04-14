@@ -9,6 +9,7 @@ import code.bookings.domain.Seat;
 import code.bookings.domain.SeatRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +32,7 @@ public class SearchScreeningQueryHandler {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<SeatDto> searchSeats(UUID screeningId) {
         return seatRepository
                 .findByScreening_Id(screeningId)

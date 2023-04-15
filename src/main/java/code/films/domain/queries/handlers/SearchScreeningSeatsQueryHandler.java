@@ -1,9 +1,10 @@
 package code.films.domain.queries.handlers;
 
 import code.bookings.domain.Seat;
-import code.bookings.domain.SeatRepository;
 import code.bookings.infrastructure.rest.dto.SeatDto;
+import code.films.domain.ScreeningRepository;
 import code.films.domain.queries.SearchScreeningSeatsQuery;
+import code.films.infrastructure.exceptions.ScreeningNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,14 +15,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SearchScreeningSeatsQueryHandler {
 
-    private final SeatRepository seatRepository;
+    private final ScreeningRepository screeningRepository;
 
     @Transactional(readOnly = true)
     public List<SeatDto> handle(SearchScreeningSeatsQuery query) {
-        return seatRepository
-                .findByScreening_Id(query.screeningId())
-                .stream()
-                .map(Seat::toDto)
-                .toList();
+        return screeningRepository
+                .findById(query.screeningId())
+                .map(screening -> screening
+                        .getSeats()
+                        .stream()
+                        .map(Seat::toDto)
+                        .toList()
+                )
+                .orElseThrow(ScreeningNotFoundException::new);
     }
 }

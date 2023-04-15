@@ -1,6 +1,7 @@
 package code.films.infrastructure.rest;
 
 import code.bookings.infrastructure.rest.dto.SeatDto;
+import code.bookings.infrastructure.rest.dto.mappers.SeatMapper;
 import code.films.domain.commands.CreateFilmCommand;
 import code.films.domain.commands.CreateScreeningCommand;
 import code.films.domain.queries.SearchFilmsQuery;
@@ -49,6 +50,8 @@ public class FilmController {
     private final SearchScreeningQueryHandler searchScreeningQueryHandler;
 
     private final SearchScreeningSeatsQueryHandler searchScreeningSeatsQueryHandler;
+
+    private final SeatMapper seatMapper;
 
     @PostMapping("/films")
     public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid CreateFilmCommand dto) {
@@ -101,7 +104,10 @@ public class FilmController {
                         .builder()
                         .screeningId(screeningId)
                         .build()
-        );
+        )
+                .stream()
+                .map(seatMapper::toDto)
+                .toList();
     }
 }
 

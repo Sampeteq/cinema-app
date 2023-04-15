@@ -1,5 +1,6 @@
 package code.utils;
 
+import code.bookings.infrastructure.rest.dto.mappers.SeatMapper;
 import code.films.domain.commands.CreateFilmCommand;
 import code.films.domain.commands.CreateScreeningCommand;
 import code.films.infrastructure.rest.dto.FilmDto;
@@ -15,7 +16,6 @@ import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
 import code.films.domain.Screening;
 import code.films.domain.ScreeningRepository;
-import code.bookings.domain.Seat;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +40,8 @@ public class FilmTestHelper {
     private final ScreeningMapper screeningMapper;
 
     private final RoomRepository roomRepository;
+
+    private final SeatMapper seatMapper;
 
     private static final int currentYear = Year.now().getValue();
 
@@ -196,7 +198,7 @@ public class FilmTestHelper {
                 .get()
                 .getSeats()
                 .stream()
-                .map(Seat::toDto)
+                .map(seatMapper::toDto)
                 .toList();
     }
 

@@ -1,7 +1,7 @@
 package code.films.domain.queries.handlers;
 
 import code.bookings.domain.Seat;
-import code.bookings.infrastructure.rest.dto.SeatDto;
+import code.films.domain.Screening;
 import code.films.domain.ScreeningRepository;
 import code.films.domain.queries.SearchScreeningSeatsQuery;
 import code.films.infrastructure.exceptions.ScreeningNotFoundException;
@@ -18,15 +18,10 @@ public class SearchScreeningSeatsQueryHandler {
     private final ScreeningRepository screeningRepository;
 
     @Transactional(readOnly = true)
-    public List<SeatDto> handle(SearchScreeningSeatsQuery query) {
+    public List<Seat> handle(SearchScreeningSeatsQuery query) {
         return screeningRepository
                 .findById(query.screeningId())
-                .map(screening -> screening
-                        .getSeats()
-                        .stream()
-                        .map(Seat::toDto)
-                        .toList()
-                )
+                .map(Screening::getSeats)
                 .orElseThrow(ScreeningNotFoundException::new);
     }
 }

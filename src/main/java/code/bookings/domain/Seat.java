@@ -64,13 +64,4 @@ public class Seat {
         }
         this.status = SeatStatus.FREE;
     }
-
-    public SeatDto toDto() {
-        return new SeatDto(
-                id,
-                rowNumber,
-                number,
-                status.name()
-        );
-    }
 }

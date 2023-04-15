@@ -12,7 +12,7 @@ import org.mapstruct.Named;
 import java.util.List;
 import java.util.UUID;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface ScreeningMapper {
 
     @Mapping(target = "filmId", source = "film", qualifiedByName = "filmToUuid")

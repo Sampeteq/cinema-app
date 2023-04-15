@@ -4,7 +4,7 @@ import code.bookings.domain.Seat;
 import code.bookings.infrastructure.rest.dto.SeatDto;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface SeatMapper {
     SeatDto toDto(Seat seat);
 }

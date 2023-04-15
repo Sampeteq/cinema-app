@@ -1,6 +1,6 @@
 package code.films.domain;
 
-import code.films.domain.queries.SearchScreeningQuery;
+import code.films.domain.queries.SearchScreeningsQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,5 +14,5 @@ public interface ScreeningRepository extends JpaRepository<Screening, UUID> {
             "where (cast(cast(:#{#params.date} as string) as timestamp) is null " +
             "or s.date = cast(cast(:#{#params.date} as string) as timestamp)) " +
             "and (:#{#params.filmId} is null or s.film.id = :#{#params.filmId})")
-    List<Screening> findBy(SearchScreeningQuery params);
+    List<Screening> findBy(SearchScreeningsQuery params);
 }

@@ -4,11 +4,13 @@ import code.bookings.infrastructure.rest.dto.SeatDto;
 import code.films.domain.commands.CreateFilmCommand;
 import code.films.domain.commands.CreateScreeningCommand;
 import code.films.domain.queries.SearchFilmsQuery;
-import code.films.domain.queries.SearchScreeningQuery;
+import code.films.domain.queries.SearchScreeningSeatsQuery;
+import code.films.domain.queries.SearchScreeningsQuery;
 import code.films.domain.commands.handlers.CreateFilmCommandHandler;
 import code.films.domain.queries.handlers.SearchFilmsQueryHandler;
 import code.films.domain.commands.handlers.CreateScreeningCommandHandler;
 import code.films.domain.queries.handlers.SearchScreeningQueryHandler;
+import code.films.domain.queries.handlers.SearchScreeningSeatsQueryHandler;
 import code.films.infrastructure.rest.mappers.FilmMapper;
 import code.films.infrastructure.rest.mappers.ScreeningMapper;
 import code.films.domain.FilmCategory;
@@ -46,6 +48,8 @@ public class FilmController {
 
     private final SearchScreeningQueryHandler searchScreeningQueryHandler;
 
+    private final SearchScreeningSeatsQueryHandler searchScreeningSeatsQueryHandler;
+
     @PostMapping("/films")
     public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid CreateFilmCommand dto) {
         var createdFilm = createFilmCommandHandler.handle(dto);
@@ -58,7 +62,7 @@ public class FilmController {
                 .builder()
                 .category(category)
                 .build();
-        return searchFilmsQueryHandler.searchFilmsBy(params);
+        return searchFilmsQueryHandler.handle(params);
     }
 
     @PostMapping("/films/screenings")
@@ -81,18 +85,23 @@ public class FilmController {
             LocalDateTime date
     ) {
 
-        var params = SearchScreeningQuery
+        var params = SearchScreeningsQuery
                 .builder()
                 .filmId(filmId)
                 .date(date)
                 .build();
 
-        return searchScreeningQueryHandler.searchScreeningsBy(params);
+        return searchScreeningQueryHandler.handle(params);
     }
 
     @GetMapping("/films/screenings/{screeningId}/seats")
     public List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
-        return searchScreeningQueryHandler.searchSeats(screeningId);
+        return searchScreeningSeatsQueryHandler.handle(
+                SearchScreeningSeatsQuery
+                        .builder()
+                        .screeningId(screeningId)
+                        .build()
+        );
     }
 }
 

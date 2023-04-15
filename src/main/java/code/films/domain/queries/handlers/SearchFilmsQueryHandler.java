@@ -17,9 +17,9 @@ public class SearchFilmsQueryHandler {
 
     private final FilmMapper filmMapper;
 
-    public List<FilmDto> searchFilmsBy(SearchFilmsQuery params) {
+    public List<FilmDto> handle(SearchFilmsQuery query) {
         return filmRepository
-                .findBy(params)
+                .findBy(query)
                 .stream()
                 .map(filmMapper::mapToDto)
                 .toList();

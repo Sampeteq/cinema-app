@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class GetScreeningSeatsQueryHandler {
+public class GetScreeningSeatsHandler {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
 

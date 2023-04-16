@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SignInCommandHandler {
+public class SignInHandler {
 
     private final AuthenticationManager authenticationManager;
 

@@ -3,12 +3,12 @@ package code.bookings.infrastructure.rest;
 import code.bookings.infrastructure.rest.dto.BookingDto;
 import code.bookings.domain.commands.CancelBookingCommand;
 import code.bookings.domain.commands.MakeBookingCommand;
-import code.bookings.domain.commands.handlers.CancelBookingCommandHandler;
-import code.bookings.domain.commands.handlers.MakeBookingCommandHandler;
+import code.bookings.domain.commands.handlers.CancelBookingHandler;
+import code.bookings.domain.commands.handlers.MakeBookingHandler;
 import code.bookings.domain.queries.GetBookingQuery;
 import code.bookings.domain.queries.GetBookingsQuery;
-import code.bookings.domain.queries.handlers.GetBookingQueryHandler;
-import code.bookings.domain.queries.handlers.GetBookingsQueryHandler;
+import code.bookings.domain.queries.handlers.GetBookingHandler;
+import code.bookings.domain.queries.handlers.GetBookingsHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,13 +26,13 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BookingController {
 
-    private final MakeBookingCommandHandler makeBookingCommandHandler;
+    private final MakeBookingHandler makeBookingHandler;
 
-    private final CancelBookingCommandHandler cancelBookingCommandHandler;
+    private final CancelBookingHandler cancelBookingHandler;
 
-    private final GetBookingsQueryHandler getBookingsQueryHandler;
+    private final GetBookingsHandler getBookingsHandler;
 
-    private final GetBookingQueryHandler getBookingQueryHandler;
+    private final GetBookingHandler getBookingHandler;
 
     @PostMapping
     public BookingDto bookSeat(@RequestParam UUID seatId, Principal principal) {
@@ -41,7 +41,7 @@ public class BookingController {
                 .seatId(seatId)
                 .username(principal.getName())
                 .build();
-        return makeBookingCommandHandler.handle(command);
+        return makeBookingHandler.handle(command);
     }
 
     @PostMapping("/{bookingId}/cancel")
@@ -50,7 +50,7 @@ public class BookingController {
                 .builder()
                 .bookingId(bookingId)
                 .build();
-        cancelBookingCommandHandler.handle(command);
+        cancelBookingHandler.handle(command);
     }
 
     @GetMapping("/my")
@@ -59,7 +59,7 @@ public class BookingController {
                 .builder()
                 .username(principal.getName())
                 .build();
-        return getBookingsQueryHandler.handle(getBookingsQuery);
+        return getBookingsHandler.handle(getBookingsQuery);
     }
 
     @GetMapping("/my/{bookingId}")
@@ -69,7 +69,7 @@ public class BookingController {
                 .bookingId(bookingId)
                 .username(principal.getName())
                 .build();
-        return getBookingQueryHandler.handle(getBookingQuery);
+        return getBookingHandler.handle(getBookingQuery);
     }
 }
 

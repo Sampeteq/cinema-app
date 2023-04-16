@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class GetBookingQueryHandler {
+public class GetBookingHandler {
 
     private final BookingRepository bookingRepository;
 

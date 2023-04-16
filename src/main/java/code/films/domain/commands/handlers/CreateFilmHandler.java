@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class CreateFilmCommandHandler {
+public class CreateFilmHandler {
 
     private static final int CURRENT_YEAR = Year.now().getValue();
 

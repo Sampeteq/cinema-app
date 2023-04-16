@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class GetBookingsQueryHandler {
+public class GetBookingsHandler {
 
     private final BookingRepository bookingRepository;
 

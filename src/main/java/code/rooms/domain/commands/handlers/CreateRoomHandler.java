@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class CreateRoomCommandHandler {
+public class CreateRoomHandler {
 
     private final RoomRepository roomRepository;
 

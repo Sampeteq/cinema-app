@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class GetFilmsQueryHandler {
+public class GetFilmsHandler {
 
     private final FilmRepository filmRepository;
 

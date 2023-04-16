@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class GetScreeningQueryHandler {
+public class GetScreeningHandler {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
 

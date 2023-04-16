@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class CancelBookingCommandHandler {
+public class CancelBookingHandler {
 
     private final BookingRepository bookingRepository;
 

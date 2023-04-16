@@ -2,9 +2,9 @@ package code.user.infrastrcuture.rest;
 
 import code.user.domain.commands.SignInCommand;
 import code.user.domain.commands.SignUpCommand;
-import code.user.domain.commands.handlers.SignInCommandHandler;
-import code.user.domain.commands.handlers.SignOutCommandHandler;
-import code.user.domain.commands.handlers.SignUpCommandHandler;
+import code.user.domain.commands.handlers.SignInHandler;
+import code.user.domain.commands.handlers.SignOutHandler;
+import code.user.domain.commands.handlers.SignUpHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,28 +18,28 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class UserController {
 
-    private final SignUpCommandHandler signUpCommandHandler;
+    private final SignUpHandler signUpHandler;
 
-    private final SignInCommandHandler signInCommandHandler;
+    private final SignInHandler signInHandler;
 
-    private final SignOutCommandHandler signOutCommandHandler;
+    private final SignOutHandler signOutHandler;
 
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody @Valid SignUpCommand command) {
-        signUpCommandHandler.handle(command);
+        signUpHandler.handle(command);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody SignInCommand command) {
-        signInCommandHandler.handle(command);
+        signInHandler.handle(command);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/signout")
     public ResponseEntity<?> signOut() {
-        signOutCommandHandler.handle();
+        signOutHandler.handle();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class CreateScreeningCommandHandler {
+public class CreateScreeningHandler {
 
     private final FilmRepository filmRepository;
 

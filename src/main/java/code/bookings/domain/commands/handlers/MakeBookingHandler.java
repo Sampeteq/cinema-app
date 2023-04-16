@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class MakeBookingCommandHandler {
+public class MakeBookingHandler {
 
     private final SeatRepository seatRepository;
 

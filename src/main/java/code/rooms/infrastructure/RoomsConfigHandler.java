@@ -1,6 +1,6 @@
 package code.rooms.infrastructure;
 
-import code.rooms.domain.commands.handlers.CreateRoomCommandHandler;
+import code.rooms.domain.commands.handlers.CreateRoomHandler;
 import code.rooms.domain.queries.GetRoomsQueryHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +24,7 @@ public class RoomsConfigHandler {
 
     private final GetRoomsQueryHandler getRoomsQueryHandler;
 
-    private final CreateRoomCommandHandler createRoomCommandHandler;
+    private final CreateRoomHandler createRoomHandler;
 
     @Value("${roomsConfigHandler.pathToRoomsConfig}")
     private String pathToRoomsConfig;
@@ -64,7 +64,7 @@ public class RoomsConfigHandler {
         var roomsFromConfig = new ObjectMapper().readValue(json, RoomsConfigDto.class);
         roomsFromConfig
                 .rooms()
-                .forEach(createRoomCommandHandler::handle);
+                .forEach(createRoomHandler::handle);
     }
 }
 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SignUpCommandHandler {
+public class SignUpHandler {
 
     private final UserRepository userRepository;
 

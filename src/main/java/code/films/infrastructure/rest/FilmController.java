@@ -7,11 +7,11 @@ import code.films.domain.commands.CreateScreeningCommand;
 import code.films.domain.queries.GetFilmsQuery;
 import code.films.domain.queries.GetScreeningSeatsQuery;
 import code.films.domain.queries.GetScreeningsQuery;
-import code.films.domain.commands.handlers.CreateFilmCommandHandler;
-import code.films.domain.queries.handlers.GetFilmsQueryHandler;
-import code.films.domain.commands.handlers.CreateScreeningCommandHandler;
-import code.films.domain.queries.handlers.GetScreeningQueryHandler;
-import code.films.domain.queries.handlers.GetScreeningSeatsQueryHandler;
+import code.films.domain.commands.handlers.CreateFilmHandler;
+import code.films.domain.queries.handlers.GetFilmsHandler;
+import code.films.domain.commands.handlers.CreateScreeningHandler;
+import code.films.domain.queries.handlers.GetScreeningHandler;
+import code.films.domain.queries.handlers.GetScreeningSeatsHandler;
 import code.films.infrastructure.rest.mappers.FilmMapper;
 import code.films.infrastructure.rest.mappers.ScreeningMapper;
 import code.films.domain.FilmCategory;
@@ -37,25 +37,25 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FilmController {
 
-    private final CreateFilmCommandHandler createFilmCommandHandler;
+    private final CreateFilmHandler createFilmHandler;
 
     private final FilmMapper filmMapper;
 
-    private final GetFilmsQueryHandler getFilmsQueryHandler;
+    private final GetFilmsHandler getFilmsHandler;
 
-    private final CreateScreeningCommandHandler createScreeningCommandHandler;
+    private final CreateScreeningHandler createScreeningHandler;
 
     private final ScreeningMapper screeningMapper;
 
-    private final GetScreeningQueryHandler getScreeningQueryHandler;
+    private final GetScreeningHandler getScreeningHandler;
 
-    private final GetScreeningSeatsQueryHandler getScreeningSeatsQueryHandler;
+    private final GetScreeningSeatsHandler getScreeningSeatsHandler;
 
     private final SeatMapper seatMapper;
 
     @PostMapping("/films")
     public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid CreateFilmCommand dto) {
-        var createdFilm = createFilmCommandHandler.handle(dto);
+        var createdFilm = createFilmHandler.handle(dto);
         return new ResponseEntity<>(filmMapper.mapToDto(createdFilm), HttpStatus.CREATED);
     }
 
@@ -65,7 +65,7 @@ public class FilmController {
                 .builder()
                 .category(category)
                 .build();
-        return getFilmsQueryHandler.handle(params);
+        return getFilmsHandler.handle(params);
     }
 
     @PostMapping("/films/screenings")
@@ -74,7 +74,7 @@ public class FilmController {
             @Valid
             CreateScreeningCommand dto
     ) {
-        var createdScreening = createScreeningCommandHandler.createScreening(dto);
+        var createdScreening = createScreeningHandler.createScreening(dto);
         return new ResponseEntity<>(screeningMapper.mapToDto(createdScreening), HttpStatus.CREATED);
     }
 
@@ -94,12 +94,12 @@ public class FilmController {
                 .date(date)
                 .build();
 
-        return getScreeningQueryHandler.handle(params);
+        return getScreeningHandler.handle(params);
     }
 
     @GetMapping("/films/screenings/{screeningId}/seats")
     public List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
-        return getScreeningSeatsQueryHandler.handle(
+        return getScreeningSeatsHandler.handle(
                 GetScreeningSeatsQuery
                         .builder()
                         .screeningId(screeningId)

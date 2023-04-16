@@ -1,13 +1,16 @@
 package code.films.domain;
 
 import code.films.domain.queries.SearchScreeningsQuery;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-public interface ScreeningRepository extends JpaRepository<Screening, UUID> {
+public interface ScreeningReadOnlyRepository extends Repository<Screening, UUID> {
+
+    Optional<Screening> findById(UUID id);
 
     @Query("select distinct s from Screening s " +
             "left join fetch s.seats left join fetch s.film left join fetch s.room " +

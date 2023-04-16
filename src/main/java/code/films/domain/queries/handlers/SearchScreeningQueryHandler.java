@@ -1,6 +1,6 @@
 package code.films.domain.queries.handlers;
 
-import code.films.domain.ScreeningRepository;
+import code.films.domain.ScreeningReadOnlyRepository;
 import code.films.domain.queries.SearchScreeningsQuery;
 import code.films.infrastructure.rest.dto.ScreeningDto;
 import code.films.infrastructure.rest.mappers.ScreeningMapper;
@@ -13,12 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 public class SearchScreeningQueryHandler {
 
-    private final ScreeningRepository screeningRepository;
+    private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
 
     private final ScreeningMapper screeningMapper;
 
     public List<ScreeningDto> handle(SearchScreeningsQuery query) {
-        return screeningRepository
+        return screeningReadOnlyRepository
                 .findBy(query)
                 .stream()
                 .map(screeningMapper::mapToDto)

@@ -10,6 +10,7 @@ import code.bookings.infrastructure.rest.dto.BookingDto;
 import code.bookings.infrastructure.rest.dto.SeatDto;
 import code.bookings.infrastructure.rest.dto.mappers.BookingMapper;
 import code.films.domain.FilmRepository;
+import code.user.domain.UserRepository;
 import code.utils.SpringIntegrationTests;
 import code.utils.UserTestHelper;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,7 @@ import java.util.stream.Stream;
 import static code.utils.BookingTestHelper.createSampleBooking;
 import static code.utils.BookingTestHelper.createSampleBookings;
 import static code.utils.FilmTestHelper.createSampleFilmWithScreening;
+import static code.utils.UserTestHelper.createSampleUser;
 import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,6 +39,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BookingsIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private FilmRepository filmRepository;
 
     @Autowired
@@ -45,8 +50,6 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
     @Autowired
     private BookingMapper bookingMapper;
 
-    @Autowired
-    private UserTestHelper userTestHelper;
 
     @Autowired
     @Qualifier("testClock")
@@ -54,7 +57,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
 
     @BeforeEach
     void setUp() {
-        userTestHelper.signUpUser("user1");
+        userRepository.save(createSampleUser("user1"));
     }
 
     @Test

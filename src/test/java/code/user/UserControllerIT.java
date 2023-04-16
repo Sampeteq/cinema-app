@@ -1,5 +1,6 @@
 package code.user;
 
+import code.user.domain.UserRepository;
 import code.user.domain.commands.SignInCommand;
 import code.user.domain.exceptions.NotSamePasswordsException;
 import code.user.infrastrcuture.exceptions.UsernameAlreadyExistsException;
@@ -9,7 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-import static code.utils.UserTestHelper.sampleSignUpDto;
+import static code.utils.UserTestHelper.createSampleSignUpCommand;
+import static code.utils.UserTestHelper.createSampleUser;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -18,12 +20,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerIT extends SpringIntegrationTests {
 
     @Autowired
-    private UserTestHelper userTestHelper;
+    private UserRepository userRepository;
 
     @Test
     void should_sign_up_and_sing_in() throws Exception {
         //given
-        var signUpRequest = UserTestHelper.sampleSignUpDto();
+        var signUpRequest = UserTestHelper.createSampleSignUpCommand();
 
         //when
         var result = mockMvc.perform(
@@ -48,8 +50,8 @@ class UserControllerIT extends SpringIntegrationTests {
     @Test
     void should_throw_exception_when_username_is_not_unique() throws Exception {
         //given
-        var username = userTestHelper.signUpUser("user1");
-        var signUpRequest = UserTestHelper.sampleSignUpDto(username);
+        var user = userRepository.save(createSampleUser("user1"));
+        var signUpRequest = UserTestHelper.createSampleSignUpCommand(user.getUsername());
 
         //when
         var result = mockMvc.perform(
@@ -67,7 +69,7 @@ class UserControllerIT extends SpringIntegrationTests {
     @Test
     void should_throw_exception_when_password_are_not_the_same() throws Exception {
         //given
-        var signUpRequest = sampleSignUpDto("password1", "password2");
+        var signUpRequest = createSampleSignUpCommand("password1", "password2");
 
         //when
         var result = mockMvc.perform(

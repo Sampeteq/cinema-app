@@ -2,18 +2,11 @@ package code.utils;
 
 import code.user.domain.commands.SignUpCommand;
 import code.user.domain.User;
-import code.user.domain.UserRepository;
 import code.user.domain.UserRole;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@AllArgsConstructor
-@Component
 public class UserTestHelper {
 
-    private final UserRepository userRepository;
-
-    public static SignUpCommand sampleSignUpDto() {
+    public static SignUpCommand createSampleSignUpCommand() {
         return new SignUpCommand(
                 "user1",
                 "password1",
@@ -21,7 +14,7 @@ public class UserTestHelper {
         );
     }
 
-    public static SignUpCommand sampleSignUpDto(String username) {
+    public static SignUpCommand createSampleSignUpCommand(String username) {
         return new SignUpCommand(
                 username,
                 "password1",
@@ -29,7 +22,7 @@ public class UserTestHelper {
         );
     }
 
-    public static SignUpCommand sampleSignUpDto(String password, String repeatedPassword) {
+    public static SignUpCommand createSampleSignUpCommand(String password, String repeatedPassword) {
         return new SignUpCommand(
                 "user1",
                 password,
@@ -37,9 +30,7 @@ public class UserTestHelper {
         );
     }
 
-    public String signUpUser(String username) {
-        var user = new User(username, "12345", UserRole.COMMON);
-        userRepository.save(user);
-        return username;
+    public static User createSampleUser(String username) {
+        return new User(username, "12345", UserRole.COMMON);
     }
 }

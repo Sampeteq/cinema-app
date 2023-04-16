@@ -1,8 +1,8 @@
 package code.rooms.infrastructure;
 
-import code.rooms.domain.commands.RoomCreateCommand;
+import code.rooms.domain.commands.CreateRoomCommand;
 
 import java.util.List;
 
-record RoomsConfigDto(List<RoomCreateCommand> rooms) {
+record RoomsConfigDto(List<CreateRoomCommand> rooms) {
 }

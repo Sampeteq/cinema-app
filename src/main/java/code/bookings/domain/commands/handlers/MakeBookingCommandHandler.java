@@ -5,7 +5,7 @@ import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.Seat;
 import code.bookings.domain.SeatRepository;
-import code.bookings.domain.commands.BookingMakeCommand;
+import code.bookings.domain.commands.MakeBookingCommand;
 import code.bookings.infrastructure.exceptions.SeatNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class BookingMakeCommandHandler {
+public class MakeBookingCommandHandler {
 
     private final SeatRepository seatRepository;
 
@@ -25,7 +25,7 @@ public class BookingMakeCommandHandler {
     private final Clock clock;
 
     @Transactional
-    public BookingDto handle(BookingMakeCommand command) {
+    public BookingDto handle(MakeBookingCommand command) {
         var seat = getSeatOrThrow(command.seatId());
         var booking = Booking.make(seat, command.username(), clock);
         return bookingRepository

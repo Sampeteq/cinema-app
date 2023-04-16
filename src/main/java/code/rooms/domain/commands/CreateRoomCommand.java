@@ -5,7 +5,7 @@ import lombok.With;
 import javax.validation.constraints.Positive;
 
 @With
-public record RoomCreateCommand(
+public record CreateRoomCommand(
         @Positive
         int number,
         @Positive

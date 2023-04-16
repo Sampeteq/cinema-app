@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record BookingMakeCommand(UUID seatId, String username) {
+public record MakeBookingCommand(UUID seatId, String username) {
 }

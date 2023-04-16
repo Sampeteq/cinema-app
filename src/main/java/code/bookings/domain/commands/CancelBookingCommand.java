@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record BookingCancelCommand(UUID bookingId) {
+public record CancelBookingCommand(UUID bookingId) {
 }

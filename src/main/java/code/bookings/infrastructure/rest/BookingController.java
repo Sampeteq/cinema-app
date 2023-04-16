@@ -1,10 +1,10 @@
 package code.bookings.infrastructure.rest;
 
 import code.bookings.infrastructure.rest.dto.BookingDto;
-import code.bookings.domain.commands.BookingCancelCommand;
-import code.bookings.domain.commands.BookingMakeCommand;
-import code.bookings.domain.commands.handlers.BookingCancelCommandHandler;
-import code.bookings.domain.commands.handlers.BookingMakeCommandHandler;
+import code.bookings.domain.commands.CancelBookingCommand;
+import code.bookings.domain.commands.MakeBookingCommand;
+import code.bookings.domain.commands.handlers.CancelBookingCommandHandler;
+import code.bookings.domain.commands.handlers.MakeBookingCommandHandler;
 import code.bookings.domain.queries.GetBookingQuery;
 import code.bookings.domain.queries.GetBookingsQuery;
 import code.bookings.domain.queries.handlers.GetBookingQueryHandler;
@@ -26,9 +26,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BookingController {
 
-    private final BookingMakeCommandHandler bookingMakeCommandHandler;
+    private final MakeBookingCommandHandler makeBookingCommandHandler;
 
-    private final BookingCancelCommandHandler bookingCancelCommandHandler;
+    private final CancelBookingCommandHandler cancelBookingCommandHandler;
 
     private final GetBookingsQueryHandler getBookingsQueryHandler;
 
@@ -36,21 +36,21 @@ public class BookingController {
 
     @PostMapping
     public BookingDto bookSeat(@RequestParam UUID seatId, Principal principal) {
-        var command = BookingMakeCommand
+        var command = MakeBookingCommand
                 .builder()
                 .seatId(seatId)
                 .username(principal.getName())
                 .build();
-        return bookingMakeCommandHandler.handle(command);
+        return makeBookingCommandHandler.handle(command);
     }
 
     @PostMapping("/{bookingId}/cancel")
     public void cancelBooking(@PathVariable UUID bookingId) {
-        var command = BookingCancelCommand
+        var command = CancelBookingCommand
                 .builder()
                 .bookingId(bookingId)
                 .build();
-        bookingCancelCommandHandler.handle(command);
+        cancelBookingCommandHandler.handle(command);
     }
 
     @GetMapping("/my")

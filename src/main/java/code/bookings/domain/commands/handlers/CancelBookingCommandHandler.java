@@ -2,7 +2,7 @@ package code.bookings.domain.commands.handlers;
 
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
-import code.bookings.domain.commands.BookingCancelCommand;
+import code.bookings.domain.commands.CancelBookingCommand;
 import code.bookings.infrastructure.exceptions.BookingNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,14 +13,14 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class BookingCancelCommandHandler {
+public class CancelBookingCommandHandler {
 
     private final BookingRepository bookingRepository;
 
     private final Clock clock;
 
     @Transactional
-    public void handle(BookingCancelCommand command) {
+    public void handle(CancelBookingCommand command) {
         var booking = getBookingOrThrow(command.bookingId());
         booking.cancel(clock);
     }

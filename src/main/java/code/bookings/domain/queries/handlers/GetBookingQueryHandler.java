@@ -22,7 +22,7 @@ public class GetBookingQueryHandler {
 
     private Booking getBookingOrThrow(UUID ticketId, String username) {
         return bookingRepository
-                .findByIdAndUsername(ticketId, username)
+                .getByIdAndUsername(ticketId, username)
                 .orElseThrow(BookingNotFoundException::new);
     }
 }

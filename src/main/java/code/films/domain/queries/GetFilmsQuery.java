@@ -4,4 +4,4 @@ import code.films.domain.FilmCategory;
 import lombok.Builder;
 
 @Builder
-public record SearchFilmsQuery(FilmCategory category) {}
+public record GetFilmsQuery(FilmCategory category) {}

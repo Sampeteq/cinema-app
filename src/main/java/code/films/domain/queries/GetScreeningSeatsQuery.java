@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record SearchScreeningSeatsQuery(UUID screeningId) {
+public record GetScreeningSeatsQuery(UUID screeningId) {
 }

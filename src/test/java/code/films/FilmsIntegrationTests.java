@@ -18,7 +18,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -92,7 +91,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
-    void should_search_all_films() throws Exception {
+    void should_get_all_films() throws Exception {
         //given
         var sampleFilms = filmRepository.saveAll(createSampleFilms());
 
@@ -108,7 +107,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
-    void should_search_films_by_params() throws Exception {
+    void should_get_films_by_params() throws Exception {
         //given
         var filmMeetingParams = filmRepository.save(
                 createSampleFilm().withCategory(FilmCategory.COMEDY)
@@ -204,7 +203,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
-    void should_search_all_screenings() throws Exception {
+    void should_get_all_screenings() throws Exception {
         //given
         var film = createSampleFilm();
         var screenings = createSampleScreenings(film);
@@ -223,7 +222,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
-    void should_search_seats_for_screening() throws Exception {
+    void should_get_seats_for_screening() throws Exception {
         //given
         var film = createSampleFilm();
         var screening = createSampleScreening(film);
@@ -242,7 +241,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     }
 
     @Test
-    void should_search_screenings_by_search_params() throws Exception {
+    void should_get_screenings_by_params() throws Exception {
         //given
         var film = createSampleFilm();
         var screeningMeetParams = createSampleScreening(film);

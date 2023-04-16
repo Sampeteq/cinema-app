@@ -288,7 +288,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
 
     @Test
     @WithMockUser(username = "user1")
-    void should_return_all_user_bookings() throws Exception {
+    void should_get_all_user_bookings() throws Exception {
         //given
         var sampleScreening = filmRepository
                 .save(createSampleFilmWithScreening())

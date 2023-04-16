@@ -1,7 +1,7 @@
 package code.rooms.infrastructure;
 
 import code.rooms.domain.commands.handlers.RoomCreateCommandHandler;
-import code.rooms.domain.queries.RoomsSearchAllQueryHandler;
+import code.rooms.domain.queries.GetRoomsQueryHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import java.nio.file.Path;
 @Profile("prod")
 public class RoomsConfigHandler {
 
-    private final RoomsSearchAllQueryHandler roomsSearchAllQueryHandler;
+    private final GetRoomsQueryHandler getRoomsQueryHandler;
 
     private final RoomCreateCommandHandler roomCreateCommandHandler;
 
@@ -31,7 +31,7 @@ public class RoomsConfigHandler {
 
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {
-        if(roomsSearchAllQueryHandler.handle().isEmpty()) {
+        if(getRoomsQueryHandler.handle().isEmpty()) {
             try {
                 logIfFileNotExists();
                 var json = readConfig();

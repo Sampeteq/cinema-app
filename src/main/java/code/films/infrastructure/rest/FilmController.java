@@ -4,14 +4,14 @@ import code.bookings.infrastructure.rest.dto.SeatDto;
 import code.bookings.infrastructure.rest.dto.mappers.SeatMapper;
 import code.films.domain.commands.CreateFilmCommand;
 import code.films.domain.commands.CreateScreeningCommand;
-import code.films.domain.queries.SearchFilmsQuery;
-import code.films.domain.queries.SearchScreeningSeatsQuery;
-import code.films.domain.queries.SearchScreeningsQuery;
+import code.films.domain.queries.GetFilmsQuery;
+import code.films.domain.queries.GetScreeningSeatsQuery;
+import code.films.domain.queries.GetScreeningsQuery;
 import code.films.domain.commands.handlers.CreateFilmCommandHandler;
-import code.films.domain.queries.handlers.SearchFilmsQueryHandler;
+import code.films.domain.queries.handlers.GetFilmsQueryHandler;
 import code.films.domain.commands.handlers.CreateScreeningCommandHandler;
-import code.films.domain.queries.handlers.SearchScreeningQueryHandler;
-import code.films.domain.queries.handlers.SearchScreeningSeatsQueryHandler;
+import code.films.domain.queries.handlers.GetScreeningQueryHandler;
+import code.films.domain.queries.handlers.GetScreeningSeatsQueryHandler;
 import code.films.infrastructure.rest.mappers.FilmMapper;
 import code.films.infrastructure.rest.mappers.ScreeningMapper;
 import code.films.domain.FilmCategory;
@@ -41,15 +41,15 @@ public class FilmController {
 
     private final FilmMapper filmMapper;
 
-    private final SearchFilmsQueryHandler searchFilmsQueryHandler;
+    private final GetFilmsQueryHandler getFilmsQueryHandler;
 
     private final CreateScreeningCommandHandler createScreeningCommandHandler;
 
     private final ScreeningMapper screeningMapper;
 
-    private final SearchScreeningQueryHandler searchScreeningQueryHandler;
+    private final GetScreeningQueryHandler getScreeningQueryHandler;
 
-    private final SearchScreeningSeatsQueryHandler searchScreeningSeatsQueryHandler;
+    private final GetScreeningSeatsQueryHandler getScreeningSeatsQueryHandler;
 
     private final SeatMapper seatMapper;
 
@@ -61,11 +61,11 @@ public class FilmController {
 
     @GetMapping("/films")
     public List<FilmDto> searchFilmsBy(@RequestParam(required = false) FilmCategory category) {
-        var params = SearchFilmsQuery
+        var params = GetFilmsQuery
                 .builder()
                 .category(category)
                 .build();
-        return searchFilmsQueryHandler.handle(params);
+        return getFilmsQueryHandler.handle(params);
     }
 
     @PostMapping("/films/screenings")
@@ -88,19 +88,19 @@ public class FilmController {
             LocalDateTime date
     ) {
 
-        var params = SearchScreeningsQuery
+        var params = GetScreeningsQuery
                 .builder()
                 .filmId(filmId)
                 .date(date)
                 .build();
 
-        return searchScreeningQueryHandler.handle(params);
+        return getScreeningQueryHandler.handle(params);
     }
 
     @GetMapping("/films/screenings/{screeningId}/seats")
     public List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
-        return searchScreeningSeatsQueryHandler.handle(
-                SearchScreeningSeatsQuery
+        return getScreeningSeatsQueryHandler.handle(
+                GetScreeningSeatsQuery
                         .builder()
                         .screeningId(screeningId)
                         .build()

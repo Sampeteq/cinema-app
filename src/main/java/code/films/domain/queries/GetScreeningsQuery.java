@@ -6,4 +6,4 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
-public record SearchScreeningsQuery (UUID filmId, LocalDateTime date) {}
+public record GetScreeningsQuery(UUID filmId, LocalDateTime date) {}

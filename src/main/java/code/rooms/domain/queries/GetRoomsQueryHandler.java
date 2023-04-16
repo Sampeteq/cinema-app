@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class RoomsSearchAllQueryHandler {
+public class GetRoomsQueryHandler {
 
     private final RoomRepository roomRepository;
 

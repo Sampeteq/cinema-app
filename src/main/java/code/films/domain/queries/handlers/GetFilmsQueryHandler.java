@@ -1,6 +1,6 @@
 package code.films.domain.queries.handlers;
 
-import code.films.domain.queries.SearchFilmsQuery;
+import code.films.domain.queries.GetFilmsQuery;
 import code.films.infrastructure.rest.mappers.FilmMapper;
 import code.films.domain.FilmRepository;
 import code.films.infrastructure.rest.dto.FilmDto;
@@ -11,15 +11,15 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class SearchFilmsQueryHandler {
+public class GetFilmsQueryHandler {
 
     private final FilmRepository filmRepository;
 
     private final FilmMapper filmMapper;
 
-    public List<FilmDto> handle(SearchFilmsQuery query) {
+    public List<FilmDto> handle(GetFilmsQuery query) {
         return filmRepository
-                .findBy(query)
+                .getBy(query)
                 .stream()
                 .map(filmMapper::mapToDto)
                 .toList();

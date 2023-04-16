@@ -1,13 +1,8 @@
 package code.films.domain;
 
 import code.films.domain.exceptions.ScreeningCollisionException;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.With;
+import lombok.*;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -23,9 +18,10 @@ import java.util.UUID;
 @Table(name = "FILMS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString
+@ToString(exclude = "screenings")
 @With
 public class Film {
 

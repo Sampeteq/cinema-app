@@ -1,10 +1,12 @@
 package code.films.domain.commands;
 
 import code.films.domain.FilmCategory;
+import lombok.Builder;
 import lombok.With;
 
 import javax.validation.constraints.NotNull;
 
+@Builder
 @With
 public record CreateFilmCommand(
         @NotNull

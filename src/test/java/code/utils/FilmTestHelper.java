@@ -1,57 +1,80 @@
 package code.utils;
 
-import code.bookings.infrastructure.rest.dto.mappers.SeatMapper;
-import code.films.domain.commands.CreateFilmCommand;
-import code.films.domain.commands.CreateScreeningCommand;
-import code.films.infrastructure.rest.dto.FilmDto;
-import code.rooms.infrastructure.rest.RoomDto;
-import code.films.infrastructure.rest.dto.ScreeningDto;
-import code.bookings.infrastructure.rest.dto.SeatDto;
-import code.films.infrastructure.rest.mappers.FilmMapper;
-import code.films.infrastructure.rest.mappers.ScreeningMapper;
 import code.films.domain.Film;
 import code.films.domain.FilmCategory;
-import code.films.domain.FilmRepository;
-import code.rooms.domain.Room;
-import code.rooms.domain.RoomRepository;
 import code.films.domain.Screening;
-import code.films.domain.ScreeningRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import code.films.domain.commands.CreateFilmCommand;
+import code.films.domain.commands.CreateScreeningCommand;
 
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
-@AllArgsConstructor
-@Component
+import static code.utils.RoomTestHelper.createSampleRoom;
+
 public class FilmTestHelper {
 
-    private final FilmRepository filmRepository;
+    private static final int CURRENT_YEAR = Year.now().getValue();
 
-    private final FilmMapper filmMapper;
+    public static CreateFilmCommand createSampleCreateFilmCommand() {
+        return CreateFilmCommand
+                .builder()
+                .title("Test film 1")
+                .filmCategory(FilmCategory.COMEDY)
+                .year(CURRENT_YEAR)
+                .durationInMinutes(100)
+                .build();
+    }
 
-    private final ScreeningRepository screeningRepository;
+    public static Film createSampleFilm() {
+        return Film
+                .builder()
+                .id(UUID.randomUUID())
+                .title("Test film 1")
+                .category(FilmCategory.COMEDY)
+                .year(CURRENT_YEAR)
+                .durationInMinutes(100)
+                .screenings(new ArrayList<>())
+                .build();
+    }
 
-    private final ScreeningMapper screeningMapper;
+    public static Film createSampleFilmWithScreening() {
+        var film = createSampleFilm();
+        var screening = createSampleScreening(film);
+        film.addScreening(screening);
+        return film;
+    }
 
-    private final RoomRepository roomRepository;
+    public static Film createSampleFilmWithScreening(LocalDateTime screeningDate) {
+        var film = createSampleFilm();
+        var screening = createSampleScreening(film).withDate(screeningDate);
+        film.addScreening(screening);
+        return film;
+    }
 
-    private final SeatMapper seatMapper;
-
-    private static final int currentYear = Year.now().getValue();
-
-    public static CreateFilmCommand sampleCreateFilmDto() {
-        return new CreateFilmCommand(
-                "title 1",
-                FilmCategory.COMEDY,
-                Year.now().getValue(),
-                120
-        );
+    public static List<Film> createSampleFilms() {
+        var film1 = Film
+                .builder()
+                .id(UUID.randomUUID())
+                .title("Test film 1")
+                .category(FilmCategory.COMEDY)
+                .year(CURRENT_YEAR)
+                .durationInMinutes(100)
+                .screenings(Collections.emptyList())
+                .build();
+        var film2 = Film
+                .builder()
+                .id(UUID.randomUUID())
+                .title("Test film 2")
+                .category(FilmCategory.DRAMA)
+                .year(CURRENT_YEAR + 1)
+                .durationInMinutes(120)
+                .screenings(Collections.emptyList())
+                .build();
+        return List.of(film1, film2);
     }
 
     public static List<Integer> sampleWrongFilmYears() {
@@ -62,190 +85,57 @@ public class FilmTestHelper {
         );
     }
 
-    public FilmDto addSampleFilm() {
-        var film = createSampleFilm();
-        filmRepository.save(film);
-        return filmMapper.mapToDto(film);
+    public static CreateScreeningCommand createSampleCreateScreeningCommand(UUID filmId, UUID roomId) {
+        return CreateScreeningCommand
+                .builder()
+                .filmId(filmId)
+                .date(LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30))
+                .minAge(13)
+                .roomId(roomId)
+                .build();
     }
 
-    public FilmDto addSampleFilmWithoutScreenings() {
-        var film = new Film(
-                UUID.randomUUID(),
-                "Sample title",
-                FilmCategory.COMEDY,
-                currentYear,
-                120,
-                new ArrayList<>()
-        );
-        filmRepository.save(film);
-        return filmMapper.mapToDto(film);
-    }
-
-    public FilmDto addSampleFilm(FilmCategory category) {
-        var film = createSampleFilm().withCategory(category);
-        filmRepository.save(film);
-        return filmMapper.mapToDto(film);
-    }
-
-
-    public List<FilmDto> addSampleFilms() {
-        var film1 = new Film(
-                UUID.randomUUID(),
-                "title 1",
-                FilmCategory.COMEDY,
-                Year.now().getValue(),
-                120,
-                new ArrayList<>()
-        );
-        var film2 = new Film(
-                UUID.randomUUID(),
-                "title 2",
-                FilmCategory.DRAMA,
-                Year.now().getValue() - 1,
-                90,
-                new ArrayList<>()
-        );
-        var sampleFilm1 = filmRepository.save(film1);
-        var sampleFilm2 = filmRepository.save(film2);
-        return Stream.of(sampleFilm1, sampleFilm2)
-                .map(filmMapper::mapToDto)
-                .toList();
-    }
-
-    public static CreateScreeningCommand sampleCreateScreeningDto(UUID filmId, UUID roomId) {
-        return new CreateScreeningCommand(
-                LocalDateTime.of(currentYear, 5, 10, 18, 30),
+    public static Screening createSampleScreening(Film film) {
+        return Screening.of(
+                LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
                 13,
-                filmId,
-                roomId
+                film,
+                createSampleRoom()
         );
     }
 
-    public static CreateScreeningCommand sampleCreateScreeningDto(
-            UUID filmId,
-            UUID roomId,
-            LocalDateTime screeningDate
-    ) {
-        return new CreateScreeningCommand(
-                screeningDate,
+    public static List<Screening> createSampleScreenings(Film film) {
+        var screening1 = Screening.of(
+                LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
                 13,
-                filmId,
-                roomId
+                film,
+                createSampleRoom()
         );
+        var screening2 = Screening.of(
+                LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
+                13,
+                film,
+                createSampleRoom()
+        );
+        return List.of(screening1, screening2);
     }
+
 
     public static List<String> sampleWrongScreeningDates() {
         var date1 = LocalDateTime.of(
-                currentYear - 1,
+                CURRENT_YEAR - 1,
                 2,
                 2,
                 16,
                 30
         ).toString();
         var date2 = LocalDateTime.of(
-                currentYear + 2,
+                CURRENT_YEAR + 2,
                 2,
                 2,
                 16,
                 30
         ).toString();
         return List.of(date1, date2);
-    }
-
-    public ScreeningDto addSampleScreening() {
-        var sampleFilm = createSampleFilm();
-        filmRepository.save(sampleFilm);
-        var screening = sampleFilm.getScreenings().get(0);
-        return screeningMapper.mapToDto(screening);
-    }
-
-    public ScreeningDto addSampleScreening(LocalDateTime screeningDate) {
-        var sampleFilm = createSampleFilm();
-        filmRepository.save(sampleFilm);
-
-        var sampleRoom = createSampleRoom();
-        roomRepository.save(sampleRoom);
-
-        var screening = createSampleScreening(sampleFilm, sampleRoom).withDate(screeningDate);
-        screeningRepository.save(screening);
-        return screeningMapper.mapToDto(screening);
-    }
-
-    public List<ScreeningDto> sampleScreenings() {
-        var sampleFilm = createSampleFilm();
-        filmRepository.save(sampleFilm);
-
-        var sampleRoom = createSampleRoom();
-        roomRepository.save(sampleRoom);
-
-        var screening1 = sampleFilm.getScreenings().get(0);
-        var screening2 = sampleFilm.getScreenings().get(1);
-        return Stream.of(screening1, screening2)
-                .map(screeningMapper::mapToDto)
-                .toList();
-    }
-
-    public RoomDto addSampleRoom() {
-        var room = createSampleRoom();
-        roomRepository.save(room);
-        return room.toDto();
-    }
-
-    @Transactional
-    public List<SeatDto> searchScreeningSeats(UUID screeningId) {
-        return screeningRepository
-                .findById(screeningId)
-                .get()
-                .getSeats()
-                .stream()
-                .map(seatMapper::toDto)
-                .toList();
-    }
-
-    private Film createSampleFilm() {
-        var film = new Film(
-                UUID.randomUUID(),
-                "Sample title",
-                FilmCategory.COMEDY,
-                currentYear,
-                120,
-                new ArrayList<>()
-        );
-        var room = createSampleRoom();
-        var screening1 = Screening.of(
-                        LocalDateTime
-                                .of(currentYear, 5, 5, 18, 30),
-                        13,
-                        film,
-                        room
-        );
-        var screening2 =
-                Screening.of(
-                        LocalDateTime.of(currentYear, 7, 3, 20, 30),
-                        18,
-                        film,
-                        room
-                );
-        film.addScreening(screening1);
-        film.addScreening(screening2);
-        return film;
-    }
-
-    private Room createSampleRoom() {
-        return new Room(
-                UUID.randomUUID(),
-                1,
-                10,
-                15
-        );
-    }
-
-    private Screening createSampleScreening(Film film, Room room) {
-        return Screening.of(
-                LocalDateTime.of(currentYear, 5, 10, 18, 30),
-                13,
-                film,
-                room
-        );
     }
 }

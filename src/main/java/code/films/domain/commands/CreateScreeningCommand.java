@@ -1,12 +1,14 @@
 package code.films.domain.commands;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.With;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Builder
 @With
 public record CreateScreeningCommand(
         @NotNull

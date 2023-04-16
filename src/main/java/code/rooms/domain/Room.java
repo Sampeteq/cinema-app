@@ -12,6 +12,7 @@ import java.util.UUID;
 @Table(name = "ROOMS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString

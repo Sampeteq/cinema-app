@@ -20,6 +20,11 @@ public interface ScreeningMapper {
     @Mapping(target = "freeSeats", source = "seats", qualifiedByName = "seatsToFreeSeats")
     ScreeningDto mapToDto(Screening screening);
 
+    @Mapping(target = "filmId", source = "film", qualifiedByName = "filmToUuid")
+    @Mapping(target = "roomId", source = "room", qualifiedByName = "roomToUuid")
+    @Mapping(target = "freeSeats", source = "seats", qualifiedByName = "seatsToFreeSeats")
+    List<ScreeningDto> mapToDto(List<Screening> screening);
+
     @Named("filmToUuid")
     static UUID filmToUuid(Film film) {
         return film.getId();

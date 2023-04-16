@@ -20,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString
+@ToString(exclude = "seats")
 @With
 public class Screening {
 
@@ -40,6 +40,7 @@ public class Screening {
     private Room room;
 
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
+    @ToStringExclude
     private List<Seat> seats;
 
     public static Screening of(LocalDateTime date, int minAge, Film film, Room room) {

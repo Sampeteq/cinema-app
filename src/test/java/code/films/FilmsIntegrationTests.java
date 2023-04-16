@@ -1,12 +1,16 @@
 package code.films;
 
+import code.bookings.infrastructure.rest.dto.mappers.SeatMapper;
 import code.films.domain.FilmCategory;
+import code.films.domain.FilmRepository;
 import code.films.domain.exceptions.ScreeningCollisionException;
 import code.films.domain.exceptions.WrongFilmYearException;
 import code.films.domain.exceptions.WrongScreeningDateException;
 import code.films.infrastructure.rest.dto.FilmDto;
 import code.films.infrastructure.rest.dto.ScreeningDto;
-import code.utils.FilmTestHelper;
+import code.films.infrastructure.rest.mappers.FilmMapper;
+import code.films.infrastructure.rest.mappers.ScreeningMapper;
+import code.rooms.domain.RoomRepository;
 import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,34 +18,47 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static code.utils.FilmTestHelper.sampleCreateFilmDto;
+import static code.utils.FilmTestHelper.*;
+import static code.utils.RoomTestHelper.createSampleRoom;
 import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class FilmsIntegrationTests extends SpringIntegrationTests {
 
     @Autowired
-    private FilmTestHelper filmTestHelper;
+    private FilmRepository filmRepository;
+
+    @Autowired
+    private FilmMapper filmMapper;
+
+    @Autowired
+    private RoomRepository roomRepository;
+
+    @Autowired
+    private ScreeningMapper screeningMapper;
+
+    @Autowired
+    private SeatMapper seatMapper;
 
     @Test
     @WithMockUser(authorities = "ADMIN")
     void should_create_film() throws Exception {
         //given
-        var dto = sampleCreateFilmDto();
+        var cmd = createSampleCreateFilmCommand();
 
         //when
         var result = mockMvc.perform(
                 post("/films")
-                        .content(toJson(dto))
+                        .content(toJson(cmd))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -59,7 +76,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
             throws Exception {
         //given
-        var dto = sampleCreateFilmDto().withYear(wrongYear);
+        var dto = createSampleCreateFilmCommand().withYear(wrongYear);
 
         //when
         var result = mockMvc.perform(
@@ -77,7 +94,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_search_all_films() throws Exception {
         //given
-        var sampleFilms = filmTestHelper.addSampleFilms();
+        var sampleFilms = filmRepository.saveAll(createSampleFilms());
 
         //when
         var result = mockMvc.perform(
@@ -87,43 +104,43 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJson(sampleFilms)));
+                .andExpect(content().json(toJson(filmMapper.mapToDto(sampleFilms))));
     }
 
     @Test
     void should_search_films_by_params() throws Exception {
         //given
-        var filmWithParams = filmTestHelper.addSampleFilm(FilmCategory.COMEDY);
-        filmTestHelper.addSampleFilm(FilmCategory.DRAMA);
+        var filmMeetingParams = filmRepository.save(
+                createSampleFilm().withCategory(FilmCategory.COMEDY)
+        );
+        var filmNotMeetingParams = filmRepository.save(
+                createSampleFilm().withCategory(FilmCategory.DRAMA)
+        );
 
         //when
         var result = mockMvc.perform(
                 get("/films")
-                        .param("category", filmWithParams.category().name())
+                        .param("category", filmMeetingParams.getCategory().name())
         );
 
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(1))
-                .andExpect(content().json(toJson(List.of(filmWithParams))));
+                .andExpect(content().json(toJson(List.of(filmMapper.mapToDto(filmMeetingParams)))));
     }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
     void should_create_screening() throws Exception {
         //given
-        var film = filmTestHelper.addSampleFilmWithoutScreenings();
-        var room = filmTestHelper.addSampleRoom();
-        var dto = FilmTestHelper.sampleCreateScreeningDto(
-                film.id(),
-                room.id()
-        );
+        var sampleFilm = filmRepository.save(createSampleFilm());
+        var sampleRoom = roomRepository.save(createSampleRoom());
+        var cmd = createSampleCreateScreeningCommand(sampleFilm.getId(), sampleRoom.getId());
 
         //when
         var result = mockMvc.perform(
                 post("/films/screenings")
-                        .content(toJson(dto))
+                        .content(toJson(cmd))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -141,17 +158,14 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {
         //given
-        var filmId = filmTestHelper.addSampleFilm().id();
-        var roomId = filmTestHelper.addSampleRoom().id();
-        var dto = FilmTestHelper.sampleCreateScreeningDto(
-                filmId,
-                roomId
-        ).withDate(wrongDate);
+        var filmId = filmRepository.save(createSampleFilm()).getId();
+        var roomId = roomRepository.save(createSampleRoom()).getId();
+        var cmd = createSampleCreateScreeningCommand(filmId, roomId).withDate(wrongDate);
 
         //when
         var result = mockMvc.perform(
                 post("/films/screenings")
-                        .content(toJson(dto))
+                        .content(toJson(cmd))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -165,17 +179,21 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_there_is_collision_between_screenings() throws Exception {
         //given
-        var screening = filmTestHelper.addSampleScreening();
-        var dto = FilmTestHelper.sampleCreateScreeningDto(
-                screening.filmId(),
-                screening.roomId(),
-                screening.date().plusMinutes(10)
-        );
+        var film = createSampleFilm();
+        var screening = createSampleScreening(film);
+        film.addScreening(screening);
+        filmRepository.save(film);
+
+
+        var cmd = createSampleCreateScreeningCommand(
+                film.getId(),
+                screening.getRoom().getId()
+        ).withDate(screening.getDate().plusMinutes(10));
 
         //when
         var result = mockMvc.perform(
                 post("/films/screenings")
-                        .content(toJson(dto))
+                        .content(toJson(cmd))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -188,7 +206,10 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_search_all_screenings() throws Exception {
         //given
-        var screenings = filmTestHelper.sampleScreenings();
+        var film = createSampleFilm();
+        var screenings = createSampleScreenings(film);
+        screenings.forEach(film::addScreening);
+        filmRepository.save(film);
 
         //when
         var result = mockMvc.perform(
@@ -198,48 +219,45 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJson(screenings)));
+                .andExpect(content().json(toJson(screeningMapper.mapToDto(screenings))));
     }
 
     @Test
     void should_search_seats_for_screening() throws Exception {
         //given
-        var screening = filmTestHelper.addSampleScreening();
-        var seats = filmTestHelper.searchScreeningSeats(screening.id());
+        var film = createSampleFilm();
+        var screening = createSampleScreening(film);
+        film.addScreening(screening);
+        filmRepository.save(film);
 
         //when
         var result = mockMvc.perform(
-                get("/films/screenings/" + screening.id() + "/seats")
+                get("/films/screenings/" + screening.getId() + "/seats")
         );
 
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJson(seats)));
+                .andExpect(content().json(toJson(seatMapper.toDto(screening.getSeats()))));
     }
 
     @Test
     void should_search_screenings_by_search_params() throws Exception {
         //given
-        var screenings = filmTestHelper.sampleScreenings();
-        var filmId = screenings.get(0).filmId();
-        var screeningDate = screenings.get(0).date();
-        var filteredScreening = screenings
-                .stream()
-                .filter(screening -> screening.filmId().equals(filmId))
-                .filter(screening -> screening.date().equals(screeningDate))
-                .toList();
+        var film = createSampleFilm();
+        var screeningMeetParams = createSampleScreening(film);
+        film.addScreening(screeningMeetParams);
+        filmRepository.save(film);
 
         //when
         var result = mockMvc.perform(
                 get("/films/screenings")
-                        .param("filmId", filmId.toString())
-                        .param("date", screeningDate.toString())
+                        .param("filmId", screeningMeetParams.getFilm().getId().toString())
+                        .param("date", screeningMeetParams.getDate().toString())
         );
-
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJson(filteredScreening)));
+                .andExpect(content().json(toJson(List.of(screeningMapper.mapToDto(screeningMeetParams)))));
     }
 }

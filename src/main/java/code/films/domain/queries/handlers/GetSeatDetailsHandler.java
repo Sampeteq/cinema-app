@@ -1,6 +1,6 @@
 package code.films.domain.queries.handlers;
 
-import code.films.domain.SeatRepository;
+import code.films.domain.SeatReadOnlyRepository;
 import code.bookings.domain.exceptions.SeatNotAvailableException;
 import code.films.domain.queries.GetSeatDetailsQuery;
 import code.films.domain.queries.SeatDetails;
@@ -13,13 +13,13 @@ import java.time.Clock;
 @RequiredArgsConstructor
 public class GetSeatDetailsHandler {
 
-    private final SeatRepository seatRepository;
+    private final SeatReadOnlyRepository seatReadOnlyRepository;
 
     private final Clock clock;
 
     public SeatDetails handle(GetSeatDetailsQuery query) {
-        var seat = seatRepository
-                .findById(query.seatid())
+        var seat = seatReadOnlyRepository
+                .getById(query.seatid())
                 .orElseThrow(SeatNotAvailableException::new);
         return SeatDetails
                 .builder()

@@ -2,7 +2,7 @@ package code.films.domain.events;
 
 import code.bookings.domain.events.DecreasedFreeSeatsEvent;
 import code.bookings.domain.exceptions.SeatNotAvailableException;
-import code.films.domain.SeatRepository;
+import code.films.domain.SeatReadOnlyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
@@ -12,12 +12,12 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class DecreasedFreeSeatsHandler {
 
-    private final SeatRepository seatRepository;
+    private final SeatReadOnlyRepository seatReadOnlyRepository;
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handle(DecreasedFreeSeatsEvent event) {
-        seatRepository
-                .findById(event.seatId())
+        seatReadOnlyRepository
+                .getById(event.seatId())
                 .orElseThrow(SeatNotAvailableException::new)
                 .handleEvent(event);
     }

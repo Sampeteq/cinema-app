@@ -1,7 +1,7 @@
 package code.bookings.infrastructure.rest.dto.mappers;
 
 import code.bookings.domain.Booking;
-import code.bookings.domain.Seat;
+import code.bookings.domain.BookingSeat;
 import code.bookings.infrastructure.rest.dto.BookingDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,7 +20,7 @@ public interface BookingMapper {
     List<BookingDto> mapToDto(List<Booking> booking);
 
     @Named("seatToUuid")
-    static UUID seatToUuid(Seat seat) {
+    static UUID seatToUuid(BookingSeat seat) {
         return seat.getId();
     }
 }

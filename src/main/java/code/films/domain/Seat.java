@@ -1,10 +1,10 @@
-package code.bookings.domain;
+package code.films.domain;
 
+import code.bookings.domain.events.DecreasedFreeSeatsEvent;
+import code.bookings.domain.events.IncreasedFreeSeatsEvent;
 import code.bookings.domain.exceptions.SeatNotAvailableException;
 import code.bookings.domain.exceptions.TooLateToBookingException;
 import code.bookings.domain.exceptions.TooLateToCancelBookingException;
-import code.bookings.infrastructure.rest.dto.SeatDto;
-import code.films.domain.Screening;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -48,20 +48,11 @@ public class Seat {
         return status.equals(SeatStatus.FREE);
     }
 
-    public void book(Clock clock) {
-        if (status.equals(SeatStatus.BUSY)) {
-            throw new SeatNotAvailableException();
-        }
-        if (screening.timeToScreeningStartInHours(clock) < 24) {
-            throw new TooLateToBookingException();
-        }
+    public void handleEvent(DecreasedFreeSeatsEvent event) {
         this.status = SeatStatus.BUSY;
     }
 
-    public void cancelBooking(Clock clock) {
-        if (screening.timeToScreeningStartInHours(clock) < 24) {
-            throw new TooLateToCancelBookingException();
-        }
+    public void handleEvent(IncreasedFreeSeatsEvent event) {
         this.status = SeatStatus.FREE;
     }
 }

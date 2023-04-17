@@ -2,7 +2,7 @@ package code.bookings;
 
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingStatus;
-import code.bookings.domain.Seat;
+import code.films.domain.Seat;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.TooLateToBookingException;
 import code.bookings.domain.exceptions.TooLateToCancelBookingException;
@@ -12,7 +12,6 @@ import code.bookings.infrastructure.rest.dto.mappers.BookingMapper;
 import code.films.domain.FilmRepository;
 import code.user.domain.UserRepository;
 import code.utils.SpringIntegrationTests;
-import code.utils.UserTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

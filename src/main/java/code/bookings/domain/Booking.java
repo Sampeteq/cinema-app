@@ -1,25 +1,10 @@
 package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
-import code.bookings.domain.exceptions.TooLateToCancelBookingException;
 import code.bookings.infrastructure.rest.dto.BookingDto;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.With;
+import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import java.time.Clock;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
@@ -40,12 +25,12 @@ public class Booking {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "seatId")
-    private Seat seat;
+    private BookingSeat seat;
 
     private String username;
 
-    public static Booking make(Seat seat, String username, Clock clock) {
-        seat.book(clock);
+    public static Booking make(BookingSeat seat, String username) {
+        seat.book();
         return new Booking(
                 UUID.randomUUID(),
                 BookingStatus.ACTIVE,
@@ -54,11 +39,11 @@ public class Booking {
         );
     }
 
-    public void cancel(Clock clock) {
+    public void cancel() {
         if (status.equals(BookingStatus.CANCELLED)) {
             throw new BookingAlreadyCancelledException();
         }
-        seat.cancelBooking(clock);
+        seat.cancelBooking();
         this.status = BookingStatus.CANCELLED;
     }
 

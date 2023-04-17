@@ -1,41 +1,49 @@
 package code.bookings.domain.commands.handlers;
 
-import code.bookings.infrastructure.rest.dto.BookingDto;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
-import code.bookings.domain.Seat;
-import code.bookings.domain.SeatRepository;
+import code.bookings.domain.BookingSeat;
 import code.bookings.domain.commands.MakeBookingCommand;
-import code.bookings.infrastructure.exceptions.SeatNotFoundException;
+import code.bookings.domain.events.DecreasedFreeSeatsEvent;
+import code.bookings.infrastructure.rest.dto.BookingDto;
+import code.films.domain.queries.GetSeatDetailsQuery;
+import code.films.domain.queries.handlers.GetSeatDetailsHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Clock;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class MakeBookingHandler {
 
-    private final SeatRepository seatRepository;
+    private final GetSeatDetailsHandler getSeatDetailsHandler;
 
     private final BookingRepository bookingRepository;
 
-    private final Clock clock;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public BookingDto handle(MakeBookingCommand command) {
-        var seat = getSeatOrThrow(command.seatId());
-        var booking = Booking.make(seat, command.username(), clock);
+        var getSeatDetailsQuery = GetSeatDetailsQuery
+                .builder()
+                .seatid(command.seatId())
+                .build();
+        var seatDetails = getSeatDetailsHandler.handle(getSeatDetailsQuery);
+        var bookingSeat = BookingSeat
+                .builder()
+                .id(command.seatId())
+                .isAvailable(seatDetails.isAvailable())
+                .timeToScreeningInHours(seatDetails.timeToScreeningInHour())
+                .build();
+        var booking = Booking.make(bookingSeat, command.username());
+        var decreasedFreeSeatsEvent = DecreasedFreeSeatsEvent
+                .builder()
+                .seatId(command.seatId())
+                .build();
+        applicationEventPublisher.publishEvent(decreasedFreeSeatsEvent);
         return bookingRepository
                 .save(booking)
                 .toDto();
-    }
-
-    private Seat getSeatOrThrow(UUID seatId) {
-        return seatRepository
-                .findById(seatId)
-                .orElseThrow(SeatNotFoundException::new);
     }
 }

@@ -1,6 +1,6 @@
 package code.films.domain.queries.handlers;
 
-import code.bookings.domain.Seat;
+import code.films.domain.Seat;
 import code.films.domain.Screening;
 import code.films.domain.ScreeningReadOnlyRepository;
 import code.films.domain.queries.GetScreeningSeatsQuery;

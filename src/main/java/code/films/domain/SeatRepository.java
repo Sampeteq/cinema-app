@@ -1,4 +1,4 @@
-package code.bookings.domain;
+package code.films.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

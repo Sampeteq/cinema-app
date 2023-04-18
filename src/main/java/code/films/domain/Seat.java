@@ -1,10 +1,7 @@
 package code.films.domain;
 
-import code.bookings.domain.events.DecreasedFreeSeatsEvent;
-import code.bookings.domain.events.IncreasedFreeSeatsEvent;
-import code.bookings.domain.exceptions.SeatNotAvailableException;
-import code.bookings.domain.exceptions.TooLateToBookingException;
-import code.bookings.domain.exceptions.TooLateToCancelBookingException;
+import code.bookings.domain.client.commands.events.DecreasedFreeSeatsEvent;
+import code.bookings.domain.client.commands.events.IncreasedFreeSeatsEvent;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -18,7 +15,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.Clock;
 import java.util.UUID;
 
 @Entity

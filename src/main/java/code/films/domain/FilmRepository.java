@@ -1,6 +1,6 @@
 package code.films.domain;
 
-import code.films.domain.queries.GetFilmsQuery;
+import code.films.domain.client.queries.GetFilmsQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -1,6 +1,6 @@
 package code.rooms.infrastructure;
 
-import code.rooms.domain.commands.CreateRoomCommand;
+import code.rooms.domain.client.commands.CreateRoomCommand;
 
 import java.util.List;
 

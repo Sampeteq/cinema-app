@@ -1,14 +1,14 @@
 package code.bookings.infrastructure.rest;
 
-import code.bookings.infrastructure.rest.dto.BookingDto;
-import code.bookings.domain.commands.CancelBookingCommand;
-import code.bookings.domain.commands.MakeBookingCommand;
-import code.bookings.domain.commands.handlers.CancelBookingHandler;
-import code.bookings.domain.commands.handlers.MakeBookingHandler;
-import code.bookings.domain.queries.GetBookingQuery;
-import code.bookings.domain.queries.GetBookingsQuery;
-import code.bookings.domain.queries.handlers.GetBookingHandler;
-import code.bookings.domain.queries.handlers.GetBookingsHandler;
+import code.bookings.domain.client.dto.BookingDto;
+import code.bookings.domain.client.commands.CancelBookingCommand;
+import code.bookings.domain.client.commands.MakeBookingCommand;
+import code.bookings.domain.client.commands.handlers.CancelBookingHandler;
+import code.bookings.domain.client.commands.handlers.MakeBookingHandler;
+import code.bookings.domain.client.queries.GetBookingQuery;
+import code.bookings.domain.client.queries.GetBookingsQuery;
+import code.bookings.domain.client.queries.handlers.GetBookingHandler;
+import code.bookings.domain.client.queries.handlers.GetBookingsHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

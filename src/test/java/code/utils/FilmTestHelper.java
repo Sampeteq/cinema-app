@@ -3,8 +3,8 @@ package code.utils;
 import code.films.domain.Film;
 import code.films.domain.FilmCategory;
 import code.films.domain.Screening;
-import code.films.domain.commands.CreateFilmCommand;
-import code.films.domain.commands.CreateScreeningCommand;
+import code.films.domain.client.commands.CreateFilmCommand;
+import code.films.domain.client.commands.CreateScreeningCommand;
 
 import java.time.LocalDateTime;
 import java.time.Year;

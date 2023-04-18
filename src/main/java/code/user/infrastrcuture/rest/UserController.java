@@ -1,10 +1,10 @@
 package code.user.infrastrcuture.rest;
 
-import code.user.domain.commands.SignInCommand;
-import code.user.domain.commands.SignUpCommand;
-import code.user.domain.commands.handlers.SignInHandler;
-import code.user.domain.commands.handlers.SignOutHandler;
-import code.user.domain.commands.handlers.SignUpHandler;
+import code.user.domain.client.commands.SignInCommand;
+import code.user.domain.client.commands.SignUpCommand;
+import code.user.domain.client.commands.handlers.SignInHandler;
+import code.user.domain.client.commands.handlers.SignOutHandler;
+import code.user.domain.client.commands.handlers.SignUpHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

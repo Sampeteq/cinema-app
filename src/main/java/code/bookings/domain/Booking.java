@@ -1,7 +1,7 @@
 package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
-import code.bookings.infrastructure.rest.dto.BookingDto;
+import code.bookings.domain.client.dto.BookingDto;
 import lombok.*;
 
 import javax.persistence.*;

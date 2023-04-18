@@ -1,6 +1,7 @@
 package code.bookings.client.commands.handlers;
 
 import code.bookings.client.commands.MakeBookingCommand;
+import code.bookings.client.dto.mappers.BookingMapper;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingSeat;
@@ -20,6 +21,8 @@ public class MakeBookingHandler {
     private final GetSeatDetailsHandler getSeatDetailsHandler;
 
     private final BookingRepository bookingRepository;
+
+    private final BookingMapper bookingMapper;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
@@ -41,9 +44,8 @@ public class MakeBookingHandler {
                 .builder()
                 .seatId(command.seatId())
                 .build();
-        var bookingDto = bookingRepository
-                .save(booking)
-                .toDto();
+        var savedBooking = bookingRepository.save(booking);
+        var bookingDto = bookingMapper.mapToDto(savedBooking);
         applicationEventPublisher.publishEvent(decreasedFreeSeatsEvent);
         return bookingDto;
     }

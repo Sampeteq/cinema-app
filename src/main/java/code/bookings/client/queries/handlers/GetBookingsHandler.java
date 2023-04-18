@@ -1,8 +1,8 @@
 package code.bookings.client.queries.handlers;
 
 import code.bookings.client.dto.BookingDto;
+import code.bookings.client.dto.mappers.BookingMapper;
 import code.bookings.client.queries.GetBookingsQuery;
-import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,11 +15,13 @@ public class GetBookingsHandler {
 
     private final BookingRepository bookingRepository;
 
+    private final BookingMapper bookingMapper;
+
     public List<BookingDto> handle(GetBookingsQuery query) {
         return bookingRepository
                 .getByUsername(query.username())
                 .stream()
-                .map(Booking::toDto)
+                .map(bookingMapper::mapToDto)
                 .toList();
     }
 }

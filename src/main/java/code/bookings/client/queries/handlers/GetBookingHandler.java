@@ -1,14 +1,12 @@
 package code.bookings.client.queries.handlers;
 
-import code.bookings.client.queries.GetBookingQuery;
 import code.bookings.client.dto.BookingDto;
-import code.bookings.domain.Booking;
+import code.bookings.client.dto.mappers.BookingMapper;
+import code.bookings.client.queries.GetBookingQuery;
 import code.bookings.domain.BookingRepository;
 import code.bookings.infrastructure.exceptions.BookingNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -16,13 +14,12 @@ public class GetBookingHandler {
 
     private final BookingRepository bookingRepository;
 
-    public BookingDto handle(GetBookingQuery query) {
-        return getBookingOrThrow(query.bookingId(), query.username()).toDto();
-    }
+    private final BookingMapper bookingMapper;
 
-    private Booking getBookingOrThrow(UUID ticketId, String username) {
+    public BookingDto handle(GetBookingQuery query) {
         return bookingRepository
-                .getByIdAndUsername(ticketId, username)
+                .getByIdAndUsername(query.bookingId(), query.username())
+                .map(bookingMapper::mapToDto)
                 .orElseThrow(BookingNotFoundException::new);
     }
 }

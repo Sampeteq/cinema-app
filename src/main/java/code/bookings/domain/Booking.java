@@ -1,7 +1,6 @@
 package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
-import code.bookings.client.dto.BookingDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -45,13 +44,5 @@ public class Booking {
         }
         seat.cancelBooking();
         this.status = BookingStatus.CANCELLED;
-    }
-
-    public BookingDto toDto() {
-        return new BookingDto(
-                this.id,
-                this.status.name(),
-                this.seat.getId()
-        );
     }
 }

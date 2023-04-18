@@ -41,9 +41,10 @@ public class MakeBookingHandler {
                 .builder()
                 .seatId(command.seatId())
                 .build();
-        applicationEventPublisher.publishEvent(decreasedFreeSeatsEvent);
-        return bookingRepository
+        var bookingDto = bookingRepository
                 .save(booking)
                 .toDto();
+        applicationEventPublisher.publishEvent(decreasedFreeSeatsEvent);
+        return bookingDto;
     }
 }

@@ -1,7 +1,7 @@
 package code.rooms.infrastructure;
 
-import code.rooms.domain.client.commands.handlers.CreateRoomHandler;
-import code.rooms.domain.client.queries.GetRoomsQueryHandler;
+import code.rooms.client.commands.handlers.CreateRoomHandler;
+import code.rooms.client.queries.GetRoomsQueryHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

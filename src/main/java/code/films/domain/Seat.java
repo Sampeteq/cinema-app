@@ -1,7 +1,7 @@
 package code.films.domain;
 
-import code.bookings.domain.client.commands.events.DecreasedFreeSeatsEvent;
-import code.bookings.domain.client.commands.events.IncreasedFreeSeatsEvent;
+import code.bookings.client.commands.events.DecreasedFreeSeatsEvent;
+import code.bookings.client.commands.events.IncreasedFreeSeatsEvent;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

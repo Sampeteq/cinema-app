@@ -1,6 +1,6 @@
 package code.rooms.domain;
 
-import code.rooms.domain.client.dto.RoomDto;
+import code.rooms.client.dto.RoomDto;
 import lombok.*;
 
 import javax.persistence.Entity;

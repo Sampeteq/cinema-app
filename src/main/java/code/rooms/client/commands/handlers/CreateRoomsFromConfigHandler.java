@@ -1,4 +1,4 @@
-package code.rooms.infrastructure;
+package code.rooms.client.commands.handlers;
 
 import code.rooms.client.commands.CreateRoomCommands;
 import code.rooms.client.commands.handlers.CreateRoomHandler;
@@ -21,7 +21,7 @@ import java.nio.file.Path;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("prod")
-public class RoomsConfigHandler {
+public class CreateRoomsFromConfigHandler {
 
     private final GetRoomsQueryHandler getRoomsQueryHandler;
 

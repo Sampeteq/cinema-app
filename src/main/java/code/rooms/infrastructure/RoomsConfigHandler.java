@@ -62,8 +62,8 @@ public class RoomsConfigHandler {
     }
 
     private void createRooms(String json) throws JsonProcessingException {
-        var roomsFromConfig = new ObjectMapper().readValue(json, CreateRoomCommands.class);
-        roomsFromConfig
+        new ObjectMapper()
+                .readValue(json, CreateRoomCommands.class)
                 .commands()
                 .forEach(createRoomHandler::handle);
     }

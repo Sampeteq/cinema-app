@@ -56,14 +56,14 @@ public class RoomsConfigHandler {
 
     private void logIfFileIsEmpty(String json) {
         if (json.isEmpty()) {
-            log.info("Empty rooms config file");
+            log.info("Empty commands config file");
         }
     }
 
     private void createRooms(String json) throws JsonProcessingException {
         var roomsFromConfig = new ObjectMapper().readValue(json, RoomsConfigDto.class);
         roomsFromConfig
-                .rooms()
+                .commands()
                 .forEach(createRoomHandler::handle);
     }
 }

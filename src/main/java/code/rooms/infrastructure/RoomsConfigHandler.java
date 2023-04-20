@@ -37,7 +37,7 @@ public class RoomsConfigHandler {
                 logIfFileNotExists();
                 var json = readConfig();
                 logIfFileIsEmpty(json);
-                createRooms(json);
+                handleCreateRoomCommandsFromJson(json);
             }
             catch (IOException exception) {
                 log.error(exception.getMessage());
@@ -61,7 +61,7 @@ public class RoomsConfigHandler {
         }
     }
 
-    private void createRooms(String json) throws JsonProcessingException {
+    private void handleCreateRoomCommandsFromJson(String json) throws JsonProcessingException {
         new ObjectMapper()
                 .readValue(json, CreateRoomCommands.class)
                 .commands()

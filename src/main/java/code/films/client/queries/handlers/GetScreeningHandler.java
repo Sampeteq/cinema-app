@@ -1,8 +1,8 @@
 package code.films.client.queries.handlers;
 
+import code.films.client.queries.GetScreeningsQuery;
 import code.films.domain.Screening;
 import code.films.domain.ScreeningReadOnlyRepository;
-import code.films.client.queries.GetScreeningsQuery;
 import code.films.infrastructure.rest.dto.ScreeningDto;
 import code.films.infrastructure.rest.mappers.ScreeningMapper;
 import lombok.AllArgsConstructor;

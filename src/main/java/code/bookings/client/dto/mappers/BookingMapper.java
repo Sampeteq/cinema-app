@@ -1,8 +1,8 @@
 package code.bookings.client.dto.mappers;
 
+import code.bookings.client.dto.BookingDto;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingSeat;
-import code.bookings.client.dto.BookingDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

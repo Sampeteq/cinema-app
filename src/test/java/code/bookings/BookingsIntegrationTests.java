@@ -1,15 +1,15 @@
 package code.bookings;
 
+import code.bookings.client.dto.BookingDto;
+import code.bookings.client.dto.mappers.BookingMapper;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingStatus;
-import code.films.domain.Seat;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.TooLateToBookingException;
 import code.bookings.domain.exceptions.TooLateToCancelBookingException;
-import code.bookings.client.dto.BookingDto;
 import code.bookings.infrastructure.rest.dto.SeatDto;
-import code.bookings.client.dto.mappers.BookingMapper;
 import code.films.domain.FilmRepository;
+import code.films.domain.Seat;
 import code.user.domain.UserRepository;
 import code.utils.SpringIntegrationTests;
 import org.junit.jupiter.api.BeforeEach;

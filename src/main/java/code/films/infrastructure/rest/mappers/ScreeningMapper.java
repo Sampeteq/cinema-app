@@ -1,8 +1,8 @@
 package code.films.infrastructure.rest.mappers;
 
-import code.films.domain.Seat;
 import code.films.domain.Film;
 import code.films.domain.Screening;
+import code.films.domain.Seat;
 import code.films.infrastructure.rest.dto.ScreeningDto;
 import code.rooms.domain.Room;
 import org.mapstruct.Mapper;

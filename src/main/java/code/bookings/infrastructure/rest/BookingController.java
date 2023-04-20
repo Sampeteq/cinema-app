@@ -1,21 +1,16 @@
 package code.bookings.infrastructure.rest;
 
-import code.bookings.client.dto.BookingDto;
 import code.bookings.client.commands.CancelBookingCommand;
 import code.bookings.client.commands.MakeBookingCommand;
 import code.bookings.client.commands.handlers.CancelBookingHandler;
 import code.bookings.client.commands.handlers.MakeBookingHandler;
+import code.bookings.client.dto.BookingDto;
 import code.bookings.client.queries.GetBookingQuery;
 import code.bookings.client.queries.GetBookingsQuery;
 import code.bookings.client.queries.handlers.GetBookingHandler;
 import code.bookings.client.queries.handlers.GetBookingsHandler;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;

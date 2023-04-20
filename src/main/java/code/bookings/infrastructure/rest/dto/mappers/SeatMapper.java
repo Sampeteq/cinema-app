@@ -1,7 +1,7 @@
 package code.bookings.infrastructure.rest.dto.mappers;
 
-import code.films.domain.Seat;
 import code.bookings.infrastructure.rest.dto.SeatDto;
+import code.films.domain.Seat;
 import org.mapstruct.Mapper;
 
 import java.util.List;

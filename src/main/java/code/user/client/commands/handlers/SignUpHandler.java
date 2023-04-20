@@ -1,9 +1,9 @@
 package code.user.client.commands.handlers;
 
+import code.user.client.commands.SignUpCommand;
 import code.user.domain.User;
 import code.user.domain.UserRepository;
 import code.user.domain.UserRole;
-import code.user.client.commands.SignUpCommand;
 import code.user.domain.exceptions.NotSamePasswordsException;
 import code.user.infrastrcuture.exceptions.UsernameAlreadyExistsException;
 import lombok.RequiredArgsConstructor;

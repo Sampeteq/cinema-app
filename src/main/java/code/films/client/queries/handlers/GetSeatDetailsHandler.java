@@ -1,9 +1,9 @@
 package code.films.client.queries.handlers;
 
-import code.films.domain.SeatReadOnlyRepository;
 import code.bookings.domain.exceptions.SeatNotAvailableException;
 import code.films.client.queries.GetSeatDetailsQuery;
 import code.films.client.queries.SeatDetails;
+import code.films.domain.SeatReadOnlyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

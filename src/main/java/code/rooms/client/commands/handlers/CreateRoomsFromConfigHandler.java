@@ -1,7 +1,6 @@
 package code.rooms.client.commands.handlers;
 
 import code.rooms.client.commands.CreateRoomCommands;
-import code.rooms.client.commands.handlers.CreateRoomHandler;
 import code.rooms.client.queries.GetRoomsQueryHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

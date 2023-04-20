@@ -2,15 +2,8 @@ package code.films.domain;
 
 import code.films.domain.exceptions.ScreeningCollisionException;
 import lombok.*;
-import org.apache.commons.lang3.builder.ToStringExclude;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 

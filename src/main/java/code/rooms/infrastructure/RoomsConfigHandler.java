@@ -35,7 +35,7 @@ public class RoomsConfigHandler {
         if(getRoomsQueryHandler.handle().isEmpty()) {
             try {
                 logIfFileNotExists();
-                var json = readConfig();
+                var json = readCreateRoomCommandsJson();
                 logIfFileIsEmpty(json);
                 handleCreateRoomCommandsFromJson(json);
             }
@@ -51,7 +51,7 @@ public class RoomsConfigHandler {
         }
     }
 
-    private String readConfig() throws IOException {
+    private String readCreateRoomCommandsJson() throws IOException {
         return Files.readString(Path.of(pathToRoomsConfig));
     }
 

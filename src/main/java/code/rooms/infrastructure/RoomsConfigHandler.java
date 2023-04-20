@@ -1,5 +1,6 @@
 package code.rooms.infrastructure;
 
+import code.rooms.client.commands.CreateRoomCommands;
 import code.rooms.client.commands.handlers.CreateRoomHandler;
 import code.rooms.client.queries.GetRoomsQueryHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -61,7 +62,7 @@ public class RoomsConfigHandler {
     }
 
     private void createRooms(String json) throws JsonProcessingException {
-        var roomsFromConfig = new ObjectMapper().readValue(json, RoomsConfigDto.class);
+        var roomsFromConfig = new ObjectMapper().readValue(json, CreateRoomCommands.class);
         roomsFromConfig
                 .commands()
                 .forEach(createRoomHandler::handle);

@@ -1,12 +1,12 @@
 {
   "rooms": [
     {
-      "number": "4",
+      "number": "1",
       "rowsQuantity": 10,
       "seatsQuantityInOneRow": 15
     },
     {
-      "number": "5",
+      "number": "2",
       "rowsQuantity": 15,
       "seatsQuantityInOneRow": 20
     }

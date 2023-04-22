@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record GetSeatDetailsQuery(UUID seatid) {
+public record GetSeatDetailsQuery(UUID seatId) {
 }

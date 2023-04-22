@@ -19,7 +19,7 @@ public class GetSeatDetailsHandler {
 
     public SeatDetails handle(GetSeatDetailsQuery query) {
         var seat = seatReadOnlyRepository
-                .getById(query.seatid())
+                .getById(query.seatId())
                 .orElseThrow(SeatNotAvailableException::new);
         return SeatDetails
                 .builder()

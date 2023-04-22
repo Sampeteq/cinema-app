@@ -35,11 +35,11 @@ public class MakeBookingHandler {
                 .timeToScreeningInHours(seatDetails.timeToScreeningInHour())
                 .build();
         var booking = Booking.make(bookingSeat, command.username());
+        var savedBooking = bookingRepository.save(booking);
         var decreasedFreeSeatsEvent = DecreasedFreeSeatsEvent
                 .builder()
                 .seatId(command.seatId())
                 .build();
-        var savedBooking = bookingRepository.save(booking);
         var bookingDto = bookingMapper.mapToDto(savedBooking);
         applicationEventPublisher.publishEvent(decreasedFreeSeatsEvent);
         return bookingDto;

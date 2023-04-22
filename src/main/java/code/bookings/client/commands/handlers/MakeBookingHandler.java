@@ -7,7 +7,6 @@ import code.bookings.client.dto.mappers.BookingMapper;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingSeat;
-import code.films.client.queries.GetSeatDetailsQuery;
 import code.films.client.queries.handlers.GetSeatDetailsHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,11 +27,7 @@ public class MakeBookingHandler {
 
     @Transactional
     public BookingDto handle(MakeBookingCommand command) {
-        var getSeatDetailsQuery = GetSeatDetailsQuery
-                .builder()
-                .seatid(command.seatId())
-                .build();
-        var seatDetails = getSeatDetailsHandler.handle(getSeatDetailsQuery);
+        var seatDetails = getSeatDetailsHandler.handle(command.seatId());
         var bookingSeat = BookingSeat
                 .builder()
                 .id(command.seatId())

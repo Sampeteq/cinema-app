@@ -1,4 +1,4 @@
-package code.films.client.queries;
+package code.films.client.dto;
 
 import lombok.Builder;
 

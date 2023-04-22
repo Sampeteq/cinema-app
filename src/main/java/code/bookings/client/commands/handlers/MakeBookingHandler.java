@@ -40,8 +40,8 @@ public class MakeBookingHandler {
                 .builder()
                 .seatId(command.seatId())
                 .build();
-        var bookingDto = bookingMapper.mapToDto(savedBooking);
         applicationEventPublisher.publishEvent(decreasedFreeSeatsEvent);
+        var bookingDto = bookingMapper.mapToDto(savedBooking);
         return bookingDto;
     }
 }

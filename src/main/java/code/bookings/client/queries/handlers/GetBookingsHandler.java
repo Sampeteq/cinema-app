@@ -19,7 +19,7 @@ public class GetBookingsHandler {
 
     public List<BookingDto> handle(GetBookingsQuery query) {
         return bookingRepository
-                .getByUsername(query.username())
+                .readByUsername(query.username())
                 .stream()
                 .map(bookingMapper::mapToDto)
                 .toList();

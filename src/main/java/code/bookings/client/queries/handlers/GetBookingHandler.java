@@ -18,7 +18,7 @@ public class GetBookingHandler {
 
     public BookingDto handle(GetBookingQuery query) {
         return bookingRepository
-                .getByIdAndUsername(query.bookingId(), query.username())
+                .readByIdAndUsername(query.bookingId(), query.username())
                 .map(bookingMapper::mapToDto)
                 .orElseThrow(BookingNotFoundException::new);
     }

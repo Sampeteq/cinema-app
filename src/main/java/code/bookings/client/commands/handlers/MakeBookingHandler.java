@@ -39,7 +39,7 @@ public class MakeBookingHandler {
                 .build();
         log.info("Found a seat for booking:{}",bookingSeat);
         var booking = Booking.make(bookingSeat, command.username());
-        var savedBooking = bookingRepository.save(booking);
+        var savedBooking = bookingRepository.add(booking);
         log.info("Saved a booking:{}", savedBooking);
         var decreasedFreeSeatsEvent = DecreasedFreeSeatsEvent
                 .builder()

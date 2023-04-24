@@ -33,7 +33,7 @@ public class CancelBookingHandler {
 
     private Booking getBookingOrThrow(UUID bookingId) {
         return bookingRepository
-                .findById(bookingId)
+                .readById(bookingId)
                 .orElseThrow(BookingNotFoundException::new);
     }
 }

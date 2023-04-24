@@ -63,7 +63,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_make_booking() throws Exception {
         //given
-        var film = filmRepository.save(createSampleFilmWithScreening());
+        var film = filmRepository.add(createSampleFilmWithScreening());
         var seatId = film
                 .getScreenings()
                 .get(0)
@@ -92,7 +92,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_during_booking_when_less_than_24h_to_screening() throws Exception {
         //given
         var screeningDate = getCurrentDate(clock).minusHours(23);
-        var film = filmRepository.save(createSampleFilmWithScreening(screeningDate));
+        var film = filmRepository.add(createSampleFilmWithScreening(screeningDate));
         var seatId = film
                 .getScreenings()
                 .get(0)
@@ -118,7 +118,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_seat_be_busy_after_booking() throws Exception {
         //given
-        var film = filmRepository.save(createSampleFilmWithScreening());
+        var film = filmRepository.add(createSampleFilmWithScreening());
         var screening = film
                 .getScreenings()
                 .get(0);
@@ -147,7 +147,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_reduce_screening_free_seats_by_one_after_booking() throws Exception {
         //given
-        var film = filmRepository.save(createSampleFilmWithScreening());
+        var film = filmRepository.add(createSampleFilmWithScreening());
         var screening = film.getScreenings().get(0);
         var seatId = film
                 .getScreenings()
@@ -178,7 +178,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(username = "user1")
     void should_cancel_booking() throws Exception {
         //give
-        var seat = filmRepository.save(createSampleFilmWithScreening())
+        var seat = filmRepository.add(createSampleFilmWithScreening())
                 .getScreenings()
                 .get(0)
                 .getSeats()
@@ -206,7 +206,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
     void should_seat_be_free_again_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
         var screening = filmRepository
-                .save(createSampleFilmWithScreening())
+                .add(createSampleFilmWithScreening())
                 .getScreenings()
                 .get(0);
         var freeSeatsNumber = screening
@@ -239,7 +239,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_during_booking_when_booking_is_already_cancelled() throws Exception {
         //given
         var seat = filmRepository
-                .save(createSampleFilmWithScreening())
+                .add(createSampleFilmWithScreening())
                 .getScreenings()
                 .get(0)
                 .getSeats()
@@ -268,7 +268,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
         var hoursToScreening = 23;
         var screeningDate = getCurrentDate(clock).minusHours(hoursToScreening);
         var seat = filmRepository
-                .save(createSampleFilmWithScreening(screeningDate))
+                .add(createSampleFilmWithScreening(screeningDate))
                 .getScreenings()
                 .get(0)
                 .getSeats()
@@ -293,7 +293,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
     void should_get_all_user_bookings() throws Exception {
         //given
         var sampleScreening = filmRepository
-                .save(createSampleFilmWithScreening())
+                .add(createSampleFilmWithScreening())
                 .getScreenings()
                 .get(0);
         var seat1 = sampleScreening

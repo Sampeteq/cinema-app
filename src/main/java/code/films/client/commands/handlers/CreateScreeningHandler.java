@@ -54,13 +54,13 @@ public class CreateScreeningHandler {
 
     private Film getFilmOrThrow(CreateScreeningCommand dto) {
         return filmRepository
-                .findById(dto.filmId())
+                .readById(dto.filmId())
                 .orElseThrow(FilmNotFoundException::new);
     }
 
     private Room getRoomOrThrow(UUID roomId) {
         return roomRepository
-                .findById(roomId)
+                .readById(roomId)
                 .orElseThrow(RoomNotFoundException::new);
     }
 }

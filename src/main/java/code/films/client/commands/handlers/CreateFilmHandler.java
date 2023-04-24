@@ -31,7 +31,7 @@ public class CreateFilmHandler {
                 command.durationInMinutes(),
                 new ArrayList<>()
         );
-        return filmRepository.save(film);
+        return filmRepository.add(film);
     }
 
     private static boolean isFilmYearCorrect(Integer year) {

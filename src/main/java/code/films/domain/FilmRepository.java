@@ -1,16 +1,17 @@
 package code.films.domain;
 
 import code.films.client.queries.GetFilmsQuery;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-public interface FilmRepository extends JpaRepository<Film, UUID> {
+public interface FilmRepository  {
+    Film add(Film film);
 
-    @Query("SELECT f FROM Film f WHERE :#{#params.category} is null or f.category = :#{#params.category}")
-    List<Film> getBy(GetFilmsQuery params);
+    List<Film> addMany(List<Film> films);
+
+    Optional<Film> readById(UUID filmId);
+
+    List<Film> readBy(GetFilmsQuery query);
 }
-
-

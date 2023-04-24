@@ -19,7 +19,7 @@ public class GetFilmsHandler {
 
     public List<FilmDto> handle(GetFilmsQuery query) {
         return filmRepository
-                .getBy(query)
+                .readBy(query)
                 .stream()
                 .map(filmMapper::mapToDto)
                 .toList();

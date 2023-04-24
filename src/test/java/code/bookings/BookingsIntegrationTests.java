@@ -56,7 +56,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
 
     @BeforeEach
     void setUp() {
-        userRepository.save(createSampleUser("user1"));
+        userRepository.add(createSampleUser("user1"));
     }
 
     @Test

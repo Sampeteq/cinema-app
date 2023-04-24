@@ -30,7 +30,7 @@ public class OnStartUpMainAdminCreateHandler {
 
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {
-        if (userRepository.existsById(mainAdminUsername)) {
+        if (userRepository.existsByUsername(mainAdminUsername)) {
             log.info("Main admin already exists");
         } else {
             var mainAdmin = new User(
@@ -38,7 +38,7 @@ public class OnStartUpMainAdminCreateHandler {
                     passwordEncoder.encode(mainAdminPassword),
                     UserRole.ADMIN
             );
-            userRepository.save(mainAdmin);
+            userRepository.add(mainAdmin);
             log.info("Main admin added.Username: {}" + " .Password: {}", mainAdminUsername, mainAdminPassword);
         }
     }

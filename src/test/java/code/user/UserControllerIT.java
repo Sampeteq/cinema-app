@@ -50,7 +50,7 @@ class UserControllerIT extends SpringIntegrationTests {
     @Test
     void should_throw_exception_when_username_is_not_unique() throws Exception {
         //given
-        var user = userRepository.save(createSampleUser("user1"));
+        var user = userRepository.add(createSampleUser("user1"));
         var signUpRequest = UserTestHelper.createSampleSignUpCommand(user.getUsername());
 
         //when

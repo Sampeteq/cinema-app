@@ -19,7 +19,7 @@ public class SignUpHandler {
     private final PasswordEncoder passwordEncoder;
 
     public void handle(SignUpCommand command) {
-        if (userRepository.existsById(command.username())) {
+        if (userRepository.existsByUsername(command.username())) {
             throw new UsernameAlreadyExistsException();
         }
         if (!(command.password().equals(command.repeatedPassword()))) {
@@ -30,6 +30,6 @@ public class SignUpHandler {
                 passwordEncoder.encode(command.password()),
                 UserRole.COMMON
         );
-        userRepository.save(user);
+        userRepository.add(user);
     }
 }

@@ -25,6 +25,6 @@ public class CreateRoomHandler {
                 command.rowsQuantity(),
                 command.seatsQuantityInOneRow()
         );
-       roomRepository.save(screeningRoom);
+       roomRepository.add(screeningRoom);
     }
 }

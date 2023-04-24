@@ -14,6 +14,6 @@ public class GetRoomsQueryHandler {
     private final RoomRepository roomRepository;
 
     public List<Room> handle() {
-        return roomRepository.findAll();
+        return roomRepository.readAll();
     }
 }

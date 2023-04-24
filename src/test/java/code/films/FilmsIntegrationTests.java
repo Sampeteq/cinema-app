@@ -93,7 +93,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_get_all_films() throws Exception {
         //given
-        var sampleFilms = filmRepository.saveAll(createSampleFilms());
+        var sampleFilms = filmRepository.addMany(createSampleFilms());
 
         //when
         var result = mockMvc.perform(
@@ -109,10 +109,10 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     @Test
     void should_get_films_by_params() throws Exception {
         //given
-        var filmMeetingParams = filmRepository.save(
+        var filmMeetingParams = filmRepository.add(
                 createSampleFilm().withCategory(FilmCategory.COMEDY)
         );
-        var filmNotMeetingParams = filmRepository.save(
+        var filmNotMeetingParams = filmRepository.add(
                 createSampleFilm().withCategory(FilmCategory.DRAMA)
         );
 
@@ -132,8 +132,8 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     @WithMockUser(authorities = "ADMIN")
     void should_create_screening() throws Exception {
         //given
-        var sampleFilm = filmRepository.save(createSampleFilm());
-        var sampleRoom = roomRepository.save(createSampleRoom());
+        var sampleFilm = filmRepository.add(createSampleFilm());
+        var sampleRoom = roomRepository.add(createSampleRoom());
         var cmd = createSampleCreateScreeningCommand(sampleFilm.getId(), sampleRoom.getId());
 
         //when
@@ -157,8 +157,8 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {
         //given
-        var filmId = filmRepository.save(createSampleFilm()).getId();
-        var roomId = roomRepository.save(createSampleRoom()).getId();
+        var filmId = filmRepository.add(createSampleFilm()).getId();
+        var roomId = roomRepository.add(createSampleRoom()).getId();
         var cmd = createSampleCreateScreeningCommand(filmId, roomId).withDate(wrongDate);
 
         //when
@@ -181,7 +181,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
         var film = createSampleFilm();
         var screening = createSampleScreening(film);
         film.addScreening(screening);
-        filmRepository.save(film);
+        filmRepository.add(film);
 
 
         var cmd = createSampleCreateScreeningCommand(
@@ -208,7 +208,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
         var film = createSampleFilm();
         var screenings = createSampleScreenings(film);
         screenings.forEach(film::addScreening);
-        filmRepository.save(film);
+        filmRepository.add(film);
 
         //when
         var result = mockMvc.perform(
@@ -227,7 +227,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
         var film = createSampleFilm();
         var screening = createSampleScreening(film);
         film.addScreening(screening);
-        filmRepository.save(film);
+        filmRepository.add(film);
 
         //when
         var result = mockMvc.perform(
@@ -246,7 +246,7 @@ class FilmsIntegrationTests extends SpringIntegrationTests {
         var film = createSampleFilm();
         var screeningMeetParams = createSampleScreening(film);
         film.addScreening(screeningMeetParams);
-        filmRepository.save(film);
+        filmRepository.add(film);
 
         //when
         var result = mockMvc.perform(

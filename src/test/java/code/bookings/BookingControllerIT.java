@@ -11,7 +11,7 @@ import code.bookings.infrastructure.rest.dto.SeatDto;
 import code.films.domain.FilmRepository;
 import code.films.domain.Seat;
 import code.user.domain.UserRepository;
-import code.utils.SpringIntegrationTests;
+import code.utils.SpringIT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class BookingControllerIT extends SpringIntegrationTests {
+class BookingControllerIT extends SpringIT {
 
     @Autowired
     private UserRepository userRepository;

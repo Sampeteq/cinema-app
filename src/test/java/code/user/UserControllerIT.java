@@ -4,7 +4,7 @@ import code.user.client.commands.SignInCommand;
 import code.user.domain.UserRepository;
 import code.user.domain.exceptions.NotSamePasswordsException;
 import code.user.infrastrcuture.exceptions.UsernameAlreadyExistsException;
-import code.utils.SpringIntegrationTests;
+import code.utils.SpringIT;
 import code.utils.UserTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class UserControllerIT extends SpringIntegrationTests {
+class UserControllerIT extends SpringIT {
 
     @Autowired
     private UserRepository userRepository;

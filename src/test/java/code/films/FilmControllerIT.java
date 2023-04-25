@@ -11,7 +11,7 @@ import code.films.infrastructure.rest.dto.ScreeningDto;
 import code.films.infrastructure.rest.mappers.FilmMapper;
 import code.films.infrastructure.rest.mappers.ScreeningMapper;
 import code.rooms.domain.RoomRepository;
-import code.utils.SpringIntegrationTests;
+import code.utils.SpringIT;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class FilmControllerIT extends SpringIntegrationTests {
+class FilmControllerIT extends SpringIT {
 
     @Autowired
     private FilmRepository filmRepository;

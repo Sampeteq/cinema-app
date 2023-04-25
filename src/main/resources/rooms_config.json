@@ -1,14 +1,12 @@
-{
-  "rooms": [
-    {
-      "number": "1",
-      "rowsQuantity": 10,
-      "seatsQuantityInOneRow": 15
-    },
-    {
-      "number": "2",
-      "rowsQuantity": 15,
-      "seatsQuantityInOneRow": 20
-    }
-  ]
-}
+[
+  {
+    "number": "1",
+    "rowsQuantity": 10,
+    "seatsQuantityInOneRow": 15
+  },
+  {
+    "number": "2",
+    "rowsQuantity": 15,
+    "seatsQuantityInOneRow": 20
+  }
+]

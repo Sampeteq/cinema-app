@@ -19,10 +19,6 @@ public class RoomController {
 
     @GetMapping("/films/screenings/rooms")
     public List<RoomDto> searchAllRooms() {
-        return getRoomsQueryHandler
-                .handle()
-                .stream()
-                .map(Room::toDto)
-                .toList();
+        return getRoomsQueryHandler.handle();
     }
 }

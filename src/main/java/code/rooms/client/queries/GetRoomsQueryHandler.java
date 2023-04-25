@@ -1,5 +1,7 @@
 package code.rooms.client.queries;
 
+import code.rooms.client.dto.RoomDto;
+import code.rooms.client.dto.mappers.RoomMapper;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
 import lombok.AllArgsConstructor;
@@ -13,7 +15,13 @@ public class GetRoomsQueryHandler {
 
     private final RoomRepository roomRepository;
 
-    public List<Room> handle() {
-        return roomRepository.readAll();
+    private final RoomMapper roomMapper;
+
+    public List<RoomDto> handle() {
+        return roomRepository
+                .readAll()
+                .stream()
+                .map(roomMapper::mapToDto)
+                .toList();
     }
 }

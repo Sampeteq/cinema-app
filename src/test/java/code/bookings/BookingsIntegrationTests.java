@@ -183,7 +183,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
                 .get(0)
                 .getSeats()
                 .get(0);
-        var booking = bookingRepository.save(createSampleBooking(seat, "user1"));
+        var booking = bookingRepository.add(createSampleBooking(seat, "user1"));
 
         //when
         var result = mockMvc.perform(
@@ -214,7 +214,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
                 .stream()
                 .count();
         var seat = screening.getSeats().get(0);
-        var booking = bookingRepository.save(createSampleBooking(seat, "user1"));
+        var booking = bookingRepository.add(createSampleBooking(seat, "user1"));
 
         //when
         var result = mockMvc.perform(
@@ -244,7 +244,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
                 .get(0)
                 .getSeats()
                 .get(0);
-        var booking = bookingRepository.save(
+        var booking = bookingRepository.add(
                 createSampleBooking(seat, "user1").withStatus(BookingStatus.CANCELLED)
         );
 
@@ -273,7 +273,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
                 .get(0)
                 .getSeats()
                 .get(0);
-        var booking = bookingRepository.save(createSampleBooking(seat, "user1"));
+        var booking = bookingRepository.add(createSampleBooking(seat, "user1"));
 
         //when
         var result = mockMvc.perform(
@@ -302,7 +302,7 @@ class BookingsIntegrationTests extends SpringIntegrationTests {
         var seat2 = sampleScreening
                 .getSeats()
                 .get(0);
-        var userBookings = bookingRepository.saveAll(createSampleBookings(seat1, seat2, "user1"));
+        var userBookings = bookingRepository.addMany(createSampleBookings(seat1, seat2, "user1"));
 
         //when
         var result = mockMvc.perform(

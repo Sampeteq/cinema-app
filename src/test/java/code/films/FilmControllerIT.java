@@ -1,15 +1,15 @@
 package code.films;
 
-import code.bookings.infrastructure.rest.dto.mappers.SeatMapper;
+import code.films.client.dto.mappers.SeatMapper;
 import code.films.domain.FilmCategory;
 import code.films.domain.FilmRepository;
 import code.films.domain.exceptions.ScreeningCollisionException;
 import code.films.domain.exceptions.WrongFilmYearException;
 import code.films.domain.exceptions.WrongScreeningDateException;
-import code.films.infrastructure.rest.dto.FilmDto;
-import code.films.infrastructure.rest.dto.ScreeningDto;
-import code.films.infrastructure.rest.mappers.FilmMapper;
-import code.films.infrastructure.rest.mappers.ScreeningMapper;
+import code.films.client.dto.FilmDto;
+import code.films.client.dto.ScreeningDto;
+import code.films.client.dto.mappers.FilmMapper;
+import code.films.client.dto.mappers.ScreeningMapper;
 import code.rooms.domain.RoomRepository;
 import code.utils.SpringIT;
 import org.junit.jupiter.api.Test;

@@ -7,7 +7,7 @@ import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.TooLateToBookingException;
 import code.bookings.domain.exceptions.TooLateToCancelBookingException;
-import code.bookings.infrastructure.rest.dto.SeatDto;
+import code.films.client.dto.SeatDto;
 import code.films.domain.FilmRepository;
 import code.films.domain.Seat;
 import code.user.domain.UserRepository;

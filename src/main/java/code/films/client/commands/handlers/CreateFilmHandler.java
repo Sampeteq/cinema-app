@@ -1,9 +1,11 @@
 package code.films.client.commands.handlers;
 
 import code.films.client.commands.CreateFilmCommand;
+import code.films.client.dto.mappers.FilmMapper;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import code.films.domain.exceptions.WrongFilmYearException;
+import code.films.client.dto.FilmDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +21,9 @@ public class CreateFilmHandler {
 
     private final FilmRepository filmRepository;
 
-    public Film handle(CreateFilmCommand command) {
+    private final FilmMapper filmMapper;
+
+    public FilmDto handle(CreateFilmCommand command) {
         if (!isFilmYearCorrect(command.year())) {
             throw new WrongFilmYearException();
         }
@@ -31,7 +35,8 @@ public class CreateFilmHandler {
                 command.durationInMinutes(),
                 new ArrayList<>()
         );
-        return filmRepository.add(film);
+        var addedFilm = filmRepository.add(film);
+        return filmMapper.mapToDto(addedFilm);
     }
 
     private static boolean isFilmYearCorrect(Integer year) {

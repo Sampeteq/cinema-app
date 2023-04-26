@@ -1,6 +1,6 @@
-package code.bookings.infrastructure.rest.dto.mappers;
+package code.films.client.dto.mappers;
 
-import code.bookings.infrastructure.rest.dto.SeatDto;
+import code.films.client.dto.SeatDto;
 import code.films.domain.Seat;
 import org.mapstruct.Mapper;
 

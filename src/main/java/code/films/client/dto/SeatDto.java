@@ -1,4 +1,4 @@
-package code.bookings.infrastructure.rest.dto;
+package code.films.client.dto;
 
 import lombok.With;
 

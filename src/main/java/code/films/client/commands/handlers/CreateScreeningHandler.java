@@ -1,6 +1,8 @@
 package code.films.client.commands.handlers;
 
 import code.films.client.commands.CreateScreeningCommand;
+import code.films.client.dto.ScreeningDto;
+import code.films.client.dto.mappers.ScreeningMapper;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import code.films.domain.Screening;
@@ -26,10 +28,12 @@ public class CreateScreeningHandler {
 
     private final RoomRepository roomRepository;
 
+    private final ScreeningMapper screeningMapper;
+
     private final Clock clock;
 
     @Transactional
-    public Screening createScreening(CreateScreeningCommand dto) {
+    public ScreeningDto createScreening(CreateScreeningCommand dto) {
         validateScreeningDate(dto.date());
         var film = getFilmOrThrow(dto);
         var room = getRoomOrThrow(dto.roomId());
@@ -40,7 +44,7 @@ public class CreateScreeningHandler {
                 room
         );
         film.addScreening(newScreening);
-        return newScreening;
+        return screeningMapper.mapToDto(newScreening);
     }
 
     private void validateScreeningDate(LocalDateTime date) {

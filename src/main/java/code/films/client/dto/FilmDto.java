@@ -1,4 +1,4 @@
-package code.films.infrastructure.rest.dto;
+package code.films.client.dto;
 
 
 import code.films.domain.FilmCategory;

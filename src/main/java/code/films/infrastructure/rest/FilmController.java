@@ -1,11 +1,12 @@
 package code.films.infrastructure.rest;
 
-import code.bookings.infrastructure.rest.dto.SeatDto;
-import code.bookings.infrastructure.rest.dto.mappers.SeatMapper;
+import code.films.client.dto.SeatDto;
 import code.films.client.commands.CreateFilmCommand;
 import code.films.client.commands.CreateScreeningCommand;
 import code.films.client.commands.handlers.CreateFilmHandler;
 import code.films.client.commands.handlers.CreateScreeningHandler;
+import code.films.client.dto.FilmDto;
+import code.films.client.dto.ScreeningDto;
 import code.films.client.queries.GetFilmsQuery;
 import code.films.client.queries.GetScreeningSeatsQuery;
 import code.films.client.queries.GetScreeningsQuery;
@@ -13,10 +14,6 @@ import code.films.client.queries.handlers.GetFilmsHandler;
 import code.films.client.queries.handlers.GetScreeningHandler;
 import code.films.client.queries.handlers.GetScreeningSeatsHandler;
 import code.films.domain.FilmCategory;
-import code.films.infrastructure.rest.dto.FilmDto;
-import code.films.infrastructure.rest.dto.ScreeningDto;
-import code.films.infrastructure.rest.mappers.FilmMapper;
-import code.films.infrastructure.rest.mappers.ScreeningMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -34,24 +31,18 @@ public class FilmController {
 
     private final CreateFilmHandler createFilmHandler;
 
-    private final FilmMapper filmMapper;
-
     private final GetFilmsHandler getFilmsHandler;
 
     private final CreateScreeningHandler createScreeningHandler;
-
-    private final ScreeningMapper screeningMapper;
 
     private final GetScreeningHandler getScreeningHandler;
 
     private final GetScreeningSeatsHandler getScreeningSeatsHandler;
 
-    private final SeatMapper seatMapper;
-
     @PostMapping("/films")
     public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid CreateFilmCommand dto) {
         var createdFilm = createFilmHandler.handle(dto);
-        return new ResponseEntity<>(filmMapper.mapToDto(createdFilm), HttpStatus.CREATED);
+        return new ResponseEntity<>(createdFilm, HttpStatus.CREATED);
     }
 
     @GetMapping("/films")
@@ -70,7 +61,7 @@ public class FilmController {
             CreateScreeningCommand dto
     ) {
         var createdScreening = createScreeningHandler.createScreening(dto);
-        return new ResponseEntity<>(screeningMapper.mapToDto(createdScreening), HttpStatus.CREATED);
+        return new ResponseEntity<>(createdScreening, HttpStatus.CREATED);
     }
 
     @GetMapping("/films/screenings")
@@ -99,10 +90,7 @@ public class FilmController {
                         .builder()
                         .screeningId(screeningId)
                         .build()
-        )
-                .stream()
-                .map(seatMapper::toDto)
-                .toList();
+        );
     }
 }
 

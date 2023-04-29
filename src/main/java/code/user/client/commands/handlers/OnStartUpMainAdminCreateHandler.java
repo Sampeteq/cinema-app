@@ -1,4 +1,4 @@
-package code.user.infrastrcuture;
+package code.user.client.commands.handlers;
 
 import code.user.domain.User;
 import code.user.domain.UserRepository;

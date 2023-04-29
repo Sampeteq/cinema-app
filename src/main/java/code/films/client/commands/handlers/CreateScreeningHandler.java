@@ -25,11 +25,8 @@ import java.util.UUID;
 public class CreateScreeningHandler {
 
     private final FilmRepository filmRepository;
-
     private final RoomRepository roomRepository;
-
     private final ScreeningMapper screeningMapper;
-
     private final Clock clock;
 
     @Transactional

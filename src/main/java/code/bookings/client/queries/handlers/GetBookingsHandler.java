@@ -14,7 +14,6 @@ import java.util.List;
 public class GetBookingsHandler {
 
     private final BookingRepository bookingRepository;
-
     private final BookingMapper bookingMapper;
 
     public List<BookingDto> handle(GetBookingsQuery query) {

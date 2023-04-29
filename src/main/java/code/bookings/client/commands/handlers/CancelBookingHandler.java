@@ -17,7 +17,6 @@ import java.util.UUID;
 public class CancelBookingHandler {
 
     private final BookingRepository bookingRepository;
-
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional

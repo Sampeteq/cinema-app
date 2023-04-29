@@ -14,7 +14,6 @@ import java.util.List;
 public class GetRoomsQueryHandler {
 
     private final RoomRepository roomRepository;
-
     private final RoomMapper roomMapper;
 
     public List<RoomDto> handle() {

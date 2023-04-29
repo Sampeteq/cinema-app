@@ -14,7 +14,6 @@ import java.util.UUID;
 public class GetSeatDetailsHandler {
 
     private final SeatReadOnlyRepository seatReadOnlyRepository;
-
     private final Clock clock;
 
     public SeatDetails handle(UUID seatId) {

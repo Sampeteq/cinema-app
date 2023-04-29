@@ -20,7 +20,6 @@ import java.util.UUID;
 public class GetScreeningHandler {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
-
     private final ScreeningMapper screeningMapper;
 
     @Transactional(readOnly = true)

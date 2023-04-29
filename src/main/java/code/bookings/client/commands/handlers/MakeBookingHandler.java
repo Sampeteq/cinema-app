@@ -20,11 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class MakeBookingHandler {
 
     private final GetSeatDetailsHandler getSeatDetailsHandler;
-
     private final BookingRepository bookingRepository;
-
     private final BookingMapper bookingMapper;
-
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional

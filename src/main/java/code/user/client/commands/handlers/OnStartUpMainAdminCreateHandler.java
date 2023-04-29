@@ -20,12 +20,9 @@ public class OnStartUpMainAdminCreateHandler {
 
     @Value("${onStartUp.mainAdminUsername}")
     private String mainAdminUsername;
-
     @Value("${onStartUp.mainAdminPassword}")
     private String mainAdminPassword;
-
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     @EventListener(ContextRefreshedEvent.class)

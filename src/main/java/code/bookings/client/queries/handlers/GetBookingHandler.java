@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class GetBookingHandler {
 
     private final BookingRepository bookingRepository;
-
     private final BookingMapper bookingMapper;
 
     public BookingDto handle(GetBookingQuery query) {

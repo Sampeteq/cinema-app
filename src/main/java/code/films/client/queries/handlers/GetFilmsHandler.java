@@ -14,7 +14,6 @@ import java.util.List;
 public class GetFilmsHandler {
 
     private final FilmRepository filmRepository;
-
     private final FilmMapper filmMapper;
 
     public List<FilmDto> handle(GetFilmsQuery query) {

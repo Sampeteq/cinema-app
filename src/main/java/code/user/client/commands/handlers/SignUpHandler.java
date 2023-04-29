@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 public class SignUpHandler {
 
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     public void handle(SignUpCommand command) {

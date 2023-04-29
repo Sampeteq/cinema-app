@@ -18,9 +18,7 @@ import java.util.UUID;
 public class CreateFilmHandler {
 
     private static final int CURRENT_YEAR = Year.now().getValue();
-
     private final FilmRepository filmRepository;
-
     private final FilmMapper filmMapper;
 
     public FilmDto handle(CreateFilmCommand command) {

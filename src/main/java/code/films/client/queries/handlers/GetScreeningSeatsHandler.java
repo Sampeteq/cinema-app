@@ -17,7 +17,6 @@ import java.util.List;
 public class GetScreeningSeatsHandler {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
-
     private final SeatMapper seatMapper;
 
     @Transactional(readOnly = true)

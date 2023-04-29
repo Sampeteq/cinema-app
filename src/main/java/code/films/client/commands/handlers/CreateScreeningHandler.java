@@ -7,7 +7,7 @@ import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import code.films.domain.Screening;
 import code.films.domain.exceptions.WrongScreeningDateException;
-import code.films.infrastructure.exceptions.FilmNotFoundException;
+import code.films.client.exceptions.FilmNotFoundException;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
 import code.rooms.client.exceptions.RoomNotFoundException;

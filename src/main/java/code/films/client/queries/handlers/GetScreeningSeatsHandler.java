@@ -5,7 +5,7 @@ import code.films.client.dto.mappers.SeatMapper;
 import code.films.client.queries.GetScreeningSeatsQuery;
 import code.films.domain.Screening;
 import code.films.domain.ScreeningReadOnlyRepository;
-import code.films.infrastructure.exceptions.ScreeningNotFoundException;
+import code.films.client.exceptions.ScreeningNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

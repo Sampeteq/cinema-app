@@ -3,7 +3,7 @@ package code.rooms.client.commands.handlers;
 import code.rooms.client.commands.CreateRoomCommand;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
-import code.rooms.infrastructure.exceptions.RoomNumberAlreadyExistsException;
+import code.rooms.client.exceptions.RoomNumberAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

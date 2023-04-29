@@ -10,7 +10,7 @@ import code.films.domain.exceptions.WrongScreeningDateException;
 import code.films.infrastructure.exceptions.FilmNotFoundException;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
-import code.rooms.infrastructure.exceptions.RoomNotFoundException;
+import code.rooms.client.exceptions.RoomNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package code.rooms.infrastructure.exceptions;
+package code.rooms.client.exceptions;
 
 import code.shared.ValidationException;
 

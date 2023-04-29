@@ -1,6 +1,5 @@
 package code.rooms.domain;
 
-import code.rooms.client.dto.RoomDto;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -26,14 +25,4 @@ public class Room {
     private int rowsQuantity;
 
     private int seatsInOneRowQuantity;
-
-    public RoomDto toDto() {
-        return new RoomDto(
-                id,
-                number,
-                rowsQuantity,
-                seatsInOneRowQuantity,
-                seatsInOneRowQuantity * rowsQuantity
-        );
-    }
 }

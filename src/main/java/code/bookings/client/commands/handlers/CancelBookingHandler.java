@@ -4,7 +4,7 @@ import code.bookings.client.commands.CancelBookingCommand;
 import code.bookings.client.commands.events.IncreasedFreeSeatsEvent;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
-import code.bookings.infrastructure.exceptions.BookingNotFoundException;
+import code.bookings.client.exceptions.BookingNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;

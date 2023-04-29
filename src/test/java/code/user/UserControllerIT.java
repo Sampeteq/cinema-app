@@ -2,7 +2,7 @@ package code.user;
 
 import code.user.client.commands.SignInCommand;
 import code.user.domain.UserRepository;
-import code.user.domain.exceptions.NotSamePasswordsException;
+import code.user.client.commands.handlers.exceptions.NotSamePasswordsException;
 import code.user.infrastrcuture.exceptions.UsernameAlreadyExistsException;
 import code.utils.SpringIT;
 import code.utils.UserTestHelper;

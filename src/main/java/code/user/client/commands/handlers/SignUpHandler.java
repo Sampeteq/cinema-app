@@ -24,11 +24,12 @@ public class SignUpHandler {
         if (!(command.password().equals(command.repeatedPassword()))) {
             throw new NotSamePasswordsException();
         }
-        var user = new User(
-                command.username(),
-                passwordEncoder.encode(command.password()),
-                UserRole.COMMON
-        );
+        var user = User
+                .builder()
+                .username(command.username())
+                .password(passwordEncoder.encode(command.password()))
+                .role(UserRole.COMMON)
+                .build();
         userRepository.add(user);
     }
 }

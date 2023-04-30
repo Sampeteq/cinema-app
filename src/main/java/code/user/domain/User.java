@@ -12,7 +12,8 @@ import java.util.List;
 @Entity
 @Table(name = "USERS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 @EqualsAndHashCode(of = "username")
 @ToString
 public class User implements UserDetails {

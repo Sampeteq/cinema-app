@@ -30,11 +30,13 @@ public class OnStartUpMainAdminCreateHandler {
         if (userRepository.existsByUsername(mainAdminUsername)) {
             log.info("Main admin already exists");
         } else {
-            var mainAdmin = new User(
-                    mainAdminUsername,
-                    passwordEncoder.encode(mainAdminPassword),
-                    UserRole.ADMIN
-            );
+            var mainAdmin = User
+                    .builder()
+                    .username(mainAdminUsername)
+                    .password(passwordEncoder.encode(mainAdminPassword))
+                    .role(UserRole.ADMIN)
+                    .build();
+
             userRepository.add(mainAdmin);
             log.info("Main admin added.Username: {}" + " .Password: {}", mainAdminUsername, mainAdminPassword);
         }

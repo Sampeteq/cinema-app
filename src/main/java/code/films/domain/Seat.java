@@ -10,7 +10,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "SEATS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString

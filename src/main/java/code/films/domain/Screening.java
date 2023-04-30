@@ -60,13 +60,14 @@ public class Screening {
                 seatNumber = 1;
                 helpCounter = 1;
             }
-            var seat = new Seat(
-                    UUID.randomUUID(),
-                    rowNumber,
-                    seatNumber++,
-                    SeatStatus.FREE,
-                    screening
-            );
+            var seat = Seat
+                    .builder()
+                    .id(UUID.randomUUID())
+                    .rowNumber(rowNumber)
+                    .number(seatNumber++)
+                    .status(SeatStatus.FREE)
+                    .screening(screening)
+                    .build();
             seats.add(seat);
             helpCounter++;
         }

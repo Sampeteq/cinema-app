@@ -19,12 +19,13 @@ public class CreateRoomHandler {
         if (roomRepository.existsByCustomId(command.customId())) {
             throw new RoomNumberAlreadyExistsException();
         }
-        var screeningRoom = new Room(
-                UUID.randomUUID(),
-                command.customId(),
-                command.rowsQuantity(),
-                command.seatsQuantityInOneRow()
-        );
+        var screeningRoom = Room
+                .builder()
+                .id(UUID.randomUUID())
+                .customId(command.customId())
+                .rowsQuantity(command.rowsQuantity())
+                .seatsInOneRowQuantity(command.seatsQuantityInOneRow())
+                .build();
        roomRepository.add(screeningRoom);
     }
 }

@@ -10,7 +10,7 @@ public class RoomTestHelper {
         return Room
                 .builder()
                 .id(UUID.randomUUID())
-                .number(1)
+                .customId("1")
                 .rowsQuantity(10)
                 .seatsInOneRowQuantity(15)
                 .build();

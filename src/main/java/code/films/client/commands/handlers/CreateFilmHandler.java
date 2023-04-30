@@ -16,7 +16,7 @@ public class CreateFilmHandler {
     private final FilmMapper filmMapper;
 
     public FilmDto handle(CreateFilmCommand command) {
-        var film = Film.of(
+        var film = Film.create(
                 Film.builder()
                         .title(command.title())
                         .category(command.filmCategory())

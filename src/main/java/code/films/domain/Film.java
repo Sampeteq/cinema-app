@@ -36,7 +36,7 @@ public class Film {
     @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
     private List<Screening> screenings;
 
-    public static Film of(FilmBuilder filmBuilder) {
+    public static Film create(FilmBuilder filmBuilder) {
         var fromBuilder = filmBuilder.build();
         if (!isFilmYearCorrect(filmBuilder.year)) {
             throw new WrongFilmYearException();

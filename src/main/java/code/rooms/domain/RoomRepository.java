@@ -12,5 +12,5 @@ public interface RoomRepository {
 
     List<Room> readAll();
 
-    boolean existsByNumber(int number);
+    boolean existsByCustomId(String customId);
 }

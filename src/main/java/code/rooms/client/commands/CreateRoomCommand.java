@@ -2,12 +2,13 @@ package code.rooms.client.commands;
 
 import lombok.With;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @With
 public record CreateRoomCommand(
-        @Positive
-        int number,
+        @NotNull
+        String customId,
         @Positive
         int rowsQuantity,
         @Positive

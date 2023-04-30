@@ -20,7 +20,7 @@ public class Room {
     @Id
     private UUID id;
 
-    private int number;
+    private String customId;
 
     private int rowsQuantity;
 

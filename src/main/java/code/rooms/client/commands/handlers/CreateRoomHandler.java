@@ -16,12 +16,12 @@ public class CreateRoomHandler {
     private final RoomRepository roomRepository;
 
     public void handle(CreateRoomCommand command) {
-        if (roomRepository.existsByNumber(command.number())) {
+        if (roomRepository.existsByCustomId(command.customId())) {
             throw new RoomNumberAlreadyExistsException();
         }
         var screeningRoom = new Room(
                 UUID.randomUUID(),
-                command.number(),
+                command.customId(),
                 command.rowsQuantity(),
                 command.seatsQuantityInOneRow()
         );

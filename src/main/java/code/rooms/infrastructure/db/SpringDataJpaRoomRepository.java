@@ -32,11 +32,11 @@ public class SpringDataJpaRoomRepository implements RoomRepository {
     }
 
     @Override
-    public boolean existsByNumber(int number) {
-        return jpaRoomRepository.existsByNumber(number);
+    public boolean existsByCustomId(String customId) {
+        return jpaRoomRepository.existsByCustomId(customId);
     }
 }
 
 interface JpaRoomRepository extends JpaRepository<Room, UUID> {
-    boolean existsByNumber(int number);
+    boolean existsByCustomId(String customId);
 }

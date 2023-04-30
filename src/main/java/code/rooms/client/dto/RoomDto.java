@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public record RoomDto(
         UUID id,
-        int number,
+        String customId,
         int rowsQuantity,
         int seatsInOneRowQuantity,
         int seatsQuantity

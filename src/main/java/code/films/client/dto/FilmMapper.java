@@ -1,7 +1,6 @@
-package code.films.client.dto.mappers;
+package code.films.client.dto;
 
 import code.films.domain.Film;
-import code.films.client.dto.FilmDto;
 import org.mapstruct.Mapper;
 
 import java.util.List;

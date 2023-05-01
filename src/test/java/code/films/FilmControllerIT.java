@@ -1,7 +1,7 @@
 package code.films;
 
 import code.films.client.dto.FilmDto;
-import code.films.client.dto.mappers.FilmMapper;
+import code.films.client.dto.FilmMapper;
 import code.films.domain.FilmCategory;
 import code.films.domain.FilmRepository;
 import code.films.domain.exceptions.WrongFilmYearException;

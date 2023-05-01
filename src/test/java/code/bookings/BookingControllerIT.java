@@ -1,7 +1,7 @@
 package code.bookings;
 
 import code.bookings.client.dto.BookingDto;
-import code.bookings.client.dto.mappers.BookingMapper;
+import code.bookings.client.dto.BookingMapper;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;

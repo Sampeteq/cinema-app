@@ -1,4 +1,4 @@
-package code.rooms.client.dto.mappers;
+package code.rooms.client.dto;
 
 import code.rooms.client.dto.RoomDto;
 import code.rooms.domain.Room;

@@ -2,7 +2,7 @@ package code.bookings.client.commands.handlers;
 
 import code.bookings.client.commands.MakeBookingCommand;
 import code.bookings.client.dto.BookingDto;
-import code.bookings.client.dto.mappers.BookingMapper;
+import code.bookings.client.dto.BookingMapper;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.exceptions.SeatNotAvailableException;

@@ -1,7 +1,7 @@
 package code.rooms.client.queries;
 
 import code.rooms.client.dto.RoomDto;
-import code.rooms.client.dto.mappers.RoomMapper;
+import code.rooms.client.dto.RoomMapper;
 import code.rooms.domain.RoomRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

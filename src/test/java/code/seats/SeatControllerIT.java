@@ -6,8 +6,8 @@ import code.utils.SpringIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static code.utils.FilmTestHelper.createSampleFilm;
-import static code.utils.FilmTestHelper.createSampleScreening;
+import static code.utils.FilmTestHelper.createFilm;
+import static code.utils.FilmTestHelper.createScreening;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -24,8 +24,8 @@ public class SeatControllerIT extends SpringIT {
     @Test
     void should_get_seats_for_screening() throws Exception {
         //given
-        var film = createSampleFilm();
-        var screening = createSampleScreening(film);
+        var film = createFilm();
+        var screening = createScreening(film);
         film.addScreening(screening);
         filmRepository.add(film);
 

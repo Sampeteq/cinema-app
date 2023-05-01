@@ -6,7 +6,7 @@ import code.user.domain.UserRole;
 
 public class UserTestHelper {
 
-    public static SignUpCommand createSampleSignUpCommand() {
+    public static SignUpCommand createSignUpCommand() {
         return new SignUpCommand(
                 "user1",
                 "password1",
@@ -14,7 +14,7 @@ public class UserTestHelper {
         );
     }
 
-    public static SignUpCommand createSampleSignUpCommand(String username) {
+    public static SignUpCommand createSignUpCommand(String username) {
         return new SignUpCommand(
                 username,
                 "password1",
@@ -22,7 +22,7 @@ public class UserTestHelper {
         );
     }
 
-    public static SignUpCommand createSampleSignUpCommand(String password, String repeatedPassword) {
+    public static SignUpCommand createSignUpCommand(String password, String repeatedPassword) {
         return new SignUpCommand(
                 "user1",
                 password,
@@ -30,7 +30,7 @@ public class UserTestHelper {
         );
     }
 
-    public static User createSampleUser(String username) {
+    public static User createUser(String username) {
         return User
                 .builder()
                 .username(username)

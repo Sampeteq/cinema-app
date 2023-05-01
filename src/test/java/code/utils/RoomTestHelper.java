@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class RoomTestHelper {
 
-    public static Room createSampleRoom() {
+    public static Room createRoom() {
         return Room
                 .builder()
                 .id(UUID.randomUUID())

@@ -11,6 +11,7 @@ import code.seats.client.dto.SeatDto;
 import code.films.domain.FilmRepository;
 import code.seats.domain.Seat;
 import code.user.domain.UserRepository;
+import code.utils.FilmTestHelper;
 import code.utils.SpringIT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,10 +25,10 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static code.utils.BookingTestHelper.createSampleBooking;
-import static code.utils.BookingTestHelper.createSampleBookings;
-import static code.utils.FilmTestHelper.createSampleFilmWithScreening;
-import static code.utils.UserTestHelper.createSampleUser;
+import static code.utils.BookingTestHelper.createBooking;
+import static code.utils.BookingTestHelper.createBookings;
+import static code.utils.FilmTestHelper.createFilmWithScreening;
+import static code.utils.UserTestHelper.createUser;
 import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,14 +57,14 @@ class BookingControllerIT extends SpringIT {
 
     @BeforeEach
     void setUp() {
-        userRepository.add(createSampleUser("user1"));
+        userRepository.add(createUser("user1"));
     }
 
     @Test
     @WithMockUser(username = "user1")
     void should_make_booking() throws Exception {
         //given
-        var film = filmRepository.add(createSampleFilmWithScreening());
+        var film = filmRepository.add(FilmTestHelper.createFilmWithScreening());
         var seatId = film
                 .getScreenings()
                 .get(0)
@@ -92,7 +93,7 @@ class BookingControllerIT extends SpringIT {
     void should_throw_exception_during_booking_when_less_than_24h_to_screening() throws Exception {
         //given
         var screeningDate = getCurrentDate(clock).minusHours(23);
-        var film = filmRepository.add(createSampleFilmWithScreening(screeningDate));
+        var film = filmRepository.add(createFilmWithScreening(screeningDate));
         var seatId = film
                 .getScreenings()
                 .get(0)
@@ -118,7 +119,7 @@ class BookingControllerIT extends SpringIT {
     @WithMockUser(username = "user1")
     void should_seat_be_busy_after_booking() throws Exception {
         //given
-        var film = filmRepository.add(createSampleFilmWithScreening());
+        var film = filmRepository.add(FilmTestHelper.createFilmWithScreening());
         var screening = film
                 .getScreenings()
                 .get(0);
@@ -147,7 +148,7 @@ class BookingControllerIT extends SpringIT {
     @WithMockUser(username = "user1")
     void should_reduce_screening_free_seats_by_one_after_booking() throws Exception {
         //given
-        var film = filmRepository.add(createSampleFilmWithScreening());
+        var film = filmRepository.add(FilmTestHelper.createFilmWithScreening());
         var screening = film.getScreenings().get(0);
         var seatId = film
                 .getScreenings()
@@ -178,12 +179,12 @@ class BookingControllerIT extends SpringIT {
     @WithMockUser(username = "user1")
     void should_cancel_booking() throws Exception {
         //give
-        var seat = filmRepository.add(createSampleFilmWithScreening())
+        var seat = filmRepository.add(FilmTestHelper.createFilmWithScreening())
                 .getScreenings()
                 .get(0)
                 .getSeats()
                 .get(0);
-        var booking = bookingRepository.add(createSampleBooking(seat, "user1"));
+        var booking = bookingRepository.add(createBooking(seat, "user1"));
 
         //when
         var result = mockMvc.perform(
@@ -206,7 +207,7 @@ class BookingControllerIT extends SpringIT {
     void should_seat_be_free_again_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
         var screening = filmRepository
-                .add(createSampleFilmWithScreening())
+                .add(FilmTestHelper.createFilmWithScreening())
                 .getScreenings()
                 .get(0);
         var freeSeatsNumber = screening
@@ -214,7 +215,7 @@ class BookingControllerIT extends SpringIT {
                 .stream()
                 .count();
         var seat = screening.getSeats().get(0);
-        var booking = bookingRepository.add(createSampleBooking(seat, "user1"));
+        var booking = bookingRepository.add(createBooking(seat, "user1"));
 
         //when
         var result = mockMvc.perform(
@@ -239,13 +240,13 @@ class BookingControllerIT extends SpringIT {
     void should_throw_exception_during_booking_when_booking_is_already_cancelled() throws Exception {
         //given
         var seat = filmRepository
-                .add(createSampleFilmWithScreening())
+                .add(FilmTestHelper.createFilmWithScreening())
                 .getScreenings()
                 .get(0)
                 .getSeats()
                 .get(0);
         var booking = bookingRepository.add(
-                createSampleBooking(seat, "user1").withStatus(BookingStatus.CANCELLED)
+                createBooking(seat, "user1").withStatus(BookingStatus.CANCELLED)
         );
 
         //when
@@ -268,12 +269,12 @@ class BookingControllerIT extends SpringIT {
         var hoursToScreening = 23;
         var screeningDate = getCurrentDate(clock).minusHours(hoursToScreening);
         var seat = filmRepository
-                .add(createSampleFilmWithScreening(screeningDate))
+                .add(createFilmWithScreening(screeningDate))
                 .getScreenings()
                 .get(0)
                 .getSeats()
                 .get(0);
-        var booking = bookingRepository.add(createSampleBooking(seat, "user1"));
+        var booking = bookingRepository.add(createBooking(seat, "user1"));
 
         //when
         var result = mockMvc.perform(
@@ -293,7 +294,7 @@ class BookingControllerIT extends SpringIT {
     void should_get_all_user_bookings() throws Exception {
         //given
         var sampleScreening = filmRepository
-                .add(createSampleFilmWithScreening())
+                .add(FilmTestHelper.createFilmWithScreening())
                 .getScreenings()
                 .get(0);
         var seat1 = sampleScreening
@@ -302,7 +303,7 @@ class BookingControllerIT extends SpringIT {
         var seat2 = sampleScreening
                 .getSeats()
                 .get(0);
-        var userBookings = bookingRepository.addMany(createSampleBookings(seat1, seat2, "user1"));
+        var userBookings = bookingRepository.addMany(createBookings(seat1, seat2, "user1"));
 
         //when
         var result = mockMvc.perform(

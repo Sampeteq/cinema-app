@@ -35,7 +35,7 @@ class FilmControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void should_create_film() throws Exception {
         //given
-        var cmd = createSampleCreateFilmCommand();
+        var cmd = createCreateFilmCommand();
 
         //when
         var result = mockMvc.perform(
@@ -53,12 +53,12 @@ class FilmControllerIT extends SpringIT {
     }
 
     @ParameterizedTest
-    @MethodSource("code.utils.FilmTestHelper#sampleWrongFilmYears")
+    @MethodSource("code.utils.FilmTestHelper#getWrongFilmYears")
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
             throws Exception {
         //given
-        var dto = createSampleCreateFilmCommand().withYear(wrongYear);
+        var dto = createCreateFilmCommand().withYear(wrongYear);
 
         //when
         var result = mockMvc.perform(
@@ -76,7 +76,7 @@ class FilmControllerIT extends SpringIT {
     @Test
     void should_get_all_films() throws Exception {
         //given
-        var sampleFilms = filmRepository.addMany(createSampleFilms());
+        var sampleFilms = filmRepository.addMany(createFilms());
 
         //when
         var result = mockMvc.perform(
@@ -93,10 +93,10 @@ class FilmControllerIT extends SpringIT {
     void should_get_films_by_params() throws Exception {
         //given
         var filmMeetingParams = filmRepository.add(
-                createSampleFilm().withCategory(FilmCategory.COMEDY)
+                createFilm().withCategory(FilmCategory.COMEDY)
         );
         var filmNotMeetingParams = filmRepository.add(
-                createSampleFilm().withCategory(FilmCategory.DRAMA)
+                createFilm().withCategory(FilmCategory.DRAMA)
         );
 
         //when

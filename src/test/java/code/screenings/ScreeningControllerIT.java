@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static code.utils.FilmTestHelper.*;
-import static code.utils.FilmTestHelper.createSampleScreenings;
-import static code.utils.RoomTestHelper.createSampleRoom;
+import static code.utils.FilmTestHelper.createScreenings;
+import static code.utils.RoomTestHelper.createRoom;
 import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,9 +42,9 @@ public class ScreeningControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void should_create_screening() throws Exception {
         //given
-        var sampleFilm = filmRepository.add(createSampleFilm());
-        var sampleRoom = roomRepository.add(createSampleRoom());
-        var cmd = createSampleCreateScreeningCommand(sampleFilm.getId(), sampleRoom.getId());
+        var sampleFilm = filmRepository.add(createFilm());
+        var sampleRoom = roomRepository.add(createRoom());
+        var cmd = createCreateScreeningCommand(sampleFilm.getId(), sampleRoom.getId());
 
         //when
         var result = mockMvc.perform(
@@ -62,14 +62,14 @@ public class ScreeningControllerIT extends SpringIT {
     }
 
     @ParameterizedTest
-    @MethodSource("code.utils.FilmTestHelper#sampleWrongScreeningDates")
+    @MethodSource("code.utils.FilmTestHelper#getWrongScreeningDates")
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {
         //given
-        var filmId = filmRepository.add(createSampleFilm()).getId();
-        var roomId = roomRepository.add(createSampleRoom()).getId();
-        var cmd = createSampleCreateScreeningCommand(filmId, roomId).withDate(wrongDate);
+        var filmId = filmRepository.add(createFilm()).getId();
+        var roomId = roomRepository.add(createRoom()).getId();
+        var cmd = createCreateScreeningCommand(filmId, roomId).withDate(wrongDate);
 
         //when
         var result = mockMvc.perform(
@@ -88,13 +88,13 @@ public class ScreeningControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_there_is_collision_between_screenings() throws Exception {
         //given
-        var film = createSampleFilm();
-        var screening = createSampleScreening(film);
+        var film = createFilm();
+        var screening = createScreening(film);
         film.addScreening(screening);
         filmRepository.add(film);
 
 
-        var cmd = createSampleCreateScreeningCommand(
+        var cmd = createCreateScreeningCommand(
                 film.getId(),
                 screening.getRoom().getId()
         ).withDate(screening.getDate().plusMinutes(10));
@@ -115,8 +115,8 @@ public class ScreeningControllerIT extends SpringIT {
     @Test
     void should_get_all_screenings() throws Exception {
         //given
-        var film = createSampleFilm();
-        var screenings = createSampleScreenings(film);
+        var film = createFilm();
+        var screenings = createScreenings(film);
         screenings.forEach(film::addScreening);
         filmRepository.add(film);
 
@@ -134,8 +134,8 @@ public class ScreeningControllerIT extends SpringIT {
     @Test
     void should_get_screenings_by_params() throws Exception {
         //given
-        var film = createSampleFilm();
-        var screeningMeetParams = createSampleScreening(film);
+        var film = createFilm();
+        var screeningMeetParams = createScreening(film);
         film.addScreening(screeningMeetParams);
         filmRepository.add(film);
 

@@ -13,13 +13,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static code.utils.RoomTestHelper.createSampleRoom;
+import static code.utils.RoomTestHelper.createRoom;
 
 public class FilmTestHelper {
 
     private static final int CURRENT_YEAR = Year.now().getValue();
 
-    public static CreateFilmCommand createSampleCreateFilmCommand() {
+    public static CreateFilmCommand createCreateFilmCommand() {
         return CreateFilmCommand
                 .builder()
                 .title("Test film 1")
@@ -29,7 +29,7 @@ public class FilmTestHelper {
                 .build();
     }
 
-    public static Film createSampleFilm() {
+    public static Film createFilm() {
         return Film
                 .builder()
                 .id(UUID.randomUUID())
@@ -41,21 +41,21 @@ public class FilmTestHelper {
                 .build();
     }
 
-    public static Film createSampleFilmWithScreening() {
-        var film = createSampleFilm();
-        var screening = createSampleScreening(film);
+    public static Film createFilmWithScreening() {
+        var film = createFilm();
+        var screening = createScreening(film);
         film.addScreening(screening);
         return film;
     }
 
-    public static Film createSampleFilmWithScreening(LocalDateTime screeningDate) {
-        var film = createSampleFilm();
-        var screening = createSampleScreening(film).withDate(screeningDate);
+    public static Film createFilmWithScreening(LocalDateTime screeningDate) {
+        var film = createFilm();
+        var screening = createScreening(film).withDate(screeningDate);
         film.addScreening(screening);
         return film;
     }
 
-    public static List<Film> createSampleFilms() {
+    public static List<Film> createFilms() {
         var film1 = Film
                 .builder()
                 .id(UUID.randomUUID())
@@ -77,7 +77,7 @@ public class FilmTestHelper {
         return List.of(film1, film2);
     }
 
-    public static List<Integer> sampleWrongFilmYears() {
+    public static List<Integer> getWrongFilmYears() {
         var currentYear = Year.now();
         return List.of(
                 currentYear.minusYears(2).getValue(),
@@ -85,7 +85,7 @@ public class FilmTestHelper {
         );
     }
 
-    public static CreateScreeningCommand createSampleCreateScreeningCommand(UUID filmId, UUID roomId) {
+    public static CreateScreeningCommand createCreateScreeningCommand(UUID filmId, UUID roomId) {
         return CreateScreeningCommand
                 .builder()
                 .filmId(filmId)
@@ -95,33 +95,33 @@ public class FilmTestHelper {
                 .build();
     }
 
-    public static Screening createSampleScreening(Film film) {
+    public static Screening createScreening(Film film) {
         return Screening.of(
                 LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
                 13,
                 film,
-                createSampleRoom()
+                createRoom()
         );
     }
 
-    public static List<Screening> createSampleScreenings(Film film) {
+    public static List<Screening> createScreenings(Film film) {
         var screening1 = Screening.of(
                 LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
                 13,
                 film,
-                createSampleRoom()
+                createRoom()
         );
         var screening2 = Screening.of(
                 LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
                 13,
                 film,
-                createSampleRoom()
+                createRoom()
         );
         return List.of(screening1, screening2);
     }
 
 
-    public static List<String> sampleWrongScreeningDates() {
+    public static List<String> getWrongScreeningDates() {
         var date1 = LocalDateTime.of(
                 CURRENT_YEAR - 1,
                 2,

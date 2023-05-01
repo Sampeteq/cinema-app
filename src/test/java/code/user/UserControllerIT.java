@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-import static code.utils.UserTestHelper.createSampleSignUpCommand;
-import static code.utils.UserTestHelper.createSampleUser;
+import static code.utils.UserTestHelper.createSignUpCommand;
+import static code.utils.UserTestHelper.createUser;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -25,7 +25,7 @@ class UserControllerIT extends SpringIT {
     @Test
     void should_sign_up_and_sing_in() throws Exception {
         //given
-        var signUpRequest = UserTestHelper.createSampleSignUpCommand();
+        var signUpRequest = UserTestHelper.createSignUpCommand();
 
         //when
         var result = mockMvc.perform(
@@ -50,8 +50,8 @@ class UserControllerIT extends SpringIT {
     @Test
     void should_throw_exception_when_username_is_not_unique() throws Exception {
         //given
-        var user = userRepository.add(createSampleUser("user1"));
-        var signUpRequest = UserTestHelper.createSampleSignUpCommand(user.getUsername());
+        var user = userRepository.add(createUser("user1"));
+        var signUpRequest = UserTestHelper.createSignUpCommand(user.getUsername());
 
         //when
         var result = mockMvc.perform(
@@ -69,7 +69,7 @@ class UserControllerIT extends SpringIT {
     @Test
     void should_throw_exception_when_password_are_not_the_same() throws Exception {
         //given
-        var signUpRequest = createSampleSignUpCommand("password1", "password2");
+        var signUpRequest = createSignUpCommand("password1", "password2");
 
         //when
         var result = mockMvc.perform(

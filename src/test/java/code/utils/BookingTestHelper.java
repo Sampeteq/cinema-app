@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class BookingTestHelper {
 
-    public static Booking createSampleBooking(Seat seat, String username) {
+    public static Booking createBooking(Seat seat, String username) {
         return new Booking(
                 UUID.randomUUID(),
                 BookingStatus.ACTIVE,
@@ -18,7 +18,7 @@ public class BookingTestHelper {
         );
     }
 
-    public static List<Booking> createSampleBookings(Seat seat1, Seat seat2, String username) {
+    public static List<Booking> createBookings(Seat seat1, Seat seat2, String username) {
         var booking1 = new Booking(
                 UUID.randomUUID(),
                 BookingStatus.ACTIVE,

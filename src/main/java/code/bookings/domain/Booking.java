@@ -1,9 +1,11 @@
 package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
+import code.seats.domain.Seat;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.Clock;
 import java.util.UUID;
 
 @Entity
@@ -24,12 +26,12 @@ public class Booking {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "seatId")
-    private BookingSeat seat;
+    private Seat seat;
 
     private String username;
 
-    public static Booking make(BookingSeat seat, String username) {
-        seat.book();
+    public static Booking make(Seat seat, String username, Clock clock) {
+        seat.book(clock);
         return new Booking(
                 UUID.randomUUID(),
                 BookingStatus.ACTIVE,
@@ -38,11 +40,11 @@ public class Booking {
         );
     }
 
-    public void cancel() {
+    public void cancel(Clock clock) {
         if (status.equals(BookingStatus.CANCELLED)) {
             throw new BookingAlreadyCancelledException();
         }
-        seat.cancelBooking();
+        seat.cancelBooking(clock);
         this.status = BookingStatus.CANCELLED;
     }
 }

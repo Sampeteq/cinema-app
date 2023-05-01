@@ -1,7 +1,8 @@
 package code.films.domain;
 
-import code.films.domain.exceptions.ScreeningCollisionException;
+import code.screenings.domain.exceptions.ScreeningCollisionException;
 import code.films.domain.exceptions.WrongFilmYearException;
+import code.screenings.domain.Screening;
 import lombok.*;
 
 import javax.persistence.*;

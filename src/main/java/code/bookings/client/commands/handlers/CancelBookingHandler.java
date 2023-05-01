@@ -1,15 +1,14 @@
 package code.bookings.client.commands.handlers;
 
 import code.bookings.client.commands.CancelBookingCommand;
-import code.bookings.client.commands.events.IncreasedFreeSeatsEvent;
+import code.bookings.client.exceptions.BookingNotFoundException;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
-import code.bookings.client.exceptions.BookingNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.util.UUID;
 
 @Component
@@ -17,17 +16,12 @@ import java.util.UUID;
 public class CancelBookingHandler {
 
     private final BookingRepository bookingRepository;
-    private final ApplicationEventPublisher applicationEventPublisher;
+    private final Clock clock;
 
     @Transactional
     public void handle(CancelBookingCommand command) {
         var booking = getBookingOrThrow(command.bookingId());
-        booking.cancel();
-        var increasedFreeSeatsEvent = IncreasedFreeSeatsEvent
-                .builder()
-                .seatId(booking.getSeat().getId())
-                .build();
-        applicationEventPublisher.publishEvent(increasedFreeSeatsEvent);
+        booking.cancel(clock);
     }
 
     private Booking getBookingOrThrow(UUID bookingId) {

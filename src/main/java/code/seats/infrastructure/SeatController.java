@@ -17,7 +17,7 @@ public class SeatController {
 
     private final GetScreeningSeatsHandler getScreeningSeatsHandler;
 
-    @GetMapping("/films/screenings/{screeningId}/seats")
+    @GetMapping("/screenings/{screeningId}/seats")
     public List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
         return getScreeningSeatsHandler.handle(
                 GetScreeningSeatsQuery

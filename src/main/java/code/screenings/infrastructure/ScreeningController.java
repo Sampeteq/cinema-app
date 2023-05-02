@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/screenings")
 @RequiredArgsConstructor
 public class ScreeningController {
 
@@ -24,7 +25,7 @@ public class ScreeningController {
 
     private final GetScreeningHandler getScreeningHandler;
 
-    @PostMapping("/films/screenings")
+    @PostMapping
     public ResponseEntity<ScreeningDto> createScreening(
             @RequestBody
             @Valid
@@ -34,7 +35,7 @@ public class ScreeningController {
         return new ResponseEntity<>(createdScreening, HttpStatus.CREATED);
     }
 
-    @GetMapping("/films/screenings")
+    @GetMapping
     public List<ScreeningDto> searchScreeningsBy(
             @RequestParam(required = false)
             UUID filmId,

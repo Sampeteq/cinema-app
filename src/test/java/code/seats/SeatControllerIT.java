@@ -31,7 +31,7 @@ public class SeatControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get("/films/screenings/" + screening.getId() + "/seats")
+                get("/screenings/" + screening.getId() + "/seats")
         );
 
         //then

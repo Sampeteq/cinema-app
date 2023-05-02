@@ -48,7 +48,7 @@ public class ScreeningControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/films/screenings")
+                post("/screenings")
                         .content(toJson(cmd))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -57,7 +57,7 @@ public class ScreeningControllerIT extends SpringIT {
         result.andExpect(status().isCreated());
         var createdScreening = fromResultActions(result, ScreeningDto.class);
         mockMvc
-                .perform(get("/films/screenings"))
+                .perform(get("/screenings"))
                 .andExpect(content().json(toJson(List.of(createdScreening))));
     }
 
@@ -73,7 +73,7 @@ public class ScreeningControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/films/screenings")
+                post("/screenings")
                         .content(toJson(cmd))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -101,7 +101,7 @@ public class ScreeningControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/films/screenings")
+                post("/screenings")
                         .content(toJson(cmd))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -122,7 +122,7 @@ public class ScreeningControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get("/films/screenings")
+                get("/screenings")
         );
 
         //then
@@ -141,7 +141,7 @@ public class ScreeningControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get("/films/screenings")
+                get("/screenings")
                         .param("filmId", screeningMeetParams.getFilm().getId().toString())
                         .param("date", screeningMeetParams.getDate().toString())
         );

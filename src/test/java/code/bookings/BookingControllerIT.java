@@ -302,7 +302,7 @@ class BookingControllerIT extends SpringIT {
                 .get(0);
         var seat2 = sampleScreening
                 .getSeats()
-                .get(0);
+                .get(1);
         var userBookings = bookingRepository.addMany(createBookings(seat1, seat2, "user1"));
 
         //when

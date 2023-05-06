@@ -21,7 +21,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-@Profile("prov")
+@Profile("prod")
 public class CreateRoomsFromConfigHandler {
 
     private final GetRoomsQueryHandler getRoomsQueryHandler;

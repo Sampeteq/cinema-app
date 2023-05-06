@@ -12,6 +12,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static java.util.stream.IntStream.rangeClosed;
 
 @Entity
 @Table(name = "SCREENINGS")
@@ -51,28 +55,16 @@ public class Screening {
                 room,
                 new ArrayList<>()
         );
-        var seats = new ArrayList<Seat>();
-        var rowNumber = 1;
-        var seatNumber = 1;
-        var helpCounter = 1;
-        for (int i = 1; i <= room.getRowsQuantity() * room.getSeatsInOneRowQuantity(); i++) {
-            if (helpCounter > room.getSeatsInOneRowQuantity()) {
-                rowNumber++;
-                seatNumber = 1;
-                helpCounter = 1;
-            }
-            var seat = Seat
-                    .builder()
-                    .id(UUID.randomUUID())
-                    .rowNumber(rowNumber)
-                    .number(seatNumber++)
-                    .status(SeatStatus.FREE)
-                    .screening(screening)
-                    .build();
-            seats.add(seat);
-            helpCounter++;
-        }
-        screening.seats = seats;
+        screening.seats = rangeClosed(1, room.getRowsQuantity())
+                .boxed()
+                .flatMap(rowNumber -> rangeClosed(1, room.getSeatsInOneRowQuantity())
+                        .mapToObj(seatNumber -> Seat.builder()
+                                .id(UUID.randomUUID())
+                                .rowNumber(rowNumber)
+                                .number(seatNumber)
+                                .status(SeatStatus.FREE)
+                                .screening(screening).build()))
+                .toList();
         return screening;
     }
 

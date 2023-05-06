@@ -4,7 +4,6 @@ import code.bookings.domain.Booking;
 import code.bookings.domain.BookingStatus;
 import code.screenings.domain.Seat;
 
-import java.util.List;
 import java.util.UUID;
 
 public class BookingTestHelper {
@@ -18,19 +17,12 @@ public class BookingTestHelper {
         );
     }
 
-    public static List<Booking> createBookings(Seat seat1, Seat seat2, String username) {
-        var booking1 = new Booking(
+    public static Booking createBooking(Seat seat, String username, BookingStatus status) {
+        return new Booking(
                 UUID.randomUUID(),
-                BookingStatus.ACTIVE,
-                seat1,
+                status,
+                seat,
                 username
         );
-        var booking2 = new Booking(
-                UUID.randomUUID(),
-                BookingStatus.ACTIVE,
-                seat2,
-                username
-        );
-        return List.of(booking1, booking2);
     }
 }

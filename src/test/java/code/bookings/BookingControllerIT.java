@@ -2,16 +2,17 @@ package code.bookings;
 
 import code.bookings.client.dto.BookingDto;
 import code.bookings.client.dto.BookingMapper;
+import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.TooLateToBookingException;
 import code.bookings.domain.exceptions.TooLateToCancelBookingException;
-import code.screenings.client.dto.SeatDto;
+import code.films.domain.Film;
 import code.films.domain.FilmRepository;
+import code.screenings.client.dto.SeatDto;
 import code.screenings.domain.Seat;
 import code.user.domain.UserRepository;
-import code.utils.FilmTestHelper;
 import code.utils.SpringIT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,10 +24,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static code.utils.BookingTestHelper.createBooking;
-import static code.utils.BookingTestHelper.createBookings;
 import static code.utils.FilmTestHelper.createFilmWithScreening;
 import static code.utils.UserTestHelper.createUser;
 import static code.utils.WebTestHelper.fromResultActions;
@@ -50,7 +51,6 @@ class BookingControllerIT extends SpringIT {
     @Autowired
     private BookingMapper bookingMapper;
 
-
     @Autowired
     @Qualifier("testClock")
     private Clock clock;
@@ -64,18 +64,12 @@ class BookingControllerIT extends SpringIT {
     @WithMockUser(username = "user1")
     void should_make_booking() throws Exception {
         //given
-        var film = filmRepository.add(FilmTestHelper.createFilmWithScreening());
-        var seatId = film
-                .getScreenings()
-                .get(0)
-                .getSeats()
-                .get(0)
-                .getId();
+        var seat = prepareSeat();
 
         //when
         var result = mockMvc.perform(
                 post("/bookings/")
-                        .param("seatId", seatId.toString())
+                        .param("seatId", seat.getId().toString())
         );
 
         //then
@@ -93,18 +87,12 @@ class BookingControllerIT extends SpringIT {
     void should_throw_exception_during_booking_when_less_than_24h_to_screening() throws Exception {
         //given
         var screeningDate = getCurrentDate(clock).minusHours(23);
-        var film = filmRepository.add(createFilmWithScreening(screeningDate));
-        var seatId = film
-                .getScreenings()
-                .get(0)
-                .getSeats()
-                .get(0)
-                .getId();
+        var seat = prepareSeat(screeningDate);
 
         //when
         var result = mockMvc.perform(
                 post("/bookings/")
-                        .param("seatId", seatId.toString())
+                        .param("seatId", seat.getId().toString())
         );
 
         //then
@@ -119,19 +107,13 @@ class BookingControllerIT extends SpringIT {
     @WithMockUser(username = "user1")
     void should_seat_be_busy_after_booking() throws Exception {
         //given
-        var film = filmRepository.add(FilmTestHelper.createFilmWithScreening());
-        var screening = film
-                .getScreenings()
-                .get(0);
-        var seatId = screening
-                .getSeats()
-                .get(0)
-                .getId();
+        var seat = prepareSeat();
+        var screening = seat.getScreening();
 
         //when
         mockMvc.perform(
                 post("/bookings/")
-                        .param("seatId", seatId.toString())
+                        .param("seatId", seat.getId().toString())
         );
 
         //then
@@ -139,7 +121,7 @@ class BookingControllerIT extends SpringIT {
                 get("/screenings/" + screening.getId() + "/seats")
         );
         var isSeatBusy = getSeatsFromResult(searchSeatsResult).anyMatch(
-                s -> s.id().equals(seatId) && s.status().equals("BUSY")
+                s -> s.id().equals(seat.getId()) && s.status().equals("BUSY")
         );
         assertThat(isSeatBusy).isTrue();
     }
@@ -148,15 +130,9 @@ class BookingControllerIT extends SpringIT {
     @WithMockUser(username = "user1")
     void should_reduce_screening_free_seats_by_one_after_booking() throws Exception {
         //given
-        var film = filmRepository.add(FilmTestHelper.createFilmWithScreening());
-        var screening = film.getScreenings().get(0);
-        var seatId = film
-                .getScreenings()
-                .get(0)
-                .getSeats()
-                .get(0)
-                .getId();
-        var freeSeatsNumber = screening
+        var seat = prepareSeat();
+        var freeSeatsNumber = seat
+                .getScreening()
                 .getSeats()
                 .stream()
                 .filter(Seat::isFree)
@@ -165,7 +141,7 @@ class BookingControllerIT extends SpringIT {
         //when
         mockMvc.perform(
                 post("/bookings/")
-                        .param("seatId", seatId.toString())
+                        .param("seatId", seat.getId().toString())
         );
 
         //then
@@ -179,12 +155,7 @@ class BookingControllerIT extends SpringIT {
     @WithMockUser(username = "user1")
     void should_cancel_booking() throws Exception {
         //give
-        var seat = filmRepository.add(FilmTestHelper.createFilmWithScreening())
-                .getScreenings()
-                .get(0)
-                .getSeats()
-                .get(0);
-        var booking = bookingRepository.add(createBooking(seat, "user1"));
+        var booking = prepareBooking();
 
         //when
         var result = mockMvc.perform(
@@ -206,16 +177,10 @@ class BookingControllerIT extends SpringIT {
     @WithMockUser(username = "user1")
     void should_seat_be_free_again_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
-        var screening = filmRepository
-                .add(FilmTestHelper.createFilmWithScreening())
-                .getScreenings()
-                .get(0);
-        var freeSeatsNumber = screening
-                .getSeats()
-                .stream()
-                .count();
-        var seat = screening.getSeats().get(0);
-        var booking = bookingRepository.add(createBooking(seat, "user1"));
+        var booking = prepareBooking();
+        var screening = booking.getSeat().getScreening();
+        var seat = booking.getSeat();
+        var freeSeatsNumber = screening.getSeats().size();
 
         //when
         var result = mockMvc.perform(
@@ -239,15 +204,7 @@ class BookingControllerIT extends SpringIT {
     @WithMockUser(username = "user1")
     void should_throw_exception_during_booking_when_booking_is_already_cancelled() throws Exception {
         //given
-        var seat = filmRepository
-                .add(FilmTestHelper.createFilmWithScreening())
-                .getScreenings()
-                .get(0)
-                .getSeats()
-                .get(0);
-        var booking = bookingRepository.add(
-                createBooking(seat, "user1").withStatus(BookingStatus.CANCELLED)
-        );
+        var booking = prepareBooking(BookingStatus.CANCELLED);
 
         //when
         var result = mockMvc.perform(
@@ -267,14 +224,7 @@ class BookingControllerIT extends SpringIT {
     void should_throw_exception_during_booking_cancelling_when_less_than_24h_to_screening() throws Exception {
         //given
         var hoursToScreening = 23;
-        var screeningDate = getCurrentDate(clock).minusHours(hoursToScreening);
-        var seat = filmRepository
-                .add(createFilmWithScreening(screeningDate))
-                .getScreenings()
-                .get(0)
-                .getSeats()
-                .get(0);
-        var booking = bookingRepository.add(createBooking(seat, "user1"));
+        var booking = prepareBooking(hoursToScreening);
 
         //when
         var result = mockMvc.perform(
@@ -293,17 +243,7 @@ class BookingControllerIT extends SpringIT {
     @WithMockUser(username = "user1")
     void should_get_all_user_bookings() throws Exception {
         //given
-        var sampleScreening = filmRepository
-                .add(FilmTestHelper.createFilmWithScreening())
-                .getScreenings()
-                .get(0);
-        var seat1 = sampleScreening
-                .getSeats()
-                .get(0);
-        var seat2 = sampleScreening
-                .getSeats()
-                .get(1);
-        var userBookings = bookingRepository.addMany(createBookings(seat1, seat2, "user1"));
+        var bookings = prepareBookings("user1");
 
         //when
         var result = mockMvc.perform(
@@ -313,7 +253,68 @@ class BookingControllerIT extends SpringIT {
         //then
         result.andExpect(status().isOk());
         var bookingsFromResult = getBookingsFromResult(result).toList();
-        assertThat(bookingsFromResult).containsExactlyInAnyOrderElementsOf(bookingMapper.mapToDto(userBookings));
+        assertThat(bookingsFromResult).containsExactlyInAnyOrderElementsOf(bookingMapper.mapToDto(bookings));
+    }
+
+    private Seat prepareSeat() {
+        var film = addFilm(createFilmWithScreening());
+        return film
+                .getScreenings()
+                .get(0)
+                .getSeats()
+                .get(0);
+    }
+
+    private Seat prepareSeat(LocalDateTime screeningDate) {
+        var film = addFilm(createFilmWithScreening(screeningDate));
+        return film
+                .getScreenings()
+                .get(0)
+                .getSeats()
+                .get(0);
+    }
+
+    private List<Seat> prepareSeats() {
+        var film = addFilm(createFilmWithScreening());
+        return film
+                .getScreenings()
+                .get(0)
+                .getSeats();
+    }
+
+    private Booking prepareBooking() {
+        var seat = prepareSeat();
+        return addBooking(createBooking(seat, "user1"));
+    }
+
+    private Booking prepareBooking(BookingStatus status) {
+        var seat = prepareSeat();
+        return addBooking(createBooking(seat, "user1", status));
+    }
+
+    private Booking prepareBooking(int hoursToScreening) {
+        var screeningDate = getCurrentDate(clock).minusHours(hoursToScreening);
+        var seat = prepareSeat(screeningDate);
+        return addBooking(createBooking(seat, "user1"));
+    }
+
+    private List<Booking> prepareBookings(String username) {
+        var seats = prepareSeats();
+        var booking1 = addBooking(createBooking(seats.get(0), username));
+        var booking2 = addBooking(createBooking(seats.get(1), username));
+        return List.of(booking1, booking2);
+    }
+
+    private Film addFilm(Film film) {
+        return filmRepository.add(film);
+    }
+
+    private Booking addBooking(Booking booking) {
+        return bookingRepository.add(booking);
+    }
+
+    private LocalDateTime getCurrentDate(Clock clock) {
+        return LocalDateTime.now(clock);
     }
 
     private Stream<SeatDto> getSeatsFromResult(ResultActions searchSeatsResult) throws Exception {
@@ -326,10 +327,6 @@ class BookingControllerIT extends SpringIT {
         return Arrays.stream(
                 fromResultActions(searchSeatsResult, BookingDto[].class)
         );
-    }
-
-    private LocalDateTime getCurrentDate(Clock clock) {
-        return LocalDateTime.now(clock);
     }
 
 }

@@ -1,7 +1,7 @@
 package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
-import code.seats.domain.Seat;
+import code.screenings.domain.Seat;
 import lombok.*;
 
 import javax.persistence.*;

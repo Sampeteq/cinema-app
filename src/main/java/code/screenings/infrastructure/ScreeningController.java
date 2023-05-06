@@ -1,10 +1,13 @@
 package code.screenings.infrastructure;
 
+import code.screenings.client.dto.SeatDto;
+import code.screenings.client.queries.GetScreeningSeatsQuery;
 import code.screenings.client.queries.GetScreeningsQuery;
 import code.screenings.client.queries.GetScreeningHandler;
 import code.screenings.client.commands.CreateScreeningCommand;
 import code.screenings.client.commands.handlers.CreateScreeningHandler;
 import code.screenings.client.dto.ScreeningDto;
+import code.screenings.client.queries.handlers.GetScreeningSeatsHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,8 @@ public class ScreeningController {
     private final CreateScreeningHandler createScreeningHandler;
 
     private final GetScreeningHandler getScreeningHandler;
+
+    private final GetScreeningSeatsHandler getScreeningSeatsHandler;
 
     @PostMapping
     public ResponseEntity<ScreeningDto> createScreening(
@@ -52,5 +57,15 @@ public class ScreeningController {
                 .build();
 
         return getScreeningHandler.handle(params);
+    }
+
+    @GetMapping("/{screeningId}/seats")
+    public List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
+        return getScreeningSeatsHandler.handle(
+                GetScreeningSeatsQuery
+                        .builder()
+                        .screeningId(screeningId)
+                        .build()
+        );
     }
 }

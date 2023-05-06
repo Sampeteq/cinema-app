@@ -1,9 +1,8 @@
-package code.seats.domain;
+package code.screenings.domain;
 
 import code.bookings.domain.exceptions.SeatNotAvailableException;
 import code.bookings.domain.exceptions.TooLateToBookingException;
 import code.bookings.domain.exceptions.TooLateToCancelBookingException;
-import code.screenings.domain.Screening;
 import lombok.*;
 
 import javax.persistence.*;

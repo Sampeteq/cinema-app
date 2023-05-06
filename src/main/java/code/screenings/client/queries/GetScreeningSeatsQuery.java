@@ -1,4 +1,4 @@
-package code.seats.client.queries;
+package code.screenings.client.queries;
 
 import lombok.Builder;
 

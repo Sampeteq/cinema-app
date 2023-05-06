@@ -1,4 +1,4 @@
-package code.seats.client.exceptions;
+package code.screenings.client.exceptions;
 
 
 import code.shared.EntityNotFoundException;

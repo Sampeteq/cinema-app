@@ -2,7 +2,7 @@ package code.utils;
 
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingStatus;
-import code.seats.domain.Seat;
+import code.screenings.domain.Seat;
 
 import java.util.List;
 import java.util.UUID;

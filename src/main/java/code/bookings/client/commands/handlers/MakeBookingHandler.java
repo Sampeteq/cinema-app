@@ -6,7 +6,7 @@ import code.bookings.client.dto.BookingMapper;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.exceptions.SeatNotAvailableException;
-import code.seats.domain.SeatReadOnlyRepository;
+import code.screenings.domain.SeatReadOnlyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

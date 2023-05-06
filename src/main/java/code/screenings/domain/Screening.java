@@ -1,8 +1,6 @@
 package code.screenings.domain;
 
 import code.films.domain.Film;
-import code.seats.domain.Seat;
-import code.seats.domain.SeatStatus;
 import code.rooms.domain.Room;
 import lombok.*;
 import org.apache.commons.lang3.builder.ToStringExclude;

@@ -1,4 +1,4 @@
-package code.seats.domain;
+package code.screenings.domain;
 
 import org.springframework.data.repository.Repository;
 

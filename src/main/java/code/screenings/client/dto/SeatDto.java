@@ -1,4 +1,4 @@
-package code.seats.client.dto;
+package code.screenings.client.dto;
 
 import lombok.With;
 

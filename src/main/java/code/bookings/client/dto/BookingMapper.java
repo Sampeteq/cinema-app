@@ -1,7 +1,7 @@
 package code.bookings.client.dto;
 
 import code.bookings.domain.Booking;
-import code.seats.domain.Seat;
+import code.screenings.domain.Seat;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

@@ -1,6 +1,6 @@
-package code.seats.client.dto;
+package code.screenings.client.dto;
 
-import code.seats.domain.Seat;
+import code.screenings.domain.Seat;
 import org.mapstruct.Mapper;
 
 import java.util.List;

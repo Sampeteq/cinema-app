@@ -6,6 +6,7 @@ import code.screenings.client.dto.ScreeningDto;
 import code.screenings.client.dto.ScreeningMapper;
 import code.screenings.domain.exceptions.ScreeningCollisionException;
 import code.screenings.domain.exceptions.WrongScreeningDateException;
+import code.screenings.client.dto.SeatMapper;
 import code.utils.SpringIT;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,6 +38,9 @@ public class ScreeningControllerIT extends SpringIT {
 
     @Autowired
     private ScreeningMapper screeningMapper;
+
+    @Autowired
+    private SeatMapper seatMapper;
 
     @Test
     @WithMockUser(authorities = "ADMIN")
@@ -149,5 +153,24 @@ public class ScreeningControllerIT extends SpringIT {
         result
                 .andExpect(status().isOk())
                 .andExpect(content().json(toJson(List.of(screeningMapper.mapToDto(screeningMeetParams)))));
+    }
+
+    @Test
+    void should_get_seats_for_screening() throws Exception {
+        //given
+        var film = createFilm();
+        var screening = createScreening(film);
+        film.addScreening(screening);
+        filmRepository.add(film);
+
+        //when
+        var result = mockMvc.perform(
+                get("/screenings/" + screening.getId() + "/seats")
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(seatMapper.toDto(screening.getSeats()))));
     }
 }

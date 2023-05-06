@@ -58,13 +58,8 @@ public class Screening {
         screening.seats = rangeClosed(1, room.getRowsQuantity())
                 .boxed()
                 .flatMap(rowNumber -> rangeClosed(1, room.getSeatsInOneRowQuantity())
-                        .mapToObj(seatNumber -> Seat.builder()
-                                .id(UUID.randomUUID())
-                                .rowNumber(rowNumber)
-                                .number(seatNumber)
-                                .status(SeatStatus.FREE)
-                                .screening(screening).build()))
-                .toList();
+                        .mapToObj(seatNumber -> Seat.of(rowNumber, seatNumber, screening))
+                ).toList();
         return screening;
     }
 

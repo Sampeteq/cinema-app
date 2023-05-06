@@ -33,6 +33,16 @@ public class Seat {
     @ManyToOne
     private Screening screening;
 
+    public static Seat of(int rowNumber, int number, Screening screening) {
+        return new Seat(
+                UUID.randomUUID(),
+                rowNumber,
+                number,
+                SeatStatus.FREE,
+                screening
+        );
+    }
+
     public void book(Clock clock) {
         if (!this.status.equals(SeatStatus.FREE)) {
             throw new SeatNotAvailableException();

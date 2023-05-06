@@ -12,6 +12,7 @@ import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import code.screenings.client.dto.SeatDto;
 import code.screenings.domain.Seat;
+import code.screenings.domain.SeatStatus;
 import code.user.domain.UserRepository;
 import code.utils.SpringIT;
 import org.junit.jupiter.api.BeforeEach;
@@ -121,7 +122,7 @@ class BookingControllerIT extends SpringIT {
                 get("/screenings/" + screening.getId() + "/seats")
         );
         var isSeatBusy = getSeatsFromResult(searchSeatsResult).anyMatch(
-                s -> s.id().equals(seat.getId()) && s.status().equals("BUSY")
+                s -> s.id().equals(seat.getId()) && s.status().equals(SeatStatus.BUSY.name())
         );
         assertThat(isSeatBusy).isTrue();
     }
@@ -168,7 +169,7 @@ class BookingControllerIT extends SpringIT {
                 get("/bookings/my")
         );
         var isBookingCancelled = getBookingsFromResult(searchBookingsResult).anyMatch(
-                b -> b.equals(bookingMapper.mapToDto(booking).withStatus("CANCELLED"))
+                b -> b.equals(bookingMapper.mapToDto(booking).withStatus(BookingStatus.CANCELLED.name()))
         );
         assertThat(isBookingCancelled).isTrue();
     }
@@ -193,7 +194,7 @@ class BookingControllerIT extends SpringIT {
                 get("/screenings/" + screening.getId() + "/seats")
         );
         var isSeatFreeAgain = getSeatsFromResult(searchSeatsResult)
-                .anyMatch(s -> s.id().equals(seat.getId()) && s.status().equals("FREE"));
+                .anyMatch(s -> s.id().equals(seat.getId()) && s.status().equals(SeatStatus.FREE.name()));
         assertThat(isSeatFreeAgain).isTrue();
         mockMvc
                 .perform(get("/screenings"))

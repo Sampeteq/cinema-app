@@ -66,12 +66,16 @@ public class Screening {
                 room,
                 new ArrayList<>()
         );
-        screening.seats = rangeClosed(1, room.getRowsQuantity())
+        screening.seats = createSeats(room, screening);
+        return screening;
+    }
+
+    private static List<Seat> createSeats(Room room, Screening screening) {
+        return screening.seats = rangeClosed(1, room.getRowsQuantity())
                 .boxed()
                 .flatMap(rowNumber -> rangeClosed(1, room.getSeatsInOneRowQuantity())
                         .mapToObj(seatNumber -> Seat.of(rowNumber, seatNumber, screening))
                 ).toList();
-        return screening;
     }
 
     public boolean isCollisionWith(Screening other) {

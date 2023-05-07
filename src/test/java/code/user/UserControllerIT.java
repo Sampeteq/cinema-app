@@ -1,9 +1,9 @@
 package code.user;
 
 import code.user.client.commands.SignInCommand;
-import code.user.domain.UserRepository;
 import code.user.client.exceptions.NotSamePasswordsException;
 import code.user.client.exceptions.UsernameAlreadyExistsException;
+import code.user.domain.UserRepository;
 import code.utils.SpringIT;
 import code.utils.UserTestHelper;
 import org.junit.jupiter.api.Test;

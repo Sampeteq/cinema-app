@@ -1,9 +1,9 @@
 package code.films.client.queries.handlers;
 
-import code.films.client.queries.GetFilmsQuery;
-import code.films.domain.FilmRepository;
 import code.films.client.dto.FilmDto;
 import code.films.client.dto.FilmMapper;
+import code.films.client.queries.GetFilmsQuery;
+import code.films.domain.FilmRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

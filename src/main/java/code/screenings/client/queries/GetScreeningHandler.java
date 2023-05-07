@@ -1,9 +1,9 @@
 package code.screenings.client.queries;
 
-import code.screenings.domain.Screening;
-import code.screenings.domain.ScreeningReadOnlyRepository;
 import code.screenings.client.dto.ScreeningDto;
 import code.screenings.client.dto.ScreeningMapper;
+import code.screenings.domain.Screening;
+import code.screenings.domain.ScreeningReadOnlyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;

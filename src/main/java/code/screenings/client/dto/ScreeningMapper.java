@@ -1,9 +1,9 @@
 package code.screenings.client.dto;
 
 import code.films.domain.Film;
+import code.rooms.domain.Room;
 import code.screenings.domain.Screening;
 import code.screenings.domain.Seat;
-import code.rooms.domain.Room;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

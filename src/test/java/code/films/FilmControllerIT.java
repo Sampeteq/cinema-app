@@ -15,7 +15,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 
-import static code.utils.FilmTestHelper.*;
+import static code.utils.FilmTestHelper.createCreateFilmCommand;
+import static code.utils.FilmTestHelper.createFilm;
+import static code.utils.FilmTestHelper.createFilms;
 import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

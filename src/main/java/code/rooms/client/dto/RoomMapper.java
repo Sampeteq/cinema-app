@@ -1,6 +1,5 @@
 package code.rooms.client.dto;
 
-import code.rooms.client.dto.RoomDto;
 import code.rooms.domain.Room;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

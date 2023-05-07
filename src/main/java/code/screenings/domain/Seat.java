@@ -3,9 +3,20 @@ package code.screenings.domain;
 import code.bookings.domain.exceptions.SeatNotAvailableException;
 import code.bookings.domain.exceptions.TooLateToBookingException;
 import code.bookings.domain.exceptions.TooLateToCancelBookingException;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.Clock;
 import java.util.UUID;
 

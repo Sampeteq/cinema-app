@@ -1,18 +1,24 @@
 package code.screenings.infrastructure;
 
-import code.screenings.client.dto.SeatDto;
-import code.screenings.client.queries.GetScreeningSeatsQuery;
-import code.screenings.client.queries.GetScreeningsQuery;
-import code.screenings.client.queries.GetScreeningHandler;
 import code.screenings.client.commands.CreateScreeningCommand;
 import code.screenings.client.commands.handlers.CreateScreeningHandler;
 import code.screenings.client.dto.ScreeningDto;
+import code.screenings.client.dto.SeatDto;
+import code.screenings.client.queries.GetScreeningHandler;
+import code.screenings.client.queries.GetScreeningSeatsQuery;
+import code.screenings.client.queries.GetScreeningsQuery;
 import code.screenings.client.queries.handlers.GetScreeningSeatsHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;

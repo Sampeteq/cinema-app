@@ -1,9 +1,9 @@
 package code.utils;
 
 import code.films.client.commands.CreateFilmCommand;
-import code.screenings.client.commands.CreateScreeningCommand;
 import code.films.domain.Film;
 import code.films.domain.FilmCategory;
+import code.screenings.client.commands.CreateScreeningCommand;
 import code.screenings.domain.Screening;
 
 import java.time.LocalDateTime;

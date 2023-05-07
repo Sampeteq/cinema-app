@@ -1,11 +1,24 @@
 package code.films.domain;
 
-import code.screenings.domain.exceptions.ScreeningCollisionException;
 import code.films.domain.exceptions.WrongFilmYearException;
 import code.screenings.domain.Screening;
-import lombok.*;
+import code.screenings.domain.exceptions.ScreeningCollisionException;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.With;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;

@@ -90,7 +90,6 @@ public class FilmTestHelper {
                 .builder()
                 .filmId(filmId)
                 .date(LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30))
-                .minAge(13)
                 .roomId(roomId)
                 .build();
     }
@@ -98,7 +97,6 @@ public class FilmTestHelper {
     public static Screening createScreening(Film film) {
         return Screening.of(
                 LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
-                13,
                 film,
                 createRoom()
         );
@@ -107,13 +105,11 @@ public class FilmTestHelper {
     public static List<Screening> createScreenings(Film film) {
         var screening1 = Screening.of(
                 LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
-                13,
                 film,
                 createRoom()
         );
         var screening2 = Screening.of(
                 LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
-                13,
                 film,
                 createRoom()
         );

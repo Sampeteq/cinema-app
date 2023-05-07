@@ -43,8 +43,6 @@ public class Screening {
 
     private LocalDateTime date;
 
-    private int minAge;
-
     @ManyToOne
     @ToStringExclude
     private Film film;
@@ -57,11 +55,10 @@ public class Screening {
     @ToStringExclude
     private List<Seat> seats;
 
-    public static Screening of(LocalDateTime date, int minAge, Film film, Room room) {
+    public static Screening of(LocalDateTime date, Film film, Room room) {
         var screening = new Screening(
                 UUID.randomUUID(),
                 date,
-                minAge,
                 film,
                 room,
                 new ArrayList<>()

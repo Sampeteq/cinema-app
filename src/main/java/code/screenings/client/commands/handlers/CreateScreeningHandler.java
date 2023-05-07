@@ -36,7 +36,6 @@ public class CreateScreeningHandler {
         var room = getRoomOrThrow(dto.roomId());
         var newScreening = Screening.of(
                 dto.date(),
-                dto.minAge(),
                 film,
                 room
         );

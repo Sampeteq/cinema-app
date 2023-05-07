@@ -70,14 +70,6 @@ public class Screening {
         return screening;
     }
 
-    private static List<Seat> createSeats(Room room, Screening screening) {
-        return screening.seats = rangeClosed(1, room.getRowsQuantity())
-                .boxed()
-                .flatMap(rowNumber -> rangeClosed(1, room.getSeatsInOneRowQuantity())
-                        .mapToObj(seatNumber -> Seat.of(rowNumber, seatNumber, screening))
-                ).toList();
-    }
-
     public boolean isCollisionWith(Screening other) {
         var hasSameRoom = other.hasRoom(this.room);
         var isTimeCollision = other.startBefore(this.finishDate()) && other.endAfter(this.date);
@@ -89,6 +81,14 @@ public class Screening {
                 .between(LocalDateTime.now(clock), date)
                 .abs()
                 .toHours();
+    }
+
+    private static List<Seat> createSeats(Room room, Screening screening) {
+        return screening.seats = rangeClosed(1, room.getRowsQuantity())
+                .boxed()
+                .flatMap(rowNumber -> rangeClosed(1, room.getSeatsInOneRowQuantity())
+                        .mapToObj(seatNumber -> Seat.of(rowNumber, seatNumber, screening))
+                ).toList();
     }
 
     private boolean hasRoom(Room room) {

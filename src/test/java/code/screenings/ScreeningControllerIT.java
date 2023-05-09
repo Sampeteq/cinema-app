@@ -95,7 +95,8 @@ public class ScreeningControllerIT extends SpringIT {
     void should_throw_exception_when_there_is_collision_between_screenings() throws Exception {
         //given
         var film = createFilm();
-        var screening = createScreening(film);
+        var room = roomRepository.add(createRoom());
+        var screening = createScreening(film, room);
         film.addScreening(screening);
         filmRepository.add(film);
 
@@ -122,7 +123,8 @@ public class ScreeningControllerIT extends SpringIT {
     void should_get_all_screenings() throws Exception {
         //given
         var film = createFilm();
-        var screenings = createScreenings(film);
+        var room = roomRepository.add(createRoom());
+        var screenings = createScreenings(film, room);
         screenings.forEach(film::addScreening);
         filmRepository.add(film);
 
@@ -141,7 +143,8 @@ public class ScreeningControllerIT extends SpringIT {
     void should_get_screenings_by_params() throws Exception {
         //given
         var film = createFilm();
-        var screeningMeetParams = createScreening(film);
+        var room = roomRepository.add(createRoom());
+        var screeningMeetParams = createScreening(film, room);
         film.addScreening(screeningMeetParams);
         filmRepository.add(film);
 
@@ -161,7 +164,8 @@ public class ScreeningControllerIT extends SpringIT {
     void should_get_seats_for_screening() throws Exception {
         //given
         var film = createFilm();
-        var screening = createScreening(film);
+        var room = roomRepository.add(createRoom());
+        var screening = createScreening(film, room);
         film.addScreening(screening);
         filmRepository.add(film);
 

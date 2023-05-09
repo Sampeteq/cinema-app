@@ -10,6 +10,7 @@ import code.bookings.domain.exceptions.TooLateToBookingException;
 import code.bookings.domain.exceptions.TooLateToCancelBookingException;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
+import code.rooms.domain.RoomRepository;
 import code.screenings.client.dto.SeatDto;
 import code.screenings.domain.Seat;
 import code.screenings.domain.SeatStatus;
@@ -30,6 +31,7 @@ import java.util.stream.Stream;
 
 import static code.utils.BookingTestHelper.createBooking;
 import static code.utils.FilmTestHelper.createFilmWithScreening;
+import static code.utils.RoomTestHelper.createRoom;
 import static code.utils.UserTestHelper.createUser;
 import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
@@ -54,6 +56,9 @@ class BookingControllerIT extends SpringIT {
 
     @Autowired
     private BookingMapper bookingMapper;
+
+    @Autowired
+    private RoomRepository roomRepository;
 
     @Autowired
     @Qualifier("testClock")
@@ -261,7 +266,8 @@ class BookingControllerIT extends SpringIT {
     }
 
     private Seat prepareSeat() {
-        var film = addFilm(createFilmWithScreening());
+        var room = roomRepository.add(createRoom());
+        var film = addFilm(createFilmWithScreening(room));
         return film
                 .getScreenings()
                 .get(0)
@@ -270,7 +276,8 @@ class BookingControllerIT extends SpringIT {
     }
 
     private Seat prepareSeat(LocalDateTime screeningDate) {
-        var film = addFilm(createFilmWithScreening(screeningDate));
+        var room = roomRepository.add(createRoom());
+        var film = addFilm(createFilmWithScreening(screeningDate, room));
         return film
                 .getScreenings()
                 .get(0)
@@ -279,7 +286,8 @@ class BookingControllerIT extends SpringIT {
     }
 
     private List<Seat> prepareSeats() {
-        var film = addFilm(createFilmWithScreening());
+        var room = roomRepository.add(createRoom());
+        var film = addFilm(createFilmWithScreening(room));
         return film
                 .getScreenings()
                 .get(0)

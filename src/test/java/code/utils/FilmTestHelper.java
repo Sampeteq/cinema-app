@@ -3,6 +3,7 @@ package code.utils;
 import code.films.client.commands.CreateFilmCommand;
 import code.films.domain.Film;
 import code.films.domain.FilmCategory;
+import code.rooms.domain.Room;
 import code.screenings.client.commands.CreateScreeningCommand;
 import code.screenings.domain.Screening;
 
@@ -12,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-
-import static code.utils.RoomTestHelper.createRoom;
 
 public class FilmTestHelper {
 
@@ -41,16 +40,16 @@ public class FilmTestHelper {
                 .build();
     }
 
-    public static Film createFilmWithScreening() {
+    public static Film createFilmWithScreening(Room room) {
         var film = createFilm();
-        var screening = createScreening(film);
+        var screening = createScreening(film, room);
         film.addScreening(screening);
         return film;
     }
 
-    public static Film createFilmWithScreening(LocalDateTime screeningDate) {
+    public static Film createFilmWithScreening(LocalDateTime screeningDate, Room room) {
         var film = createFilm();
-        var screening = createScreening(film).withDate(screeningDate);
+        var screening = createScreening(film, room).withDate(screeningDate);
         film.addScreening(screening);
         return film;
     }
@@ -94,24 +93,24 @@ public class FilmTestHelper {
                 .build();
     }
 
-    public static Screening createScreening(Film film) {
+    public static Screening createScreening(Film film, Room room) {
         return Screening.of(
                 LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
                 film,
-                createRoom()
+                room
         );
     }
 
-    public static List<Screening> createScreenings(Film film) {
+    public static List<Screening> createScreenings(Film film, Room room) {
         var screening1 = Screening.of(
                 LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
                 film,
-                createRoom()
+                room
         );
         var screening2 = Screening.of(
-                LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
+                LocalDateTime.of(CURRENT_YEAR, 5, 11, 18, 30),
                 film,
-                createRoom()
+                room
         );
         return List.of(screening1, screening2);
     }

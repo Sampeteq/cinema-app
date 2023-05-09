@@ -47,7 +47,7 @@ public class Screening {
     @ToStringExclude
     private Film film;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "roomId")
     private Room room;
 

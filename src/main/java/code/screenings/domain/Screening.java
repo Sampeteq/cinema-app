@@ -33,7 +33,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString(exclude = "seats")
+@ToString(exclude = {"film"})
 @With
 public class Screening {
 
@@ -44,7 +44,6 @@ public class Screening {
     private LocalDateTime date;
 
     @ManyToOne
-    @ToStringExclude
     private Film film;
 
     @OneToOne
@@ -52,7 +51,6 @@ public class Screening {
     private Room room;
 
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
-    @ToStringExclude
     private List<Seat> seats;
 
     public static Screening of(LocalDateTime date, Film film, Room room) {

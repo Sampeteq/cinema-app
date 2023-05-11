@@ -32,7 +32,7 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString(exclude = "screenings")
+@ToString
 @With
 public class Film {
 

@@ -30,7 +30,7 @@ import java.time.Clock;
 @With
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString
+@ToString(exclude = {"screening"})
 public class Seat {
 
     @Id

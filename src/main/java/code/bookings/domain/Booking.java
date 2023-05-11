@@ -40,7 +40,7 @@ public class Booking {
     private BookingStatus status;
 
     @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "seatId")
+    @JoinColumn(name = "seat_id")
     private Seat seat;
 
     private String username;

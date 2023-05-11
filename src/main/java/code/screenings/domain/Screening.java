@@ -48,7 +48,7 @@ public class Screening {
     private Film film;
 
     @OneToOne
-    @JoinColumn(name = "roomId")
+    @JoinColumn(name = "room_id")
     private Room room;
 
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)

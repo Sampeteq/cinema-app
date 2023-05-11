@@ -14,14 +14,12 @@ import code.screenings.domain.Seat;
 import code.screenings.domain.exceptions.WrongScreeningDateException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
-import java.util.UUID;
 
 import static java.util.stream.IntStream.rangeClosed;
 

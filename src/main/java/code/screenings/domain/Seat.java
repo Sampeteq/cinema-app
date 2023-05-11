@@ -21,7 +21,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.Clock;
-import java.util.UUID;
 
 @Entity
 @Table(name = "SEATS")

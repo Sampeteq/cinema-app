@@ -4,7 +4,6 @@ import code.films.client.queries.GetFilmsQuery;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface FilmRepository  {
     Film add(Film film);

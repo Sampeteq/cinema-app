@@ -2,8 +2,6 @@ package code.utils;
 
 import code.rooms.domain.Room;
 
-import java.util.UUID;
-
 public class RoomTestHelper {
 
     public static Room createRoom() {

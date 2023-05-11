@@ -32,7 +32,7 @@ public class FilmTestHelper {
     public static Film createFilm() {
         return Film
                 .builder()
-                .id(UUID.randomUUID())
+                .id(1L)
                 .title("Test film 1")
                 .category(FilmCategory.COMEDY)
                 .year(CURRENT_YEAR)
@@ -58,7 +58,7 @@ public class FilmTestHelper {
     public static List<Film> createFilms() {
         var film1 = Film
                 .builder()
-                .id(UUID.randomUUID())
+                .id(1L)
                 .title("Test film 1")
                 .category(FilmCategory.COMEDY)
                 .year(CURRENT_YEAR)
@@ -67,7 +67,7 @@ public class FilmTestHelper {
                 .build();
         var film2 = Film
                 .builder()
-                .id(UUID.randomUUID())
+                .id(2L)
                 .title("Test film 2")
                 .category(FilmCategory.DRAMA)
                 .year(CURRENT_YEAR + 1)
@@ -85,7 +85,7 @@ public class FilmTestHelper {
         );
     }
 
-    public static CreateScreeningCommand createCreateScreeningCommand(UUID filmId, UUID roomId) {
+    public static CreateScreeningCommand createCreateScreeningCommand(Long filmId, Long roomId) {
         return CreateScreeningCommand
                 .builder()
                 .filmId(filmId)
@@ -99,9 +99,9 @@ public class FilmTestHelper {
                 LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
                 film,
                 room
-        );
-        var seat1 = Seat.of(1,2,screening);
-        var seat2 = Seat.of(1,2,screening);
+        ).withId(1L);
+        var seat1 = Seat.of(1,2,screening).withId(1L);
+        var seat2 = Seat.of(1,2,screening).withId(2L);
         screening.addSeats(List.of(seat1, seat2));
         return screening;
     }
@@ -111,7 +111,7 @@ public class FilmTestHelper {
                 LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
                 film,
                 room
-        );
+        ).withId(1L);
         var seat11 = Seat.of(1,2,screening1);
         var seat12 = Seat.of(1,2,screening1);
         screening1.addSeats(List.of(seat11, seat12));
@@ -119,7 +119,7 @@ public class FilmTestHelper {
                 LocalDateTime.of(CURRENT_YEAR, 5, 11, 18, 30),
                 film,
                 room
-        );
+        ).withId(2L);
         var seat21 = Seat.of(1,2,screening2);
         var seat22 = Seat.of(1,2,screening2);
         screening2.addSeats(List.of(seat21, seat22));

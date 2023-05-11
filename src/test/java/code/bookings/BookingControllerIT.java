@@ -253,6 +253,7 @@ class BookingControllerIT extends SpringIT {
     void should_get_all_user_bookings() throws Exception {
         //given
         var bookings = prepareBookings("user1");
+        System.out.println(bookings);
 
         //when
         var result = mockMvc.perform(
@@ -312,8 +313,8 @@ class BookingControllerIT extends SpringIT {
 
     private List<Booking> prepareBookings(String username) {
         var seats = prepareSeats();
-        var booking1 = addBooking(createBooking(seats.get(0), username));
-        var booking2 = addBooking(createBooking(seats.get(1), username));
+        var booking1 = addBooking(createBooking(seats.get(0), username).withId(1L));
+        var booking2 = addBooking(createBooking(seats.get(1), username).withId(2L));
         return List.of(booking1, booking2);
     }
 

@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-public interface SeatReadOnlyRepository extends Repository<Seat, UUID> {
-    Optional<Seat> getById(UUID seatId);
-    Set<Seat> getByScreening_Id(UUID screeningId);
+public interface SeatReadOnlyRepository extends Repository<Seat, Long> {
+    Optional<Seat> getById(Long seatId);
+    Set<Seat> getByScreening_Id(Long screeningId);
 }

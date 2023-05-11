@@ -10,10 +10,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.With;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -25,14 +28,16 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
+@With
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString
 public class Seat {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
-    private UUID id;
+    private Long id;
 
     private int rowNumber;
 
@@ -46,7 +51,7 @@ public class Seat {
 
     public static Seat of(int rowNumber, int number, Screening screening) {
         return new Seat(
-                UUID.randomUUID(),
+                null,
                 rowNumber,
                 number,
                 SeatStatus.FREE,

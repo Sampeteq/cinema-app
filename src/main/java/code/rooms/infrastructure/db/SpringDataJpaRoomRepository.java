@@ -22,7 +22,7 @@ public class SpringDataJpaRoomRepository implements RoomRepository {
     }
 
     @Override
-    public Optional<Room> readById(UUID roomId) {
+    public Optional<Room> readById(Long roomId) {
         return jpaRoomRepository.findById(roomId);
     }
 
@@ -37,6 +37,6 @@ public class SpringDataJpaRoomRepository implements RoomRepository {
     }
 }
 
-interface JpaRoomRepository extends JpaRepository<Room, UUID> {
+interface JpaRoomRepository extends JpaRepository<Room, Long> {
     boolean existsByCustomId(String customId);
 }

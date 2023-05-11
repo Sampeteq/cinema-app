@@ -12,14 +12,14 @@ import java.util.UUID;
 @Mapper
 public interface BookingMapper {
 
-    @Mapping(target = "seatId", source = "seat", qualifiedByName = "seatToUuid")
+    @Mapping(target = "seatId", source = "seat", qualifiedByName = "seatToId")
     BookingDto mapToDto(Booking booking);
 
-    @Mapping(target = "seatId", source = "seat", qualifiedByName = "seatToUuid")
+    @Mapping(target = "seatId", source = "seat", qualifiedByName = "seatToId")
     List<BookingDto> mapToDto(List<Booking> booking);
 
-    @Named("seatToUuid")
-    static UUID seatToUuid(Seat seat) {
+    @Named("seatToId")
+    static Long seatToUuid(Seat seat) {
         return seat.getId();
     }
 }

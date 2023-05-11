@@ -3,7 +3,7 @@
 
 CREATE TABLE IF NOT EXISTS FILMS
 (
-    id                  uuid primary key,
+    id                  bigint generated always as identity primary key,
     title               varchar,
     category            varchar,
     year                int,

@@ -8,7 +8,7 @@ public interface RoomRepository {
 
     Room add(Room room);
 
-    Optional<Room> readById(UUID roomId);
+    Optional<Room> readById(Long roomId);
 
     List<Room> readAll();
 

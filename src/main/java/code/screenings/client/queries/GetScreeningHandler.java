@@ -39,7 +39,7 @@ public class GetScreeningHandler {
                 criteriaBuilder.equal(root.get("date"), date);
     }
 
-    private static Specification<Screening> filmLike(UUID filmId) {
+    private static Specification<Screening> filmLike(Long filmId) {
         return (root, query, criteriaBuilder) -> filmId == null ?
                 criteriaBuilder.conjunction() :
                 criteriaBuilder.equal(root.get("film").get("id"), filmId);

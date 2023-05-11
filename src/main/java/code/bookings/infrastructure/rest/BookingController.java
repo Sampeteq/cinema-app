@@ -35,7 +35,7 @@ public class BookingController {
     private final GetBookingHandler getBookingHandler;
 
     @PostMapping
-    public BookingDto bookSeat(@RequestParam UUID seatId, Principal principal) {
+    public BookingDto bookSeat(@RequestParam Long seatId, Principal principal) {
         var command = MakeBookingCommand
                 .builder()
                 .seatId(seatId)
@@ -45,7 +45,7 @@ public class BookingController {
     }
 
     @PostMapping("/{bookingId}/cancel")
-    public void cancelBooking(@PathVariable UUID bookingId) {
+    public void cancelBooking(@PathVariable Long bookingId) {
         var command = CancelBookingCommand
                 .builder()
                 .bookingId(bookingId)
@@ -63,7 +63,7 @@ public class BookingController {
     }
 
     @GetMapping("/my/{bookingId}")
-    public BookingDto getBookingById(@PathVariable UUID bookingId, Principal principal) {
+    public BookingDto getBookingById(@PathVariable Long bookingId, Principal principal) {
         var getBookingQuery = GetBookingQuery
                 .builder()
                 .bookingId(bookingId)

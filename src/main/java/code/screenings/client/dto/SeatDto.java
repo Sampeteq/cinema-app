@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @With
 public record SeatDto(
-        UUID id,
+        Long id,
         int rowNumber,
         int number,
         String status

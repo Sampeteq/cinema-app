@@ -14,23 +14,23 @@ import java.util.UUID;
 @Mapper
 public interface ScreeningMapper {
 
-    @Mapping(target = "filmId", source = "film", qualifiedByName = "filmToUuid")
-    @Mapping(target = "roomId", source = "room", qualifiedByName = "roomToUuid")
+    @Mapping(target = "filmId", source = "film", qualifiedByName = "filmToId")
+    @Mapping(target = "roomId", source = "room", qualifiedByName = "roomToId")
     @Mapping(target = "freeSeats", source = "seats", qualifiedByName = "seatsToFreeSeats")
     ScreeningDto mapToDto(Screening screening);
 
-    @Mapping(target = "filmId", source = "film", qualifiedByName = "filmToUuid")
-    @Mapping(target = "roomId", source = "room", qualifiedByName = "roomToUuid")
+    @Mapping(target = "filmId", source = "film", qualifiedByName = "filmToId")
+    @Mapping(target = "roomId", source = "room", qualifiedByName = "roomToId")
     @Mapping(target = "freeSeats", source = "seats", qualifiedByName = "seatsToFreeSeats")
     List<ScreeningDto> mapToDto(List<Screening> screening);
 
-    @Named("filmToUuid")
-    static UUID filmToUuid(Film film) {
+    @Named("filmToId")
+    static Long filmToId(Film film) {
         return film.getId();
     }
 
-    @Named("roomToUuid")
-    static UUID roomToUuid(Room room) {
+    @Named("roomToId")
+    static Long roomToId(Room room) {
         return room.getId();
     }
 

@@ -28,12 +28,12 @@ public class SpringDataJpaBookingRepository implements BookingRepository {
     }
 
     @Override
-    public Optional<Booking> readById(UUID bookingId) {
+    public Optional<Booking> readById(Long bookingId) {
         return jpaBookingRepository.findById(bookingId);
     }
 
     @Override
-    public Optional<Booking> readByIdAndUsername(UUID ticketId, String username) {
+    public Optional<Booking> readByIdAndUsername(Long ticketId, String username) {
         return jpaBookingRepository.readByIdAndUsername(ticketId, username);
     }
 
@@ -43,8 +43,8 @@ public class SpringDataJpaBookingRepository implements BookingRepository {
     }
 }
 
-interface JpaBookingRepository extends JpaRepository<Booking, UUID> {
-    Optional<Booking> readByIdAndUsername(UUID bookingId, String username);
+interface JpaBookingRepository extends JpaRepository<Booking, Long> {
+    Optional<Booking> readByIdAndUsername(Long bookingId, String username);
 
     @Query("SELECT DISTINCT s FROM Booking s where s.username = :username")
     List<Booking> readByUsername(String username);

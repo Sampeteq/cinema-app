@@ -6,7 +6,7 @@ import code.films.domain.FilmCategory;
 import java.util.UUID;
 
 public record FilmDto(
-        UUID id,
+        Long id,
         String title,
         FilmCategory category,
         int year,

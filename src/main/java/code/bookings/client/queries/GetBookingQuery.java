@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record GetBookingQuery(UUID bookingId, String username) {
+public record GetBookingQuery(Long bookingId, String username) {
 }

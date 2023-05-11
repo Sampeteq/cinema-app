@@ -7,7 +7,7 @@ import java.util.UUID;
 public interface BookingRepository {
     Booking add(Booking booking);
     List<Booking> addMany(List<Booking> bookings);
-    Optional<Booking> readById(UUID bookingId);
-    Optional<Booking> readByIdAndUsername(UUID ticketId, String username);
+    Optional<Booking> readById(Long bookingId);
+    Optional<Booking> readByIdAndUsername(Long ticketId, String username);
     List<Booking> readByUsername(String username);
 }

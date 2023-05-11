@@ -11,7 +11,7 @@ public interface FilmRepository  {
 
     List<Film> addMany(List<Film> films);
 
-    Optional<Film> readById(UUID filmId);
+    Optional<Film> readById(Long filmId);
 
     List<Film> readBy(GetFilmsQuery query);
 }

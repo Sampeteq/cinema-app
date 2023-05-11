@@ -49,7 +49,7 @@ public class ScreeningController {
     @GetMapping
     public List<ScreeningDto> searchScreeningsBy(
             @RequestParam(required = false)
-            UUID filmId,
+            Long filmId,
 
             @RequestParam(required = false)
             @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
@@ -66,7 +66,7 @@ public class ScreeningController {
     }
 
     @GetMapping("/{screeningId}/seats")
-    public List<SeatDto> searchSeats(@PathVariable UUID screeningId) {
+    public List<SeatDto> searchSeats(@PathVariable Long screeningId) {
         return getScreeningSeatsHandler.handle(
                 GetScreeningSeatsQuery
                         .builder()

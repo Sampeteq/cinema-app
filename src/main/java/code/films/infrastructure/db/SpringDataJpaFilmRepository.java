@@ -29,7 +29,7 @@ public class SpringDataJpaFilmRepository implements FilmRepository {
     }
 
     @Override
-    public Optional<Film> readById(UUID filmId) {
+    public Optional<Film> readById(Long filmId) {
         return jpaFilmRepository.findById(filmId);
     }
 
@@ -39,7 +39,7 @@ public class SpringDataJpaFilmRepository implements FilmRepository {
     }
 }
 
-interface JpaFilmRepository extends JpaRepository<Film, UUID> {
+interface JpaFilmRepository extends JpaRepository<Film, Long> {
     @Query("SELECT f FROM Film f WHERE :#{#params.category} is null or f.category = :#{#params.category}")
     List<Film> getBy(GetFilmsQuery params);
 }

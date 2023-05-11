@@ -14,6 +14,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -32,7 +34,8 @@ import java.util.UUID;
 public class Booking {
 
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
@@ -46,7 +49,7 @@ public class Booking {
     public static Booking make(Seat seat, String username, Clock clock) {
         seat.book(clock);
         return new Booking(
-                UUID.randomUUID(),
+                null,
                 BookingStatus.ACTIVE,
                 seat,
                 username

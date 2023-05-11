@@ -6,10 +6,10 @@ import java.util.UUID;
 
 @With
 public record BookingDto(
-        UUID id,
+        Long id,
 
         String status,
 
-        UUID seatId
+        Long seatId
 ) {
 }

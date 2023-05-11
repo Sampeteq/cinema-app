@@ -21,7 +21,6 @@ public class CreateRoomHandler {
         }
         var screeningRoom = Room
                 .builder()
-                .id(UUID.randomUUID())
                 .customId(command.customId())
                 .rowsQuantity(command.rowsQuantity())
                 .seatsInOneRowQuantity(command.seatsQuantityInOneRow())

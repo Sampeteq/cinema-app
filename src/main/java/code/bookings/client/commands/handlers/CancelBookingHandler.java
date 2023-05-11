@@ -24,7 +24,7 @@ public class CancelBookingHandler {
         booking.cancel(clock);
     }
 
-    private Booking getBookingOrThrow(UUID bookingId) {
+    private Booking getBookingOrThrow(Long bookingId) {
         return bookingRepository
                 .readById(bookingId)
                 .orElseThrow(BookingNotFoundException::new);

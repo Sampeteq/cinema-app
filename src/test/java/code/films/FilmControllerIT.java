@@ -97,7 +97,7 @@ class FilmControllerIT extends SpringIT {
         var filmMeetingParams = filmRepository.add(
                 createFilm().withCategory(FilmCategory.COMEDY).withId(1L)
         );
-        var filmNotMeetingParams = filmRepository.add(
+        filmRepository.add(
                 createFilm().withCategory(FilmCategory.DRAMA).withId(2L)
         );
 

@@ -56,15 +56,17 @@ public class Screening {
     private List<Seat> seats;
 
     public static Screening of(LocalDateTime date, Film film, Room room) {
-        var screening = new Screening(
+        return new Screening(
                 UUID.randomUUID(),
                 date,
                 film,
                 room,
                 new ArrayList<>()
         );
-        screening.seats = createSeats(room, screening);
-        return screening;
+    }
+
+    public void addSeats(List<Seat> seats) {
+        this.seats = seats;
     }
 
     public boolean isCollisionWith(Screening other) {
@@ -78,14 +80,6 @@ public class Screening {
                 .between(LocalDateTime.now(clock), date)
                 .abs()
                 .toHours();
-    }
-
-    private static List<Seat> createSeats(Room room, Screening screening) {
-        return screening.seats = rangeClosed(1, room.getRowsQuantity())
-                .boxed()
-                .flatMap(rowNumber -> rangeClosed(1, room.getSeatsInOneRowQuantity())
-                        .mapToObj(seatNumber -> Seat.of(rowNumber, seatNumber, screening))
-                ).toList();
     }
 
     private boolean hasRoom(Room room) {

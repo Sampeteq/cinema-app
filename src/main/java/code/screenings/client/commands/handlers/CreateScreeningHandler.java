@@ -10,6 +10,7 @@ import code.screenings.client.commands.CreateScreeningCommand;
 import code.screenings.client.dto.ScreeningDto;
 import code.screenings.client.dto.ScreeningMapper;
 import code.screenings.domain.Screening;
+import code.screenings.domain.Seat;
 import code.screenings.domain.exceptions.WrongScreeningDateException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.UUID;
+
+import static java.util.stream.IntStream.rangeClosed;
 
 @Component
 @AllArgsConstructor
@@ -39,6 +43,8 @@ public class CreateScreeningHandler {
                 film,
                 room
         );
+        var seats = createSeats(room, newScreening);
+        newScreening.addSeats(seats);
         film.addScreening(newScreening);
         return screeningMapper.mapToDto(newScreening);
     }
@@ -62,5 +68,13 @@ public class CreateScreeningHandler {
         return roomRepository
                 .readById(roomId)
                 .orElseThrow(RoomNotFoundException::new);
+    }
+
+    private static List<Seat> createSeats(Room room, Screening screening) {
+        return rangeClosed(1, room.getRowsQuantity())
+                .boxed()
+                .flatMap(rowNumber -> rangeClosed(1, room.getSeatsInOneRowQuantity())
+                        .mapToObj(seatNumber -> Seat.of(rowNumber, seatNumber, screening))
+                ).toList();
     }
 }

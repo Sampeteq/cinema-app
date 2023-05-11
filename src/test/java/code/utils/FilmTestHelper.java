@@ -6,6 +6,7 @@ import code.films.domain.FilmCategory;
 import code.rooms.domain.Room;
 import code.screenings.client.commands.CreateScreeningCommand;
 import code.screenings.domain.Screening;
+import code.screenings.domain.Seat;
 
 import java.time.LocalDateTime;
 import java.time.Year;
@@ -94,11 +95,15 @@ public class FilmTestHelper {
     }
 
     public static Screening createScreening(Film film, Room room) {
-        return Screening.of(
+        var screening = Screening.of(
                 LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
                 film,
                 room
         );
+        var seat1 = Seat.of(1,2,screening);
+        var seat2 = Seat.of(1,2,screening);
+        screening.addSeats(List.of(seat1, seat2));
+        return screening;
     }
 
     public static List<Screening> createScreenings(Film film, Room room) {
@@ -107,14 +112,19 @@ public class FilmTestHelper {
                 film,
                 room
         );
+        var seat11 = Seat.of(1,2,screening1);
+        var seat12 = Seat.of(1,2,screening1);
+        screening1.addSeats(List.of(seat11, seat12));
         var screening2 = Screening.of(
                 LocalDateTime.of(CURRENT_YEAR, 5, 11, 18, 30),
                 film,
                 room
         );
+        var seat21 = Seat.of(1,2,screening2);
+        var seat22 = Seat.of(1,2,screening2);
+        screening2.addSeats(List.of(seat21, seat22));
         return List.of(screening1, screening2);
     }
-
 
     public static List<String> getWrongScreeningDates() {
         var date1 = LocalDateTime.of(

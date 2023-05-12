@@ -5,8 +5,8 @@ import code.bookings.client.dto.BookingDto;
 import code.bookings.client.dto.BookingMapper;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
-import code.bookings.domain.exceptions.SeatNotAvailableException;
 import code.screenings.domain.SeatReadOnlyRepository;
+import code.screenings.domain.exceptions.SeatNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,7 @@ public class MakeBookingHandler {
         log.info("Received a command:{}",command);
         var seat = seatReadOnlyRepository
                 .getById(command.seatId())
-                .orElseThrow(SeatNotAvailableException::new);
+                .orElseThrow(SeatNotFoundException::new);
         log.info("Found a seat for booking:{}",seat);
         var booking = Booking.make(seat, command.username(), clock);
         var savedBooking = bookingRepository.add(booking);

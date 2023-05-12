@@ -1,1 +1,0 @@
-alter table if exists screenings drop column if exists min_age

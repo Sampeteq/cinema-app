@@ -4,7 +4,6 @@
 create table if not exists screenings
 (
     id      bigint generated always as identity primary key,
-    min_age int,
     date    timestamp with time zone,
     film_id bigint,
     room_id bigint,

@@ -1,7 +1,7 @@
 package code.bookings.client.commands.handlers;
 
 import code.bookings.client.commands.CancelBookingCommand;
-import code.bookings.client.exceptions.BookingNotFoundException;
+import code.bookings.domain.exceptions.BookingNotFoundException;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import lombok.RequiredArgsConstructor;

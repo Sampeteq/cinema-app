@@ -1,8 +1,8 @@
 package code.user.client.commands.handlers;
 
 import code.user.client.commands.SignUpCommand;
-import code.user.client.exceptions.NotSamePasswordsException;
-import code.user.client.exceptions.UsernameAlreadyExistsException;
+import code.user.domain.exceptions.NotSamePasswordsException;
+import code.user.domain.exceptions.UsernameAlreadyExistsException;
 import code.user.domain.User;
 import code.user.domain.UserRepository;
 import code.user.domain.UserRole;

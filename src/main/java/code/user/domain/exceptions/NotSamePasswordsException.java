@@ -1,4 +1,4 @@
-package code.user.client.exceptions;
+package code.user.domain.exceptions;
 
 import code.shared.ValidationException;
 

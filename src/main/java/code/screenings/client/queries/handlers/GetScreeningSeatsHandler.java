@@ -2,7 +2,7 @@ package code.screenings.client.queries.handlers;
 
 import code.screenings.client.dto.SeatDto;
 import code.screenings.client.dto.SeatMapper;
-import code.screenings.client.exceptions.ScreeningNotFoundException;
+import code.screenings.domain.exceptions.ScreeningNotFoundException;
 import code.screenings.client.queries.GetScreeningSeatsQuery;
 import code.screenings.domain.Screening;
 import code.screenings.domain.ScreeningReadOnlyRepository;

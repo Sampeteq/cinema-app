@@ -1,9 +1,9 @@
 package code.screenings.client.commands.handlers;
 
-import code.films.client.exceptions.FilmNotFoundException;
+import code.films.domain.exceptions.FilmNotFoundException;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
-import code.rooms.client.exceptions.RoomNotFoundException;
+import code.rooms.domain.exceptions.RoomNotFoundException;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
 import code.screenings.client.commands.CreateScreeningCommand;

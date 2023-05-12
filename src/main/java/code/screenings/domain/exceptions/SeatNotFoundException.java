@@ -1,4 +1,4 @@
-package code.screenings.client.exceptions;
+package code.screenings.domain.exceptions;
 
 
 import code.shared.EntityNotFoundException;

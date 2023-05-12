@@ -1,4 +1,4 @@
-package code.bookings.client.exceptions;
+package code.bookings.domain.exceptions;
 
 import code.shared.EntityNotFoundException;
 

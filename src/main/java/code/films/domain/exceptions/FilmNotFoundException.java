@@ -1,4 +1,4 @@
-package code.films.client.exceptions;
+package code.films.domain.exceptions;
 
 import code.shared.EntityNotFoundException;
 

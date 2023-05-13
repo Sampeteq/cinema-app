@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
         return username -> userRepository
-                .readByUsername(username)
+                .readyByMail(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 

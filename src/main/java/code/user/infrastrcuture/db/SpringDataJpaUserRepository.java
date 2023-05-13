@@ -20,8 +20,8 @@ public class SpringDataJpaUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> readByUsername(String username) {
-        return jpaUserRepository.readByMail(username);
+    public Optional<User> readyByMail(String mail) {
+        return jpaUserRepository.readByMail(mail);
     }
 
     @Override

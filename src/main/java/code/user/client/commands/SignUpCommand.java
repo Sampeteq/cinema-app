@@ -1,11 +1,11 @@
 package code.user.client.commands;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 public record SignUpCommand(
-
-        @Size(min = 3, max = 15)
-        String username,
+        @Email
+        String mail,
 
         @Size(min = 5, max = 20)
         String password,

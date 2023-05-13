@@ -31,7 +31,7 @@ public class MakeBookingHandler {
                 .getById(command.seatId())
                 .orElseThrow(SeatNotFoundException::new);
         log.info("Found a seat for booking:{}",seat);
-        var booking = Booking.make(seat, command.username(), clock);
+        var booking = Booking.make(seat, command.userMail(), clock);
         var savedBooking = bookingRepository.add(booking);
         log.info("Saved a booking:{}", savedBooking);
         return bookingMapper.mapToDto(savedBooking);

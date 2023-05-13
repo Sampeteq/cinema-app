@@ -8,7 +8,7 @@ public class UserTestHelper {
 
     public static SignUpCommand createSignUpCommand() {
         return new SignUpCommand(
-                "user1",
+                "user1@mail.com",
                 "password1",
                 "password1"
         );
@@ -24,16 +24,16 @@ public class UserTestHelper {
 
     public static SignUpCommand createSignUpCommand(String password, String repeatedPassword) {
         return new SignUpCommand(
-                "user1",
+                "user1@mail.com",
                 password,
                 repeatedPassword
         );
     }
 
-    public static User createUser(String username) {
+    public static User createUser(String mail) {
         return User
                 .builder()
-                .username(username)
+                .mail(mail)
                 .password("12345")
                 .role(UserRole.COMMON)
                 .build();

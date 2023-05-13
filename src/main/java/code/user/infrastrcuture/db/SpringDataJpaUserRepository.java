@@ -21,16 +21,16 @@ public class SpringDataJpaUserRepository implements UserRepository {
 
     @Override
     public Optional<User> readByUsername(String username) {
-        return jpaUserRepository.readByUsername(username);
+        return jpaUserRepository.readByMail(username);
     }
 
     @Override
     public boolean existsByUsername(String username) {
-        return jpaUserRepository.existsByUsername(username);
+        return jpaUserRepository.existsByMail(username);
     }
 }
 
 interface JpaUserRepository extends JpaRepository<User, String> {
-    Optional<User> readByUsername(String username);
-    boolean existsByUsername(String username);
+    Optional<User> readByMail(String mail);
+    boolean existsByMail(String mail);
 }

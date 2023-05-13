@@ -1,7 +1,7 @@
 package code.user.client.commands;
 
 public record SignInCommand(
-        String username,
+        String mail,
         String password
 ) {
 }

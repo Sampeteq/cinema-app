@@ -37,7 +37,7 @@ class UserControllerIT extends SpringIT {
         //then
         result.andExpect(status().isCreated());
         var signInDto = new SignInCommand(
-                signUpRequest.username(),
+                signUpRequest.mail(),
                 signUpRequest.password()
         );
         mockMvc.perform(
@@ -50,7 +50,7 @@ class UserControllerIT extends SpringIT {
     @Test
     void should_throw_exception_when_username_is_not_unique() throws Exception {
         //given
-        var user = userRepository.add(createUser("user1"));
+        var user = userRepository.add(createUser("user1@mail.com"));
         var signUpRequest = UserTestHelper.createSignUpCommand(user.getUsername());
 
         //when

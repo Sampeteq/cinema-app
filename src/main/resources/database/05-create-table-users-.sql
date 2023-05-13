@@ -3,7 +3,7 @@
 
 create table if not exists users
 (
-    username varchar primary key,
+    mail     varchar primary key,
     password varchar,
     role     varchar
 );

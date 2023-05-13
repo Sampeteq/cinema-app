@@ -23,11 +23,11 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-@EqualsAndHashCode(of = "username")
+@EqualsAndHashCode(of = "mail")
 @ToString
 public class User implements UserDetails {
     @Id
-    private String username;
+    private String mail;
     private String password;
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
@@ -44,7 +44,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return mail;
     }
 
     @Override

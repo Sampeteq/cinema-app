@@ -32,7 +32,7 @@ public class OnStartUpMainAdminCreateHandler {
         } else {
             var mainAdmin = User
                     .builder()
-                    .username(mainAdminUsername)
+                    .mail(mainAdminUsername)
                     .password(passwordEncoder.encode(mainAdminPassword))
                     .role(UserRole.ADMIN)
                     .build();

@@ -18,7 +18,7 @@ public class SignUpHandler {
     private final PasswordEncoder passwordEncoder;
 
     public void handle(SignUpCommand command) {
-        if (userRepository.existsByUsername(command.username())) {
+        if (userRepository.existsByUsername(command.mail())) {
             throw new UsernameAlreadyExistsException();
         }
         if (!(command.password().equals(command.repeatedPassword()))) {
@@ -26,7 +26,7 @@ public class SignUpHandler {
         }
         var user = User
                 .builder()
-                .username(command.username())
+                .mail(command.mail())
                 .password(passwordEncoder.encode(command.password()))
                 .role(UserRole.COMMON)
                 .build();

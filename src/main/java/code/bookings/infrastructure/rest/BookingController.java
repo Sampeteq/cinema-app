@@ -38,7 +38,7 @@ public class BookingController {
         var command = MakeBookingCommand
                 .builder()
                 .seatId(seatId)
-                .username(principal.getName())
+                .userMail(principal.getName())
                 .build();
         return makeBookingHandler.handle(command);
     }

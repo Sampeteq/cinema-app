@@ -66,11 +66,11 @@ class BookingControllerIT extends SpringIT {
 
     @BeforeEach
     void setUp() {
-        userRepository.add(createUser("user1"));
+        userRepository.add(createUser("user1@mail.com"));
     }
 
     @Test
-    @WithMockUser(username = "user1")
+    @WithMockUser(username = "user1@mail.com")
     void should_make_booking() throws Exception {
         //given
         var seat = prepareSeat();
@@ -92,7 +92,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1")
+    @WithMockUser(username = "user1@mail.com")
     void should_throw_exception_during_booking_when_less_than_24h_to_screening() throws Exception {
         //given
         var screeningDate = getCurrentDate(clock).minusHours(23);
@@ -113,7 +113,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1")
+    @WithMockUser(username = "user1@mail.com")
     void should_seat_be_busy_after_booking() throws Exception {
         //given
         var seat = prepareSeat();
@@ -136,7 +136,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1")
+    @WithMockUser(username = "user1@mail.com")
     void should_reduce_screening_free_seats_by_one_after_booking() throws Exception {
         //given
         var seat = prepareSeat();
@@ -161,10 +161,10 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1")
+    @WithMockUser(username = "user1@mail.com")
     void should_cancel_booking() throws Exception {
         //give
-        var booking = prepareBooking();
+        var booking = prepareBooking("user1@mail.com");
 
         //when
         var result = mockMvc.perform(
@@ -183,10 +183,10 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1")
+    @WithMockUser(username = "user1@mail.com")
     void should_seat_be_free_again_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
-        var booking = prepareBooking();
+        var booking = prepareBooking("user1@mail.com");
         var screening = booking.getSeat().getScreening();
         var seat = booking.getSeat();
         var freeSeatsNumber = screening.getSeats().size();
@@ -210,10 +210,10 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1")
+    @WithMockUser(username = "user1@mail.com")
     void should_throw_exception_during_booking_when_booking_is_already_cancelled() throws Exception {
         //given
-        var booking = prepareBooking(BookingStatus.CANCELLED);
+        var booking = prepareBooking(BookingStatus.CANCELLED, "user1@mail.com");
 
         //when
         var result = mockMvc.perform(
@@ -229,11 +229,11 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1")
+    @WithMockUser(username = "user1@mail.com")
     void should_throw_exception_during_booking_cancelling_when_less_than_24h_to_screening() throws Exception {
         //given
         var hoursToScreening = 23;
-        var booking = prepareBooking(hoursToScreening);
+        var booking = prepareBooking(hoursToScreening, "user1@mail.com");
 
         //when
         var result = mockMvc.perform(
@@ -249,10 +249,10 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1")
+    @WithMockUser(username = "user1@mail.com")
     void should_get_all_user_bookings() throws Exception {
         //given
-        var bookings = prepareBookings("user1");
+        var bookings = prepareBookings("user1@mail.com");
         System.out.println(bookings);
 
         //when
@@ -295,20 +295,20 @@ class BookingControllerIT extends SpringIT {
                 .getSeats();
     }
 
-    private Booking prepareBooking() {
+    private Booking prepareBooking(String userMail) {
         var seat = prepareSeat();
-        return addBooking(createBooking(seat, "user1"));
+        return addBooking(createBooking(seat, userMail));
     }
 
-    private Booking prepareBooking(BookingStatus status) {
+    private Booking prepareBooking(BookingStatus status, String userMail) {
         var seat = prepareSeat();
-        return addBooking(createBooking(seat, "user1", status));
+        return addBooking(createBooking(seat, userMail, status));
     }
 
-    private Booking prepareBooking(int hoursToScreening) {
+    private Booking prepareBooking(int hoursToScreening, String userMail) {
         var screeningDate = getCurrentDate(clock).minusHours(hoursToScreening);
         var seat = prepareSeat(screeningDate);
-        return addBooking(createBooking(seat, "user1"));
+        return addBooking(createBooking(seat, userMail));
     }
 
     private List<Booking> prepareBookings(String username) {

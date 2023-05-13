@@ -6,7 +6,7 @@ create table if not exists bookings
     id           bigint generated always as identity primary key,
     status       varchar,
     seat_id      bigint,
-    username     varchar,
+    user_mail   varchar,
     foreign key (seat_id) references seats (id),
-    foreign key (username) references users (username)
+    foreign key (user_mail) references users (mail)
 );

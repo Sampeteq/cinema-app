@@ -14,7 +14,7 @@ public class SignInHandler {
     private final AuthenticationManager authenticationManager;
 
     public void handle(SignInCommand command) {
-        var token = new UsernamePasswordAuthenticationToken(command.username(), command.password());
+        var token = new UsernamePasswordAuthenticationToken(command.mail(), command.password());
         var checkedToken = authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(checkedToken);
     }

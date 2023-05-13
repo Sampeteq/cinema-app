@@ -4,7 +4,7 @@ import code.screenings.client.commands.CreateScreeningCommand;
 import code.screenings.client.commands.handlers.CreateScreeningHandler;
 import code.screenings.client.dto.ScreeningDto;
 import code.screenings.client.dto.SeatDto;
-import code.screenings.client.queries.GetScreeningHandler;
+import code.screenings.client.queries.handlers.GetScreeningHandler;
 import code.screenings.client.queries.GetScreeningSeatsQuery;
 import code.screenings.client.queries.GetScreeningsQuery;
 import code.screenings.client.queries.handlers.GetScreeningSeatsHandler;

@@ -1,7 +1,8 @@
-package code.screenings.client.queries;
+package code.screenings.client.queries.handlers;
 
 import code.screenings.client.dto.ScreeningDto;
 import code.screenings.client.dto.ScreeningMapper;
+import code.screenings.client.queries.GetScreeningsQuery;
 import code.screenings.domain.Screening;
 import code.screenings.domain.ScreeningReadOnlyRepository;
 import lombok.AllArgsConstructor;

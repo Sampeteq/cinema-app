@@ -25,8 +25,8 @@ public class SpringDataJpaUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean existsByUsername(String username) {
-        return jpaUserRepository.existsByMail(username);
+    public boolean existsByMail(String mail) {
+        return jpaUserRepository.existsByMail(mail);
     }
 }
 

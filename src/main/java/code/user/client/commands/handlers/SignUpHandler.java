@@ -18,7 +18,7 @@ public class SignUpHandler {
     private final PasswordEncoder passwordEncoder;
 
     public void handle(SignUpCommand command) {
-        if (userRepository.existsByUsername(command.mail())) {
+        if (userRepository.existsByMail(command.mail())) {
             throw new MailAlreadyExistsException();
         }
         if (!(command.password().equals(command.repeatedPassword()))) {

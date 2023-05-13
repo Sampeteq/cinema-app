@@ -27,7 +27,7 @@ public class OnStartUpMainAdminCreateHandler {
 
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {
-        if (userRepository.existsByUsername(mainAdminUsername)) {
+        if (userRepository.existsByMail(mainAdminUsername)) {
             log.info("Main admin already exists");
         } else {
             var mainAdmin = User

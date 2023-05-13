@@ -15,8 +15,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class FilmTestHelper {
-
     private static final int CURRENT_YEAR = Year.now().getValue();
+    private static final LocalDateTime SCREENING_DATE = LocalDateTime.of(
+            CURRENT_YEAR,
+            5,
+            10,
+            18,
+            30
+    );
 
     public static CreateFilmCommand createCreateFilmCommand() {
         return CreateFilmCommand
@@ -88,14 +94,14 @@ public class FilmTestHelper {
         return CreateScreeningCommand
                 .builder()
                 .filmId(filmId)
-                .date(LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30))
+                .date(SCREENING_DATE)
                 .roomId(roomId)
                 .build();
     }
 
     public static Screening createScreening(Film film, Room room) {
         var screening = Screening.of(
-                LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
+                SCREENING_DATE,
                 film,
                 room
         ).withId(1L);
@@ -107,7 +113,7 @@ public class FilmTestHelper {
 
     public static List<Screening> createScreenings(Film film, Room room) {
         var screening1 = Screening.of(
-                LocalDateTime.of(CURRENT_YEAR, 5, 10, 18, 30),
+                SCREENING_DATE,
                 film,
                 room
         ).withId(1L);
@@ -115,7 +121,7 @@ public class FilmTestHelper {
         var seat12 = Seat.of(1,2,screening1);
         screening1.addSeats(List.of(seat11, seat12));
         var screening2 = Screening.of(
-                LocalDateTime.of(CURRENT_YEAR, 5, 11, 18, 30),
+                SCREENING_DATE.plusDays(1),
                 film,
                 room
         ).withId(2L);
@@ -126,20 +132,8 @@ public class FilmTestHelper {
     }
 
     public static List<String> getWrongScreeningDates() {
-        var date1 = LocalDateTime.of(
-                CURRENT_YEAR - 1,
-                2,
-                2,
-                16,
-                30
-        ).toString();
-        var date2 = LocalDateTime.of(
-                CURRENT_YEAR + 2,
-                2,
-                2,
-                16,
-                30
-        ).toString();
+        var date1 = SCREENING_DATE.minusYears(1).toString();
+        var date2 = SCREENING_DATE.plusYears(2).toString();
         return List.of(date1, date2);
     }
 }

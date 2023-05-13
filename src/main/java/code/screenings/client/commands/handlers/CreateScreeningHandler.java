@@ -1,24 +1,22 @@
 package code.screenings.client.commands.handlers;
 
-import code.films.domain.exceptions.FilmNotFoundException;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
-import code.rooms.domain.exceptions.RoomNotFoundException;
+import code.films.domain.exceptions.FilmNotFoundException;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
+import code.rooms.domain.exceptions.RoomNotFoundException;
 import code.screenings.client.commands.CreateScreeningCommand;
 import code.screenings.client.dto.ScreeningDto;
 import code.screenings.client.dto.ScreeningMapper;
 import code.screenings.domain.Screening;
+import code.screenings.domain.ScreeningDateValidator;
 import code.screenings.domain.Seat;
-import code.screenings.domain.exceptions.WrongScreeningDateException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 import static java.util.stream.IntStream.rangeClosed;
@@ -27,14 +25,15 @@ import static java.util.stream.IntStream.rangeClosed;
 @AllArgsConstructor
 public class CreateScreeningHandler {
 
+    private final ScreeningDateValidator screeningDateValidator;
+    private final Clock clock;
+    private final TransactionTemplate transactionTemplate;
     private final FilmRepository filmRepository;
     private final RoomRepository roomRepository;
     private final ScreeningMapper screeningMapper;
-    private final Clock clock;
-    private final TransactionTemplate transactionTemplate;
 
     public ScreeningDto createScreening(CreateScreeningCommand dto) {
-        validateScreeningDate(dto.date());
+        screeningDateValidator.validate(dto.date(), clock);
         var screening = transactionTemplate.execute(status ->{
             var film = getFilmOrThrow(dto);
             var room = getRoomOrThrow(dto.roomId());
@@ -49,15 +48,6 @@ public class CreateScreeningHandler {
             return newScreening;
         });
         return screeningMapper.mapToDto(screening);
-    }
-
-    private void validateScreeningDate(LocalDateTime date) {
-        var currentDate = LocalDateTime.ofInstant(clock.instant(), ZoneOffset.UTC);
-        var currentYear = currentDate.getYear();
-        var isYearCurrentOrNextOne = date.getYear() == currentYear || date.getYear() == currentYear + 1;
-        if (!isYearCurrentOrNextOne) {
-            throw new WrongScreeningDateException();
-        }
     }
 
     private Film getFilmOrThrow(CreateScreeningCommand dto) {

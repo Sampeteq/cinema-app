@@ -7,6 +7,7 @@ import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.screenings.domain.SeatReadOnlyRepository;
 import code.screenings.domain.exceptions.SeatNotFoundException;
+import code.user.infrastrcuture.SecurityHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.time.Clock;
 public class MakeBookingHandler {
 
     private final SeatReadOnlyRepository seatReadOnlyRepository;
+    private final SecurityHelper securityHelper;
     private final Clock clock;
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
@@ -31,7 +33,8 @@ public class MakeBookingHandler {
                 .getById(command.seatId())
                 .orElseThrow(SeatNotFoundException::new);
         log.info("Found a seat for booking:{}",seat);
-        var booking = Booking.make(seat, command.userMail(), clock);
+        var currentUser = securityHelper.getCurrentUser();
+        var booking = Booking.make(seat, currentUser.getUsername(), clock);
         var savedBooking = bookingRepository.add(booking);
         log.info("Saved a booking:{}", savedBooking);
         return bookingMapper.mapToDto(savedBooking);

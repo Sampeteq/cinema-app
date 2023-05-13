@@ -5,8 +5,6 @@ import code.bookings.client.commands.MakeBookingCommand;
 import code.bookings.client.commands.handlers.CancelBookingHandler;
 import code.bookings.client.commands.handlers.MakeBookingHandler;
 import code.bookings.client.dto.BookingDto;
-import code.bookings.client.queries.GetBookingQuery;
-import code.bookings.client.queries.GetBookingsQuery;
 import code.bookings.client.queries.handlers.GetBookingHandler;
 import code.bookings.client.queries.handlers.GetBookingsHandler;
 import lombok.AllArgsConstructor;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -34,11 +31,10 @@ public class BookingController {
     private final GetBookingHandler getBookingHandler;
 
     @PostMapping
-    public BookingDto bookSeat(@RequestParam Long seatId, Principal principal) {
+    public BookingDto bookSeat(@RequestParam Long seatId) {
         var command = MakeBookingCommand
                 .builder()
                 .seatId(seatId)
-                .userMail(principal.getName())
                 .build();
         return makeBookingHandler.handle(command);
     }
@@ -53,22 +49,13 @@ public class BookingController {
     }
 
     @GetMapping("/my")
-    public List<BookingDto> getAllBookings(Principal principal) {
-        var getBookingsQuery = GetBookingsQuery
-                .builder()
-                .username(principal.getName())
-                .build();
-        return getBookingsHandler.handle(getBookingsQuery);
+    public List<BookingDto> getAllBookings() {
+        return getBookingsHandler.handle();
     }
 
     @GetMapping("/my/{bookingId}")
-    public BookingDto getBookingById(@PathVariable Long bookingId, Principal principal) {
-        var getBookingQuery = GetBookingQuery
-                .builder()
-                .bookingId(bookingId)
-                .username(principal.getName())
-                .build();
-        return getBookingHandler.handle(getBookingQuery);
+    public BookingDto getBookingById(@PathVariable Long bookingId) {
+        return getBookingHandler.handle(bookingId);
     }
 }
 

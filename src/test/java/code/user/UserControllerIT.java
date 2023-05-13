@@ -2,7 +2,7 @@ package code.user;
 
 import code.user.client.commands.SignInCommand;
 import code.user.domain.exceptions.NotSamePasswordsException;
-import code.user.domain.exceptions.UsernameAlreadyExistsException;
+import code.user.domain.exceptions.MailAlreadyExistsException;
 import code.user.domain.UserRepository;
 import code.utils.SpringIT;
 import code.utils.UserTestHelper;
@@ -63,7 +63,7 @@ class UserControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new UsernameAlreadyExistsException().getMessage()));
+                .andExpect(content().string(new MailAlreadyExistsException().getMessage()));
     }
 
     @Test

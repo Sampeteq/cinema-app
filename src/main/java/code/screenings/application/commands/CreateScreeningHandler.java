@@ -31,17 +31,17 @@ public class CreateScreeningHandler {
     private final RoomRepository roomRepository;
     private final ScreeningMapper screeningMapper;
 
-    public ScreeningDto handle(CreateScreeningCommand dto) {
-        screeningDateValidator.validate(dto.date(), clock);
-        var screening = transactionTemplate.execute(status -> createScreening(dto));
+    public ScreeningDto handle(CreateScreeningCommand command) {
+        screeningDateValidator.validate(command.date(), clock);
+        var screening = transactionTemplate.execute(status -> createScreening(command));
         return screeningMapper.mapToDto(screening);
     }
 
-    private Screening createScreening(CreateScreeningCommand dto) {
-        var film = getFilmOrThrow(dto);
-        var room = getRoomOrThrow(dto.roomId());
+    private Screening createScreening(CreateScreeningCommand command) {
+        var film = getFilmOrThrow(command.filmId());
+        var room = getRoomOrThrow(command.roomId());
         var newScreening = Screening.of(
-                dto.date(),
+                command.date(),
                 film,
                 room
         );
@@ -51,9 +51,9 @@ public class CreateScreeningHandler {
         return newScreening;
     }
 
-    private Film getFilmOrThrow(CreateScreeningCommand dto) {
+    private Film getFilmOrThrow(Long filmId) {
         return filmRepository
-                .readById(dto.filmId())
+                .readById(filmId)
                 .orElseThrow(FilmNotFoundException::new);
     }
 

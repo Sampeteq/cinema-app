@@ -41,7 +41,7 @@ public class ScreeningController {
             @Valid
             CreateScreeningCommand dto
     ) {
-        var createdScreening = createScreeningHandler.createScreening(dto);
+        var createdScreening = createScreeningHandler.handle(dto);
         return new ResponseEntity<>(createdScreening, HttpStatus.CREATED);
     }
 

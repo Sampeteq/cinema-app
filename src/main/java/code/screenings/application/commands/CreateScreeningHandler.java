@@ -31,7 +31,7 @@ public class CreateScreeningHandler {
     private final RoomRepository roomRepository;
     private final ScreeningMapper screeningMapper;
 
-    public ScreeningDto createScreening(CreateScreeningCommand dto) {
+    public ScreeningDto handle(CreateScreeningCommand dto) {
         screeningDateValidator.validate(dto.date(), clock);
         var screening = transactionTemplate.execute(status ->{
             var film = getFilmOrThrow(dto);

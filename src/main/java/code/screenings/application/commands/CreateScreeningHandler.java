@@ -33,20 +33,22 @@ public class CreateScreeningHandler {
 
     public ScreeningDto handle(CreateScreeningCommand dto) {
         screeningDateValidator.validate(dto.date(), clock);
-        var screening = transactionTemplate.execute(status ->{
-            var film = getFilmOrThrow(dto);
-            var room = getRoomOrThrow(dto.roomId());
-            var newScreening = Screening.of(
-                    dto.date(),
-                    film,
-                    room
-            );
-            var seats = createSeats(room, newScreening);
-            newScreening.addSeats(seats);
-            film.addScreening(newScreening);
-            return newScreening;
-        });
+        var screening = transactionTemplate.execute(status -> createScreening(dto));
         return screeningMapper.mapToDto(screening);
+    }
+
+    private Screening createScreening(CreateScreeningCommand dto) {
+        var film = getFilmOrThrow(dto);
+        var room = getRoomOrThrow(dto.roomId());
+        var newScreening = Screening.of(
+                dto.date(),
+                film,
+                room
+        );
+        var seats = createSeats(room, newScreening);
+        newScreening.addSeats(seats);
+        film.addScreening(newScreening);
+        return newScreening;
     }
 
     private Film getFilmOrThrow(CreateScreeningCommand dto) {

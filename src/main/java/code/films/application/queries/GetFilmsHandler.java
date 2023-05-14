@@ -2,7 +2,6 @@ package code.films.application.queries;
 
 import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmMapper;
-import code.films.application.queries.GetFilmsQuery;
 import code.films.domain.FilmRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

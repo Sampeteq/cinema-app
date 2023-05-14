@@ -1,9 +1,9 @@
 package code.user;
 
 import code.user.application.commands.SignInCommand;
-import code.user.domain.exceptions.NotSamePasswordsException;
-import code.user.domain.exceptions.MailAlreadyExistsException;
 import code.user.domain.UserRepository;
+import code.user.domain.exceptions.MailAlreadyExistsException;
+import code.user.domain.exceptions.NotSamePasswordsException;
 import code.user.domain.exceptions.UserAlreadyLoggedInException;
 import code.utils.SpringIT;
 import code.utils.UserTestHelper;

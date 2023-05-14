@@ -1,6 +1,5 @@
 package code.bookings.application.commands;
 
-import code.bookings.application.commands.MakeBookingCommand;
 import code.bookings.application.dto.BookingDto;
 import code.bookings.application.dto.BookingMapper;
 import code.bookings.domain.Booking;

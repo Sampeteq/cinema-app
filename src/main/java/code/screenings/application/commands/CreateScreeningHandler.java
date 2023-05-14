@@ -6,7 +6,6 @@ import code.films.domain.exceptions.FilmNotFoundException;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
 import code.rooms.domain.exceptions.RoomNotFoundException;
-import code.screenings.application.commands.CreateScreeningCommand;
 import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.ScreeningMapper;
 import code.screenings.domain.Screening;

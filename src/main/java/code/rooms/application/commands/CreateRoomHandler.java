@@ -1,9 +1,8 @@
 package code.rooms.application.commands;
 
-import code.rooms.application.commands.CreateRoomCommand;
-import code.rooms.domain.exceptions.RoomNumberAlreadyExistsException;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
+import code.rooms.domain.exceptions.RoomNumberAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

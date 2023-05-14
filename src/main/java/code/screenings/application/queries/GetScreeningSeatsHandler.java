@@ -2,10 +2,9 @@ package code.screenings.application.queries;
 
 import code.screenings.application.dto.SeatDto;
 import code.screenings.application.dto.SeatMapper;
-import code.screenings.domain.exceptions.ScreeningNotFoundException;
-import code.screenings.application.queries.GetScreeningSeatsQuery;
 import code.screenings.domain.Screening;
 import code.screenings.domain.ScreeningReadOnlyRepository;
+import code.screenings.domain.exceptions.ScreeningNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,11 +1,10 @@
 package code.user.application.commands;
 
-import code.user.application.commands.SignUpCommand;
-import code.user.domain.exceptions.NotSamePasswordsException;
-import code.user.domain.exceptions.MailAlreadyExistsException;
 import code.user.domain.User;
 import code.user.domain.UserRepository;
 import code.user.domain.UserRole;
+import code.user.domain.exceptions.MailAlreadyExistsException;
+import code.user.domain.exceptions.NotSamePasswordsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

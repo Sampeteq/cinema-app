@@ -1,8 +1,8 @@
 package code.bookings.infrastructure.rest;
 
 import code.bookings.application.commands.CancelBookingCommand;
-import code.bookings.application.commands.MakeBookingCommand;
 import code.bookings.application.commands.CancelBookingHandler;
+import code.bookings.application.commands.MakeBookingCommand;
 import code.bookings.application.commands.MakeBookingHandler;
 import code.bookings.application.dto.BookingDto;
 import code.bookings.application.queries.GetBookingHandler;

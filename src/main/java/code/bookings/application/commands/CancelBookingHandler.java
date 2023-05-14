@@ -1,6 +1,5 @@
 package code.bookings.application.commands;
 
-import code.bookings.application.commands.CancelBookingCommand;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.exceptions.BookingNotFoundException;

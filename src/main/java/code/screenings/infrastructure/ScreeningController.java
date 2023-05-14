@@ -1,13 +1,13 @@
 package code.screenings.infrastructure;
 
-import code.screenings.client.commands.CreateScreeningCommand;
-import code.screenings.client.commands.handlers.CreateScreeningHandler;
-import code.screenings.client.dto.ScreeningDto;
-import code.screenings.client.dto.SeatDto;
-import code.screenings.client.queries.handlers.GetScreeningHandler;
-import code.screenings.client.queries.GetScreeningSeatsQuery;
-import code.screenings.client.queries.GetScreeningsQuery;
-import code.screenings.client.queries.handlers.GetScreeningSeatsHandler;
+import code.screenings.application.commands.CreateScreeningCommand;
+import code.screenings.application.commands.handlers.CreateScreeningHandler;
+import code.screenings.application.dto.ScreeningDto;
+import code.screenings.application.dto.SeatDto;
+import code.screenings.application.queries.handlers.GetScreeningHandler;
+import code.screenings.application.queries.GetScreeningSeatsQuery;
+import code.screenings.application.queries.GetScreeningsQuery;
+import code.screenings.application.queries.handlers.GetScreeningSeatsHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;

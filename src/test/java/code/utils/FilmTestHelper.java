@@ -1,10 +1,10 @@
 package code.utils;
 
-import code.films.client.commands.CreateFilmCommand;
+import code.films.application.commands.CreateFilmCommand;
 import code.films.domain.Film;
 import code.films.domain.FilmCategory;
 import code.rooms.domain.Room;
-import code.screenings.client.commands.CreateScreeningCommand;
+import code.screenings.application.commands.CreateScreeningCommand;
 import code.screenings.domain.Screening;
 import code.screenings.domain.Seat;
 

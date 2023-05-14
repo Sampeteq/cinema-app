@@ -1,6 +1,6 @@
 package code.utils;
 
-import code.user.client.commands.SignUpCommand;
+import code.user.application.commands.SignUpCommand;
 import code.user.domain.User;
 import code.user.domain.UserRole;
 

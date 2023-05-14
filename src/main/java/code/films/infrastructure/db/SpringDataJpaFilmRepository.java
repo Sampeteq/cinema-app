@@ -1,6 +1,6 @@
 package code.films.infrastructure.db;
 
-import code.films.client.queries.GetFilmsQuery;
+import code.films.application.queries.GetFilmsQuery;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import lombok.RequiredArgsConstructor;

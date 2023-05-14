@@ -1,7 +1,7 @@
 package code.bookings;
 
-import code.bookings.client.dto.BookingDto;
-import code.bookings.client.dto.BookingMapper;
+import code.bookings.application.dto.BookingDto;
+import code.bookings.application.dto.BookingMapper;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingStatus;
@@ -11,7 +11,7 @@ import code.bookings.domain.exceptions.TooLateToCancelBookingException;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import code.rooms.domain.RoomRepository;
-import code.screenings.client.dto.SeatDto;
+import code.screenings.application.dto.SeatDto;
 import code.screenings.domain.Seat;
 import code.screenings.domain.SeatStatus;
 import code.user.domain.User;

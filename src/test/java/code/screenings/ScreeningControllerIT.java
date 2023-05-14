@@ -2,9 +2,9 @@ package code.screenings;
 
 import code.films.domain.FilmRepository;
 import code.rooms.domain.RoomRepository;
-import code.screenings.client.dto.ScreeningDto;
-import code.screenings.client.dto.ScreeningMapper;
-import code.screenings.client.dto.SeatMapper;
+import code.screenings.application.dto.ScreeningDto;
+import code.screenings.application.dto.ScreeningMapper;
+import code.screenings.application.dto.SeatMapper;
 import code.screenings.domain.exceptions.ScreeningCollisionException;
 import code.screenings.domain.exceptions.WrongScreeningDateException;
 import code.utils.SpringIT;

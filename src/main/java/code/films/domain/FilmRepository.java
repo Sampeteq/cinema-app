@@ -1,6 +1,6 @@
 package code.films.domain;
 
-import code.films.client.queries.GetFilmsQuery;
+import code.films.application.queries.GetFilmsQuery;
 
 import java.util.List;
 import java.util.Optional;

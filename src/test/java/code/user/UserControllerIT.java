@@ -1,6 +1,6 @@
 package code.user;
 
-import code.user.client.commands.SignInCommand;
+import code.user.application.commands.SignInCommand;
 import code.user.domain.exceptions.NotSamePasswordsException;
 import code.user.domain.exceptions.MailAlreadyExistsException;
 import code.user.domain.UserRepository;

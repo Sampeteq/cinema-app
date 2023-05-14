@@ -3,7 +3,8 @@
 
 create table if not exists users
 (
-    mail     varchar primary key,
+    id       bigint generated always as identity primary key,
+    mail     varchar unique,
     password varchar,
     role     varchar
 );

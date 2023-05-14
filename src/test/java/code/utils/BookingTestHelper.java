@@ -6,21 +6,21 @@ import code.screenings.domain.Seat;
 
 public class BookingTestHelper {
 
-    public static Booking createBooking(Seat seat, String username) {
+    public static Booking createBooking(Seat seat, Long userId) {
         return new Booking(
                 1L,
                 BookingStatus.ACTIVE,
                 seat,
-                username
+                userId
         );
     }
 
-    public static Booking createBooking(Seat seat, String username, BookingStatus status) {
+    public static Booking createBooking(Seat seat, Long userId, BookingStatus status) {
         return new Booking(
                 1L,
                 status,
                 seat,
-                username
+                userId
         );
     }
 }

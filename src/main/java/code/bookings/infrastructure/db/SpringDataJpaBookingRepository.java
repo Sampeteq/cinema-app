@@ -32,19 +32,19 @@ public class SpringDataJpaBookingRepository implements BookingRepository {
     }
 
     @Override
-    public Optional<Booking> readByIdAndUsername(Long ticketId, String username) {
-        return jpaBookingRepository.readByIdAndUserMail(ticketId, username);
+    public Optional<Booking> readByIdAndUserId(Long ticketId, Long userId) {
+        return jpaBookingRepository.readByIdAndUserId(ticketId, userId);
     }
 
     @Override
-    public List<Booking> readByUsername(String username) {
-        return jpaBookingRepository.readByUserMail(username);
+    public List<Booking> readByUserId(Long userId) {
+        return jpaBookingRepository.readByUserId(userId);
     }
 }
 
 interface JpaBookingRepository extends JpaRepository<Booking, Long> {
-    Optional<Booking> readByIdAndUserMail(Long bookingId, String username);
+    Optional<Booking> readByIdAndUserId(Long bookingId, Long userId);
 
-    @Query("SELECT DISTINCT s FROM Booking s where s.userMail = :userMail")
-    List<Booking> readByUserMail(String userMail);
+    @Query("SELECT DISTINCT b FROM Booking b where b.userId = :userId")
+    List<Booking> readByUserId(Long userId);
 }

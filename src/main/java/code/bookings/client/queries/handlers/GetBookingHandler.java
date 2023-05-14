@@ -19,7 +19,7 @@ public class GetBookingHandler {
     public BookingDto handle(Long id) {
         var currentUser = securityHelper.getCurrentUser();
         return bookingRepository
-                .readByIdAndUsername(id, currentUser.getUsername())
+                .readByIdAndUserId(id, currentUser.getId())
                 .map(bookingMapper::mapToDto)
                 .orElseThrow(BookingNotFoundException::new);
     }

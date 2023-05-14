@@ -7,6 +7,6 @@ public interface BookingRepository {
     Booking add(Booking booking);
     List<Booking> addMany(List<Booking> bookings);
     Optional<Booking> readById(Long bookingId);
-    Optional<Booking> readByIdAndUsername(Long ticketId, String username);
-    List<Booking> readByUsername(String username);
+    Optional<Booking> readByIdAndUserId(Long ticketId, Long userId);
+    List<Booking> readByUserId(Long userId);
 }

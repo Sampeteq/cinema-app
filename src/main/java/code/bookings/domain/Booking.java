@@ -43,15 +43,15 @@ public class Booking {
     @JoinColumn(name = "seat_id")
     private Seat seat;
 
-    private String userMail;
+    private Long userId;
 
-    public static Booking make(Seat seat, String userMail, Clock clock) {
+    public static Booking make(Seat seat, Long userId, Clock clock) {
         seat.book(clock);
         return new Booking(
                 null,
                 BookingStatus.ACTIVE,
                 seat,
-                userMail
+                userId
         );
     }
 

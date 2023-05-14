@@ -14,6 +14,7 @@ import code.rooms.domain.RoomRepository;
 import code.screenings.client.dto.SeatDto;
 import code.screenings.domain.Seat;
 import code.screenings.domain.SeatStatus;
+import code.user.domain.User;
 import code.user.domain.UserRepository;
 import code.utils.SpringIT;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+@WithMockUser(username = "user1@mail.com")
 class BookingControllerIT extends SpringIT {
 
     @Autowired
@@ -64,13 +65,15 @@ class BookingControllerIT extends SpringIT {
     @Qualifier("testClock")
     private Clock clock;
 
+    private User user;
+
     @BeforeEach
+    @WithMockUser(username = "user1@mail.com")
     void setUp() {
-        userRepository.add(createUser("user1@mail.com"));
+        this.user = userRepository.add(createUser("user1@mail.com"));
     }
 
     @Test
-    @WithMockUser(username = "user1@mail.com")
     void should_make_booking() throws Exception {
         //given
         var seat = prepareSeat();
@@ -92,7 +95,6 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1@mail.com")
     void should_throw_exception_during_booking_when_less_than_24h_to_screening() throws Exception {
         //given
         var screeningDate = getCurrentDate(clock).minusHours(23);
@@ -113,7 +115,6 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1@mail.com")
     void should_seat_be_busy_after_booking() throws Exception {
         //given
         var seat = prepareSeat();
@@ -136,7 +137,6 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1@mail.com")
     void should_reduce_screening_free_seats_by_one_after_booking() throws Exception {
         //given
         var seat = prepareSeat();
@@ -161,10 +161,9 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1@mail.com")
     void should_cancel_booking() throws Exception {
         //give
-        var booking = prepareBooking("user1@mail.com");
+        var booking = prepareBooking(user.getId());
 
         //when
         var result = mockMvc.perform(
@@ -183,10 +182,9 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1@mail.com")
     void should_seat_be_free_again_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
         //given
-        var booking = prepareBooking("user1@mail.com");
+        var booking = prepareBooking(user.getId());
         var screening = booking.getSeat().getScreening();
         var seat = booking.getSeat();
         var freeSeatsNumber = screening.getSeats().size();
@@ -210,10 +208,9 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1@mail.com")
     void should_throw_exception_during_booking_when_booking_is_already_cancelled() throws Exception {
         //given
-        var booking = prepareBooking(BookingStatus.CANCELLED, "user1@mail.com");
+        var booking = prepareBooking(BookingStatus.CANCELLED, user.getId());
 
         //when
         var result = mockMvc.perform(
@@ -229,11 +226,10 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1@mail.com")
     void should_throw_exception_during_booking_cancelling_when_less_than_24h_to_screening() throws Exception {
         //given
         var hoursToScreening = 23;
-        var booking = prepareBooking(hoursToScreening, "user1@mail.com");
+        var booking = prepareBooking(hoursToScreening, user.getId());
 
         //when
         var result = mockMvc.perform(
@@ -249,11 +245,9 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(username = "user1@mail.com")
     void should_get_all_user_bookings() throws Exception {
         //given
-        var bookings = prepareBookings("user1@mail.com");
-        System.out.println(bookings);
+        var bookings = prepareBookings(user.getId());
 
         //when
         var result = mockMvc.perform(
@@ -295,26 +289,26 @@ class BookingControllerIT extends SpringIT {
                 .getSeats();
     }
 
-    private Booking prepareBooking(String userMail) {
+    private Booking prepareBooking(Long userId) {
         var seat = prepareSeat();
-        return addBooking(createBooking(seat, userMail));
+        return addBooking(createBooking(seat, userId));
     }
 
-    private Booking prepareBooking(BookingStatus status, String userMail) {
+    private Booking prepareBooking(BookingStatus status, Long userId) {
         var seat = prepareSeat();
-        return addBooking(createBooking(seat, userMail, status));
+        return addBooking(createBooking(seat, userId, status));
     }
 
-    private Booking prepareBooking(int hoursToScreening, String userMail) {
+    private Booking prepareBooking(int hoursToScreening, Long userId) {
         var screeningDate = getCurrentDate(clock).minusHours(hoursToScreening);
         var seat = prepareSeat(screeningDate);
-        return addBooking(createBooking(seat, userMail));
+        return addBooking(createBooking(seat, userId));
     }
 
-    private List<Booking> prepareBookings(String username) {
+    private List<Booking> prepareBookings(Long userId) {
         var seats = prepareSeats();
-        var booking1 = addBooking(createBooking(seats.get(0), username).withId(1L));
-        var booking2 = addBooking(createBooking(seats.get(1), username).withId(2L));
+        var booking1 = addBooking(createBooking(seats.get(0), userId).withId(1L));
+        var booking2 = addBooking(createBooking(seats.get(1), userId).withId(2L));
         return List.of(booking1, booking2);
     }
 

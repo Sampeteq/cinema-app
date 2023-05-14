@@ -28,7 +28,7 @@ public class CancelBookingHandler {
     private Booking getBookingOrThrow(Long bookingId) {
         var currentUser = securityHelper.getCurrentUser();
         return bookingRepository
-                .readByIdAndUsername(bookingId, currentUser.getUsername())
+                .readByIdAndUserId(bookingId, currentUser.getId())
                 .orElseThrow(BookingNotFoundException::new);
     }
 }

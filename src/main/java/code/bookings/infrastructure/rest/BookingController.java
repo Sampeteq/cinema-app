@@ -2,11 +2,11 @@ package code.bookings.infrastructure.rest;
 
 import code.bookings.application.commands.CancelBookingCommand;
 import code.bookings.application.commands.MakeBookingCommand;
-import code.bookings.application.commands.handlers.CancelBookingHandler;
-import code.bookings.application.commands.handlers.MakeBookingHandler;
+import code.bookings.application.commands.CancelBookingHandler;
+import code.bookings.application.commands.MakeBookingHandler;
 import code.bookings.application.dto.BookingDto;
-import code.bookings.application.queries.handlers.GetBookingHandler;
-import code.bookings.application.queries.handlers.GetBookingsHandler;
+import code.bookings.application.queries.GetBookingHandler;
+import code.bookings.application.queries.GetBookingsHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

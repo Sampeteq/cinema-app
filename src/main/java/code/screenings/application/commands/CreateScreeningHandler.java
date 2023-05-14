@@ -1,4 +1,4 @@
-package code.screenings.application.commands.handlers;
+package code.screenings.application.commands;
 
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;

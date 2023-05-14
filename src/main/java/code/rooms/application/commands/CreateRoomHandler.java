@@ -1,4 +1,4 @@
-package code.rooms.application.commands.handlers;
+package code.rooms.application.commands;
 
 import code.rooms.application.commands.CreateRoomCommand;
 import code.rooms.domain.exceptions.RoomNumberAlreadyExistsException;

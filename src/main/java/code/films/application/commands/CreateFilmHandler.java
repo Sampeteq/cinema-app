@@ -1,4 +1,4 @@
-package code.films.application.commands.handlers;
+package code.films.application.commands;
 
 import code.films.application.commands.CreateFilmCommand;
 import code.films.application.dto.FilmDto;

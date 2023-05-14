@@ -1,4 +1,4 @@
-package code.films.application.queries.handlers;
+package code.films.application.queries;
 
 import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmMapper;

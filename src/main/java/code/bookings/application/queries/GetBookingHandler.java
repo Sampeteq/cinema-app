@@ -1,4 +1,4 @@
-package code.bookings.application.queries.handlers;
+package code.bookings.application.queries;
 
 import code.bookings.application.dto.BookingDto;
 import code.bookings.application.dto.BookingMapper;

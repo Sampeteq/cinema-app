@@ -1,6 +1,5 @@
-package code.rooms.application.commands.handlers;
+package code.rooms.application.commands;
 
-import code.rooms.application.commands.CreateRoomCommand;
 import code.rooms.application.queries.GetRoomsQueryHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

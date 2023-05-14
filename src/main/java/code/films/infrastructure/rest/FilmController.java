@@ -1,10 +1,10 @@
 package code.films.infrastructure.rest;
 
 import code.films.application.commands.CreateFilmCommand;
-import code.films.application.commands.handlers.CreateFilmHandler;
+import code.films.application.commands.CreateFilmHandler;
 import code.films.application.dto.FilmDto;
 import code.films.application.queries.GetFilmsQuery;
-import code.films.application.queries.handlers.GetFilmsHandler;
+import code.films.application.queries.GetFilmsHandler;
 import code.films.domain.FilmCategory;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

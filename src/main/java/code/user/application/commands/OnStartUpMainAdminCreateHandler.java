@@ -1,4 +1,4 @@
-package code.user.application.commands.handlers;
+package code.user.application.commands;
 
 import code.user.domain.User;
 import code.user.domain.UserRepository;

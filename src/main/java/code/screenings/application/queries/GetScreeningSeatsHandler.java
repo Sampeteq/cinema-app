@@ -1,4 +1,4 @@
-package code.screenings.application.queries.handlers;
+package code.screenings.application.queries;
 
 import code.screenings.application.dto.SeatDto;
 import code.screenings.application.dto.SeatMapper;

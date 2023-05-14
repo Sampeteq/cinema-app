@@ -1,4 +1,4 @@
-package code.bookings.application.commands.handlers;
+package code.bookings.application.commands;
 
 import code.bookings.application.commands.MakeBookingCommand;
 import code.bookings.application.dto.BookingDto;

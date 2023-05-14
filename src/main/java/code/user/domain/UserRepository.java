@@ -4,6 +4,6 @@ import java.util.Optional;
 
 public interface UserRepository {
     User add(User user);
-    Optional<User> readyByMail(String username);
+    Optional<User> readyByMail(String mail);
     boolean existsByMail(String mail);
 }

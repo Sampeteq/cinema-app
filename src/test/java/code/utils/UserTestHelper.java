@@ -1,5 +1,6 @@
 package code.utils;
 
+import code.user.application.commands.SignInCommand;
 import code.user.application.commands.SignUpCommand;
 import code.user.domain.User;
 import code.user.domain.UserRole;
@@ -28,6 +29,10 @@ public class UserTestHelper {
                 password,
                 repeatedPassword
         );
+    }
+
+    public static SignInCommand createSignInCommand(String mail) {
+        return new SignInCommand(mail, "12345");
     }
 
     public static User createUser(String mail) {

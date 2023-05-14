@@ -4,12 +4,15 @@ import code.user.application.commands.SignInCommand;
 import code.user.domain.exceptions.NotSamePasswordsException;
 import code.user.domain.exceptions.MailAlreadyExistsException;
 import code.user.domain.UserRepository;
+import code.user.domain.exceptions.UserAlreadyLoggedInException;
 import code.utils.SpringIT;
 import code.utils.UserTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 
+import static code.utils.UserTestHelper.createSignInCommand;
 import static code.utils.UserTestHelper.createSignUpCommand;
 import static code.utils.UserTestHelper.createUser;
 import static code.utils.WebTestHelper.toJson;
@@ -82,5 +85,24 @@ class UserControllerIT extends SpringIT {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(new NotSamePasswordsException().getMessage()));
+    }
+
+    @Test
+    @WithMockUser(username = "user1@mail.com")
+    void should_throw_exception_when_user_is_already_logged_in() throws Exception {
+        //given
+        var signInCommand = createSignInCommand("user1@mail.com");
+
+        //when
+        var result = mockMvc.perform(
+                post("/signin")
+                        .content(toJson(signInCommand))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(new UserAlreadyLoggedInException().getMessage()));
     }
 }

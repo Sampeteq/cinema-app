@@ -18,9 +18,9 @@ public class GetBookingsHandler {
     private final BookingMapper bookingMapper;
 
     public List<BookingDto> handle() {
-        var currentUser = securityHelper.getCurrentUser();
+        var currentUserId = securityHelper.getCurrentUserId();
         return bookingRepository
-                .readByUserId(currentUser.getId())
+                .readByUserId(currentUserId)
                 .stream()
                 .map(bookingMapper::mapToDto)
                 .toList();

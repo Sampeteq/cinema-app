@@ -15,13 +15,14 @@ public class SecurityHelper {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public User getCurrentUser() {
+    public Long getCurrentUserId() {
         var mail = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getName();
         return userRepository
                 .readyByMail(mail)
+                .map(User::getId)
                 .orElseThrow(() -> new UsernameNotFoundException(mail));
     }
 }

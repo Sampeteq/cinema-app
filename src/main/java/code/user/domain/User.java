@@ -25,7 +25,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-@EqualsAndHashCode(of = "mail")
+@EqualsAndHashCode(of = "id")
 @ToString
 public class User implements UserDetails {
     @Id

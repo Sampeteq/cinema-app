@@ -1,8 +1,6 @@
 package code.user.infrastrcuture;
 
 import code.user.domain.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,8 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 @Configuration
-@AllArgsConstructor
-@Log4j2
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override

@@ -307,8 +307,8 @@ class BookingControllerIT extends SpringIT {
 
     private List<Booking> prepareBookings(Long userId) {
         var seats = prepareSeats();
-        var booking1 = addBooking(createBooking(seats.get(0), userId).withId(1L));
-        var booking2 = addBooking(createBooking(seats.get(1), userId).withId(2L));
+        var booking1 = addBooking(createBooking(seats.get(0), userId));
+        var booking2 = addBooking(createBooking(seats.get(1), userId));
         return List.of(booking1, booking2);
     }
 

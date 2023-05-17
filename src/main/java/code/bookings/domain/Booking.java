@@ -2,13 +2,9 @@ package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.screenings.domain.Seat;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.With;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -24,10 +20,7 @@ import java.time.Clock;
 
 @Entity
 @Table(name = "BOOKINGS")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@With
 @Getter
 @ToString
 public class Booking {
@@ -45,10 +38,17 @@ public class Booking {
 
     private Long userId;
 
+    protected Booking() {}
+
+    private Booking(BookingStatus status, Seat seat, Long userId) {
+        this.status = status;
+        this.seat = seat;
+        this.userId = userId;
+    }
+
     public static Booking make(Seat seat, Long userId, Clock clock) {
         seat.book(clock);
         return new Booking(
-                null,
                 BookingStatus.ACTIVE,
                 seat,
                 userId

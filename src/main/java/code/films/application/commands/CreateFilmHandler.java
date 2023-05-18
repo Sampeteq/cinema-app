@@ -16,11 +16,10 @@ public class CreateFilmHandler {
 
     public FilmDto handle(CreateFilmCommand command) {
         var film = Film.create(
-                Film.builder()
-                        .title(command.title())
-                        .category(command.filmCategory())
-                        .year(command.year())
-                        .durationInMinutes(command.durationInMinutes())
+                        command.title(),
+                        command.filmCategory(),
+                        command.year(),
+                        command.durationInMinutes()
         );
         var addedFilm = filmRepository.add(film);
         return filmMapper.mapToDto(addedFilm);

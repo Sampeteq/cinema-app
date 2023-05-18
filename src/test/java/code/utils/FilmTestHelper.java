@@ -10,8 +10,6 @@ import code.screenings.domain.Seat;
 
 import java.time.LocalDateTime;
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FilmTestHelper {
@@ -35,15 +33,11 @@ public class FilmTestHelper {
     }
 
     public static Film createFilm() {
-        return Film
-                .builder()
-                .id(1L)
-                .title("Test film 1")
-                .category(FilmCategory.COMEDY)
-                .year(CURRENT_YEAR)
-                .durationInMinutes(100)
-                .screenings(new ArrayList<>())
-                .build();
+        return Film.create("Test film 1", FilmCategory.COMEDY, CURRENT_YEAR, 100);
+    }
+
+    public static Film createFilm(FilmCategory category) {
+        return Film.create("Test film 1", category, CURRENT_YEAR, 100);
     }
 
     public static Film createFilmWithScreening(Room room) {
@@ -61,24 +55,8 @@ public class FilmTestHelper {
     }
 
     public static List<Film> createFilms() {
-        var film1 = Film
-                .builder()
-                .id(1L)
-                .title("Test film 1")
-                .category(FilmCategory.COMEDY)
-                .year(CURRENT_YEAR)
-                .durationInMinutes(100)
-                .screenings(Collections.emptyList())
-                .build();
-        var film2 = Film
-                .builder()
-                .id(2L)
-                .title("Test film 2")
-                .category(FilmCategory.DRAMA)
-                .year(CURRENT_YEAR + 1)
-                .durationInMinutes(120)
-                .screenings(Collections.emptyList())
-                .build();
+        var film1 = Film.create("Test film 1", FilmCategory.COMEDY, CURRENT_YEAR, 100);
+        var film2 = Film.create("Test film 2", FilmCategory.DRAMA, CURRENT_YEAR, 120);
         return List.of(film1, film2);
     }
 
@@ -102,6 +80,18 @@ public class FilmTestHelper {
     public static Screening createScreening(Film film, Room room) {
         var screening = Screening.of(
                 SCREENING_DATE,
+                film,
+                room
+        ).withId(1L);
+        var seat1 = Seat.of(1,2,screening).withId(1L);
+        var seat2 = Seat.of(1,2,screening).withId(2L);
+        screening.addSeats(List.of(seat1, seat2));
+        return screening;
+    }
+
+    public static Screening createScreening(Film film, Room room, LocalDateTime screeningDate) {
+        var screening = Screening.of(
+                screeningDate,
                 film,
                 room
         ).withId(1L);

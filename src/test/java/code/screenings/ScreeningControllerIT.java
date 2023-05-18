@@ -5,6 +5,7 @@ import code.rooms.domain.RoomRepository;
 import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.ScreeningMapper;
 import code.screenings.application.dto.SeatMapper;
+import code.screenings.domain.Screening;
 import code.screenings.domain.exceptions.ScreeningCollisionException;
 import code.screenings.domain.exceptions.WrongScreeningDateException;
 import code.utils.SpringIT;
@@ -94,15 +95,10 @@ public class ScreeningControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_there_is_collision_between_screenings() throws Exception {
         //given
-        var film = createFilm();
-        var room = roomRepository.add(createRoom());
-        var screening = createScreening(film, room);
-        film.addScreening(screening);
-        filmRepository.add(film);
-
+        var screening = prepareScreening();
 
         var cmd = createCreateScreeningCommand(
-                film.getId(),
+                screening.getFilm().getId(),
                 screening.getRoom().getId()
         ).withDate(screening.getDate().plusMinutes(10));
 
@@ -122,11 +118,7 @@ public class ScreeningControllerIT extends SpringIT {
     @Test
     void should_get_all_screenings() throws Exception {
         //given
-        var film = createFilm();
-        var room = roomRepository.add(createRoom());
-        var screenings = createScreenings(film, room);
-        screenings.forEach(film::addScreening);
-        filmRepository.add(film);
+        var screenings = prepareScreenings();
 
         //when
         var result = mockMvc.perform(
@@ -142,7 +134,7 @@ public class ScreeningControllerIT extends SpringIT {
     @Test
     void should_get_screenings_by_params() throws Exception {
         //given
-        var film = createFilm();
+        var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
         var screeningMeetParams = createScreening(film, room);
         film.addScreening(screeningMeetParams);
@@ -163,11 +155,7 @@ public class ScreeningControllerIT extends SpringIT {
     @Test
     void should_get_seats_for_screening() throws Exception {
         //given
-        var film = createFilm();
-        var room = roomRepository.add(createRoom());
-        var screening = createScreening(film, room);
-        film.addScreening(screening);
-        filmRepository.add(film);
+        var screening = prepareScreening();
 
         //when
         var result = mockMvc.perform(
@@ -178,5 +166,23 @@ public class ScreeningControllerIT extends SpringIT {
         result
                 .andExpect(status().isOk())
                 .andExpect(content().json(toJson(seatMapper.toDto(screening.getSeats()))));
+    }
+
+    private Screening prepareScreening() {
+        var film = filmRepository.add(createFilm());
+        var room = roomRepository.add(createRoom());
+        var screening = createScreening(film, room);
+        film.addScreening(screening);
+        filmRepository.add(film);
+        return screening;
+    }
+
+    private List<Screening> prepareScreenings() {
+        var film = filmRepository.add(createFilm());
+        var room = roomRepository.add(createRoom());
+        var screenings = createScreenings(film, room);
+        screenings.forEach(film::addScreening);
+        filmRepository.add(film);
+        return screenings;
     }
 }

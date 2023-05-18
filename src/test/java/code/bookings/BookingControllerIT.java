@@ -31,7 +31,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static code.utils.BookingTestHelper.createBooking;
+import static code.utils.FilmTestHelper.createFilm;
 import static code.utils.FilmTestHelper.createFilmWithScreening;
+import static code.utils.FilmTestHelper.createScreening;
 import static code.utils.RoomTestHelper.createRoom;
 import static code.utils.UserTestHelper.createUser;
 import static code.utils.WebTestHelper.fromResultActions;
@@ -261,9 +263,12 @@ class BookingControllerIT extends SpringIT {
     }
 
     private Seat prepareSeat() {
+        var film = addFilm(createFilm());
         var room = roomRepository.add(createRoom());
-        var film = addFilm(createFilmWithScreening(room));
-        return film
+        var screening = createScreening(film, room);
+        film.addScreening(screening);
+        var filmWithScreening = addFilm(film);
+        return filmWithScreening
                 .getScreenings()
                 .get(0)
                 .getSeats()
@@ -271,9 +276,12 @@ class BookingControllerIT extends SpringIT {
     }
 
     private Seat prepareSeat(LocalDateTime screeningDate) {
+        var film = addFilm(createFilm());
         var room = roomRepository.add(createRoom());
-        var film = addFilm(createFilmWithScreening(screeningDate, room));
-        return film
+        var screening = createScreening(film, room, screeningDate);
+        film.addScreening(screening);
+        var filmWithScreening = addFilm(film);
+        return filmWithScreening
                 .getScreenings()
                 .get(0)
                 .getSeats()
@@ -281,9 +289,12 @@ class BookingControllerIT extends SpringIT {
     }
 
     private List<Seat> prepareSeats() {
+        var film = addFilm(createFilm());
         var room = roomRepository.add(createRoom());
-        var film = addFilm(createFilmWithScreening(room));
-        return film
+        var screening = createScreening(film, room);
+        film.addScreening(screening);
+        var filmWithScreening = addFilm(film);
+        return filmWithScreening
                 .getScreenings()
                 .get(0)
                 .getSeats();

@@ -3,14 +3,9 @@ package code.films.domain;
 import code.films.domain.exceptions.WrongFilmYearException;
 import code.screenings.domain.Screening;
 import code.screenings.domain.exceptions.ScreeningCollisionException;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.With;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -27,13 +22,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "FILMS")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString
-@With
 public class Film {
 
     @Id
@@ -50,20 +41,26 @@ public class Film {
     private int durationInMinutes;
 
     @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
-    private List<Screening> screenings;
+    private final List<Screening> screenings = new ArrayList<>();
 
-    public static Film create(FilmBuilder filmBuilder) {
-        var fromBuilder = filmBuilder.build();
-        if (!isFilmYearCorrect(filmBuilder.year)) {
+    protected Film() {}
+
+    private Film(String title, FilmCategory category, int year, int durationInMinutes) {
+        this.title = title;
+        this.category = category;
+        this.year = year;
+        this.durationInMinutes = durationInMinutes;
+    }
+
+    public static Film create(String title, FilmCategory category, int year, int durationInMinutes) {
+        if (!isFilmYearCorrect(year)) {
             throw new WrongFilmYearException();
         }
         return new Film(
-                null,
-                fromBuilder.title,
-                fromBuilder.category,
-                fromBuilder.year,
-                fromBuilder.durationInMinutes,
-                new ArrayList<>()
+                title,
+                category,
+                year,
+                durationInMinutes
         );
     }
 

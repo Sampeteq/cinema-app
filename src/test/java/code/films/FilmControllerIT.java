@@ -95,10 +95,10 @@ class FilmControllerIT extends SpringIT {
     void should_get_films_by_params() throws Exception {
         //given
         var filmMeetingParams = filmRepository.add(
-                createFilm().withCategory(FilmCategory.COMEDY).withId(1L)
+                createFilm(FilmCategory.COMEDY)
         );
         filmRepository.add(
-                createFilm().withCategory(FilmCategory.DRAMA).withId(2L)
+                createFilm(FilmCategory.DRAMA)
         );
 
         //when

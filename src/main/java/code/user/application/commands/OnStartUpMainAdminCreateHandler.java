@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class OnStartUpMainAdminCreateHandler {
 
-    @Value("${onStartUp.mainAdminUsername}")
-    private String mainAdminUsername;
+    @Value("${onStartUp.mainAdminMail}")
+    private String mainAdminMail;
     @Value("${onStartUp.mainAdminPassword}")
     private String mainAdminPassword;
     private final UserRepository userRepository;
@@ -27,18 +27,18 @@ public class OnStartUpMainAdminCreateHandler {
 
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {
-        if (userRepository.existsByMail(mainAdminUsername)) {
+        if (userRepository.existsByMail(mainAdminMail)) {
             log.info("Main admin already exists");
         } else {
             var mainAdmin = User
                     .builder()
-                    .mail(mainAdminUsername)
+                    .mail(mainAdminMail)
                     .password(passwordEncoder.encode(mainAdminPassword))
                     .role(UserRole.ADMIN)
                     .build();
 
             userRepository.add(mainAdmin);
-            log.info("Main admin added.Username: {}" + " .Password: {}", mainAdminUsername, mainAdminPassword);
+            log.info("Main admin added.Mail: {}" + " .Password: {}", mainAdminMail, mainAdminPassword);
         }
     }
 }

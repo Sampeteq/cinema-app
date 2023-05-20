@@ -32,7 +32,6 @@ import java.util.stream.Stream;
 
 import static code.utils.BookingTestHelper.createBooking;
 import static code.utils.FilmTestHelper.createFilm;
-import static code.utils.FilmTestHelper.createFilmWithScreening;
 import static code.utils.FilmTestHelper.createScreening;
 import static code.utils.RoomTestHelper.createRoom;
 import static code.utils.UserTestHelper.createUser;

@@ -40,20 +40,6 @@ public class FilmTestHelper {
         return Film.create("Test film 1", category, CURRENT_YEAR, 100);
     }
 
-    public static Film createFilmWithScreening(Room room) {
-        var film = createFilm();
-        var screening = createScreening(film, room);
-        film.addScreening(screening);
-        return film;
-    }
-
-    public static Film createFilmWithScreening(LocalDateTime screeningDate, Room room) {
-        var film = createFilm();
-        var screening = createScreening(film, room).withDate(screeningDate);
-        film.addScreening(screening);
-        return film;
-    }
-
     public static List<Film> createFilms() {
         var film1 = Film.create("Test film 1", FilmCategory.COMEDY, CURRENT_YEAR, 100);
         var film2 = Film.create("Test film 2", FilmCategory.DRAMA, CURRENT_YEAR, 120);

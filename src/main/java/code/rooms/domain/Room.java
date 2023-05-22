@@ -2,12 +2,8 @@ package code.rooms.domain;
 
 import code.screenings.domain.Screening;
 import code.screenings.domain.exceptions.ScreeningCollisionException;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.CascadeType;
@@ -22,9 +18,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "ROOMS")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString
@@ -41,8 +34,23 @@ public class Room {
     private int seatsInOneRowQuantity;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<Screening> screenings = new ArrayList<>();
+    private final List<Screening> screenings = new ArrayList<>();
+
+    protected Room() {}
+
+    private Room(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
+        this.customId = customId;
+        this.rowsQuantity = rowsQuantity;
+        this.seatsInOneRowQuantity = seatsInOneRowQuantity;
+    }
+
+    public static Room create(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
+        return new Room(
+                customId,
+                rowsQuantity,
+                seatsInOneRowQuantity
+        );
+    }
 
     public void addScreening(Screening newScreening) {
         var isScreeningsCollision = screenings

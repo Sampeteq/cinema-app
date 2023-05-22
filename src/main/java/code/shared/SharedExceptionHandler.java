@@ -30,9 +30,7 @@ public class SharedExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handle() {
-        return ResponseEntity
-                .notFound()
-                .build();
+    public ResponseEntity<String> handle(EntityNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

@@ -2,7 +2,7 @@ package code.bookings.application.commands;
 
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
-import code.bookings.domain.exceptions.BookingNotFoundException;
+import code.shared.EntityNotFoundException;
 import code.user.infrastrcuture.SecurityHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,6 +28,6 @@ public class CancelBookingHandler {
         var currentUserId = securityHelper.getCurrentUserId();
         return bookingRepository
                 .readByIdAndUserId(bookingId, currentUserId)
-                .orElseThrow(BookingNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("Booking"));
     }
 }

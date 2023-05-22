@@ -5,7 +5,7 @@ import code.bookings.application.dto.BookingMapper;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.screenings.domain.SeatReadOnlyRepository;
-import code.screenings.domain.exceptions.SeatNotFoundException;
+import code.shared.EntityNotFoundException;
 import code.user.infrastrcuture.SecurityHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class MakeBookingHandler {
         log.info("Received a command:{}",command);
         var seat = seatReadOnlyRepository
                 .getById(command.seatId())
-                .orElseThrow(SeatNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("Booking"));
         log.info("Found a seat for booking:{}",seat);
         var currentUserId = securityHelper.getCurrentUserId();
         var booking = Booking.make(seat, clock, currentUserId);

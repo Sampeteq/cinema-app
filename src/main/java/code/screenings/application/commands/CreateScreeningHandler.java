@@ -2,15 +2,14 @@ package code.screenings.application.commands;
 
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
-import code.films.domain.exceptions.FilmNotFoundException;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
-import code.rooms.domain.exceptions.RoomNotFoundException;
 import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.ScreeningMapper;
 import code.screenings.domain.Screening;
 import code.screenings.domain.ScreeningDateValidator;
 import code.screenings.domain.Seat;
+import code.shared.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -54,13 +53,13 @@ public class CreateScreeningHandler {
     private Film getFilmOrThrow(Long filmId) {
         return filmRepository
                 .readById(filmId)
-                .orElseThrow(FilmNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("Film"));
     }
 
     private Room getRoomOrThrow(Long roomId) {
         return roomRepository
                 .readById(roomId)
-                .orElseThrow(RoomNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("Room"));
     }
 
     private static List<Seat> createSeats(Room room, Screening screening) {

@@ -11,7 +11,7 @@ public class BookingTestHelper {
 
     public static Booking createBooking(Seat seat, Long userId) {
         var clock = getClockForBookingOrCancelling(seat);
-        return Booking.make(seat, userId, clock);
+        return Booking.make(seat, clock, userId);
     }
 
     public static Booking createBooking(Seat seat, Long userId, BookingStatus status) {

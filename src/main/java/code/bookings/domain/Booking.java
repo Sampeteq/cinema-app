@@ -46,7 +46,7 @@ public class Booking {
         this.userId = userId;
     }
 
-    public static Booking make(Seat seat, Long userId, Clock clock) {
+    public static Booking make(Seat seat, Clock clock, Long userId) {
         seat.book(clock);
         return new Booking(
                 BookingStatus.ACTIVE,

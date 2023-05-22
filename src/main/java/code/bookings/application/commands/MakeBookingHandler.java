@@ -33,7 +33,7 @@ public class MakeBookingHandler {
                 .orElseThrow(SeatNotFoundException::new);
         log.info("Found a seat for booking:{}",seat);
         var currentUserId = securityHelper.getCurrentUserId();
-        var booking = Booking.make(seat, currentUserId, clock);
+        var booking = Booking.make(seat, clock, currentUserId);
         var savedBooking = bookingRepository.add(booking);
         log.info("Saved a booking:{}", savedBooking);
         return bookingMapper.mapToDto(savedBooking);

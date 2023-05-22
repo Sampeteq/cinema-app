@@ -137,8 +137,8 @@ public class ScreeningControllerIT extends SpringIT {
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
         var screeningMeetParams = createScreening(film, room);
-        film.addScreening(screeningMeetParams);
-        filmRepository.add(film);
+        room.addScreening(screeningMeetParams);
+        roomRepository.add(room);
 
         //when
         var result = mockMvc.perform(
@@ -172,8 +172,8 @@ public class ScreeningControllerIT extends SpringIT {
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
         var screening = createScreening(film, room);
-        film.addScreening(screening);
-        filmRepository.add(film);
+        room.addScreening(screening);
+        roomRepository.add(room);
         return screening;
     }
 
@@ -181,8 +181,8 @@ public class ScreeningControllerIT extends SpringIT {
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
         var screenings = createScreenings(film, room);
-        screenings.forEach(film::addScreening);
-        filmRepository.add(film);
+        screenings.forEach(room::addScreening);
+        roomRepository.add(room);
         return screenings;
     }
 }

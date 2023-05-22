@@ -1,24 +1,18 @@
 package code.films.domain;
 
 import code.films.domain.exceptions.WrongFilmYearException;
-import code.screenings.domain.Screening;
-import code.screenings.domain.exceptions.ScreeningCollisionException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "FILMS")
@@ -39,9 +33,6 @@ public class Film {
     private int year;
 
     private int durationInMinutes;
-
-    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
-    private final List<Screening> screenings = new ArrayList<>();
 
     protected Film() {}
 
@@ -67,15 +58,5 @@ public class Film {
     private static boolean isFilmYearCorrect(Integer year) {
         var CURRENT_YEAR = Year.now().getValue();
         return year == CURRENT_YEAR - 1 || year == CURRENT_YEAR || year == CURRENT_YEAR + 1;
-    }
-
-    public void addScreening(Screening newScreening) {
-        var isScreeningsCollision = screenings
-                .stream()
-                .anyMatch(screening -> screening.isCollisionWith(newScreening));
-        if (isScreeningsCollision) {
-            throw new ScreeningCollisionException();
-        }
-        screenings.add(newScreening);
     }
 }

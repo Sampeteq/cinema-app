@@ -265,9 +265,9 @@ class BookingControllerIT extends SpringIT {
         var film = addFilm(createFilm());
         var room = roomRepository.add(createRoom());
         var screening = createScreening(film, room);
-        film.addScreening(screening);
-        var filmWithScreening = addFilm(film);
-        return filmWithScreening
+        room.addScreening(screening);
+        var roomWithScreening = roomRepository.add(room);
+        return roomWithScreening
                 .getScreenings()
                 .get(0)
                 .getSeats()
@@ -278,9 +278,9 @@ class BookingControllerIT extends SpringIT {
         var film = addFilm(createFilm());
         var room = roomRepository.add(createRoom());
         var screening = createScreening(film, room, screeningDate);
-        film.addScreening(screening);
-        var filmWithScreening = addFilm(film);
-        return filmWithScreening
+        room.addScreening(screening);
+        var roomWithScreening = roomRepository.add(room);
+        return roomWithScreening
                 .getScreenings()
                 .get(0)
                 .getSeats()
@@ -291,9 +291,9 @@ class BookingControllerIT extends SpringIT {
         var film = addFilm(createFilm());
         var room = roomRepository.add(createRoom());
         var screening = createScreening(film, room);
-        film.addScreening(screening);
-        var filmWithScreening = addFilm(film);
-        return filmWithScreening
+        room.addScreening(screening);
+        var roomWithScreening = roomRepository.add(room);
+        return roomWithScreening
                 .getScreenings()
                 .get(0)
                 .getSeats();

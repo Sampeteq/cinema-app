@@ -47,7 +47,7 @@ public class CreateScreeningHandler {
         );
         var seats = createSeats(room, newScreening);
         newScreening.addSeats(seats);
-        film.addScreening(newScreening);
+        room.addScreening(newScreening);
         return newScreening;
     }
 

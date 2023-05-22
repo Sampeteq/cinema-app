@@ -1,5 +1,7 @@
 package code.rooms.domain;
 
+import code.screenings.domain.Screening;
+import code.screenings.domain.exceptions.ScreeningCollisionException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,11 +10,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "ROOMS")
@@ -33,4 +39,18 @@ public class Room {
     private int rowsQuantity;
 
     private int seatsInOneRowQuantity;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Screening> screenings = new ArrayList<>();
+
+    public void addScreening(Screening newScreening) {
+        var isScreeningsCollision = screenings
+                .stream()
+                .anyMatch(screening -> screening.isCollisionWith(newScreening));
+        if (isScreeningsCollision) {
+            throw new ScreeningCollisionException();
+        }
+        screenings.add(newScreening);
+    }
 }

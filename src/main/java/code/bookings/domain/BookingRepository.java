@@ -7,6 +7,6 @@ public interface BookingRepository {
     Booking add(Booking booking);
     List<Booking> addMany(List<Booking> bookings);
     Optional<Booking> readById(Long bookingId);
-    Optional<Booking> readByIdAndUserId(Long ticketId, Long userId);
+    Optional<Booking> readByIdAndUserId(Long bookingId, Long userId);
     List<Booking> readByUserId(Long userId);
 }

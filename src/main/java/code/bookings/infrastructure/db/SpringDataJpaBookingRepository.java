@@ -32,8 +32,8 @@ public class SpringDataJpaBookingRepository implements BookingRepository {
     }
 
     @Override
-    public Optional<Booking> readByIdAndUserId(Long ticketId, Long userId) {
-        return jpaBookingRepository.readByIdAndUserId(ticketId, userId);
+    public Optional<Booking> readByIdAndUserId(Long bookingId, Long userId) {
+        return jpaBookingRepository.readByIdAndUserId(bookingId, userId);
     }
 
     @Override

@@ -14,8 +14,6 @@ public record CreateScreeningCommand(
         @Schema(type = "string", example = "2022-01-01T16:30")
         LocalDateTime date,
         @NotNull
-        Long filmId,
-        @NotNull
-        Long roomId
+        Long filmId
 ) {
 }

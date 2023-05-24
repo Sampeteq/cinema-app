@@ -6,7 +6,7 @@ import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.ScreeningMapper;
 import code.screenings.application.dto.SeatMapper;
 import code.screenings.domain.Screening;
-import code.screenings.domain.exceptions.ScreeningCollisionException;
+import code.screenings.domain.exceptions.NoAvailableRoomsException;
 import code.screenings.domain.exceptions.WrongScreeningDateException;
 import code.utils.SpringIT;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ public class ScreeningControllerIT extends SpringIT {
         //given
         var sampleFilm = filmRepository.add(createFilm());
         var sampleRoom = roomRepository.add(createRoom());
-        var cmd = createCreateScreeningCommand(sampleFilm.getId(), sampleRoom.getId());
+        var cmd = createCreateScreeningCommand(sampleFilm.getId());
 
         //when
         var result = mockMvc.perform(
@@ -76,7 +76,7 @@ public class ScreeningControllerIT extends SpringIT {
         //given
         var filmId = filmRepository.add(createFilm()).getId();
         var roomId = roomRepository.add(createRoom()).getId();
-        var cmd = createCreateScreeningCommand(filmId, roomId).withDate(wrongDate);
+        var cmd = createCreateScreeningCommand(filmId).withDate(wrongDate);
 
         //when
         var result = mockMvc.perform(
@@ -98,8 +98,7 @@ public class ScreeningControllerIT extends SpringIT {
         var screening = prepareScreening();
 
         var cmd = createCreateScreeningCommand(
-                screening.getFilm().getId(),
-                screening.getRoom().getId()
+                screening.getFilm().getId()
         ).withDate(screening.getDate().plusMinutes(10));
 
         //when
@@ -112,7 +111,7 @@ public class ScreeningControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new ScreeningCollisionException().getMessage()));
+                .andExpect(content().string(new NoAvailableRoomsException().getMessage()));
     }
 
     @Test

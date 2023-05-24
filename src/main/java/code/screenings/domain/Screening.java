@@ -59,14 +59,26 @@ public class Screening {
         );
     }
 
+    public static Screening of(LocalDateTime date, Film film) {
+        return new Screening(
+                null,
+                date,
+                film,
+                null,
+                new ArrayList<>()
+        );
+    }
+
     public void addSeats(List<Seat> seats) {
         this.seats = seats;
     }
 
+    public void assignRoom(Room room) {
+        this.room = room;
+    }
+
     public boolean isCollisionWith(Screening other) {
-        var hasSameRoom = other.hasRoom(this.room);
-        var isTimeCollision = other.startBefore(this.finishDate()) && other.endAfter(this.date);
-        return hasSameRoom && isTimeCollision;
+        return other.startBefore(this.finishDate()) && other.endAfter(this.date);
     }
 
     public int timeToScreeningStartInHours(Clock clock) {
@@ -74,10 +86,6 @@ public class Screening {
                 .between(LocalDateTime.now(clock), date)
                 .abs()
                 .toHours();
-    }
-
-    private boolean hasRoom(Room room) {
-        return this.room.equals(room);
     }
 
     private boolean startBefore(LocalDateTime date) {

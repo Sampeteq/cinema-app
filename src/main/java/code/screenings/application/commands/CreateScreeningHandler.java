@@ -9,6 +9,7 @@ import code.screenings.application.dto.ScreeningMapper;
 import code.screenings.domain.Screening;
 import code.screenings.domain.ScreeningDateValidator;
 import code.screenings.domain.Seat;
+import code.screenings.domain.exceptions.NoAvailableRoomsException;
 import code.shared.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -38,15 +39,14 @@ public class CreateScreeningHandler {
 
     private Screening createScreening(CreateScreeningCommand command) {
         var film = getFilmOrThrow(command.filmId());
-        var room = getRoomOrThrow(command.roomId());
         var newScreening = Screening.of(
                 command.date(),
-                film,
-                room
+                film
         );
-        var seats = createSeats(room, newScreening);
+        var availableRoom = getFirstAvailableRoom(newScreening);
+        var seats = createSeats(availableRoom, newScreening);
         newScreening.addSeats(seats);
-        room.addScreening(newScreening);
+        availableRoom.addScreening(newScreening);
         return newScreening;
     }
 
@@ -56,10 +56,17 @@ public class CreateScreeningHandler {
                 .orElseThrow(() -> new EntityNotFoundException("Film"));
     }
 
-    private Room getRoomOrThrow(Long roomId) {
+    private Room getFirstAvailableRoom(Screening newScreening) {
         return roomRepository
-                .readById(roomId)
-                .orElseThrow(() -> new EntityNotFoundException("Room"));
+                .readAll()
+                .stream()
+                .filter(room -> room
+                        .getScreenings()
+                        .stream()
+                        .noneMatch(screening -> screening.isCollisionWith(newScreening))
+                )
+                .findFirst()
+                .orElseThrow(NoAvailableRoomsException::new);
     }
 
     private static List<Seat> createSeats(Room room, Screening screening) {

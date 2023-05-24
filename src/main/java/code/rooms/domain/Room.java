@@ -1,7 +1,6 @@
 package code.rooms.domain;
 
 import code.screenings.domain.Screening;
-import code.screenings.domain.exceptions.ScreeningCollisionException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -53,12 +52,7 @@ public class Room {
     }
 
     public void addScreening(Screening newScreening) {
-        var isScreeningsCollision = screenings
-                .stream()
-                .anyMatch(screening -> screening.isCollisionWith(newScreening));
-        if (isScreeningsCollision) {
-            throw new ScreeningCollisionException();
-        }
         screenings.add(newScreening);
+        newScreening.assignRoom(this);
     }
 }

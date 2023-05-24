@@ -54,12 +54,11 @@ public class FilmTestHelper {
         );
     }
 
-    public static CreateScreeningCommand createCreateScreeningCommand(Long filmId, Long roomId) {
+    public static CreateScreeningCommand createCreateScreeningCommand(Long filmId) {
         return CreateScreeningCommand
                 .builder()
                 .filmId(filmId)
                 .date(SCREENING_DATE)
-                .roomId(roomId)
                 .build();
     }
 

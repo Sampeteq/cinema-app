@@ -77,6 +77,14 @@ public class Screening {
         this.room = room;
     }
 
+    public void removeRoom() {
+        this.room = null;
+    }
+
+    public boolean hasRoom() {
+        return this.room != null;
+    }
+
     public boolean isCollisionWith(Screening other) {
         return other.startBefore(this.finishDate()) && other.endAfter(this.date);
     }
@@ -98,5 +106,10 @@ public class Screening {
 
     private LocalDateTime finishDate() {
         return date.plusMinutes(film.getDurationInMinutes());
+    }
+
+    public boolean isFinished(Clock clock) {
+        var currentDate = LocalDateTime.now(clock);
+        return currentDate.isAfter(finishDate());
     }
 }

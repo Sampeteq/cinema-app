@@ -1,5 +1,6 @@
-package code.user.application.commands;
+package code.user.application.services;
 
+import code.user.application.commands.UserLoginCommand;
 import code.user.domain.exceptions.UserAlreadyLoggedInException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -2,7 +2,7 @@ package code.rooms;
 
 import code.films.domain.FilmRepository;
 import code.rooms.domain.RoomRepository;
-import code.screenings.application.ScreeningFinishingService;
+import code.screenings.application.services.ScreeningFinishingService;
 import code.screenings.domain.Screening;
 import code.utils.SpringIT;
 import org.junit.jupiter.api.Test;

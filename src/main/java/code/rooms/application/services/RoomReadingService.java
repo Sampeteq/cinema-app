@@ -1,4 +1,4 @@
-package code.rooms.application.queries;
+package code.rooms.application.services;
 
 import code.rooms.application.dto.RoomDto;
 import code.rooms.application.dto.RoomMapper;

@@ -1,9 +1,9 @@
 package code.films.infrastructure.rest;
 
 import code.films.application.commands.FilmCreationCommand;
-import code.films.application.commands.FilmCreationService;
+import code.films.application.services.FilmCreationService;
 import code.films.application.dto.FilmDto;
-import code.films.application.queries.FilmReadingService;
+import code.films.application.services.FilmReadingService;
 import code.films.application.queries.FilmReadingQuery;
 import code.films.domain.FilmCategory;
 import lombok.AllArgsConstructor;

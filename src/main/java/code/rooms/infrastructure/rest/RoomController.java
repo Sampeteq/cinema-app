@@ -1,7 +1,7 @@
 package code.rooms.infrastructure.rest;
 
 import code.rooms.application.dto.RoomDto;
-import code.rooms.application.queries.RoomReadingService;
+import code.rooms.application.services.RoomReadingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

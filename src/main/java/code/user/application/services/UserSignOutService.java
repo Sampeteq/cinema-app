@@ -1,4 +1,4 @@
-package code.user.application.commands;
+package code.user.application.services;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

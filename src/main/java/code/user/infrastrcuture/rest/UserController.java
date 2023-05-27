@@ -1,10 +1,10 @@
 package code.user.infrastrcuture.rest;
 
 import code.user.application.commands.UserLoginCommand;
-import code.user.application.commands.UserLoginService;
-import code.user.application.commands.UserSignOutService;
+import code.user.application.services.UserLoginService;
+import code.user.application.services.UserSignOutService;
 import code.user.application.commands.UserSignUpCommand;
-import code.user.application.commands.UserSignUpService;
+import code.user.application.services.UserSignUpService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

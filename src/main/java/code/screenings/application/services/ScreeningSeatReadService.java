@@ -1,7 +1,8 @@
-package code.screenings.application.queries;
+package code.screenings.application.services;
 
 import code.screenings.application.dto.SeatDto;
 import code.screenings.application.dto.SeatMapper;
+import code.screenings.application.queries.ScreeningSeatQuery;
 import code.screenings.domain.Screening;
 import code.screenings.domain.ScreeningReadOnlyRepository;
 import code.shared.EntityNotFoundException;

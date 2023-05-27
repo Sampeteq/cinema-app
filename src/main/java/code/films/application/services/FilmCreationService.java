@@ -1,5 +1,6 @@
-package code.films.application.commands;
+package code.films.application.services;
 
+import code.films.application.commands.FilmCreationCommand;
 import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmMapper;
 import code.films.domain.Film;

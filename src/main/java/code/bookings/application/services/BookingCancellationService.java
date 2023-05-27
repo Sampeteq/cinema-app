@@ -1,5 +1,6 @@
-package code.bookings.application.commands;
+package code.bookings.application.services;
 
+import code.bookings.application.commands.BookingCancellationCommand;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.shared.EntityNotFoundException;

@@ -1,11 +1,11 @@
 package code.screenings.infrastructure;
 
 import code.screenings.application.commands.ScreeningCreationCommand;
-import code.screenings.application.commands.ScreeningCreationService;
+import code.screenings.application.services.ScreeningCreationService;
 import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.SeatDto;
-import code.screenings.application.queries.ScreeningReadService;
-import code.screenings.application.queries.ScreeningSeatReadService;
+import code.screenings.application.services.ScreeningReadService;
+import code.screenings.application.services.ScreeningSeatReadService;
 import code.screenings.application.queries.ScreeningSeatQuery;
 import code.screenings.application.queries.ScreeningReadQuery;
 import lombok.RequiredArgsConstructor;

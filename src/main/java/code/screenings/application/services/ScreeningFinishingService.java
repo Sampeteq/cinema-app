@@ -1,4 +1,4 @@
-package code.screenings.application;
+package code.screenings.application.services;
 
 import code.rooms.domain.RoomRepository;
 import code.screenings.domain.Screening;

@@ -1,9 +1,10 @@
-package code.screenings.application.commands;
+package code.screenings.application.services;
 
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
+import code.screenings.application.commands.ScreeningCreationCommand;
 import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.ScreeningMapper;
 import code.screenings.domain.Screening;

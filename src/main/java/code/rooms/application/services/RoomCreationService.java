@@ -1,5 +1,6 @@
-package code.rooms.application.commands;
+package code.rooms.application.services;
 
+import code.rooms.application.commands.RoomCreationCommand;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
 import code.rooms.domain.exceptions.RoomNumberAlreadyExistsException;

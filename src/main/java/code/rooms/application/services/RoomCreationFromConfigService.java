@@ -1,6 +1,6 @@
-package code.rooms.application.commands;
+package code.rooms.application.services;
 
-import code.rooms.application.queries.RoomReadingService;
+import code.rooms.application.commands.RoomCreationCommand;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

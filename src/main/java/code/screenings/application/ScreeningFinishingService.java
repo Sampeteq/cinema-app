@@ -13,13 +13,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class FinishedScreeningsHandler {
+public class ScreeningFinishingService {
 
     private final RoomRepository roomRepository;
     private final Clock clock;
 
     @Transactional
-    public void handle() {
+    public void onFinishedScreenings() {
         log.info("Searching for finished screenings");
         var finishedScreenings = readFinishedScreenings();
         if (finishedScreenings.isEmpty()) {

@@ -3,7 +3,7 @@ package code.user.application.commands;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
-public record SignUpCommand(
+public record UserSignUpCommand(
         @Email
         String mail,
 

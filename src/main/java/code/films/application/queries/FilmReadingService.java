@@ -10,12 +10,12 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class GetFilmsHandler {
+public class FilmReadingService {
 
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
 
-    public List<FilmDto> handle(GetFilmsQuery query) {
+    public List<FilmDto> read(FilmReadingQuery query) {
         return filmRepository
                 .readBy(query)
                 .stream()

@@ -1,10 +1,10 @@
 package code.user.infrastrcuture.rest;
 
-import code.user.application.commands.SignInCommand;
-import code.user.application.commands.SignInHandler;
-import code.user.application.commands.SignOutHandler;
-import code.user.application.commands.SignUpCommand;
-import code.user.application.commands.SignUpHandler;
+import code.user.application.commands.UserLoginCommand;
+import code.user.application.commands.UserLoginService;
+import code.user.application.commands.UserSignOutService;
+import code.user.application.commands.UserSignUpCommand;
+import code.user.application.commands.UserSignUpService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,28 +18,28 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class UserController {
 
-    private final SignUpHandler signUpHandler;
+    private final UserSignUpService userSignUpService;
 
-    private final SignInHandler signInHandler;
+    private final UserLoginService userLoginService;
 
-    private final SignOutHandler signOutHandler;
+    private final UserSignOutService userSignOutService;
 
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody @Valid SignUpCommand command) {
-        signUpHandler.handle(command);
+    public ResponseEntity<?> signUp(@RequestBody @Valid UserSignUpCommand command) {
+        userSignUpService.signUpUser(command);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signIn(@RequestBody SignInCommand command) {
-        signInHandler.handle(command);
+    public ResponseEntity<?> signIn(@RequestBody UserLoginCommand command) {
+        userLoginService.loginUser(command);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/signout")
     public ResponseEntity<?> signOut() {
-        signOutHandler.handle();
+        userSignOutService.signOutUser();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

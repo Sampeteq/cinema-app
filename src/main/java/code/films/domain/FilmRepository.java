@@ -1,6 +1,6 @@
 package code.films.domain;
 
-import code.films.application.queries.GetFilmsQuery;
+import code.films.application.queries.FilmReadingQuery;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,5 +12,5 @@ public interface FilmRepository  {
 
     Optional<Film> readById(Long filmId);
 
-    List<Film> readBy(GetFilmsQuery query);
+    List<Film> readBy(FilmReadingQuery query);
 }

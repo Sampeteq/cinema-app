@@ -1,10 +1,10 @@
 package code.films.infrastructure.rest;
 
-import code.films.application.commands.CreateFilmCommand;
-import code.films.application.commands.CreateFilmHandler;
+import code.films.application.commands.FilmCreationCommand;
+import code.films.application.commands.FilmCreationService;
 import code.films.application.dto.FilmDto;
-import code.films.application.queries.GetFilmsHandler;
-import code.films.application.queries.GetFilmsQuery;
+import code.films.application.queries.FilmReadingService;
+import code.films.application.queries.FilmReadingQuery;
 import code.films.domain.FilmCategory;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,23 +22,23 @@ import java.util.List;
 @AllArgsConstructor
 public class FilmController {
 
-    private final CreateFilmHandler createFilmHandler;
+    private final FilmCreationService filmCreationService;
 
-    private final GetFilmsHandler getFilmsHandler;
+    private final FilmReadingService filmReadingService;
 
     @PostMapping("/films")
-    public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid CreateFilmCommand dto) {
-        var createdFilm = createFilmHandler.handle(dto);
+    public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid FilmCreationCommand dto) {
+        var createdFilm = filmCreationService.createFilm(dto);
         return new ResponseEntity<>(createdFilm, HttpStatus.CREATED);
     }
 
     @GetMapping("/films")
     public List<FilmDto> searchFilmsBy(@RequestParam(required = false) FilmCategory category) {
-        var params = GetFilmsQuery
+        var params = FilmReadingQuery
                 .builder()
                 .category(category)
                 .build();
-        return getFilmsHandler.handle(params);
+        return filmReadingService.read(params);
     }
 }
 

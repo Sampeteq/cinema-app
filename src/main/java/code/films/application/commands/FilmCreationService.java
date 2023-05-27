@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class CreateFilmHandler {
+public class FilmCreationService {
 
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
 
-    public FilmDto handle(CreateFilmCommand command) {
+    public FilmDto createFilm(FilmCreationCommand command) {
         var film = Film.create(
                         command.title(),
                         command.filmCategory(),

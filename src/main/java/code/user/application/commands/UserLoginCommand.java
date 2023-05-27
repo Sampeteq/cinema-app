@@ -1,6 +1,6 @@
 package code.user.application.commands;
 
-public record SignInCommand(
+public record UserLoginCommand(
         String mail,
         String password
 ) {

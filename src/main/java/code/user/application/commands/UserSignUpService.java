@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SignUpHandler {
+public class UserSignUpService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void handle(SignUpCommand command) {
+    public void signUpUser(UserSignUpCommand command) {
         if (userRepository.existsByMail(command.mail())) {
             throw new MailAlreadyExistsException();
         }

@@ -13,13 +13,13 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class GetScreeningSeatsHandler {
+public class ScreeningSeatReadService {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
     private final SeatMapper seatMapper;
 
     @Transactional(readOnly = true)
-    public List<SeatDto> handle(GetScreeningSeatsQuery query) {
+    public List<SeatDto> handle(ScreeningSeatQuery query) {
         return screeningReadOnlyRepository
                 .getById(query.screeningId())
                 .map(Screening::getSeats)

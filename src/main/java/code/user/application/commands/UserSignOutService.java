@@ -4,9 +4,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SignOutHandler {
+public class UserSignOutService {
 
-    public void handle() {
+    public void signOutUser() {
         SecurityContextHolder.clearContext();
     }
 }

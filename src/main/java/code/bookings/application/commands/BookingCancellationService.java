@@ -1,26 +1,33 @@
-package code.bookings.application.queries;
+package code.bookings.application.commands;
 
-import code.bookings.application.dto.BookingDto;
-import code.bookings.application.dto.BookingMapper;
+import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.shared.EntityNotFoundException;
 import code.user.infrastrcuture.SecurityHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Clock;
 
 @Component
 @RequiredArgsConstructor
-public class GetBookingHandler {
+public class BookingCancellationService {
 
     private final SecurityHelper securityHelper;
     private final BookingRepository bookingRepository;
-    private final BookingMapper bookingMapper;
+    private final Clock clock;
 
-    public BookingDto handle(Long id) {
+    @Transactional
+    public void cancelBooking(BookingCancellationCommand command) {
+        var booking = getBookingOrThrow(command.bookingId());
+        booking.cancel(clock);
+    }
+
+    private Booking getBookingOrThrow(Long bookingId) {
         var currentUserId = securityHelper.getCurrentUserId();
         return bookingRepository
-                .readByIdAndUserId(id, currentUserId)
-                .map(bookingMapper::mapToDto)
+                .readByIdAndUserId(bookingId, currentUserId)
                 .orElseThrow(() -> new EntityNotFoundException("Booking"));
     }
 }

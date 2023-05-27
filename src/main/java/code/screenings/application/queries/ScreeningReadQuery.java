@@ -5,4 +5,4 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record GetScreeningsQuery(Long filmId, LocalDateTime date) {}
+public record ScreeningReadQuery(Long filmId, LocalDateTime date) {}

@@ -1,13 +1,13 @@
 package code.screenings.infrastructure;
 
-import code.screenings.application.commands.CreateScreeningCommand;
-import code.screenings.application.commands.CreateScreeningHandler;
+import code.screenings.application.commands.ScreeningCreationCommand;
+import code.screenings.application.commands.ScreeningCreationService;
 import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.SeatDto;
-import code.screenings.application.queries.GetScreeningHandler;
-import code.screenings.application.queries.GetScreeningSeatsHandler;
-import code.screenings.application.queries.GetScreeningSeatsQuery;
-import code.screenings.application.queries.GetScreeningsQuery;
+import code.screenings.application.queries.ScreeningReadService;
+import code.screenings.application.queries.ScreeningSeatReadService;
+import code.screenings.application.queries.ScreeningSeatQuery;
+import code.screenings.application.queries.ScreeningReadQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -29,19 +29,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScreeningController {
 
-    private final CreateScreeningHandler createScreeningHandler;
+    private final ScreeningCreationService screeningCreationService;
 
-    private final GetScreeningHandler getScreeningHandler;
+    private final ScreeningReadService screeningReadService;
 
-    private final GetScreeningSeatsHandler getScreeningSeatsHandler;
+    private final ScreeningSeatReadService screeningSeatReadService;
 
     @PostMapping
     public ResponseEntity<ScreeningDto> createScreening(
             @RequestBody
             @Valid
-            CreateScreeningCommand dto
+            ScreeningCreationCommand dto
     ) {
-        var createdScreening = createScreeningHandler.handle(dto);
+        var createdScreening = screeningCreationService.handle(dto);
         return new ResponseEntity<>(createdScreening, HttpStatus.CREATED);
     }
 
@@ -55,19 +55,19 @@ public class ScreeningController {
             LocalDateTime date
     ) {
 
-        var params = GetScreeningsQuery
+        var params = ScreeningReadQuery
                 .builder()
                 .filmId(filmId)
                 .date(date)
                 .build();
 
-        return getScreeningHandler.handle(params);
+        return screeningReadService.read(params);
     }
 
     @GetMapping("/{screeningId}/seats")
     public List<SeatDto> searchSeats(@PathVariable Long screeningId) {
-        return getScreeningSeatsHandler.handle(
-                GetScreeningSeatsQuery
+        return screeningSeatReadService.handle(
+                ScreeningSeatQuery
                         .builder()
                         .screeningId(screeningId)
                         .build()

@@ -10,12 +10,12 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class GetRoomsQueryHandler {
+public class RoomReadingService {
 
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;
 
-    public List<RoomDto> handle() {
+    public List<RoomDto> readAll() {
         return roomRepository
                 .readAll()
                 .stream()

@@ -15,13 +15,13 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class GetScreeningHandler {
+public class ScreeningReadService {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
     private final ScreeningMapper screeningMapper;
 
     @Transactional(readOnly = true)
-    public List<ScreeningDto> handle(GetScreeningsQuery query) {
+    public List<ScreeningDto> read(ScreeningReadQuery query) {
         var specification = dateLike(query.date())
                 .and(filmLike(query.filmId()))
                 .and(withFetch());

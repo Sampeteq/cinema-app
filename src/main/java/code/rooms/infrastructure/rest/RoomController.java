@@ -1,7 +1,7 @@
 package code.rooms.infrastructure.rest;
 
 import code.rooms.application.dto.RoomDto;
-import code.rooms.application.queries.GetRoomsQueryHandler;
+import code.rooms.application.queries.RoomReadingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +14,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoomController {
 
-    private final GetRoomsQueryHandler getRoomsQueryHandler;
+    private final RoomReadingService roomReadingService;
 
     @GetMapping
     public List<RoomDto> searchAllRooms() {
-        return getRoomsQueryHandler.handle();
+        return roomReadingService.readAll();
     }
 }

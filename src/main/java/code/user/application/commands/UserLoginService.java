@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SignInHandler {
+public class UserLoginService {
 
     private final AuthenticationManager authenticationManager;
 
-    public void handle(SignInCommand command) {
+    public void loginUser(UserLoginCommand command) {
         var username = SecurityContextHolder
                 .getContext()
                 .getAuthentication()

@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CreateRoomHandler {
+public class RoomCreationService {
 
     private final RoomRepository roomRepository;
 
-    public void handle(CreateRoomCommand command) {
+    public void createRoom(RoomCreationCommand command) {
         if (roomRepository.existsByCustomId(command.customId())) {
             throw new RoomNumberAlreadyExistsException();
         }

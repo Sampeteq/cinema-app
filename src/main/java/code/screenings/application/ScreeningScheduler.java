@@ -10,11 +10,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Slf4j
 public class ScreeningScheduler {
 
-    private final FinishedScreeningsHandler finishedScreeningsHandler;
+    private final ScreeningFinishingService screeningFinishingService;
 
     /** 3600000ms - 1h */
     @Scheduled(fixedDelay = 3600000)
     public void run() {
-      finishedScreeningsHandler.handle();
+      screeningFinishingService.onFinishedScreenings();
     }
 }

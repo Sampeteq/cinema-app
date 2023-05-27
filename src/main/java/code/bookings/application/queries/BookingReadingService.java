@@ -3,6 +3,7 @@ package code.bookings.application.queries;
 import code.bookings.application.dto.BookingDto;
 import code.bookings.application.dto.BookingMapper;
 import code.bookings.domain.BookingRepository;
+import code.shared.EntityNotFoundException;
 import code.user.infrastrcuture.SecurityHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,13 +12,21 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class GetBookingsHandler {
+public class BookingReadingService {
 
     private final SecurityHelper securityHelper;
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
 
-    public List<BookingDto> handle() {
+    public BookingDto read(Long id) {
+        var currentUserId = securityHelper.getCurrentUserId();
+        return bookingRepository
+                .readByIdAndUserId(id, currentUserId)
+                .map(bookingMapper::mapToDto)
+                .orElseThrow(() -> new EntityNotFoundException("Booking"));
+    }
+
+    public List<BookingDto> readAll() {
         var currentUserId = securityHelper.getCurrentUserId();
         return bookingRepository
                 .readByUserId(currentUserId)

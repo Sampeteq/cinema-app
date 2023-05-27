@@ -22,7 +22,7 @@ import static java.util.stream.IntStream.rangeClosed;
 
 @Component
 @AllArgsConstructor
-public class CreateScreeningHandler {
+public class ScreeningCreationService {
 
     private final ScreeningDateValidator screeningDateValidator;
     private final Clock clock;
@@ -31,13 +31,13 @@ public class CreateScreeningHandler {
     private final RoomRepository roomRepository;
     private final ScreeningMapper screeningMapper;
 
-    public ScreeningDto handle(CreateScreeningCommand command) {
+    public ScreeningDto handle(ScreeningCreationCommand command) {
         screeningDateValidator.validate(command.date(), clock);
         var screening = transactionTemplate.execute(status -> createScreening(command));
         return screeningMapper.mapToDto(screening);
     }
 
-    private Screening createScreening(CreateScreeningCommand command) {
+    private Screening createScreening(ScreeningCreationCommand command) {
         var film = getFilmOrThrow(command.filmId());
         var newScreening = Screening.of(
                 command.date(),

@@ -1,6 +1,6 @@
 package code.rooms.application.commands;
 
-import code.rooms.application.queries.GetRoomsQueryHandler;
+import code.rooms.application.queries.RoomReadingService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,21 +21,21 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("prod")
-public class CreateRoomsFromConfigHandler {
+public class RoomCreationFromConfigService {
 
-    private final GetRoomsQueryHandler getRoomsQueryHandler;
+    private final RoomReadingService roomReadingService;
 
-    private final CreateRoomHandler createRoomHandler;
+    private final RoomCreationService roomCreationService;
 
     @Value("${roomsConfigHandler.pathToRoomsConfig}")
     private String pathToRoomsConfig;
 
     @EventListener(ContextRefreshedEvent.class)
-    public void handle() {
-        if(getRoomsQueryHandler.handle().isEmpty()) {
+    public void createRoomsFromConfig() {
+        if(roomReadingService.readAll().isEmpty()) {
             try {
                 logIfFileNotExists();
-                var json = readCreateRoomCommandsJson();
+                var json = readRoomCreationCommandsJson();
                 logIfFileIsEmpty(json);
                 createRoomsFromJson(json);
             }
@@ -51,7 +51,7 @@ public class CreateRoomsFromConfigHandler {
         }
     }
 
-    private String readCreateRoomCommandsJson() throws IOException {
+    private String readRoomCreationCommandsJson() throws IOException {
         return Files.readString(Path.of(pathToRoomsConfig));
     }
 
@@ -63,7 +63,7 @@ public class CreateRoomsFromConfigHandler {
 
     private void createRoomsFromJson(String json) throws JsonProcessingException {
         new ObjectMapper()
-                .readValue(json, new TypeReference<List<CreateRoomCommand>>() {})
-                .forEach(createRoomHandler::handle);
+                .readValue(json, new TypeReference<List<RoomCreationCommand>>() {})
+                .forEach(roomCreationService::createRoom);
     }
 }

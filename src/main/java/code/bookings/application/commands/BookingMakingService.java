@@ -17,7 +17,7 @@ import java.time.Clock;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class MakeBookingHandler {
+public class BookingMakingService {
 
     private final SeatReadOnlyRepository seatReadOnlyRepository;
     private final SecurityHelper securityHelper;
@@ -26,7 +26,7 @@ public class MakeBookingHandler {
     private final BookingMapper bookingMapper;
 
     @Transactional
-    public BookingDto handle(MakeBookingCommand command) {
+    public BookingDto makeBooking(BookingMakingCommand command) {
         log.info("Received a command:{}",command);
         var seat = seatReadOnlyRepository
                 .getById(command.seatId())

@@ -5,6 +5,8 @@ import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
 
-public interface ScreeningReadOnlyRepository extends Repository<Screening, Long>, JpaSpecificationExecutor<Screening> {
+public interface ScreeningReadOnlyRepository extends
+        Repository<Screening, Long>,
+        JpaSpecificationExecutor<Screening> {
     Optional<Screening> getById(Long id);
 }

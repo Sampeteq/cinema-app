@@ -29,19 +29,13 @@ public class BookingController {
 
     @PostMapping
     public BookingDto bookSeat(@RequestParam Long seatId) {
-        var command = BookingMakingCommand
-                .builder()
-                .seatId(seatId)
-                .build();
+        var command = new BookingMakingCommand(seatId);
         return bookingMakingService.makeBooking(command);
     }
 
     @PostMapping("/{bookingId}/cancel")
     public void cancelBooking(@PathVariable Long bookingId) {
-        var command = BookingCancellationCommand
-                .builder()
-                .bookingId(bookingId)
-                .build();
+        var command = new BookingCancellationCommand(bookingId);
         bookingCancellationService.cancelBooking(command);
     }
 

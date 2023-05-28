@@ -36,10 +36,7 @@ public class ScreeningCreationService {
         screeningDateValidator.validate(command.date(), clock);
         var screening = transactionTemplate.execute(status -> {
             var film = getFilmOrThrow(command.filmId());
-            var newScreening = Screening.create(
-                    command.date(),
-                    film
-            );
+            var newScreening = Screening.create(command.date(), film);
             var availableRoom = getFirstAvailableRoom(newScreening);
             var seats = createSeats(availableRoom, newScreening);
             newScreening.addSeats(seats);

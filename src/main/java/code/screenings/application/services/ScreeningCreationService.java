@@ -32,23 +32,21 @@ public class ScreeningCreationService {
     private final RoomRepository roomRepository;
     private final ScreeningMapper screeningMapper;
 
-    public ScreeningDto handle(ScreeningCreationCommand command) {
+    public ScreeningDto createScreening(ScreeningCreationCommand command) {
         screeningDateValidator.validate(command.date(), clock);
-        var screening = transactionTemplate.execute(status -> createScreening(command));
+        var screening = transactionTemplate.execute(status -> {
+            var film = getFilmOrThrow(command.filmId());
+            var newScreening = Screening.of(
+                    command.date(),
+                    film
+            );
+            var availableRoom = getFirstAvailableRoom(newScreening);
+            var seats = createSeats(availableRoom, newScreening);
+            newScreening.addSeats(seats);
+            availableRoom.addScreening(newScreening);
+            return newScreening;
+        });
         return screeningMapper.mapToDto(screening);
-    }
-
-    private Screening createScreening(ScreeningCreationCommand command) {
-        var film = getFilmOrThrow(command.filmId());
-        var newScreening = Screening.of(
-                command.date(),
-                film
-        );
-        var availableRoom = getFirstAvailableRoom(newScreening);
-        var seats = createSeats(availableRoom, newScreening);
-        newScreening.addSeats(seats);
-        availableRoom.addScreening(newScreening);
-        return newScreening;
     }
 
     private Film getFilmOrThrow(Long filmId) {

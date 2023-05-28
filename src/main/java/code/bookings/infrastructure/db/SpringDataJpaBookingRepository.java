@@ -21,15 +21,6 @@ public class SpringDataJpaBookingRepository implements BookingRepository {
         return jpaBookingRepository.save(booking);
     }
 
-    @Override
-    public List<Booking> addMany(List<Booking> bookings) {
-        return jpaBookingRepository.saveAll(bookings);
-    }
-
-    @Override
-    public Optional<Booking> readById(Long bookingId) {
-        return jpaBookingRepository.findById(bookingId);
-    }
 
     @Override
     public Optional<Booking> readByIdAndUserId(Long bookingId, Long userId) {

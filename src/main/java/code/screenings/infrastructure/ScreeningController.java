@@ -66,11 +66,6 @@ public class ScreeningController {
 
     @GetMapping("/{screeningId}/seats")
     public List<SeatDto> searchSeats(@PathVariable Long screeningId) {
-        return screeningSeatReadService.handle(
-                ScreeningSeatQuery
-                        .builder()
-                        .screeningId(screeningId)
-                        .build()
-        );
+        return screeningSeatReadService.read(screeningId);
     }
 }

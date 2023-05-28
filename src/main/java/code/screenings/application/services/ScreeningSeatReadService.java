@@ -2,7 +2,6 @@ package code.screenings.application.services;
 
 import code.screenings.application.dto.SeatDto;
 import code.screenings.application.dto.SeatMapper;
-import code.screenings.application.queries.ScreeningSeatQuery;
 import code.screenings.domain.Screening;
 import code.screenings.domain.ScreeningReadOnlyRepository;
 import code.shared.EntityNotFoundException;
@@ -20,9 +19,9 @@ public class ScreeningSeatReadService {
     private final SeatMapper seatMapper;
 
     @Transactional(readOnly = true)
-    public List<SeatDto> handle(ScreeningSeatQuery query) {
+    public List<SeatDto> read(Long screeningId) {
         return screeningReadOnlyRepository
-                .getById(query.screeningId())
+                .getById(screeningId)
                 .map(Screening::getSeats)
                 .map(seatMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));

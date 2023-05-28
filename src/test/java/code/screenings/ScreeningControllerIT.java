@@ -172,8 +172,10 @@ public class ScreeningControllerIT extends SpringIT {
         var room = roomRepository.add(createRoom());
         var screening = createScreening(film, room);
         room.addScreening(screening);
-        roomRepository.add(room);
-        return screening;
+        return roomRepository
+                .add(room)
+                .getScreenings()
+                .get(0);
     }
 
     private List<Screening> prepareScreenings() {

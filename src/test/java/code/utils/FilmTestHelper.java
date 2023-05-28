@@ -68,8 +68,8 @@ public class FilmTestHelper {
                 film,
                 room
         ).withId(1L);
-        var seat1 = Seat.of(1,2,screening).withId(1L);
-        var seat2 = Seat.of(1,2,screening).withId(2L);
+        var seat1 = Seat.of(1,2,screening);
+        var seat2 = Seat.of(1,2,screening);
         screening.addSeats(List.of(seat1, seat2));
         return screening;
     }
@@ -80,8 +80,8 @@ public class FilmTestHelper {
                 film,
                 room
         ).withId(1L);
-        var seat1 = Seat.of(1,2,screening).withId(1L);
-        var seat2 = Seat.of(1,2,screening).withId(2L);
+        var seat1 = Seat.of(1,2,screening);
+        var seat2 = Seat.of(1,2,screening);
         screening.addSeats(List.of(seat1, seat2));
         return screening;
     }

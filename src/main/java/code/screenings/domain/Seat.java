@@ -3,14 +3,9 @@ package code.screenings.domain;
 import code.bookings.domain.exceptions.SeatNotAvailableException;
 import code.bookings.domain.exceptions.TooLateToBookingException;
 import code.bookings.domain.exceptions.TooLateToCancelBookingException;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.With;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,10 +19,6 @@ import java.time.Clock;
 
 @Entity
 @Table(name = "SEATS")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
-@With
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString(exclude = {"screening"})
@@ -48,12 +39,20 @@ public class Seat {
     @ManyToOne
     private Screening screening;
 
+    protected Seat() {
+    }
+
+    private Seat(int rowNumber, int number, Screening screening) {
+        this.rowNumber = rowNumber;
+        this.number = number;
+        this.status = SeatStatus.FREE;
+        this.screening = screening;
+    }
+
     public static Seat of(int rowNumber, int number, Screening screening) {
         return new Seat(
-                null,
                 rowNumber,
                 number,
-                SeatStatus.FREE,
                 screening
         );
     }

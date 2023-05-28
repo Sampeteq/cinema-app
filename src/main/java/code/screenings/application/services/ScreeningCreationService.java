@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.IntStream.rangeClosed;
@@ -37,7 +38,10 @@ public class ScreeningCreationService {
         var screening = transactionTemplate.execute(status -> {
             var film = getFilmOrThrow(command.filmId());
             var newScreening = Screening.create(command.date(), film);
-            var availableRoom = getFirstAvailableRoom(newScreening);
+            var availableRoom = getFirstAvailableRoom(
+                    newScreening.startDate(),
+                    newScreening.finishDate()
+            );
             var seats = createSeats(availableRoom, newScreening);
             newScreening.addSeats(seats);
             availableRoom.addScreening(newScreening);
@@ -52,14 +56,14 @@ public class ScreeningCreationService {
                 .orElseThrow(() -> new EntityNotFoundException("Film"));
     }
 
-    private Room getFirstAvailableRoom(Screening newScreening) {
+    private Room getFirstAvailableRoom(LocalDateTime start, LocalDateTime finish) {
         return roomRepository
                 .readAll()
                 .stream()
                 .filter(room -> room
                         .getScreenings()
                         .stream()
-                        .noneMatch(screening -> screening.isCollisionWith(newScreening))
+                        .noneMatch(screening -> screening.isCollisionWith(start, finish))
                 )
                 .findFirst()
                 .orElseThrow(NoAvailableRoomsException::new);

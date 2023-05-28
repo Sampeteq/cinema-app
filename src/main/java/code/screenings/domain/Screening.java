@@ -85,8 +85,8 @@ public class Screening {
         return this.room != null;
     }
 
-    public boolean isCollisionWith(Screening other) {
-        return other.startBefore(this.finishDate()) && other.endAfter(this.date);
+    public boolean isCollisionWith(LocalDateTime start, LocalDateTime finish) {
+        return start.isBefore(this.finishDate()) && finish.isAfter(this.date);
     }
 
     public int timeToScreeningStartInHours(Clock clock) {
@@ -96,15 +96,11 @@ public class Screening {
                 .toHours();
     }
 
-    private boolean startBefore(LocalDateTime date) {
-        return this.date.isBefore(date);
+    public LocalDateTime startDate() {
+        return date;
     }
 
-    private boolean endAfter(LocalDateTime date) {
-        return this.finishDate().isAfter(date);
-    }
-
-    private LocalDateTime finishDate() {
+    public LocalDateTime finishDate() {
         return date.plusMinutes(film.getDurationInMinutes());
     }
 

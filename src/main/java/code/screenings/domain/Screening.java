@@ -49,7 +49,7 @@ public class Screening {
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
-    public static Screening of(LocalDateTime date, Film film, Room room) {
+    public static Screening create(LocalDateTime date, Film film, Room room) {
         return new Screening(
                 null,
                 date,
@@ -59,7 +59,7 @@ public class Screening {
         );
     }
 
-    public static Screening of(LocalDateTime date, Film film) {
+    public static Screening create(LocalDateTime date, Film film) {
         return new Screening(
                 null,
                 date,

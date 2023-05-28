@@ -63,7 +63,7 @@ public class FilmTestHelper {
     }
 
     public static Screening createScreening(Film film, Room room) {
-        var screening = Screening.of(
+        var screening = Screening.create(
                 SCREENING_DATE,
                 film,
                 room
@@ -75,7 +75,7 @@ public class FilmTestHelper {
     }
 
     public static Screening createScreening(Film film, Room room, LocalDateTime screeningDate) {
-        var screening = Screening.of(
+        var screening = Screening.create(
                 screeningDate,
                 film,
                 room
@@ -87,7 +87,7 @@ public class FilmTestHelper {
     }
 
     public static List<Screening> createScreenings(Film film, Room room) {
-        var screening1 = Screening.of(
+        var screening1 = Screening.create(
                 SCREENING_DATE,
                 film,
                 room
@@ -95,7 +95,7 @@ public class FilmTestHelper {
         var seat11 = Seat.of(1,2,screening1);
         var seat12 = Seat.of(1,2,screening1);
         screening1.addSeats(List.of(seat11, seat12));
-        var screening2 = Screening.of(
+        var screening2 = Screening.create(
                 SCREENING_DATE.plusDays(1),
                 film,
                 room

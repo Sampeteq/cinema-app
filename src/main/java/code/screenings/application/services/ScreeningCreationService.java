@@ -36,7 +36,7 @@ public class ScreeningCreationService {
         screeningDateValidator.validate(command.date(), clock);
         var screening = transactionTemplate.execute(status -> {
             var film = getFilmOrThrow(command.filmId());
-            var newScreening = Screening.of(
+            var newScreening = Screening.create(
                     command.date(),
                     film
             );

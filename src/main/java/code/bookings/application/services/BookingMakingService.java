@@ -5,6 +5,7 @@ import code.bookings.application.dto.BookingDto;
 import code.bookings.application.dto.BookingMapper;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
+import code.bookings.domain.exceptions.SeatNotAvailableException;
 import code.screenings.domain.SeatReadOnlyRepository;
 import code.shared.EntityNotFoundException;
 import code.user.infrastrcuture.SecurityHelper;
@@ -29,6 +30,10 @@ public class BookingMakingService {
     @Transactional
     public BookingDto makeBooking(BookingMakingCommand command) {
         log.info("Received a command:{}",command);
+        if (bookingRepository.existsBySeatId(command.seatId())) {
+            log.error("Booking already exists");
+            throw new SeatNotAvailableException();
+        }
         var seat = seatReadOnlyRepository
                 .getById(command.seatId())
                 .orElseThrow(() -> new EntityNotFoundException("Booking"));

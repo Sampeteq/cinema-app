@@ -6,7 +6,7 @@ create table if not exists seats
     id           bigint generated always as identity primary key,
     row_number   int,
     number       int,
-    status       varchar,
+    is_free      boolean,
     screening_id bigint,
     foreign key (screening_id) references screenings (id)
 );

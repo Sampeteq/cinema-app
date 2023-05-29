@@ -1,15 +1,10 @@
 package code.screenings.domain;
 
-import code.bookings.domain.exceptions.SeatNotAvailableException;
-import code.bookings.domain.exceptions.TooLateToBookingException;
-import code.bookings.domain.exceptions.TooLateToCancelBookingException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,8 +28,7 @@ public class Seat {
 
     private int number;
 
-    @Enumerated(EnumType.STRING)
-    private SeatStatus status;
+    private boolean isFree;
 
     @ManyToOne
     private Screening screening;
@@ -42,10 +36,10 @@ public class Seat {
     protected Seat() {
     }
 
-    private Seat(int rowNumber, int number, Screening screening) {
+    private Seat(int rowNumber, int number, boolean isFree, Screening screening) {
         this.rowNumber = rowNumber;
         this.number = number;
-        this.status = SeatStatus.FREE;
+        this.isFree = isFree;
         this.screening = screening;
     }
 
@@ -53,27 +47,20 @@ public class Seat {
         return new Seat(
                 rowNumber,
                 number,
+                true,
                 screening
         );
     }
 
-    public void book(Clock clock) {
-        if (!this.status.equals(SeatStatus.FREE)) {
-            throw new SeatNotAvailableException();
-        }
-        if (screening.timeToScreeningStartInHours(clock) < 24) {
-            throw new TooLateToBookingException();
-        }
-        this.status = SeatStatus.BUSY;
+    public int timeToScreeningInHours(Clock clock) {
+        return this.screening.timeToScreeningStartInHours(clock);
     }
 
-    public void cancelBooking(Clock clock) {
-        if (screening.timeToScreeningStartInHours(clock) < 24) {
-            throw new TooLateToCancelBookingException();
-        }
+    public void makeNotFree() {
+        this.isFree = false;
     }
 
-    public boolean isFree() {
-        return status.equals(SeatStatus.FREE);
+    public void makeFree() {
+        this.isFree = true;
     }
 }

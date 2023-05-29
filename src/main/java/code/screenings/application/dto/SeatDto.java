@@ -7,6 +7,6 @@ public record SeatDto(
         Long id,
         int rowNumber,
         int number,
-        String status
+        boolean isFree
 ) {
 }

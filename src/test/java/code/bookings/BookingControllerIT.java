@@ -13,7 +13,6 @@ import code.films.domain.FilmRepository;
 import code.rooms.domain.RoomRepository;
 import code.screenings.application.dto.SeatDto;
 import code.screenings.domain.Seat;
-import code.screenings.domain.SeatStatus;
 import code.user.domain.User;
 import code.user.domain.UserRepository;
 import code.utils.SpringIT;
@@ -116,7 +115,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    void should_seat_be_busy_after_booking() throws Exception {
+    void should_not_seat_be_free_after_booking() throws Exception {
         //given
         var seat = prepareSeat();
         var screening = seat.getScreening();
@@ -132,7 +131,7 @@ class BookingControllerIT extends SpringIT {
                 get("/screenings/" + screening.getId() + "/seats")
         );
         var isSeatBusy = getSeatsFromResult(searchSeatsResult).anyMatch(
-                s -> s.id().equals(seat.getId()) && s.status().equals(SeatStatus.BUSY.name())
+                s -> s.id().equals(seat.getId()) && !s.isFree()
         );
         assertThat(isSeatBusy).isTrue();
     }
@@ -201,7 +200,7 @@ class BookingControllerIT extends SpringIT {
                 get("/screenings/" + screening.getId() + "/seats")
         );
         var isSeatFreeAgain = getSeatsFromResult(searchSeatsResult)
-                .anyMatch(s -> s.id().equals(seat.getId()) && s.status().equals(SeatStatus.FREE.name()));
+                .anyMatch(s -> s.id().equals(seat.getId()) && s.isFree());
         assertThat(isSeatFreeAgain).isTrue();
         mockMvc
                 .perform(get("/screenings"))

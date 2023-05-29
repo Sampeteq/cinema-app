@@ -7,4 +7,5 @@ public interface BookingRepository {
     Booking add(Booking booking);
     Optional<Booking> readByIdAndUserId(Long bookingId, Long userId);
     List<Booking> readByUserId(Long userId);
+    boolean existsBySeatId(Long seatId);
 }

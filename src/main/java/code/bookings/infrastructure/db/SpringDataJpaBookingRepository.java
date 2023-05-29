@@ -31,6 +31,11 @@ public class SpringDataJpaBookingRepository implements BookingRepository {
     public List<Booking> readByUserId(Long userId) {
         return jpaBookingRepository.readByUserId(userId);
     }
+
+    @Override
+    public boolean existsBySeatId(Long seatId) {
+        return jpaBookingRepository.existsBySeatId(seatId);
+    }
 }
 
 interface JpaBookingRepository extends JpaRepository<Booking, Long> {
@@ -38,4 +43,6 @@ interface JpaBookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("SELECT DISTINCT b FROM Booking b where b.userId = :userId")
     List<Booking> readByUserId(Long userId);
+
+    boolean existsBySeatId(Long seatId);
 }

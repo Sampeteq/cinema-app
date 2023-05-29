@@ -40,9 +40,9 @@ public class BookingMakingService {
         log.info("Found a seat for booking:{}",seat);
         var currentUserId = securityHelper.getCurrentUserId();
         var booking = Booking.make(seat, clock, currentUserId);
-        var savedBooking = bookingRepository.add(booking);
-        log.info("Saved a booking:{}", savedBooking);
+        var addedBooking = bookingRepository.add(booking);
+        log.info("Added a booking:{}", addedBooking);
         seat.makeNotFree();
-        return bookingMapper.mapToDto(savedBooking);
+        return bookingMapper.mapToDto(addedBooking);
     }
 }

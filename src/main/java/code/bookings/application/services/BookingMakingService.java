@@ -6,6 +6,7 @@ import code.bookings.application.dto.BookingMapper;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
+import code.screenings.domain.Seat;
 import code.screenings.domain.SeatReadOnlyRepository;
 import code.shared.EntityNotFoundException;
 import code.user.infrastrcuture.SecurityHelper;
@@ -30,13 +31,8 @@ public class BookingMakingService {
     @Transactional
     public BookingDto makeBooking(BookingMakingCommand command) {
         log.info("Received a command:{}",command);
-        if (bookingRepository.existsBySeatId(command.seatId())) {
-            log.error("Booking already exists");
-            throw new BookingAlreadyExists();
-        }
-        var seat = seatReadOnlyRepository
-                .getById(command.seatId())
-                .orElseThrow(() -> new EntityNotFoundException("Booking"));
+        validateIfBookingAlreadyExists(command.seatId());
+        var seat = getSeatOrThrow(command);
         log.info("Found a seat for booking:{}",seat);
         var currentUserId = securityHelper.getCurrentUserId();
         var booking = Booking.make(seat, clock, currentUserId);
@@ -44,5 +40,18 @@ public class BookingMakingService {
         log.info("Added a booking:{}", addedBooking);
         seat.makeNotFree();
         return bookingMapper.mapToDto(addedBooking);
+    }
+
+    private void validateIfBookingAlreadyExists(Long seatId) {
+        if (bookingRepository.existsBySeatId(seatId)) {
+            log.error("Booking already exists");
+            throw new BookingAlreadyExists();
+        }
+    }
+
+    private Seat getSeatOrThrow(BookingMakingCommand command) {
+        return seatReadOnlyRepository
+                .getById(command.seatId())
+                .orElseThrow(() -> new EntityNotFoundException("Booking"));
     }
 }

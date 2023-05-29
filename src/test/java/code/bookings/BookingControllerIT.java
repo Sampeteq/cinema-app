@@ -8,7 +8,6 @@ import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.TooLateToBookingException;
 import code.bookings.domain.exceptions.TooLateToCancelBookingException;
-import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import code.rooms.domain.RoomRepository;
 import code.screenings.application.dto.SeatDto;
@@ -210,7 +209,7 @@ class BookingControllerIT extends SpringIT {
     @Test
     void should_throw_exception_during_booking_when_booking_is_already_cancelled() throws Exception {
         //given
-        var booking = prepareBooking(BookingStatus.CANCELLED, user.getId());
+        var booking = prepareBooking(user.getId(), BookingStatus.CANCELLED);
 
         //when
         var result = mockMvc.perform(
@@ -229,7 +228,7 @@ class BookingControllerIT extends SpringIT {
     void should_throw_exception_during_booking_cancelling_when_less_than_24h_to_screening() throws Exception {
         //given
         var hoursToScreening = 23;
-        var booking = prepareBooking(hoursToScreening, user.getId());
+        var booking = prepareBooking(user.getId(), hoursToScreening);
 
         //when
         var result = mockMvc.perform(
@@ -261,12 +260,11 @@ class BookingControllerIT extends SpringIT {
     }
 
     private Seat prepareSeat() {
-        var film = addFilm(createFilm());
+        var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
-        var screening = createScreening(film, room);
-        room.addScreening(screening);
-        var roomWithScreening = roomRepository.add(room);
-        return roomWithScreening
+        room.addScreening(createScreening(film, room));
+        return roomRepository
+                .add(room)
                 .getScreenings()
                 .get(0)
                 .getSeats()
@@ -274,12 +272,11 @@ class BookingControllerIT extends SpringIT {
     }
 
     private Seat prepareSeat(LocalDateTime screeningDate) {
-        var film = addFilm(createFilm());
+        var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
-        var screening = createScreening(film, room, screeningDate);
-        room.addScreening(screening);
-        var roomWithScreening = roomRepository.add(room);
-        return roomWithScreening
+        room.addScreening(createScreening(film, room, screeningDate));
+        return roomRepository
+                .add(room)
                 .getScreenings()
                 .get(0)
                 .getSeats()
@@ -287,12 +284,11 @@ class BookingControllerIT extends SpringIT {
     }
 
     private List<Seat> prepareSeats() {
-        var film = addFilm(createFilm());
+        var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
-        var screening = createScreening(film, room);
-        room.addScreening(screening);
-        var roomWithScreening = roomRepository.add(room);
-        return roomWithScreening
+        room.addScreening(createScreening(film, room));
+        return roomRepository
+                .add(room)
                 .getScreenings()
                 .get(0)
                 .getSeats();
@@ -300,33 +296,25 @@ class BookingControllerIT extends SpringIT {
 
     private Booking prepareBooking(Long userId) {
         var seat = prepareSeat();
-        return addBooking(createBooking(seat, userId));
+        return bookingRepository.add(createBooking(seat, userId));
     }
 
-    private Booking prepareBooking(BookingStatus status, Long userId) {
+    private Booking prepareBooking(Long userId, BookingStatus status) {
         var seat = prepareSeat();
-        return addBooking(createBooking(seat, userId, status));
+        return bookingRepository.add(createBooking(seat, userId));
     }
 
-    private Booking prepareBooking(int hoursToScreening, Long userId) {
+    private Booking prepareBooking(Long userId, int hoursToScreening) {
         var screeningDate = getCurrentDate(clock).minusHours(hoursToScreening);
         var seat = prepareSeat(screeningDate);
-        return addBooking(createBooking(seat, userId));
+        return bookingRepository.add(createBooking(seat, userId));
     }
 
     private List<Booking> prepareBookings(Long userId) {
         var seats = prepareSeats();
-        var booking1 = addBooking(createBooking(seats.get(0), userId));
-        var booking2 = addBooking(createBooking(seats.get(1), userId));
+        var booking1 = bookingRepository.add(createBooking(seats.get(0), userId));
+        var booking2 = bookingRepository.add(createBooking(seats.get(1), userId));
         return List.of(booking1, booking2);
-    }
-
-    private Film addFilm(Film film) {
-        return filmRepository.add(film);
-    }
-
-    private Booking addBooking(Booking booking) {
-        return bookingRepository.add(booking);
     }
 
     private LocalDateTime getCurrentDate(Clock clock) {

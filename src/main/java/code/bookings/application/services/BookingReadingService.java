@@ -29,7 +29,7 @@ public class BookingReadingService {
     public List<BookingDto> readAll() {
         var currentUserId = securityHelper.getCurrentUserId();
         return bookingRepository
-                .readByUserId(currentUserId)
+                .readAllByUserId(currentUserId)
                 .stream()
                 .map(bookingMapper::mapToDto)
                 .toList();

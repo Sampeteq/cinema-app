@@ -23,6 +23,7 @@ public class BookingCancellationService {
     public void cancelBooking(BookingCancellationCommand command) {
         var booking = getBookingOrThrow(command.bookingId());
         booking.cancel(clock);
+        booking.getSeat().makeFree();
     }
 
     private Booking getBookingOrThrow(Long bookingId) {

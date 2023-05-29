@@ -42,6 +42,7 @@ public class BookingMakingService {
         var booking = Booking.make(seat, clock, currentUserId);
         var savedBooking = bookingRepository.add(booking);
         log.info("Saved a booking:{}", savedBooking);
+        seat.makeNotFree();
         return bookingMapper.mapToDto(savedBooking);
     }
 }

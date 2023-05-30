@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface ScreeningReadOnlyRepository extends
         Repository<Screening, Long>,
         JpaSpecificationExecutor<Screening> {
-    Optional<Screening> getById(Long id);
+    Optional<Screening> findById(Long id);
 }

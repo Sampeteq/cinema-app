@@ -1,6 +1,7 @@
 package code.bookings;
 
 import code.bookings.application.dto.BookingDto;
+import code.bookings.application.dto.BookingId;
 import code.bookings.application.dto.BookingMapper;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
@@ -34,8 +35,8 @@ import static code.utils.FilmTestHelper.createScreening;
 import static code.utils.RoomTestHelper.createRoom;
 import static code.utils.UserTestHelper.createUser;
 import static code.utils.WebTestHelper.fromResultActions;
-import static code.utils.WebTestHelper.toJson;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -85,12 +86,16 @@ class BookingControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isOk());
-        var bookingDto = fromResultActions(result, BookingDto.class);
+        var bookingId = fromResultActions(result, BookingId.class)
+                .id()
+                .intValue();
         mockMvc.perform(
-                        get("/bookings/my/" + bookingDto.id())
+                        get("/bookings/my/" + bookingId)
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJson(bookingDto)));
+                .andExpect(jsonPath("$.id", equalTo(bookingId)))
+                .andExpect(jsonPath("$.status", equalTo(BookingStatus.ACTIVE.name())))
+                .andExpect(jsonPath("$.seatId", equalTo(seat.getId().intValue())));
     }
 
     @Test
@@ -301,7 +306,7 @@ class BookingControllerIT extends SpringIT {
 
     private Booking prepareBooking(Long userId, BookingStatus status) {
         var seat = prepareSeat();
-        return bookingRepository.add(createBooking(seat, userId));
+        return bookingRepository.add(createBooking(seat, userId, status));
     }
 
     private Booking prepareBooking(Long userId, int hoursToScreening) {

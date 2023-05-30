@@ -1,6 +1,7 @@
 package code.bookings.infrastructure.rest;
 
 import code.bookings.application.commands.BookingCancellationCommand;
+import code.bookings.application.dto.BookingId;
 import code.bookings.application.services.BookingCancellationService;
 import code.bookings.application.commands.BookingMakingCommand;
 import code.bookings.application.services.BookingMakingService;
@@ -28,7 +29,7 @@ public class BookingController {
     private final BookingReadingService bookingReadingService;
 
     @PostMapping
-    public BookingDto bookSeat(@RequestParam Long seatId) {
+    public BookingId bookSeat(@RequestParam Long seatId) {
         var command = new BookingMakingCommand(seatId);
         return bookingMakingService.makeBooking(command);
     }

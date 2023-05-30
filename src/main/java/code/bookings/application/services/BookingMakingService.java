@@ -1,7 +1,7 @@
 package code.bookings.application.services;
 
 import code.bookings.application.commands.BookingMakingCommand;
-import code.bookings.application.dto.BookingDto;
+import code.bookings.application.dto.BookingId;
 import code.bookings.application.dto.BookingMapper;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
@@ -26,10 +26,9 @@ public class BookingMakingService {
     private final SecurityHelper securityHelper;
     private final Clock clock;
     private final BookingRepository bookingRepository;
-    private final BookingMapper bookingMapper;
 
     @Transactional
-    public BookingDto makeBooking(BookingMakingCommand command) {
+    public BookingId makeBooking(BookingMakingCommand command) {
         log.info("Received a command:{}",command);
         validateIfBookingAlreadyExists(command.seatId());
         var seat = getSeatOrThrow(command);
@@ -39,7 +38,7 @@ public class BookingMakingService {
         var addedBooking = bookingRepository.add(booking);
         log.info("Added a booking:{}", addedBooking);
         seat.makeNotFree();
-        return bookingMapper.mapToDto(addedBooking);
+        return new BookingId(addedBooking.getId());
     }
 
     private void validateIfBookingAlreadyExists(Long seatId) {

@@ -40,6 +40,8 @@ public class Screening {
 
     private LocalDateTime date;
 
+    private boolean isFinished;
+
     @ManyToOne
     private Film film;
 
@@ -53,6 +55,7 @@ public class Screening {
         return new Screening(
                 null,
                 date,
+                false,
                 film,
                 room,
                 new ArrayList<>()
@@ -63,6 +66,7 @@ public class Screening {
         return new Screening(
                 null,
                 date,
+                false,
                 film,
                 null,
                 new ArrayList<>()
@@ -107,5 +111,21 @@ public class Screening {
     public boolean isFinished(Clock clock) {
         var currentDate = LocalDateTime.now(clock);
         return currentDate.isAfter(finishDate());
+    }
+
+    public void finish() {
+        this.isFinished = true;
+        this.room = null;
+    }
+
+    @Override
+    public String toString() {
+        return "Screening{" +
+                "id=" + id +
+                ", date=" + date +
+                ", isFinished=" + isFinished +
+                ", film=" + film.getId() +
+                ", room=" + room.getId() +
+                '}';
     }
 }

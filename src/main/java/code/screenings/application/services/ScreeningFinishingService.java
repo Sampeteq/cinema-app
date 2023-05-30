@@ -27,7 +27,7 @@ public class ScreeningFinishingService {
         } else {
             log.info("Found finished screenings:");
             finishedScreenings.forEach(screening -> log.info(screening.toString()));
-            finishedScreenings.forEach(Screening::removeRoom);
+            finishedScreenings.forEach(Screening::finish);
         }
     }
 

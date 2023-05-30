@@ -23,7 +23,8 @@ public class ScreeningReadService {
 
     @Transactional(readOnly = true)
     public List<ScreeningDto> read(ScreeningReadQuery query) {
-        var specification = dateLike(query.date())
+        var specification = notFinished()
+                .and(dateLike(query.date()))
                 .and(filmLike(query.filmId()))
                 .and(withFetch());
         return screeningReadOnlyRepository
@@ -31,6 +32,10 @@ public class ScreeningReadService {
                 .stream()
                 .map(screeningMapper::mapToDto)
                 .toList();
+    }
+
+    private static Specification<Screening> notFinished() {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isFinished"), false);
     }
 
     private static Specification<Screening> dateLike(LocalDateTime date) {

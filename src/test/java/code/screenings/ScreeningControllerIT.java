@@ -26,9 +26,11 @@ import static code.utils.FilmTestHelper.createScreenings;
 import static code.utils.RoomTestHelper.createRoom;
 import static code.utils.WebTestHelper.fromResultActions;
 import static code.utils.WebTestHelper.toJson;
+import static org.hamcrest.Matchers.empty;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ScreeningControllerIT extends SpringIT {
@@ -131,6 +133,20 @@ public class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
+    void should_not_return_finished_screenings() throws Exception {
+        //given
+        prepareFinishedScreenings();
+
+        //when
+        var result = mockMvc.perform(
+                get("/screenings")
+        );
+
+        //then
+        result.andExpect(jsonPath("$", empty()));
+    }
+
+    @Test
     void should_get_screenings_by_params() throws Exception {
         //given
         var film = filmRepository.add(createFilm());
@@ -182,6 +198,16 @@ public class ScreeningControllerIT extends SpringIT {
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
         var screenings = createScreenings(film, room);
+        screenings.forEach(room::addScreening);
+        roomRepository.add(room);
+        return screenings;
+    }
+
+    private List<Screening> prepareFinishedScreenings() {
+        var film = filmRepository.add(createFilm());
+        var room = roomRepository.add(createRoom());
+        var screenings = createScreenings(film, room);
+        screenings.forEach(Screening::finish);
         screenings.forEach(room::addScreening);
         roomRepository.add(room);
         return screenings;

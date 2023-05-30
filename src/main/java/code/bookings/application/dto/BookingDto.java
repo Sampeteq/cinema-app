@@ -8,6 +8,6 @@ public record BookingDto(
 
         String status,
 
-        BookingSeatDto seat
+        BookingScreeningDto screening
 ) {
 }

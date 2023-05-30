@@ -16,6 +16,7 @@ import code.screenings.domain.Seat;
 import code.user.domain.User;
 import code.user.domain.UserRepository;
 import code.utils.SpringIT;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ import static code.utils.UserTestHelper.createUser;
 import static code.utils.WebTestHelper.fromResultActions;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -94,10 +96,12 @@ class BookingControllerIT extends SpringIT {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(bookingId)))
+                .andExpect(jsonPath("$.screening.filmTitle", equalTo(seat.getScreening().getFilm().getTitle())))
+                .andExpect(jsonPath("$.screening.date", notNullValue()))
                 .andExpect(jsonPath("$.status", equalTo(BookingStatus.ACTIVE.name())))
-                .andExpect(jsonPath("$.seat.id", equalTo(seat.getId().intValue())))
-                .andExpect(jsonPath("$.seat.rowNumber", equalTo(seat.getRowNumber())))
-                .andExpect(jsonPath("$.seat.number", equalTo(seat.getNumber())));
+                .andExpect(jsonPath("$.screening.seat.id", equalTo(seat.getId().intValue())))
+                .andExpect(jsonPath("$.screening.seat.rowNumber", equalTo(seat.getRowNumber())))
+                .andExpect(jsonPath("$.screening.seat.number", equalTo(seat.getNumber())));
     }
 
     @Test

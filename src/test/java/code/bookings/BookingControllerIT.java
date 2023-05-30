@@ -95,7 +95,9 @@ class BookingControllerIT extends SpringIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(bookingId)))
                 .andExpect(jsonPath("$.status", equalTo(BookingStatus.ACTIVE.name())))
-                .andExpect(jsonPath("$.seatId", equalTo(seat.getId().intValue())));
+                .andExpect(jsonPath("$.seat.id", equalTo(seat.getId().intValue())))
+                .andExpect(jsonPath("$.seat.rowNumber", equalTo(seat.getRowNumber())))
+                .andExpect(jsonPath("$.seat.number", equalTo(seat.getNumber())));
     }
 
     @Test
@@ -107,7 +109,7 @@ class BookingControllerIT extends SpringIT {
         //when
         var result = mockMvc.perform(
                 post("/bookings/")
-                        .param("seatId", seat.getId().toString())
+                        .param("seat", seat.getId().toString())
         );
 
         //then
@@ -127,7 +129,7 @@ class BookingControllerIT extends SpringIT {
         //when
         mockMvc.perform(
                 post("/bookings/")
-                        .param("seatId", seat.getId().toString())
+                        .param("seat", seat.getId().toString())
         );
 
         //then
@@ -154,7 +156,7 @@ class BookingControllerIT extends SpringIT {
         //when
         mockMvc.perform(
                 post("/bookings/")
-                        .param("seatId", seat.getId().toString())
+                        .param("seat", seat.getId().toString())
         );
 
         //then

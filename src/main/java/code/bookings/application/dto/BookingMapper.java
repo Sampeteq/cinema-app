@@ -20,7 +20,6 @@ public interface BookingMapper {
     @Named("mapToBookingScreeningDto")
     static BookingScreeningDto mapToBookingScreeningDto(Seat seat) {
         var bookingSeatDto = new BookingSeatDto(
-                seat.getId(),
                 seat.getRowNumber(),
                 seat.getNumber()
         );

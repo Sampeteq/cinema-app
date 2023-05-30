@@ -1,4 +1,4 @@
 package code.bookings.application.dto;
 
-public record BookingSeatDto(Long id, int rowNumber, int number) {
+public record BookingSeatDto(int rowNumber, int number) {
 }

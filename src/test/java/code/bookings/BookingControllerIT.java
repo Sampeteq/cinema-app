@@ -99,7 +99,6 @@ class BookingControllerIT extends SpringIT {
                 .andExpect(jsonPath("$.screening.filmTitle", equalTo(seat.getScreening().getFilm().getTitle())))
                 .andExpect(jsonPath("$.screening.date", notNullValue()))
                 .andExpect(jsonPath("$.status", equalTo(BookingStatus.ACTIVE.name())))
-                .andExpect(jsonPath("$.screening.seat.id", equalTo(seat.getId().intValue())))
                 .andExpect(jsonPath("$.screening.seat.rowNumber", equalTo(seat.getRowNumber())))
                 .andExpect(jsonPath("$.screening.seat.number", equalTo(seat.getNumber())));
     }

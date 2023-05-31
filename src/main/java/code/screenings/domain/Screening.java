@@ -62,17 +62,6 @@ public class Screening {
         );
     }
 
-    public static Screening create(LocalDateTime date, Film film) {
-        return new Screening(
-                null,
-                date,
-                false,
-                film,
-                null,
-                new ArrayList<>()
-        );
-    }
-
     public void addSeats(List<Seat> seats) {
         this.seats = seats;
     }

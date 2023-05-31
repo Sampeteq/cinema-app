@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.With;
 
 import javax.persistence.CascadeType;
@@ -30,7 +29,6 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString(exclude = {"film"})
 @With
 public class Screening {
 

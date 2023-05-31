@@ -83,10 +83,6 @@ public class Screening {
                 .toHours();
     }
 
-    public LocalDateTime startDate() {
-        return date;
-    }
-
     public LocalDateTime finishDate() {
         return date.plusMinutes(film.getDurationInMinutes());
     }

@@ -112,7 +112,7 @@ class BookingControllerIT extends SpringIT {
         //when
         var result = mockMvc.perform(
                 post("/bookings/")
-                        .param("seat", seat.getId().toString())
+                        .param("seatId", seat.getId().toString())
         );
 
         //then
@@ -132,7 +132,7 @@ class BookingControllerIT extends SpringIT {
         //when
         mockMvc.perform(
                 post("/bookings/")
-                        .param("seat", seat.getId().toString())
+                        .param("seatId", seat.getId().toString())
         );
 
         //then
@@ -159,7 +159,7 @@ class BookingControllerIT extends SpringIT {
         //when
         mockMvc.perform(
                 post("/bookings/")
-                        .param("seat", seat.getId().toString())
+                        .param("seatId", seat.getId().toString())
         );
 
         //then

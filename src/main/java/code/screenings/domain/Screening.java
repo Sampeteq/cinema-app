@@ -83,10 +83,6 @@ public class Screening {
                 .toHours();
     }
 
-    public LocalDateTime finishDate() {
-        return date.plusMinutes(film.getDurationInMinutes());
-    }
-
     public boolean isFinished(Clock clock) {
         var currentDate = LocalDateTime.now(clock);
         return currentDate.isAfter(finishDate());
@@ -106,5 +102,9 @@ public class Screening {
                 ", film=" + film.getId() +
                 ", room=" + room.getId() +
                 '}';
+    }
+
+    private LocalDateTime finishDate() {
+        return date.plusMinutes(film.getDurationInMinutes());
     }
 }

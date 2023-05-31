@@ -53,6 +53,5 @@ public class Room {
 
     public void addScreening(Screening newScreening) {
         screenings.add(newScreening);
-        newScreening.assignRoom(this);
     }
 }

@@ -66,10 +66,6 @@ public class Screening {
         this.seats = seats;
     }
 
-    public void assignRoom(Room room) {
-        this.room = room;
-    }
-
     public boolean hasRoom() {
         return this.room != null;
     }

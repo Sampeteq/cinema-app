@@ -81,10 +81,6 @@ public class Screening {
         this.room = room;
     }
 
-    public void removeRoom() {
-        this.room = null;
-    }
-
     public boolean hasRoom() {
         return this.room != null;
     }

@@ -20,7 +20,6 @@ import javax.persistence.Table;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -49,14 +48,17 @@ public class Screening {
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
+    private Screening(LocalDateTime date, Film film, Room room) {
+        this.date = date;
+        this.film = film;
+        this.room = room;
+    }
+
     public static Screening create(LocalDateTime date, Film film, Room room) {
         return new Screening(
-                null,
                 date,
-                false,
                 film,
-                room,
-                new ArrayList<>()
+                room
         );
     }
 

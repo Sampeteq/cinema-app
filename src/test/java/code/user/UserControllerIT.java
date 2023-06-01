@@ -39,13 +39,13 @@ class UserControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isCreated());
-        var signInDto = new UserLoginCommand(
+        var signInCmd = new UserLoginCommand(
                 signUpRequest.mail(),
                 signUpRequest.password()
         );
         mockMvc.perform(
                 post("/signin")
-                        .content(toJson(signInDto))
+                        .content(toJson(signInCmd))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
     }

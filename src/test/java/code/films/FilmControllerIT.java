@@ -60,12 +60,12 @@ class FilmControllerIT extends SpringIT {
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
             throws Exception {
         //given
-        var dto = createCreateFilmCommand().withYear(wrongYear);
+        var cmd = createCreateFilmCommand().withYear(wrongYear);
 
         //when
         var result = mockMvc.perform(
                 post("/films")
-                        .content(toJson(dto))
+                        .content(toJson(cmd))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 

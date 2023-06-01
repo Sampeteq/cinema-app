@@ -39,9 +39,9 @@ public class ScreeningController {
     public ResponseEntity<ScreeningDto> createScreening(
             @RequestBody
             @Valid
-            ScreeningCreationCommand dto
+            ScreeningCreationCommand cmd
     ) {
-        var createdScreening = screeningCreationService.createScreening(dto);
+        var createdScreening = screeningCreationService.createScreening(cmd);
         return new ResponseEntity<>(createdScreening, HttpStatus.CREATED);
     }
 

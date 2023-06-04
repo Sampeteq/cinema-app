@@ -1,16 +1,10 @@
 package code.utils;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
-@Component
-@RequiredArgsConstructor
 public class DbCleaner {
     private static final String TABLES_NAMES_SQL =
             "SELECT table_name " +
@@ -19,6 +13,10 @@ public class DbCleaner {
     private static final String TRUNCATE_SQL = "TRUNCATE TABLE ";
     private static final String RESTART_IDENTITY = " RESTART IDENTITY CASCADE";
     private final DataSource dataSource;
+
+    public DbCleaner(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public void clean() {
         try (

@@ -6,6 +6,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.sql.DataSource;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public abstract class SpringIT {
@@ -14,10 +16,10 @@ public abstract class SpringIT {
     protected MockMvc mockMvc;
 
     @Autowired
-    protected DbCleaner dbCleaner;
+    private DataSource dataSource;
 
     @AfterEach
     void cleanDb() {
-        dbCleaner.clean();
+        new DbCleaner(dataSource).clean();
     }
 }

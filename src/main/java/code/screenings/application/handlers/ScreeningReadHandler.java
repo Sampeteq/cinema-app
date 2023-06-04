@@ -25,7 +25,7 @@ public class ScreeningReadHandler {
     public List<ScreeningDto> handle(ScreeningReadQuery query) {
         var specification = notFinished()
                 .and(dateLike(query.date()))
-                .and(filmLike(query.filmId()))
+                .and(filmLike(query.filmTitle()))
                 .and(withFetch());
         return screeningReadOnlyRepository
                 .findAll(specification)
@@ -44,10 +44,10 @@ public class ScreeningReadHandler {
                 criteriaBuilder.equal(root.get("date"), date);
     }
 
-    private static Specification<Screening> filmLike(Long filmId) {
-        return (root, query, criteriaBuilder) -> filmId == null ?
+    private static Specification<Screening> filmLike(String filmTitle) {
+        return (root, query, criteriaBuilder) -> filmTitle == null ?
                 criteriaBuilder.conjunction() :
-                criteriaBuilder.equal(root.get("film").get("id"), filmId);
+                criteriaBuilder.equal(root.get("film").get("title"), filmTitle);
     }
 
     private static Specification<Screening> withFetch() {

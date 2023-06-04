@@ -47,7 +47,7 @@ public class ScreeningController {
     @GetMapping
     public List<ScreeningDto> readScreeningsBy(
             @RequestParam(required = false)
-            Long filmId,
+            String filmTitle,
 
             @RequestParam(required = false)
             @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
@@ -56,7 +56,7 @@ public class ScreeningController {
 
         var params = ScreeningReadQuery
                 .builder()
-                .filmId(filmId)
+                .filmTitle(filmTitle)
                 .date(date)
                 .build();
 

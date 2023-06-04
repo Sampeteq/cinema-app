@@ -1,6 +1,6 @@
 package code.user;
 
-import code.user.application.commands.UserLoginCommand;
+import code.user.application.commands.UserSignInCommand;
 import code.user.domain.UserRepository;
 import code.user.domain.exceptions.UserMailAlreadyExistsException;
 import code.user.domain.exceptions.UserNotSamePasswordsException;
@@ -39,7 +39,7 @@ class UserControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isCreated());
-        var signInCmd = new UserLoginCommand(
+        var signInCmd = new UserSignInCommand(
                 signUpRequest.mail(),
                 signUpRequest.password()
         );

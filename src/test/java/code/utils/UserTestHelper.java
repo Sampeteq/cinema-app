@@ -1,6 +1,6 @@
 package code.utils;
 
-import code.user.application.commands.UserLoginCommand;
+import code.user.application.commands.UserSignInCommand;
 import code.user.application.commands.UserSignUpCommand;
 import code.user.domain.User;
 import code.user.domain.UserRole;
@@ -31,8 +31,8 @@ public class UserTestHelper {
         );
     }
 
-    public static UserLoginCommand createSignInCommand(String mail) {
-        return new UserLoginCommand(mail, "12345");
+    public static UserSignInCommand createSignInCommand(String mail) {
+        return new UserSignInCommand(mail, "12345");
     }
 
     public static User createUser(String mail) {

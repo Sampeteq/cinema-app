@@ -1,6 +1,6 @@
 package code.user.application.handlers;
 
-import code.user.application.commands.UserLoginCommand;
+import code.user.application.commands.UserSignInCommand;
 import code.user.domain.exceptions.UserAlreadyLoggedInException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserLoginHandler {
+public class UserSignInHandler {
 
     private final AuthenticationManager authenticationManager;
 
-    public void handle(UserLoginCommand command) {
+    public void handle(UserSignInCommand command) {
         var username = SecurityContextHolder
                 .getContext()
                 .getAuthentication()

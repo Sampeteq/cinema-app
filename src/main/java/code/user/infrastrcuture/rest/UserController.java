@@ -1,7 +1,7 @@
 package code.user.infrastrcuture.rest;
 
-import code.user.application.commands.UserLoginCommand;
-import code.user.application.handlers.UserLoginHandler;
+import code.user.application.commands.UserSignInCommand;
+import code.user.application.handlers.UserSignInHandler;
 import code.user.application.handlers.UserSignOutHandler;
 import code.user.application.commands.UserSignUpCommand;
 import code.user.application.handlers.UserSignUpHandler;
@@ -20,7 +20,7 @@ public class UserController {
 
     private final UserSignUpHandler userSignUpHandler;
 
-    private final UserLoginHandler userLoginHandler;
+    private final UserSignInHandler userSignInHandler;
 
     private final UserSignOutHandler userSignOutHandler;
 
@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signIn(@RequestBody UserLoginCommand command) {
-        userLoginHandler.handle(command);
+    public ResponseEntity<?> signIn(@RequestBody UserSignInCommand command) {
+        userSignInHandler.handle(command);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

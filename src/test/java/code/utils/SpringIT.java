@@ -20,6 +20,6 @@ public abstract class SpringIT {
 
     @AfterEach
     void cleanDb() {
-        new DbCleaner(dataSource).clean();
+        new SqlDatabaseCleaner(dataSource).clean();
     }
 }

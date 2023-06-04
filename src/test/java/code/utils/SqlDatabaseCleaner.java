@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DbCleaner {
+public class SqlDatabaseCleaner {
     private static final String TABLES_NAMES_SQL =
             "SELECT table_name " +
             "FROM information_schema.tables " +
@@ -14,7 +14,7 @@ public class DbCleaner {
     private static final String RESTART_IDENTITY = " RESTART IDENTITY CASCADE";
     private final DataSource dataSource;
 
-    public DbCleaner(DataSource dataSource) {
+    public SqlDatabaseCleaner(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 

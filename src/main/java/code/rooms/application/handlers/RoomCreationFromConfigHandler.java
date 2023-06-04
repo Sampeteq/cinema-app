@@ -1,4 +1,4 @@
-package code.rooms.application.services;
+package code.rooms.application.handlers;
 
 import code.rooms.application.commands.RoomCreationCommand;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,18 +21,18 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("prod")
-public class RoomCreationFromConfigService {
+public class RoomCreationFromConfigHandler {
 
-    private final RoomReadingService roomReadingService;
+    private final RoomReadingHandler roomReadingHandler;
 
-    private final RoomCreationService roomCreationService;
+    private final RoomCreationHandler roomCreationHandler;
 
     @Value("${roomsConfigHandler.pathToRoomsConfig}")
     private String pathToRoomsConfig;
 
     @EventListener(ContextRefreshedEvent.class)
-    public void createRoomsFromConfig() {
-        if(roomReadingService.readAll().isEmpty()) {
+    public void handle() {
+        if(roomReadingHandler.handle().isEmpty()) {
             try {
                 logIfFileNotExists();
                 var json = readRoomCreationCommandsJson();
@@ -64,6 +64,6 @@ public class RoomCreationFromConfigService {
     private void createRoomsFromJson(String json) throws JsonProcessingException {
         new ObjectMapper()
                 .readValue(json, new TypeReference<List<RoomCreationCommand>>() {})
-                .forEach(roomCreationService::createRoom);
+                .forEach(roomCreationHandler::handle);
     }
 }

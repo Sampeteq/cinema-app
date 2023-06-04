@@ -1,12 +1,11 @@
 package code.screenings.infrastructure;
 
 import code.screenings.application.commands.ScreeningCreationCommand;
-import code.screenings.application.services.ScreeningCreationService;
+import code.screenings.application.handlers.ScreeningCreationHandler;
 import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.SeatDto;
-import code.screenings.application.services.ScreeningReadService;
-import code.screenings.application.services.ScreeningSeatReadService;
-import code.screenings.application.queries.ScreeningSeatQuery;
+import code.screenings.application.handlers.ScreeningReadHandler;
+import code.screenings.application.handlers.ScreeningSeatReadHandler;
 import code.screenings.application.queries.ScreeningReadQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,11 +28,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScreeningController {
 
-    private final ScreeningCreationService screeningCreationService;
+    private final ScreeningCreationHandler screeningCreationHandler;
 
-    private final ScreeningReadService screeningReadService;
+    private final ScreeningReadHandler screeningReadHandler;
 
-    private final ScreeningSeatReadService screeningSeatReadService;
+    private final ScreeningSeatReadHandler screeningSeatReadHandler;
 
     @PostMapping
     public ResponseEntity<ScreeningDto> createScreening(
@@ -41,7 +40,7 @@ public class ScreeningController {
             @Valid
             ScreeningCreationCommand cmd
     ) {
-        var createdScreening = screeningCreationService.createScreening(cmd);
+        var createdScreening = screeningCreationHandler.handle(cmd);
         return new ResponseEntity<>(createdScreening, HttpStatus.CREATED);
     }
 
@@ -61,11 +60,11 @@ public class ScreeningController {
                 .date(date)
                 .build();
 
-        return screeningReadService.read(params);
+        return screeningReadHandler.handle(params);
     }
 
     @GetMapping("/{screeningId}/seats")
     public List<SeatDto> searchSeats(@PathVariable Long screeningId) {
-        return screeningSeatReadService.read(screeningId);
+        return screeningSeatReadHandler.handle(screeningId);
     }
 }

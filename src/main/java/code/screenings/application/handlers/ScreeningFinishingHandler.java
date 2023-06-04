@@ -1,4 +1,4 @@
-package code.screenings.application.services;
+package code.screenings.application.handlers;
 
 import code.rooms.domain.RoomRepository;
 import code.screenings.domain.Screening;
@@ -13,13 +13,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ScreeningFinishingService {
+public class ScreeningFinishingHandler {
 
     private final RoomRepository roomRepository;
     private final Clock clock;
 
     @Transactional
-    public void onFinishedScreenings() {
+    public void handle() {
         log.info("Searching for finished screenings");
         var finishedScreenings = readFinishedScreenings();
         if (finishedScreenings.isEmpty()) {

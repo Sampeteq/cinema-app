@@ -1,4 +1,4 @@
-package code.bookings.application.services;
+package code.bookings.application.handlers;
 
 import code.bookings.application.commands.BookingCancellationCommand;
 import code.bookings.domain.Booking;
@@ -13,14 +13,14 @@ import java.time.Clock;
 
 @Component
 @RequiredArgsConstructor
-public class BookingCancellationService {
+public class BookingCancellationHandler {
 
     private final SecurityHelper securityHelper;
     private final BookingRepository bookingRepository;
     private final Clock clock;
 
     @Transactional
-    public void cancelBooking(BookingCancellationCommand command) {
+    public void handle(BookingCancellationCommand command) {
         var booking = getBookingOrThrow(command.bookingId());
         booking.cancel(clock);
         booking.getSeat().makeFree();

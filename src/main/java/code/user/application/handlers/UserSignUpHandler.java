@@ -1,4 +1,4 @@
-package code.user.application.services;
+package code.user.application.handlers;
 
 import code.user.application.commands.UserSignUpCommand;
 import code.user.domain.User;
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserSignUpService {
+public class UserSignUpHandler {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void signUpUser(UserSignUpCommand command) {
+    public void handle(UserSignUpCommand command) {
         if (userRepository.existsByMail(command.mail())) {
             throw new UserMailAlreadyExistsException();
         }

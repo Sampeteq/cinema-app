@@ -1,4 +1,4 @@
-package code.rooms.application.services;
+package code.rooms.application.handlers;
 
 import code.rooms.application.dto.RoomDto;
 import code.rooms.application.dto.RoomMapper;
@@ -10,12 +10,12 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class RoomReadingService {
+public class RoomReadingHandler {
 
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;
 
-    public List<RoomDto> readAll() {
+    public List<RoomDto> handle() {
         return roomRepository
                 .readAll()
                 .stream()

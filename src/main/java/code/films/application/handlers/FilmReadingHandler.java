@@ -1,4 +1,4 @@
-package code.films.application.services;
+package code.films.application.handlers;
 
 import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmMapper;
@@ -11,12 +11,12 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class FilmReadingService {
+public class FilmReadingHandler {
 
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
 
-    public List<FilmDto> read(FilmReadingQuery query) {
+    public List<FilmDto> handle(FilmReadingQuery query) {
         return filmRepository
                 .readBy(query)
                 .stream()

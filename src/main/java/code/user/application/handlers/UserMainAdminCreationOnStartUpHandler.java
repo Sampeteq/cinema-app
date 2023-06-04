@@ -1,4 +1,4 @@
-package code.user.application.services;
+package code.user.application.handlers;
 
 import code.user.domain.User;
 import code.user.domain.UserRepository;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Profile("prod")
 @Slf4j
-public class UserMainAdminCreationOnStartUpService {
+public class UserMainAdminCreationOnStartUpHandler {
 
     @Value("${onStartUp.mainAdminMail}")
     private String mainAdminMail;
@@ -26,7 +26,7 @@ public class UserMainAdminCreationOnStartUpService {
     private final PasswordEncoder passwordEncoder;
 
     @EventListener(ContextRefreshedEvent.class)
-    public void createMainAdminUserOnStartUp() {
+    public void handle() {
         if (userRepository.existsByMail(mainAdminMail)) {
             log.info("Main admin already exists");
         } else {

@@ -1,4 +1,4 @@
-package code.bookings.application.services;
+package code.bookings.application.handlers;
 
 import code.bookings.application.dto.BookingDto;
 import code.bookings.application.dto.BookingMapper;
@@ -12,13 +12,13 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class BookingReadingService {
+public class BookingReadingHandler {
 
     private final SecurityHelper securityHelper;
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
 
-    public BookingDto read(Long id) {
+    public BookingDto handle(Long id) {
         var currentUserId = securityHelper.getCurrentUserId();
         return bookingRepository
                 .readByIdAndUserId(id, currentUserId)

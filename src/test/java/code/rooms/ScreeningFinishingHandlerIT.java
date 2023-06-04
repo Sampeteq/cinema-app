@@ -2,7 +2,7 @@ package code.rooms;
 
 import code.films.domain.FilmRepository;
 import code.rooms.domain.RoomRepository;
-import code.screenings.application.services.ScreeningFinishingService;
+import code.screenings.application.handlers.ScreeningFinishingHandler;
 import code.screenings.domain.Screening;
 import code.utils.SpringIT;
 import org.junit.jupiter.api.Test;
@@ -13,10 +13,10 @@ import static code.utils.FilmTestHelper.createScreenings;
 import static code.utils.RoomTestHelper.createRoom;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ScreeningFinishingServiceIT extends SpringIT {
+class ScreeningFinishingHandlerIT extends SpringIT {
 
     @Autowired
-    private ScreeningFinishingService screeningFinishingService;
+    private ScreeningFinishingHandler screeningFinishingHandler;
 
     @Autowired
     private RoomRepository roomRepository;
@@ -35,7 +35,7 @@ class ScreeningFinishingServiceIT extends SpringIT {
                 .getScreenings();
 
         //when
-        screeningFinishingService.onFinishedScreenings();
+        screeningFinishingHandler.handle();
 
         //then
         assertThat(screeningsWithRooms).noneMatch(Screening::hasRoom);

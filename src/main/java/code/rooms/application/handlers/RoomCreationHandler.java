@@ -1,4 +1,4 @@
-package code.rooms.application.services;
+package code.rooms.application.handlers;
 
 import code.rooms.application.commands.RoomCreationCommand;
 import code.rooms.domain.Room;
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RoomCreationService {
+public class RoomCreationHandler {
 
     private final RoomRepository roomRepository;
 
-    public void createRoom(RoomCreationCommand command) {
+    public void handle(RoomCreationCommand command) {
         if (roomRepository.existsByCustomId(command.customId())) {
             throw new RoomCustomIdAlreadyExistsException();
         }

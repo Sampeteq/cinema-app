@@ -1,12 +1,12 @@
-package code.user.application.services;
+package code.user.application.handlers;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserSignOutService {
+public class UserSignOutHandler {
 
-    public void signOutUser() {
+    public void handle() {
         SecurityContextHolder.clearContext();
     }
 }

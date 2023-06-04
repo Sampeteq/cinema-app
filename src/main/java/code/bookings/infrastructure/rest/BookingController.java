@@ -2,11 +2,11 @@ package code.bookings.infrastructure.rest;
 
 import code.bookings.application.commands.BookingCancellationCommand;
 import code.bookings.application.dto.BookingId;
-import code.bookings.application.services.BookingCancellationService;
+import code.bookings.application.handlers.BookingCancellationHandler;
 import code.bookings.application.commands.BookingMakingCommand;
-import code.bookings.application.services.BookingMakingService;
+import code.bookings.application.handlers.BookingMakingHandler;
 import code.bookings.application.dto.BookingDto;
-import code.bookings.application.services.BookingReadingService;
+import code.bookings.application.handlers.BookingReadingHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,32 +22,32 @@ import java.util.List;
 @AllArgsConstructor
 public class BookingController {
 
-    private final BookingMakingService bookingMakingService;
+    private final BookingMakingHandler bookingMakingHandler;
 
-    private final BookingCancellationService bookingCancellationService;
+    private final BookingCancellationHandler bookingCancellationHandler;
 
-    private final BookingReadingService bookingReadingService;
+    private final BookingReadingHandler bookingReadingHandler;
 
     @PostMapping
     public BookingId bookSeat(@RequestParam Long seatId) {
         var command = new BookingMakingCommand(seatId);
-        return bookingMakingService.makeBooking(command);
+        return bookingMakingHandler.handle(command);
     }
 
     @PostMapping("/{bookingId}/cancel")
     public void cancelBooking(@PathVariable Long bookingId) {
         var command = new BookingCancellationCommand(bookingId);
-        bookingCancellationService.cancelBooking(command);
+        bookingCancellationHandler.handle(command);
     }
 
     @GetMapping("/my")
     public List<BookingDto> getAllBookings() {
-        return bookingReadingService.readAll();
+        return bookingReadingHandler.readAll();
     }
 
     @GetMapping("/my/{bookingId}")
     public BookingDto getBookingById(@PathVariable Long bookingId) {
-        return bookingReadingService.read(bookingId);
+        return bookingReadingHandler.handle(bookingId);
     }
 }
 

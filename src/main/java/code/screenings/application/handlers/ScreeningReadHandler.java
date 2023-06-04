@@ -1,4 +1,4 @@
-package code.screenings.application.services;
+package code.screenings.application.handlers;
 
 import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.ScreeningMapper;
@@ -16,13 +16,13 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class ScreeningReadService {
+public class ScreeningReadHandler {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
     private final ScreeningMapper screeningMapper;
 
     @Transactional(readOnly = true)
-    public List<ScreeningDto> read(ScreeningReadQuery query) {
+    public List<ScreeningDto> handle(ScreeningReadQuery query) {
         var specification = notFinished()
                 .and(dateLike(query.date()))
                 .and(filmLike(query.filmId()))

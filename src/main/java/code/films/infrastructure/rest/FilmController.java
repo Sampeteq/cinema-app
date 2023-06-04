@@ -1,9 +1,9 @@
 package code.films.infrastructure.rest;
 
 import code.films.application.commands.FilmCreationCommand;
-import code.films.application.services.FilmCreationService;
+import code.films.application.handlers.FilmCreationHandler;
 import code.films.application.dto.FilmDto;
-import code.films.application.services.FilmReadingService;
+import code.films.application.handlers.FilmReadingHandler;
 import code.films.application.queries.FilmReadingQuery;
 import code.films.domain.FilmCategory;
 import lombok.AllArgsConstructor;
@@ -22,13 +22,13 @@ import java.util.List;
 @AllArgsConstructor
 public class FilmController {
 
-    private final FilmCreationService filmCreationService;
+    private final FilmCreationHandler filmCreationHandler;
 
-    private final FilmReadingService filmReadingService;
+    private final FilmReadingHandler filmReadingHandler;
 
     @PostMapping("/films")
     public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid FilmCreationCommand dto) {
-        var createdFilm = filmCreationService.createFilm(dto);
+        var createdFilm = filmCreationHandler.handle(dto);
         return new ResponseEntity<>(createdFilm, HttpStatus.CREATED);
     }
 
@@ -38,7 +38,7 @@ public class FilmController {
                 .builder()
                 .category(category)
                 .build();
-        return filmReadingService.read(params);
+        return filmReadingHandler.handle(params);
     }
 }
 

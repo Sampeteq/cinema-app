@@ -1,4 +1,4 @@
-package code.screenings.application.services;
+package code.screenings.application.handlers;
 
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
@@ -24,7 +24,7 @@ import static java.util.stream.IntStream.rangeClosed;
 
 @Component
 @AllArgsConstructor
-public class ScreeningCreationService {
+public class ScreeningCreationHandler {
 
     private final ScreeningDateValidator screeningDateValidator;
     private final Clock clock;
@@ -33,7 +33,7 @@ public class ScreeningCreationService {
     private final RoomRepository roomRepository;
     private final ScreeningMapper screeningMapper;
 
-    public ScreeningDto createScreening(ScreeningCreationCommand command) {
+    public ScreeningDto handle(ScreeningCreationCommand command) {
         screeningDateValidator.validate(command.date(), clock);
         var screening = transactionTemplate.execute(status -> {
             var film = getFilmOrThrow(command.filmId());

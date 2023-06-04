@@ -1,8 +1,7 @@
-package code.bookings.application.services;
+package code.bookings.application.handlers;
 
 import code.bookings.application.commands.BookingMakingCommand;
 import code.bookings.application.dto.BookingId;
-import code.bookings.application.dto.BookingMapper;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
@@ -20,7 +19,7 @@ import java.time.Clock;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class BookingMakingService {
+public class BookingMakingHandler {
 
     private final SeatReadOnlyRepository seatReadOnlyRepository;
     private final SecurityHelper securityHelper;
@@ -28,7 +27,7 @@ public class BookingMakingService {
     private final BookingRepository bookingRepository;
 
     @Transactional
-    public BookingId makeBooking(BookingMakingCommand command) {
+    public BookingId handle(BookingMakingCommand command) {
         log.info("Received a command:{}",command);
         validateIfBookingAlreadyExists(command.seatId());
         var seat = getSeatOrThrow(command);

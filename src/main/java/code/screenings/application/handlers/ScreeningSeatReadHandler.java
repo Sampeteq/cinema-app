@@ -1,4 +1,4 @@
-package code.screenings.application.services;
+package code.screenings.application.handlers;
 
 import code.screenings.application.dto.SeatDto;
 import code.screenings.application.dto.SeatMapper;
@@ -13,13 +13,13 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ScreeningSeatReadService {
+public class ScreeningSeatReadHandler {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
     private final SeatMapper seatMapper;
 
     @Transactional(readOnly = true)
-    public List<SeatDto> read(Long screeningId) {
+    public List<SeatDto> handle(Long screeningId) {
         return screeningReadOnlyRepository
                 .findById(screeningId)
                 .map(Screening::getSeats)

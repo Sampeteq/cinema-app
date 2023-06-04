@@ -1,4 +1,4 @@
-package code.utils;
+package code.rooms;
 
 import code.rooms.domain.Room;
 

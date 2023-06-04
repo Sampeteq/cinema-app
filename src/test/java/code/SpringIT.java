@@ -1,4 +1,4 @@
-package code.utils;
+package code;
 
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;

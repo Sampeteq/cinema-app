@@ -1,4 +1,4 @@
-package code.utils;
+package code;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

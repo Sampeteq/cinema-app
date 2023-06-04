@@ -5,7 +5,7 @@ import code.films.application.dto.FilmMapper;
 import code.films.domain.FilmCategory;
 import code.films.domain.FilmRepository;
 import code.films.domain.exceptions.FilmWrongYearException;
-import code.utils.SpringIT;
+import code.SpringIT;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -15,11 +15,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 
-import static code.utils.FilmTestHelper.createCreateFilmCommand;
-import static code.utils.FilmTestHelper.createFilm;
-import static code.utils.FilmTestHelper.createFilms;
-import static code.utils.WebTestHelper.fromResultActions;
-import static code.utils.WebTestHelper.toJson;
+import static code.films.FilmTestHelper.createCreateFilmCommand;
+import static code.films.FilmTestHelper.createFilm;
+import static code.films.FilmTestHelper.createFilms;
+import static code.WebTestHelper.fromResultActions;
+import static code.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

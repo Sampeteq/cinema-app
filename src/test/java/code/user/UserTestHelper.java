@@ -1,4 +1,4 @@
-package code.utils;
+package code.user;
 
 import code.user.application.commands.UserSignInCommand;
 import code.user.application.commands.UserSignUpCommand;

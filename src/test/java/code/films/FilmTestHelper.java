@@ -1,4 +1,4 @@
-package code.utils;
+package code.films;
 
 import code.films.application.commands.FilmCreateCommand;
 import code.films.domain.Film;

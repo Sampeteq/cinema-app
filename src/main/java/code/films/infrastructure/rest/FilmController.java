@@ -30,7 +30,7 @@ public class FilmController {
     }
 
     @GetMapping("/films")
-    public List<FilmDto> searchFilmsBy() {
+    public List<FilmDto> readAll() {
         return filmReadAllHandler.handle();
     }
 }

@@ -72,7 +72,7 @@ class FilmControllerIT extends SpringIT {
     }
 
     @Test
-    void should_get_all_films() throws Exception {
+    void should_read_all_films() throws Exception {
         //given
         var sampleFilms = filmRepository.addMany(createFilms());
 

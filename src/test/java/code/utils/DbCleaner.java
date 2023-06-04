@@ -7,10 +7,15 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class DbCleaner {
-
+    public static final String TABLES_NAMES_SQL =
+            "SELECT table_name " +
+            "FROM information_schema.tables " +
+            "WHERE table_schema='public'";
+    public static final String TRUNCATE_SQL = "TRUNCATE TABLE ";
+    public static final String RESTART_IDENTITY = " RESTART IDENTITY CASCADE";
     private final DataSource dataSource;
 
     public void clean() {
@@ -18,14 +23,12 @@ public class DbCleaner {
                 var connection = dataSource.getConnection();
                 var resultSet = connection
                         .createStatement()
-                        .executeQuery("SELECT table_name FROM information_schema.tables WHERE table_schema='public'")
+                        .executeQuery(TABLES_NAMES_SQL)
         ) {
             while (resultSet.next()) {
                 var tableName = resultSet.getString("table_name");
-                try (
-                        var truncateStatement = connection.createStatement()
-                ) {
-                    truncateStatement.executeUpdate("TRUNCATE TABLE " + tableName + " RESTART IDENTITY CASCADE");
+                try (var statement = connection.createStatement()) {
+                    statement.executeUpdate(TRUNCATE_SQL + tableName + RESTART_IDENTITY);
                 }
             }
         } catch (SQLException exception) {

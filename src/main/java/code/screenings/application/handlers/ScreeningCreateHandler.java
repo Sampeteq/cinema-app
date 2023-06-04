@@ -4,7 +4,7 @@ import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
-import code.screenings.application.commands.ScreeningCreationCommand;
+import code.screenings.application.commands.ScreeningCreateCommand;
 import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.ScreeningMapper;
 import code.screenings.domain.Screening;
@@ -24,7 +24,7 @@ import static java.util.stream.IntStream.rangeClosed;
 
 @Component
 @AllArgsConstructor
-public class ScreeningCreationHandler {
+public class ScreeningCreateHandler {
 
     private final ScreeningDateValidator screeningDateValidator;
     private final Clock clock;
@@ -33,7 +33,7 @@ public class ScreeningCreationHandler {
     private final RoomRepository roomRepository;
     private final ScreeningMapper screeningMapper;
 
-    public ScreeningDto handle(ScreeningCreationCommand command) {
+    public ScreeningDto handle(ScreeningCreateCommand command) {
         screeningDateValidator.validate(command.date(), clock);
         var screening = transactionTemplate.execute(status -> {
             var film = getFilmOrThrow(command.filmId());

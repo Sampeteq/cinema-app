@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @With
-public record ScreeningCreationCommand(
+public record ScreeningCreateCommand(
         @NotNull
         @Schema(type = "string", example = "2022-01-01T16:30")
         LocalDateTime date,

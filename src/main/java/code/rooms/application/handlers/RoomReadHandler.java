@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class RoomReadingHandler {
+public class RoomReadHandler {
 
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;

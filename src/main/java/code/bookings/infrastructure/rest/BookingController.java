@@ -1,12 +1,12 @@
 package code.bookings.infrastructure.rest;
 
-import code.bookings.application.commands.BookingCancellationCommand;
+import code.bookings.application.commands.BookingCancelCommand;
 import code.bookings.application.dto.BookingId;
-import code.bookings.application.handlers.BookingCancellationHandler;
-import code.bookings.application.commands.BookingMakingCommand;
-import code.bookings.application.handlers.BookingMakingHandler;
+import code.bookings.application.handlers.BookingCancelHandler;
+import code.bookings.application.commands.BookingMakeCommand;
+import code.bookings.application.handlers.BookingMakeHandler;
 import code.bookings.application.dto.BookingDto;
-import code.bookings.application.handlers.BookingReadingHandler;
+import code.bookings.application.handlers.BookingReadHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,32 +22,32 @@ import java.util.List;
 @AllArgsConstructor
 public class BookingController {
 
-    private final BookingMakingHandler bookingMakingHandler;
+    private final BookingMakeHandler bookingMakeHandler;
 
-    private final BookingCancellationHandler bookingCancellationHandler;
+    private final BookingCancelHandler bookingCancelHandler;
 
-    private final BookingReadingHandler bookingReadingHandler;
+    private final BookingReadHandler bookingReadHandler;
 
     @PostMapping
     public BookingId bookSeat(@RequestParam Long seatId) {
-        var command = new BookingMakingCommand(seatId);
-        return bookingMakingHandler.handle(command);
+        var command = new BookingMakeCommand(seatId);
+        return bookingMakeHandler.handle(command);
     }
 
     @PostMapping("/{bookingId}/cancel")
     public void cancelBooking(@PathVariable Long bookingId) {
-        var command = new BookingCancellationCommand(bookingId);
-        bookingCancellationHandler.handle(command);
+        var command = new BookingCancelCommand(bookingId);
+        bookingCancelHandler.handle(command);
     }
 
     @GetMapping("/my")
     public List<BookingDto> getAllBookings() {
-        return bookingReadingHandler.readAll();
+        return bookingReadHandler.readAll();
     }
 
     @GetMapping("/my/{bookingId}")
     public BookingDto getBookingById(@PathVariable Long bookingId) {
-        return bookingReadingHandler.handle(bookingId);
+        return bookingReadHandler.handle(bookingId);
     }
 }
 

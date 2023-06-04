@@ -1,6 +1,6 @@
 package code.films.infrastructure.db;
 
-import code.films.application.queries.FilmReadingQuery;
+import code.films.application.queries.FilmReadQuery;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +33,12 @@ public class SpringDataJpaFilmRepository implements FilmRepository {
     }
 
     @Override
-    public List<Film> readBy(FilmReadingQuery query) {
+    public List<Film> readBy(FilmReadQuery query) {
         return jpaFilmRepository.getBy(query);
     }
 }
 
 interface JpaFilmRepository extends JpaRepository<Film, Long> {
     @Query("SELECT f FROM Film f WHERE :#{#params.category} is null or f.category = :#{#params.category}")
-    List<Film> getBy(FilmReadingQuery params);
+    List<Film> getBy(FilmReadQuery params);
 }

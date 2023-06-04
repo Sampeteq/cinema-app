@@ -1,6 +1,6 @@
 package code.bookings.application.handlers;
 
-import code.bookings.application.commands.BookingMakingCommand;
+import code.bookings.application.commands.BookingMakeCommand;
 import code.bookings.application.dto.BookingId;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
@@ -19,7 +19,7 @@ import java.time.Clock;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class BookingMakingHandler {
+public class BookingMakeHandler {
 
     private final SeatReadOnlyRepository seatReadOnlyRepository;
     private final SecurityHelper securityHelper;
@@ -27,7 +27,7 @@ public class BookingMakingHandler {
     private final BookingRepository bookingRepository;
 
     @Transactional
-    public BookingId handle(BookingMakingCommand command) {
+    public BookingId handle(BookingMakeCommand command) {
         log.info("Received a command:{}",command);
         validateIfBookingAlreadyExists(command.seatId());
         var seat = getSeatOrThrow(command);
@@ -47,7 +47,7 @@ public class BookingMakingHandler {
         }
     }
 
-    private Seat getSeatOrThrow(BookingMakingCommand command) {
+    private Seat getSeatOrThrow(BookingMakeCommand command) {
         return seatReadOnlyRepository
                 .getById(command.seatId())
                 .orElseThrow(() -> new EntityNotFoundException("Booking"));

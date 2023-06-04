@@ -1,7 +1,7 @@
 package code.screenings.infrastructure;
 
-import code.screenings.application.commands.ScreeningCreationCommand;
-import code.screenings.application.handlers.ScreeningCreationHandler;
+import code.screenings.application.commands.ScreeningCreateCommand;
+import code.screenings.application.handlers.ScreeningCreateHandler;
 import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.SeatDto;
 import code.screenings.application.handlers.ScreeningReadHandler;
@@ -28,7 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScreeningController {
 
-    private final ScreeningCreationHandler screeningCreationHandler;
+    private final ScreeningCreateHandler screeningCreateHandler;
 
     private final ScreeningReadHandler screeningReadHandler;
 
@@ -38,9 +38,9 @@ public class ScreeningController {
     public ResponseEntity<ScreeningDto> createScreening(
             @RequestBody
             @Valid
-            ScreeningCreationCommand cmd
+            ScreeningCreateCommand cmd
     ) {
-        var createdScreening = screeningCreationHandler.handle(cmd);
+        var createdScreening = screeningCreateHandler.handle(cmd);
         return new ResponseEntity<>(createdScreening, HttpStatus.CREATED);
     }
 

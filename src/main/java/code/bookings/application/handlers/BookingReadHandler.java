@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class BookingReadingHandler {
+public class BookingReadHandler {
 
     private final SecurityHelper securityHelper;
     private final BookingRepository bookingRepository;

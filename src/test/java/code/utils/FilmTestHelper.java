@@ -1,10 +1,10 @@
 package code.utils;
 
-import code.films.application.commands.FilmCreationCommand;
+import code.films.application.commands.FilmCreateCommand;
 import code.films.domain.Film;
 import code.films.domain.FilmCategory;
 import code.rooms.domain.Room;
-import code.screenings.application.commands.ScreeningCreationCommand;
+import code.screenings.application.commands.ScreeningCreateCommand;
 import code.screenings.domain.Screening;
 import code.screenings.domain.Seat;
 
@@ -22,8 +22,8 @@ public class FilmTestHelper {
             30
     );
 
-    public static FilmCreationCommand createCreateFilmCommand() {
-        return FilmCreationCommand
+    public static FilmCreateCommand createCreateFilmCommand() {
+        return FilmCreateCommand
                 .builder()
                 .title("Test film 1")
                 .filmCategory(FilmCategory.COMEDY)
@@ -54,8 +54,8 @@ public class FilmTestHelper {
         );
     }
 
-    public static ScreeningCreationCommand createCreateScreeningCommand(Long filmId) {
-        return ScreeningCreationCommand
+    public static ScreeningCreateCommand createCreateScreeningCommand(Long filmId) {
+        return ScreeningCreateCommand
                 .builder()
                 .filmId(filmId)
                 .date(SCREENING_DATE)

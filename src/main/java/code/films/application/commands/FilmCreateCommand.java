@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Builder
 @With
-public record FilmCreationCommand(
+public record FilmCreateCommand(
         @NotNull
         String title,
         @NotNull

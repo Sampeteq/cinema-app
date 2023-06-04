@@ -1,6 +1,6 @@
 package code.bookings.application.handlers;
 
-import code.bookings.application.commands.BookingCancellationCommand;
+import code.bookings.application.commands.BookingCancelCommand;
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.shared.EntityNotFoundException;
@@ -13,14 +13,14 @@ import java.time.Clock;
 
 @Component
 @RequiredArgsConstructor
-public class BookingCancellationHandler {
+public class BookingCancelHandler {
 
     private final SecurityHelper securityHelper;
     private final BookingRepository bookingRepository;
     private final Clock clock;
 
     @Transactional
-    public void handle(BookingCancellationCommand command) {
+    public void handle(BookingCancelCommand command) {
         var booking = getBookingOrThrow(command.bookingId());
         booking.cancel(clock);
         booking.getSeat().makeFree();

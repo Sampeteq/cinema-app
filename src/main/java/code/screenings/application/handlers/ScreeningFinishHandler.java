@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ScreeningFinishingHandler {
+public class ScreeningFinishHandler {
 
     private final RoomRepository roomRepository;
     private final Clock clock;

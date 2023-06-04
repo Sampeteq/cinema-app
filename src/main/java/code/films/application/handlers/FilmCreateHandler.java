@@ -1,6 +1,6 @@
 package code.films.application.handlers;
 
-import code.films.application.commands.FilmCreationCommand;
+import code.films.application.commands.FilmCreateCommand;
 import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmMapper;
 import code.films.domain.Film;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class FilmCreationHandler {
+public class FilmCreateHandler {
 
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
 
-    public FilmDto handle(FilmCreationCommand command) {
+    public FilmDto handle(FilmCreateCommand command) {
         var film = Film.create(
                         command.title(),
                         command.filmCategory(),

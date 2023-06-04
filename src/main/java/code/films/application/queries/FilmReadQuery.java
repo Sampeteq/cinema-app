@@ -4,4 +4,4 @@ import code.films.domain.FilmCategory;
 import lombok.Builder;
 
 @Builder
-public record FilmReadingQuery(FilmCategory category) {}
+public record FilmReadQuery(FilmCategory category) {}

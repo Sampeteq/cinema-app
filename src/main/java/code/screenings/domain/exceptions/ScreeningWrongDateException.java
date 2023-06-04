@@ -2,9 +2,9 @@ package code.screenings.domain.exceptions;
 
 import code.shared.ValidationException;
 
-public class WrongScreeningDateException extends ValidationException {
+public class ScreeningWrongDateException extends ValidationException {
 
-    public WrongScreeningDateException() {
+    public ScreeningWrongDateException() {
         super("A screening date year must be current or next one");
     }
 }

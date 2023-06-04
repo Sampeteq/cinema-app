@@ -6,8 +6,8 @@ import code.screenings.application.dto.ScreeningDto;
 import code.screenings.application.dto.ScreeningMapper;
 import code.screenings.application.dto.SeatMapper;
 import code.screenings.domain.Screening;
-import code.screenings.domain.exceptions.NoAvailableRoomsException;
-import code.screenings.domain.exceptions.WrongScreeningDateException;
+import code.screenings.domain.exceptions.RoomsNoAvailableException;
+import code.screenings.domain.exceptions.ScreeningWrongDateException;
 import code.utils.SpringIT;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -90,7 +90,7 @@ public class ScreeningControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new WrongScreeningDateException().getMessage()));
+                .andExpect(content().string(new ScreeningWrongDateException().getMessage()));
     }
 
     @Test
@@ -113,7 +113,7 @@ public class ScreeningControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new NoAvailableRoomsException().getMessage()));
+                .andExpect(content().string(new RoomsNoAvailableException().getMessage()));
     }
 
     @Test

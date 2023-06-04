@@ -1,6 +1,6 @@
 package code.screenings.domain;
 
-import code.screenings.domain.exceptions.WrongScreeningDateException;
+import code.screenings.domain.exceptions.ScreeningWrongDateException;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
@@ -15,7 +15,7 @@ public class ScreeningDateValidator {
         var currentYear = currentDate.getYear();
         var isYearCurrentOrNextOne = date.getYear() == currentYear || date.getYear() == currentYear + 1;
         if (!isYearCurrentOrNextOne) {
-            throw new WrongScreeningDateException();
+            throw new ScreeningWrongDateException();
         }
     }
 }

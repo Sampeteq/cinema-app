@@ -1,6 +1,6 @@
 package code.films.domain;
 
-import code.films.domain.exceptions.WrongFilmYearException;
+import code.films.domain.exceptions.FilmWrongYearException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -45,7 +45,7 @@ public class Film {
 
     public static Film create(String title, FilmCategory category, int year, int durationInMinutes) {
         if (!isFilmYearCorrect(year)) {
-            throw new WrongFilmYearException();
+            throw new FilmWrongYearException();
         }
         return new Film(
                 title,

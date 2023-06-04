@@ -2,9 +2,9 @@ package code.user.domain.exceptions;
 
 import code.shared.ValidationException;
 
-public class NotSamePasswordsException extends ValidationException {
+public class UserNotSamePasswordsException extends ValidationException {
 
-    public NotSamePasswordsException() {
+    public UserNotSamePasswordsException() {
         super("Not same passwords");
     }
 }

@@ -4,8 +4,8 @@ import code.user.application.commands.UserSignUpCommand;
 import code.user.domain.User;
 import code.user.domain.UserRepository;
 import code.user.domain.UserRole;
-import code.user.domain.exceptions.MailAlreadyExistsException;
-import code.user.domain.exceptions.NotSamePasswordsException;
+import code.user.domain.exceptions.UserMailAlreadyExistsException;
+import code.user.domain.exceptions.UserNotSamePasswordsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -19,10 +19,10 @@ public class UserSignUpService {
 
     public void signUpUser(UserSignUpCommand command) {
         if (userRepository.existsByMail(command.mail())) {
-            throw new MailAlreadyExistsException();
+            throw new UserMailAlreadyExistsException();
         }
         if (!(command.password().equals(command.repeatedPassword()))) {
-            throw new NotSamePasswordsException();
+            throw new UserNotSamePasswordsException();
         }
         var user = User
                 .builder()

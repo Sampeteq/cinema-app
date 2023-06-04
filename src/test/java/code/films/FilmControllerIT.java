@@ -4,7 +4,7 @@ import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmMapper;
 import code.films.domain.FilmCategory;
 import code.films.domain.FilmRepository;
-import code.films.domain.exceptions.WrongFilmYearException;
+import code.films.domain.exceptions.FilmWrongYearException;
 import code.utils.SpringIT;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -72,7 +72,7 @@ class FilmControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new WrongFilmYearException().getMessage()));
+                .andExpect(content().string(new FilmWrongYearException().getMessage()));
     }
 
     @Test

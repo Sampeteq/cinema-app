@@ -2,9 +2,9 @@ package code.screenings.domain.exceptions;
 
 import code.shared.ValidationException;
 
-public class NoAvailableRoomsException extends ValidationException {
+public class RoomsNoAvailableException extends ValidationException {
 
-    public NoAvailableRoomsException() {
+    public RoomsNoAvailableException() {
         super("No available rooms");
     }
 }

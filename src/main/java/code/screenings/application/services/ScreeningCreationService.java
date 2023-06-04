@@ -10,7 +10,7 @@ import code.screenings.application.dto.ScreeningMapper;
 import code.screenings.domain.Screening;
 import code.screenings.domain.ScreeningDateValidator;
 import code.screenings.domain.Seat;
-import code.screenings.domain.exceptions.NoAvailableRoomsException;
+import code.screenings.domain.exceptions.RoomsNoAvailableException;
 import code.shared.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -68,7 +68,7 @@ public class ScreeningCreationService {
                         .noneMatch(screening -> screening.isCollisionWith(start, finish))
                 )
                 .findFirst()
-                .orElseThrow(NoAvailableRoomsException::new);
+                .orElseThrow(RoomsNoAvailableException::new);
     }
 
     private static List<Seat> createSeats(Room room, Screening screening) {

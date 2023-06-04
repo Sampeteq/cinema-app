@@ -7,8 +7,8 @@ import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
-import code.bookings.domain.exceptions.TooLateToBookingException;
-import code.bookings.domain.exceptions.TooLateToCancelBookingException;
+import code.bookings.domain.exceptions.BookingTooLateException;
+import code.bookings.domain.exceptions.BookingCancelTooLateException;
 import code.films.domain.FilmRepository;
 import code.rooms.domain.RoomRepository;
 import code.screenings.application.dto.SeatDto;
@@ -16,7 +16,6 @@ import code.screenings.domain.Seat;
 import code.user.domain.User;
 import code.user.domain.UserRepository;
 import code.utils.SpringIT;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,7 +118,7 @@ class BookingControllerIT extends SpringIT {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new TooLateToBookingException().getMessage()
+                        new BookingTooLateException().getMessage()
                 ));
     }
 
@@ -249,7 +248,7 @@ class BookingControllerIT extends SpringIT {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new TooLateToCancelBookingException().getMessage()
+                        new BookingCancelTooLateException().getMessage()
                 ));
     }
 

@@ -2,9 +2,9 @@ package code.bookings.domain.exceptions;
 
 import code.shared.ValidationException;
 
-public class TooLateToCancelBookingException extends ValidationException {
+public class BookingCancelTooLateException extends ValidationException {
 
-    public TooLateToCancelBookingException() {
+    public BookingCancelTooLateException() {
         super("Too late to cancel booking exception");
     }
 }

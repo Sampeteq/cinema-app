@@ -2,9 +2,9 @@ package code.rooms.domain.exceptions;
 
 import code.shared.ValidationException;
 
-public class RoomNumberAlreadyExistsException extends ValidationException {
+public class RoomCustomIdAlreadyExistsException extends ValidationException {
 
-    public RoomNumberAlreadyExistsException() {
+    public RoomCustomIdAlreadyExistsException() {
         super("A room customId already exists");
     }
 }

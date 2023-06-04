@@ -2,9 +2,9 @@ package code.films.domain.exceptions;
 
 import code.shared.ValidationException;
 
-public class WrongFilmYearException extends ValidationException {
+public class FilmWrongYearException extends ValidationException {
 
-    public WrongFilmYearException() {
+    public FilmWrongYearException() {
         super("A film year must be previous, current or next one");
     }
 }

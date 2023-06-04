@@ -1,11 +1,10 @@
 package code.films;
 
+import code.SpringIT;
 import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmMapper;
-import code.films.domain.FilmCategory;
 import code.films.domain.FilmRepository;
 import code.films.domain.exceptions.FilmWrongYearException;
-import code.SpringIT;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,7 +15,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import java.util.List;
 
 import static code.films.FilmTestHelper.createCreateFilmCommand;
-import static code.films.FilmTestHelper.createFilm;
 import static code.films.FilmTestHelper.createFilms;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -87,27 +85,5 @@ class FilmControllerIT extends SpringIT {
         result
                 .andExpect(status().isOk())
                 .andExpect(content().json(toJson(filmMapper.mapToDto(sampleFilms))));
-    }
-
-    @Test
-    void should_get_films_by_params() throws Exception {
-        //given
-        var filmMeetingParams = filmRepository.add(
-                createFilm(FilmCategory.COMEDY)
-        );
-        filmRepository.add(
-                createFilm(FilmCategory.DRAMA)
-        );
-
-        //when
-        var result = mockMvc.perform(
-                get("/films")
-                        .param("category", filmMeetingParams.getCategory().name())
-        );
-
-        //then
-        result
-                .andExpect(status().isOk())
-                .andExpect(content().json(toJson(List.of(filmMapper.mapToDto(filmMeetingParams)))));
     }
 }

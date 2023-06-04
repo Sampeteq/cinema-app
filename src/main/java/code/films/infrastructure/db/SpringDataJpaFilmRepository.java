@@ -1,11 +1,9 @@
 package code.films.infrastructure.db;
 
-import code.films.application.queries.FilmReadQuery;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,10 +30,6 @@ public class SpringDataJpaFilmRepository implements FilmRepository {
         return jpaFilmRepository.findById(filmId);
     }
 
-    @Override
-    public List<Film> readBy(FilmReadQuery query) {
-        return jpaFilmRepository.getBy(query);
-    }
 
     @Override
     public List<Film> readAll() {
@@ -44,6 +38,4 @@ public class SpringDataJpaFilmRepository implements FilmRepository {
 }
 
 interface JpaFilmRepository extends JpaRepository<Film, Long> {
-    @Query("SELECT f FROM Film f WHERE :#{#params.category} is null or f.category = :#{#params.category}")
-    List<Film> getBy(FilmReadQuery params);
 }

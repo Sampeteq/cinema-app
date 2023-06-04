@@ -45,7 +45,7 @@ public class ScreeningController {
     }
 
     @GetMapping
-    public List<ScreeningDto> searchScreeningsBy(
+    public List<ScreeningDto> readScreeningsBy(
             @RequestParam(required = false)
             Long filmId,
 
@@ -64,7 +64,7 @@ public class ScreeningController {
     }
 
     @GetMapping("/{screeningId}/seats")
-    public List<SeatDto> searchSeats(@PathVariable Long screeningId) {
+    public List<SeatDto> readSeats(@PathVariable Long screeningId) {
         return screeningSeatReadHandler.handle(screeningId);
     }
 }

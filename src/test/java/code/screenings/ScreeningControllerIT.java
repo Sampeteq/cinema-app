@@ -115,7 +115,7 @@ public class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    void should_get_all_screenings() throws Exception {
+    void should_read_all_screenings() throws Exception {
         //given
         var screenings = prepareScreenings();
 
@@ -131,7 +131,7 @@ public class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    void should_not_return_finished_screenings() throws Exception {
+    void should_not_read_finished_screenings() throws Exception {
         //given
         prepareFinishedScreenings();
 
@@ -145,7 +145,7 @@ public class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    void should_get_screenings_by_params() throws Exception {
+    void should_read_screenings_by_params() throws Exception {
         //given
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
@@ -166,7 +166,7 @@ public class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    void should_get_seats_for_screening() throws Exception {
+    void should_read_seats_for_screening() throws Exception {
         //given
         var screening = prepareScreening();
 

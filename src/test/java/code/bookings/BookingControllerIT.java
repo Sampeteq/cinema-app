@@ -34,7 +34,6 @@ import static code.films.FilmTestHelper.createFilm;
 import static code.films.FilmTestHelper.createScreening;
 import static code.rooms.RoomTestHelper.createRoom;
 import static code.user.UserTestHelper.createUser;
-import static code.WebTestHelper.fromResultActions;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;

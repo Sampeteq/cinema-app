@@ -24,8 +24,6 @@ import static code.films.FilmTestHelper.createFilm;
 import static code.films.FilmTestHelper.createScreening;
 import static code.films.FilmTestHelper.createScreenings;
 import static code.rooms.RoomTestHelper.createRoom;
-import static code.WebTestHelper.fromResultActions;
-import static code.WebTestHelper.toJson;
 import static org.hamcrest.Matchers.empty;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

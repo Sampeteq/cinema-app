@@ -14,7 +14,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import static code.user.UserTestHelper.createSignInCommand;
 import static code.user.UserTestHelper.createSignUpCommand;
 import static code.user.UserTestHelper.createUser;
-import static code.WebTestHelper.toJson;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

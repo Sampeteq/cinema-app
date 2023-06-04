@@ -36,6 +36,11 @@ public class SpringDataJpaFilmRepository implements FilmRepository {
     public List<Film> readBy(FilmReadQuery query) {
         return jpaFilmRepository.getBy(query);
     }
+
+    @Override
+    public List<Film> readAll() {
+        return jpaFilmRepository.findAll();
+    }
 }
 
 interface JpaFilmRepository extends JpaRepository<Film, Long> {

@@ -2,7 +2,6 @@ package code.films.application.handlers;
 
 import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmMapper;
-import code.films.application.queries.FilmReadQuery;
 import code.films.domain.FilmRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,9 +15,9 @@ public class FilmReadingHandler {
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
 
-    public List<FilmDto> handle(FilmReadQuery query) {
+    public List<FilmDto> handle() {
         return filmRepository
-                .readBy(query)
+                .readAll()
                 .stream()
                 .map(filmMapper::mapToDto)
                 .toList();

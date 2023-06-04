@@ -13,4 +13,6 @@ public interface FilmRepository  {
     Optional<Film> readById(Long filmId);
 
     List<Film> readBy(FilmReadQuery query);
+
+    List<Film> readAll();
 }

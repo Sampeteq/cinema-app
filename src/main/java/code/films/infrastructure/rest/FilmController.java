@@ -1,18 +1,15 @@
 package code.films.infrastructure.rest;
 
 import code.films.application.commands.FilmCreateCommand;
-import code.films.application.handlers.FilmCreateHandler;
 import code.films.application.dto.FilmDto;
+import code.films.application.handlers.FilmCreateHandler;
 import code.films.application.handlers.FilmReadingHandler;
-import code.films.application.queries.FilmReadQuery;
-import code.films.domain.FilmCategory;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -33,12 +30,8 @@ public class FilmController {
     }
 
     @GetMapping("/films")
-    public List<FilmDto> searchFilmsBy(@RequestParam(required = false) FilmCategory category) {
-        var params = FilmReadQuery
-                .builder()
-                .category(category)
-                .build();
-        return filmReadingHandler.handle(params);
+    public List<FilmDto> searchFilmsBy() {
+        return filmReadingHandler.handle();
     }
 }
 

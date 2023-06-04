@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class FilmReadingHandler {
+public class FilmReadAllHandler {
 
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;

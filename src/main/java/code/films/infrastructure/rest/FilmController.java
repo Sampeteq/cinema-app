@@ -3,7 +3,7 @@ package code.films.infrastructure.rest;
 import code.films.application.commands.FilmCreateCommand;
 import code.films.application.dto.FilmDto;
 import code.films.application.handlers.FilmCreateHandler;
-import code.films.application.handlers.FilmReadingHandler;
+import code.films.application.handlers.FilmReadAllHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class FilmController {
 
     private final FilmCreateHandler filmCreateHandler;
 
-    private final FilmReadingHandler filmReadingHandler;
+    private final FilmReadAllHandler filmReadAllHandler;
 
     @PostMapping("/films")
     public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid FilmCreateCommand dto) {
@@ -31,7 +31,7 @@ public class FilmController {
 
     @GetMapping("/films")
     public List<FilmDto> searchFilmsBy() {
-        return filmReadingHandler.handle();
+        return filmReadAllHandler.handle();
     }
 }
 

@@ -18,7 +18,7 @@ public class FilmCreateHandler {
     public FilmDto handle(FilmCreateCommand command) {
         var film = Film.create(
                         command.title(),
-                        command.filmCategory(),
+                        command.category(),
                         command.year(),
                         command.durationInMinutes()
         );

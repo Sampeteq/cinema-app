@@ -12,7 +12,7 @@ public record FilmCreateCommand(
         @NotNull
         String title,
         @NotNull
-        FilmCategory filmCategory,
+        FilmCategory category,
         @NotNull
         Integer year,
         @NotNull

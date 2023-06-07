@@ -53,12 +53,12 @@ public class ScreeningController {
             @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
             LocalDateTime date
     ) {
-        var params = ScreeningReadQuery
+        var query = ScreeningReadQuery
                 .builder()
                 .filmTitle(filmTitle)
                 .date(date)
                 .build();
-        return screeningReadHandler.handle(params);
+        return screeningReadHandler.handle(query);
     }
 
     @GetMapping("/{screeningId}/seats")

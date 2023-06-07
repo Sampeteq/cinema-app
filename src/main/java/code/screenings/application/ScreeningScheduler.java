@@ -14,7 +14,7 @@ public class ScreeningScheduler {
     private final ScreeningFinishHandler screeningFinishHandler;
 
     /** 3600000ms - 1h */
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 3600000)
     public void run() {
       screeningFinishHandler.handle();
     }

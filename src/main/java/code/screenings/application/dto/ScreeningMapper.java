@@ -13,19 +13,19 @@ import java.util.List;
 @Mapper
 public interface ScreeningMapper {
 
-    @Mapping(target = "filmId", source = "film", qualifiedByName = "filmToId")
+    @Mapping(target = "filmTitle", source = "film", qualifiedByName = "filmToFilmTitle")
     @Mapping(target = "roomId", source = "room", qualifiedByName = "roomToId")
     @Mapping(target = "freeSeats", source = "seats", qualifiedByName = "seatsToFreeSeats")
     ScreeningDto mapToDto(Screening screening);
 
-    @Mapping(target = "filmId", source = "film", qualifiedByName = "filmToId")
+    @Mapping(target = "filmTitle", source = "film", qualifiedByName = "filmToId")
     @Mapping(target = "roomId", source = "room", qualifiedByName = "roomToId")
     @Mapping(target = "freeSeats", source = "seats", qualifiedByName = "seatsToFreeSeats")
     List<ScreeningDto> mapToDto(List<Screening> screening);
 
-    @Named("filmToId")
-    static Long filmToId(Film film) {
-        return film.getId();
+    @Named("filmToFilmTitle")
+    static String filmToId(Film film) {
+        return film.getTitle();
     }
 
     @Named("roomToId")

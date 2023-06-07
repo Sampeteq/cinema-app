@@ -156,7 +156,7 @@ public class ScreeningControllerIT extends SpringIT {
         //when
         var result = mockMvc.perform(
                 get("/screenings")
-                        .param("filmId", screeningMeetParams.getFilm().getTitle())
+                        .param("filmTitle", screeningMeetParams.getFilm().getTitle())
                         .param("date", screeningMeetParams.getDate().toString())
         );
         //then

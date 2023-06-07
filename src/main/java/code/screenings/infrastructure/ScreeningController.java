@@ -53,13 +53,11 @@ public class ScreeningController {
             @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
             LocalDateTime date
     ) {
-
         var params = ScreeningReadQuery
                 .builder()
                 .filmTitle(filmTitle)
                 .date(date)
                 .build();
-
         return screeningReadHandler.handle(params);
     }
 

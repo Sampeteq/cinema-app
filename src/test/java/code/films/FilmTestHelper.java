@@ -10,7 +10,7 @@ import java.util.List;
 public class FilmTestHelper {
     private static final int CURRENT_YEAR = Year.now().getValue();
 
-    public static FilmCreateCommand createCreateFilmCommand() {
+    public static FilmCreateCommand createFilmCreateCommand() {
         return new FilmCreateCommand(
                 "Test film 1",
                 FilmCategory.COMEDY,

@@ -14,7 +14,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 
-import static code.films.FilmTestHelper.createCreateFilmCommand;
+import static code.films.FilmTestHelper.createFilmCreateCommand;
 import static code.films.FilmTestHelper.createFilms;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,7 +33,7 @@ class FilmControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void should_create_film() throws Exception {
         //given
-        var cmd = createCreateFilmCommand();
+        var cmd = createFilmCreateCommand();
 
         //when
         var result = mockMvc.perform(
@@ -56,7 +56,7 @@ class FilmControllerIT extends SpringIT {
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
             throws Exception {
         //given
-        var cmd = createCreateFilmCommand().withYear(wrongYear);
+        var cmd = createFilmCreateCommand().withYear(wrongYear);
 
         //when
         var result = mockMvc.perform(

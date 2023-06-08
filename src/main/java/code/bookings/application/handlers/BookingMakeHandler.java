@@ -21,16 +21,21 @@ import java.time.Clock;
 @Slf4j
 public class BookingMakeHandler {
 
+    private final BookingRepository bookingRepository;
     private final SeatReadOnlyRepository seatReadOnlyRepository;
     private final SecurityHelper securityHelper;
     private final Clock clock;
-    private final BookingRepository bookingRepository;
 
     @Transactional
     public BookingId handle(BookingMakeCommand command) {
         log.info("Received a command:{}",command);
-        validateIfBookingAlreadyExists(command.seatId());
-        var seat = getSeatOrThrow(command);
+        if (bookingRepository.existsBySeatId(command.seatId())) {
+            log.error("Booking already exists");
+            throw new BookingAlreadyExists();
+        }
+        var seat = seatReadOnlyRepository
+                .getById(command.seatId())
+                .orElseThrow(() -> new EntityNotFoundException("Booking"));
         log.info("Found a seat for booking:{}",seat);
         var currentUserId = securityHelper.getCurrentUserId();
         var booking = Booking.make(seat, clock, currentUserId);
@@ -38,18 +43,5 @@ public class BookingMakeHandler {
         log.info("Added a booking:{}", addedBooking);
         seat.makeNotFree();
         return new BookingId(addedBooking.getId());
-    }
-
-    private void validateIfBookingAlreadyExists(Long seatId) {
-        if (bookingRepository.existsBySeatId(seatId)) {
-            log.error("Booking already exists");
-            throw new BookingAlreadyExists();
-        }
-    }
-
-    private Seat getSeatOrThrow(BookingMakeCommand command) {
-        return seatReadOnlyRepository
-                .getById(command.seatId())
-                .orElseThrow(() -> new EntityNotFoundException("Booking"));
     }
 }

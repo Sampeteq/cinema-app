@@ -26,7 +26,7 @@ public class FilmTestHelper {
         return FilmCreateCommand
                 .builder()
                 .title("Test film 1")
-                .filmCategory(FilmCategory.COMEDY)
+                .category(FilmCategory.COMEDY)
                 .year(CURRENT_YEAR)
                 .durationInMinutes(100)
                 .build();

@@ -16,28 +16,28 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Profile("prod")
 @Slf4j
-public class UserMainAdminCreationOnStartUpHandler {
+public class UserMainAdminCreateOnStartUpHandler {
 
-    @Value("${onStartUp.mainAdminMail}")
-    private String mainAdminMail;
-    @Value("${onStartUp.mainAdminPassword}")
-    private String mainAdminPassword;
+    @Value("${admin.mail}")
+    private String adminMail;
+    @Value("${admin.password}")
+    private String adminPassword;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {
-        if (userRepository.existsByMail(mainAdminMail)) {
-            log.info("Main admin already exists");
+        if (userRepository.existsByMail(adminMail)) {
+            log.info("Admin already exists");
         } else {
-            var mainAdmin = User
+            var admin = User
                     .builder()
-                    .mail(mainAdminMail)
-                    .password(passwordEncoder.encode(mainAdminPassword))
+                    .mail(adminMail)
+                    .password(passwordEncoder.encode(adminPassword))
                     .role(UserRole.ADMIN)
                     .build();
-            userRepository.add(mainAdmin);
-            log.info("Main admin added");
+            userRepository.add(admin);
+            log.info("Admin added");
         }
     }
 }

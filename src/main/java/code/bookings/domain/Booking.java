@@ -66,6 +66,7 @@ public class Booking {
         if (seat.timeToScreeningInHours(clock) < 24) {
             throw new BookingCancelTooLateException();
         }
+        this.seat.makeFree();
         this.status = BookingStatus.CANCELLED;
     }
 }

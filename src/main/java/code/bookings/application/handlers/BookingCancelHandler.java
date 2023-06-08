@@ -1,7 +1,6 @@
 package code.bookings.application.handlers;
 
 import code.bookings.application.commands.BookingCancelCommand;
-import code.bookings.domain.Booking;
 import code.bookings.domain.BookingRepository;
 import code.shared.EntityNotFoundException;
 import code.user.infrastrcuture.SecurityHelper;
@@ -21,15 +20,10 @@ public class BookingCancelHandler {
 
     @Transactional
     public void handle(BookingCancelCommand command) {
-        var booking = getBookingOrThrow(command.bookingId());
-        booking.cancel(clock);
-        booking.getSeat().makeFree();
-    }
-
-    private Booking getBookingOrThrow(Long bookingId) {
         var currentUserId = securityHelper.getCurrentUserId();
-        return bookingRepository
-                .readByIdAndUserId(bookingId, currentUserId)
-                .orElseThrow(() -> new EntityNotFoundException("Booking"));
+        bookingRepository
+                .readByIdAndUserId(command.bookingId(), currentUserId)
+                .orElseThrow(() -> new EntityNotFoundException("Booking"))
+                .cancel(clock);
     }
 }

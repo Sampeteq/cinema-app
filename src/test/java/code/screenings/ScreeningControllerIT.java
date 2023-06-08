@@ -19,10 +19,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static code.films.FilmTestHelper.createCreateScreeningCommand;
+import static code.screenings.ScreeningTestHelper.createCreateScreeningCommand;
 import static code.films.FilmTestHelper.createFilm;
-import static code.films.FilmTestHelper.createScreening;
-import static code.films.FilmTestHelper.createScreenings;
+import static code.screenings.ScreeningTestHelper.createScreening;
+import static code.screenings.ScreeningTestHelper.createScreenings;
 import static code.rooms.RoomTestHelper.createRoom;
 import static org.hamcrest.Matchers.empty;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -69,7 +69,7 @@ public class ScreeningControllerIT extends SpringIT {
     }
 
     @ParameterizedTest
-    @MethodSource("code.films.FilmTestHelper#getWrongScreeningDates")
+    @MethodSource("code.screenings.ScreeningTestHelper#getWrongScreeningDates")
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {

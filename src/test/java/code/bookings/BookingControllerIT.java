@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 
 import static code.bookings.BookingTestHelper.createBooking;
 import static code.films.FilmTestHelper.createFilm;
-import static code.films.FilmTestHelper.createScreening;
+import static code.screenings.ScreeningTestHelper.createScreening;
 import static code.rooms.RoomTestHelper.createRoom;
 import static code.user.UserTestHelper.createUser;
 import static org.assertj.core.api.Assertions.assertThat;

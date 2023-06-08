@@ -43,9 +43,8 @@ public class ScreeningCreateHandler {
                     screeningDate,
                     screeningFinishDate
             );
-            var newScreening = Screening.create(command.date(), film, availableRoom);
-            var seats = createSeats(availableRoom, newScreening);
-            newScreening.addSeats(seats);
+            var seats = createSeats(availableRoom);
+            var newScreening = Screening.create(command.date(), film, availableRoom, seats);
             availableRoom.addScreening(newScreening);
             return newScreening;
         });
@@ -71,11 +70,11 @@ public class ScreeningCreateHandler {
                 .orElseThrow(RoomsNoAvailableException::new);
     }
 
-    private static List<Seat> createSeats(Room room, Screening screening) {
+    private static List<Seat> createSeats(Room room) {
         return rangeClosed(1, room.getRowsQuantity())
                 .boxed()
                 .flatMap(rowNumber -> rangeClosed(1, room.getSeatsInOneRowQuantity())
-                        .mapToObj(seatNumber -> Seat.of(rowNumber, seatNumber, screening))
+                        .mapToObj(seatNumber -> Seat.of(rowNumber, seatNumber))
                 ).toList();
     }
 }

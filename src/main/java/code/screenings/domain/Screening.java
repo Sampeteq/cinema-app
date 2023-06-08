@@ -48,22 +48,22 @@ public class Screening {
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
-    private Screening(LocalDateTime date, Film film, Room room) {
+    private Screening(LocalDateTime date, Film film, Room room, List<Seat> seats) {
         this.date = date;
         this.film = film;
         this.room = room;
+        this.seats = seats;
     }
 
-    public static Screening create(LocalDateTime date, Film film, Room room) {
-        return new Screening(
+    public static Screening create(LocalDateTime date, Film film, Room room, List<Seat> seats) {
+        var screening = new Screening(
                 date,
                 film,
-                room
+                room,
+                seats
         );
-    }
-
-    public void addSeats(List<Seat> seats) {
-        this.seats = seats;
+        seats.forEach(seat -> seat.assignScreening(screening));
+        return screening;
     }
 
     public boolean hasRoom() {

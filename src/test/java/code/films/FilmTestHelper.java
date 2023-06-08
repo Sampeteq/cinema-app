@@ -63,46 +63,50 @@ public class FilmTestHelper {
     }
 
     public static Screening createScreening(Film film, Room room) {
-        var screening = Screening.create(
+        var seats = List.of(
+                Seat.of(1,2),
+                Seat.of(1,2)
+        );
+        return Screening.create(
                 SCREENING_DATE,
                 film,
-                room
-        ).withId(1L);
-        var seat1 = Seat.of(1,2,screening);
-        var seat2 = Seat.of(1,2,screening);
-        screening.addSeats(List.of(seat1, seat2));
-        return screening;
+                room,
+                seats
+        );
     }
 
     public static Screening createScreening(Film film, Room room, LocalDateTime screeningDate) {
-        var screening = Screening.create(
+        var seats = List.of(
+                Seat.of(1,2),
+                Seat.of(1,2)
+        );
+        return Screening.create(
                 screeningDate,
                 film,
-                room
-        ).withId(1L);
-        var seat1 = Seat.of(1,2,screening);
-        var seat2 = Seat.of(1,2,screening);
-        screening.addSeats(List.of(seat1, seat2));
-        return screening;
+                room,
+                seats
+        );
     }
 
     public static List<Screening> createScreenings(Film film, Room room) {
         var screening1 = Screening.create(
                 SCREENING_DATE,
                 film,
-                room
-        ).withId(1L);
-        var seat11 = Seat.of(1,2,screening1);
-        var seat12 = Seat.of(1,2,screening1);
-        screening1.addSeats(List.of(seat11, seat12));
+                room,
+                List.of(
+                        Seat.of(1, 2),
+                        Seat.of(1, 2)
+                )
+        );
         var screening2 = Screening.create(
                 SCREENING_DATE.plusDays(1),
                 film,
-                room
-        ).withId(2L);
-        var seat21 = Seat.of(1,2,screening2);
-        var seat22 = Seat.of(1,2,screening2);
-        screening2.addSeats(List.of(seat21, seat22));
+                room,
+                List.of(
+                        Seat.of(1, 2),
+                        Seat.of(1, 2)
+                )
+        );
         return List.of(screening1, screening2);
     }
 

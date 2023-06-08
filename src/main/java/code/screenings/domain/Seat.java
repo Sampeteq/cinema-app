@@ -36,20 +36,22 @@ public class Seat {
     protected Seat() {
     }
 
-    private Seat(int rowNumber, int number, boolean isFree, Screening screening) {
+    private Seat(int rowNumber, int number, boolean isFree) {
         this.rowNumber = rowNumber;
         this.number = number;
         this.isFree = isFree;
-        this.screening = screening;
     }
 
-    public static Seat of(int rowNumber, int number, Screening screening) {
+    public static Seat of(int rowNumber, int number) {
         return new Seat(
                 rowNumber,
                 number,
-                true,
-                screening
+                true
         );
+    }
+
+    public void assignScreening(Screening screening) {
+        this.screening = screening;
     }
 
     public int timeToScreeningInHours(Clock clock) {

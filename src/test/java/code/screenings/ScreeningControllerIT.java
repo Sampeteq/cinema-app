@@ -149,9 +149,11 @@ public class ScreeningControllerIT extends SpringIT {
         //given
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
-        var screeningMeetParams = createScreening(film, room);
-        room.addScreening(screeningMeetParams);
-        roomRepository.add(room);
+        room.addScreening(createScreening(film, room));
+        var screeningMeetParams = roomRepository
+                .add(room)
+                .getScreenings()
+                .get(0);
 
         //when
         var result = mockMvc.perform(
@@ -197,8 +199,7 @@ public class ScreeningControllerIT extends SpringIT {
         var room = roomRepository.add(createRoom());
         var screenings = createScreenings(film, room);
         screenings.forEach(room::addScreening);
-        roomRepository.add(room);
-        return screenings;
+        return roomRepository.add(room).getScreenings();
     }
 
     private List<Screening> prepareFinishedScreenings() {

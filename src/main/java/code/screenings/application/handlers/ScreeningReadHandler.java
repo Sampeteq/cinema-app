@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.JoinType;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -30,6 +31,7 @@ public class ScreeningReadHandler {
         return screeningReadOnlyRepository
                 .findAll(specification)
                 .stream()
+                .sorted(Comparator.comparing(Screening::getId))
                 .map(screeningMapper::mapToDto)
                 .toList();
     }

@@ -11,13 +11,12 @@ public class FilmTestHelper {
     private static final int CURRENT_YEAR = Year.now().getValue();
 
     public static FilmCreateCommand createCreateFilmCommand() {
-        return FilmCreateCommand
-                .builder()
-                .title("Test film 1")
-                .category(FilmCategory.COMEDY)
-                .year(CURRENT_YEAR)
-                .durationInMinutes(100)
-                .build();
+        return new FilmCreateCommand(
+                "Test film 1",
+                FilmCategory.COMEDY,
+                CURRENT_YEAR,
+                100
+        );
     }
 
     public static Film createFilm() {

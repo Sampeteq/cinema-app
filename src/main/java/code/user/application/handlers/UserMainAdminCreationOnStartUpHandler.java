@@ -36,9 +36,8 @@ public class UserMainAdminCreationOnStartUpHandler {
                     .password(passwordEncoder.encode(mainAdminPassword))
                     .role(UserRole.ADMIN)
                     .build();
-
             userRepository.add(mainAdmin);
-            log.info("Main admin added.Mail: {}" + " .Password: {}", mainAdminMail, mainAdminPassword);
+            log.info("Main admin added");
         }
     }
 }

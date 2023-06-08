@@ -34,11 +34,9 @@ public class FilmTestHelper {
     }
 
     public static List<Integer> getWrongFilmYears() {
-        var currentYear = Year.now();
         return List.of(
-                currentYear.minusYears(2).getValue(),
-                currentYear.plusYears(2).getValue()
+                CURRENT_YEAR - 2,
+                CURRENT_YEAR + 2
         );
     }
-
 }

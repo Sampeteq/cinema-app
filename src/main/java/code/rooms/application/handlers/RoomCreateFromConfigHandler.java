@@ -27,7 +27,7 @@ public class RoomCreateFromConfigHandler {
 
     private final RoomCreateHandler roomCreateHandler;
 
-    @Value("${roomsConfigHandler.pathToRoomsConfig}")
+    @Value("${rooms.pathToRoomsConfig}")
     private String pathToRoomsConfig;
 
     @EventListener(ContextRefreshedEvent.class)

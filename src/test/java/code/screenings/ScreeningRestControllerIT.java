@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ScreeningControllerIT extends SpringIT {
+public class ScreeningRestControllerIT extends SpringIT {
 
     @Autowired
     private FilmRepository filmRepository;

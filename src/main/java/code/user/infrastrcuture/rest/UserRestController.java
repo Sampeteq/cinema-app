@@ -16,7 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
-public class UserController {
+public class UserRestController {
 
     private final UserSignUpHandler userSignUpHandler;
 

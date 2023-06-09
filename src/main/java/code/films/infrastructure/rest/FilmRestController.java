@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-public class FilmController {
+public class FilmRestController {
 
     private final FilmCreateHandler filmCreateHandler;
 

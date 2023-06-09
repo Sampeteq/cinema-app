@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WithMockUser(username = "user1@mail.com")
-class BookingControllerIT extends SpringIT {
+class BookingRestControllerIT extends SpringIT {
 
     @Autowired
     private UserRepository userRepository;

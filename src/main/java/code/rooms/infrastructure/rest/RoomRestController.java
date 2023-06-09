@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/rooms")
 @RequiredArgsConstructor
-public class RoomController {
+public class RoomRestController {
 
     private final RoomReadHandler roomReadHandler;
 

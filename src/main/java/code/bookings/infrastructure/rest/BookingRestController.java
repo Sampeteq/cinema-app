@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/bookings")
 @AllArgsConstructor
-public class BookingController {
+public class BookingRestController {
 
     private final BookingMakeHandler bookingMakeHandler;
 

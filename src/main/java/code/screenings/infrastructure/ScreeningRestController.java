@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/screenings")
 @RequiredArgsConstructor
-public class ScreeningController {
+public class ScreeningRestController {
 
     private final ScreeningCreateHandler screeningCreateHandler;
 

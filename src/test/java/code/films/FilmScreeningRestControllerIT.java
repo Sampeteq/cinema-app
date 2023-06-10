@@ -184,7 +184,7 @@ public class FilmScreeningRestControllerIT extends SpringIT {
     }
 
     private FilmScreening prepareScreening() {
-        var film = filmRepository.add(createFilm());
+        var film = createFilm();
         var room = roomRepository.add(createRoom());
         var screening = createScreening(film, room);
         film.addScreening(screening);
@@ -195,7 +195,7 @@ public class FilmScreeningRestControllerIT extends SpringIT {
     }
 
     private List<FilmScreening> prepareScreenings() {
-        var film = filmRepository.add(createFilm());
+        var film = createFilm();
         var room = roomRepository.add(createRoom());
         var screenings = createScreenings(film, room);
         screenings.forEach(film::addScreening);
@@ -203,7 +203,7 @@ public class FilmScreeningRestControllerIT extends SpringIT {
     }
 
     private List<FilmScreening> prepareFinishedScreenings() {
-        var film = filmRepository.add(createFilm());
+        var film = createFilm();
         var room = roomRepository.add(createRoom());
         var screenings = createScreenings(film, room);
         screenings.forEach(FilmScreening::finish);

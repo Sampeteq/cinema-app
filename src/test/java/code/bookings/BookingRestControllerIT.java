@@ -268,7 +268,7 @@ class BookingRestControllerIT extends SpringIT {
     }
 
     private FilmScreeningSeat prepareSeat() {
-        var film = filmRepository.add(createFilm());
+        var film = createFilm();
         var room = roomRepository.add(createRoom());
         film.addScreening(createScreening(film, room));
         return filmRepository
@@ -280,7 +280,7 @@ class BookingRestControllerIT extends SpringIT {
     }
 
     private FilmScreeningSeat prepareSeat(LocalDateTime screeningDate) {
-        var film = filmRepository.add(createFilm());
+        var film = createFilm();
         var room = roomRepository.add(createRoom());
         film.addScreening(createScreening(film, room, screeningDate));
         return filmRepository
@@ -292,7 +292,7 @@ class BookingRestControllerIT extends SpringIT {
     }
 
     private List<FilmScreeningSeat> prepareSeats() {
-        var film = filmRepository.add(createFilm());
+        var film = createFilm();
         var room = roomRepository.add(createRoom());
         film.addScreening(createScreening(film, room));
         return filmRepository

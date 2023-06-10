@@ -1,6 +1,6 @@
 package code.rooms;
 
-import code.screenings.ScreeningTestHelper;
+import code.films.FilmScreeningTestHelper;
 import code.films.domain.FilmRepository;
 import code.rooms.domain.RoomRepository;
 import code.screenings.application.handlers.ScreeningFinishHandler;
@@ -29,7 +29,7 @@ class ScreeningFinishHandlerIT extends SpringIT {
         //given
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
-        ScreeningTestHelper.createScreenings(film, room).forEach(room::addScreening);
+        FilmScreeningTestHelper.createScreenings(film, room).forEach(room::addScreening);
         var screeningsWithRooms = roomRepository
                 .add(createRoom())
                 .getScreenings();

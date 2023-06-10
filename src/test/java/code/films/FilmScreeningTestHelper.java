@@ -1,4 +1,4 @@
-package code.screenings;
+package code.films;
 
 import code.films.domain.Film;
 import code.rooms.domain.Room;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
 
-public class ScreeningTestHelper {
+public class FilmScreeningTestHelper {
 
     private static final int CURRENT_YEAR = Year.now().getValue();
 

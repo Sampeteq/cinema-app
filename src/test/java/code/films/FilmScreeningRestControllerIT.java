@@ -1,4 +1,4 @@
-package code.screenings;
+package code.films;
 
 import code.films.domain.FilmRepository;
 import code.rooms.domain.RoomRepository;
@@ -19,10 +19,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static code.screenings.ScreeningTestHelper.createCreateScreeningCommand;
+import static code.films.FilmScreeningTestHelper.createCreateScreeningCommand;
 import static code.films.FilmTestHelper.createFilm;
-import static code.screenings.ScreeningTestHelper.createScreening;
-import static code.screenings.ScreeningTestHelper.createScreenings;
+import static code.films.FilmScreeningTestHelper.createScreening;
+import static code.films.FilmScreeningTestHelper.createScreenings;
 import static code.rooms.RoomTestHelper.createRoom;
 import static org.hamcrest.Matchers.empty;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ScreeningRestControllerIT extends SpringIT {
+public class FilmScreeningRestControllerIT extends SpringIT {
 
     @Autowired
     private FilmRepository filmRepository;
@@ -69,7 +69,7 @@ public class ScreeningRestControllerIT extends SpringIT {
     }
 
     @ParameterizedTest
-    @MethodSource("code.screenings.ScreeningTestHelper#getWrongScreeningDates")
+    @MethodSource("code.films.FilmScreeningTestHelper#getWrongScreeningDates")
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {

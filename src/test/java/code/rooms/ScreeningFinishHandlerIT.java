@@ -29,7 +29,7 @@ class ScreeningFinishHandlerIT extends SpringIT {
         //given
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
-        FilmScreeningTestHelper.createScreenings(film, room).forEach(room::addScreening);
+        FilmScreeningTestHelper.createScreenings(film, room).forEach(film::addScreening);
         var screeningsWithRooms = roomRepository
                 .add(createRoom())
                 .getScreenings();

@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,7 +31,7 @@ public class Room {
 
     private int seatsInOneRowQuantity;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "room")
     private final List<FilmScreening> screenings = new ArrayList<>();
 
     protected Room() {}
@@ -49,9 +48,5 @@ public class Room {
                 rowsQuantity,
                 seatsInOneRowQuantity
         );
-    }
-
-    public void addScreening(FilmScreening newScreening) {
-        screenings.add(newScreening);
     }
 }

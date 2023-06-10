@@ -5,14 +5,18 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "FILMS")
@@ -34,6 +38,9 @@ public class Film {
 
     private int durationInMinutes;
 
+    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
+    private final List<FilmScreening> screenings = new ArrayList<>();
+
     protected Film() {}
 
     private Film(String title, FilmCategory category, int year, int durationInMinutes) {
@@ -53,6 +60,10 @@ public class Film {
                 year,
                 durationInMinutes
         );
+    }
+
+    public void addScreening(FilmScreening newScreening) {
+        this.screenings.add(newScreening);
     }
 
     private static boolean isFilmYearCorrect(Integer year) {

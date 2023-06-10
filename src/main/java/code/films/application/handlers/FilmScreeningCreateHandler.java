@@ -45,7 +45,7 @@ public class FilmScreeningCreateHandler {
             );
             var seats = createSeats(availableRoom);
             var newScreening = FilmScreening.create(command.date(), film, availableRoom, seats);
-            availableRoom.addScreening(newScreening);
+            film.addScreening(newScreening);
             return newScreening;
         });
         return screeningMapper.mapToDto(screening);

@@ -1,6 +1,5 @@
-package code.screenings.domain;
+package code.films.domain;
 
-import code.films.domain.Film;
 import code.rooms.domain.Room;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -29,7 +28,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 @Getter
 @With
-public class Screening {
+public class FilmScreening {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,17 +45,17 @@ public class Screening {
     private Room room;
 
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
-    private List<Seat> seats;
+    private List<FilmScreeningSeat> seats;
 
-    private Screening(LocalDateTime date, Film film, Room room, List<Seat> seats) {
+    private FilmScreening(LocalDateTime date, Film film, Room room, List<FilmScreeningSeat> seats) {
         this.date = date;
         this.film = film;
         this.room = room;
         this.seats = seats;
     }
 
-    public static Screening create(LocalDateTime date, Film film, Room room, List<Seat> seats) {
-        var screening = new Screening(
+    public static FilmScreening create(LocalDateTime date, Film film, Room room, List<FilmScreeningSeat> seats) {
+        var screening = new FilmScreening(
                 date,
                 film,
                 room,

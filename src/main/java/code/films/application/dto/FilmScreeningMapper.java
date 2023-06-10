@@ -1,9 +1,9 @@
-package code.screenings.application.dto;
+package code.films.application.dto;
 
 import code.films.domain.Film;
+import code.films.domain.FilmScreening;
 import code.rooms.domain.Room;
-import code.screenings.domain.Screening;
-import code.screenings.domain.Seat;
+import code.films.domain.FilmScreeningSeat;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -11,17 +11,17 @@ import org.mapstruct.Named;
 import java.util.List;
 
 @Mapper
-public interface ScreeningMapper {
+public interface FilmScreeningMapper {
 
     @Mapping(target = "filmTitle", source = "film", qualifiedByName = "filmToFilmTitle")
     @Mapping(target = "roomId", source = "room", qualifiedByName = "roomToId")
     @Mapping(target = "freeSeats", source = "seats", qualifiedByName = "seatsToFreeSeats")
-    ScreeningDto mapToDto(Screening screening);
+    FilmScreeningDto mapToDto(FilmScreening screening);
 
     @Mapping(target = "filmTitle", source = "film", qualifiedByName = "filmToId")
     @Mapping(target = "roomId", source = "room", qualifiedByName = "roomToId")
     @Mapping(target = "freeSeats", source = "seats", qualifiedByName = "seatsToFreeSeats")
-    List<ScreeningDto> mapToDto(List<Screening> screening);
+    List<FilmScreeningDto> mapToDto(List<FilmScreening> screening);
 
     @Named("filmToFilmTitle")
     static String filmToId(Film film) {
@@ -34,10 +34,10 @@ public interface ScreeningMapper {
     }
 
     @Named("seatsToFreeSeats")
-    static int seatsToFreeSeats(List<Seat> seats) {
+    static int seatsToFreeSeats(List<FilmScreeningSeat> seats) {
         return (int) seats
                 .stream()
-                .filter(Seat::isFree)
+                .filter(FilmScreeningSeat::isFree)
                 .count();
     }
 }

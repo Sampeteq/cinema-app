@@ -1,12 +1,12 @@
-package code.screenings.infrastructure;
+package code.films.infrastructure.rest;
 
-import code.screenings.application.commands.ScreeningCreateCommand;
-import code.screenings.application.handlers.ScreeningCreateHandler;
-import code.screenings.application.dto.ScreeningDto;
-import code.screenings.application.dto.SeatDto;
-import code.screenings.application.handlers.ScreeningReadHandler;
-import code.screenings.application.handlers.ScreeningSeatReadHandler;
-import code.screenings.application.queries.ScreeningReadQuery;
+import code.films.application.commands.FilmScreeningCreateCommand;
+import code.films.application.dto.FilmScreeningDto;
+import code.films.application.dto.FilmScreeningSeatDto;
+import code.films.application.handlers.FilmScreeningCreateHandler;
+import code.films.application.handlers.FilmScreeningReadHandler;
+import code.films.application.handlers.FilmScreeningSeatReadHandler;
+import code.films.application.queries.FilmScreeningReadQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -26,26 +26,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/screenings")
 @RequiredArgsConstructor
-public class ScreeningRestController {
+public class FilmScreeningRestController {
 
-    private final ScreeningCreateHandler screeningCreateHandler;
+    private final FilmScreeningCreateHandler screeningCreateHandler;
 
-    private final ScreeningReadHandler screeningReadHandler;
+    private final FilmScreeningReadHandler screeningReadHandler;
 
-    private final ScreeningSeatReadHandler screeningSeatReadHandler;
+    private final FilmScreeningSeatReadHandler screeningSeatReadHandler;
 
     @PostMapping
-    public ResponseEntity<ScreeningDto> createScreening(
+    public ResponseEntity<FilmScreeningDto> createScreening(
             @RequestBody
             @Valid
-            ScreeningCreateCommand cmd
+            FilmScreeningCreateCommand cmd
     ) {
         var createdScreening = screeningCreateHandler.handle(cmd);
         return new ResponseEntity<>(createdScreening, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<ScreeningDto> readScreeningsBy(
+    public List<FilmScreeningDto> readScreeningsBy(
             @RequestParam(required = false)
             String filmTitle,
 
@@ -53,7 +53,7 @@ public class ScreeningRestController {
             @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
             LocalDateTime date
     ) {
-        var query = ScreeningReadQuery
+        var query = FilmScreeningReadQuery
                 .builder()
                 .filmTitle(filmTitle)
                 .date(date)
@@ -62,7 +62,7 @@ public class ScreeningRestController {
     }
 
     @GetMapping("/{screeningId}/seats")
-    public List<SeatDto> readSeats(@PathVariable Long screeningId) {
+    public List<FilmScreeningSeatDto> readSeats(@PathVariable Long screeningId) {
         return screeningSeatReadHandler.handle(screeningId);
     }
 }

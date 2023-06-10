@@ -1,10 +1,10 @@
 package code.films;
 
 import code.films.domain.Film;
+import code.films.domain.FilmScreening;
+import code.films.domain.FilmScreeningSeat;
 import code.rooms.domain.Room;
-import code.screenings.application.commands.ScreeningCreateCommand;
-import code.screenings.domain.Screening;
-import code.screenings.domain.Seat;
+import code.films.application.commands.FilmScreeningCreateCommand;
 
 import java.time.LocalDateTime;
 import java.time.Year;
@@ -22,20 +22,20 @@ public class FilmScreeningTestHelper {
             30
     );
 
-    public static ScreeningCreateCommand createCreateScreeningCommand(Long filmId) {
-        return ScreeningCreateCommand
+    public static FilmScreeningCreateCommand createCreateScreeningCommand(Long filmId) {
+        return FilmScreeningCreateCommand
                 .builder()
                 .filmId(filmId)
                 .date(SCREENING_DATE)
                 .build();
     }
 
-    public static Screening createScreening(Film film, Room room) {
+    public static FilmScreening createScreening(Film film, Room room) {
         var seats = List.of(
-                Seat.of(1, 2),
-                Seat.of(1, 2)
+                FilmScreeningSeat.of(1, 2),
+                FilmScreeningSeat.of(1, 2)
         );
-        return Screening.create(
+        return FilmScreening.create(
                 SCREENING_DATE,
                 film,
                 room,
@@ -43,12 +43,12 @@ public class FilmScreeningTestHelper {
         );
     }
 
-    public static Screening createScreening(Film film, Room room, LocalDateTime screeningDate) {
+    public static FilmScreening createScreening(Film film, Room room, LocalDateTime screeningDate) {
         var seats = List.of(
-                Seat.of(1, 2),
-                Seat.of(1, 2)
+                FilmScreeningSeat.of(1, 2),
+                FilmScreeningSeat.of(1, 2)
         );
-        return Screening.create(
+        return FilmScreening.create(
                 screeningDate,
                 film,
                 room,
@@ -56,23 +56,23 @@ public class FilmScreeningTestHelper {
         );
     }
 
-    public static List<Screening> createScreenings(Film film, Room room) {
-        var screening1 = Screening.create(
+    public static List<FilmScreening> createScreenings(Film film, Room room) {
+        var screening1 = FilmScreening.create(
                 SCREENING_DATE,
                 film,
                 room,
                 List.of(
-                        Seat.of(1, 2),
-                        Seat.of(1, 2)
+                        FilmScreeningSeat.of(1, 2),
+                        FilmScreeningSeat.of(1, 2)
                 )
         );
-        var screening2 = Screening.create(
+        var screening2 = FilmScreening.create(
                 SCREENING_DATE.plusDays(1),
                 film,
                 room,
                 List.of(
-                        Seat.of(1, 2),
-                        Seat.of(1, 2)
+                        FilmScreeningSeat.of(1, 2),
+                        FilmScreeningSeat.of(1, 2)
                 )
         );
         return List.of(screening1, screening2);

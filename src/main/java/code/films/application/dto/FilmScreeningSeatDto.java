@@ -1,9 +1,9 @@
-package code.screenings.application.dto;
+package code.films.application.dto;
 
 import lombok.With;
 
 @With
-public record SeatDto(
+public record FilmScreeningSeatDto(
         Long id,
         int rowNumber,
         int number,

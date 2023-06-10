@@ -1,4 +1,4 @@
-package code.screenings.domain.exceptions;
+package code.films.domain.exceptions;
 
 import code.shared.ValidationException;
 

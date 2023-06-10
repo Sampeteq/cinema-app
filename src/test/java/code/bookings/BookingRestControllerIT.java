@@ -9,10 +9,10 @@ import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.BookingTooLateException;
 import code.bookings.domain.exceptions.BookingCancelTooLateException;
+import code.films.application.dto.FilmScreeningSeatDto;
 import code.films.domain.FilmRepository;
 import code.rooms.domain.RoomRepository;
-import code.screenings.application.dto.SeatDto;
-import code.screenings.domain.Seat;
+import code.films.domain.FilmScreeningSeat;
 import code.user.domain.User;
 import code.user.domain.UserRepository;
 import code.SpringIT;
@@ -151,7 +151,7 @@ class BookingRestControllerIT extends SpringIT {
                 .getScreening()
                 .getSeats()
                 .stream()
-                .filter(Seat::isFree)
+                .filter(FilmScreeningSeat::isFree)
                 .count();
 
         //when
@@ -267,7 +267,7 @@ class BookingRestControllerIT extends SpringIT {
         assertThat(bookingsFromResult).containsExactlyInAnyOrderElementsOf(bookingMapper.mapToDto(bookings));
     }
 
-    private Seat prepareSeat() {
+    private FilmScreeningSeat prepareSeat() {
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
         room.addScreening(createScreening(film, room));
@@ -279,7 +279,7 @@ class BookingRestControllerIT extends SpringIT {
                 .get(0);
     }
 
-    private Seat prepareSeat(LocalDateTime screeningDate) {
+    private FilmScreeningSeat prepareSeat(LocalDateTime screeningDate) {
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
         room.addScreening(createScreening(film, room, screeningDate));
@@ -291,7 +291,7 @@ class BookingRestControllerIT extends SpringIT {
                 .get(0);
     }
 
-    private List<Seat> prepareSeats() {
+    private List<FilmScreeningSeat> prepareSeats() {
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
         room.addScreening(createScreening(film, room));
@@ -329,9 +329,9 @@ class BookingRestControllerIT extends SpringIT {
         return LocalDateTime.now(clock);
     }
 
-    private Stream<SeatDto> getSeatsFromResult(ResultActions searchSeatsResult) throws Exception {
+    private Stream<FilmScreeningSeatDto> getSeatsFromResult(ResultActions searchSeatsResult) throws Exception {
         return Arrays.stream(
-                fromResultActions(searchSeatsResult, SeatDto[].class)
+                fromResultActions(searchSeatsResult, FilmScreeningSeatDto[].class)
         );
     }
 

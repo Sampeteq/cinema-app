@@ -1,13 +1,13 @@
 package code.films;
 
+import code.films.application.dto.FilmScreeningSeatMapper;
 import code.films.domain.FilmRepository;
+import code.films.domain.FilmScreening;
 import code.rooms.domain.RoomRepository;
-import code.screenings.application.dto.ScreeningDto;
-import code.screenings.application.dto.ScreeningMapper;
-import code.screenings.application.dto.SeatMapper;
-import code.screenings.domain.Screening;
-import code.screenings.domain.exceptions.RoomsNoAvailableException;
-import code.screenings.domain.exceptions.ScreeningWrongDateException;
+import code.films.application.dto.FilmScreeningDto;
+import code.films.application.dto.FilmScreeningMapper;
+import code.films.domain.exceptions.RoomsNoAvailableException;
+import code.films.domain.exceptions.FilmScreeningWrongDateException;
 import code.SpringIT;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,10 +40,10 @@ public class FilmScreeningRestControllerIT extends SpringIT {
     private RoomRepository roomRepository;
 
     @Autowired
-    private ScreeningMapper screeningMapper;
+    private FilmScreeningMapper screeningMapper;
 
     @Autowired
-    private SeatMapper seatMapper;
+    private FilmScreeningSeatMapper seatMapper;
 
     @Test
     @WithMockUser(authorities = "ADMIN")
@@ -62,7 +62,7 @@ public class FilmScreeningRestControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isCreated());
-        var createdScreening = fromResultActions(result, ScreeningDto.class);
+        var createdScreening = fromResultActions(result, FilmScreeningDto.class);
         mockMvc
                 .perform(get("/screenings"))
                 .andExpect(content().json(toJson(List.of(createdScreening))));
@@ -88,7 +88,7 @@ public class FilmScreeningRestControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new ScreeningWrongDateException().getMessage()));
+                .andExpect(content().string(new FilmScreeningWrongDateException().getMessage()));
     }
 
     @Test
@@ -183,7 +183,7 @@ public class FilmScreeningRestControllerIT extends SpringIT {
                 .andExpect(content().json(toJson(seatMapper.toDto(screening.getSeats()))));
     }
 
-    private Screening prepareScreening() {
+    private FilmScreening prepareScreening() {
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
         var screening = createScreening(film, room);
@@ -194,7 +194,7 @@ public class FilmScreeningRestControllerIT extends SpringIT {
                 .get(0);
     }
 
-    private List<Screening> prepareScreenings() {
+    private List<FilmScreening> prepareScreenings() {
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
         var screenings = createScreenings(film, room);
@@ -202,11 +202,11 @@ public class FilmScreeningRestControllerIT extends SpringIT {
         return roomRepository.add(room).getScreenings();
     }
 
-    private List<Screening> prepareFinishedScreenings() {
+    private List<FilmScreening> prepareFinishedScreenings() {
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
         var screenings = createScreenings(film, room);
-        screenings.forEach(Screening::finish);
+        screenings.forEach(FilmScreening::finish);
         screenings.forEach(room::addScreening);
         roomRepository.add(room);
         return screenings;

@@ -1,4 +1,4 @@
-package code.screenings.application.commands;
+package code.films.application.commands;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @With
-public record ScreeningCreateCommand(
+public record FilmScreeningCreateCommand(
         @NotNull
         @Schema(type = "string", example = "2022-01-01T16:30")
         LocalDateTime date,

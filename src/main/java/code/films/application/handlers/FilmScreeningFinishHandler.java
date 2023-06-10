@@ -1,7 +1,7 @@
-package code.screenings.application.handlers;
+package code.films.application.handlers;
 
+import code.films.domain.FilmScreening;
 import code.rooms.domain.RoomRepository;
-import code.screenings.domain.Screening;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ScreeningFinishHandler {
+public class FilmScreeningFinishHandler {
 
     private final RoomRepository roomRepository;
     private final Clock clock;
@@ -27,11 +27,11 @@ public class ScreeningFinishHandler {
         } else {
             log.info("Found finished screenings:");
             finishedScreenings.forEach(screening -> log.info(screening.toString()));
-            finishedScreenings.forEach(Screening::finish);
+            finishedScreenings.forEach(FilmScreening::finish);
         }
     }
 
-    private List<Screening> readFinishedScreenings() {
+    private List<FilmScreening> readFinishedScreenings() {
         return roomRepository
                 .readAll()
                 .stream()

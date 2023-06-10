@@ -3,7 +3,7 @@ package code.bookings.domain;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.BookingTooLateException;
 import code.bookings.domain.exceptions.BookingCancelTooLateException;
-import code.screenings.domain.Seat;
+import code.films.domain.FilmScreeningSeat;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -36,19 +36,19 @@ public class Booking {
 
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "seat_id")
-    private Seat seat;
+    private FilmScreeningSeat seat;
 
     private Long userId;
 
     protected Booking() {}
 
-    private Booking(BookingStatus status, Seat seat, Long userId) {
+    private Booking(BookingStatus status, FilmScreeningSeat seat, Long userId) {
         this.status = status;
         this.seat = seat;
         this.userId = userId;
     }
 
-    public static Booking make(Seat seat, Clock clock, Long userId) {
+    public static Booking make(FilmScreeningSeat seat, Clock clock, Long userId) {
         if (seat.timeToScreeningInHours(clock) < 24) {
             throw new BookingTooLateException();
         }

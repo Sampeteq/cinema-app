@@ -1,6 +1,6 @@
-package code.screenings.application;
+package code.films.application;
 
-import code.screenings.application.handlers.ScreeningFinishHandler;
+import code.films.application.handlers.FilmScreeningFinishHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -9,9 +9,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-public class ScreeningScheduler {
+public class FilmScreeningScheduler {
 
-    private final ScreeningFinishHandler screeningFinishHandler;
+    private final FilmScreeningFinishHandler screeningFinishHandler;
 
     /** 3600000ms - 1h */
     @Scheduled(fixedDelay = 3600000)

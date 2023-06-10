@@ -1,4 +1,4 @@
-package code.screenings.domain;
+package code.films.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import java.time.Clock;
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString(exclude = {"screening"})
-public class Seat {
+public class FilmScreeningSeat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,26 +31,26 @@ public class Seat {
     private boolean isFree;
 
     @ManyToOne
-    private Screening screening;
+    private FilmScreening screening;
 
-    protected Seat() {
+    protected FilmScreeningSeat() {
     }
 
-    private Seat(int rowNumber, int number, boolean isFree) {
+    private FilmScreeningSeat(int rowNumber, int number, boolean isFree) {
         this.rowNumber = rowNumber;
         this.number = number;
         this.isFree = isFree;
     }
 
-    public static Seat of(int rowNumber, int number) {
-        return new Seat(
+    public static FilmScreeningSeat of(int rowNumber, int number) {
+        return new FilmScreeningSeat(
                 rowNumber,
                 number,
                 true
         );
     }
 
-    public void assignScreening(Screening screening) {
+    public void assignScreening(FilmScreening screening) {
         this.screening = screening;
     }
 

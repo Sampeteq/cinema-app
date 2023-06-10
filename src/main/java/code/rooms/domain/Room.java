@@ -1,6 +1,6 @@
 package code.rooms.domain;
 
-import code.screenings.domain.Screening;
+import code.films.domain.FilmScreening;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -33,7 +33,7 @@ public class Room {
     private int seatsInOneRowQuantity;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-    private final List<Screening> screenings = new ArrayList<>();
+    private final List<FilmScreening> screenings = new ArrayList<>();
 
     protected Room() {}
 
@@ -51,7 +51,7 @@ public class Room {
         );
     }
 
-    public void addScreening(Screening newScreening) {
+    public void addScreening(FilmScreening newScreening) {
         screenings.add(newScreening);
     }
 }

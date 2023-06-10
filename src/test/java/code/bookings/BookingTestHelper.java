@@ -2,19 +2,19 @@ package code.bookings;
 
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingStatus;
-import code.screenings.domain.Seat;
+import code.films.domain.FilmScreeningSeat;
 
 import java.time.Clock;
 import java.time.ZoneOffset;
 
 public class BookingTestHelper {
 
-    public static Booking createBooking(Seat seat, Long userId) {
+    public static Booking createBooking(FilmScreeningSeat seat, Long userId) {
         var clock = getClockForBookingOrCancelling(seat);
         return Booking.make(seat, clock, userId);
     }
 
-    public static Booking createBooking(Seat seat, Long userId, BookingStatus status) {
+    public static Booking createBooking(FilmScreeningSeat seat, Long userId, BookingStatus status) {
         var clock = getClockForBookingOrCancelling(seat);
         if (status.equals(BookingStatus.CANCELLED)) {
             var booking = createBooking(seat, userId);
@@ -25,7 +25,7 @@ public class BookingTestHelper {
         }
     }
 
-    private static Clock getClockForBookingOrCancelling(Seat seat) {
+    private static Clock getClockForBookingOrCancelling(FilmScreeningSeat seat) {
         var screeningDate = seat
                 .getScreening()
                 .getDate()

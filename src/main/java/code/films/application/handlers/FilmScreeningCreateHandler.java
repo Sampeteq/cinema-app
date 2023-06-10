@@ -1,16 +1,16 @@
-package code.screenings.application.handlers;
+package code.films.application.handlers;
 
+import code.films.application.dto.FilmScreeningMapper;
 import code.films.domain.Film;
 import code.films.domain.FilmRepository;
+import code.films.domain.FilmScreening;
+import code.films.domain.FilmScreeningDateValidator;
+import code.films.domain.exceptions.RoomsNoAvailableException;
 import code.rooms.domain.Room;
 import code.rooms.domain.RoomRepository;
-import code.screenings.application.commands.ScreeningCreateCommand;
-import code.screenings.application.dto.ScreeningDto;
-import code.screenings.application.dto.ScreeningMapper;
-import code.screenings.domain.Screening;
-import code.screenings.domain.ScreeningDateValidator;
-import code.screenings.domain.Seat;
-import code.screenings.domain.exceptions.RoomsNoAvailableException;
+import code.films.application.commands.FilmScreeningCreateCommand;
+import code.films.application.dto.FilmScreeningDto;
+import code.films.domain.FilmScreeningSeat;
 import code.shared.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,16 +24,16 @@ import static java.util.stream.IntStream.rangeClosed;
 
 @Component
 @AllArgsConstructor
-public class ScreeningCreateHandler {
+public class FilmScreeningCreateHandler {
 
-    private final ScreeningDateValidator screeningDateValidator;
+    private final FilmScreeningDateValidator screeningDateValidator;
     private final Clock clock;
     private final TransactionTemplate transactionTemplate;
     private final FilmRepository filmRepository;
     private final RoomRepository roomRepository;
-    private final ScreeningMapper screeningMapper;
+    private final FilmScreeningMapper screeningMapper;
 
-    public ScreeningDto handle(ScreeningCreateCommand command) {
+    public FilmScreeningDto handle(FilmScreeningCreateCommand command) {
         screeningDateValidator.validate(command.date(), clock);
         var screening = transactionTemplate.execute(status -> {
             var film = getFilmOrThrow(command.filmId());
@@ -44,7 +44,7 @@ public class ScreeningCreateHandler {
                     screeningFinishDate
             );
             var seats = createSeats(availableRoom);
-            var newScreening = Screening.create(command.date(), film, availableRoom, seats);
+            var newScreening = FilmScreening.create(command.date(), film, availableRoom, seats);
             availableRoom.addScreening(newScreening);
             return newScreening;
         });
@@ -70,11 +70,11 @@ public class ScreeningCreateHandler {
                 .orElseThrow(RoomsNoAvailableException::new);
     }
 
-    private static List<Seat> createSeats(Room room) {
+    private static List<FilmScreeningSeat> createSeats(Room room) {
         return rangeClosed(1, room.getRowsQuantity())
                 .boxed()
                 .flatMap(rowNumber -> rangeClosed(1, room.getSeatsInOneRowQuantity())
-                        .mapToObj(seatNumber -> Seat.of(rowNumber, seatNumber))
+                        .mapToObj(seatNumber -> FilmScreeningSeat.of(rowNumber, seatNumber))
                 ).toList();
     }
 }

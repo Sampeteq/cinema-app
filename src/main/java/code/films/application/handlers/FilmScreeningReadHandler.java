@@ -1,10 +1,10 @@
-package code.screenings.application.handlers;
+package code.films.application.handlers;
 
-import code.screenings.application.dto.ScreeningDto;
-import code.screenings.application.dto.ScreeningMapper;
-import code.screenings.application.queries.ScreeningReadQuery;
-import code.screenings.domain.Screening;
-import code.screenings.domain.ScreeningReadOnlyRepository;
+import code.films.application.dto.FilmScreeningDto;
+import code.films.domain.FilmScreening;
+import code.films.application.dto.FilmScreeningMapper;
+import code.films.application.queries.FilmScreeningReadQuery;
+import code.films.domain.FilmScreeningReadOnlyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -17,13 +17,13 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class ScreeningReadHandler {
+public class FilmScreeningReadHandler {
 
-    private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
-    private final ScreeningMapper screeningMapper;
+    private final FilmScreeningReadOnlyRepository screeningReadOnlyRepository;
+    private final FilmScreeningMapper screeningMapper;
 
     @Transactional(readOnly = true)
-    public List<ScreeningDto> handle(ScreeningReadQuery query) {
+    public List<FilmScreeningDto> handle(FilmScreeningReadQuery query) {
         var specification = notFinished()
                 .and(dateLike(query.date()))
                 .and(filmTitleLike(query.filmTitle()))
@@ -31,28 +31,28 @@ public class ScreeningReadHandler {
         return screeningReadOnlyRepository
                 .findAll(specification)
                 .stream()
-                .sorted(Comparator.comparing(Screening::getId))
+                .sorted(Comparator.comparing(FilmScreening::getId))
                 .map(screeningMapper::mapToDto)
                 .toList();
     }
 
-    private static Specification<Screening> notFinished() {
+    private static Specification<FilmScreening> notFinished() {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isFinished"), false);
     }
 
-    private static Specification<Screening> dateLike(LocalDateTime date) {
+    private static Specification<FilmScreening> dateLike(LocalDateTime date) {
         return (root, query, criteriaBuilder) -> date == null ?
                 criteriaBuilder.conjunction() :
                 criteriaBuilder.equal(root.get("date"), date);
     }
 
-    private static Specification<Screening> filmTitleLike(String filmTitle) {
+    private static Specification<FilmScreening> filmTitleLike(String filmTitle) {
         return (root, query, criteriaBuilder) -> filmTitle == null ?
                 criteriaBuilder.conjunction() :
                 criteriaBuilder.equal(root.get("film").get("title"), filmTitle);
     }
 
-    private static Specification<Screening> withFetch() {
+    private static Specification<FilmScreening> withFetch() {
         return (root, query, criteriaBuilder) -> {
             root.fetch("seats", JoinType.LEFT);
             root.fetch("film", JoinType.LEFT);

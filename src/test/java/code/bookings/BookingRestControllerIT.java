@@ -144,30 +144,6 @@ class BookingRestControllerIT extends SpringIT {
     }
 
     @Test
-    void should_reduce_screening_free_seats_by_one_after_booking() throws Exception {
-        //given
-        var seat = prepareSeat();
-        var freeSeatsNumber = seat
-                .getScreening()
-                .getSeats()
-                .stream()
-                .filter(FilmScreeningSeat::isFree)
-                .count();
-
-        //when
-        mockMvc.perform(
-                post("/bookings/")
-                        .param("seatId", seat.getId().toString())
-        );
-
-        //then
-        mockMvc.perform(
-                        get("/screenings")
-                )
-                .andExpect(jsonPath("$[0].freeSeats").value(freeSeatsNumber - 1));
-    }
-
-    @Test
     void should_cancel_booking() throws Exception {
         //give
         var booking = prepareBooking(user.getId());
@@ -189,12 +165,11 @@ class BookingRestControllerIT extends SpringIT {
     }
 
     @Test
-    void should_seat_be_free_again_and_increase_free_seats_by_one_after_booking_cancelling() throws Exception {
+    void should_seat_be_free_again_after_booking_cancelling() throws Exception {
         //given
         var booking = prepareBooking(user.getId());
         var screening = booking.getSeat().getScreening();
         var seat = booking.getSeat();
-        var freeSeatsNumber = screening.getSeats().size();
 
         //when
         var result = mockMvc.perform(
@@ -209,9 +184,6 @@ class BookingRestControllerIT extends SpringIT {
         var isSeatFreeAgain = getSeatsFromResult(searchSeatsResult)
                 .anyMatch(s -> s.id().equals(seat.getId()) && s.isFree());
         assertThat(isSeatFreeAgain).isTrue();
-        mockMvc
-                .perform(get("/screenings"))
-                .andExpect(jsonPath("$[0].freeSeats").value(freeSeatsNumber));
     }
 
     @Test

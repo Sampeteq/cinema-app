@@ -115,6 +115,9 @@ class FilmRestControllerIT extends SpringIT {
         );
         films.get(0).addScreening(screening1);
         films.get(1).addScreening(screening2);
-        return filmRepository.addMany(films);
+        return films
+                .stream()
+                .map(filmRepository::add)
+                .toList();
     }
 }

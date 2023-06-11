@@ -20,11 +20,6 @@ public class SpringDataJpaFilmRepository implements FilmRepository {
     }
 
     @Override
-    public List<Film> addMany(List<Film> films) {
-        return jpaFilmRepository.saveAll(films);
-    }
-
-    @Override
     public Optional<Film> readById(Long filmId) {
         return jpaFilmRepository.findById(filmId);
     }

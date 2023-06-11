@@ -5,7 +5,7 @@ import code.films.domain.Film;
 import code.films.infrastructure.db.FilmRepository;
 import code.films.domain.FilmScreening;
 import code.films.domain.FilmScreeningDateValidator;
-import code.films.domain.exceptions.RoomsNoAvailableException;
+import code.films.domain.exceptions.FilmScreeningRoomsNoAvailableException;
 import code.rooms.domain.Room;
 import code.rooms.infrastructure.db.RoomRepository;
 import code.films.application.commands.FilmScreeningCreateCommand;
@@ -67,7 +67,7 @@ public class FilmScreeningCreateHandler {
                         .noneMatch(screening -> screening.isCollisionWith(start, finish))
                 )
                 .findFirst()
-                .orElseThrow(RoomsNoAvailableException::new);
+                .orElseThrow(FilmScreeningRoomsNoAvailableException::new);
     }
 
     private static List<FilmScreeningSeat> createSeats(Room room) {

@@ -6,7 +6,7 @@ import code.films.domain.FilmScreening;
 import code.rooms.infrastructure.db.RoomRepository;
 import code.films.application.dto.FilmScreeningDto;
 import code.films.application.dto.FilmScreeningMapper;
-import code.films.domain.exceptions.RoomsNoAvailableException;
+import code.films.domain.exceptions.FilmScreeningRoomsNoAvailableException;
 import code.films.domain.exceptions.FilmScreeningWrongDateException;
 import code.SpringIT;
 import org.junit.jupiter.api.Test;
@@ -111,7 +111,7 @@ public class FilmScreeningRestControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new RoomsNoAvailableException().getMessage()));
+                .andExpect(content().string(new FilmScreeningRoomsNoAvailableException().getMessage()));
     }
 
     @Test

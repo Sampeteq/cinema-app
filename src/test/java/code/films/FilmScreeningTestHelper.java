@@ -4,7 +4,6 @@ import code.films.domain.Film;
 import code.films.domain.FilmScreening;
 import code.films.domain.FilmScreeningSeat;
 import code.rooms.domain.Room;
-import code.films.application.commands.FilmScreeningCreateCommand;
 
 import java.time.LocalDateTime;
 import java.time.Year;
@@ -21,14 +20,6 @@ public class FilmScreeningTestHelper {
             18,
             30
     );
-
-    public static FilmScreeningCreateCommand createCreateScreeningCommand(Long filmId) {
-        return FilmScreeningCreateCommand
-                .builder()
-                .filmId(filmId)
-                .date(SCREENING_DATE)
-                .build();
-    }
 
     public static FilmScreening createScreening(Film film, Room room) {
         var seats = List.of(

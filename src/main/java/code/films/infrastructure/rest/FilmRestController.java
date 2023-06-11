@@ -91,7 +91,7 @@ public class FilmRestController {
         return screeningSeatReadHandler.handle(screeningId);
     }
 
-    @GetMapping
+    @GetMapping("/films/screenings/rooms")
     public List<FilmScreeningRoomDto> readAllRooms() {
         return roomReadHandler.handle();
     }

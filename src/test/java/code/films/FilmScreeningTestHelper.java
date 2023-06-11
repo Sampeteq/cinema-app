@@ -2,8 +2,8 @@ package code.films;
 
 import code.films.domain.Film;
 import code.films.domain.FilmScreening;
+import code.films.domain.FilmScreeningRoom;
 import code.films.domain.FilmScreeningSeat;
-import code.rooms.domain.Room;
 
 import java.time.LocalDateTime;
 import java.time.Year;
@@ -21,7 +21,7 @@ public class FilmScreeningTestHelper {
             30
     );
 
-    public static FilmScreening createScreening(Film film, Room room) {
+    public static FilmScreening createScreening(Film film, FilmScreeningRoom room) {
         var seats = List.of(
                 FilmScreeningSeat.of(1, 2),
                 FilmScreeningSeat.of(1, 2)
@@ -34,7 +34,7 @@ public class FilmScreeningTestHelper {
         );
     }
 
-    public static FilmScreening createScreening(Film film, Room room, LocalDateTime screeningDate) {
+    public static FilmScreening createScreening(Film film, FilmScreeningRoom room, LocalDateTime screeningDate) {
         var seats = List.of(
                 FilmScreeningSeat.of(1, 2),
                 FilmScreeningSeat.of(1, 2)
@@ -47,7 +47,7 @@ public class FilmScreeningTestHelper {
         );
     }
 
-    public static List<FilmScreening> createScreenings(Film film, Room room) {
+    public static List<FilmScreening> createScreenings(Film film, FilmScreeningRoom room) {
         var screening1 = FilmScreening.create(
                 SCREENING_DATE,
                 film,

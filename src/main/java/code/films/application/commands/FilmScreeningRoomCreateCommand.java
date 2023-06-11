@@ -1,4 +1,4 @@
-package code.rooms.application.commands;
+package code.films.application.commands;
 
 import lombok.With;
 
@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @With
-public record RoomCreateCommand(
+public record FilmScreeningRoomCreateCommand(
         @NotNull
         String customId,
         @Positive

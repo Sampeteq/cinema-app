@@ -5,7 +5,7 @@ import code.films.application.dto.FilmMapper;
 import code.films.domain.Film;
 import code.films.domain.FilmCategory;
 import code.films.infrastructure.db.FilmRepository;
-import code.rooms.infrastructure.db.RoomRepository;
+import code.films.infrastructure.db.FilmScreeningRoomRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 import static code.films.FilmScreeningTestHelper.createScreening;
 import static code.films.FilmTestHelper.createFilm;
 import static code.films.FilmTestHelper.createFilms;
-import static code.rooms.RoomTestHelper.createRoom;
+import static code.films.FilmScreeningRoomTestHelper.createRoom;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,7 +30,7 @@ public class FilmReadRestControllerIT extends SpringIT {
     private FilmRepository filmRepository;
 
     @Autowired
-    private RoomRepository roomRepository;
+    private FilmScreeningRoomRepository roomRepository;
 
     @Autowired
     private FilmMapper filmMapper;

@@ -1,6 +1,6 @@
-package code.rooms.application.handlers;
+package code.films.application.handlers;
 
-import code.rooms.application.commands.RoomCreateCommand;
+import code.films.application.commands.FilmScreeningRoomCreateCommand;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,11 +21,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("prod")
-public class RoomCreateFromConfigHandler {
+public class FilmScreeningRoomCreateFromConfigHandler {
 
-    private final RoomReadHandler roomReadHandler;
+    private final FilmScreeningRoomReadHandler roomReadHandler;
 
-    private final RoomCreateHandler roomCreateHandler;
+    private final FilmScreeningRoomCreateHandler roomCreateHandler;
 
     @Value("${rooms.pathToRoomsConfig}")
     private String pathToRoomsConfig;
@@ -63,7 +63,7 @@ public class RoomCreateFromConfigHandler {
 
     private void createRoomsFromJson(String json) throws JsonProcessingException {
         new ObjectMapper()
-                .readValue(json, new TypeReference<List<RoomCreateCommand>>() {})
+                .readValue(json, new TypeReference<List<FilmScreeningRoomCreateCommand>>() {})
                 .forEach(roomCreateHandler::handle);
     }
 }

@@ -1,7 +1,7 @@
 package code.films.application.handlers;
 
 import code.films.domain.FilmScreening;
-import code.rooms.infrastructure.db.RoomRepository;
+import code.films.infrastructure.db.FilmScreeningRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 public class FilmScreeningFinishHandler {
 
-    private final RoomRepository roomRepository;
+    private final FilmScreeningRoomRepository roomRepository;
     private final Clock clock;
 
     @Transactional

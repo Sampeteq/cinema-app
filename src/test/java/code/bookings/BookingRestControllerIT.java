@@ -11,7 +11,7 @@ import code.bookings.domain.exceptions.BookingTooLateException;
 import code.bookings.domain.exceptions.BookingCancelTooLateException;
 import code.films.application.dto.FilmScreeningSeatDto;
 import code.films.infrastructure.db.FilmRepository;
-import code.rooms.infrastructure.db.RoomRepository;
+import code.films.infrastructure.db.FilmScreeningRoomRepository;
 import code.films.domain.FilmScreeningSeat;
 import code.user.domain.User;
 import code.user.infrastrcuture.db.UserRepository;
@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 import static code.bookings.BookingTestHelper.createBooking;
 import static code.films.FilmTestHelper.createFilm;
 import static code.films.FilmScreeningTestHelper.createScreening;
-import static code.rooms.RoomTestHelper.createRoom;
+import static code.films.FilmScreeningRoomTestHelper.createRoom;
 import static code.user.UserTestHelper.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -59,7 +59,7 @@ class BookingRestControllerIT extends SpringIT {
     private BookingMapper bookingMapper;
 
     @Autowired
-    private RoomRepository roomRepository;
+    private FilmScreeningRoomRepository roomRepository;
 
     @Autowired
     @Qualifier("testClock")

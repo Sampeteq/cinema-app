@@ -2,12 +2,12 @@ package code.films.application.handlers;
 
 import code.films.application.dto.FilmScreeningMapper;
 import code.films.domain.Film;
+import code.films.domain.FilmScreeningRoom;
 import code.films.infrastructure.db.FilmRepository;
 import code.films.domain.FilmScreening;
 import code.films.domain.FilmScreeningDateValidator;
 import code.films.domain.exceptions.FilmScreeningRoomsNoAvailableException;
-import code.rooms.domain.Room;
-import code.rooms.infrastructure.db.RoomRepository;
+import code.films.infrastructure.db.FilmScreeningRoomRepository;
 import code.films.application.commands.FilmScreeningCreateCommand;
 import code.films.application.dto.FilmScreeningDto;
 import code.films.domain.FilmScreeningSeat;
@@ -30,7 +30,7 @@ public class FilmScreeningCreateHandler {
     private final Clock clock;
     private final TransactionTemplate transactionTemplate;
     private final FilmRepository filmRepository;
-    private final RoomRepository roomRepository;
+    private final FilmScreeningRoomRepository roomRepository;
     private final FilmScreeningMapper screeningMapper;
 
     public FilmScreeningDto handle(FilmScreeningCreateCommand command) {
@@ -57,7 +57,7 @@ public class FilmScreeningCreateHandler {
                 .orElseThrow(() -> new EntityNotFoundException("Film"));
     }
 
-    private Room getFirstAvailableRoom(LocalDateTime start, LocalDateTime finish) {
+    private FilmScreeningRoom getFirstAvailableRoom(LocalDateTime start, LocalDateTime finish) {
         return roomRepository
                 .readAll()
                 .stream()
@@ -70,7 +70,7 @@ public class FilmScreeningCreateHandler {
                 .orElseThrow(FilmScreeningRoomsNoAvailableException::new);
     }
 
-    private static List<FilmScreeningSeat> createSeats(Room room) {
+    private static List<FilmScreeningSeat> createSeats(FilmScreeningRoom room) {
         return rangeClosed(1, room.getRowsQuantity())
                 .boxed()
                 .flatMap(rowNumber -> rangeClosed(1, room.getSeatsInOneRowQuantity())

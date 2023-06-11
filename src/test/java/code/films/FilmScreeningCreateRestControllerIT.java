@@ -6,7 +6,7 @@ import code.films.domain.FilmScreening;
 import code.films.domain.exceptions.FilmScreeningRoomsNoAvailableException;
 import code.films.domain.exceptions.FilmScreeningWrongDateException;
 import code.films.infrastructure.db.FilmRepository;
-import code.rooms.infrastructure.db.RoomRepository;
+import code.films.infrastructure.db.FilmScreeningRoomRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import static code.films.FilmScreeningTestHelper.SCREENING_DATE;
 import static code.films.FilmScreeningTestHelper.createScreening;
 import static code.films.FilmTestHelper.createFilm;
-import static code.rooms.RoomTestHelper.createRoom;
+import static code.films.FilmScreeningRoomTestHelper.createRoom;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,7 +32,7 @@ public class FilmScreeningCreateRestControllerIT extends SpringIT {
     private FilmRepository filmRepository;
 
     @Autowired
-    private RoomRepository roomRepository;
+    private FilmScreeningRoomRepository roomRepository;
 
     @Test
     @WithMockUser(authorities = "ADMIN")

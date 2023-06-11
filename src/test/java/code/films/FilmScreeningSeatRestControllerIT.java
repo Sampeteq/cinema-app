@@ -4,13 +4,13 @@ import code.SpringIT;
 import code.films.application.dto.FilmScreeningSeatMapper;
 import code.films.domain.FilmScreening;
 import code.films.infrastructure.db.FilmRepository;
-import code.rooms.infrastructure.db.RoomRepository;
+import code.films.infrastructure.db.FilmScreeningRoomRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static code.films.FilmScreeningTestHelper.createScreening;
 import static code.films.FilmTestHelper.createFilm;
-import static code.rooms.RoomTestHelper.createRoom;
+import static code.films.FilmScreeningRoomTestHelper.createRoom;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,7 +21,7 @@ class FilmScreeningSeatRestControllerIT extends SpringIT {
     private FilmRepository filmRepository;
 
     @Autowired
-    private RoomRepository roomRepository;
+    private FilmScreeningRoomRepository roomRepository;
 
     @Autowired
     private FilmScreeningSeatMapper seatMapper;

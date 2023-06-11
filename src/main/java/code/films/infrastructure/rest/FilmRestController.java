@@ -4,12 +4,14 @@ import code.films.application.commands.FilmCreateCommand;
 import code.films.application.commands.FilmScreeningCreateCommand;
 import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmScreeningDto;
+import code.films.application.dto.FilmScreeningRoomDto;
 import code.films.application.dto.FilmScreeningSeatDto;
 import code.films.application.handlers.FilmCreateHandler;
 import code.films.application.handlers.FilmReadAllHandler;
 import code.films.application.handlers.FilmReadByCategoryHandler;
 import code.films.application.handlers.FilmReadByTitleHandler;
 import code.films.application.handlers.FilmScreeningCreateHandler;
+import code.films.application.handlers.FilmScreeningRoomReadHandler;
 import code.films.application.handlers.FilmScreeningSeatReadHandler;
 import code.films.domain.FilmCategory;
 import lombok.AllArgsConstructor;
@@ -42,6 +44,8 @@ public class FilmRestController {
     private final FilmScreeningCreateHandler screeningCreateHandler;
 
     private final FilmScreeningSeatReadHandler screeningSeatReadHandler;
+
+    private final FilmScreeningRoomReadHandler roomReadHandler;
 
     @PostMapping("/films")
     public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid FilmCreateCommand dto) {
@@ -85,6 +89,11 @@ public class FilmRestController {
     @GetMapping("/films/screenings/{screeningId}/seats")
     public List<FilmScreeningSeatDto> readSeats(@PathVariable Long screeningId) {
         return screeningSeatReadHandler.handle(screeningId);
+    }
+
+    @GetMapping
+    public List<FilmScreeningRoomDto> readAllRooms() {
+        return roomReadHandler.handle();
     }
 }
 

@@ -1,6 +1,5 @@
 package code.films.domain;
 
-import code.rooms.domain.Room;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -42,19 +41,19 @@ public class FilmScreening {
     private Film film;
 
     @ManyToOne
-    private Room room;
+    private FilmScreeningRoom room;
 
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
     private List<FilmScreeningSeat> seats;
 
-    private FilmScreening(LocalDateTime date, Film film, Room room, List<FilmScreeningSeat> seats) {
+    private FilmScreening(LocalDateTime date, Film film, FilmScreeningRoom room, List<FilmScreeningSeat> seats) {
         this.date = date;
         this.film = film;
         this.room = room;
         this.seats = seats;
     }
 
-    public static FilmScreening create(LocalDateTime date, Film film, Room room, List<FilmScreeningSeat> seats) {
+    public static FilmScreening create(LocalDateTime date, Film film, FilmScreeningRoom room, List<FilmScreeningSeat> seats) {
         var screening = new FilmScreening(
                 date,
                 film,

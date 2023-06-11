@@ -1,6 +1,5 @@
-package code.rooms.domain;
+package code.films.domain;
 
-import code.films.domain.FilmScreening;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -19,7 +18,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString
-public class Room {
+public class FilmScreeningRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,16 +33,16 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private final List<FilmScreening> screenings = new ArrayList<>();
 
-    protected Room() {}
+    protected FilmScreeningRoom() {}
 
-    private Room(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
+    private FilmScreeningRoom(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
         this.customId = customId;
         this.rowsQuantity = rowsQuantity;
         this.seatsInOneRowQuantity = seatsInOneRowQuantity;
     }
 
-    public static Room create(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
-        return new Room(
+    public static FilmScreeningRoom create(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
+        return new FilmScreeningRoom(
                 customId,
                 rowsQuantity,
                 seatsInOneRowQuantity

@@ -1,6 +1,6 @@
-package code.rooms.infrastructure.db;
+package code.films.infrastructure.db;
 
-import code.rooms.domain.Room;
+import code.films.domain.FilmScreeningRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,22 +10,22 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class SpringDataJpaRoomRepository implements RoomRepository {
+public class FilmScreeningRoomSpringDataJpaRepository implements FilmScreeningRoomRepository {
 
-    private final JpaRoomRepository jpaRoomRepository;
+    private final FilmScreeningRoomJpaRepository jpaRoomRepository;
 
     @Override
-    public Room add(Room room) {
+    public FilmScreeningRoom add(FilmScreeningRoom room) {
         return jpaRoomRepository.save(room);
     }
 
     @Override
-    public Optional<Room> readById(Long roomId) {
+    public Optional<FilmScreeningRoom> readById(Long roomId) {
         return jpaRoomRepository.findById(roomId);
     }
 
     @Override
-    public List<Room> readAll() {
+    public List<FilmScreeningRoom> readAll() {
         return jpaRoomRepository.findAll();
     }
 
@@ -35,6 +35,6 @@ public class SpringDataJpaRoomRepository implements RoomRepository {
     }
 }
 
-interface JpaRoomRepository extends JpaRepository<Room, Long> {
+interface FilmScreeningRoomJpaRepository extends JpaRepository<FilmScreeningRoom, Long> {
     boolean existsByCustomId(String customId);
 }

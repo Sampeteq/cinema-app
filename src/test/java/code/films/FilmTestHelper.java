@@ -27,9 +27,19 @@ public class FilmTestHelper {
         return Film.create("Test film 1", category, CURRENT_YEAR, 100);
     }
 
+    public static Film createFilm(String title) {
+        return Film.create(title, FilmCategory.COMEDY, CURRENT_YEAR, 100);
+    }
+
     public static List<Film> createFilms() {
         var film1 = Film.create("Test film 1", FilmCategory.COMEDY, CURRENT_YEAR, 100);
         var film2 = Film.create("Test film 2", FilmCategory.DRAMA, CURRENT_YEAR, 120);
+        return List.of(film1, film2);
+    }
+
+    public static List<Film> createFilms(FilmCategory category) {
+        var film1 = Film.create("Test film 1", category, CURRENT_YEAR, 100);
+        var film2 = Film.create("Test film 2", category, CURRENT_YEAR, 120);
         return List.of(film1, film2);
     }
 

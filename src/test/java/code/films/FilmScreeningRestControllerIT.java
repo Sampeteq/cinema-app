@@ -1,14 +1,14 @@
 package code.films;
 
-import code.films.application.dto.FilmScreeningSeatMapper;
-import code.films.infrastructure.db.FilmRepository;
-import code.films.domain.FilmScreening;
-import code.rooms.infrastructure.db.RoomRepository;
+import code.SpringIT;
 import code.films.application.dto.FilmScreeningDto;
-import code.films.application.dto.FilmScreeningMapper;
+import code.films.application.dto.FilmScreeningSeatMapper;
+import code.films.domain.FilmScreening;
 import code.films.domain.exceptions.FilmScreeningRoomsNoAvailableException;
 import code.films.domain.exceptions.FilmScreeningWrongDateException;
-import code.SpringIT;
+import code.films.infrastructure.db.FilmRepository;
+import code.rooms.infrastructure.db.RoomRepository;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,11 +20,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static code.films.FilmScreeningTestHelper.createCreateScreeningCommand;
-import static code.films.FilmTestHelper.createFilm;
 import static code.films.FilmScreeningTestHelper.createScreening;
-import static code.films.FilmScreeningTestHelper.createScreenings;
+import static code.films.FilmTestHelper.createFilm;
 import static code.rooms.RoomTestHelper.createRoom;
-import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -38,9 +37,6 @@ public class FilmScreeningRestControllerIT extends SpringIT {
 
     @Autowired
     private RoomRepository roomRepository;
-
-    @Autowired
-    private FilmScreeningMapper screeningMapper;
 
     @Autowired
     private FilmScreeningSeatMapper seatMapper;
@@ -64,8 +60,13 @@ public class FilmScreeningRestControllerIT extends SpringIT {
         result.andExpect(status().isCreated());
         var createdScreening = fromResultActions(result, FilmScreeningDto.class);
         mockMvc
-                .perform(get("/screenings"))
-                .andExpect(content().json(toJson(List.of(createdScreening))));
+                .perform(get("/films"))
+                .andExpect(
+                        jsonPath("$[0].screenings[0].id", equalTo(createdScreening.id().intValue()))
+                )
+                .andExpect(
+                        jsonPath("$[0].screenings[0].date", equalTo(createdScreening.date().toString()))
+                );
     }
 
     @ParameterizedTest
@@ -115,59 +116,6 @@ public class FilmScreeningRestControllerIT extends SpringIT {
     }
 
     @Test
-    void should_read_all_screenings() throws Exception {
-        //given
-        var screenings = prepareScreenings();
-
-        //when
-        var result = mockMvc.perform(
-                get("/screenings")
-        );
-
-        //then
-        result
-                .andExpect(status().isOk())
-                .andExpect(content().json(toJson(screeningMapper.mapToDto(screenings))));
-    }
-
-    @Test
-    void should_not_read_finished_screenings() throws Exception {
-        //given
-        prepareFinishedScreenings();
-
-        //when
-        var result = mockMvc.perform(
-                get("/screenings")
-        );
-
-        //then
-        result.andExpect(jsonPath("$", empty()));
-    }
-
-    @Test
-    void should_read_screenings_by_params() throws Exception {
-        //given
-        var film = filmRepository.add(createFilm());
-        var room = roomRepository.add(createRoom());
-        film.addScreening(createScreening(film, room));
-        var screeningMeetParams = filmRepository
-                .add(film)
-                .getScreenings()
-                .get(0);
-
-        //when
-        var result = mockMvc.perform(
-                get("/screenings")
-                        .param("filmTitle", screeningMeetParams.getFilm().getTitle())
-                        .param("date", screeningMeetParams.getDate().toString())
-        );
-        //then
-        result
-                .andExpect(status().isOk())
-                .andExpect(content().json(toJson(List.of(screeningMapper.mapToDto(screeningMeetParams)))));
-    }
-
-    @Test
     void should_read_seats_for_screening() throws Exception {
         //given
         var screening = prepareScreening();
@@ -192,23 +140,5 @@ public class FilmScreeningRestControllerIT extends SpringIT {
                 .add(film)
                 .getScreenings()
                 .get(0);
-    }
-
-    private List<FilmScreening> prepareScreenings() {
-        var film = createFilm();
-        var room = roomRepository.add(createRoom());
-        var screenings = createScreenings(film, room);
-        screenings.forEach(film::addScreening);
-        return filmRepository.add(film).getScreenings();
-    }
-
-    private List<FilmScreening> prepareFinishedScreenings() {
-        var film = createFilm();
-        var room = roomRepository.add(createRoom());
-        var screenings = createScreenings(film, room);
-        screenings.forEach(FilmScreening::finish);
-        screenings.forEach(film::addScreening);
-        filmRepository.add(film);
-        return screenings;
     }
 }

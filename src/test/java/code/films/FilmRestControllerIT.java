@@ -4,8 +4,9 @@ import code.SpringIT;
 import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmMapper;
 import code.films.domain.Film;
-import code.films.infrastructure.db.FilmRepository;
+import code.films.domain.FilmCategory;
 import code.films.domain.exceptions.FilmWrongYearException;
+import code.films.infrastructure.db.FilmRepository;
 import code.rooms.infrastructure.db.RoomRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,8 +17,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static code.films.FilmScreeningTestHelper.createScreening;
+import static code.films.FilmTestHelper.createFilm;
 import static code.films.FilmTestHelper.createFilmCreateCommand;
 import static code.films.FilmTestHelper.createFilms;
 import static code.rooms.RoomTestHelper.createRoom;
@@ -100,8 +103,48 @@ class FilmRestControllerIT extends SpringIT {
                 .andExpect(content().json(toJson(filmMapper.mapToDto(addedFilms))));
     }
 
-    private List<Film> addFilmsWithScreenings() {
-        var films = createFilms();
+    @Test
+    void should_read_film_by_title() throws Exception {
+        //given
+        var expectedTitle = "Film 1";
+        var otherTitle = "Film 2";
+        var expectedFilm = addFilmWithScreening(() -> createFilm(expectedTitle));
+        addFilmWithScreening(() -> createFilm(otherTitle));
+
+        //when
+        var result = mockMvc.perform(
+                get("/films/title")
+                        .param("title", expectedTitle)
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(filmMapper.mapToDto(expectedFilm))));
+    }
+
+    @Test
+    void should_read_films_by_category() throws Exception {
+        //given
+        var expectedCategory = FilmCategory.COMEDY;
+        var otherCategory = FilmCategory.DRAMA;
+        var expectedFilms = addFilmsWithScreenings(() -> createFilms(expectedCategory));
+        addFilmsWithScreenings(() -> createFilms(otherCategory));
+
+        //when
+        var result = mockMvc.perform(
+                get("/films/category")
+                        .param("category", expectedCategory.name())
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(filmMapper.mapToDto(expectedFilms))));
+    }
+
+    private List<Film> addFilmsWithScreenings(Supplier<List<Film>> filmsSupplier) {
+        var films = filmsSupplier.get();
         var room = roomRepository.add(createRoom());
         var screening1 = createScreening(
                 films.get(0),
@@ -119,5 +162,21 @@ class FilmRestControllerIT extends SpringIT {
                 .stream()
                 .map(filmRepository::add)
                 .toList();
+    }
+
+    private List<Film> addFilmsWithScreenings() {
+        return addFilmsWithScreenings(() -> createFilms());
+    }
+
+    private Film addFilmWithScreening(Supplier<Film> filmSupplier) {
+        var film = filmSupplier.get();
+        var room = roomRepository.add(createRoom());
+        var screening = createScreening(
+                film,
+                room,
+                LocalDateTime.of(2023,9,1,16,30)
+        );
+        film.addScreening(screening);
+        return filmRepository.add(film);
     }
 }

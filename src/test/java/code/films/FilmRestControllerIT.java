@@ -4,6 +4,7 @@ import code.SpringIT;
 import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmMapper;
 import code.films.application.dto.FilmScreeningDto;
+import code.films.application.dto.FilmScreeningSeatMapper;
 import code.films.domain.Film;
 import code.films.domain.FilmCategory;
 import code.films.domain.FilmScreening;
@@ -48,6 +49,9 @@ class FilmRestControllerIT extends SpringIT {
 
     @Autowired
     private FilmMapper filmMapper;
+
+    @Autowired
+    private FilmScreeningSeatMapper seatMapper;
 
     @Test
     @WithMockUser(authorities = "ADMIN")
@@ -214,6 +218,22 @@ class FilmRestControllerIT extends SpringIT {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(new FilmScreeningRoomsNoAvailableException().getMessage()));
+    }
+
+    @Test
+    void should_read_seats_for_screening() throws Exception {
+        //given
+        var screening = prepareScreening();
+
+        //when
+        var result = mockMvc.perform(
+                get("/films/screenings/" + screening.getId() + "/seats")
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(seatMapper.toDto(screening.getSeats()))));
     }
 
     private List<Film> addFilmsWithScreenings(Supplier<List<Film>> filmsSupplier) {

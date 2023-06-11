@@ -10,6 +10,7 @@ import code.films.application.handlers.FilmReadAllHandler;
 import code.films.application.handlers.FilmReadByCategoryHandler;
 import code.films.application.handlers.FilmReadByTitleHandler;
 import code.films.application.handlers.FilmScreeningCreateHandler;
+import code.films.application.handlers.FilmScreeningSeatReadHandler;
 import code.films.domain.FilmCategory;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -39,6 +40,8 @@ public class FilmRestController {
     private final FilmReadByCategoryHandler filmReadByCategoryHandler;
 
     private final FilmScreeningCreateHandler screeningCreateHandler;
+
+    private final FilmScreeningSeatReadHandler screeningSeatReadHandler;
 
     @PostMapping("/films")
     public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid FilmCreateCommand dto) {
@@ -77,6 +80,11 @@ public class FilmRestController {
                 .build();
         var createdScreening = screeningCreateHandler.handle(cmd);
         return new ResponseEntity<>(createdScreening, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/films/screenings/{screeningId}/seats")
+    public List<FilmScreeningSeatDto> readSeats(@PathVariable Long screeningId) {
+        return screeningSeatReadHandler.handle(screeningId);
     }
 }
 

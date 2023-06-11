@@ -2,12 +2,12 @@ package code.films.application.handlers;
 
 import code.films.application.dto.FilmScreeningMapper;
 import code.films.domain.Film;
-import code.films.domain.FilmRepository;
+import code.films.infrastructure.db.FilmRepository;
 import code.films.domain.FilmScreening;
 import code.films.domain.FilmScreeningDateValidator;
 import code.films.domain.exceptions.RoomsNoAvailableException;
 import code.rooms.domain.Room;
-import code.rooms.domain.RoomRepository;
+import code.rooms.infrastructure.db.RoomRepository;
 import code.films.application.commands.FilmScreeningCreateCommand;
 import code.films.application.dto.FilmScreeningDto;
 import code.films.domain.FilmScreeningSeat;

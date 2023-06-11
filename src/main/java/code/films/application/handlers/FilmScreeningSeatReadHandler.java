@@ -3,7 +3,7 @@ package code.films.application.handlers;
 import code.films.application.dto.FilmScreeningSeatDto;
 import code.films.domain.FilmScreening;
 import code.films.application.dto.FilmScreeningSeatMapper;
-import code.films.domain.FilmScreeningReadOnlyRepository;
+import code.films.infrastructure.db.FilmScreeningReadOnlyRepository;
 import code.shared.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,6 @@
-package code.films.domain;
+package code.films.infrastructure.db;
+
+import code.films.domain.Film;
 
 import java.util.List;
 import java.util.Optional;

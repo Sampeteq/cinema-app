@@ -1,7 +1,7 @@
 package code.films.application.handlers;
 
 import code.films.domain.FilmScreening;
-import code.rooms.domain.RoomRepository;
+import code.rooms.infrastructure.db.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

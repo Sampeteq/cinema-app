@@ -1,4 +1,6 @@
-package code.rooms.domain;
+package code.rooms.infrastructure.db;
+
+import code.rooms.domain.Room;
 
 import java.util.List;
 import java.util.Optional;

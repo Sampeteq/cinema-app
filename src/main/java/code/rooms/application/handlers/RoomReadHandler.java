@@ -2,7 +2,7 @@ package code.rooms.application.handlers;
 
 import code.rooms.application.dto.RoomDto;
 import code.rooms.application.dto.RoomMapper;
-import code.rooms.domain.RoomRepository;
+import code.rooms.infrastructure.db.RoomRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

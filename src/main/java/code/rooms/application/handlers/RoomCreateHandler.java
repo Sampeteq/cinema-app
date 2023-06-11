@@ -2,7 +2,7 @@ package code.rooms.application.handlers;
 
 import code.rooms.application.commands.RoomCreateCommand;
 import code.rooms.domain.Room;
-import code.rooms.domain.RoomRepository;
+import code.rooms.infrastructure.db.RoomRepository;
 import code.rooms.domain.exceptions.RoomCustomIdAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

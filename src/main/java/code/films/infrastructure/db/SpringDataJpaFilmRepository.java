@@ -1,7 +1,6 @@
 package code.films.infrastructure.db;
 
 import code.films.domain.Film;
-import code.films.domain.FilmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,7 @@
 package code.user;
 
 import code.user.application.commands.UserSignInCommand;
-import code.user.domain.UserRepository;
+import code.user.infrastrcuture.db.UserRepository;
 import code.user.domain.exceptions.UserMailAlreadyExistsException;
 import code.user.domain.exceptions.UserNotSamePasswordsException;
 import code.user.domain.exceptions.UserAlreadyLoggedInException;

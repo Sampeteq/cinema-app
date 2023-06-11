@@ -1,7 +1,6 @@
 package code.user.infrastrcuture.db;
 
 import code.user.domain.User;
-import code.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

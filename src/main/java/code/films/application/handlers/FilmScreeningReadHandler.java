@@ -4,7 +4,7 @@ import code.films.application.dto.FilmScreeningDto;
 import code.films.domain.FilmScreening;
 import code.films.application.dto.FilmScreeningMapper;
 import code.films.application.queries.FilmScreeningReadQuery;
-import code.films.domain.FilmScreeningReadOnlyRepository;
+import code.films.infrastructure.db.FilmScreeningReadOnlyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;

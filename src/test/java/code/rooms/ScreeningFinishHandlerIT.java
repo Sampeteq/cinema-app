@@ -1,8 +1,8 @@
 package code.rooms;
 
 import code.films.FilmScreeningTestHelper;
-import code.films.domain.FilmRepository;
-import code.rooms.domain.RoomRepository;
+import code.films.infrastructure.db.FilmRepository;
+import code.rooms.infrastructure.db.RoomRepository;
 import code.films.application.handlers.FilmScreeningFinishHandler;
 import code.films.domain.FilmScreening;
 import code.SpringIT;

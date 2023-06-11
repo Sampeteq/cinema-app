@@ -1,7 +1,6 @@
 package code.rooms.infrastructure.db;
 
 import code.rooms.domain.Room;
-import code.rooms.domain.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -2,7 +2,7 @@ package code.user.application.handlers;
 
 import code.user.application.commands.UserSignUpCommand;
 import code.user.domain.User;
-import code.user.domain.UserRepository;
+import code.user.infrastrcuture.db.UserRepository;
 import code.user.domain.UserRole;
 import code.user.domain.exceptions.UserMailAlreadyExistsException;
 import code.user.domain.exceptions.UserNotSamePasswordsException;

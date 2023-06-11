@@ -1,4 +1,6 @@
-package code.bookings.domain;
+package code.bookings.infrastructure.db;
+
+import code.bookings.domain.Booking;
 
 import java.util.List;
 import java.util.Optional;

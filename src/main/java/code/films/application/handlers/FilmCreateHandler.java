@@ -4,7 +4,7 @@ import code.films.application.commands.FilmCreateCommand;
 import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmMapper;
 import code.films.domain.Film;
-import code.films.domain.FilmRepository;
+import code.films.infrastructure.db.FilmRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

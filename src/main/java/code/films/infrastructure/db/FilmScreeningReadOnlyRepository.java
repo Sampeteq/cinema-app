@@ -1,5 +1,6 @@
-package code.films.domain;
+package code.films.infrastructure.db;
 
+import code.films.domain.FilmScreening;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.Repository;
 

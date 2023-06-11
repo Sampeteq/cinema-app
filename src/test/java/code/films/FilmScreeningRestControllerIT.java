@@ -1,9 +1,9 @@
 package code.films;
 
 import code.films.application.dto.FilmScreeningSeatMapper;
-import code.films.domain.FilmRepository;
+import code.films.infrastructure.db.FilmRepository;
 import code.films.domain.FilmScreening;
-import code.rooms.domain.RoomRepository;
+import code.rooms.infrastructure.db.RoomRepository;
 import code.films.application.dto.FilmScreeningDto;
 import code.films.application.dto.FilmScreeningMapper;
 import code.films.domain.exceptions.RoomsNoAvailableException;

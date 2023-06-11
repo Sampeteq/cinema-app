@@ -1,4 +1,6 @@
-package code.user.domain;
+package code.user.infrastrcuture.db;
+
+import code.user.domain.User;
 
 import java.util.Optional;
 

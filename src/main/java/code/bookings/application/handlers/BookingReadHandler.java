@@ -2,7 +2,7 @@ package code.bookings.application.handlers;
 
 import code.bookings.application.dto.BookingDto;
 import code.bookings.application.dto.BookingMapper;
-import code.bookings.domain.BookingRepository;
+import code.bookings.infrastructure.db.BookingRepository;
 import code.shared.EntityNotFoundException;
 import code.user.infrastrcuture.SecurityHelper;
 import lombok.RequiredArgsConstructor;

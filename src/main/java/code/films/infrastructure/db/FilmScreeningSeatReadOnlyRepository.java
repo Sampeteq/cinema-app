@@ -1,5 +1,6 @@
-package code.films.domain;
+package code.films.infrastructure.db;
 
+import code.films.domain.FilmScreeningSeat;
 import org.springframework.data.repository.Repository;
 
 import java.util.Optional;

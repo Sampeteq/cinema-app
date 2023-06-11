@@ -2,7 +2,7 @@ package code.films.application.handlers;
 
 import code.films.application.dto.FilmDto;
 import code.films.application.dto.FilmMapper;
-import code.films.domain.FilmRepository;
+import code.films.infrastructure.db.FilmRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

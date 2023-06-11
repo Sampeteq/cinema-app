@@ -10,9 +10,9 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class SpringDataJpaFilmRepository implements FilmRepository {
+public class FilmSpringDataJpaRepository implements FilmRepository {
 
-    private final JpaFilmRepository jpaFilmRepository;
+    private final FilmJpaRepository jpaFilmRepository;
 
     @Override
     public Film add(Film film) {
@@ -24,12 +24,11 @@ public class SpringDataJpaFilmRepository implements FilmRepository {
         return jpaFilmRepository.findById(filmId);
     }
 
-
     @Override
     public List<Film> readAll() {
         return jpaFilmRepository.findAll();
     }
 }
 
-interface JpaFilmRepository extends JpaRepository<Film, Long> {
+interface FilmJpaRepository extends JpaRepository<Film, Long> {
 }

@@ -62,7 +62,7 @@ public class ScreeningCreateRestControllerIT extends SpringIT {
     }
 
     @ParameterizedTest
-    @MethodSource("code.films.FilmScreeningTestHelper#getWrongScreeningDates")
+    @MethodSource("code.films.ScreeningTestHelper#getWrongScreeningDates")
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
             throws Exception {

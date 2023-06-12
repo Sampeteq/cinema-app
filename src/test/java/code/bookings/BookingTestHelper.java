@@ -2,7 +2,7 @@ package code.bookings;
 
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingStatus;
-import code.films.domain.Seat;
+import code.catalog.domain.Seat;
 
 import java.time.Clock;
 import java.time.ZoneOffset;

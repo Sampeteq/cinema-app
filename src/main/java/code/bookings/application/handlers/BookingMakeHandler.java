@@ -5,7 +5,7 @@ import code.bookings.application.dto.BookingId;
 import code.bookings.domain.Booking;
 import code.bookings.infrastructure.db.BookingRepository;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
-import code.films.infrastructure.db.SeatReadOnlyRepository;
+import code.catalog.infrastructure.db.SeatReadOnlyRepository;
 import code.shared.EntityNotFoundException;
 import code.user.infrastrcuture.SecurityHelper;
 import lombok.RequiredArgsConstructor;

@@ -3,7 +3,7 @@ package code.bookings.domain;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.BookingTooLateException;
 import code.bookings.domain.exceptions.BookingCancelTooLateException;
-import code.films.domain.Seat;
+import code.catalog.domain.Seat;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;

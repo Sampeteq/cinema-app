@@ -11,6 +11,6 @@ public record FilmDto(
         FilmCategory category,
         int year,
         int durationInMinutes,
-        List<FilmScreeningDto> screenings
+        List<ScreeningDto> screenings
 ) {
 }

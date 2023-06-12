@@ -17,7 +17,7 @@ import java.time.Clock;
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString(exclude = {"screening"})
-public class FilmScreeningSeat {
+public class Seat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,26 +31,26 @@ public class FilmScreeningSeat {
     private boolean isFree;
 
     @ManyToOne
-    private FilmScreening screening;
+    private Screening screening;
 
-    protected FilmScreeningSeat() {
+    protected Seat() {
     }
 
-    private FilmScreeningSeat(int rowNumber, int number, boolean isFree) {
+    private Seat(int rowNumber, int number, boolean isFree) {
         this.rowNumber = rowNumber;
         this.number = number;
         this.isFree = isFree;
     }
 
-    public static FilmScreeningSeat of(int rowNumber, int number) {
-        return new FilmScreeningSeat(
+    public static Seat of(int rowNumber, int number) {
+        return new Seat(
                 rowNumber,
                 number,
                 true
         );
     }
 
-    public void assignScreening(FilmScreening screening) {
+    public void assignScreening(Screening screening) {
         this.screening = screening;
     }
 

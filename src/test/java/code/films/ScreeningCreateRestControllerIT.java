@@ -1,12 +1,12 @@
 package code.films;
 
 import code.SpringIT;
-import code.films.application.dto.FilmScreeningDto;
-import code.films.domain.FilmScreening;
-import code.films.domain.exceptions.FilmScreeningRoomsNoAvailableException;
-import code.films.domain.exceptions.FilmScreeningWrongDateException;
+import code.films.application.dto.ScreeningDto;
+import code.films.domain.Screening;
+import code.films.domain.exceptions.RoomsNoAvailableException;
+import code.films.domain.exceptions.ScreeningWrongDateException;
 import code.films.infrastructure.db.FilmRepository;
-import code.films.infrastructure.db.FilmScreeningRoomRepository;
+import code.films.infrastructure.db.RoomRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -15,10 +15,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDateTime;
 
-import static code.films.FilmScreeningTestHelper.SCREENING_DATE;
-import static code.films.FilmScreeningTestHelper.createScreening;
+import static code.films.ScreeningTestHelper.SCREENING_DATE;
+import static code.films.ScreeningTestHelper.createScreening;
 import static code.films.FilmTestHelper.createFilm;
-import static code.films.FilmScreeningRoomTestHelper.createRoom;
+import static code.films.RoomTestHelper.createRoom;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,13 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class FilmScreeningCreateRestControllerIT extends SpringIT {
+public class ScreeningCreateRestControllerIT extends SpringIT {
 
     @Autowired
     private FilmRepository filmRepository;
 
     @Autowired
-    private FilmScreeningRoomRepository roomRepository;
+    private RoomRepository roomRepository;
 
     @Test
     @WithMockUser(authorities = "ADMIN")
@@ -50,7 +50,7 @@ public class FilmScreeningCreateRestControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isCreated());
-        var createdScreening = fromResultActions(result, FilmScreeningDto.class);
+        var createdScreening = fromResultActions(result, ScreeningDto.class);
         mockMvc
                 .perform(get("/films"))
                 .andExpect(
@@ -79,7 +79,7 @@ public class FilmScreeningCreateRestControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new FilmScreeningWrongDateException().getMessage()));
+                .andExpect(content().string(new ScreeningWrongDateException().getMessage()));
     }
 
     @Test
@@ -98,10 +98,10 @@ public class FilmScreeningCreateRestControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new FilmScreeningRoomsNoAvailableException().getMessage()));
+                .andExpect(content().string(new RoomsNoAvailableException().getMessage()));
     }
 
-    private FilmScreening prepareScreening() {
+    private Screening prepareScreening() {
         var film = createFilm();
         var room = roomRepository.add(createRoom());
         var screening = createScreening(film, room);

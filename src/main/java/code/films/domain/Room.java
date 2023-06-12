@@ -18,7 +18,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString
-public class FilmScreeningRoom {
+public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,18 +31,18 @@ public class FilmScreeningRoom {
     private int seatsInOneRowQuantity;
 
     @OneToMany(mappedBy = "room")
-    private final List<FilmScreening> screenings = new ArrayList<>();
+    private final List<Screening> screenings = new ArrayList<>();
 
-    protected FilmScreeningRoom() {}
+    protected Room() {}
 
-    private FilmScreeningRoom(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
+    private Room(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
         this.customId = customId;
         this.rowsQuantity = rowsQuantity;
         this.seatsInOneRowQuantity = seatsInOneRowQuantity;
     }
 
-    public static FilmScreeningRoom create(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
-        return new FilmScreeningRoom(
+    public static Room create(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
+        return new Room(
                 customId,
                 rowsQuantity,
                 seatsInOneRowQuantity

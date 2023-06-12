@@ -1,18 +1,18 @@
 package code.films.application.dto;
 
-import code.films.domain.FilmScreeningRoom;
+import code.films.domain.Room;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 @Mapper
-public interface FilmScreeningRoomMapper {
+public interface RoomMapper {
 
     @Mapping(target = "seatsQuantity", source = "room" , qualifiedByName = "getSeatsQuantity")
-    FilmScreeningRoomDto mapToDto(FilmScreeningRoom room);
+    RoomDto mapToDto(Room room);
 
     @Named("getSeatsQuantity")
-    static int getSeatsQuantity(FilmScreeningRoom room) {
+    static int getSeatsQuantity(Room room) {
         return room.getRowsQuantity() * room.getSeatsInOneRowQuantity();
     }
 }

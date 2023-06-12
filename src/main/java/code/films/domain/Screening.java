@@ -27,7 +27,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 @Getter
 @With
-public class FilmScreening {
+public class Screening {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,20 +41,20 @@ public class FilmScreening {
     private Film film;
 
     @ManyToOne
-    private FilmScreeningRoom room;
+    private Room room;
 
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
-    private List<FilmScreeningSeat> seats;
+    private List<Seat> seats;
 
-    private FilmScreening(LocalDateTime date, Film film, FilmScreeningRoom room, List<FilmScreeningSeat> seats) {
+    private Screening(LocalDateTime date, Film film, Room room, List<Seat> seats) {
         this.date = date;
         this.film = film;
         this.room = room;
         this.seats = seats;
     }
 
-    public static FilmScreening create(LocalDateTime date, Film film, FilmScreeningRoom room, List<FilmScreeningSeat> seats) {
-        var screening = new FilmScreening(
+    public static Screening create(LocalDateTime date, Film film, Room room, List<Seat> seats) {
+        var screening = new Screening(
                 date,
                 film,
                 room,

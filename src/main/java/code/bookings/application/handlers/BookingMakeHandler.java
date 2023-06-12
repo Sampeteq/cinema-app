@@ -5,7 +5,7 @@ import code.bookings.application.dto.BookingId;
 import code.bookings.domain.Booking;
 import code.bookings.infrastructure.db.BookingRepository;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
-import code.films.infrastructure.db.FilmScreeningSeatReadOnlyRepository;
+import code.films.infrastructure.db.SeatReadOnlyRepository;
 import code.shared.EntityNotFoundException;
 import code.user.infrastrcuture.SecurityHelper;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.time.Clock;
 public class BookingMakeHandler {
 
     private final BookingRepository bookingRepository;
-    private final FilmScreeningSeatReadOnlyRepository seatReadOnlyRepository;
+    private final SeatReadOnlyRepository seatReadOnlyRepository;
     private final SecurityHelper securityHelper;
     private final Clock clock;
 

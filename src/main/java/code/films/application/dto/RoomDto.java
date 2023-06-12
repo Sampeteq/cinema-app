@@ -1,6 +1,6 @@
 package code.films.application.dto;
 
-public record FilmScreeningRoomDto(
+public record RoomDto(
         Long id,
         String customId,
         int rowsQuantity,

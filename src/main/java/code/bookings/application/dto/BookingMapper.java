@@ -1,7 +1,7 @@
 package code.bookings.application.dto;
 
 import code.bookings.domain.Booking;
-import code.films.domain.FilmScreeningSeat;
+import code.films.domain.Seat;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -18,7 +18,7 @@ public interface BookingMapper {
     List<BookingDto> mapToDto(List<Booking> booking);
 
     @Named("mapToBookingScreeningDto")
-    static BookingScreeningDto mapToBookingScreeningDto(FilmScreeningSeat seat) {
+    static BookingScreeningDto mapToBookingScreeningDto(Seat seat) {
         var bookingSeatDto = new BookingSeatDto(
                 seat.getRowNumber(),
                 seat.getNumber()

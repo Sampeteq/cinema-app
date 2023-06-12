@@ -1,24 +1,24 @@
 package code.films;
 
 import code.films.infrastructure.db.FilmRepository;
-import code.films.infrastructure.db.FilmScreeningRoomRepository;
-import code.films.application.handlers.FilmScreeningFinishHandler;
-import code.films.domain.FilmScreening;
+import code.films.infrastructure.db.RoomRepository;
+import code.films.application.handlers.ScreeningFinishHandler;
+import code.films.domain.Screening;
 import code.SpringIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static code.films.FilmTestHelper.createFilm;
-import static code.films.FilmScreeningRoomTestHelper.createRoom;
+import static code.films.RoomTestHelper.createRoom;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FilmScreeningRoomFinishHandlerIT extends SpringIT {
+class RoomFinishHandlerIT extends SpringIT {
 
     @Autowired
-    private FilmScreeningFinishHandler screeningFinishHandler;
+    private ScreeningFinishHandler screeningFinishHandler;
 
     @Autowired
-    private FilmScreeningRoomRepository roomRepository;
+    private RoomRepository roomRepository;
 
     @Autowired
     private FilmRepository filmRepository;
@@ -28,7 +28,7 @@ class FilmScreeningRoomFinishHandlerIT extends SpringIT {
         //given
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
-        FilmScreeningTestHelper.createScreenings(film, room).forEach(film::addScreening);
+        ScreeningTestHelper.createScreenings(film, room).forEach(film::addScreening);
         var screeningsWithRooms = roomRepository
                 .add(createRoom())
                 .getScreenings();
@@ -37,6 +37,6 @@ class FilmScreeningRoomFinishHandlerIT extends SpringIT {
         screeningFinishHandler.handle();
 
         //then
-        assertThat(screeningsWithRooms).noneMatch(FilmScreening::hasRoom);
+        assertThat(screeningsWithRooms).noneMatch(Screening::hasRoom);
     }
 }

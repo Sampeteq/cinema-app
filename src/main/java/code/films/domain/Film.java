@@ -39,7 +39,7 @@ public class Film {
     private int durationInMinutes;
 
     @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
-    private final List<FilmScreening> screenings = new ArrayList<>();
+    private final List<Screening> screenings = new ArrayList<>();
 
     protected Film() {}
 
@@ -62,7 +62,7 @@ public class Film {
         );
     }
 
-    public void addScreening(FilmScreening newScreening) {
+    public void addScreening(Screening newScreening) {
         this.screenings.add(newScreening);
     }
 

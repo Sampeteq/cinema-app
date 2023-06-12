@@ -1,16 +1,16 @@
 package code.films.application.handlers;
 
-import code.films.application.dto.FilmScreeningMapper;
+import code.films.application.dto.ScreeningMapper;
 import code.films.domain.Film;
-import code.films.domain.FilmScreeningRoom;
+import code.films.domain.Room;
+import code.films.domain.Seat;
 import code.films.infrastructure.db.FilmRepository;
-import code.films.domain.FilmScreening;
-import code.films.domain.FilmScreeningDateValidator;
-import code.films.domain.exceptions.FilmScreeningRoomsNoAvailableException;
-import code.films.infrastructure.db.FilmScreeningRoomRepository;
-import code.films.application.commands.FilmScreeningCreateCommand;
-import code.films.application.dto.FilmScreeningDto;
-import code.films.domain.FilmScreeningSeat;
+import code.films.domain.Screening;
+import code.films.domain.ScreeningDateValidator;
+import code.films.domain.exceptions.RoomsNoAvailableException;
+import code.films.infrastructure.db.RoomRepository;
+import code.films.application.commands.ScreeningCreateCommand;
+import code.films.application.dto.ScreeningDto;
 import code.shared.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,16 +24,16 @@ import static java.util.stream.IntStream.rangeClosed;
 
 @Component
 @AllArgsConstructor
-public class FilmScreeningCreateHandler {
+public class ScreeningCreateHandler {
 
-    private final FilmScreeningDateValidator screeningDateValidator;
+    private final ScreeningDateValidator screeningDateValidator;
     private final Clock clock;
     private final TransactionTemplate transactionTemplate;
     private final FilmRepository filmRepository;
-    private final FilmScreeningRoomRepository roomRepository;
-    private final FilmScreeningMapper screeningMapper;
+    private final RoomRepository roomRepository;
+    private final ScreeningMapper screeningMapper;
 
-    public FilmScreeningDto handle(FilmScreeningCreateCommand command) {
+    public ScreeningDto handle(ScreeningCreateCommand command) {
         screeningDateValidator.validate(command.date(), clock);
         var screening = transactionTemplate.execute(status -> {
             var film = getFilmOrThrow(command.filmId());
@@ -44,7 +44,7 @@ public class FilmScreeningCreateHandler {
                     screeningFinishDate
             );
             var seats = createSeats(availableRoom);
-            var newScreening = FilmScreening.create(command.date(), film, availableRoom, seats);
+            var newScreening = Screening.create(command.date(), film, availableRoom, seats);
             film.addScreening(newScreening);
             return newScreening;
         });
@@ -57,7 +57,7 @@ public class FilmScreeningCreateHandler {
                 .orElseThrow(() -> new EntityNotFoundException("Film"));
     }
 
-    private FilmScreeningRoom getFirstAvailableRoom(LocalDateTime start, LocalDateTime finish) {
+    private Room getFirstAvailableRoom(LocalDateTime start, LocalDateTime finish) {
         return roomRepository
                 .readAll()
                 .stream()
@@ -67,14 +67,14 @@ public class FilmScreeningCreateHandler {
                         .noneMatch(screening -> screening.isCollisionWith(start, finish))
                 )
                 .findFirst()
-                .orElseThrow(FilmScreeningRoomsNoAvailableException::new);
+                .orElseThrow(RoomsNoAvailableException::new);
     }
 
-    private static List<FilmScreeningSeat> createSeats(FilmScreeningRoom room) {
+    private static List<Seat> createSeats(Room room) {
         return rangeClosed(1, room.getRowsQuantity())
                 .boxed()
                 .flatMap(rowNumber -> rangeClosed(1, room.getSeatsInOneRowQuantity())
-                        .mapToObj(seatNumber -> FilmScreeningSeat.of(rowNumber, seatNumber))
+                        .mapToObj(seatNumber -> Seat.of(rowNumber, seatNumber))
                 ).toList();
     }
 }

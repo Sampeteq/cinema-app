@@ -1,9 +1,9 @@
 package code.films.application.handlers;
 
-import code.films.application.dto.FilmScreeningSeatDto;
-import code.films.domain.FilmScreening;
-import code.films.application.dto.FilmScreeningSeatMapper;
-import code.films.infrastructure.db.FilmScreeningReadOnlyRepository;
+import code.films.application.dto.SeatDto;
+import code.films.domain.Screening;
+import code.films.application.dto.SeatMapper;
+import code.films.infrastructure.db.ScreeningReadOnlyRepository;
 import code.shared.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,16 +13,16 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class FilmScreeningSeatReadHandler {
+public class SeatReadHandler {
 
-    private final FilmScreeningReadOnlyRepository screeningReadOnlyRepository;
-    private final FilmScreeningSeatMapper seatMapper;
+    private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
+    private final SeatMapper seatMapper;
 
     @Transactional(readOnly = true)
-    public List<FilmScreeningSeatDto> handle(Long screeningId) {
+    public List<SeatDto> handle(Long screeningId) {
         return screeningReadOnlyRepository
                 .findById(screeningId)
-                .map(FilmScreening::getSeats)
+                .map(Screening::getSeats)
                 .map(seatMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));
     }

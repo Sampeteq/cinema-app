@@ -9,10 +9,10 @@ import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.BookingTooLateException;
 import code.bookings.domain.exceptions.BookingCancelTooLateException;
-import code.films.application.dto.FilmScreeningSeatDto;
+import code.films.application.dto.SeatDto;
+import code.films.domain.Seat;
 import code.films.infrastructure.db.FilmRepository;
-import code.films.infrastructure.db.FilmScreeningRoomRepository;
-import code.films.domain.FilmScreeningSeat;
+import code.films.infrastructure.db.RoomRepository;
 import code.user.domain.User;
 import code.user.infrastrcuture.db.UserRepository;
 import code.SpringIT;
@@ -31,8 +31,8 @@ import java.util.stream.Stream;
 
 import static code.bookings.BookingTestHelper.createBooking;
 import static code.films.FilmTestHelper.createFilm;
-import static code.films.FilmScreeningTestHelper.createScreening;
-import static code.films.FilmScreeningRoomTestHelper.createRoom;
+import static code.films.ScreeningTestHelper.createScreening;
+import static code.films.RoomTestHelper.createRoom;
 import static code.user.UserTestHelper.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -59,7 +59,7 @@ class BookingRestControllerIT extends SpringIT {
     private BookingMapper bookingMapper;
 
     @Autowired
-    private FilmScreeningRoomRepository roomRepository;
+    private RoomRepository roomRepository;
 
     @Autowired
     @Qualifier("testClock")
@@ -239,7 +239,7 @@ class BookingRestControllerIT extends SpringIT {
         assertThat(bookingsFromResult).containsExactlyInAnyOrderElementsOf(bookingMapper.mapToDto(bookings));
     }
 
-    private FilmScreeningSeat prepareSeat() {
+    private Seat prepareSeat() {
         var film = createFilm();
         var room = roomRepository.add(createRoom());
         film.addScreening(createScreening(film, room));
@@ -251,7 +251,7 @@ class BookingRestControllerIT extends SpringIT {
                 .get(0);
     }
 
-    private FilmScreeningSeat prepareSeat(LocalDateTime screeningDate) {
+    private Seat prepareSeat(LocalDateTime screeningDate) {
         var film = createFilm();
         var room = roomRepository.add(createRoom());
         film.addScreening(createScreening(film, room, screeningDate));
@@ -263,7 +263,7 @@ class BookingRestControllerIT extends SpringIT {
                 .get(0);
     }
 
-    private List<FilmScreeningSeat> prepareSeats() {
+    private List<Seat> prepareSeats() {
         var film = createFilm();
         var room = roomRepository.add(createRoom());
         film.addScreening(createScreening(film, room));
@@ -301,9 +301,9 @@ class BookingRestControllerIT extends SpringIT {
         return LocalDateTime.now(clock);
     }
 
-    private Stream<FilmScreeningSeatDto> getSeatsFromResult(ResultActions searchSeatsResult) throws Exception {
+    private Stream<SeatDto> getSeatsFromResult(ResultActions searchSeatsResult) throws Exception {
         return Arrays.stream(
-                fromResultActions(searchSeatsResult, FilmScreeningSeatDto[].class)
+                fromResultActions(searchSeatsResult, SeatDto[].class)
         );
     }
 

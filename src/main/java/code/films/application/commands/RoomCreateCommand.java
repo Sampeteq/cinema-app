@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @With
-public record FilmScreeningRoomCreateCommand(
+public record RoomCreateCommand(
         @NotNull
         String customId,
         @Positive

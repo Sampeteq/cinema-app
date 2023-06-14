@@ -1,4 +1,4 @@
-package code.catalog.application.handlers;
+package code.catalog.application.services;
 
 import code.catalog.application.dto.RoomDto;
 import code.catalog.application.dto.RoomMapper;
@@ -10,12 +10,12 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class RoomReadHandler {
+public class RoomReadService {
 
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;
 
-    public List<RoomDto> handle() {
+    public List<RoomDto> readAll() {
         return roomRepository
                 .readAll()
                 .stream()

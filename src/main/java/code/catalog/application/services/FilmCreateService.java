@@ -1,4 +1,4 @@
-package code.catalog.application.handlers;
+package code.catalog.application.services;
 
 import code.catalog.application.commands.FilmCreateCommand;
 import code.catalog.application.dto.FilmDto;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class FilmCreateHandler {
+public class FilmCreateService {
 
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
 
-    public FilmDto handle(FilmCreateCommand command) {
+    public FilmDto creteFilm(FilmCreateCommand command) {
         var film = Film.create(
                         command.title(),
                         command.category(),

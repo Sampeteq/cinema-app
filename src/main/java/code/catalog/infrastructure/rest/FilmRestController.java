@@ -3,16 +3,14 @@ package code.catalog.infrastructure.rest;
 import code.catalog.application.commands.FilmCreateCommand;
 import code.catalog.application.commands.ScreeningCreateCommand;
 import code.catalog.application.dto.FilmDto;
-import code.catalog.application.dto.ScreeningDto;
 import code.catalog.application.dto.RoomDto;
+import code.catalog.application.dto.ScreeningDto;
 import code.catalog.application.dto.SeatDto;
-import code.catalog.application.handlers.FilmCreateHandler;
-import code.catalog.application.handlers.FilmReadAllHandler;
-import code.catalog.application.handlers.FilmReadByCategoryHandler;
-import code.catalog.application.handlers.FilmReadByTitleHandler;
-import code.catalog.application.handlers.ScreeningCreateHandler;
-import code.catalog.application.handlers.RoomReadHandler;
-import code.catalog.application.handlers.SeatReadHandler;
+import code.catalog.application.services.FilmCreateService;
+import code.catalog.application.services.FilmReadService;
+import code.catalog.application.services.RoomReadService;
+import code.catalog.application.services.ScreeningCreateService;
+import code.catalog.application.services.SeatReadService;
 import code.catalog.domain.FilmCategory;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,39 +31,35 @@ import java.util.List;
 @AllArgsConstructor
 public class FilmRestController {
 
-    private final FilmCreateHandler filmCreateHandler;
+    private final FilmCreateService filmCreateHandler;
 
-    private final FilmReadAllHandler filmReadAllHandler;
+    private final FilmReadService filmReadService;
 
-    private final FilmReadByTitleHandler filmReadByTitleHandler;
+    private final ScreeningCreateService screeningCreateHandler;
 
-    private final FilmReadByCategoryHandler filmReadByCategoryHandler;
+    private final SeatReadService screeningSeatReadHandler;
 
-    private final ScreeningCreateHandler screeningCreateHandler;
-
-    private final SeatReadHandler screeningSeatReadHandler;
-
-    private final RoomReadHandler roomReadHandler;
+    private final RoomReadService roomReadHandler;
 
     @PostMapping("/films")
     public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid FilmCreateCommand dto) {
-        var createdFilm = filmCreateHandler.handle(dto);
+        var createdFilm = filmCreateHandler.creteFilm(dto);
         return new ResponseEntity<>(createdFilm, HttpStatus.CREATED);
     }
 
     @GetMapping("/films")
     public List<FilmDto> readAll() {
-        return filmReadAllHandler.handle();
-    }
-
-    @GetMapping("/films/title")
-    public FilmDto readByTitle(@RequestParam String title) {
-        return filmReadByTitleHandler.handle(title);
+        return filmReadService.readAll();
     }
 
     @GetMapping("/films/category")
     public List<FilmDto> readByCategory(@RequestParam FilmCategory category) {
-        return filmReadByCategoryHandler.handle(category);
+        return filmReadService.readByCategory(category);
+    }
+
+    @GetMapping("/films/title")
+    public FilmDto readByTitle(@RequestParam String title) {
+        return filmReadService.readByTitle(title);
     }
 
     @PostMapping("/films/{filmId}/screenings")
@@ -82,18 +76,18 @@ public class FilmRestController {
                 .filmId(filmId)
                 .date(screeningDate)
                 .build();
-        var createdScreening = screeningCreateHandler.handle(cmd);
+        var createdScreening = screeningCreateHandler.createScreening(cmd);
         return new ResponseEntity<>(createdScreening, HttpStatus.CREATED);
     }
 
     @GetMapping("/films/screenings/{screeningId}/seats")
     public List<SeatDto> readSeats(@PathVariable Long screeningId) {
-        return screeningSeatReadHandler.handle(screeningId);
+        return screeningSeatReadHandler.readByScreeningId(screeningId);
     }
 
     @GetMapping("/films/screenings/rooms")
     public List<RoomDto> readAllRooms() {
-        return roomReadHandler.handle();
+        return roomReadHandler.readAll();
     }
 }
 

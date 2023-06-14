@@ -2,11 +2,11 @@ package code.bookings.infrastructure.rest;
 
 import code.bookings.application.commands.BookingCancelCommand;
 import code.bookings.application.dto.BookingId;
-import code.bookings.application.handlers.BookingCancelHandler;
+import code.bookings.application.services.BookingCancelService;
 import code.bookings.application.commands.BookingMakeCommand;
-import code.bookings.application.handlers.BookingMakeHandler;
+import code.bookings.application.services.BookingMakeService;
 import code.bookings.application.dto.BookingDto;
-import code.bookings.application.handlers.BookingReadHandler;
+import code.bookings.application.services.BookingReadService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,22 +22,22 @@ import java.util.List;
 @AllArgsConstructor
 public class BookingRestController {
 
-    private final BookingMakeHandler bookingMakeHandler;
+    private final BookingMakeService bookingMakeHandler;
 
-    private final BookingCancelHandler bookingCancelHandler;
+    private final BookingCancelService bookingCancelHandler;
 
-    private final BookingReadHandler bookingReadHandler;
+    private final BookingReadService bookingReadHandler;
 
     @PostMapping
     public BookingId bookSeat(@RequestParam Long seatId) {
         var command = new BookingMakeCommand(seatId);
-        return bookingMakeHandler.handle(command);
+        return bookingMakeHandler.makeBooking(command);
     }
 
     @PostMapping("/{bookingId}/cancel")
     public void cancelBooking(@PathVariable Long bookingId) {
         var command = new BookingCancelCommand(bookingId);
-        bookingCancelHandler.handle(command);
+        bookingCancelHandler.cancelBooking(command);
     }
 
     @GetMapping("/my")
@@ -47,7 +47,7 @@ public class BookingRestController {
 
     @GetMapping("/my/{bookingId}")
     public BookingDto getBookingById(@PathVariable Long bookingId) {
-        return bookingReadHandler.handle(bookingId);
+        return bookingReadHandler.read(bookingId);
     }
 }
 

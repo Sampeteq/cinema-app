@@ -1,4 +1,4 @@
-package code.bookings.application.handlers;
+package code.bookings.application.services;
 
 import code.bookings.application.commands.BookingMakeCommand;
 import code.bookings.application.dto.BookingId;
@@ -18,7 +18,7 @@ import java.time.Clock;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class BookingMakeHandler {
+public class BookingMakeService {
 
     private final BookingRepository bookingRepository;
     private final SeatReadOnlyRepository seatReadOnlyRepository;
@@ -26,7 +26,7 @@ public class BookingMakeHandler {
     private final Clock clock;
 
     @Transactional
-    public BookingId handle(BookingMakeCommand command) {
+    public BookingId makeBooking(BookingMakeCommand command) {
         log.info("Received a command:{}",command);
         if (bookingRepository.existsBySeatId(command.seatId())) {
             log.error("Booking already exists");

@@ -1,10 +1,10 @@
 package code.user.infrastrcuture.rest;
 
 import code.user.application.commands.UserSignInCommand;
-import code.user.application.handlers.UserSignInHandler;
-import code.user.application.handlers.UserSignOutHandler;
+import code.user.application.services.UserSignInService;
+import code.user.application.services.UserSignOutService;
 import code.user.application.commands.UserSignUpCommand;
-import code.user.application.handlers.UserSignUpHandler;
+import code.user.application.services.UserSignUpService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +18,11 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class UserRestController {
 
-    private final UserSignUpHandler userSignUpHandler;
+    private final UserSignUpService userSignUpHandler;
 
-    private final UserSignInHandler userSignInHandler;
+    private final UserSignInService userSignInHandler;
 
-    private final UserSignOutHandler userSignOutHandler;
+    private final UserSignOutService userSignOutHandler;
 
 
     @PostMapping("/signup")

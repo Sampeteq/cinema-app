@@ -1,4 +1,4 @@
-package code.catalog.application.handlers;
+package code.catalog.application.services;
 
 import code.catalog.domain.Screening;
 import code.catalog.infrastructure.db.RoomRepository;
@@ -13,13 +13,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ScreeningFinishHandler {
+public class ScreeningFinishService {
 
     private final RoomRepository roomRepository;
     private final Clock clock;
 
     @Transactional
-    public void handle() {
+    public void finishScreenings() {
         log.info("Searching for finished screenings");
         var finishedScreenings = readFinishedScreenings();
         if (finishedScreenings.isEmpty()) {

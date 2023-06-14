@@ -1,4 +1,4 @@
-package code.bookings.application.handlers;
+package code.bookings.application.services;
 
 import code.bookings.application.commands.BookingCancelCommand;
 import code.bookings.infrastructure.db.BookingRepository;
@@ -12,14 +12,14 @@ import java.time.Clock;
 
 @Component
 @RequiredArgsConstructor
-public class BookingCancelHandler {
+public class BookingCancelService {
 
     private final SecurityHelper securityHelper;
     private final BookingRepository bookingRepository;
     private final Clock clock;
 
     @Transactional
-    public void handle(BookingCancelCommand command) {
+    public void cancelBooking(BookingCancelCommand command) {
         var currentUserId = securityHelper.getCurrentUserId();
         bookingRepository
                 .readByIdAndUserId(command.bookingId(), currentUserId)

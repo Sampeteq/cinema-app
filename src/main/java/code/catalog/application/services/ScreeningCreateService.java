@@ -1,4 +1,4 @@
-package code.catalog.application.handlers;
+package code.catalog.application.services;
 
 import code.catalog.application.dto.ScreeningMapper;
 import code.catalog.domain.Film;
@@ -24,7 +24,7 @@ import static java.util.stream.IntStream.rangeClosed;
 
 @Component
 @AllArgsConstructor
-public class ScreeningCreateHandler {
+public class ScreeningCreateService {
 
     private final ScreeningDateValidator screeningDateValidator;
     private final Clock clock;
@@ -33,7 +33,7 @@ public class ScreeningCreateHandler {
     private final RoomRepository roomRepository;
     private final ScreeningMapper screeningMapper;
 
-    public ScreeningDto handle(ScreeningCreateCommand command) {
+    public ScreeningDto createScreening(ScreeningCreateCommand command) {
         screeningDateValidator.validate(command.date(), clock);
         var screening = transactionTemplate.execute(status -> {
             var film = getFilmOrThrow(command.filmId());

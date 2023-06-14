@@ -1,4 +1,4 @@
-package code.catalog.application.handlers;
+package code.catalog.application.services;
 
 import code.catalog.domain.Room;
 import code.catalog.domain.exceptions.RoomCustomIdAlreadyExistsException;
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RoomCreateHandler {
+public class RoomCreateService {
 
     private final RoomRepository roomRepository;
 
-    public void handle(RoomCreateCommand command) {
+    public void createRoom(RoomCreateCommand command) {
         if (roomRepository.existsByCustomId(command.customId())) {
             throw new RoomCustomIdAlreadyExistsException();
         }

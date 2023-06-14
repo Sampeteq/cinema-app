@@ -1,4 +1,4 @@
-package code.user.application.handlers;
+package code.user.application.services;
 
 import code.user.application.commands.UserSignInCommand;
 import code.user.domain.exceptions.UserAlreadyLoggedInException;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserSignInHandler {
+public class UserSignInService {
 
     private final AuthenticationManager authenticationManager;
 

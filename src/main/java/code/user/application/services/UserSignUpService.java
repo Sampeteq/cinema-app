@@ -1,4 +1,4 @@
-package code.user.application.handlers;
+package code.user.application.services;
 
 import code.user.application.commands.UserSignUpCommand;
 import code.user.domain.User;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserSignUpHandler {
+public class UserSignUpService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

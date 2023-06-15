@@ -71,10 +71,6 @@ public class Screening {
         return screening;
     }
 
-    public boolean hasRoom() {
-        return this.room != null;
-    }
-
     public boolean isCollisionWith(LocalDateTime start, LocalDateTime finish) {
         return start.isBefore(this.endDate) && finish.isAfter(this.date);
     }

@@ -37,6 +37,6 @@ class RoomFinishHandlerIT extends SpringIT {
         screeningFinishHandler.removeRoomsFromEndedScreenings();
 
         //then
-        assertThat(screeningsWithRooms).noneMatch(Screening::hasRoom);
+        assertThat(screeningsWithRooms).allMatch(screening -> screening.getRoom() == null);
     }
 }

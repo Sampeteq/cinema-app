@@ -47,9 +47,17 @@ public class FilmSpringDataJpaRepository implements FilmRepository {
 
 interface FilmJpaRepository extends JpaRepository<Film, Long>, JpaSpecificationExecutor<Film> {
 
-    @Query("select f from Film f join fetch f.screenings s where f.title = :title and s.isFinished = false")
+    @Query(
+            "select f from Film f " +
+                    "join fetch f.screenings s " +
+                    "where f.title = :title and s.endDate > CURRENT_DATE"
+    )
     List<Film> readByTitle(String title);
 
-    @Query("select f from Film f join fetch f.screenings s where f.category = :category and s.isFinished = false")
+    @Query(
+            "select f from Film f " +
+                    "join fetch f.screenings s " +
+                    "where f.category = :category and s.endDate > CURRENT_DATE"
+    )
     List<Film> readByCategory(FilmCategory category);
 }

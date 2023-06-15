@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.With;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -34,7 +33,7 @@ public class Screening {
 
     private LocalDateTime date;
 
-    private boolean isFinished;
+    private LocalDateTime endDate;
 
     @ManyToOne
     private Film film;
@@ -45,16 +44,25 @@ public class Screening {
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
-    private Screening(LocalDateTime date, Film film, Room room, List<Seat> seats) {
+    private Screening(
+            LocalDateTime date,
+            LocalDateTime endDate,
+            Film film,
+            Room room,
+            List<Seat> seats
+    ) {
         this.date = date;
+        this.endDate = endDate;
         this.film = film;
         this.room = room;
         this.seats = seats;
     }
 
     public static Screening create(LocalDateTime date, Film film, Room room, List<Seat> seats) {
+        var endDate = date.plusMinutes(film.getDurationInMinutes());
         var screening = new Screening(
                 date,
+                endDate,
                 film,
                 room,
                 seats
@@ -68,7 +76,7 @@ public class Screening {
     }
 
     public boolean isCollisionWith(LocalDateTime start, LocalDateTime finish) {
-        return start.isBefore(this.finishDate()) && finish.isAfter(this.date);
+        return start.isBefore(this.endDate) && finish.isAfter(this.date);
     }
 
     public int timeToScreeningStartInHours(Clock clock) {
@@ -78,13 +86,7 @@ public class Screening {
                 .toHours();
     }
 
-    public boolean isFinished(Clock clock) {
-        var currentDate = LocalDateTime.now(clock);
-        return currentDate.isAfter(finishDate());
-    }
-
-    public void finish() {
-        this.isFinished = true;
+    public void removeRoom() {
         this.room = null;
     }
 
@@ -93,13 +95,9 @@ public class Screening {
         return "Screening{" +
                 "id=" + id +
                 ", date=" + date +
-                ", isFinished=" + isFinished +
+                ", end date=" + endDate +
                 ", film=" + film.getId() +
                 ", room=" + room.getId() +
                 '}';
-    }
-
-    private LocalDateTime finishDate() {
-        return date.plusMinutes(film.getDurationInMinutes());
     }
 }

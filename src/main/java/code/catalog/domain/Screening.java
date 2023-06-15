@@ -26,7 +26,6 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @Getter
-@With
 public class Screening {
 
     @Id

@@ -28,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class ScreeningCreateRestControllerIT extends SpringIT {
 
+    public static final String FILMS_BASE_ENDPOINT = "/films";
     @Autowired
     private FilmRepository filmRepository;
 
@@ -52,7 +53,7 @@ public class ScreeningCreateRestControllerIT extends SpringIT {
         result.andExpect(status().isCreated());
         var createdScreening = fromResultActions(result, ScreeningDto.class);
         mockMvc
-                .perform(get("/films"))
+                .perform(get(FILMS_BASE_ENDPOINT))
                 .andExpect(
                         jsonPath("$[0].screenings[0].id", equalTo(createdScreening.id().intValue()))
                 )
@@ -72,7 +73,7 @@ public class ScreeningCreateRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/films/" + filmId + "/screenings")
+                post(FILMS_BASE_ENDPOINT + "/" + filmId + "/screenings")
                         .param("screeningDate", wrongDate.toString())
         );
 
@@ -91,7 +92,7 @@ public class ScreeningCreateRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/films/" + screening.getFilm().getId() + "/screenings")
+                post(FILMS_BASE_ENDPOINT + "/" + screening.getFilm().getId() + "/screenings")
                         .param("screeningDate", screeningDate.toString())
         );
 

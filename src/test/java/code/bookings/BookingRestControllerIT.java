@@ -67,6 +67,8 @@ class BookingRestControllerIT extends SpringIT {
 
     private User user;
 
+    public static final String BOOKINGS_BASE_ENDPOINT = "/bookings/";
+
     @BeforeEach
     @WithMockUser(username = "user1@mail.com")
     void setUp() {
@@ -80,7 +82,7 @@ class BookingRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/bookings/")
+                post(BOOKINGS_BASE_ENDPOINT)
                         .param("seatId", seat.getId().toString())
         );
 
@@ -90,7 +92,7 @@ class BookingRestControllerIT extends SpringIT {
                 .id()
                 .intValue();
         mockMvc.perform(
-                        get("/bookings/my/" + bookingId)
+                        get(BOOKINGS_BASE_ENDPOINT + "my/" + bookingId)
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(bookingId)))
@@ -109,7 +111,7 @@ class BookingRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/bookings/")
+                post(BOOKINGS_BASE_ENDPOINT)
                         .param("seatId", seat.getId().toString())
         );
 
@@ -129,7 +131,7 @@ class BookingRestControllerIT extends SpringIT {
 
         //when
         mockMvc.perform(
-                post("/bookings/")
+                post(BOOKINGS_BASE_ENDPOINT)
                         .param("seatId", seat.getId().toString())
         );
 
@@ -150,7 +152,7 @@ class BookingRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/bookings/" + booking.getId() + "/cancel")
+                post(BOOKINGS_BASE_ENDPOINT + booking.getId() + "/cancel")
         );
 
         //then
@@ -173,7 +175,7 @@ class BookingRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/bookings/" + booking.getId() + "/cancel")
+                post(BOOKINGS_BASE_ENDPOINT + booking.getId() + "/cancel")
         );
 
         //then
@@ -193,7 +195,7 @@ class BookingRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/bookings/" + booking.getId() + "/cancel")
+                post(BOOKINGS_BASE_ENDPOINT + booking.getId() + "/cancel")
         );
 
         //then
@@ -212,7 +214,7 @@ class BookingRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/bookings/" + booking.getId() + "/cancel")
+                post(BOOKINGS_BASE_ENDPOINT + booking.getId() + "/cancel")
         );
 
         //then

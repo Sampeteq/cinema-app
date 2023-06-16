@@ -35,6 +35,8 @@ public class FilmReadRestControllerIT extends SpringIT {
     @Autowired
     private FilmMapper filmMapper;
 
+    public static final String FILMS_BASE_ENDPOINT = "/films/";
+
     @Test
     void should_read_all_films() throws Exception {
         //given
@@ -42,7 +44,7 @@ public class FilmReadRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get("/films")
+                get(FILMS_BASE_ENDPOINT)
         );
 
         //then
@@ -63,7 +65,7 @@ public class FilmReadRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get("/films/title")
+                get(FILMS_BASE_ENDPOINT + "/title")
                         .param("title", expectedTitle)
         );
 
@@ -83,7 +85,7 @@ public class FilmReadRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get("/films/category")
+                get(FILMS_BASE_ENDPOINT + "/category")
                         .param("category", expectedCategory.name())
         );
 

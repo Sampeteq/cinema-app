@@ -17,6 +17,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class SeatRestControllerIT extends SpringIT {
 
+    public static final String FILMS_SCREENINGS_ENDPOINT = "/films/screenings/";
+
     @Autowired
     private FilmRepository filmRepository;
 
@@ -33,7 +35,7 @@ class SeatRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get("/films/screenings/" + screening.getId() + "/seats")
+                get(FILMS_SCREENINGS_ENDPOINT + screening.getId() + "/seats")
         );
 
         //then

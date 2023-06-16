@@ -19,6 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class FilmCreateRestControllerIT extends SpringIT {
 
+    public static final String FILMS_BASE_ENDPOINT = "/films";
+
     @Test
     @WithMockUser(authorities = "ADMIN")
     void should_create_film() throws Exception {
@@ -27,7 +29,7 @@ public class FilmCreateRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/films")
+                post(FILMS_BASE_ENDPOINT)
                         .content(toJson(cmd))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -36,7 +38,7 @@ public class FilmCreateRestControllerIT extends SpringIT {
         result.andExpect(status().isCreated());
         var createdFilm = fromResultActions(result, FilmDto.class);
         mockMvc
-                .perform(get("/films"))
+                .perform(get(FILMS_BASE_ENDPOINT))
                 .andExpect(content().json(toJson(List.of(createdFilm))));
     }
 
@@ -50,7 +52,7 @@ public class FilmCreateRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/films")
+                post(FILMS_BASE_ENDPOINT)
                         .content(toJson(cmd))
                         .contentType(MediaType.APPLICATION_JSON)
         );

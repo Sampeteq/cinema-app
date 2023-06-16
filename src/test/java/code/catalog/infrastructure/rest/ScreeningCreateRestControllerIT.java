@@ -45,7 +45,7 @@ public class ScreeningCreateRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/films/" + sampleFilm.getId() + "/screenings")
+                post(FILMS_BASE_ENDPOINT + "/" + sampleFilm.getId() + "/screenings")
                         .param("screeningDate", screeningDate.toString())
         );
 
@@ -53,7 +53,7 @@ public class ScreeningCreateRestControllerIT extends SpringIT {
         result.andExpect(status().isCreated());
         var createdScreening = fromResultActions(result, ScreeningDto.class);
         mockMvc
-                .perform(get(FILMS_BASE_ENDPOINT))
+                .perform(get(FILMS_BASE_ENDPOINT + "/screenings"))
                 .andExpect(
                         jsonPath("$[0].screenings[0].id", equalTo(createdScreening.id().intValue()))
                 )

@@ -44,7 +44,7 @@ public class FilmReadRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get(FILMS_BASE_ENDPOINT)
+                get(FILMS_BASE_ENDPOINT + "/screenings")
         );
 
         //then
@@ -65,7 +65,7 @@ public class FilmReadRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get(FILMS_BASE_ENDPOINT + "/title")
+                get(FILMS_BASE_ENDPOINT + "/screenings/by" + "/title")
                         .param("title", expectedTitle)
         );
 
@@ -85,7 +85,7 @@ public class FilmReadRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get(FILMS_BASE_ENDPOINT + "/category")
+                get(FILMS_BASE_ENDPOINT + "/screenings/by" + "/category")
                         .param("category", expectedCategory.name())
         );
 

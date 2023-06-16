@@ -38,7 +38,7 @@ public class FilmCreateRestControllerIT extends SpringIT {
         result.andExpect(status().isCreated());
         var createdFilm = fromResultActions(result, FilmDto.class);
         mockMvc
-                .perform(get(FILMS_BASE_ENDPOINT))
+                .perform(get(FILMS_BASE_ENDPOINT + "/screenings"))
                 .andExpect(content().json(toJson(List.of(createdFilm))));
     }
 

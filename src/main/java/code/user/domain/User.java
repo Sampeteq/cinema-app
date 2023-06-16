@@ -24,11 +24,15 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 @ToString
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String mail;
+
     private String password;
+
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 

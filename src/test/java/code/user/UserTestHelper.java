@@ -36,11 +36,6 @@ public class UserTestHelper {
     }
 
     public static User createUser(String mail) {
-        return User
-                .builder()
-                .mail(mail)
-                .password("12345")
-                .role(UserRole.COMMON)
-                .build();
+        return new User(mail, "12345", UserRole.COMMON);
     }
 }

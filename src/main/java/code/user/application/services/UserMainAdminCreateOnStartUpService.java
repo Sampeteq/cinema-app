@@ -30,12 +30,11 @@ public class UserMainAdminCreateOnStartUpService {
         if (userRepository.existsByMail(adminMail)) {
             log.info("Admin already exists");
         } else {
-            var admin = User
-                    .builder()
-                    .mail(adminMail)
-                    .password(passwordEncoder.encode(adminPassword))
-                    .role(UserRole.ADMIN)
-                    .build();
+            var admin = new User(
+                    adminMail,
+                    passwordEncoder.encode(adminPassword),
+                    UserRole.ADMIN
+            );
             userRepository.add(admin);
             log.info("Admin added");
         }

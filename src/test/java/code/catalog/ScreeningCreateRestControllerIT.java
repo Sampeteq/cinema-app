@@ -15,10 +15,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDateTime;
 
-import static code.catalog.ScreeningTestHelper.SCREENING_DATE;
-import static code.catalog.ScreeningTestHelper.createScreening;
-import static code.catalog.FilmTestHelper.createFilm;
-import static code.catalog.RoomTestHelper.createRoom;
+import static code.catalog.helpers.ScreeningTestHelper.SCREENING_DATE;
+import static code.catalog.helpers.ScreeningTestHelper.createScreening;
+import static code.catalog.helpers.FilmTestHelper.createFilm;
+import static code.catalog.helpers.RoomTestHelper.createRoom;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

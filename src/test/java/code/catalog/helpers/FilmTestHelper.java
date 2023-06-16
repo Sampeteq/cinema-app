@@ -1,4 +1,4 @@
-package code.catalog;
+package code.catalog.helpers;
 
 import code.catalog.application.commands.FilmCreateCommand;
 import code.catalog.domain.Film;

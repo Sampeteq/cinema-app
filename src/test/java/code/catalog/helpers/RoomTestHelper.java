@@ -1,4 +1,4 @@
-package code.catalog;
+package code.catalog.helpers;
 
 import code.catalog.domain.Room;
 

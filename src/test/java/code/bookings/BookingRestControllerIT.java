@@ -30,9 +30,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static code.bookings.BookingTestHelper.createBooking;
-import static code.catalog.FilmTestHelper.createFilm;
-import static code.catalog.ScreeningTestHelper.createScreening;
-import static code.catalog.RoomTestHelper.createRoom;
+import static code.catalog.helpers.FilmTestHelper.createFilm;
+import static code.catalog.helpers.ScreeningTestHelper.createScreening;
+import static code.catalog.helpers.RoomTestHelper.createRoom;
 import static code.user.UserTestHelper.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;

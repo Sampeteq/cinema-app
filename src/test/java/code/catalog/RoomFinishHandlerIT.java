@@ -1,15 +1,15 @@
 package code.catalog;
 
+import code.catalog.helpers.ScreeningTestHelper;
 import code.catalog.infrastructure.db.FilmRepository;
 import code.catalog.infrastructure.db.RoomRepository;
 import code.catalog.application.services.ScreeningEndService;
-import code.catalog.domain.Screening;
 import code.SpringIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static code.catalog.FilmTestHelper.createFilm;
-import static code.catalog.RoomTestHelper.createRoom;
+import static code.catalog.helpers.FilmTestHelper.createFilm;
+import static code.catalog.helpers.RoomTestHelper.createRoom;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RoomFinishHandlerIT extends SpringIT {

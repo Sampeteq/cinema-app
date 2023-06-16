@@ -43,7 +43,7 @@ public class FilmCreateRestControllerIT extends SpringIT {
     }
 
     @ParameterizedTest
-    @MethodSource("code.catalog.FilmTestHelper#getWrongFilmYears")
+    @MethodSource("code.catalog.helpers.FilmTestHelper#getWrongFilmYears")
     @WithMockUser(authorities = "ADMIN")
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
             throws Exception {

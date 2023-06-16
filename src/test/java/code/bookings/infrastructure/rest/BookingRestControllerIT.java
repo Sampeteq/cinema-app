@@ -1,4 +1,4 @@
-package code.bookings;
+package code.bookings.infrastructure.rest;
 
 import code.bookings.application.dto.BookingDto;
 import code.bookings.application.dto.BookingId;
@@ -29,11 +29,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static code.bookings.BookingTestHelper.createBooking;
+import static code.bookings.helpers.BookingTestHelper.createBooking;
 import static code.catalog.helpers.FilmTestHelper.createFilm;
 import static code.catalog.helpers.ScreeningTestHelper.createScreening;
 import static code.catalog.helpers.RoomTestHelper.createRoom;
-import static code.user.UserTestHelper.createUser;
+import static code.user.helpers.UserTestHelper.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;

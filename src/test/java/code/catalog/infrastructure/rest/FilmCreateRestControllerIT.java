@@ -1,4 +1,4 @@
-package code.catalog;
+package code.catalog.infrastructure.rest;
 
 import code.SpringIT;
 import code.catalog.application.dto.FilmDto;

@@ -1,4 +1,4 @@
-package code.catalog;
+package code.catalog.application;
 
 import code.catalog.helpers.ScreeningTestHelper;
 import code.catalog.infrastructure.db.FilmRepository;

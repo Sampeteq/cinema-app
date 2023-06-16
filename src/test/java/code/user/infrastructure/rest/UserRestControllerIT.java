@@ -1,5 +1,6 @@
-package code.user;
+package code.user.infrastructure.rest;
 
+import code.user.helpers.UserTestHelper;
 import code.user.application.commands.UserSignInCommand;
 import code.user.infrastrcuture.db.UserRepository;
 import code.user.domain.exceptions.UserMailAlreadyExistsException;
@@ -11,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import static code.user.UserTestHelper.createSignInCommand;
-import static code.user.UserTestHelper.createSignUpCommand;
-import static code.user.UserTestHelper.createUser;
+import static code.user.helpers.UserTestHelper.createSignInCommand;
+import static code.user.helpers.UserTestHelper.createSignUpCommand;
+import static code.user.helpers.UserTestHelper.createUser;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

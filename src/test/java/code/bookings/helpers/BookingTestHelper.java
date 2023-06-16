@@ -1,4 +1,4 @@
-package code.bookings;
+package code.bookings.helpers;
 
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingStatus;

@@ -1,6 +1,7 @@
 package code.catalog.application.services;
 
 import code.catalog.application.commands.RoomCreateCommand;
+import code.catalog.infrastructure.db.RoomRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +24,7 @@ import java.util.List;
 @Profile("prod")
 public class RoomCreateFromConfigService {
 
-    private final RoomReadService roomReadHandler;
+    private final RoomRepository roomRepository;
 
     private final RoomCreateService roomCreateHandler;
 
@@ -32,7 +33,7 @@ public class RoomCreateFromConfigService {
 
     @EventListener(ContextRefreshedEvent.class)
     public void createRoomsFromConfig() {
-        if(roomReadHandler.readAll().isEmpty()) {
+        if(roomRepository.readAll().isEmpty()) {
             try {
                 logIfFileNotExists();
                 var json = readRoomCreationCommandsJson();

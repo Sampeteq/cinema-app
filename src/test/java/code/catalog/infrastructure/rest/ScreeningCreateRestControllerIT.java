@@ -36,6 +36,20 @@ public class ScreeningCreateRestControllerIT extends SpringIT {
     private RoomRepository roomRepository;
 
     @Test
+    @WithMockUser(authorities = "COMMON")
+    void should_only_admin_create_screening() throws Exception {
+        //given
+
+        //when
+        var result = mockMvc.perform(
+                post(FILMS_BASE_ENDPOINT + "/1" + "/screenings")
+        );
+
+        //then
+        result.andExpect(status().isForbidden());
+    }
+
+    @Test
     @WithMockUser(authorities = "ADMIN")
     void should_create_screening() throws Exception {
         //given

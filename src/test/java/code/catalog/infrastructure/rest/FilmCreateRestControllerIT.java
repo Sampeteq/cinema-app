@@ -22,6 +22,20 @@ public class FilmCreateRestControllerIT extends SpringIT {
     public static final String FILMS_BASE_ENDPOINT = "/films";
 
     @Test
+    @WithMockUser(authorities = "COMMON")
+    void should_only_admin_create_film() throws Exception {
+        //given
+
+        //when
+        var result = mockMvc.perform(
+                post(FILMS_BASE_ENDPOINT)
+        );
+
+        //then
+        result.andExpect(status().isForbidden());
+    }
+
+    @Test
     @WithMockUser(authorities = "ADMIN")
     void should_create_film() throws Exception {
         //given

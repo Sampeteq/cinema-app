@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**")
                 .permitAll()
-                .mvcMatchers(HttpMethod.POST, "/films", "/screenings")
+                .mvcMatchers(HttpMethod.POST, "/films", "/films/{filmId}/screenings")
                 .hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()

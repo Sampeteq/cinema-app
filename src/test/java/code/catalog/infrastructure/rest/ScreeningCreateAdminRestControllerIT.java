@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ScreeningCreateRestControllerIT extends SpringIT {
+public class ScreeningCreateAdminRestControllerIT extends SpringIT {
 
     public static final String FILMS_BASE_ENDPOINT = "/films";
     @Autowired

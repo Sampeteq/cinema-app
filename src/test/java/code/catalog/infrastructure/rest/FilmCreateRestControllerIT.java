@@ -3,6 +3,7 @@ package code.catalog.infrastructure.rest;
 import code.SpringIT;
 import code.catalog.application.dto.FilmDto;
 import code.catalog.domain.exceptions.FilmWrongYearException;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,9 +13,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import java.util.List;
 
 import static code.catalog.helpers.FilmTestHelper.createFilmCreateCommand;
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class FilmCreateRestControllerIT extends SpringIT {
@@ -50,10 +53,12 @@ public class FilmCreateRestControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isCreated());
-        var createdFilm = fromResultActions(result, FilmDto.class);
         mockMvc
                 .perform(get(FILMS_BASE_ENDPOINT + "/screenings"))
-                .andExpect(content().json(toJson(List.of(createdFilm))));
+                .andExpect(jsonPath("$[0].title", equalTo(cmd.title())))
+                .andExpect(jsonPath("$[0].category", equalTo(cmd.category().name())))
+                .andExpect(jsonPath("$[0].year", equalTo(cmd.year())))
+                .andExpect(jsonPath("$[0].durationInMinutes", equalTo(cmd.durationInMinutes())));
     }
 
     @ParameterizedTest

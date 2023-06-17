@@ -1,7 +1,6 @@
 package code.catalog.infrastructure.rest;
 
 import code.SpringIT;
-import code.catalog.application.dto.ScreeningDto;
 import code.catalog.domain.Screening;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
 import code.catalog.domain.exceptions.ScreeningWrongDateException;
@@ -15,10 +14,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDateTime;
 
-import static code.catalog.helpers.ScreeningTestHelper.SCREENING_DATE;
-import static code.catalog.helpers.ScreeningTestHelper.createScreening;
 import static code.catalog.helpers.FilmTestHelper.createFilm;
 import static code.catalog.helpers.RoomTestHelper.createRoom;
+import static code.catalog.helpers.ScreeningTestHelper.SCREENING_DATE;
+import static code.catalog.helpers.ScreeningTestHelper.createScreening;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -53,26 +52,24 @@ public class ScreeningCreateRestControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void should_create_screening() throws Exception {
         //given
-        var sampleFilm = filmRepository.add(createFilm());
-        var sampleRoom = roomRepository.add(createRoom());
-        var screeningDate = SCREENING_DATE;
+        var film = filmRepository.add(createFilm());
+        roomRepository.add(createRoom());
 
         //when
         var result = mockMvc.perform(
-                post(FILMS_BASE_ENDPOINT + "/" + sampleFilm.getId() + "/screenings")
-                        .param("screeningDate", screeningDate.toString())
+                post(FILMS_BASE_ENDPOINT + "/" + film.getId() + "/screenings")
+                        .param("screeningDate", SCREENING_DATE.toString())
         );
 
         //then
         result.andExpect(status().isCreated());
-        var createdScreening = fromResultActions(result, ScreeningDto.class);
         mockMvc
                 .perform(get(FILMS_BASE_ENDPOINT + "/screenings"))
                 .andExpect(
-                        jsonPath("$[0].screenings[0].id", equalTo(createdScreening.id().intValue()))
+                        jsonPath("$[0].id", equalTo(film.getId().intValue()))
                 )
                 .andExpect(
-                        jsonPath("$[0].screenings[0].date", equalTo(createdScreening.date().toString()))
+                        jsonPath("$[0].screenings[0].date", equalTo(SCREENING_DATE.toString()))
                 );
     }
 

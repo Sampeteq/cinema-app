@@ -2,19 +2,17 @@ package code.catalog.infrastructure.rest;
 
 import code.catalog.application.commands.FilmCreateCommand;
 import code.catalog.application.commands.ScreeningCreateCommand;
-import code.catalog.application.dto.FilmDto;
-import code.catalog.application.dto.ScreeningDto;
 import code.catalog.application.services.FilmCreateService;
 import code.catalog.application.services.ScreeningCreateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -25,18 +23,19 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class FilmAdminRestController {
 
-    private final FilmCreateService filmCreateHandler;
+    private final FilmCreateService filmCreateService;
 
     private final ScreeningCreateService screeningCreateHandler;
 
     @PostMapping
-    public ResponseEntity<FilmDto> createFilm(@RequestBody @Valid FilmCreateCommand dto) {
-        var createdFilm = filmCreateHandler.creteFilm(dto);
-        return new ResponseEntity<>(createdFilm, HttpStatus.CREATED);
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public void createFilm(@RequestBody @Valid FilmCreateCommand cmd) {
+        filmCreateService.creteFilm(cmd);
     }
 
     @PostMapping("/{filmId}/screenings")
-    public ResponseEntity<ScreeningDto> createScreening(
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public void createScreening(
             @PathVariable
             Long filmId,
 
@@ -49,7 +48,6 @@ public class FilmAdminRestController {
                 .filmId(filmId)
                 .date(screeningDate)
                 .build();
-        var createdScreening = screeningCreateHandler.createScreening(cmd);
-        return new ResponseEntity<>(createdScreening, HttpStatus.CREATED);
+        screeningCreateHandler.createScreening(cmd);
     }
 }

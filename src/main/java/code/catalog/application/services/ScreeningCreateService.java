@@ -1,18 +1,17 @@
 package code.catalog.application.services;
 
-import code.catalog.application.dto.ScreeningMapper;
+import code.catalog.application.commands.ScreeningCreateCommand;
 import code.catalog.domain.Film;
 import code.catalog.domain.Room;
-import code.catalog.domain.Seat;
-import code.catalog.infrastructure.db.FilmRepository;
 import code.catalog.domain.Screening;
 import code.catalog.domain.ScreeningDateValidator;
+import code.catalog.domain.Seat;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
+import code.catalog.infrastructure.db.FilmRepository;
 import code.catalog.infrastructure.db.RoomRepository;
-import code.catalog.application.commands.ScreeningCreateCommand;
-import code.catalog.application.dto.ScreeningDto;
 import code.shared.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -23,7 +22,7 @@ import java.util.List;
 import static java.util.stream.IntStream.rangeClosed;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ScreeningCreateService {
 
     private final ScreeningDateValidator screeningDateValidator;
@@ -31,9 +30,8 @@ public class ScreeningCreateService {
     private final TransactionTemplate transactionTemplate;
     private final FilmRepository filmRepository;
     private final RoomRepository roomRepository;
-    private final ScreeningMapper screeningMapper;
 
-    public ScreeningDto createScreening(ScreeningCreateCommand command) {
+    public Long createScreening(ScreeningCreateCommand command) {
         screeningDateValidator.validate(command.date(), clock);
         var screening = transactionTemplate.execute(status -> {
             var film = getFilmOrThrow(command.filmId());
@@ -48,7 +46,7 @@ public class ScreeningCreateService {
             film.addScreening(newScreening);
             return newScreening;
         });
-        return screeningMapper.mapToDto(screening);
+        return screening.getId();
     }
 
     private Film getFilmOrThrow(Long filmId) {

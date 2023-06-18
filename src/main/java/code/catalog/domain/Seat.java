@@ -16,7 +16,7 @@ import java.time.Clock;
 @Table(name = "SEATS")
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString(exclude = {"screening"})
+@ToString(exclude = {"film"})
 public class Seat {
 
     @Id

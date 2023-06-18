@@ -96,11 +96,12 @@ class BookingRestControllerIT extends SpringIT {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(bookingId)))
-                .andExpect(jsonPath("$.screening.filmTitle", equalTo(seat.getScreening().getFilm().getTitle())))
-                .andExpect(jsonPath("$.screening.date", notNullValue()))
                 .andExpect(jsonPath("$.status", equalTo(BookingStatus.ACTIVE.name())))
-                .andExpect(jsonPath("$.screening.seat.rowNumber", equalTo(seat.getRowNumber())))
-                .andExpect(jsonPath("$.screening.seat.number", equalTo(seat.getNumber())));
+                .andExpect(jsonPath("$.film", equalTo(seat.getScreening().getFilm().getTitle())))
+                .andExpect(jsonPath("$.screeningDate", notNullValue()))
+                .andExpect(jsonPath("$.room", equalTo(seat.getScreening().getRoom().getCustomId())))
+                .andExpect(jsonPath("$.row", equalTo(seat.getRowNumber())))
+                .andExpect(jsonPath("$.seat", equalTo(seat.getNumber())));
     }
 
     @Test
@@ -161,7 +162,7 @@ class BookingRestControllerIT extends SpringIT {
                 get("/bookings/my")
         );
         var isBookingCancelled = getBookingsFromResult(searchBookingsResult).anyMatch(
-                b -> b.equals(bookingMapper.mapToDto(booking).withStatus(BookingStatus.CANCELLED.name()))
+                b -> b.equals(bookingMapper.mapToDto(booking).withStatus(BookingStatus.CANCELLED))
         );
         assertThat(isBookingCancelled).isTrue();
     }

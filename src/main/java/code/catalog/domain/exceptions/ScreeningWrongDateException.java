@@ -5,6 +5,6 @@ import code.shared.ValidationException;
 public class ScreeningWrongDateException extends ValidationException {
 
     public ScreeningWrongDateException() {
-        super("A screening date year must be current or next one");
+        super("A film date year must be current or next one");
     }
 }

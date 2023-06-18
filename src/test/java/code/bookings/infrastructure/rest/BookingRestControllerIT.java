@@ -104,9 +104,9 @@ class BookingRestControllerIT extends SpringIT {
     }
 
     @Test
-    void should_throw_exception_during_booking_when_less_than_24h_to_screening() throws Exception {
+    void should_throw_exception_during_booking_when_less_than_1h_to_screening() throws Exception {
         //given
-        var screeningDate = getCurrentDate(clock).minusHours(23);
+        var screeningDate = getCurrentDate(clock).minusMinutes(59);
         var seat = prepareSeat(screeningDate);
 
         //when

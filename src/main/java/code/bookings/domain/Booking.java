@@ -49,7 +49,7 @@ public class Booking {
     }
 
     public static Booking make(Seat seat, Clock clock, Long userId) {
-        if (seat.timeToScreeningInHours(clock) < 24) {
+        if (seat.timeToScreeningInHours(clock) < 1) {
             throw new BookingTooLateException();
         }
         return new Booking(

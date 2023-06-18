@@ -1,6 +1,6 @@
 package code.catalog.helpers;
 
-import code.catalog.application.commands.FilmCreateCommand;
+import code.catalog.application.dto.FilmCreateDto;
 import code.catalog.domain.Film;
 import code.catalog.domain.FilmCategory;
 
@@ -10,8 +10,8 @@ import java.util.List;
 public class FilmTestHelper {
     private static final int CURRENT_YEAR = Year.now().getValue();
 
-    public static FilmCreateCommand createFilmCreateCommand() {
-        return new FilmCreateCommand(
+    public static FilmCreateDto createFilmCreateDto() {
+        return new FilmCreateDto(
                 "Test film 1",
                 FilmCategory.COMEDY,
                 CURRENT_YEAR,

@@ -1,7 +1,7 @@
 package code.user.infrastructure.rest;
 
 import code.user.helpers.UserTestHelper;
-import code.user.application.commands.UserSignInCommand;
+import code.user.application.dto.UserSignInDto;
 import code.user.infrastrcuture.db.UserRepository;
 import code.user.domain.exceptions.UserMailAlreadyExistsException;
 import code.user.domain.exceptions.UserNotSamePasswordsException;
@@ -13,7 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import static code.user.helpers.UserTestHelper.createSignInCommand;
-import static code.user.helpers.UserTestHelper.createSignUpCommand;
+import static code.user.helpers.UserTestHelper.createSignUpDto;
 import static code.user.helpers.UserTestHelper.createUser;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -27,7 +27,7 @@ class UserRestControllerIT extends SpringIT {
     @Test
     void should_sign_up_and_sing_in() throws Exception {
         //given
-        var signUpRequest = UserTestHelper.createSignUpCommand();
+        var signUpRequest = UserTestHelper.createSignUpDto();
 
         //when
         var result = mockMvc.perform(
@@ -38,13 +38,13 @@ class UserRestControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isCreated());
-        var signInCmd = new UserSignInCommand(
+        var signInDto = new UserSignInDto(
                 signUpRequest.mail(),
                 signUpRequest.password()
         );
         mockMvc.perform(
                 post("/signin")
-                        .content(toJson(signInCmd))
+                        .content(toJson(signInDto))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
     }
@@ -53,7 +53,7 @@ class UserRestControllerIT extends SpringIT {
     void should_throw_exception_when_username_is_not_unique() throws Exception {
         //given
         var user = userRepository.add(createUser("user1@mail.com"));
-        var signUpRequest = UserTestHelper.createSignUpCommand(user.getUsername());
+        var signUpRequest = UserTestHelper.createSignUpDto(user.getUsername());
 
         //when
         var result = mockMvc.perform(
@@ -71,7 +71,7 @@ class UserRestControllerIT extends SpringIT {
     @Test
     void should_throw_exception_when_password_are_not_the_same() throws Exception {
         //given
-        var signUpRequest = createSignUpCommand("password1", "password2");
+        var signUpRequest = createSignUpDto("password1", "password2");
 
         //when
         var result = mockMvc.perform(

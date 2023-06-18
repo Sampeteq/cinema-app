@@ -1,9 +1,9 @@
-package code.user.application.commands;
+package code.user.application.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
-public record UserSignUpCommand(
+public record UserSignUpDto(
         @Email
         String mail,
 

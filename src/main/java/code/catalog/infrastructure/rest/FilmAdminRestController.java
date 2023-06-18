@@ -1,7 +1,7 @@
 package code.catalog.infrastructure.rest;
 
-import code.catalog.application.commands.FilmCreateCommand;
-import code.catalog.application.commands.ScreeningCreateCommand;
+import code.catalog.application.dto.FilmCreateDto;
+import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.application.services.FilmCreateService;
 import code.catalog.application.services.ScreeningCreateService;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +29,8 @@ public class FilmAdminRestController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createFilm(@RequestBody @Valid FilmCreateCommand cmd) {
-        filmCreateService.creteFilm(cmd);
+    public void createFilm(@RequestBody @Valid FilmCreateDto dto) {
+        filmCreateService.creteFilm(dto);
     }
 
     @PostMapping("/{filmId}/screenings")
@@ -43,11 +43,11 @@ public class FilmAdminRestController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             LocalDateTime screeningDate
     ) {
-        var cmd = ScreeningCreateCommand
+        var dto = ScreeningCreateDto
                 .builder()
                 .filmId(filmId)
                 .date(screeningDate)
                 .build();
-        screeningCreateHandler.createScreening(cmd);
+        screeningCreateHandler.createScreening(dto);
     }
 }

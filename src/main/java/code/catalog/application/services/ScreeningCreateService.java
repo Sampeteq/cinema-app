@@ -1,6 +1,6 @@
 package code.catalog.application.services;
 
-import code.catalog.application.commands.ScreeningCreateCommand;
+import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.domain.Film;
 import code.catalog.domain.Room;
 import code.catalog.domain.Screening;
@@ -10,7 +10,6 @@ import code.catalog.domain.exceptions.RoomsNoAvailableException;
 import code.catalog.infrastructure.db.FilmRepository;
 import code.catalog.infrastructure.db.RoomRepository;
 import code.shared.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -31,18 +30,18 @@ public class ScreeningCreateService {
     private final FilmRepository filmRepository;
     private final RoomRepository roomRepository;
 
-    public Long createScreening(ScreeningCreateCommand command) {
-        screeningDateValidator.validate(command.date(), clock);
+    public Long createScreening(ScreeningCreateDto dto) {
+        screeningDateValidator.validate(dto.date(), clock);
         var screening = transactionTemplate.execute(status -> {
-            var film = getFilmOrThrow(command.filmId());
-            var screeningDate = command.date();
-            var screeningFinishDate = command.date().plusMinutes(film.getDurationInMinutes());
+            var film = getFilmOrThrow(dto.filmId());
+            var screeningDate = dto.date();
+            var screeningFinishDate = dto.date().plusMinutes(film.getDurationInMinutes());
             var availableRoom = getFirstAvailableRoom(
                     screeningDate,
                     screeningFinishDate
             );
             var seats = createSeats(availableRoom);
-            var newScreening = Screening.create(command.date(), film, availableRoom, seats);
+            var newScreening = Screening.create(dto.date(), film, availableRoom, seats);
             film.addScreening(newScreening);
             return newScreening;
         });

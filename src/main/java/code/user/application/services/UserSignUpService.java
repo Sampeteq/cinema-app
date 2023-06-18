@@ -1,6 +1,6 @@
 package code.user.application.services;
 
-import code.user.application.commands.UserSignUpCommand;
+import code.user.application.dto.UserSignUpDto;
 import code.user.domain.User;
 import code.user.infrastrcuture.db.UserRepository;
 import code.user.domain.UserRole;
@@ -17,16 +17,16 @@ public class UserSignUpService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void handle(UserSignUpCommand command) {
-        if (userRepository.existsByMail(command.mail())) {
+    public void handle(UserSignUpDto dto) {
+        if (userRepository.existsByMail(dto.mail())) {
             throw new UserMailAlreadyExistsException();
         }
-        if (!(command.password().equals(command.repeatedPassword()))) {
+        if (!(dto.password().equals(dto.repeatedPassword()))) {
             throw new UserNotSamePasswordsException();
         }
         var user = new User(
-                command.mail(),
-                passwordEncoder.encode(command.password()),
+                dto.mail(),
+                passwordEncoder.encode(dto.password()),
                 UserRole.COMMON
         );
         userRepository.add(user);

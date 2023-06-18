@@ -1,6 +1,6 @@
 package code.catalog.application.services;
 
-import code.catalog.application.commands.RoomCreateCommand;
+import code.catalog.application.dto.RoomCreateDto;
 import code.catalog.infrastructure.db.RoomRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -64,7 +64,7 @@ public class RoomCreateFromConfigService {
 
     private void createRoomsFromJson(String json) throws JsonProcessingException {
         new ObjectMapper()
-                .readValue(json, new TypeReference<List<RoomCreateCommand>>() {})
+                .readValue(json, new TypeReference<List<RoomCreateDto>>() {})
                 .forEach(roomCreateHandler::createRoom);
     }
 }

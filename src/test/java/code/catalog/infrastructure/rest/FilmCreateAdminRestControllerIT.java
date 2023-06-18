@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import static code.catalog.helpers.FilmTestHelper.createFilmCreateCommand;
+import static code.catalog.helpers.FilmTestHelper.createFilmCreateDto;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,7 +38,7 @@ public class FilmCreateAdminRestControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void should_create_film() throws Exception {
         //given
-        var cmd = createFilmCreateCommand();
+        var cmd = createFilmCreateDto();
 
         //when
         var result = mockMvc.perform(
@@ -63,7 +63,7 @@ public class FilmCreateAdminRestControllerIT extends SpringIT {
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
             throws Exception {
         //given
-        var cmd = createFilmCreateCommand().withYear(wrongYear);
+        var cmd = createFilmCreateDto().withYear(wrongYear);
 
         //when
         var result = mockMvc.perform(

@@ -1,11 +1,9 @@
 package code.bookings.infrastructure.rest;
 
-import code.bookings.application.commands.BookingCancelCommand;
+import code.bookings.application.dto.BookingDto;
 import code.bookings.application.dto.BookingId;
 import code.bookings.application.services.BookingCancelService;
-import code.bookings.application.commands.BookingMakeCommand;
 import code.bookings.application.services.BookingMakeService;
-import code.bookings.application.dto.BookingDto;
 import code.bookings.application.services.BookingReadService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,14 +28,12 @@ public class BookingRestController {
 
     @PostMapping
     public BookingId bookSeat(@RequestParam Long seatId) {
-        var command = new BookingMakeCommand(seatId);
-        return bookingMakeHandler.makeBooking(command);
+        return bookingMakeHandler.makeBooking(seatId);
     }
 
     @PostMapping("/{bookingId}/cancel")
     public void cancelBooking(@PathVariable Long bookingId) {
-        var command = new BookingCancelCommand(bookingId);
-        bookingCancelHandler.cancelBooking(command);
+        bookingCancelHandler.cancelBooking(bookingId);
     }
 
     @GetMapping("/my")

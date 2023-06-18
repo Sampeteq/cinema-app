@@ -1,10 +1,9 @@
 package code.bookings.application.services;
 
-import code.bookings.application.commands.BookingMakeCommand;
 import code.bookings.application.dto.BookingId;
 import code.bookings.domain.Booking;
-import code.bookings.infrastructure.db.BookingRepository;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
+import code.bookings.infrastructure.db.BookingRepository;
 import code.catalog.infrastructure.db.SeatReadOnlyRepository;
 import code.shared.EntityNotFoundException;
 import code.user.infrastrcuture.SecurityHelper;
@@ -26,14 +25,13 @@ public class BookingMakeService {
     private final Clock clock;
 
     @Transactional
-    public BookingId makeBooking(BookingMakeCommand command) {
-        log.info("Received a command:{}",command);
-        if (bookingRepository.existsBySeatId(command.seatId())) {
+    public BookingId makeBooking(Long seatId) {
+        if (bookingRepository.existsBySeatId(seatId)) {
             log.error("Booking already exists");
             throw new BookingAlreadyExists();
         }
         var seat = seatReadOnlyRepository
-                .getById(command.seatId())
+                .getById(seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Booking"));
         log.info("Found a seat for booking:{}",seat);
         var currentUserId = securityHelper.getCurrentUserId();

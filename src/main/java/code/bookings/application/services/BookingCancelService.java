@@ -1,6 +1,5 @@
 package code.bookings.application.services;
 
-import code.bookings.application.commands.BookingCancelCommand;
 import code.bookings.infrastructure.db.BookingRepository;
 import code.shared.EntityNotFoundException;
 import code.user.infrastrcuture.SecurityHelper;
@@ -19,10 +18,10 @@ public class BookingCancelService {
     private final Clock clock;
 
     @Transactional
-    public void cancelBooking(BookingCancelCommand command) {
+    public void cancelBooking(Long bookingId) {
         var currentUserId = securityHelper.getCurrentUserId();
         bookingRepository
-                .readByIdAndUserId(command.bookingId(), currentUserId)
+                .readByIdAndUserId(bookingId, currentUserId)
                 .orElseThrow(() -> new EntityNotFoundException("Booking"))
                 .cancel(clock);
     }

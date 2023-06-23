@@ -1,10 +1,10 @@
 package code.catalog.application;
 
+import code.SpringIT;
+import code.catalog.application.services.ScreeningEndService;
 import code.catalog.helpers.ScreeningTestHelper;
 import code.catalog.infrastructure.db.FilmRepository;
 import code.catalog.infrastructure.db.RoomRepository;
-import code.catalog.application.services.ScreeningEndService;
-import code.SpringIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

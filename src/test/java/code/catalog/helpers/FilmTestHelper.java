@@ -10,7 +10,7 @@ import java.util.List;
 public class FilmTestHelper {
     private static final int CURRENT_YEAR = Year.now().getValue();
 
-    public static FilmCreateDto createFilmCreateDto() {
+    public static FilmCreateDto createFilmCreateCommand() {
         return new FilmCreateDto(
                 "Test film 1",
                 FilmCategory.COMEDY,

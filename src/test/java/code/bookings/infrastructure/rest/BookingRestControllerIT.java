@@ -1,21 +1,20 @@
 package code.bookings.infrastructure.rest;
 
+import code.SpringIT;
 import code.bookings.application.dto.BookingDto;
-import code.bookings.application.dto.BookingId;
 import code.bookings.application.dto.BookingMapper;
 import code.bookings.domain.Booking;
-import code.bookings.infrastructure.db.BookingRepository;
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
-import code.bookings.domain.exceptions.BookingTooLateException;
 import code.bookings.domain.exceptions.BookingCancelTooLateException;
+import code.bookings.domain.exceptions.BookingTooLateException;
+import code.bookings.infrastructure.db.BookingRepository;
 import code.catalog.application.dto.SeatDto;
 import code.catalog.domain.Seat;
 import code.catalog.infrastructure.db.FilmRepository;
 import code.catalog.infrastructure.db.RoomRepository;
 import code.user.domain.User;
 import code.user.infrastrcuture.db.UserRepository;
-import code.SpringIT;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +30,13 @@ import java.util.stream.Stream;
 
 import static code.bookings.helpers.BookingTestHelper.createBooking;
 import static code.catalog.helpers.FilmTestHelper.createFilm;
-import static code.catalog.helpers.ScreeningTestHelper.createScreening;
 import static code.catalog.helpers.RoomTestHelper.createRoom;
+import static code.catalog.helpers.ScreeningTestHelper.createScreening;
 import static code.user.helpers.UserTestHelper.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WithMockUser(username = "user1@mail.com")
@@ -70,7 +66,6 @@ class BookingRestControllerIT extends SpringIT {
     public static final String BOOKINGS_BASE_ENDPOINT = "/bookings/";
 
     @BeforeEach
-    @WithMockUser(username = "user1@mail.com")
     void setUp() {
         this.user = userRepository.add(createUser("user1@mail.com"));
     }
@@ -79,29 +74,28 @@ class BookingRestControllerIT extends SpringIT {
     void should_make_booking() throws Exception {
         //given
         var seat = prepareSeat();
+        var expectedDto = List.of(
+                new BookingDto(
+                1L,
+                BookingStatus.ACTIVE,
+                seat.getScreening().getFilm().getTitle(),
+                seat.getScreening().getDate(),
+                seat.getScreening().getRoom().getCustomId(),
+                seat.getRowNumber(),
+                seat.getNumber()
+                )
+        );
 
         //when
         var result = mockMvc.perform(
-                post(BOOKINGS_BASE_ENDPOINT)
-                        .param("seatId", seat.getId().toString())
+                post(BOOKINGS_BASE_ENDPOINT).param("seatId", seat.getId().toString())
         );
 
         //then
         result.andExpect(status().isOk());
-        var bookingId = fromResultActions(result, BookingId.class)
-                .id()
-                .intValue();
         mockMvc.perform(
-                        get(BOOKINGS_BASE_ENDPOINT + "my/" + bookingId)
-                )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", equalTo(bookingId)))
-                .andExpect(jsonPath("$.status", equalTo(BookingStatus.ACTIVE.name())))
-                .andExpect(jsonPath("$.film", equalTo(seat.getScreening().getFilm().getTitle())))
-                .andExpect(jsonPath("$.screeningDate", notNullValue()))
-                .andExpect(jsonPath("$.room", equalTo(seat.getScreening().getRoom().getCustomId())))
-                .andExpect(jsonPath("$.row", equalTo(seat.getRowNumber())))
-                .andExpect(jsonPath("$.seat", equalTo(seat.getNumber())));
+                get(BOOKINGS_BASE_ENDPOINT + "my/")
+        ).andExpect(content().json(toJson(expectedDto)));
     }
 
     @Test

@@ -1,6 +1,8 @@
 package code.catalog.infrastructure.rest;
 
 import code.SpringIT;
+import code.catalog.application.dto.FilmDto;
+import code.catalog.application.dto.ScreeningDto;
 import code.catalog.domain.Screening;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
 import code.catalog.domain.exceptions.ScreeningWrongDateException;
@@ -13,26 +15,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static code.catalog.helpers.FilmTestHelper.createFilm;
 import static code.catalog.helpers.RoomTestHelper.createRoom;
 import static code.catalog.helpers.ScreeningTestHelper.SCREENING_DATE;
 import static code.catalog.helpers.ScreeningTestHelper.createScreening;
-import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ScreeningCreateAdminRestControllerIT extends SpringIT {
 
-    public static final String FILMS_BASE_ENDPOINT = "/films";
     @Autowired
     private FilmRepository filmRepository;
 
     @Autowired
     private RoomRepository roomRepository;
+
+    public static final String FILMS_BASE_ENDPOINT = "/films";
 
     @Test
     @WithMockUser(authorities = "COMMON")
@@ -63,15 +65,21 @@ public class ScreeningCreateAdminRestControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isCreated());
+        var expectedDto = List.of(
+                new FilmDto(
+                        1L,
+                        film.getTitle(),
+                        film.getCategory(),
+                        film.getYear(),
+                        film.getDurationInMinutes(),
+                        List.of(
+                                new ScreeningDto(1L, SCREENING_DATE)
+                        )
+                )
+        );
         mockMvc
                 .perform(get(FILMS_BASE_ENDPOINT + "/screenings"))
-                .andExpect(
-                        jsonPath("$[0].id", equalTo(film.getId().intValue()))
-                )
-                .andExpect(
-                        jsonPath("$[0].screenings[0].date", equalTo(SCREENING_DATE.toString()))
-                );
-    }
+                .andExpect(content().json(toJson(expectedDto)));}
 
     @ParameterizedTest
     @MethodSource("code.catalog.helpers.ScreeningTestHelper#getWrongScreeningDates")

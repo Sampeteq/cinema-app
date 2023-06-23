@@ -6,6 +6,7 @@ import code.catalog.application.dto.FilmMapper;
 import code.catalog.application.dto.ScreeningDto;
 import code.catalog.domain.Film;
 import code.catalog.domain.FilmCategory;
+import code.catalog.helpers.FilmTestHelper;
 import code.catalog.infrastructure.db.FilmRepository;
 import code.catalog.infrastructure.db.RoomRepository;
 import org.junit.jupiter.api.Test;
@@ -15,15 +16,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static code.catalog.helpers.ScreeningTestHelper.createScreening;
 import static code.catalog.helpers.FilmTestHelper.createFilm;
 import static code.catalog.helpers.FilmTestHelper.createFilms;
 import static code.catalog.helpers.RoomTestHelper.createRoom;
-import static org.hamcrest.Matchers.everyItem;
-import static org.hamcrest.Matchers.notNullValue;
+import static code.catalog.helpers.ScreeningTestHelper.createScreening;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class FilmReadPublicRestControllerIT extends SpringIT {
@@ -40,9 +38,13 @@ public class FilmReadPublicRestControllerIT extends SpringIT {
     public static final String FILMS_BASE_ENDPOINT = "/films/";
 
     @Test
-    void should_read_all_films() throws Exception {
+    void should_read_all_films_screenings() throws Exception {
         //given
-        var addedFilms = addFilmsWithScreenings(() -> createFilms());
+        var addedFilms = addFilmsWithScreenings(FilmTestHelper::createFilms);
+        var expectedFilms = addedFilms
+                .stream()
+                .map(film -> filmMapper.mapToDto(film))
+                .toList();
 
         //when
         var result = mockMvc.perform(
@@ -52,13 +54,11 @@ public class FilmReadPublicRestControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", everyItem(notNullValue())))
-                .andExpect(jsonPath("$[*].screenings", everyItem(notNullValue())))
-                .andExpect(content().json(toJson(filmMapper.mapToDto(addedFilms))));
+                .andExpect(content().json(toJson(expectedFilms)));
     }
 
     @Test
-    void should_read_film_by_title() throws Exception {
+    void should_read_film_screenings_by_title() throws Exception {
         //given
         var expectedTitle = "Film 1";
         var otherTitle = "Film 2";
@@ -78,7 +78,7 @@ public class FilmReadPublicRestControllerIT extends SpringIT {
     }
 
     @Test
-    void should_read_films_by_category() throws Exception {
+    void should_read_films_screenings_by_category() throws Exception {
         //given
         var expectedCategory = FilmCategory.COMEDY;
         var otherCategory = FilmCategory.DRAMA;

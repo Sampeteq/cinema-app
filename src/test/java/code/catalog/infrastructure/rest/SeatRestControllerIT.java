@@ -8,9 +8,9 @@ import code.catalog.infrastructure.db.RoomRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static code.catalog.helpers.ScreeningTestHelper.createScreening;
 import static code.catalog.helpers.FilmTestHelper.createFilm;
 import static code.catalog.helpers.RoomTestHelper.createRoom;
+import static code.catalog.helpers.ScreeningTestHelper.createScreening;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

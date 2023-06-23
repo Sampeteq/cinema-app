@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -40,5 +41,13 @@ public class FilmReadService {
                 .readByTitle(title)
                 .map(filmMapper::mapToDto)
                 .orElseThrow(() -> new EntityNotFoundException("Film"));
+    }
+
+    public List<FilmDto> readByDate(LocalDate date) {
+        return filmRepository
+                .readByDate(date)
+                .stream()
+                .map(filmMapper::mapToDto)
+                .toList();
     }
 }

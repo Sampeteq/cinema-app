@@ -1,7 +1,9 @@
 package code.catalog.infrastructure.rest;
 
 import code.SpringIT;
+import code.catalog.application.dto.FilmDto;
 import code.catalog.application.dto.FilmMapper;
+import code.catalog.application.dto.ScreeningDto;
 import code.catalog.domain.Film;
 import code.catalog.domain.FilmCategory;
 import code.catalog.infrastructure.db.FilmRepository;
@@ -93,6 +95,62 @@ public class FilmReadPublicRestControllerIT extends SpringIT {
         result
                 .andExpect(status().isOk())
                 .andExpect(content().json(toJson(filmMapper.mapToDto(expectedFilms))));
+    }
+
+    @Test
+    void should_read_film_screenings_by_date() throws Exception {
+        //given
+        var film = createFilm();
+        var screening1Date = LocalDateTime.of(2023, 10, 1, 16, 30);
+        var screening2Date = LocalDateTime.of(2023, 10, 3, 18, 0);
+        addTwoScreenings(screening1Date, screening2Date, film);
+
+        //when
+        var result = mockMvc.perform(
+                get(FILMS_BASE_ENDPOINT + "/screenings/by/date")
+                        .param("date", screening1Date.toLocalDate().toString())
+        );
+
+        //then
+        var expectedDto = List.of(
+                new FilmDto(
+                        1L,
+                        film.getTitle(),
+                        film.getCategory(),
+                        film.getYear(),
+                        film.getDurationInMinutes(),
+                        List.of(
+                                new ScreeningDto(
+                                        1L,
+                                        screening1Date
+                                )
+                        )
+                )
+        );
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(expectedDto)));
+    }
+
+    private void addTwoScreenings(
+            LocalDateTime screeningDate1,
+            LocalDateTime screeningDate2,
+            Film film
+    ) {
+        var room = roomRepository.add(createRoom());
+        var screening1 = createScreening(
+                film,
+                room,
+                screeningDate1
+        );
+        var screening2 = createScreening(
+                film,
+                room,
+                screeningDate2
+        );
+        film.addScreening(screening1);
+        film.addScreening(screening2);
+        filmRepository.add(film);
     }
 
     private Film addFilmWithScreening(Supplier<Film> filmSupplier) {

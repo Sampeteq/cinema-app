@@ -4,7 +4,7 @@ import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.domain.Film;
 import code.catalog.domain.Room;
 import code.catalog.domain.Screening;
-import code.catalog.domain.ScreeningDateValidator;
+import code.catalog.domain.services.ScreeningDateValidateService;
 import code.catalog.domain.Seat;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
 import code.catalog.infrastructure.db.FilmRepository;
@@ -24,7 +24,7 @@ import static java.util.stream.IntStream.rangeClosed;
 @RequiredArgsConstructor
 public class ScreeningCreateService {
 
-    private final ScreeningDateValidator screeningDateValidator;
+    private final ScreeningDateValidateService screeningDateValidator;
     private final Clock clock;
     private final TransactionTemplate transactionTemplate;
     private final FilmRepository filmRepository;

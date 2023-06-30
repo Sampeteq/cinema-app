@@ -1,4 +1,4 @@
-package code.catalog.domain;
+package code.catalog.domain.services;
 
 import code.catalog.domain.exceptions.ScreeningWrongDateException;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 @Component
-public class ScreeningDateValidator {
+public class ScreeningDateValidateService {
 
     public void validate(LocalDateTime date, Clock clock) {
         var currentDate = LocalDateTime.ofInstant(clock.instant(), ZoneOffset.UTC);

@@ -21,7 +21,7 @@ public class BookingMakeService {
 
     private final BookingRepository bookingRepository;
     private final SeatReadOnlyRepository seatReadOnlyRepository;
-    private final UserCurrentService securityHelper;
+    private final UserCurrentService userCurrentService;
     private final Clock clock;
 
     @Transactional
@@ -34,7 +34,7 @@ public class BookingMakeService {
                 .getById(seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Booking"));
         log.info("Found a seat for booking:{}",seat);
-        var currentUserId = securityHelper.getCurrentUserId();
+        var currentUserId = userCurrentService.getCurrentUserId();
         var booking = Booking.make(seat, clock, currentUserId);
         var addedBooking = bookingRepository.add(booking);
         log.info("Added a booking:{}", addedBooking);

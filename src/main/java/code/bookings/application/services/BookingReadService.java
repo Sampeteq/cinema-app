@@ -14,12 +14,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingReadService {
 
-    private final UserCurrentService securityHelper;
+    private final UserCurrentService userCurrentService;
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
 
     public BookingDto read(Long id) {
-        var currentUserId = securityHelper.getCurrentUserId();
+        var currentUserId = userCurrentService.getCurrentUserId();
         return bookingRepository
                 .readByIdAndUserId(id, currentUserId)
                 .map(bookingMapper::mapToDto)
@@ -27,7 +27,7 @@ public class BookingReadService {
     }
 
     public List<BookingDto> readAll() {
-        var currentUserId = securityHelper.getCurrentUserId();
+        var currentUserId = userCurrentService.getCurrentUserId();
         return bookingRepository
                 .readAllByUserId(currentUserId)
                 .stream()

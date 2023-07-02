@@ -13,13 +13,13 @@ import java.time.Clock;
 @RequiredArgsConstructor
 public class BookingCancelService {
 
-    private final UserCurrentService securityHelper;
+    private final UserCurrentService userCurrentService;
     private final BookingRepository bookingRepository;
     private final Clock clock;
 
     @Transactional
     public void cancelBooking(Long bookingId) {
-        var currentUserId = securityHelper.getCurrentUserId();
+        var currentUserId = userCurrentService.getCurrentUserId();
         bookingRepository
                 .readByIdAndUserId(bookingId, currentUserId)
                 .orElseThrow(() -> new EntityNotFoundException("Booking"))

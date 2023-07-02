@@ -5,9 +5,9 @@ import code.catalog.domain.Room;
 import code.catalog.domain.exceptions.RoomCustomIdAlreadyExistsException;
 import code.catalog.infrastructure.db.RoomRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class RoomCreateService {
 

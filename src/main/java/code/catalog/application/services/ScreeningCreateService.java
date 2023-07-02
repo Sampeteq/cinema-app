@@ -11,7 +11,7 @@ import code.catalog.infrastructure.db.FilmRepository;
 import code.catalog.infrastructure.db.RoomRepository;
 import code.shared.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.Clock;
@@ -20,7 +20,7 @@ import java.util.List;
 
 import static java.util.stream.IntStream.rangeClosed;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class ScreeningCreateService {
 

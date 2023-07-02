@@ -6,12 +6,12 @@ import code.catalog.domain.Screening;
 import code.catalog.infrastructure.db.ScreeningReadOnlyRepository;
 import code.shared.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class SeatReadService {
 

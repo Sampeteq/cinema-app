@@ -5,15 +5,15 @@ import code.catalog.application.dto.FilmMapper;
 import code.catalog.domain.FilmCategory;
 import code.catalog.infrastructure.db.FilmRepository;
 import code.shared.EntityNotFoundException;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Component
-@AllArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class FilmReadService {
 
     private final FilmRepository filmRepository;

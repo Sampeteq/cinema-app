@@ -8,9 +8,9 @@ import code.user.domain.exceptions.UserNotSamePasswordsException;
 import code.user.infrastrcuture.db.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class UserSignUpService {
 

@@ -14,7 +14,7 @@ public class UserSignInService {
 
     private final AuthenticationManager authenticationManager;
 
-    public void handle(UserSignInDto dto) {
+    public void signIn(UserSignInDto dto) {
         var username = SecurityContextHolder
                 .getContext()
                 .getAuthentication()

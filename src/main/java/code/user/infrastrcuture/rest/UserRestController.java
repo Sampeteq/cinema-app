@@ -27,19 +27,19 @@ public class UserRestController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody @Valid UserSignUpDto dto) {
-        userSignUpHandler.handle(dto);
+        userSignUpHandler.signUp(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody UserSignInDto dto) {
-        userSignInHandler.handle(dto);
+        userSignInHandler.signIn(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/signout")
     public ResponseEntity<?> signOut() {
-        userSignOutHandler.handle();
+        userSignOutHandler.signOut();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

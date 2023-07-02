@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserSignOutService {
 
-    public void handle() {
+    public void signOut() {
         SecurityContextHolder.clearContext();
     }
 }

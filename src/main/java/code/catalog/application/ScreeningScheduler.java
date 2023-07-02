@@ -11,11 +11,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Slf4j
 public class ScreeningScheduler {
 
-    private final ScreeningEndService screeningFinishHandler;
+    private final ScreeningEndService screeningEndService;
 
     /** 3600000ms - 1h */
     @Scheduled(fixedDelay = 3600000)
     public void run() {
-      screeningFinishHandler.removeRoomsFromEndedScreenings();
+      screeningEndService.removeRoomsFromEndedScreenings();
     }
 }

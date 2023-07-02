@@ -6,7 +6,7 @@ import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.infrastructure.db.BookingRepository;
 import code.catalog.infrastructure.db.SeatReadOnlyRepository;
 import code.shared.EntityNotFoundException;
-import code.user.infrastrcuture.SecurityHelper;
+import code.user.application.services.UserCurrentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class BookingMakeService {
 
     private final BookingRepository bookingRepository;
     private final SeatReadOnlyRepository seatReadOnlyRepository;
-    private final SecurityHelper securityHelper;
+    private final UserCurrentService securityHelper;
     private final Clock clock;
 
     @Transactional

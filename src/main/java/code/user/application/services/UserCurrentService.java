@@ -1,4 +1,4 @@
-package code.user.infrastrcuture;
+package code.user.application.services;
 
 import code.user.domain.User;
 import code.user.infrastrcuture.db.UserRepository;
@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-public class SecurityHelper {
+public class UserCurrentService {
 
     private final UserRepository userRepository;
 

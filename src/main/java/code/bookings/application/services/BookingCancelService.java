@@ -2,7 +2,7 @@ package code.bookings.application.services;
 
 import code.bookings.infrastructure.db.BookingRepository;
 import code.shared.EntityNotFoundException;
-import code.user.infrastrcuture.SecurityHelper;
+import code.user.application.services.UserCurrentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import java.time.Clock;
 @RequiredArgsConstructor
 public class BookingCancelService {
 
-    private final SecurityHelper securityHelper;
+    private final UserCurrentService securityHelper;
     private final BookingRepository bookingRepository;
     private final Clock clock;
 

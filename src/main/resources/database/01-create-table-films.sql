@@ -1,7 +1,7 @@
 --liquibase formatted sql
 --changeset nofenak:1
 
-CREATE TABLE IF NOT EXISTS FILMS
+create table if not exists films
 (
     id                  bigint generated always as identity primary key,
     title               varchar,

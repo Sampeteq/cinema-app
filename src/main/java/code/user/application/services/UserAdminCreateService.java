@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Profile("prod")
 @Slf4j
-public class UserMainAdminCreateOnStartUpService {
+public class UserAdminCreateService {
 
     @Value("${admin.mail}")
     private String adminMail;

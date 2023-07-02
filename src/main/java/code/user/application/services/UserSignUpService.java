@@ -2,10 +2,10 @@ package code.user.application.services;
 
 import code.user.application.dto.UserSignUpDto;
 import code.user.domain.User;
-import code.user.infrastrcuture.db.UserRepository;
 import code.user.domain.UserRole;
 import code.user.domain.exceptions.UserMailAlreadyExistsException;
 import code.user.domain.exceptions.UserNotSamePasswordsException;
+import code.user.infrastrcuture.db.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

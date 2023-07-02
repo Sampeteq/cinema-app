@@ -1,8 +1,8 @@
 package code.catalog.application.services;
 
 import code.catalog.application.dto.SeatDto;
-import code.catalog.domain.Screening;
 import code.catalog.application.dto.SeatMapper;
+import code.catalog.domain.Screening;
 import code.catalog.infrastructure.db.ScreeningReadOnlyRepository;
 import code.shared.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

@@ -24,14 +24,14 @@ import static java.util.stream.IntStream.rangeClosed;
 @RequiredArgsConstructor
 public class ScreeningCreateService {
 
-    private final ScreeningDateValidateService screeningDateValidator;
+    private final ScreeningDateValidateService screeningDateValidateService;
     private final Clock clock;
     private final TransactionTemplate transactionTemplate;
     private final FilmRepository filmRepository;
     private final RoomRepository roomRepository;
 
     public Long createScreening(ScreeningCreateDto dto) {
-        screeningDateValidator.validate(dto.date(), clock);
+        screeningDateValidateService.validate(dto.date(), clock);
         var screening = transactionTemplate.execute(status -> {
             var film = getFilmOrThrow(dto.filmId());
             var screeningDate = dto.date();

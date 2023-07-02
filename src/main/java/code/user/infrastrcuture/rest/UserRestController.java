@@ -18,28 +18,28 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class UserRestController {
 
-    private final UserSignUpService userSignUpHandler;
+    private final UserSignUpService userSignUpService;
 
-    private final UserSignInService userSignInHandler;
+    private final UserSignInService userSignInService;
 
-    private final UserSignOutService userSignOutHandler;
+    private final UserSignOutService userSignOutService;
 
 
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody @Valid UserSignUpDto dto) {
-        userSignUpHandler.signUp(dto);
+        userSignUpService.signUp(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody UserSignInDto dto) {
-        userSignInHandler.signIn(dto);
+        userSignInService.signIn(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/signout")
     public ResponseEntity<?> signOut() {
-        userSignOutHandler.signOut();
+        userSignOutService.signOut();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

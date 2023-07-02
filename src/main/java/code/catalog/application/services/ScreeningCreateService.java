@@ -2,24 +2,16 @@ package code.catalog.application.services;
 
 import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.domain.Film;
-import code.catalog.domain.Room;
 import code.catalog.domain.Screening;
-import code.catalog.domain.Seat;
-import code.catalog.domain.exceptions.RoomsNoAvailableException;
 import code.catalog.domain.factories.SeatFactory;
-import code.catalog.domain.services.ScreeningDateValidateService;
 import code.catalog.domain.ports.FilmRepository;
-import code.catalog.domain.ports.RoomRepository;
+import code.catalog.domain.services.ScreeningDateValidateService;
 import code.shared.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static java.util.stream.IntStream.rangeClosed;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +21,7 @@ public class ScreeningCreateService {
     private final Clock clock;
     private final TransactionTemplate transactionTemplate;
     private final FilmRepository filmRepository;
-    private final RoomRepository roomRepository;
+    private final RoomAvailableService roomAvailableService;
     private final SeatFactory seatFactory;
 
     public Long createScreening(ScreeningCreateDto dto) {
@@ -38,7 +30,7 @@ public class ScreeningCreateService {
             var film = getFilmOrThrow(dto.filmId());
             var screeningDate = dto.date();
             var screeningFinishDate = dto.date().plusMinutes(film.getDurationInMinutes());
-            var availableRoom = getFirstAvailableRoom(
+            var availableRoom = roomAvailableService.getFirstAvailableRoom(
                     screeningDate,
                     screeningFinishDate
             );
@@ -54,18 +46,5 @@ public class ScreeningCreateService {
         return filmRepository
                 .readById(filmId)
                 .orElseThrow(() -> new EntityNotFoundException("Film"));
-    }
-
-    private Room getFirstAvailableRoom(LocalDateTime start, LocalDateTime end) {
-        return roomRepository
-                .readAll()
-                .stream()
-                .filter(room -> room
-                        .getScreenings()
-                        .stream()
-                        .noneMatch(screening -> screening.collide(start, end))
-                )
-                .findFirst()
-                .orElseThrow(RoomsNoAvailableException::new);
     }
 }

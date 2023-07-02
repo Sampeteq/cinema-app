@@ -6,6 +6,7 @@ import code.catalog.domain.Room;
 import code.catalog.domain.Screening;
 import code.catalog.domain.Seat;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
+import code.catalog.domain.factories.SeatFactory;
 import code.catalog.domain.services.ScreeningDateValidateService;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
@@ -29,6 +30,7 @@ public class ScreeningCreateService {
     private final TransactionTemplate transactionTemplate;
     private final FilmRepository filmRepository;
     private final RoomRepository roomRepository;
+    private final SeatFactory seatFactory;
 
     public Long createScreening(ScreeningCreateDto dto) {
         screeningDateValidateService.validate(dto.date(), clock);
@@ -40,7 +42,7 @@ public class ScreeningCreateService {
                     screeningDate,
                     screeningFinishDate
             );
-            var seats = createSeats(availableRoom);
+            var seats = seatFactory.createSeats(availableRoom);
             var newScreening = Screening.create(dto.date(), film, availableRoom, seats);
             film.addScreening(newScreening);
             return newScreening;
@@ -65,13 +67,5 @@ public class ScreeningCreateService {
                 )
                 .findFirst()
                 .orElseThrow(RoomsNoAvailableException::new);
-    }
-
-    private static List<Seat> createSeats(Room room) {
-        return rangeClosed(1, room.getRowsQuantity())
-                .boxed()
-                .flatMap(rowNumber -> rangeClosed(1, room.getSeatsInOneRowQuantity())
-                        .mapToObj(seatNumber -> Seat.of(rowNumber, seatNumber))
-                ).toList();
     }
 }

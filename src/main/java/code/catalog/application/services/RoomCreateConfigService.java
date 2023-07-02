@@ -1,7 +1,7 @@
 package code.catalog.application.services;
 
 import code.catalog.application.dto.RoomCreateDto;
-import code.catalog.infrastructure.db.RoomRepository;
+import code.catalog.domain.ports.RoomRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -3,7 +3,7 @@ package code.catalog.application.services;
 import code.catalog.application.dto.FilmDto;
 import code.catalog.application.dto.FilmMapper;
 import code.catalog.domain.FilmCategory;
-import code.catalog.infrastructure.db.FilmRepository;
+import code.catalog.domain.ports.FilmRepository;
 import code.shared.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

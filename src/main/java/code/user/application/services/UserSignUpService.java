@@ -5,7 +5,7 @@ import code.user.domain.User;
 import code.user.domain.UserRole;
 import code.user.domain.exceptions.UserMailAlreadyExistsException;
 import code.user.domain.exceptions.UserNotSamePasswordsException;
-import code.user.infrastrcuture.db.UserRepository;
+import code.user.domain.ports.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

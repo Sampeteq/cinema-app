@@ -1,6 +1,6 @@
 package code.user.infrastrcuture;
 
-import code.user.infrastrcuture.db.UserRepository;
+import code.user.domain.ports.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

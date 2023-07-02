@@ -2,6 +2,7 @@ package code.catalog.infrastructure.db;
 
 import code.catalog.domain.Film;
 import code.catalog.domain.FilmCategory;
+import code.catalog.domain.ports.FilmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

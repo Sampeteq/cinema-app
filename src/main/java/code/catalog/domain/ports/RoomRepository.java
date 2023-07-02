@@ -1,4 +1,4 @@
-package code.catalog.infrastructure.db;
+package code.catalog.domain.ports;
 
 import code.catalog.domain.Room;
 

@@ -3,7 +3,7 @@ package code.catalog.application.services;
 import code.catalog.application.dto.RoomCreateDto;
 import code.catalog.domain.Room;
 import code.catalog.domain.exceptions.RoomCustomIdAlreadyExistsException;
-import code.catalog.infrastructure.db.RoomRepository;
+import code.catalog.domain.ports.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

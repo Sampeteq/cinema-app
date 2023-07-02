@@ -2,7 +2,7 @@ package code.catalog.application.services;
 
 import code.catalog.application.dto.FilmCreateDto;
 import code.catalog.domain.Film;
-import code.catalog.infrastructure.db.FilmRepository;
+import code.catalog.domain.ports.FilmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

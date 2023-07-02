@@ -6,7 +6,7 @@ import code.user.domain.exceptions.UserAlreadyLoggedInException;
 import code.user.domain.exceptions.UserMailAlreadyExistsException;
 import code.user.domain.exceptions.UserNotSamePasswordsException;
 import code.user.helpers.UserTestHelper;
-import code.user.infrastrcuture.db.UserRepository;
+import code.user.domain.ports.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

@@ -7,8 +7,8 @@ import code.catalog.application.dto.ScreeningDto;
 import code.catalog.domain.Film;
 import code.catalog.domain.FilmCategory;
 import code.catalog.helpers.FilmTestHelper;
-import code.catalog.infrastructure.db.FilmRepository;
-import code.catalog.infrastructure.db.RoomRepository;
+import code.catalog.domain.ports.FilmRepository;
+import code.catalog.domain.ports.RoomRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,7 +1,7 @@
 package code.user.application.services;
 
 import code.user.domain.User;
-import code.user.infrastrcuture.db.UserRepository;
+import code.user.domain.ports.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

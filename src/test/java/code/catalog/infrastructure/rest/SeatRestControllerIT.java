@@ -3,8 +3,8 @@ package code.catalog.infrastructure.rest;
 import code.SpringIT;
 import code.catalog.application.dto.SeatMapper;
 import code.catalog.domain.Screening;
-import code.catalog.infrastructure.db.FilmRepository;
-import code.catalog.infrastructure.db.RoomRepository;
+import code.catalog.domain.ports.FilmRepository;
+import code.catalog.domain.ports.RoomRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,4 +1,4 @@
-package code.bookings.infrastructure.db;
+package code.bookings.domain.ports;
 
 import code.bookings.domain.Booking;
 

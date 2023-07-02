@@ -1,6 +1,7 @@
 package code.catalog.infrastructure.db;
 
 import code.catalog.domain.Room;
+import code.catalog.domain.ports.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package code.user.infrastrcuture.db;
+package code.user.domain.ports;
 
 import code.user.domain.User;
 

@@ -1,6 +1,7 @@
 package code.bookings.infrastructure.db;
 
 import code.bookings.domain.Booking;
+import code.bookings.domain.ports.BookingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

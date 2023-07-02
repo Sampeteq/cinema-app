@@ -1,6 +1,6 @@
 package code.bookings.application.services;
 
-import code.bookings.infrastructure.db.BookingRepository;
+import code.bookings.domain.ports.BookingRepository;
 import code.shared.EntityNotFoundException;
 import code.user.application.services.UserCurrentService;
 import lombok.RequiredArgsConstructor;

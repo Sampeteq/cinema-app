@@ -2,7 +2,7 @@ package code.user.application.services;
 
 import code.user.domain.User;
 import code.user.domain.UserRole;
-import code.user.infrastrcuture.db.UserRepository;
+import code.user.domain.ports.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

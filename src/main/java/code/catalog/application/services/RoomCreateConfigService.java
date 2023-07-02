@@ -22,21 +22,21 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("prod")
-public class RoomCreateFromConfigService {
+public class RoomCreateConfigService {
 
     private final RoomRepository roomRepository;
 
-    private final RoomCreateService roomCreateHandler;
+    private final RoomCreateService roomCreateService;
 
     @Value("${rooms.pathToRoomsConfig}")
     private String pathToRoomsConfig;
 
     @EventListener(ContextRefreshedEvent.class)
-    public void createRoomsFromConfig() {
+    public void createRoomsFromConfigOnStartUp() {
         if(roomRepository.readAll().isEmpty()) {
             try {
-                logIfFileNotExists();
-                var json = readRoomCreationCommandsJson();
+                logIfFileNotExists(pathToRoomsConfig);
+                var json = readJsonFromRoomsConfig(pathToRoomsConfig);
                 logIfFileIsEmpty(json);
                 createRoomsFromJson(json);
             }
@@ -46,13 +46,13 @@ public class RoomCreateFromConfigService {
         }
     }
 
-    private void logIfFileNotExists() {
+    private void logIfFileNotExists(String pathToRoomsConfig) {
         if (Files.notExists(Path.of(pathToRoomsConfig))) {
             log.warn("Rooms configs file not found");
         }
     }
 
-    private String readRoomCreationCommandsJson() throws IOException {
+    private String readJsonFromRoomsConfig(String pathToRoomsConfig) throws IOException {
         return Files.readString(Path.of(pathToRoomsConfig));
     }
 
@@ -65,6 +65,6 @@ public class RoomCreateFromConfigService {
     private void createRoomsFromJson(String json) throws JsonProcessingException {
         new ObjectMapper()
                 .readValue(json, new TypeReference<List<RoomCreateDto>>() {})
-                .forEach(roomCreateHandler::createRoom);
+                .forEach(roomCreateService::createRoom);
     }
 }

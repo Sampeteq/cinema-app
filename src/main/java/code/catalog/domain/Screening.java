@@ -71,7 +71,7 @@ public class Screening {
         return screening;
     }
 
-    public boolean isCollisionWith(LocalDateTime start, LocalDateTime finish) {
+    public boolean collide(LocalDateTime start, LocalDateTime finish) {
         return start.isBefore(this.endDate) && finish.isAfter(this.date);
     }
 

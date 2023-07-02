@@ -54,14 +54,14 @@ public class ScreeningCreateService {
                 .orElseThrow(() -> new EntityNotFoundException("Film"));
     }
 
-    private Room getFirstAvailableRoom(LocalDateTime start, LocalDateTime finish) {
+    private Room getFirstAvailableRoom(LocalDateTime start, LocalDateTime end) {
         return roomRepository
                 .readAll()
                 .stream()
                 .filter(room -> room
                         .getScreenings()
                         .stream()
-                        .noneMatch(screening -> screening.isCollisionWith(start, finish))
+                        .noneMatch(screening -> screening.collide(start, end))
                 )
                 .findFirst()
                 .orElseThrow(RoomsNoAvailableException::new);

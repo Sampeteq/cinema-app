@@ -32,7 +32,7 @@ public class BookingMakeService {
         }
         var seat = seatReadOnlyRepository
                 .getById(seatId)
-                .orElseThrow(() -> new EntityNotFoundException("Booking"));
+                .orElseThrow(() -> new EntityNotFoundException("Seat"));
         log.info("Found a seat for booking:{}",seat);
         var currentUserId = userCurrentService.getCurrentUserId();
         var booking = Booking.make(seat, clock, currentUserId);

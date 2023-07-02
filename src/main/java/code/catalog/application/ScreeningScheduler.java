@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-public class FilmScreeningScheduler {
+public class ScreeningScheduler {
 
     private final ScreeningEndService screeningFinishHandler;
 

@@ -15,40 +15,40 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class FilmSpringDataJpaRepository implements FilmRepository {
+public class FilmJpaRepositoryAdapter implements FilmRepository {
 
-    private final FilmJpaRepository jpaFilmRepository;
+    private final FilmJpaRepository filmJpaRepository;
 
     @Override
     public Film add(Film film) {
-        return jpaFilmRepository.save(film);
+        return filmJpaRepository.save(film);
     }
 
     @Override
     public Optional<Film> readById(Long filmId) {
-        return jpaFilmRepository.findById(filmId);
+        return filmJpaRepository.findById(filmId);
     }
 
     @Override
     public Optional<Film> readByTitle(String title) {
-        var r = jpaFilmRepository.readByTitle(title);
+        var r = filmJpaRepository.readByTitle(title);
         System.out.println(r);
         return r.stream().findFirst();
     }
 
     @Override
     public List<Film> readByCategory(FilmCategory category) {
-        return jpaFilmRepository.readByCategory(category);
+        return filmJpaRepository.readByCategory(category);
     }
 
     @Override
     public List<Film> readByDate(LocalDate date) {
-        return jpaFilmRepository.readByDate(date.atStartOfDay(), date.plusDays(1).atStartOfDay());
+        return filmJpaRepository.readByDate(date.atStartOfDay(), date.plusDays(1).atStartOfDay());
     }
 
     @Override
     public List<Film> readAll() {
-        return jpaFilmRepository.findAll();
+        return filmJpaRepository.findAll();
     }
 }
 

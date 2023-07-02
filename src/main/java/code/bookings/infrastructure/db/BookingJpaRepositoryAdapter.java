@@ -11,33 +11,33 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class SpringDataJpaBookingRepository implements BookingRepository {
+public class BookingJpaRepositoryAdapter implements BookingRepository {
 
-    private final JpaBookingRepository jpaBookingRepository;
+    private final BookingJpaRepository bookingJpaRepository;
 
     @Override
     public Booking add(Booking booking) {
-        return jpaBookingRepository.save(booking);
+        return bookingJpaRepository.save(booking);
     }
 
 
     @Override
     public Optional<Booking> readByIdAndUserId(Long bookingId, Long userId) {
-        return jpaBookingRepository.readByIdAndUserId(bookingId, userId);
+        return bookingJpaRepository.readByIdAndUserId(bookingId, userId);
     }
 
     @Override
     public List<Booking> readAllByUserId(Long userId) {
-        return jpaBookingRepository.readAllByUserId(userId);
+        return bookingJpaRepository.readAllByUserId(userId);
     }
 
     @Override
     public boolean existsBySeatId(Long seatId) {
-        return jpaBookingRepository.existsBySeatId(seatId);
+        return bookingJpaRepository.existsBySeatId(seatId);
     }
 }
 
-interface JpaBookingRepository extends JpaRepository<Booking, Long> {
+interface BookingJpaRepository extends JpaRepository<Booking, Long> {
     Optional<Booking> readByIdAndUserId(Long bookingId, Long userId);
 
     @Query("SELECT DISTINCT b FROM Booking b where b.userId = :userId")

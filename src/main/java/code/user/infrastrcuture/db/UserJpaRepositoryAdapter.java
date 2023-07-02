@@ -9,9 +9,9 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class SpringDataJpaUserRepository implements UserRepository {
+public class UserJpaRepositoryAdapter implements UserRepository {
 
-    private final JpaUserRepository jpaUserRepository;
+    private final UserJpaRepository jpaUserRepository;
 
     @Override
     public User add(User user) {
@@ -29,7 +29,7 @@ public class SpringDataJpaUserRepository implements UserRepository {
     }
 }
 
-interface JpaUserRepository extends JpaRepository<User, String> {
+interface UserJpaRepository extends JpaRepository<User, String> {
     Optional<User> readByMail(String mail);
     boolean existsByMail(String mail);
 }

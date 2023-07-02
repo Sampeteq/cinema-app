@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class RoomSpringDataJpaRepository implements RoomRepository {
+public class RoomJpaRepositoryAdapter implements RoomRepository {
 
     private final RoomJpaRepository jpaRoomRepository;
 

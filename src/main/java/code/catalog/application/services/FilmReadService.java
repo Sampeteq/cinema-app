@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FilmReadService {
 
@@ -35,7 +36,6 @@ public class FilmReadService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
     public FilmDto readByTitle(String title) {
         return filmRepository
                 .readByTitle(title)

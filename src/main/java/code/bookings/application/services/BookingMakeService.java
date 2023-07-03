@@ -4,7 +4,7 @@ import code.bookings.application.dto.BookingId;
 import code.bookings.domain.Booking;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.domain.ports.BookingRepository;
-import code.catalog.infrastructure.db.SeatReadOnlyRepository;
+import code.catalog.infrastructure.db.ScreeningReadOnlyRepository;
 import code.shared.EntityNotFoundException;
 import code.user.application.services.UserCurrentService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.time.Clock;
 public class BookingMakeService {
 
     private final BookingRepository bookingRepository;
-    private final SeatReadOnlyRepository seatReadOnlyRepository;
+    private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
     private final UserCurrentService userCurrentService;
     private final Clock clock;
 
@@ -30,9 +30,11 @@ public class BookingMakeService {
             log.error("Booking already exists");
             throw new BookingAlreadyExists();
         }
-        var seat = seatReadOnlyRepository
-                .getById(seatId)
-                .orElseThrow(() -> new EntityNotFoundException("Seat"));
+        var seat = screeningReadOnlyRepository
+                .readBySeatId(seatId)
+                .orElseThrow(() -> new EntityNotFoundException("Seat"))
+                .getSeats()
+                .get(0);
         log.info("Found a seat for booking:{}",seat);
         var currentUserId = userCurrentService.getCurrentUserId();
         var booking = Booking.make(seat, clock, currentUserId);

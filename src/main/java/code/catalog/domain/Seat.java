@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class Seat {
 
     private boolean isFree;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Screening screening;
 
     protected Seat() {

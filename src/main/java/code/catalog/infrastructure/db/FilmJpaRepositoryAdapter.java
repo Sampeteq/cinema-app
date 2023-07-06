@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class FilmJpaRepositoryAdapter implements FilmRepository {
 
     private final FilmJpaRepository filmJpaRepository;
+    private final Clock clock;
 
     @Override
     public Film add(Film film) {
@@ -32,14 +34,14 @@ public class FilmJpaRepositoryAdapter implements FilmRepository {
 
     @Override
     public Optional<Film> readByTitle(String title) {
-        var r = filmJpaRepository.readByTitle(title);
+        var r = filmJpaRepository.readByTitle(title, LocalDateTime.now(clock));
         System.out.println(r);
         return r.stream().findFirst();
     }
 
     @Override
     public List<Film> readByCategory(FilmCategory category) {
-        return filmJpaRepository.readByCategory(category);
+        return filmJpaRepository.readByCategory(category, LocalDateTime.now(clock));
     }
 
     @Override
@@ -58,16 +60,16 @@ interface FilmJpaRepository extends JpaRepository<Film, Long>, JpaSpecificationE
     @Query(
             "select f from Film f " +
                     "join fetch f.screenings s " +
-                    "where f.title = :title and s.endDate > CURRENT_DATE"
+                    "where f.title = :title and s.endDate > :currentDate"
     )
-    List<Film> readByTitle(String title);
+    List<Film> readByTitle(String title, LocalDateTime currentDate);
 
     @Query(
             "select f from Film f " +
                     "join fetch f.screenings s " +
-                    "where f.category = :category and s.endDate > CURRENT_DATE"
+                    "where f.category = :category and s.endDate > :currentDate"
     )
-    List<Film> readByCategory(FilmCategory category);
+    List<Film> readByCategory(FilmCategory category, LocalDateTime currentDate);
 
     @Query("select distinct f from Film f join fetch f.screenings s where s.date >= :from and s.date <= :to")
     List<Film> readByDate(LocalDateTime from, LocalDateTime to);

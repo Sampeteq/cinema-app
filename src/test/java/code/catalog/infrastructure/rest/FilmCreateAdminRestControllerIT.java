@@ -46,8 +46,7 @@ public class FilmCreateAdminRestControllerIT extends SpringIT {
                 cmd.title(),
                 cmd.category(),
                 cmd.year(),
-                cmd.durationInMinutes(),
-                List.of()
+                cmd.durationInMinutes()
                 )
         );
 
@@ -61,7 +60,7 @@ public class FilmCreateAdminRestControllerIT extends SpringIT {
         //then
         result.andExpect(status().isCreated());
         mockMvc
-                .perform(get(FILMS_BASE_ENDPOINT + "/screenings"))
+                .perform(get(FILMS_BASE_ENDPOINT))
                 .andExpect(content().json(toJson(expectedDto)));
     }
 

@@ -2,15 +2,19 @@ package code.catalog.application.services;
 
 import code.catalog.application.dto.FilmDto;
 import code.catalog.application.dto.FilmMapper;
+import code.catalog.application.dto.ScreeningDto;
+import code.catalog.application.dto.ScreeningMapper;
 import code.catalog.domain.FilmCategory;
+import code.catalog.domain.Screening;
 import code.catalog.domain.ports.FilmRepository;
-import code.shared.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static java.util.Comparator.comparing;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,6 +23,7 @@ public class FilmReadService {
 
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
+    private final ScreeningMapper screeningMapper;
 
     public List<FilmDto> readAll() {
         return filmRepository
@@ -28,26 +33,51 @@ public class FilmReadService {
                 .toList();
     }
 
-    public List<FilmDto> readByCategory(FilmCategory category) {
+    public List<ScreeningDto> readAllScreenings() {
+        return filmRepository
+                .readAll()
+                .stream()
+                .flatMap(film -> film
+                        .getScreenings()
+                        .stream()
+                        .sorted(comparing(Screening::getDate))
+                        .map(screeningMapper::mapToDto)
+                ).toList();
+    }
+
+    public List<ScreeningDto> readScreeningsByFilmTitle(String filmTitle) {
+        return filmRepository
+                .readByTitle(filmTitle)
+                .stream()
+                .flatMap(film -> film
+                        .getScreenings()
+                        .stream()
+                        .sorted(comparing(Screening::getDate))
+                        .map(screeningMapper::mapToDto)
+                ).toList();
+    }
+
+    public List<ScreeningDto> readScreeningsByCategory(FilmCategory category) {
         return filmRepository
                 .readByCategory(category)
                 .stream()
-                .map(filmMapper::mapToDto)
-                .toList();
+                .flatMap(film -> film
+                        .getScreenings()
+                        .stream()
+                        .sorted(comparing(Screening::getDate))
+                        .map(screeningMapper::mapToDto)
+                ).toList();
     }
 
-    public FilmDto readByTitle(String title) {
-        return filmRepository
-                .readByTitle(title)
-                .map(filmMapper::mapToDto)
-                .orElseThrow(() -> new EntityNotFoundException("Film"));
-    }
-
-    public List<FilmDto> readByDate(LocalDate date) {
+    public List<ScreeningDto> readScreeningsByDate(LocalDate date) {
         return filmRepository
                 .readByDate(date)
                 .stream()
-                .map(filmMapper::mapToDto)
-                .toList();
+                .flatMap(film -> film
+                        .getScreenings()
+                        .stream()
+                        .sorted(comparing(Screening::getDate))
+                        .map(screeningMapper::mapToDto)
+                ).toList();
     }
 }

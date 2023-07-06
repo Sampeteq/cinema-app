@@ -1,7 +1,6 @@
 package code.catalog.infrastructure.rest;
 
 import code.SpringIT;
-import code.catalog.application.dto.FilmDto;
 import code.catalog.application.dto.ScreeningDto;
 import code.catalog.domain.Screening;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
@@ -66,20 +65,15 @@ public class ScreeningCreateAdminRestControllerIT extends SpringIT {
         //then
         result.andExpect(status().isCreated());
         var expectedDto = List.of(
-                new FilmDto(
-                        1L,
-                        film.getTitle(),
-                        film.getCategory(),
-                        film.getYear(),
-                        film.getDurationInMinutes(),
-                        List.of(
-                                new ScreeningDto(1L, SCREENING_DATE)
-                        )
-                )
+               new ScreeningDto(
+                       1L,
+                       SCREENING_DATE
+               )
         );
         mockMvc
                 .perform(get(FILMS_BASE_ENDPOINT + "/screenings"))
-                .andExpect(content().json(toJson(expectedDto)));}
+                .andExpect(content().json(toJson(expectedDto)));
+    }
 
     @ParameterizedTest
     @MethodSource("code.catalog.helpers.ScreeningTestHelper#getWrongScreeningDates")

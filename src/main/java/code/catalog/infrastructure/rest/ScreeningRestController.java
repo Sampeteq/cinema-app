@@ -40,6 +40,11 @@ public class ScreeningRestController {
         screeningCreateService.createScreening(dto);
     }
 
+    @GetMapping
+    public List<ScreeningDto> readAll() {
+        return screeningReadService.readAllScreenings();
+    }
+
     @GetMapping("/by/title")
     public List<ScreeningDto> readByTitle(@RequestParam String title) {
         return screeningReadService.readScreeningsByFilmTitle(title);

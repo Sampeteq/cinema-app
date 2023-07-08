@@ -44,40 +44,4 @@ public class FilmReadService {
                         .map(screeningMapper::mapToDto)
                 ).toList();
     }
-
-    public List<ScreeningDto> readScreeningsByFilmTitle(String filmTitle) {
-        return filmRepository
-                .readByTitle(filmTitle)
-                .stream()
-                .flatMap(film -> film
-                        .getScreenings()
-                        .stream()
-                        .sorted(comparing(Screening::getDate))
-                        .map(screeningMapper::mapToDto)
-                ).toList();
-    }
-
-    public List<ScreeningDto> readScreeningsByCategory(FilmCategory category) {
-        return filmRepository
-                .readByCategory(category)
-                .stream()
-                .flatMap(film -> film
-                        .getScreenings()
-                        .stream()
-                        .sorted(comparing(Screening::getDate))
-                        .map(screeningMapper::mapToDto)
-                ).toList();
-    }
-
-    public List<ScreeningDto> readScreeningsByDate(LocalDate date) {
-        return filmRepository
-                .readByDate(date)
-                .stream()
-                .flatMap(film -> film
-                        .getScreenings()
-                        .stream()
-                        .sorted(comparing(Screening::getDate))
-                        .map(screeningMapper::mapToDto)
-                ).toList();
-    }
 }

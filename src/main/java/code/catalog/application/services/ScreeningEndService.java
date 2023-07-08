@@ -17,7 +17,7 @@ public class ScreeningEndService {
     @Transactional
     public void removeRoomsFromEndedScreenings() {
         log.info("Searching for ended screenings");
-        var endedScreenings = screeningReadOnlyRepository.readEnded();
+        var endedScreenings = screeningReadOnlyRepository.findEnded();
         if (endedScreenings.isEmpty()) {
             log.info("Ended screenings not found");
         } else {

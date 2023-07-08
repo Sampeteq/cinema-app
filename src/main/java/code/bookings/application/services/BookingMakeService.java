@@ -31,7 +31,7 @@ public class BookingMakeService {
             throw new BookingAlreadyExists();
         }
         var seat = screeningReadOnlyRepository
-                .readBySeatId(seatId)
+                .findBySeatId(seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Seat"))
                 .getSeats()
                 .get(0);

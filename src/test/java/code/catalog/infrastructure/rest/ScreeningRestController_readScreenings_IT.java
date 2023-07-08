@@ -1,12 +1,12 @@
 package code.catalog.infrastructure.rest;
 
 import code.SpringIT;
-import code.catalog.application.dto.FilmDto;
-import code.catalog.application.dto.FilmMapper;
 import code.catalog.application.dto.ScreeningDto;
 import code.catalog.application.dto.ScreeningMapper;
+import code.catalog.application.dto.SeatMapper;
 import code.catalog.domain.Film;
 import code.catalog.domain.FilmCategory;
+import code.catalog.domain.Screening;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static code.catalog.helpers.FilmTestHelper.createFilm;
-import static code.catalog.helpers.FilmTestHelper.createFilms;
 import static code.catalog.helpers.RoomTestHelper.createRoom;
 import static code.catalog.helpers.ScreeningTestHelper.createScreening;
 import static code.catalog.helpers.ScreeningTestHelper.createScreenings;
@@ -26,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class FilmReadPublicRestControllerIT extends SpringIT {
+class ScreeningRestController_readScreenings_IT extends SpringIT {
 
     @Autowired
     private FilmRepository filmRepository;
@@ -35,30 +34,14 @@ public class FilmReadPublicRestControllerIT extends SpringIT {
     private RoomRepository roomRepository;
 
     @Autowired
-    private FilmMapper filmMapper;
-
-    @Autowired
     private ScreeningMapper screeningMapper;
 
-    public static final String FILMS_BASE_ENDPOINT = "/films/";
+    @Autowired
+    private SeatMapper seatMapper;
+
+    public static final String SCREENINGS_BASE_ENDPOINT = "/screenings/";
 
     private static final int CURRENT_YEAR = Year.now().getValue();
-
-    @Test
-    void should_read_all_films() throws Exception {
-        //given
-        var films = addFilms();
-
-        //when
-        var result = mockMvc.perform(
-                get(FILMS_BASE_ENDPOINT)
-        );
-
-        //then
-        result
-                .andExpect(status().isOk())
-                .andExpect(content().json(toJson(films)));
-    }
 
     @Test
     void should_read_all_screenings() throws Exception {
@@ -67,7 +50,7 @@ public class FilmReadPublicRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get(FILMS_BASE_ENDPOINT + "/screenings")
+                get(SCREENINGS_BASE_ENDPOINT)
         );
 
         //then
@@ -85,7 +68,7 @@ public class FilmReadPublicRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get(FILMS_BASE_ENDPOINT + "/screenings/by" + "/title")
+                get(SCREENINGS_BASE_ENDPOINT + "/by/title")
                         .param("title", requiredFilmTitle)
         );
 
@@ -104,7 +87,7 @@ public class FilmReadPublicRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get(FILMS_BASE_ENDPOINT + "/screenings/by" + "/category")
+                get(SCREENINGS_BASE_ENDPOINT + "by/category")
                         .param("category", requiredFilmCategory.toString())
         );
 
@@ -123,7 +106,7 @@ public class FilmReadPublicRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get(FILMS_BASE_ENDPOINT + "/screenings/by" + "/date")
+                get(SCREENINGS_BASE_ENDPOINT + "by/date")
                         .param("date", requiredDate.toString())
         );
 
@@ -133,12 +116,31 @@ public class FilmReadPublicRestControllerIT extends SpringIT {
                 .andExpect(content().json(toJson(List.of(screeningWithRequiredDate))));
     }
 
-    private List<FilmDto> addFilms() {
-        return createFilms()
-                .stream()
-                .map(filmRepository::add)
-                .map(film -> filmMapper.mapToDto(film))
-                .toList();
+    @Test
+    void should_read_seats_for_screening() throws Exception {
+        //given
+        var screening = addScreening();
+
+        //when
+        var result = mockMvc.perform(
+                get(SCREENINGS_BASE_ENDPOINT + screening.getId() + "/seats")
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(seatMapper.toDto(screening.getSeats()))));
+    }
+
+    private Screening addScreening() {
+        var film = createFilm();
+        var room = roomRepository.add(createRoom());
+        var screening = createScreening(film, room);
+        film.addScreening(screening);
+        return filmRepository
+                .add(film)
+                .getScreenings()
+                .get(0);
     }
 
     private ScreeningDto addScreening(Supplier<Film> filmSupplier) {

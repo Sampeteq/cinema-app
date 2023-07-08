@@ -1,6 +1,7 @@
 package code.catalog.infrastructure.rest;
 
 import code.SpringIT;
+import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.application.dto.ScreeningDto;
 import code.catalog.domain.Screening;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDateTime;
@@ -25,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ScreeningCreateAdminRestControllerIT extends SpringIT {
+public class ScreeningRestController_createScreening_IT extends SpringIT {
 
     @Autowired
     private FilmRepository filmRepository;
@@ -33,7 +35,7 @@ public class ScreeningCreateAdminRestControllerIT extends SpringIT {
     @Autowired
     private RoomRepository roomRepository;
 
-    public static final String FILMS_BASE_ENDPOINT = "/films";
+    public static final String SCREENING_BASE_ENDPOINT = "/screenings";
 
     @Test
     @WithMockUser(authorities = "COMMON")
@@ -42,7 +44,7 @@ public class ScreeningCreateAdminRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(FILMS_BASE_ENDPOINT + "/1" + "/screenings")
+                post(SCREENING_BASE_ENDPOINT)
         );
 
         //then
@@ -55,11 +57,17 @@ public class ScreeningCreateAdminRestControllerIT extends SpringIT {
         //given
         var film = filmRepository.add(createFilm());
         roomRepository.add(createRoom());
+        var screeningCreateDto = ScreeningCreateDto
+                .builder()
+                .filmId(film.getId())
+                .date(SCREENING_DATE)
+                .build();
 
         //when
         var result = mockMvc.perform(
-                post(FILMS_BASE_ENDPOINT + "/" + film.getId() + "/screenings")
-                        .param("screeningDate", SCREENING_DATE.toString())
+                post(SCREENING_BASE_ENDPOINT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(screeningCreateDto))
         );
 
         //then
@@ -71,7 +79,7 @@ public class ScreeningCreateAdminRestControllerIT extends SpringIT {
                )
         );
         mockMvc
-                .perform(get(FILMS_BASE_ENDPOINT + "/screenings"))
+                .perform(get(SCREENING_BASE_ENDPOINT))
                 .andExpect(content().json(toJson(expectedDto)));
     }
 
@@ -82,12 +90,18 @@ public class ScreeningCreateAdminRestControllerIT extends SpringIT {
             throws Exception {
         //given
         var filmId = filmRepository.add(createFilm()).getId();
-        var roomId = roomRepository.add(createRoom()).getId();
+        roomRepository.add(createRoom());
+        var screeningCreateDto = ScreeningCreateDto
+                .builder()
+                .filmId(filmId)
+                .date(wrongDate)
+                .build();
 
         //when
         var result = mockMvc.perform(
-                post(FILMS_BASE_ENDPOINT + "/" + filmId + "/screenings")
-                        .param("screeningDate", wrongDate.toString())
+                post(SCREENING_BASE_ENDPOINT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(screeningCreateDto))
         );
 
         //then
@@ -101,12 +115,17 @@ public class ScreeningCreateAdminRestControllerIT extends SpringIT {
     void should_throw_exception_when_there_is_collision_between_screenings() throws Exception {
         //given
         var screening = prepareScreening();
-        var screeningDate = screening.getDate().plusMinutes(10);
+        var screeningCreateDto = ScreeningCreateDto
+                .builder()
+                .filmId(1L)
+                .date(screening.getDate().plusMinutes(10))
+                .build();
 
         //when
         var result = mockMvc.perform(
-                post(FILMS_BASE_ENDPOINT + "/" + screening.getFilm().getId() + "/screenings")
-                        .param("screeningDate", screeningDate.toString())
+                post(SCREENING_BASE_ENDPOINT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(screeningCreateDto))
         );
 
         //then

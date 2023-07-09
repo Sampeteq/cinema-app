@@ -18,14 +18,7 @@ public class RoomAvailableService {
     @Transactional(readOnly = true)
     public Room getFirstAvailableRoom(LocalDateTime start, LocalDateTime end) {
         return roomRepository
-                .readAll()
-                .stream()
-                .filter(room -> room
-                        .getScreenings()
-                        .stream()
-                        .noneMatch(screening -> screening.collide(start, end))
-                )
-                .findFirst()
+                .readFirstAvailableRoom(start, end)
                 .orElseThrow(RoomsNoAvailableException::new);
     }
 }

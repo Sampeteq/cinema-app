@@ -72,10 +72,6 @@ public class Screening {
         return screening;
     }
 
-    public boolean collide(LocalDateTime start, LocalDateTime finish) {
-        return start.isBefore(this.endDate) && finish.isAfter(this.date);
-    }
-
     public int timeToScreeningStartInHours(Clock clock) {
         return (int) Duration
                 .between(LocalDateTime.now(clock), date)

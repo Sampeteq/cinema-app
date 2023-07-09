@@ -2,14 +2,15 @@ package code.catalog.application;
 
 import code.SpringIT;
 import code.catalog.application.services.ScreeningEndService;
-import code.catalog.helpers.ScreeningTestHelper;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
+import code.catalog.infrastructure.db.ScreeningReadOnlyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static code.catalog.helpers.FilmTestHelper.createFilm;
 import static code.catalog.helpers.RoomTestHelper.createRoom;
+import static code.catalog.helpers.ScreeningTestHelper.createScreenings;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RoomFinishHandlerIT extends SpringIT {
@@ -18,25 +19,26 @@ class RoomFinishHandlerIT extends SpringIT {
     private ScreeningEndService screeningFinishHandler;
 
     @Autowired
+    private FilmRepository filmRepository;
+
+    @Autowired
     private RoomRepository roomRepository;
 
     @Autowired
-    private FilmRepository filmRepository;
+    private ScreeningReadOnlyRepository screeningReadOnlyRepository;
 
     @Test
     void shouldRemoveRoomsFromFinishedScreenings() {
         //given
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
-        ScreeningTestHelper.createScreenings(film, room).forEach(film::addScreening);
-        var screeningsWithRooms = roomRepository
-                .add(createRoom())
-                .getScreenings();
+        createScreenings(film, room).forEach(film::addScreening);
 
         //when
         screeningFinishHandler.removeRoomsFromEndedScreenings();
 
         //then
-        assertThat(screeningsWithRooms).allMatch(screening -> screening.getRoom() == null);
+        var screenings = screeningReadOnlyRepository.findAll();
+        assertThat(screenings).allMatch(screening -> screening.getRoom() == null);
     }
 }

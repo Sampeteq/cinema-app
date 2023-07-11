@@ -12,15 +12,13 @@ public class FilmCreateService {
 
     private final FilmRepository filmRepository;
 
-    public Long creteFilm(FilmCreateDto dto) {
+    public void creteFilm(FilmCreateDto dto) {
         var film = Film.create(
                         dto.title(),
                         dto.category(),
                         dto.year(),
                         dto.durationInMinutes()
         );
-        return filmRepository
-                .add(film)
-                .getId();
+        filmRepository.add(film);
     }
 }

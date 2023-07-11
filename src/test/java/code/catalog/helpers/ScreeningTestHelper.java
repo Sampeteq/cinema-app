@@ -22,28 +22,18 @@ public class ScreeningTestHelper {
     );
 
     public static Screening createScreening(Film film, Room room) {
-        var seats = List.of(
-                Seat.of(1, 2),
-                Seat.of(1, 2)
-        );
         return Screening.create(
                 SCREENING_DATE,
                 film,
-                room,
-                seats
+                room
         );
     }
 
     public static Screening createScreening(Film film, Room room, LocalDateTime screeningDate) {
-        var seats = List.of(
-                Seat.of(1, 2),
-                Seat.of(1, 2)
-        );
         return Screening.create(
                 screeningDate,
                 film,
-                room,
-                seats
+                room
         );
     }
 
@@ -51,20 +41,12 @@ public class ScreeningTestHelper {
         var screening1 = Screening.create(
                 SCREENING_DATE,
                 film,
-                room,
-                List.of(
-                        Seat.of(1, 2),
-                        Seat.of(1, 2)
-                )
+                room
         );
         var screening2 = Screening.create(
                 SCREENING_DATE.plusDays(1),
                 film,
-                room,
-                List.of(
-                        Seat.of(1, 2),
-                        Seat.of(1, 2)
-                )
+                room
         );
         return List.of(screening1, screening2);
     }

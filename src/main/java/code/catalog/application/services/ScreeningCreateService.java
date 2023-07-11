@@ -3,7 +3,6 @@ package code.catalog.application.services;
 import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.domain.Film;
 import code.catalog.domain.Screening;
-import code.catalog.domain.factories.SeatFactory;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.services.ScreeningDateValidateService;
 import code.shared.EntityNotFoundException;
@@ -21,7 +20,6 @@ public class ScreeningCreateService {
     private final Clock clock;
     private final FilmRepository filmRepository;
     private final RoomAvailableService roomAvailableService;
-    private final SeatFactory seatFactory;
 
     @Transactional
     public void createScreening(ScreeningCreateDto dto) {
@@ -33,8 +31,7 @@ public class ScreeningCreateService {
                 screeningDate,
                 screeningFinishDate
         );
-        var seats = seatFactory.createSeats(availableRoom);
-        var newScreening = Screening.create(dto.date(), film, availableRoom, seats);
+        var newScreening = Screening.create(dto.date(), film, availableRoom);
         film.addScreening(newScreening);
     }
 

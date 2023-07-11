@@ -1,6 +1,7 @@
 package code.user.domain;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -21,6 +22,7 @@ import java.util.List;
 @Entity
 @Table(name = "USERS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @ToString
 public class User implements UserDetails {
@@ -36,10 +38,14 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
-    public User(String mail, String password, UserRole role) {
-        this.mail = mail;
-        this.password = password;
-        this.role = role;
+    public static User create(String mail, String password, UserRole role) {
+        Long id = null;
+        return new User(
+                id,
+                mail,
+                password,
+                role
+        );
     }
 
     public Long getId() {

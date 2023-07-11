@@ -24,7 +24,7 @@ public class UserSignUpService {
         if (!(dto.password().equals(dto.repeatedPassword()))) {
             throw new UserNotSamePasswordsException();
         }
-        var user = new User(
+        var user = User.create(
                 dto.mail(),
                 passwordEncoder.encode(dto.password()),
                 UserRole.COMMON

@@ -30,7 +30,7 @@ public class UserAdminCreateService {
         if (userRepository.existsByMail(adminMail)) {
             log.info("Admin already exists");
         } else {
-            var admin = new User(
+            var admin = User.create(
                     adminMail,
                     passwordEncoder.encode(adminPassword),
                     UserRole.ADMIN

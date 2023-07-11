@@ -40,7 +40,6 @@ public class BookingMakeService {
         var booking = Booking.make(seat, clock, currentUserId);
         var addedBooking = bookingRepository.add(booking);
         log.info("Added a booking:{}", addedBooking);
-        seat.makeNotFree();
         return new BookingId(addedBooking.getId());
     }
 }

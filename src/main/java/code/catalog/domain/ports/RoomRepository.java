@@ -7,10 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomRepository {
-
     Room add(Room room);
-
-    Optional<Room> readById(Long roomId);
 
     Optional<Room> readFirstAvailableRoom(LocalDateTime start, LocalDateTime end);
 

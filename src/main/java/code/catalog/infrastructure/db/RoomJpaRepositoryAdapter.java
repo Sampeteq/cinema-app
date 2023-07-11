@@ -3,9 +3,6 @@ package code.catalog.infrastructure.db;
 import code.catalog.domain.Room;
 import code.catalog.domain.ports.RoomRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -23,11 +20,6 @@ public class RoomJpaRepositoryAdapter implements RoomRepository {
     @Override
     public Room add(Room room) {
         return jpaRoomRepository.save(room);
-    }
-
-    @Override
-    public Optional<Room> readById(Long roomId) {
-        return jpaRoomRepository.findById(roomId);
     }
 
     @Override

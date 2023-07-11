@@ -49,7 +49,7 @@ public class Room {
         return rangeClosed(1, this.rowsQuantity)
                 .boxed()
                 .flatMap(rowNumber -> rangeClosed(1, this.seatsInOneRowQuantity)
-                        .mapToObj(seatNumber -> Seat.of(rowNumber, seatNumber))
+                        .mapToObj(seatNumber -> Seat.create(rowNumber, seatNumber))
                 )
                 .toList();
     }

@@ -38,10 +38,14 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
+    private User(String mail, String password, UserRole role) {
+        this.mail = mail;
+        this.password = password;
+        this.role = role;
+    }
+
     public static User create(String mail, String password, UserRole role) {
-        Long id = null;
         return new User(
-                id,
                 mail,
                 password,
                 role

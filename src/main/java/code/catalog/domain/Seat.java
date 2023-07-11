@@ -39,16 +39,18 @@ public class Seat {
     @ManyToOne(fetch = FetchType.LAZY)
     private Screening screening;
 
+    private Seat(int rowNumber, int number, boolean isFree) {
+        this.rowNumber = rowNumber;
+        this.number = number;
+        this.isFree = isFree;
+    }
+
     public static Seat create(int rowNumber, int number) {
-        Long id = null;
-        Screening screening = null;
         final var isFree = true;
         return new Seat(
-                id,
                 rowNumber,
                 number,
-                isFree,
-                screening
+                isFree
         );
     }
 

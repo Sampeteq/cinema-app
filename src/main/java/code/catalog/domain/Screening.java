@@ -45,12 +45,24 @@ public class Screening {
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
+    public Screening(
+            LocalDateTime date,
+            LocalDateTime endDate,
+            Film film,
+            Room room,
+            List<Seat> seats
+    ) {
+        this.date = date;
+        this.endDate = endDate;
+        this.film = film;
+        this.room = room;
+        this.seats = seats;
+    }
+
     public static Screening create(LocalDateTime date, Film film, Room room) {
-        Long id = null;
         var endDate = film.calculateScreeningEndDate(date);
         var seats = room.createSeats();
         var screening = new Screening(
-                id,
                 date,
                 endDate,
                 film,

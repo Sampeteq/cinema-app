@@ -35,10 +35,14 @@ public class Room {
 
     private int seatsInOneRowQuantity;
 
+    private Room(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
+        this.customId = customId;
+        this.rowsQuantity = rowsQuantity;
+        this.seatsInOneRowQuantity = seatsInOneRowQuantity;
+    }
+
     public static Room create(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
-        var id = 0L;
         return new Room(
-                id,
                 customId,
                 rowsQuantity,
                 seatsInOneRowQuantity

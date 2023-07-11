@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,10 @@ public class Film {
                 year,
                 durationInMinutes
         );
+    }
+
+    public LocalDateTime calculateScreeningEndDate(LocalDateTime screeningDate) {
+        return screeningDate.plusMinutes(this.durationInMinutes);
     }
 
     public void addScreening(Screening newScreening) {

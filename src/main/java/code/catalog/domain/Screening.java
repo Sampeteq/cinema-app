@@ -47,7 +47,7 @@ public class Screening {
 
     public static Screening create(LocalDateTime date, Film film, Room room) {
         Long id = null;
-        var endDate = date.plusMinutes(film.getDurationInMinutes());
+        var endDate = film.calculateScreeningEndDate(date);
         var seats = room.createSeats();
         var screening = new Screening(
                 id,

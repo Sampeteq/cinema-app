@@ -26,12 +26,12 @@ public class ScreeningCreateService {
         screeningDateValidateService.validate(dto.date(), clock);
         var film = getFilmOrThrow(dto.filmId());
         var screeningDate = dto.date();
-        var screeningFinishDate = dto.date().plusMinutes(film.getDurationInMinutes());
+        var screeningEndDate = film.calculateScreeningEndDate(screeningDate);
         var availableRoom = roomAvailableService.getFirstAvailableRoom(
                 screeningDate,
-                screeningFinishDate
+                screeningEndDate
         );
-        var newScreening = Screening.create(dto.date(), film, availableRoom);
+        var newScreening = Screening.create(screeningDate, film, availableRoom);
         film.addScreening(newScreening);
     }
 

@@ -5,9 +5,13 @@ import code.catalog.domain.Room;
 public class RoomTestHelper {
 
     public static Room createRoom() {
-        return Room.builder()
-                .customId("1")
-                .rowsQuantity(10)
-                .seatsInOneRowQuantity(15).build();
+        var customId = "1";
+        var rowsQuantity = 15;
+        var seatsQuantityInOneRow = 10;
+        return Room.create(
+                customId,
+                rowsQuantity,
+                seatsQuantityInOneRow
+        );
     }
 }

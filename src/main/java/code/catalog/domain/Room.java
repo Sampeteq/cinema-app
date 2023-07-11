@@ -2,7 +2,6 @@ package code.catalog.domain;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ROOMS")
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
@@ -33,4 +31,14 @@ public class Room {
     private int rowsQuantity;
 
     private int seatsInOneRowQuantity;
+
+    public static Room create(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
+        var id = 0L;
+        return new Room(
+                id,
+                customId,
+                rowsQuantity,
+                seatsInOneRowQuantity
+        );
+    }
 }

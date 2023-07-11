@@ -17,10 +17,11 @@ public class RoomCreateService {
         if (roomRepository.existsByCustomId(dto.customId())) {
             throw new RoomCustomIdAlreadyExistsException();
         }
-        var screeningRoom = Room.builder()
-                .customId(dto.customId())
-                .seatsInOneRowQuantity(dto.seatsQuantityInOneRow())
-                .rowsQuantity(dto.rowsQuantity()).build();
+        var screeningRoom = Room.create(
+                dto.customId(),
+                dto.seatsQuantityInOneRow(),
+                dto.rowsQuantity()
+        );
        roomRepository.add(screeningRoom);
     }
 }

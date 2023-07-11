@@ -1,7 +1,10 @@
 package code.catalog.domain;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Entity;
@@ -15,6 +18,8 @@ import java.time.Clock;
 
 @Entity
 @Table(name = "SEATS")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString(exclude = {"screening"})
@@ -34,20 +39,16 @@ public class Seat {
     @ManyToOne(fetch = FetchType.LAZY)
     private Screening screening;
 
-    protected Seat() {
-    }
-
-    private Seat(int rowNumber, int number, boolean isFree) {
-        this.rowNumber = rowNumber;
-        this.number = number;
-        this.isFree = isFree;
-    }
-
     public static Seat of(int rowNumber, int number) {
+        Long id = null;
+        Screening screening = null;
+        final var isFree = true;
         return new Seat(
+                id,
                 rowNumber,
                 number,
-                true
+                isFree,
+                screening
         );
     }
 

@@ -1,6 +1,5 @@
 package code.bookings.application.services;
 
-import code.bookings.application.dto.BookingId;
 import code.bookings.domain.Booking;
 import code.bookings.domain.Film;
 import code.bookings.domain.Room;
@@ -35,7 +34,7 @@ public class BookingMakeService {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
-    public BookingId makeBooking(Long seatId) {
+    public void makeBooking(Long seatId) {
         if (bookingRepository.existsBySeatId(seatId)) {
             log.error("Booking already exists");
             throw new BookingAlreadyExists();
@@ -73,6 +72,5 @@ public class BookingMakeService {
         log.info("Added a booking:{}", addedBooking);
         var seatBookedEvent = new BookingMadeEvent(seatId);
         applicationEventPublisher.publishEvent(seatBookedEvent);
-        return new BookingId(addedBooking.getId());
     }
 }

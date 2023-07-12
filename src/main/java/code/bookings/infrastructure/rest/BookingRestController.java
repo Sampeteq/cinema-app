@@ -1,7 +1,6 @@
 package code.bookings.infrastructure.rest;
 
 import code.bookings.application.dto.BookingDto;
-import code.bookings.application.dto.BookingId;
 import code.bookings.application.services.BookingCancelService;
 import code.bookings.application.services.BookingMakeService;
 import code.bookings.application.services.BookingReadService;
@@ -27,8 +26,8 @@ public class BookingRestController {
     private final BookingReadService bookingReadHandler;
 
     @PostMapping
-    public BookingId bookSeat(@RequestParam Long seatId) {
-        return bookingMakeHandler.makeBooking(seatId);
+    public void bookSeat(@RequestParam Long seatId) {
+        bookingMakeHandler.makeBooking(seatId);
     }
 
     @PostMapping("/{bookingId}/cancel")

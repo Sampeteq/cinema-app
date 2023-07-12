@@ -6,7 +6,6 @@ import code.bookings.application.services.BookingCancelService;
 import code.bookings.application.services.BookingMakeService;
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
-import code.bookings.domain.exceptions.BookingCancelTooLateException;
 import code.bookings.domain.exceptions.BookingTooLateException;
 import code.catalog.application.dto.SeatDto;
 import code.catalog.application.services.FilmCreateService;

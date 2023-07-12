@@ -1,7 +1,10 @@
 package code.catalog.infrastructure.db;
 
+import code.catalog.application.dto.BookingDataDto;
 import code.catalog.domain.FilmCategory;
 import code.catalog.domain.Screening;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
@@ -26,4 +29,18 @@ public interface ScreeningReadOnlyRepository extends Repository<Screening, Long>
 
     @Query("select s from Screening s where s.endDate < CURRENT_DATE")
     List<Screening> findEnded();
+
+    @Query(
+            "select new code.catalog.application.dto.BookingDataDto(" +
+                    "sc.id, " +
+                    "sc.date, " +
+                    "r.id, " +
+                    "r.customId, " +
+                    "se.rowNumber, " +
+                    "se.number, " +
+                    "film.id, " +
+                    "film.title" +
+                    ") from Screening sc, Room r, Seat se, Film film where se.id = :seatId"
+    )
+    Page<BookingDataDto> readBookingDataBySeatId(Long seatId, Pageable pageable);
 }

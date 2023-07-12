@@ -1,7 +1,6 @@
 package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
-import code.catalog.domain.Seat;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -32,8 +31,7 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "seat_id")
+    @OneToOne(cascade = CascadeType.ALL)
     private Seat seat;
 
     private Long userId;

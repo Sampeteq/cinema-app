@@ -15,8 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.time.Clock;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -71,13 +69,6 @@ public class Screening {
         );
         seats.forEach(seat -> seat.assignScreening(screening));
         return screening;
-    }
-
-    public int timeToScreeningStartInHours(Clock clock) {
-        return (int) Duration
-                .between(LocalDateTime.now(clock), date)
-                .abs()
-                .toHours();
     }
 
     public void removeRoom() {

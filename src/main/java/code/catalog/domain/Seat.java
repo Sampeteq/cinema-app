@@ -1,8 +1,5 @@
 package code.catalog.domain;
 
-import code.bookings.domain.Booking;
-import code.bookings.domain.exceptions.BookingCancelTooLateException;
-import code.bookings.domain.exceptions.BookingTooLateException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -16,9 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.Clock;
 
 @Entity
 @Table(name = "SEATS")
@@ -43,9 +38,6 @@ public class Seat {
     @ManyToOne(fetch = FetchType.LAZY)
     private Screening screening;
 
-    @OneToOne(mappedBy = "seat")
-    private Booking booking;
-
     private Seat(int rowNumber, int number, boolean isFree) {
         this.rowNumber = rowNumber;
         this.number = number;
@@ -65,23 +57,11 @@ public class Seat {
         this.screening = screening;
     }
 
-    public int timeToScreeningInHours(Clock clock) {
-        return this.screening.timeToScreeningStartInHours(clock);
-    }
-
-    public void bookSeat(Booking booking, Clock clock) {
-        if (this.timeToScreeningInHours(clock) < 1) {
-            throw new BookingTooLateException();
-        }
-        this.booking = booking;
-        this.isFree = false;
-    }
-
-    public void cancelBooking(Clock clock) {
-        if (this.timeToScreeningInHours(clock) < 24) {
-            throw new BookingCancelTooLateException();
-        }
-        this.booking = null;
+    public void makeFree() {
         this.isFree = true;
+    }
+
+    public void makeNotFree() {
+        this.isFree = false;
     }
 }

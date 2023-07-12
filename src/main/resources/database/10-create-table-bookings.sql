@@ -7,6 +7,6 @@ create table if not exists bookings
     status       varchar,
     seat_id      bigint,
     user_id      bigint,
-    foreign key (seat_id) references seats (id),
+    foreign key (seat_id) references bookings_seats (id),
     foreign key (user_id) references users (id)
 );

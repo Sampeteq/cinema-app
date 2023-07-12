@@ -10,6 +10,7 @@ import code.catalog.domain.services.ScreeningDateValidateService;
 import code.shared.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class ScreeningCreateService {
     private final FilmRepository filmRepository;
     private final RoomAvailableService roomAvailableService;
 
+    @Transactional
     public void createScreening(ScreeningCreateDto dto) {
         screeningDateValidateService.validate(dto.date(), clock);
         var film = getFilmOrThrow(dto.filmId());

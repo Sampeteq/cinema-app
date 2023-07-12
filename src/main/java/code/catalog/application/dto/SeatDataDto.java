@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class BookingDataDto {
+public class SeatDataDto {
     private final Long screeningId;
     private final LocalDateTime screeningDate;
     private final Long roomId;
@@ -15,7 +15,7 @@ public class BookingDataDto {
     private final Long filmId;
     private final String filmTitle;
 
-    public BookingDataDto(
+    public SeatDataDto(
             Long screeningId,
             LocalDateTime screeningDate,
             Long roomId,

@@ -10,7 +10,7 @@ import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.domain.ports.BookingRepository;
 import code.bookings.infrastructure.db.BookingFilmRepository;
 import code.bookings.infrastructure.db.BookingRoomRepository;
-import code.catalog.application.services.BookingDataService;
+import code.catalog.application.services.SeatDataService;
 import code.user.application.services.UserCurrentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +26,9 @@ import java.time.Clock;
 public class BookingMakeService {
 
     private final BookingRepository bookingRepository;
+    private final SeatDataService seatDataService;
     private final BookingFilmRepository bookingFilmRepository;
     private final BookingRoomRepository bookingRoomRepository;
-    private final BookingDataService bookingDataService;
     private final UserCurrentService userCurrentService;
     private final Clock clock;
     private final ApplicationEventPublisher applicationEventPublisher;
@@ -39,7 +39,7 @@ public class BookingMakeService {
             log.error("Booking already exists");
             throw new BookingAlreadyExists();
         }
-        var bookingData = bookingDataService.readBookingDataBySeatId(seatId);
+        var bookingData = seatDataService.readBookingDataBySeatId(seatId);
         var film = bookingFilmRepository
                 .findById(bookingData.getFilmId())
                 .orElseGet(

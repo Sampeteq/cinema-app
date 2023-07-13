@@ -12,10 +12,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.Clock;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "BOOKINGS")
@@ -44,21 +43,21 @@ public class Booking {
         this.userId = userId;
     }
 
-    public static Booking make(Seat seat, Clock clock, Long userId) {
+    public static Booking make(Seat seat, LocalDateTime currentDate, Long userId) {
         var booking = new Booking(
                 BookingStatus.ACTIVE,
                 seat,
                 userId
         );
-        seat.bookSeat(booking, clock);
+        seat.bookSeat(booking, currentDate);
         return booking;
     }
 
-    public void cancel(Clock clock) {
+    public void cancel(LocalDateTime currentDate) {
         if (status.equals(BookingStatus.CANCELLED)) {
             throw new BookingAlreadyCancelledException();
         }
-        this.seat.cancelBooking(clock);
+        this.seat.cancelBooking(currentDate);
         this.status = BookingStatus.CANCELLED;
     }
 }

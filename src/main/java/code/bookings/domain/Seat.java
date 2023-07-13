@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.Clock;
+import java.time.LocalDateTime;
 
 @Entity(name = "booking_seat")
 @Table(name = "bookings_seats")
@@ -51,15 +51,15 @@ public class Seat {
         this.screening = screening;
     }
 
-    public void bookSeat(Booking booking, Clock clock) {
-        if (this.screening.timeToScreeningInHours(clock) < 1) {
+    public void bookSeat(Booking booking, LocalDateTime currentDate) {
+        if (this.screening.timeToScreeningInHours(currentDate) < 1) {
             throw new BookingTooLateException();
         }
         this.booking = booking;
     }
 
-    public void cancelBooking(Clock clock) {
-        if (this.screening.timeToScreeningInHours(clock) < 24) {
+    public void cancelBooking(LocalDateTime currentDate) {
+        if (this.screening.timeToScreeningInHours(currentDate) < 24) {
             throw new BookingCancelTooLateException();
         }
         this.booking = null;

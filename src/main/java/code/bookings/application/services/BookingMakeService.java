@@ -11,14 +11,13 @@ import code.bookings.domain.ports.BookingRepository;
 import code.bookings.infrastructure.db.BookingFilmRepository;
 import code.bookings.infrastructure.db.BookingRoomRepository;
 import code.catalog.application.services.SeatDataService;
+import code.shared.TimeProvider;
 import code.user.application.services.UserCurrentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Clock;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class BookingMakeService {
     private final BookingFilmRepository bookingFilmRepository;
     private final BookingRoomRepository bookingRoomRepository;
     private final UserCurrentService userCurrentService;
-    private final Clock clock;
+    private final TimeProvider timeProvider;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
@@ -67,7 +66,7 @@ public class BookingMakeService {
         );
         film.addSeatsToScreening(seat, screening.getId());
         var currentUserId = userCurrentService.getCurrentUserId();
-        var booking = Booking.make(seat, clock, currentUserId);
+        var booking = Booking.make(seat, timeProvider.getCurrentDate(), currentUserId);
         var addedBooking = bookingRepository.add(booking);
         log.info("Added a booking:{}", addedBooking);
         var seatBookedEvent = new BookingMadeEvent(seatId);

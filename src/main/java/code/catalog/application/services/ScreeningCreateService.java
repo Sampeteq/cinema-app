@@ -8,11 +8,11 @@ import code.catalog.domain.exceptions.RoomsNoAvailableException;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.services.ScreeningDateValidateService;
 import code.shared.EntityNotFoundException;
+import code.shared.TimeProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 
 @Service
@@ -20,13 +20,13 @@ import java.time.LocalDateTime;
 public class ScreeningCreateService {
 
     private final ScreeningDateValidateService screeningDateValidateService;
-    private final Clock clock;
+    private final TimeProvider timeProvider;
     private final FilmRepository filmRepository;
     private final RoomAvailableService roomAvailableService;
 
     @Transactional
     public void createScreening(ScreeningCreateDto dto) {
-        screeningDateValidateService.validate(dto.date(), clock);
+        screeningDateValidateService.validate(dto.date(), timeProvider.getCurrentDate());
         var film = getFilmOrThrow(dto.filmId());
         var screeningDate = dto.date();
         var screeningEndDate = film.calculateScreeningEndDate(screeningDate);

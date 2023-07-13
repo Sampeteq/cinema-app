@@ -49,9 +49,9 @@ public class Screening {
         return new Screening(id, date, film, room);
     }
 
-    public int timeToScreeningInHours(Clock clock) {
+    public int timeToScreeningInHours(LocalDateTime currentDate) {
         return (int) Duration
-                .between(LocalDateTime.now(clock), date)
+                .between(currentDate, date)
                 .abs()
                 .toHours();
     }

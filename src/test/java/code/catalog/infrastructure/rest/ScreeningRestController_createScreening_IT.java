@@ -1,16 +1,22 @@
 package code.catalog.infrastructure.rest;
 
 import code.SpringIT;
+import code.TimeHelper;
 import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.application.dto.ScreeningDto;
+import code.catalog.application.services.ScreeningCreateService;
 import code.catalog.domain.Screening;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
+import code.catalog.domain.exceptions.ScreeningDateException;
 import code.catalog.domain.exceptions.ScreeningWrongDateException;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
+import code.shared.TimeProvider;
+import com.teketik.test.mockinbean.MockInBean;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -18,6 +24,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static code.TimeHelper.getLocalDateTime;
 import static code.catalog.helpers.FilmTestHelper.createFilm;
 import static code.catalog.helpers.RoomTestHelper.createRoom;
 import static code.catalog.helpers.ScreeningTestHelper.SCREENING_DATE;
@@ -34,6 +41,9 @@ public class ScreeningRestController_createScreening_IT extends SpringIT {
 
     @Autowired
     private RoomRepository roomRepository;
+
+    @MockInBean(ScreeningCreateService.class)
+    private TimeProvider timeProvider;
 
     public static final String SCREENING_BASE_ENDPOINT = "/screenings";
 
@@ -83,18 +93,20 @@ public class ScreeningRestController_createScreening_IT extends SpringIT {
                 .andExpect(content().json(toJson(expectedDto)));
     }
 
-    @ParameterizedTest
-    @MethodSource("code.catalog.helpers.ScreeningTestHelper#getWrongScreeningDates")
+    @Test
     @WithMockUser(authorities = "ADMIN")
-    void should_throw_exception_when_screening_year_is_not_current_or_next_one(LocalDateTime wrongDate)
-            throws Exception {
+    void should_throw_exception_when_screening_date_is_earlier_than_current() throws Exception {
         //given
         var filmId = filmRepository.add(createFilm()).getId();
         roomRepository.add(createRoom());
+        var currentDate = getLocalDateTime();
+        Mockito
+                .when(timeProvider.getCurrentDate())
+                .thenReturn(currentDate);
         var screeningCreateDto = ScreeningCreateDto
                 .builder()
                 .filmId(filmId)
-                .date(wrongDate)
+                .date(currentDate.minusMinutes(1))
                 .build();
 
         //when
@@ -107,7 +119,46 @@ public class ScreeningRestController_createScreening_IT extends SpringIT {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new ScreeningWrongDateException().getMessage()));
+                .andExpect(content().string(
+                        new ScreeningDateException(
+                                "Screening date cannot be earlier than current"
+                        ).getMessage()
+                ));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void should_throw_exception_when_screening_and_current_date_difference_is_below_7_days()
+            throws Exception {
+        //given
+        var filmId = filmRepository.add(createFilm()).getId();
+        roomRepository.add(createRoom());
+        var currentDate = getLocalDateTime();
+        Mockito
+                .when(timeProvider.getCurrentDate())
+                .thenReturn(currentDate);
+        var screeningCreateDto = ScreeningCreateDto
+                .builder()
+                .filmId(filmId)
+                .date(currentDate.plusDays(6))
+                .build();
+
+        //when
+        var result = mockMvc.perform(
+                post(SCREENING_BASE_ENDPOINT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(screeningCreateDto))
+        );
+
+        //then
+        result
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(
+                        new ScreeningDateException(
+                                "Difference between current and screening date " +
+                                        "cannot be below " + 7 + "days"
+                        ).getMessage()
+                ));
     }
 
     @Test

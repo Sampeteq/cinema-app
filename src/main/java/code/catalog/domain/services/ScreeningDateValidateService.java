@@ -1,19 +1,29 @@
 package code.catalog.domain.services;
 
-import code.catalog.domain.exceptions.ScreeningWrongDateException;
+import code.catalog.domain.exceptions.ScreeningDateException;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Component
 public class ScreeningDateValidateService {
 
+    private static final int bookingDaysNumber = 7;
+
     public void validate(LocalDateTime screeningDate, LocalDateTime currentDate) {
-        var currentYear = currentDate.getYear();
-        var screeningDateYear = screeningDate.getYear();
-        var isYearCurrentOrNextOne = screeningDateYear == currentYear || screeningDateYear == currentYear + 1;
-        if (!isYearCurrentOrNextOne) {
-            throw new ScreeningWrongDateException();
-        }
+       if (screeningDate.isBefore(currentDate)) {
+           throw new ScreeningDateException("Screening date cannot be earlier than current");
+       }
+       var currentAndScreeningDateDifference = Duration
+                .between(screeningDate, currentDate)
+                .abs()
+                .toDays();
+       if (currentAndScreeningDateDifference < 7) {
+           throw new ScreeningDateException(
+                   "Difference between current and screening date " +
+                           "cannot be below " + bookingDaysNumber + " days"
+           );
+       }
     }
 }

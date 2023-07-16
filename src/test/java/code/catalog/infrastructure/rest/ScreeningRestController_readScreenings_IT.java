@@ -9,6 +9,7 @@ import code.catalog.domain.FilmCategory;
 import code.catalog.domain.Screening;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
+import code.shared.TimeProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,7 +21,9 @@ import java.util.function.Supplier;
 import static code.catalog.helpers.FilmTestHelper.createFilm;
 import static code.catalog.helpers.RoomTestHelper.createRoom;
 import static code.catalog.helpers.ScreeningTestHelper.createScreening;
+import static code.catalog.helpers.ScreeningTestHelper.createScreeningWithSpecificDate;
 import static code.catalog.helpers.ScreeningTestHelper.createScreenings;
+import static code.catalog.helpers.ScreeningTestHelper.getScreeningDate;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,6 +41,9 @@ class ScreeningRestController_readScreenings_IT extends SpringIT {
 
     @Autowired
     private SeatMapper seatMapper;
+
+    @Autowired
+    private TimeProvider timeProvider;
 
     public static final String SCREENINGS_BASE_ENDPOINT = "/screenings/";
 
@@ -100,9 +106,9 @@ class ScreeningRestController_readScreenings_IT extends SpringIT {
     @Test
     void should_read_screenings_by_date() throws Exception {
         //given
-        var requiredDate = LocalDate.of(CURRENT_YEAR + 1, 1, 1);
+        var requiredDate = LocalDate.of(2023, 12, 13);
         var screeningWithRequiredDate = addScreening(requiredDate);
-        addScreening(LocalDate.of(CURRENT_YEAR + 1, 1, 2));
+        addScreening(requiredDate.minusDays(1));
 
         //when
         var result = mockMvc.perform(
@@ -135,7 +141,8 @@ class ScreeningRestController_readScreenings_IT extends SpringIT {
     private Screening addScreening() {
         var film = createFilm();
         var room = roomRepository.add(createRoom());
-        var screening = createScreening(film, room);
+        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        var screening = createScreening(film, room, screeningDate);
         film.addScreening(screening);
         return filmRepository
                 .add(film)
@@ -146,7 +153,8 @@ class ScreeningRestController_readScreenings_IT extends SpringIT {
     private ScreeningDto addScreening(Supplier<Film> filmSupplier) {
         var film = filmSupplier.get();
         var room = roomRepository.add(createRoom());
-        var screening = createScreening(film, room);
+        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        var screening = createScreening(film, room, screeningDate);
         film.addScreening(screening);
         var addedScreening = filmRepository
                 .add(film)
@@ -159,7 +167,7 @@ class ScreeningRestController_readScreenings_IT extends SpringIT {
         var film = createFilm();
         var room = roomRepository.add(createRoom());
         var dateTime = date.atStartOfDay().plusHours(16);
-        var screening = createScreening(film, room, dateTime);
+        var screening = createScreeningWithSpecificDate(film, room, dateTime);
         film.addScreening(screening);
         var addedScreening = filmRepository
                 .add(film)

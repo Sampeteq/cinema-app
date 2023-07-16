@@ -1,34 +1,31 @@
 package code.catalog.infrastructure.rest;
 
+import code.MockTimeProvider;
 import code.SpringIT;
-import code.TimeHelper;
 import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.application.dto.ScreeningDto;
 import code.catalog.application.services.ScreeningCreateService;
 import code.catalog.domain.Screening;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
 import code.catalog.domain.exceptions.ScreeningDateException;
-import code.catalog.domain.exceptions.ScreeningWrongDateException;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
 import code.shared.TimeProvider;
 import com.teketik.test.mockinbean.MockInBean;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static code.TimeHelper.getLocalDateTime;
 import static code.catalog.helpers.FilmTestHelper.createFilm;
 import static code.catalog.helpers.RoomTestHelper.createRoom;
-import static code.catalog.helpers.ScreeningTestHelper.SCREENING_DATE;
 import static code.catalog.helpers.ScreeningTestHelper.createScreening;
+import static code.catalog.helpers.ScreeningTestHelper.getScreeningDate;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -46,6 +43,13 @@ public class ScreeningRestController_createScreening_IT extends SpringIT {
     private TimeProvider timeProvider;
 
     public static final String SCREENING_BASE_ENDPOINT = "/screenings";
+
+    @BeforeEach
+    void setUpTimeProvider() {
+        Mockito
+                .when(timeProvider.getCurrentDate())
+                .thenReturn(new MockTimeProvider().getCurrentDate());
+    }
 
     @Test
     @WithMockUser(authorities = "COMMON")
@@ -70,7 +74,7 @@ public class ScreeningRestController_createScreening_IT extends SpringIT {
         var screeningCreateDto = ScreeningCreateDto
                 .builder()
                 .filmId(film.getId())
-                .date(SCREENING_DATE)
+                .date(getScreeningDate(timeProvider.getCurrentDate()))
                 .build();
 
         //when
@@ -85,7 +89,7 @@ public class ScreeningRestController_createScreening_IT extends SpringIT {
         var expectedDto = List.of(
                new ScreeningDto(
                        1L,
-                       SCREENING_DATE
+                       screeningCreateDto.date()
                )
         );
         mockMvc
@@ -225,7 +229,8 @@ public class ScreeningRestController_createScreening_IT extends SpringIT {
     private Screening prepareScreening() {
         var film = createFilm();
         var room = roomRepository.add(createRoom());
-        var screening = createScreening(film, room);
+        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        var screening = createScreening(film, room, screeningDate);
         film.addScreening(screening);
         return filmRepository
                 .add(film)

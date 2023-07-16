@@ -3,35 +3,36 @@ package code.catalog.helpers;
 import code.catalog.domain.Film;
 import code.catalog.domain.Room;
 import code.catalog.domain.Screening;
-import code.catalog.domain.Seat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Year;
 import java.util.List;
+
+import static code.TimeHelper.getLocalDateTime;
 
 public class ScreeningTestHelper {
 
-    private static final int CURRENT_YEAR = Year.now().getValue();
+    public static final LocalDateTime SCREENING_DATE = getLocalDateTime();
 
-    public static final LocalDateTime SCREENING_DATE = LocalDateTime.of(
-            CURRENT_YEAR,
-            5,
-            10,
-            18,
-            30
-    );
-
-    public static Screening createScreening(Film film, Room room) {
+    public static Screening createScreening(
+            Film film,
+            Room room,
+            LocalDateTime currentDate
+    ) {
         return Screening.create(
-                SCREENING_DATE,
+                getScreeningDate(currentDate),
                 film,
                 room
         );
     }
 
-    public static Screening createScreening(Film film, Room room, LocalDateTime screeningDate) {
+    public static Screening createScreeningWithSpecificDate(
+            Film film,
+            Room room,
+            LocalDateTime screeningDate
+    ) {
         return Screening.create(
-                screeningDate,
+               screeningDate,
                 film,
                 room
         );
@@ -51,9 +52,8 @@ public class ScreeningTestHelper {
         return List.of(screening1, screening2);
     }
 
-    public static List<String> getWrongScreeningDates() {
-        var date1 = SCREENING_DATE.minusYears(1).toString();
-        var date2 = SCREENING_DATE.plusYears(2).toString();
-        return List.of(date1, date2);
+    /** Difference between current and screening date must be at least 7 days */
+    public static LocalDateTime getScreeningDate(LocalDateTime currentDate) {
+        return currentDate.plusDays(7);
     }
 }

@@ -1,5 +1,6 @@
 package code.bookings.infrastructure.rest;
 
+import code.MockTimeProvider;
 import code.SpringIT;
 import code.bookings.application.dto.BookingDto;
 import code.bookings.application.services.BookingCancelService;
@@ -16,6 +17,7 @@ import code.shared.TimeProvider;
 import code.user.application.dto.UserSignUpDto;
 import code.user.application.services.UserSignUpService;
 import com.teketik.test.mockinbean.MockInBean;
+import com.teketik.test.mockinbean.MockInBeans;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,6 +33,7 @@ import java.util.stream.Stream;
 import static code.bookings.helpers.BookingTestHelper.createFilmCreateDto;
 import static code.bookings.helpers.BookingTestHelper.createRoomCreateDto;
 import static code.bookings.helpers.BookingTestHelper.createScreeningCrateDto;
+import static code.catalog.helpers.ScreeningTestHelper.getScreeningDate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -58,7 +61,12 @@ class BookingRestControllerIT extends SpringIT {
     @Autowired
     private BookingCancelService bookingCancelService;
 
-    @MockInBean(BookingMakeService.class)
+    @MockInBeans(
+            value = {
+                    @MockInBean(BookingMakeService.class),
+                    @MockInBean(BookingCancelService.class)
+            }
+    )
     private TimeProvider timeProvider;
 
     public static final String BOOKINGS_BASE_ENDPOINT = "/bookings/";
@@ -74,7 +82,7 @@ class BookingRestControllerIT extends SpringIT {
                         password
                 )
         );
-        var currentDate = LocalDateTime.of(2023, 12, 13, 16, 30);
+        var currentDate = new MockTimeProvider().getCurrentDate();
         Mockito
                 .when(timeProvider.getCurrentDate())
                 .thenReturn(currentDate);
@@ -85,7 +93,7 @@ class BookingRestControllerIT extends SpringIT {
         //given
         var filmTitle = "Title 1";
         var roomCustomId = "1";
-        var screeningDate = LocalDateTime.of(2023, 10, 1, 16, 30);
+        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
         var seatRowNumber = 1;
         var seatNumber = 1;
         prepareSeat(filmTitle, roomCustomId, screeningDate);
@@ -116,8 +124,11 @@ class BookingRestControllerIT extends SpringIT {
     @Test
     void should_throw_exception_during_booking_when_less_than_1h_to_screening() throws Exception {
         //given
-        var screeningDate = timeProvider.getCurrentDate().minusMinutes(59);
+        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
         prepareSeat(screeningDate);
+        Mockito
+                .when(timeProvider.getCurrentDate())
+                .thenReturn(screeningDate.minusMinutes(59));
 
         //when
         var result = mockMvc.perform(
@@ -214,13 +225,16 @@ class BookingRestControllerIT extends SpringIT {
     }
 
     @Test
-    void should_throw_exception_during_booking_cancelling_when_less_than_24h_to_screening() throws Exception {
+    void should_throw_exception_during_booking_cancelling_when_less_than_24h_to_screening()
+            throws Exception {
         //given
-        var screeningDate = LocalDateTime.of(2023, 12, 13, 16, 30);
+        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
         prepareBooking(screeningDate);
+        Mockito
+                .when(timeProvider.getCurrentDate())
+                .thenReturn(screeningDate.minusHours(23));
 
         //when
-        Mockito.when(timeProvider.getCurrentDate()).thenReturn(screeningDate.plusHours(23));
         var result = mockMvc.perform(
                 post(BOOKINGS_BASE_ENDPOINT + 1L + "/cancel")
         );
@@ -238,7 +252,7 @@ class BookingRestControllerIT extends SpringIT {
         //given
         var filmTitle = "Title 1";
         var roomCustomId = "1";
-        var screeningDate = LocalDateTime.of(2023, 10, 1, 16, 30);
+        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
         var seatRowNumber = 1;
         var seatNumber = 1;
         prepareBooking(filmTitle, roomCustomId, screeningDate);
@@ -268,10 +282,16 @@ class BookingRestControllerIT extends SpringIT {
     private void prepareSeat() {
         filmCreateService.creteFilm(createFilmCreateDto());
         roomCreateService.createRoom(createRoomCreateDto());
-        screeningCreateService.createScreening(createScreeningCrateDto());
+        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        screeningCreateService.createScreening(
+                createScreeningCrateDto().withDate(screeningDate)
+        );
     }
 
     private void prepareSeat(LocalDateTime screeningDate) {
+        Mockito
+                .when(timeProvider.getCurrentDate())
+                .thenReturn(new MockTimeProvider().getCurrentDate());
         filmCreateService.creteFilm(createFilmCreateDto());
         roomCreateService.createRoom(createRoomCreateDto());
         screeningCreateService.createScreening(
@@ -298,11 +318,11 @@ class BookingRestControllerIT extends SpringIT {
     }
 
     private void prepareBooking(LocalDateTime screeningDate) {
+        prepareSeat(screeningDate);
+        var seatId = 1L;
         Mockito
                 .when(timeProvider.getCurrentDate())
                 .thenReturn(screeningDate.plusHours(25));
-        prepareSeat(screeningDate);
-        var seatId = 1L;
         bookingMakeService.makeBooking(seatId);
     }
 

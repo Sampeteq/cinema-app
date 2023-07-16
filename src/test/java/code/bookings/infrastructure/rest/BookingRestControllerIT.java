@@ -289,9 +289,6 @@ class BookingRestControllerIT extends SpringIT {
     }
 
     private void prepareSeat(LocalDateTime screeningDate) {
-        Mockito
-                .when(timeProvider.getCurrentDate())
-                .thenReturn(new MockTimeProvider().getCurrentDate());
         filmCreateService.creteFilm(createFilmCreateDto());
         roomCreateService.createRoom(createRoomCreateDto());
         screeningCreateService.createScreening(

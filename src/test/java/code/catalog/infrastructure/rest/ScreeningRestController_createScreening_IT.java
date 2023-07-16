@@ -156,7 +156,44 @@ public class ScreeningRestController_createScreening_IT extends SpringIT {
                 .andExpect(content().string(
                         new ScreeningDateException(
                                 "Difference between current and screening date " +
-                                        "cannot be below " + 7 + "days"
+                                        "cannot be below " + 7 +
+                                        " and above " + 21 + " days"
+                        ).getMessage()
+                ));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void should_throw_exception_when_screening_and_current_date_difference_is_above_21_days()
+            throws Exception {
+        //given
+        var filmId = filmRepository.add(createFilm()).getId();
+        roomRepository.add(createRoom());
+        var currentDate = getLocalDateTime();
+        Mockito
+                .when(timeProvider.getCurrentDate())
+                .thenReturn(currentDate);
+        var screeningCreateDto = ScreeningCreateDto
+                .builder()
+                .filmId(filmId)
+                .date(currentDate.plusDays(22))
+                .build();
+
+        //when
+        var result = mockMvc.perform(
+                post(SCREENING_BASE_ENDPOINT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(screeningCreateDto))
+        );
+
+        //then
+        result
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(
+                        new ScreeningDateException(
+                                "Difference between current and screening date " +
+                                        "cannot be below " + 7 +
+                                        " and above " + 21 + " days"
                         ).getMessage()
                 ));
     }

@@ -2,15 +2,19 @@ package code.catalog.infrastructure.rest;
 
 import code.SpringIT;
 import code.catalog.application.dto.FilmDto;
+import code.catalog.domain.exceptions.FilmNotUniqueTitleException;
 import code.catalog.domain.exceptions.FilmWrongYearException;
+import code.catalog.domain.ports.FilmRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 
+import static code.catalog.helpers.FilmTestHelper.createFilm;
 import static code.catalog.helpers.FilmTestHelper.createFilmCreateCommand;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -20,6 +24,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FilmRestController_createFilm_IT extends SpringIT {
 
     public static final String FILMS_BASE_ENDPOINT = "/films";
+
+    @Autowired
+    private FilmRepository filmRepository;
 
     @Test
     @WithMockUser(authorities = "COMMON")
@@ -62,6 +69,26 @@ public class FilmRestController_createFilm_IT extends SpringIT {
         mockMvc
                 .perform(get(FILMS_BASE_ENDPOINT))
                 .andExpect(content().json(toJson(expectedDto)));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void should_throw_exception_when_title_is_not_unique() throws Exception {
+        //given
+        var film = filmRepository.add(createFilm());
+        var filmCreateDto = createFilmCreateCommand().withTitle(film.getTitle());
+
+        //when
+        var result = mockMvc.perform(
+                post(FILMS_BASE_ENDPOINT)
+                        .content(toJson(filmCreateDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(new FilmNotUniqueTitleException().getMessage()));
     }
 
     @ParameterizedTest

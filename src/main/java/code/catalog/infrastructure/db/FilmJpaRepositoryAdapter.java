@@ -29,7 +29,13 @@ public class FilmJpaRepositoryAdapter implements FilmRepository {
     public List<Film> readAll() {
         return filmJpaRepository.findAll();
     }
+
+    @Override
+    public boolean existsByTitle(String title) {
+        return filmJpaRepository.existsByTitle(title);
+    }
 }
 
 interface FilmJpaRepository extends JpaRepository<Film, Long> {
+    boolean existsByTitle(String title);
 }

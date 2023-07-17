@@ -9,4 +9,5 @@ public interface FilmRepository  {
     Film add(Film film);
     Optional<Film> readById(Long filmId);
     List<Film> readAll();
+    boolean existsByTitle(String title);
 }

@@ -15,7 +15,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import java.util.List;
 
 import static code.catalog.helpers.FilmTestHelper.createFilm;
-import static code.catalog.helpers.FilmTestHelper.createFilmCreateCommand;
+import static code.catalog.helpers.FilmTestHelper.createFilmCreateDto;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -46,7 +46,7 @@ public class FilmRestController_createFilm_IT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void should_create_film() throws Exception {
         //given
-        var cmd = createFilmCreateCommand();
+        var cmd = createFilmCreateDto();
         var expectedDto = List.of(
                 new FilmDto(
                 1L,
@@ -76,7 +76,7 @@ public class FilmRestController_createFilm_IT extends SpringIT {
     void should_throw_exception_when_title_is_not_unique() throws Exception {
         //given
         var film = filmRepository.add(createFilm());
-        var filmCreateDto = createFilmCreateCommand().withTitle(film.getTitle());
+        var filmCreateDto = createFilmCreateDto().withTitle(film.getTitle());
 
         //when
         var result = mockMvc.perform(
@@ -97,7 +97,7 @@ public class FilmRestController_createFilm_IT extends SpringIT {
     void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
             throws Exception {
         //given
-        var cmd = createFilmCreateCommand().withYear(wrongYear);
+        var cmd = createFilmCreateDto().withYear(wrongYear);
 
         //when
         var result = mockMvc.perform(

@@ -2,25 +2,27 @@ This is web app to manage a cinema.
 
 Features:
 
-1.Storing and searching films and screenings:
+1.Storing and searching films, screenings and seats:
 
 Endpoints:
+
+Catalog module:
 
 /films (POST) - add a new film (admin only)
 
 /films (GET) - search all films
 
-/films?category={category} (GET) - search films by category
+/screenings (POST) - add a new screening (admin only)
 
-/films/screenings (POST) - add a new screening (admin only)
+/screenings (GET) - search all screenings
 
-/films/screenings (GET) - search all films screenings
+/screenings/title?title= (GET) - search screenings by film title
 
-/films/screenings?{paramName}=paramValue - search screenings by params
+/screenings/category?category= (GET) - search screenings by film category
 
-/films/screenings/rooms (POST) - add a new screening room (admin only)
+/screenings/date?date= (GET) - search screenings by date
 
-/films/screenings/rooms (GET) - search all screenings room (admin only)
+/screenings/{id}/seats (GET) - search screening seats
 
 /////////////////////
 
@@ -28,11 +30,11 @@ Endpoints:
 
 Endpoints:
 
-/bookings (POST) - book a seat for screening
+/bookings (POST) - book a seat
 
-/bookings/{bookingId}/cancelled (PATCH) - cancel a seat booking
+/bookings/{bookingId}/cancelled (POST) - cancel a seat booking
 
-/bookings/bookingId (GET) - search a seat booking by id
+/bookings/my (GET) - search a user seat bookings
 
 /////////////////////
 
@@ -49,9 +51,3 @@ Endpoints:
 Tech stack:Java 17, Spring Boot, Lombok, H2 DB, Open API
 
 API available on localhost:8080/swagger-ui:
-
-
-
-
-
-

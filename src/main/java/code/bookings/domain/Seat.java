@@ -49,10 +49,6 @@ public class Seat {
         );
     }
 
-    public void assignScreening(Screening screening) {
-        this.screening = screening;
-    }
-
     public void bookSeat(Booking booking, LocalDateTime currentDate) {
         if (this.screening.timeToScreeningInHours(currentDate) < 1) {
             throw new BookingTooLateException();

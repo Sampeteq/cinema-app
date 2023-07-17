@@ -48,6 +48,6 @@ Endpoints:
 
 /signout (POST) - logg out a user account
 
-Tech stack:Java 17, Spring Boot, Lombok, H2 DB, Open API
+Tech stack:Java 17, Spring Boot, Lombok, Postgres, Open API
 
 API available on localhost:8080/swagger-ui:

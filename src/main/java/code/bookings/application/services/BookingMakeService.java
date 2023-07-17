@@ -1,15 +1,13 @@
 package code.bookings.application.services;
 
 import code.bookings.domain.Booking;
-import code.bookings.domain.Film;
-import code.bookings.domain.Room;
+import code.bookings.domain.BookingDetails;
 import code.bookings.domain.Screening;
 import code.bookings.domain.Seat;
 import code.bookings.domain.events.BookingMadeEvent;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.domain.ports.BookingRepository;
-import code.bookings.infrastructure.db.BookingFilmRepository;
-import code.bookings.infrastructure.db.BookingRoomRepository;
+import code.bookings.infrastructure.db.BookingDetailsRepository;
 import code.catalog.application.services.SeatDataService;
 import code.shared.TimeProvider;
 import code.user.application.services.UserCurrentService;
@@ -26,10 +24,9 @@ public class BookingMakeService {
 
     private final BookingRepository bookingRepository;
     private final SeatDataService seatDataService;
-    private final BookingFilmRepository bookingFilmRepository;
-    private final BookingRoomRepository bookingRoomRepository;
     private final UserCurrentService userCurrentService;
     private final TimeProvider timeProvider;
+    private final BookingDetailsRepository bookingDetailsRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
@@ -39,35 +36,28 @@ public class BookingMakeService {
             throw new BookingAlreadyExists();
         }
         var bookingData = seatDataService.readBookingDataBySeatId(seatId);
-        var film = bookingFilmRepository
-                .findById(bookingData.getFilmId())
-                .orElseGet(
-                        () -> Film.create(
-                                bookingData.getFilmId(),
-                                bookingData.getFilmTitle()
-                        )
-                );
-        var room = bookingRoomRepository
-                .findById(bookingData.getRoomId())
-                .orElseGet(
-                        () -> Room.create(bookingData.getRoomId(), bookingData.getRoomCustomId())
-                );
-       var screening = Screening.create(
+        var screening = Screening.create(
                bookingData.getScreeningId(),
-               bookingData.getScreeningDate(),
-               film,
-               room
+               bookingData.getScreeningDate()
        );
-       film.addFilm(screening);
-       var seat = Seat.create(
+        var seat = Seat.create(
                 seatId,
                 bookingData.getSeatRowNumber(),
-                bookingData.getSeatNumber()
+                bookingData.getSeatNumber(),
+                screening
         );
-        film.addSeatsToScreening(seat, screening.getId());
         var currentUserId = userCurrentService.getCurrentUserId();
         var booking = Booking.make(seat, timeProvider.getCurrentDate(), currentUserId);
         var addedBooking = bookingRepository.add(booking);
+        var bookingDetails = BookingDetails.create(
+                bookingData.getFilmTitle(),
+                bookingData.getScreeningDate(),
+                bookingData.getRoomCustomId(),
+                bookingData.getSeatRowNumber(),
+                bookingData.getSeatNumber(),
+                booking
+        );
+        bookingDetailsRepository.save(bookingDetails);
         log.info("Added a booking:{}", addedBooking);
         var seatBookedEvent = new BookingMadeEvent(seatId);
         applicationEventPublisher.publishEvent(seatBookedEvent);

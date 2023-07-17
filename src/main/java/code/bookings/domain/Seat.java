@@ -33,17 +33,19 @@ public class Seat {
     @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
     private Booking booking;
 
-    private Seat(Long id, int rowNumber, int number) {
+    private Seat(Long id, int rowNumber, int number, Screening screening) {
         this.id = id;
         this.rowNumber = rowNumber;
         this.number = number;
+        this.screening = screening;
     }
 
-    public static Seat create(Long id, int rowNumber, int number) {
+    public static Seat create(Long id, int rowNumber, int number, Screening screening) {
         return new Seat(
                 id,
                 rowNumber,
-                number
+                number,
+                screening
         );
     }
 

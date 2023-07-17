@@ -6,7 +6,7 @@ import lombok.With;
 import java.time.LocalDateTime;
 
 @With
-public record BookingDto(
+public record BookingDetailsDto(
         Long id,
         BookingStatus status,
         String film,

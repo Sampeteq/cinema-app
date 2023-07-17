@@ -2,7 +2,7 @@ package code.bookings.infrastructure.rest;
 
 import code.MockTimeProvider;
 import code.SpringIT;
-import code.bookings.application.dto.BookingDto;
+import code.bookings.application.dto.BookingDetailsDto;
 import code.bookings.application.services.BookingCancelService;
 import code.bookings.application.services.BookingMakeService;
 import code.bookings.domain.BookingStatus;
@@ -106,7 +106,7 @@ class BookingRestControllerIT extends SpringIT {
         //then
         result.andExpect(status().isOk());
         var expectedDto = List.of(
-                new BookingDto(
+                new BookingDetailsDto(
                         1L,
                         BookingStatus.ACTIVE,
                         filmTitle,
@@ -266,7 +266,7 @@ class BookingRestControllerIT extends SpringIT {
         result.andExpect(status().isOk());
         var bookingsFromResult = getBookingsFromResult(result).toList();
         var expected = List.of(
-                new BookingDto(
+                new BookingDetailsDto(
                         1L,
                         BookingStatus.ACTIVE,
                         filmTitle,
@@ -343,9 +343,9 @@ class BookingRestControllerIT extends SpringIT {
         );
     }
 
-    private Stream<BookingDto> getBookingsFromResult(ResultActions searchSeatsResult) throws Exception {
+    private Stream<BookingDetailsDto> getBookingsFromResult(ResultActions searchSeatsResult) throws Exception {
         return Arrays.stream(
-                fromResultActions(searchSeatsResult, BookingDto[].class)
+                fromResultActions(searchSeatsResult, BookingDetailsDto[].class)
         );
     }
 

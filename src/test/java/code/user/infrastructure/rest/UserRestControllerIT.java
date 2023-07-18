@@ -27,20 +27,20 @@ class UserRestControllerIT extends SpringIT {
     @Test
     void should_sign_up_and_sing_in() throws Exception {
         //given
-        var signUpRequest = UserTestHelper.createSignUpDto();
+        var signUpDto = UserTestHelper.createSignUpDto();
 
         //when
         var result = mockMvc.perform(
                 post("/signup")
-                        .content(toJson(signUpRequest))
+                        .content(toJson(signUpDto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
         //then
         result.andExpect(status().isCreated());
         var signInDto = new UserSignInDto(
-                signUpRequest.mail(),
-                signUpRequest.password()
+                signUpDto.mail(),
+                signUpDto.password()
         );
         mockMvc.perform(
                 post("/signin")
@@ -90,12 +90,12 @@ class UserRestControllerIT extends SpringIT {
     @WithMockUser(username = "user1@mail.com")
     void should_throw_exception_when_user_is_already_logged_in() throws Exception {
         //given
-        var signInCommand = createSignInDto("user1@mail.com");
+        var signInDto = createSignInDto("user1@mail.com");
 
         //when
         var result = mockMvc.perform(
                 post("/signin")
-                        .content(toJson(signInCommand))
+                        .content(toJson(signInDto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 

@@ -31,7 +31,7 @@ public class UserTestHelper {
         );
     }
 
-    public static UserSignInDto createSignInCommand(String mail) {
+    public static UserSignInDto createSignInDto(String mail) {
         return new UserSignInDto(mail, "12345");
     }
 

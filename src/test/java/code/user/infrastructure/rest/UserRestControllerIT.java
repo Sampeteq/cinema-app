@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import static code.user.helpers.UserTestHelper.createSignInCommand;
+import static code.user.helpers.UserTestHelper.createSignInDto;
 import static code.user.helpers.UserTestHelper.createSignUpDto;
 import static code.user.helpers.UserTestHelper.createUser;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -90,7 +90,7 @@ class UserRestControllerIT extends SpringIT {
     @WithMockUser(username = "user1@mail.com")
     void should_throw_exception_when_user_is_already_logged_in() throws Exception {
         //given
-        var signInCommand = createSignInCommand("user1@mail.com");
+        var signInCommand = createSignInDto("user1@mail.com");
 
         //when
         var result = mockMvc.perform(

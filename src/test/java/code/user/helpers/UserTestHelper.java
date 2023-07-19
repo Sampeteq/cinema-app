@@ -8,34 +8,40 @@ import code.user.domain.UserRole;
 public class UserTestHelper {
 
     public static UserSignUpDto createSignUpDto() {
+        var mail = "user1@mail.com";
+        var password = "password1";
         return new UserSignUpDto(
-                "user1@mail.com",
-                "password1",
-                "password1"
+                mail,
+                password,
+                password
         );
     }
 
-    public static UserSignUpDto createSignUpDto(String username) {
+    public static UserSignUpDto createSignUpDto(String mail) {
+        var password = "password1";
         return new UserSignUpDto(
-                username,
-                "password1",
-                "password1"
+                mail,
+                password,
+                password
         );
     }
 
     public static UserSignUpDto createSignUpDto(String password, String repeatedPassword) {
+        var mail = "user1@mail.com";
         return new UserSignUpDto(
-                "user1@mail.com",
+                mail,
                 password,
                 repeatedPassword
         );
     }
 
     public static UserSignInDto createSignInDto(String mail) {
-        return new UserSignInDto(mail, "12345");
+        var password = "12345";
+        return new UserSignInDto(mail, password);
     }
 
     public static User createUser(String mail) {
-        return User.create(mail, "12345", UserRole.COMMON);
+        var password = "12345";
+        return User.create(mail, password, UserRole.COMMON);
     }
 }

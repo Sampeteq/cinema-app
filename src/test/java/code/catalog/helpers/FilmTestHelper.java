@@ -8,45 +8,111 @@ import java.time.Year;
 import java.util.List;
 
 public class FilmTestHelper {
-    private static final int CURRENT_YEAR = Year.now().getValue();
 
     public static FilmCreateDto createFilmCreateDto() {
+        var title = "Test film 1";
+        var category = FilmCategory.COMEDY;
+        var year = Year.now().getValue();
+        var duration = 100;
         return new FilmCreateDto(
-                "Test film 1",
-                FilmCategory.COMEDY,
-                CURRENT_YEAR,
-                100
+                title,
+                category,
+                year,
+                duration
         );
     }
 
     public static Film createFilm() {
-        return Film.create("Test film 1", FilmCategory.COMEDY, CURRENT_YEAR, 100);
+        var title = "Test film 1";
+        var category = FilmCategory.COMEDY;
+        var year = Year.now().getValue();
+        var duration = 100;
+        return Film.create(
+                title,
+                category,
+                year,
+                duration
+        );
     }
 
-    public static Film createFilm(FilmCategory category) {
-        return Film.create("Test film 1", category, CURRENT_YEAR, 100);
+    public static Film createFilm(FilmCategory filmCategory) {
+        var title = "Test film 1";
+        var year = Year.now().getValue();
+        var duration = 100;
+        return Film.create(
+                title,
+                filmCategory,
+                year,
+                duration
+        );
     }
 
-    public static Film createFilm(String title) {
-        return Film.create(title, FilmCategory.COMEDY, CURRENT_YEAR, 100);
+    public static Film createFilm(String filmTitle) {
+        var category = FilmCategory.COMEDY;
+        var year = Year.now().getValue();
+        var duration = 100;
+        return Film.create(
+                filmTitle,
+                category,
+                year,
+                duration
+        );
     }
 
     public static List<Film> createFilms() {
-        var film1 = Film.create("Test film 1", FilmCategory.COMEDY, CURRENT_YEAR, 100);
-        var film2 = Film.create("Test film 2", FilmCategory.DRAMA, CURRENT_YEAR, 120);
+        var title1 = "Test film 1";
+        var category1 = FilmCategory.COMEDY;
+        var year1 = Year.now().getValue();
+        var duration1 = 100;
+
+        var title2 = "Test film 2";
+        var category2 = FilmCategory.DRAMA;
+        var year2 = Year.now().getValue() + 1;
+        var duration2 = 120;
+        var film1 = Film.create(
+                title1,
+                category1,
+                year1,
+                duration1
+        );
+        var film2 = Film.create(
+                title2,
+                category2,
+                year2,
+                duration2
+        );
         return List.of(film1, film2);
     }
 
-    public static List<Film> createFilms(FilmCategory category) {
-        var film1 = Film.create("Test film 1", category, CURRENT_YEAR, 100);
-        var film2 = Film.create("Test film 2", category, CURRENT_YEAR, 120);
+    public static List<Film> createFilms(FilmCategory filmCategory) {
+        var title1 = "Test film 1";
+        var year1 = Year.now().getValue();
+        var duration1 = 100;
+
+        var title2 = "Test film 2";
+        var year2 = Year.now().getValue() + 1;
+        var duration2 = 120;
+
+        var film1 = Film.create(
+                title1,
+                filmCategory,
+                year1,
+                duration1
+        );
+        var film2 = Film.create(
+                title2,
+                filmCategory,
+                year2,
+                duration2
+        );
         return List.of(film1, film2);
     }
 
     public static List<Integer> getWrongFilmYears() {
+        var currentYear = Year.now().getValue();
         return List.of(
-                CURRENT_YEAR - 2,
-                CURRENT_YEAR + 2
+                currentYear - 2,
+                currentYear + 2
         );
     }
 }

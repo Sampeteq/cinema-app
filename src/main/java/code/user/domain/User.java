@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "USERS")
@@ -38,7 +39,9 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
-    private User(String mail, String password, UserRole role) {
+    private UUID passwordResetToken;
+
+    public User(String mail, String password, UserRole role) {
         this.mail = mail;
         this.password = password;
         this.role = role;
@@ -50,6 +53,14 @@ public class User implements UserDetails {
                 password,
                 role
         );
+    }
+
+    public void setPasswordResetToken(UUID passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
+
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
     }
 
     public Long getId() {
@@ -89,5 +100,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UUID getPasswordResetToken() {
+        return passwordResetToken;
     }
 }

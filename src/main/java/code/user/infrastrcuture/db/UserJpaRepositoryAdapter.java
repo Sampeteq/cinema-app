@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,6 +26,11 @@ public class UserJpaRepositoryAdapter implements UserRepository {
     }
 
     @Override
+    public Optional<User> readByPasswordResetToken(UUID passwordResetToken) {
+        return jpaUserRepository.readByPasswordResetToken(passwordResetToken);
+    }
+
+    @Override
     public boolean existsByMail(String mail) {
         return jpaUserRepository.existsByMail(mail);
     }
@@ -32,5 +38,6 @@ public class UserJpaRepositoryAdapter implements UserRepository {
 
 interface UserJpaRepository extends JpaRepository<User, String> {
     Optional<User> readByMail(String mail);
+    Optional<User> readByPasswordResetToken(UUID passwordResetToken);
     boolean existsByMail(String mail);
 }

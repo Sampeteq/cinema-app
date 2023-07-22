@@ -48,6 +48,10 @@ Endpoints:
 
 /signout (POST) - logg out a user account
 
+/password/reset (POST) - reset password (a mail with token will be sent)
+
+/password/new (POST) - set new password after reset
+
 Tech stack:Java 17, Spring Boot, Lombok, Postgres, Open API
 
 API available on localhost:8080/swagger-ui:

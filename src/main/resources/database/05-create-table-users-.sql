@@ -6,5 +6,6 @@ create table if not exists users
     id       bigint generated always as identity primary key,
     mail     varchar,
     password varchar,
-    role     varchar
+    role     varchar,
+    password_reset_token uuid
 );

@@ -55,7 +55,6 @@ public class BookingMakeService {
         var booking = Booking.make(seat, timeProvider.getCurrentDate(), currentUserId);
         var bookingDetails = BookingDetails.create(
                 bookingData.getFilmTitle(),
-                bookingData.getScreeningDate(),
                 bookingData.getRoomCustomId(),
                 bookingData.getSeatRowNumber(),
                 bookingData.getSeatNumber(),

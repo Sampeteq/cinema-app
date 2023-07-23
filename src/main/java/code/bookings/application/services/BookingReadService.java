@@ -2,16 +2,17 @@ package code.bookings.application.services;
 
 import code.bookings.application.dto.BookingDetailsDto;
 import code.bookings.application.dto.BookingDetailsMapper;
-import code.bookings.domain.Booking;
 import code.bookings.domain.ports.BookingRepository;
 import code.shared.EntityNotFoundException;
 import code.user.application.services.UserCurrentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BookingReadService {
 
@@ -23,7 +24,6 @@ public class BookingReadService {
         var currentUserId = userCurrentService.getCurrentUserId();
         return bookingRepository
                 .readByIdAndUserId(id, currentUserId)
-                .map(Booking::getBookingDetails)
                 .map(bookingDetailsMapper::mapToDto)
                 .orElseThrow(() -> new EntityNotFoundException("Booking"));
     }
@@ -33,7 +33,6 @@ public class BookingReadService {
         return bookingRepository
                 .readAllByUserId(currentUserId)
                 .stream()
-                .map(Booking::getBookingDetails)
                 .map(bookingDetailsMapper::mapToDto)
                 .toList();
     }

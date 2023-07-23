@@ -8,10 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bookings_details")
@@ -25,8 +23,6 @@ public class BookingDetails {
 
     private String filmTitle;
 
-    private LocalDateTime screeningDate;
-
     private String roomCustomId;
 
     private int seatRowNumber;
@@ -38,14 +34,12 @@ public class BookingDetails {
 
     private BookingDetails(
             String filmTitle,
-            LocalDateTime screeningDate,
             String roomCustomId,
             int seatRowNumber,
             int seatNumber,
             Booking booking
     ) {
         this.filmTitle = filmTitle;
-        this.screeningDate = screeningDate;
         this.roomCustomId = roomCustomId;
         this.seatRowNumber = seatRowNumber;
         this.seatNumber = seatNumber;
@@ -54,7 +48,6 @@ public class BookingDetails {
 
     public static BookingDetails create(
             String filmTitle,
-            LocalDateTime date,
             String roomCustomId,
             int seatRowNumber,
             int seatNumber,
@@ -62,7 +55,6 @@ public class BookingDetails {
     ) {
         return new BookingDetails(
                 filmTitle,
-                date,
                 roomCustomId,
                 seatRowNumber,
                 seatNumber,

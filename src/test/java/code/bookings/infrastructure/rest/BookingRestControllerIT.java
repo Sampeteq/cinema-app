@@ -7,6 +7,7 @@ import code.bookings.application.services.BookingCancelService;
 import code.bookings.application.services.BookingMakeService;
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
+import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.domain.exceptions.BookingCancelTooLateException;
 import code.bookings.domain.exceptions.BookingTooLateException;
 import code.catalog.application.dto.SeatDto;
@@ -119,6 +120,29 @@ class BookingRestControllerIT extends SpringIT {
         mockMvc.perform(
                 get(BOOKINGS_BASE_ENDPOINT + "my/")
         ).andExpect(content().json(toJson(expectedDto)));
+    }
+
+    @Test
+    void should_throw_exception_during_booking_when_booking_already_exists() throws Exception {
+        //given
+        var seatId = 1L;
+        prepareBooking(seatId);
+
+        //when
+        var result = mockMvc.perform(
+                post(BOOKINGS_BASE_ENDPOINT).param("seatId", String.valueOf(seatId))
+        );
+
+        //then
+        result
+                .andExpect(
+                        status().isBadRequest()
+                )
+                .andExpect(
+                        content().string(
+                                new BookingAlreadyExists().getMessage()
+                        )
+                );
     }
 
     @Test
@@ -311,6 +335,11 @@ class BookingRestControllerIT extends SpringIT {
     private void prepareBooking() {
         prepareSeat();
         var seatId = 1L;
+        bookingMakeService.makeBooking(seatId);
+    }
+
+    private void prepareBooking(Long seatId) {
+        prepareSeat();
         bookingMakeService.makeBooking(seatId);
     }
 

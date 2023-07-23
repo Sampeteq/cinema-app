@@ -1,6 +1,7 @@
 package code.bookings.infrastructure.db;
 
 import code.bookings.domain.Booking;
+import code.bookings.domain.BookingStatus;
 import code.bookings.domain.ports.BookingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,8 +35,8 @@ public class BookingJpaRepositoryAdapter implements BookingRepository {
     }
 
     @Override
-    public boolean existsBySeatId(Long seatId) {
-        return bookingJpaRepository.existsBySeatId(seatId);
+    public boolean existsBySeatIdAndBookingStatus(Long seatId, BookingStatus status) {
+        return bookingJpaRepository.existsBySeatIdAndStatus(seatId, status);
     }
 }
 
@@ -55,5 +56,5 @@ interface BookingJpaRepository extends JpaRepository<Booking, Long> {
             "WHERE b.userId = :userId")
     List<Booking> readAllByUserId(@Param("userId") Long userId);
 
-    boolean existsBySeatId(Long seatId);
+    boolean existsBySeatIdAndStatus(Long seatId, BookingStatus status);
 }

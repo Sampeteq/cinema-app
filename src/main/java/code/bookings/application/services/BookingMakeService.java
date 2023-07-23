@@ -2,6 +2,7 @@ package code.bookings.application.services;
 
 import code.bookings.domain.Booking;
 import code.bookings.domain.BookingDetails;
+import code.bookings.domain.BookingStatus;
 import code.bookings.domain.Screening;
 import code.bookings.domain.Seat;
 import code.bookings.domain.events.BookingMadeEvent;
@@ -31,7 +32,7 @@ public class BookingMakeService {
 
     @Transactional
     public void makeBooking(Long seatId) {
-        if (bookingRepository.existsBySeatId(seatId)) {
+        if (bookingRepository.existsBySeatIdAndBookingStatus(seatId, BookingStatus.ACTIVE)) {
             log.error("Booking already exists");
             throw new BookingAlreadyExists();
         }

@@ -1,6 +1,7 @@
 package code.user.infrastructure.rest;
 
 import code.SpringIT;
+import code.user.application.dto.UserPasswordNewDto;
 import code.user.application.dto.UserSignInDto;
 import code.user.domain.exceptions.UserAlreadyLoggedInException;
 import code.user.domain.exceptions.UserMailAlreadyExistsException;
@@ -12,9 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import java.util.UUID;
+
 import static code.user.helpers.UserTestHelper.createSignInDto;
 import static code.user.helpers.UserTestHelper.createSignUpDto;
 import static code.user.helpers.UserTestHelper.createUser;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -103,5 +107,54 @@ class UserRestControllerIT extends SpringIT {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(new UserAlreadyLoggedInException().getMessage()));
+    }
+
+    @Test
+    void should_reset_user_password() throws Exception {
+        //given
+        var user = userRepository.add(createUser());
+
+        //when
+        var result = mockMvc.perform(
+                post("/password/reset").param("mail", user.getUsername())
+        );
+
+        //then
+        result.andExpect(status().isOk());
+        var userPasswordResetToken = userRepository
+                .readyByMail(user.getUsername())
+                .orElseThrow()
+                .getPasswordResetToken();
+        assertThat(userPasswordResetToken).isNotNull();
+    }
+
+    @Test
+    void should_set_new_user_password() throws Exception {
+        //given
+        var passwordResetToken = UUID.randomUUID();
+        var user = userRepository.add(createUser(passwordResetToken));
+        var userPasswordNewDto = new UserPasswordNewDto(
+                passwordResetToken,
+                user.getPassword() + "new"
+        );
+
+        //when
+        var result = mockMvc.perform(
+                post("/password/new").content(
+                        toJson(userPasswordNewDto)
+                ).contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result.andExpect(status().isOk());
+        var userSignInDto = new UserSignInDto(
+                user.getUsername(),
+                userPasswordNewDto.newPassword()
+        );
+        mockMvc.perform(
+                post("/signin").content(
+                        toJson(userSignInDto)
+                ).contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
     }
 }

@@ -5,6 +5,8 @@ import code.user.application.dto.UserSignUpDto;
 import code.user.domain.User;
 import code.user.domain.UserRole;
 
+import java.util.UUID;
+
 public class UserTestHelper {
 
     public static UserSignUpDto createSignUpDto() {
@@ -40,8 +42,22 @@ public class UserTestHelper {
         return new UserSignInDto(mail, password);
     }
 
+    public static User createUser() {
+        var password = "12345";
+        var mail = "user1@mail.com";
+        return User.create(mail, password, UserRole.COMMON);
+    }
+
     public static User createUser(String mail) {
         var password = "12345";
         return User.create(mail, password, UserRole.COMMON);
+    }
+
+    public static User createUser(UUID passwordResetToken) {
+        var password = "12345";
+        var mail = "user1@mail.com";
+        var user = User.create(mail, password, UserRole.COMMON);
+        user.setPasswordResetToken(passwordResetToken);
+        return user;
     }
 }

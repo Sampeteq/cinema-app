@@ -7,6 +7,7 @@ import code.bookings.domain.Seat;
 import code.bookings.domain.events.BookingMadeEvent;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.domain.ports.BookingRepository;
+import code.bookings.domain.ports.ScreeningRepository;
 import code.catalog.application.services.SeatDataService;
 import code.shared.TimeProvider;
 import code.user.application.services.UserCurrentService;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookingMakeService {
 
     private final BookingRepository bookingRepository;
+    private final ScreeningRepository screeningRepository;
     private final SeatDataService seatDataService;
     private final UserCurrentService userCurrentService;
     private final TimeProvider timeProvider;
@@ -34,10 +36,14 @@ public class BookingMakeService {
             throw new BookingAlreadyExists();
         }
         var bookingData = seatDataService.readBookingDataBySeatId(seatId);
-        var screening = Screening.create(
-               bookingData.getScreeningId(),
-               bookingData.getScreeningDate()
-       );
+        var screening = screeningRepository
+                .readById(bookingData.getScreeningId())
+                .orElseGet(
+                        () -> Screening.create(
+                                bookingData.getScreeningId(),
+                                bookingData.getScreeningDate()
+                        )
+                );
         var seat = Seat.create(
                 seatId,
                 bookingData.getSeatRowNumber(),

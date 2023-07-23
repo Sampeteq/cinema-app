@@ -9,9 +9,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -30,8 +32,11 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Seat seat;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "booking", fetch = FetchType.LAZY)
+    private BookingDetails bookingDetails;
 
     private Long userId;
 
@@ -51,6 +56,10 @@ public class Booking {
         );
         seat.bookSeat(booking, currentDate);
         return booking;
+    }
+
+    public void setBookingDetails(BookingDetails bookingDetails) {
+        this.bookingDetails = bookingDetails;
     }
 
     public void cancel(LocalDateTime currentDate) {

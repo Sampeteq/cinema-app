@@ -34,7 +34,6 @@ public class BookingDetails {
     private int seatNumber;
 
     @OneToOne
-    @JoinColumn(name = "booking_id")
     private Booking booking;
 
     private BookingDetails(

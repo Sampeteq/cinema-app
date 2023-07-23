@@ -7,7 +7,6 @@ import code.bookings.domain.Seat;
 import code.bookings.domain.events.BookingMadeEvent;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.domain.ports.BookingRepository;
-import code.bookings.infrastructure.db.BookingDetailsRepository;
 import code.catalog.application.services.SeatDataService;
 import code.shared.TimeProvider;
 import code.user.application.services.UserCurrentService;
@@ -26,7 +25,6 @@ public class BookingMakeService {
     private final SeatDataService seatDataService;
     private final UserCurrentService userCurrentService;
     private final TimeProvider timeProvider;
-    private final BookingDetailsRepository bookingDetailsRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
@@ -48,7 +46,6 @@ public class BookingMakeService {
         );
         var currentUserId = userCurrentService.getCurrentUserId();
         var booking = Booking.make(seat, timeProvider.getCurrentDate(), currentUserId);
-        var addedBooking = bookingRepository.add(booking);
         var bookingDetails = BookingDetails.create(
                 bookingData.getFilmTitle(),
                 bookingData.getScreeningDate(),
@@ -57,7 +54,8 @@ public class BookingMakeService {
                 bookingData.getSeatNumber(),
                 booking
         );
-        bookingDetailsRepository.save(bookingDetails);
+        booking.setBookingDetails(bookingDetails);
+        var addedBooking = bookingRepository.add(booking);
         log.info("Added a booking:{}", addedBooking);
         var seatBookedEvent = new BookingMadeEvent(seatId);
         applicationEventPublisher.publishEvent(seatBookedEvent);

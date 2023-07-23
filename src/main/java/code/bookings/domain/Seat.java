@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -27,10 +28,10 @@ public class Seat {
 
     private int number;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Screening screening;
 
-    @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Booking booking;
 
     private Seat(Long id, int rowNumber, int number, Screening screening) {

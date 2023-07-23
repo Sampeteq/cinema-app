@@ -2,7 +2,8 @@ package code.bookings.application.services;
 
 import code.bookings.application.dto.BookingDetailsDto;
 import code.bookings.application.dto.BookingDetailsMapper;
-import code.bookings.infrastructure.db.BookingDetailsRepository;
+import code.bookings.domain.Booking;
+import code.bookings.domain.ports.BookingRepository;
 import code.shared.EntityNotFoundException;
 import code.user.application.services.UserCurrentService;
 import lombok.RequiredArgsConstructor;
@@ -15,22 +16,24 @@ import java.util.List;
 public class BookingReadService {
 
     private final UserCurrentService userCurrentService;
-    private final BookingDetailsRepository bookingDetailsRepository;
     private final BookingDetailsMapper bookingDetailsMapper;
+    private final BookingRepository bookingRepository;
 
     public BookingDetailsDto read(Long id) {
         var currentUserId = userCurrentService.getCurrentUserId();
-        return bookingDetailsRepository
-                .findByBookingIdAndBookingUserId(id, currentUserId)
+        return bookingRepository
+                .readByIdAndUserId(id, currentUserId)
+                .map(Booking::getBookingDetails)
                 .map(bookingDetailsMapper::mapToDto)
                 .orElseThrow(() -> new EntityNotFoundException("Booking"));
     }
 
     public List<BookingDetailsDto> readAll() {
         var currentUserId = userCurrentService.getCurrentUserId();
-        return bookingDetailsRepository
-                .findAllByBookingUserId(currentUserId)
+        return bookingRepository
+                .readAllByUserId(currentUserId)
                 .stream()
+                .map(Booking::getBookingDetails)
                 .map(bookingDetailsMapper::mapToDto)
                 .toList();
     }

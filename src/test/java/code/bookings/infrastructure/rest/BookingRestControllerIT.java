@@ -249,8 +249,7 @@ class BookingRestControllerIT extends SpringIT {
     }
 
     @Test
-    void should_throw_exception_during_booking_cancelling_when_less_than_24h_to_screening()
-            throws Exception {
+    void should_throw_exception_during_booking_cancelling_when_less_than_24h_to_screening() throws Exception {
         //given
         var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
         prepareBooking(screeningDate);

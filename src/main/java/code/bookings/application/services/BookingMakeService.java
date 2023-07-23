@@ -4,7 +4,6 @@ import code.bookings.domain.Booking;
 import code.bookings.domain.BookingDetails;
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.Screening;
-import code.bookings.domain.Seat;
 import code.bookings.domain.events.BookingMadeEvent;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.domain.ports.BookingRepository;
@@ -45,14 +44,8 @@ public class BookingMakeService {
                                 bookingData.getScreeningDate()
                         )
                 );
-        var seat = Seat.create(
-                seatId,
-                bookingData.getSeatRowNumber(),
-                bookingData.getSeatNumber(),
-                screening
-        );
         var currentUserId = userCurrentService.getCurrentUserId();
-        var booking = Booking.make(seat, timeProvider.getCurrentDate(), currentUserId);
+        var booking = Booking.make(screening, seatId, currentUserId, timeProvider.getCurrentDate());
         var bookingDetails = BookingDetails.create(
                 bookingData.getFilmTitle(),
                 bookingData.getRoomCustomId(),

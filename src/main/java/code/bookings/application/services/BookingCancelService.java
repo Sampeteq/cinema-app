@@ -26,7 +26,7 @@ public class BookingCancelService {
                 .readByIdAndUserId(bookingId, currentUserId)
                 .orElseThrow(() -> new EntityNotFoundException("Booking"));
         booking.cancel(timeProvider.getCurrentDate());
-        var seatBookingCancelledEvent = new BookingCancelledEvent(booking.getSeat().getId());
+        var seatBookingCancelledEvent = new BookingCancelledEvent(booking.getSeatId());
         applicationEventPublisher.publishEvent(seatBookingCancelledEvent);
     }
 }

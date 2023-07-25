@@ -35,7 +35,6 @@ public class ScreeningRestController {
             @Valid
             ScreeningCreateDto dto
     ) {
-        System.out.println(dto.date());
         screeningCreateService.createScreening(dto);
     }
 

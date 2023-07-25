@@ -29,8 +29,6 @@ public class ScreeningCreateService {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     public void createScreening(ScreeningCreateDto dto) {
-        System.out.println(timeProvider.getCurrentDate());
-        System.out.println(dto.date());
         screeningDateValidateService.validate(dto.date(), timeProvider.getCurrentDate());
         var addedScreening = transactionTemplate.execute(status -> {
             var film = getFilmOrThrow(dto.filmId());

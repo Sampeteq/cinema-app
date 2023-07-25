@@ -12,7 +12,7 @@ public interface BookingDetailsMapper {
                 bookingDetails.getId(),
                 bookingDetails.getBooking().getStatus(),
                 bookingDetails.getFilmTitle(),
-                booking.getScreening().getDate(),
+                booking.getSeat().getScreening().getDate(),
                 bookingDetails.getRoomCustomId(),
                 booking.getSeat().getRowNumber(),
                 booking.getSeat().getNumber()

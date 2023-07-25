@@ -13,8 +13,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -36,9 +34,6 @@ public class Booking {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "booking", fetch = FetchType.LAZY)
     private BookingDetails bookingDetails;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Screening screening;
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Seat seat;
 
@@ -46,18 +41,16 @@ public class Booking {
 
     protected Booking() {}
 
-    private Booking(BookingStatus status, Long userId, Screening screening, Seat seat) {
+    private Booking(BookingStatus status, Long userId, Seat seat) {
         this.status = status;
-        this.screening = screening;
         this.seat = seat;
         this.userId = userId;
     }
 
-    public static Booking make(Screening screening, Seat seatId, Long userId) {
+    public static Booking make(Seat seatId, Long userId) {
         return new Booking(
                 BookingStatus.ACTIVE,
                 userId,
-                screening,
                 seatId
         );
     }

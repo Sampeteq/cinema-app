@@ -4,7 +4,7 @@ import code.catalog.application.dto.ScreeningDto;
 import code.catalog.application.dto.ScreeningMapper;
 import code.catalog.domain.FilmCategory;
 import code.catalog.domain.Screening;
-import code.catalog.infrastructure.db.ScreeningReadOnlyRepository;
+import code.catalog.domain.ports.ScreeningReadOnlyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +24,7 @@ public class ScreeningReadService {
 
     public List<ScreeningDto> readAllScreenings() {
         return screeningReadOnlyRepository
-                .findAll()
+                .readAll()
                 .stream()
                 .sorted(comparing(Screening::getDate))
                 .map(screeningMapper::mapToDto)
@@ -33,7 +33,7 @@ public class ScreeningReadService {
 
     public List<ScreeningDto> readScreeningsByFilmTitle(String filmTitle) {
         return screeningReadOnlyRepository
-                .findByFilm_Title(filmTitle)
+                .readByFilmTitle(filmTitle)
                 .stream()
                 .sorted(comparing(Screening::getDate))
                 .map(screeningMapper::mapToDto)
@@ -42,7 +42,7 @@ public class ScreeningReadService {
 
     public List<ScreeningDto> readScreeningsByCategory(FilmCategory category) {
         return screeningReadOnlyRepository
-                .findByFilm_Category(category)
+                .readByFilmCategory(category)
                 .stream()
                 .sorted(comparing(Screening::getDate))
                 .map(screeningMapper::mapToDto)
@@ -51,7 +51,7 @@ public class ScreeningReadService {
 
     public List<ScreeningDto> readScreeningsByDate(LocalDate date) {
         return screeningReadOnlyRepository
-                .findByDateBetween(date.atStartOfDay(), date.plusDays(1).atStartOfDay())
+                .readByDateBetween(date.atStartOfDay(), date.plusDays(1).atStartOfDay())
                 .stream()
                 .sorted(comparing(Screening::getDate))
                 .map(screeningMapper::mapToDto)

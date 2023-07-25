@@ -1,7 +1,7 @@
 package code.catalog.application.services;
 
 import code.catalog.domain.Screening;
-import code.catalog.infrastructure.db.ScreeningReadOnlyRepository;
+import code.catalog.domain.ports.ScreeningReadOnlyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class ScreeningEndService {
     @Transactional
     public void removeRoomsFromEndedScreenings() {
         log.info("Searching for ended screenings");
-        var endedScreenings = screeningReadOnlyRepository.findEnded();
+        var endedScreenings = screeningReadOnlyRepository.readEnded();
         if (endedScreenings.isEmpty()) {
             log.info("Ended screenings not found");
         } else {

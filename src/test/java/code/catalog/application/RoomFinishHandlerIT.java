@@ -4,7 +4,7 @@ import code.SpringIT;
 import code.catalog.application.services.ScreeningEndService;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
-import code.catalog.infrastructure.db.ScreeningReadOnlyRepository;
+import code.catalog.domain.ports.ScreeningReadOnlyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -38,7 +38,7 @@ class RoomFinishHandlerIT extends SpringIT {
         screeningFinishHandler.removeRoomsFromEndedScreenings();
 
         //then
-        var screenings = screeningReadOnlyRepository.findAll();
+        var screenings = screeningReadOnlyRepository.readAll();
         assertThat(screenings).allMatch(screening -> screening.getRoom() == null);
     }
 }

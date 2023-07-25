@@ -2,8 +2,8 @@ package code.bookings.application.services;
 
 import code.bookings.domain.BookingDetails;
 import code.bookings.domain.ports.BookingRepository;
-import code.bookings.infrastructure.db.SeatRepository;
-import code.catalog.application.services.SeatDataService;
+import code.bookings.domain.ports.SeatRepository;
+import code.catalog.application.services.ScreeningDetailsService;
 import code.shared.EntityNotFoundException;
 import code.shared.TimeProvider;
 import code.user.application.services.UserCurrentService;
@@ -20,17 +20,17 @@ public class BookingMakeService {
     private final SeatRepository seatRepository;
     private final UserCurrentService userCurrentService;
     private final TimeProvider timeProvider;
-    private final SeatDataService seatDataService;
+    private final ScreeningDetailsService screeningDetailsService;
     private final BookingRepository bookingRepository;
 
     @Transactional
     public void makeBooking(Long seatId) {
         var seat = seatRepository
-                .findById(seatId)
+                .readById(seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Seat"));
         var currentUserId = userCurrentService.getCurrentUserId();
         var booking = seat.book(timeProvider.getCurrentDate(), currentUserId);
-        var bookingData = seatDataService.readBookingDataBySeatId(seatId);
+        var bookingData = screeningDetailsService.readBookingDataBySeatId(seatId);
         var bookingDetails = BookingDetails.create(
                 bookingData.getFilmTitle(),
                 bookingData.getRoomCustomId(),

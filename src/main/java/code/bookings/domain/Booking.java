@@ -47,11 +47,11 @@ public class Booking {
         this.userId = userId;
     }
 
-    public static Booking make(Seat seatId, Long userId) {
+    public static Booking make(Seat seat, Long userId) {
         return new Booking(
                 BookingStatus.ACTIVE,
                 userId,
-                seatId
+                seat
         );
     }
 

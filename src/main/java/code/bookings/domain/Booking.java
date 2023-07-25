@@ -39,7 +39,7 @@ public class Booking {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Screening screening;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Seat seat;
 
     private Long userId;

@@ -43,7 +43,7 @@ public class Seat {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Screening screening;
 
-    @OneToOne(mappedBy = "seat", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "seat", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Booking booking;
 
     private Seat(int rowNumber, int number, boolean isFree) {

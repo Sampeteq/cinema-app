@@ -181,7 +181,7 @@ class BookingRestControllerIT extends SpringIT {
 
         //then
         var searchSeatsResult = mockMvc.perform(
-                get("/screenings/" + 1 + "/seats")
+                get("/seats").param("screeningId", "1")
         );
         var isSeatBusy = getSeatsFromResult(searchSeatsResult).anyMatch(
                 s -> s.id().equals(1L) && !s.isFree()
@@ -223,7 +223,7 @@ class BookingRestControllerIT extends SpringIT {
         //then
         result.andExpect(status().isOk());
         var searchSeatsResult = mockMvc.perform(
-                get("/screenings/" + 1 + "/seats")
+                get("/seats").param("screeningId", "1")
         );
         var isSeatFreeAgain = getSeatsFromResult(searchSeatsResult)
                 .anyMatch(s -> s.id().equals(1L) && s.isFree());

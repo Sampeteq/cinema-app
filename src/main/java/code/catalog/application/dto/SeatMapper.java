@@ -1,6 +1,6 @@
 package code.catalog.application.dto;
 
-import code.catalog.domain.Seat;
+import code.bookings.domain.Seat;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

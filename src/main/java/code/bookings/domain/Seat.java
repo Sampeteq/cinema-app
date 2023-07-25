@@ -1,5 +1,8 @@
-package code.catalog.domain;
+package code.bookings.domain;
 
+import code.bookings.domain.exceptions.BookingAlreadyExists;
+import code.bookings.domain.exceptions.BookingCancelTooLateException;
+import code.bookings.domain.exceptions.BookingTooLateException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -7,13 +10,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "SEATS")
@@ -26,7 +32,6 @@ public class Seat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
     private Long id;
 
     private int rowNumber;
@@ -35,8 +40,11 @@ public class Seat {
 
     private boolean isFree;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Screening screening;
+
+    @OneToOne(mappedBy = "seat", fetch = FetchType.LAZY)
+    private Booking booking;
 
     private Seat(int rowNumber, int number, boolean isFree) {
         this.rowNumber = rowNumber;
@@ -57,11 +65,23 @@ public class Seat {
         this.screening = screening;
     }
 
-    public void makeFree() {
-        this.isFree = true;
+
+    public Booking book(LocalDateTime currentDate, Long userId) {
+        if (this.booking != null && this.booking.hasStatus(BookingStatus.ACTIVE)) {
+            throw new BookingAlreadyExists();
+        }
+        if (this.screening.timeToScreeningInHours(currentDate) < 1) {
+            throw new BookingTooLateException();
+        }
+        this.isFree = false;
+        return Booking.make(this.screening, this, userId);
     }
 
-    public void makeNotFree() {
-        this.isFree = false;
+    public void cancelBooking(LocalDateTime currentDate) {
+        if (this.screening.timeToScreeningInHours(currentDate) < 24) {
+            throw new BookingCancelTooLateException();
+        }
+        this.booking = null;
+        this.isFree = true;
     }
 }

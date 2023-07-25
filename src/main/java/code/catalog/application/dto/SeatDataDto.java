@@ -10,8 +10,6 @@ public class SeatDataDto {
     private final LocalDateTime screeningDate;
     private final Long roomId;
     private final String roomCustomId;
-    private final int seatRowNumber;
-    private final int seatNumber;
     private final Long filmId;
     private final String filmTitle;
 
@@ -20,8 +18,6 @@ public class SeatDataDto {
             LocalDateTime screeningDate,
             Long roomId,
             String roomCustomId,
-            int seatRowNumber,
-            int seatNumber,
             Long filmId,
             String filmTitle
     ) {
@@ -29,8 +25,6 @@ public class SeatDataDto {
         this.screeningDate = screeningDate;
         this.roomId = roomId;
         this.roomCustomId = roomCustomId;
-        this.seatRowNumber = seatRowNumber;
-        this.seatNumber = seatNumber;
         this.filmId = filmId;
         this.filmTitle = filmTitle;
     }

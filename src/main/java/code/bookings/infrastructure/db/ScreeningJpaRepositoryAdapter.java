@@ -15,6 +15,11 @@ public class ScreeningJpaRepositoryAdapter implements ScreeningRepository {
     private final ScreeningJpaRepository screeningJpaRepository;
 
     @Override
+    public Screening add(Screening screening) {
+        return screeningJpaRepository.save(screening);
+    }
+
+    @Override
     public Optional<Screening> readById(Long id) {
         return screeningJpaRepository.findById(id);
     }

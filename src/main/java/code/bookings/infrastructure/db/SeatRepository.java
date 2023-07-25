@@ -1,7 +1,7 @@
-package code.catalog.infrastructure.db;
+package code.bookings.infrastructure.db;
 
 import code.catalog.application.dto.SeatDataDto;
-import code.catalog.domain.Seat;
+import code.bookings.domain.Seat;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,8 +15,6 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
                     "sc.date, " +
                     "r.id, " +
                     "r.customId, " +
-                    "se.rowNumber, " +
-                    "se.number, " +
                     "film.id, " +
                     "film.title" +
                     ") from Screening sc, Room r, Seat se, Film film where se.id = :seatId"

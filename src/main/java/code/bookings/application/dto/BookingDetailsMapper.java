@@ -14,8 +14,8 @@ public interface BookingDetailsMapper {
                 bookingDetails.getFilmTitle(),
                 booking.getScreening().getDate(),
                 bookingDetails.getRoomCustomId(),
-                bookingDetails.getSeatRowNumber(),
-                bookingDetails.getSeatNumber()
+                booking.getSeat().getRowNumber(),
+                booking.getSeat().getNumber()
         );
     }
 }

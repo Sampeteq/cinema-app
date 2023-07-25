@@ -5,5 +5,6 @@ import code.bookings.domain.Screening;
 import java.util.Optional;
 
 public interface ScreeningRepository {
+    Screening add(Screening screening);
     Optional<Screening> readById(Long id);
 }

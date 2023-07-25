@@ -25,39 +25,27 @@ public class BookingDetails {
 
     private String roomCustomId;
 
-    private int seatRowNumber;
-
-    private int seatNumber;
-
     @OneToOne
     private Booking booking;
 
     private BookingDetails(
             String filmTitle,
             String roomCustomId,
-            int seatRowNumber,
-            int seatNumber,
             Booking booking
     ) {
         this.filmTitle = filmTitle;
         this.roomCustomId = roomCustomId;
-        this.seatRowNumber = seatRowNumber;
-        this.seatNumber = seatNumber;
         this.booking = booking;
     }
 
     public static BookingDetails create(
             String filmTitle,
             String roomCustomId,
-            int seatRowNumber,
-            int seatNumber,
             Booking booking
     ) {
         return new BookingDetails(
                 filmTitle,
                 roomCustomId,
-                seatRowNumber,
-                seatNumber,
                 booking
         );
     }

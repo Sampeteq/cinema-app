@@ -1,7 +1,7 @@
 package code.catalog.application.services;
 
 import code.catalog.application.dto.SeatDataDto;
-import code.catalog.infrastructure.db.SeatRepository;
+import code.bookings.infrastructure.db.SeatRepository;
 import code.shared.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

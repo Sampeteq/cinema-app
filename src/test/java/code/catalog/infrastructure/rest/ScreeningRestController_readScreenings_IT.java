@@ -122,22 +122,6 @@ class ScreeningRestController_readScreenings_IT extends SpringIT {
                 .andExpect(content().json(toJson(List.of(screeningWithRequiredDate))));
     }
 
-    @Test
-    void should_read_seats_for_screening() throws Exception {
-        //given
-        var screening = addScreening();
-
-        //when
-        var result = mockMvc.perform(
-                get(SCREENINGS_BASE_ENDPOINT + screening.getId() + "/seats")
-        );
-
-        //then
-        result
-                .andExpect(status().isOk())
-                .andExpect(content().json(toJson(seatMapper.toDto(screening.getSeats()))));
-    }
-
     private Screening addScreening() {
         var film = createFilm();
         var room = roomRepository.add(createRoom());

@@ -12,9 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.List;
-
-import static java.util.stream.IntStream.rangeClosed;
 
 @Entity
 @Table(name = "ROOMS")
@@ -47,14 +44,5 @@ public class Room {
                 rowsQuantity,
                 seatsInOneRowQuantity
         );
-    }
-
-    public List<Seat> createSeats() {
-        return rangeClosed(1, this.rowsQuantity)
-                .boxed()
-                .flatMap(rowNumber -> rangeClosed(1, this.seatsInOneRowQuantity)
-                        .mapToObj(seatNumber -> Seat.create(rowNumber, seatNumber))
-                )
-                .toList();
     }
 }

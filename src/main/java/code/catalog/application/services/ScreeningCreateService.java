@@ -4,14 +4,16 @@ import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.domain.Film;
 import code.catalog.domain.Room;
 import code.catalog.domain.Screening;
+import code.catalog.domain.events.ScreeningCreatedEvent;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.services.ScreeningDateValidateService;
 import code.shared.EntityNotFoundException;
 import code.shared.TimeProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.LocalDateTime;
 
@@ -23,17 +25,29 @@ public class ScreeningCreateService {
     private final TimeProvider timeProvider;
     private final FilmRepository filmRepository;
     private final RoomAvailableService roomAvailableService;
+    private final TransactionTemplate transactionTemplate;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    @Transactional
     public void createScreening(ScreeningCreateDto dto) {
+        System.out.println(timeProvider.getCurrentDate());
+        System.out.println(dto.date());
         screeningDateValidateService.validate(dto.date(), timeProvider.getCurrentDate());
-        var film = getFilmOrThrow(dto.filmId());
-        var screeningDate = dto.date();
-        var screeningEndDate = film.calculateScreeningEndDate(screeningDate);
-        var availableRoom = getAvailableRoomOrThrow(screeningDate, screeningEndDate);
-        var newScreening = Screening.create(screeningDate, film, availableRoom);
-        film.addScreening(newScreening);
-        filmRepository.add(film);
+        var addedScreening = transactionTemplate.execute(status -> {
+            var film = getFilmOrThrow(dto.filmId());
+            var screeningDate = dto.date();
+            var screeningEndDate = film.calculateScreeningEndDate(screeningDate);
+            var availableRoom = getAvailableRoomOrThrow(screeningDate, screeningEndDate);
+            var newScreening = Screening.create(screeningDate, film, availableRoom);
+            film.addScreening(newScreening);
+            return newScreening;
+        });
+        var screeningCreatedEvent = new ScreeningCreatedEvent(
+                addedScreening.getId(),
+                addedScreening.getDate(),
+                addedScreening.getRoom().getRowsQuantity(),
+                addedScreening.getRoom().getSeatsInOneRowQuantity()
+        );
+        applicationEventPublisher.publishEvent(screeningCreatedEvent);
     }
 
     private Film getFilmOrThrow(Long filmId) {

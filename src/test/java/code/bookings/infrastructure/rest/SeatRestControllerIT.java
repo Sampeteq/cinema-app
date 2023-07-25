@@ -7,7 +7,7 @@ import code.bookings.application.services.SeatReadService;
 import code.catalog.application.dto.SeatDto;
 import code.catalog.application.services.ScreeningCreateService;
 import code.catalog.domain.events.ScreeningCreatedEvent;
-import code.shared.TimeProvider;
+import code.shared.time.TimeProvider;
 import com.teketik.test.mockinbean.MockInBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

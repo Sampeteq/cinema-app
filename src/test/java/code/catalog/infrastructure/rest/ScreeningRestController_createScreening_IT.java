@@ -10,7 +10,7 @@ import code.catalog.domain.exceptions.RoomsNoAvailableException;
 import code.catalog.domain.exceptions.ScreeningDateException;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
-import code.shared.TimeProvider;
+import code.shared.time.TimeProvider;
 import com.teketik.test.mockinbean.MockInBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -2,7 +2,7 @@ package code.catalog.application.services;
 
 import code.catalog.application.dto.ScreeningDetails;
 import code.catalog.domain.ports.ScreeningReadOnlyRepository;
-import code.shared.EntityNotFoundException;
+import code.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

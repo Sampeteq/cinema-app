@@ -1,6 +1,6 @@
 package code.user.application.services;
 
-import code.shared.EntityNotFoundException;
+import code.shared.exceptions.EntityNotFoundException;
 import code.user.application.dto.UserPasswordNewDto;
 import code.user.domain.ports.UserRepository;
 import lombok.RequiredArgsConstructor;

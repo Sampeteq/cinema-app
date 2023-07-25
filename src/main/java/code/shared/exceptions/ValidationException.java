@@ -1,4 +1,4 @@
-package code.shared;
+package code.shared.exceptions;
 
 public class ValidationException extends RuntimeException {
 

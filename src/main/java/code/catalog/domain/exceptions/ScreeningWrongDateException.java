@@ -1,6 +1,6 @@
 package code.catalog.domain.exceptions;
 
-import code.shared.ValidationException;
+import code.shared.exceptions.ValidationException;
 
 public class ScreeningWrongDateException extends ValidationException {
 

@@ -1,6 +1,6 @@
 package code.catalog.domain.exceptions;
 
-import code.shared.ValidationException;
+import code.shared.exceptions.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

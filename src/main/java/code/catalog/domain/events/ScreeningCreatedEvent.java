@@ -1,5 +1,7 @@
 package code.catalog.domain.events;
 
+import code.shared.events.Event;
+
 import java.time.LocalDateTime;
 
 public record ScreeningCreatedEvent(
@@ -7,5 +9,5 @@ public record ScreeningCreatedEvent(
         LocalDateTime date,
         int rowsQuantity,
         int seatsQuantityInOneRow
-) {
+) implements Event {
 }

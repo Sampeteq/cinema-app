@@ -14,7 +14,7 @@ import code.catalog.application.dto.SeatDto;
 import code.catalog.application.services.FilmCreateService;
 import code.catalog.application.services.RoomCreateService;
 import code.catalog.application.services.ScreeningCreateService;
-import code.shared.TimeProvider;
+import code.shared.time.TimeProvider;
 import code.user.application.dto.UserSignUpDto;
 import code.user.application.services.UserSignUpService;
 import com.teketik.test.mockinbean.MockInBean;

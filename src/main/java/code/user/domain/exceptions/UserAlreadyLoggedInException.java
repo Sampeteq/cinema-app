@@ -1,6 +1,6 @@
 package code.user.domain.exceptions;
 
-import code.shared.ValidationException;
+import code.shared.exceptions.ValidationException;
 
 public class UserAlreadyLoggedInException extends ValidationException {
 

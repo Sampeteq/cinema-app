@@ -1,4 +1,4 @@
-package code.shared;
+package code.shared.time;
 
 import java.time.LocalDateTime;
 

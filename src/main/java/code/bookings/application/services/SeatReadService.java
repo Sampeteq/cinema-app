@@ -4,7 +4,7 @@ import code.bookings.domain.Screening;
 import code.bookings.domain.ports.ScreeningRepository;
 import code.catalog.application.dto.SeatDto;
 import code.catalog.application.dto.SeatMapper;
-import code.shared.EntityNotFoundException;
+import code.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,6 +1,6 @@
 package code;
 
-import code.shared.TimeProvider;
+import code.shared.time.TimeProvider;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package code.shared;
+package code.shared.time;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

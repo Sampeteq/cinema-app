@@ -1,8 +1,8 @@
 package code.bookings.application.services;
 
 import code.bookings.domain.ports.BookingRepository;
-import code.shared.EntityNotFoundException;
-import code.shared.TimeProvider;
+import code.shared.exceptions.EntityNotFoundException;
+import code.shared.time.TimeProvider;
 import code.user.application.services.UserCurrentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

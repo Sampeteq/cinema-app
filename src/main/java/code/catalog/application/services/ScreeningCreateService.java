@@ -8,10 +8,10 @@ import code.catalog.domain.events.ScreeningCreatedEvent;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.services.ScreeningDateValidateService;
-import code.shared.EntityNotFoundException;
-import code.shared.TimeProvider;
+import code.shared.exceptions.EntityNotFoundException;
+import code.shared.events.EventPublisher;
+import code.shared.time.TimeProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -26,7 +26,7 @@ public class ScreeningCreateService {
     private final FilmRepository filmRepository;
     private final RoomAvailableService roomAvailableService;
     private final TransactionTemplate transactionTemplate;
-    private final ApplicationEventPublisher applicationEventPublisher;
+    private final EventPublisher eventPublisher;
 
     public void createScreening(ScreeningCreateDto dto) {
         screeningDateValidateService.validate(dto.date(), timeProvider.getCurrentDate());
@@ -45,7 +45,7 @@ public class ScreeningCreateService {
                 addedScreening.getRoom().getRowsQuantity(),
                 addedScreening.getRoom().getSeatsInOneRowQuantity()
         );
-        applicationEventPublisher.publishEvent(screeningCreatedEvent);
+        eventPublisher.publish(screeningCreatedEvent);
     }
 
     private Film getFilmOrThrow(Long filmId) {

@@ -3,7 +3,7 @@ package code.bookings.application.services;
 import code.bookings.application.dto.BookingDetailsDto;
 import code.bookings.application.dto.BookingDetailsMapper;
 import code.bookings.domain.ports.BookingRepository;
-import code.shared.EntityNotFoundException;
+import code.shared.exceptions.EntityNotFoundException;
 import code.user.application.services.UserCurrentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -9,7 +9,7 @@ import code.catalog.domain.FilmCategory;
 import code.catalog.domain.Screening;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
-import code.shared.TimeProvider;
+import code.shared.time.TimeProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

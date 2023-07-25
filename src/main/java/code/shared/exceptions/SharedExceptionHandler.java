@@ -1,4 +1,4 @@
-package code.shared;
+package code.shared.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

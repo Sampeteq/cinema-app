@@ -1,6 +1,6 @@
 package code.bookings.domain.exceptions;
 
-import code.shared.ValidationException;
+import code.shared.exceptions.ValidationException;
 
 public class BookingTooLateException extends ValidationException {
 

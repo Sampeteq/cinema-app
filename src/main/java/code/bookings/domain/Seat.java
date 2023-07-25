@@ -74,7 +74,9 @@ public class Seat {
             throw new BookingTooLateException();
         }
         this.isFree = false;
-        return Booking.make(this.screening, this, userId);
+        var newBooking = Booking.make(this.screening, this, userId);
+        this.booking = newBooking;
+        return newBooking;
     }
 
     public void cancelBooking(LocalDateTime currentDate) {

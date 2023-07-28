@@ -24,7 +24,7 @@ import java.util.List;
 @Table(name = "FILMS")
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString
+@ToString(exclude = "screenings")
 public class Film {
 
     @Id

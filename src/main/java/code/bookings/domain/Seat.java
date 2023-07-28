@@ -27,7 +27,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString(exclude = {"screening"})
 public class Seat {
 
     @Id
@@ -85,5 +84,16 @@ public class Seat {
         }
         this.booking = null;
         this.isFree = true;
+    }
+
+    @Override
+    public String toString() {
+        return "Seat{" +
+                "id=" + id +
+                ", rowNumber=" + rowNumber +
+                ", number=" + number +
+                ", isFree=" + isFree +
+                ", screening=" + screening.getId() +
+                '}';
     }
 }

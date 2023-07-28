@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 @Table(name = "BOOKINGS")
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString
 public class Booking {
 
     @Id
@@ -69,5 +68,15 @@ public class Booking {
 
     public void setBookingDetails(BookingDetails bookingDetails) {
         this.bookingDetails = bookingDetails;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", status=" + status +
+                ", seat=" + seat.getId() +
+                ", userId=" + userId +
+                '}';
     }
 }

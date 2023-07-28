@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class Booking {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "booking", fetch = FetchType.LAZY)
     private BookingDetails bookingDetails;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Seat seat;
 
     private Long userId;
@@ -58,7 +59,7 @@ public class Booking {
         if (status.equals(BookingStatus.CANCELLED)) {
             throw new BookingAlreadyCancelledException();
         }
-        this.seat.cancelBooking(currentDate);
+        this.seat.cancelBooking(this, currentDate);
         this.status = BookingStatus.CANCELLED;
     }
 

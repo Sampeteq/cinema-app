@@ -29,9 +29,9 @@ class BookingUT {
 
         //then
         assertThat(seat.isFree()).isFalse();
-        assertThat(seat.getBooking()).isNotNull();
-        assertThat(seat.getBooking().getStatus()).isEqualTo(BookingStatus.ACTIVE);
-        assertThat(seat.getBooking().getUserId()).isEqualTo(userId);
+        assertThat(seat.getBookings()).hasSize(1);
+        assertThat(seat.getBookings().get(0).getStatus()).isEqualTo(BookingStatus.ACTIVE);
+        assertThat(seat.getBookings().get(0).getUserId()).isEqualTo(userId);
     }
 
     @Test

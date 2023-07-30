@@ -3,7 +3,6 @@ package code.bookings.domain;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

@@ -4,14 +4,12 @@ import code.catalog.application.dto.FilmDto;
 import code.catalog.application.dto.FilmMapper;
 import code.catalog.application.dto.ScreeningDto;
 import code.catalog.application.dto.ScreeningMapper;
-import code.catalog.domain.FilmCategory;
 import code.catalog.domain.Screening;
 import code.catalog.domain.ports.FilmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static java.util.Comparator.comparing;

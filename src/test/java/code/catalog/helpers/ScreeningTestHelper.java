@@ -4,7 +4,6 @@ import code.catalog.domain.Film;
 import code.catalog.domain.Room;
 import code.catalog.domain.Screening;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

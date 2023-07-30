@@ -1,7 +1,6 @@
 package code.bookings.infrastructure.db;
 
 import code.bookings.domain.Booking;
-import code.bookings.domain.BookingStatus;
 import code.bookings.domain.ports.BookingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,11 +32,6 @@ public class SpringDataJpaBookingRepository implements BookingRepository {
     public List<Booking> readAllByUserId(Long userId) {
         return jpaBookingRepository.readAllByUserId(userId);
     }
-
-    @Override
-    public boolean existsBySeatIdAndBookingStatus(Long seatId, BookingStatus status) {
-        return jpaBookingRepository.existsBySeatIdAndStatus(seatId, status);
-    }
 }
 
 interface JpaBookingRepository extends JpaRepository<Booking, Long> {
@@ -53,6 +47,4 @@ interface JpaBookingRepository extends JpaRepository<Booking, Long> {
             "JOIN FETCH b.bookingDetails " +
             "WHERE b.userId = :userId")
     List<Booking> readAllByUserId(@Param("userId") Long userId);
-
-    boolean existsBySeatIdAndStatus(Long seatId, BookingStatus status);
 }

@@ -14,33 +14,33 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class BookingJpaRepositoryAdapter implements BookingRepository {
+public class SpringDataJpaBookingRepository implements BookingRepository {
 
-    private final BookingJpaRepository bookingJpaRepository;
+    private final JpaBookingRepository jpaBookingRepository;
 
     @Override
     public Booking add(Booking booking) {
-        return bookingJpaRepository.save(booking);
+        return jpaBookingRepository.save(booking);
     }
 
 
     @Override
     public Optional<Booking> readByIdAndUserId(Long bookingId, Long userId) {
-        return bookingJpaRepository.readByIdAndUserId(bookingId, userId);
+        return jpaBookingRepository.readByIdAndUserId(bookingId, userId);
     }
 
     @Override
     public List<Booking> readAllByUserId(Long userId) {
-        return bookingJpaRepository.readAllByUserId(userId);
+        return jpaBookingRepository.readAllByUserId(userId);
     }
 
     @Override
     public boolean existsBySeatIdAndBookingStatus(Long seatId, BookingStatus status) {
-        return bookingJpaRepository.existsBySeatIdAndStatus(seatId, status);
+        return jpaBookingRepository.existsBySeatIdAndStatus(seatId, status);
     }
 }
 
-interface BookingJpaRepository extends JpaRepository<Booking, Long> {
+interface JpaBookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("SELECT b FROM Booking b " +
             "JOIN FETCH b.seat " +

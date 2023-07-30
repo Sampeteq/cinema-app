@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class ScreeningJpaRepositoryAdapter implements ScreeningRepository {
+public class SpringDataJpaScreeningRepository implements ScreeningRepository {
 
     private final ScreeningJpaRepository screeningJpaRepository;
 

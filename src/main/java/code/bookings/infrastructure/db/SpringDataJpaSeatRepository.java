@@ -10,16 +10,16 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class SeatJpaRepositoryAdapter implements SeatRepository {
+public class SpringDataJpaSeatRepository implements SeatRepository {
 
-    private final SeatJpaRepository seatJpaRepository;
+    private final JpaSeatRepository jpaSeatRepository;
 
     @Override
     public Optional<Seat> readById(Long id) {
-        return seatJpaRepository.findById(id);
+        return jpaSeatRepository.findById(id);
     }
 }
 
-interface SeatJpaRepository extends JpaRepository<Seat, Long> {
+interface JpaSeatRepository extends JpaRepository<Seat, Long> {
 
 }

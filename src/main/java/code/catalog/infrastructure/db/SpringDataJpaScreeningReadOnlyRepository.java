@@ -17,45 +17,45 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Repository
 @RequiredArgsConstructor
-public class ScreeningJpaReadOnlyRepositoryAdapter implements ScreeningReadOnlyRepository {
+public class SpringDataJpaScreeningReadOnlyRepository implements ScreeningReadOnlyRepository {
 
-    private final ScreeningReadOnlyJpaRepository screeningReadOnlyJpaRepository;
+    private final JpaScreeningReadOnlyRepository jpaScreeningReadOnlyRepository;
 
     @Override
     public List<Screening> readAll() {
-        return screeningReadOnlyJpaRepository.findAll();
+        return jpaScreeningReadOnlyRepository.findAll();
     }
 
     @Override
     public List<Screening> readByFilmTitle(String filmTitle) {
-        return screeningReadOnlyJpaRepository.findByFilm_Title(filmTitle);
+        return jpaScreeningReadOnlyRepository.findByFilm_Title(filmTitle);
     }
 
     @Override
     public List<Screening> readByFilmCategory(FilmCategory filmCategory) {
-        return screeningReadOnlyJpaRepository.findByFilm_Category(filmCategory);
+        return jpaScreeningReadOnlyRepository.findByFilm_Category(filmCategory);
     }
 
     @Override
     public List<Screening> readByDateBetween(LocalDateTime from, LocalDateTime to) {
-        return screeningReadOnlyJpaRepository.findByDateBetween(from, to);
+        return jpaScreeningReadOnlyRepository.findByDateBetween(from, to);
     }
 
     @Override
     public List<Screening> readEnded() {
-        return screeningReadOnlyJpaRepository.findEnded();
+        return jpaScreeningReadOnlyRepository.findEnded();
     }
 
     @Override
     public Optional<ScreeningDetails> readDetailsBySeatId(Long seatId) {
-        return screeningReadOnlyJpaRepository
+        return jpaScreeningReadOnlyRepository
                 .readDetailsBySeatId(seatId, PageRequest.of(0, 1))
                 .stream()
                 .findFirst();
     }
 }
 
-interface ScreeningReadOnlyJpaRepository extends Repository<Screening, Long> {
+interface JpaScreeningReadOnlyRepository extends Repository<Screening, Long> {
     List<Screening> findAll();
 
     List<Screening> findByFilm_Title(String filmTitle);

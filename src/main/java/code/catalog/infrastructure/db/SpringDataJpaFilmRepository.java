@@ -11,31 +11,31 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class FilmJpaRepositoryAdapter implements FilmRepository {
+public class SpringDataJpaFilmRepository implements FilmRepository {
 
-    private final FilmJpaRepository filmJpaRepository;
+    private final JpaFilmRepository jpaFilmRepository;
 
     @Override
     public Film add(Film film) {
-        return filmJpaRepository.save(film);
+        return jpaFilmRepository.save(film);
     }
 
     @Override
     public Optional<Film> readById(Long filmId) {
-        return filmJpaRepository.findById(filmId);
+        return jpaFilmRepository.findById(filmId);
     }
 
     @Override
     public List<Film> readAll() {
-        return filmJpaRepository.findAll();
+        return jpaFilmRepository.findAll();
     }
 
     @Override
     public boolean existsByTitle(String title) {
-        return filmJpaRepository.existsByTitle(title);
+        return jpaFilmRepository.existsByTitle(title);
     }
 }
 
-interface FilmJpaRepository extends JpaRepository<Film, Long> {
+interface JpaFilmRepository extends JpaRepository<Film, Long> {
     boolean existsByTitle(String title);
 }

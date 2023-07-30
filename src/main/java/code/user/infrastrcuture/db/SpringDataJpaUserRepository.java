@@ -11,9 +11,9 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
-public class UserJpaRepositoryAdapter implements UserRepository {
+public class SpringDataJpaUserRepository implements UserRepository {
 
-    private final UserJpaRepository jpaUserRepository;
+    private final JpaUserRepository jpaUserRepository;
 
     @Override
     public User add(User user) {
@@ -36,7 +36,7 @@ public class UserJpaRepositoryAdapter implements UserRepository {
     }
 }
 
-interface UserJpaRepository extends JpaRepository<User, String> {
+interface JpaUserRepository extends JpaRepository<User, String> {
     Optional<User> readByMail(String mail);
     Optional<User> readByPasswordResetToken(UUID passwordResetToken);
     boolean existsByMail(String mail);

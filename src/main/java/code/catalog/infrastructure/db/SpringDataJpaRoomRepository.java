@@ -14,9 +14,9 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class RoomJpaRepositoryAdapter implements RoomRepository {
+public class SpringDataJpaRoomRepository implements RoomRepository {
 
-    private final RoomJpaRepository jpaRoomRepository;
+    private final JpaRoomRepository jpaRoomRepository;
 
     @Override
     public Room add(Room room) {
@@ -42,7 +42,7 @@ public class RoomJpaRepositoryAdapter implements RoomRepository {
     }
 }
 
-interface RoomJpaRepository extends JpaRepository<Room, Long> {
+interface JpaRoomRepository extends JpaRepository<Room, Long> {
 
     @Query(
             "SELECT r FROM Room r WHERE NOT EXISTS " +

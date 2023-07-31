@@ -47,9 +47,9 @@ public class SpringDataJpaScreeningReadOnlyRepository implements ScreeningReadOn
     }
 
     @Override
-    public Optional<ScreeningDetails> readDetailsBySeatId(Long seatId) {
+    public Optional<ScreeningDetails> readDetailsBySeatId(Long screeningId) {
         return jpaScreeningReadOnlyRepository
-                .readDetailsBySeatId(seatId, PageRequest.of(0, 1))
+                .readDetailsByScreeningId(screeningId, PageRequest.of(0, 1))
                 .stream()
                 .findFirst();
     }
@@ -69,13 +69,13 @@ interface JpaScreeningReadOnlyRepository extends Repository<Screening, Long> {
 
     @Query(
             "select new code.catalog.application.dto.ScreeningDetails(" +
-                    "sc.id, " +
-                    "sc.date, " +
-                    "r.id, " +
-                    "r.customId, " +
+                    "screening.id, " +
+                    "screening.date, " +
+                    "room.id, " +
+                    "room.customId, " +
                     "film.id, " +
                     "film.title" +
-                    ") from Screening sc, Room r, Seat se, Film film where se.id = :seatId"
+                    ") from Screening screening, Room room, Film film where screening.id = :screeningId"
     )
-    Page<ScreeningDetails> readDetailsBySeatId(Long seatId, Pageable pageable);
+    Page<ScreeningDetails> readDetailsByScreeningId(Long screeningId, Pageable pageable);
 }

@@ -12,9 +12,9 @@ public class ScreeningDetailsService {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
 
-    public ScreeningDetails readBookingDataBySeatId(Long seatId) {
+    public ScreeningDetails readScreeningDetails(Long screeningId) {
         return screeningReadOnlyRepository
-                .readDetailsBySeatId(seatId)
-                .orElseThrow(() -> new EntityNotFoundException("Seat"));
+                .readDetailsBySeatId(screeningId)
+                .orElseThrow(() -> new EntityNotFoundException("Screening"));
     }
 }

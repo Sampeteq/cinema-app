@@ -30,7 +30,8 @@ public class BookingMakeService {
                 .orElseThrow(() -> new EntityNotFoundException("Seat"));
         var currentUserId = userCurrentService.getCurrentUserId();
         var booking = seat.book(timeProvider.getCurrentDate(), currentUserId);
-        var bookingData = screeningDetailsService.readBookingDataBySeatId(seatId);
+        var screeningId = seat.getScreening().getId();
+        var bookingData = screeningDetailsService.readScreeningDetails(screeningId);
         var bookingDetails = BookingDetails.create(
                 bookingData.getFilmTitle(),
                 bookingData.getRoomCustomId(),

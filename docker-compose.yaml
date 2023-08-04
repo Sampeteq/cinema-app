@@ -14,7 +14,7 @@ services:
 
   api:
     container_name: cinema-api
-    image: nofenak/cinema:cinema-api
+    image: nofenak/cinema-app:v1
 #    build:
 #      context: .
 #      dockerfile: Dockerfile

@@ -1,6 +1,9 @@
 package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
+import code.bookings.domain.exceptions.BookingAlreadyExists;
+import code.bookings.domain.exceptions.BookingCancelTooLateException;
+import code.bookings.domain.exceptions.BookingTooLateException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -46,20 +49,34 @@ public class Booking {
         this.userId = userId;
     }
 
-    public static Booking make(Seat seat, Long userId) {
-        return new Booking(
+    public static Booking make(Seat seat, LocalDateTime currentDate, Long userId) {
+        var screening = seat.getScreening();
+        if (screening.timeToScreeningInHours(currentDate) < 1) {
+            throw new BookingTooLateException();
+        }
+        if (seat.hasActiveBooking()) {
+            throw new BookingAlreadyExists();
+        }
+        var booking = new Booking(
                 BookingStatus.ACTIVE,
                 userId,
                 seat
         );
+        seat.addBooking(booking);
+        seat.makeNotFree();
+        return booking;
     }
 
     public void cancel(LocalDateTime currentDate) {
         if (status.equals(BookingStatus.CANCELLED)) {
             throw new BookingAlreadyCancelledException();
         }
-        this.seat.cancelBooking(this, currentDate);
+        var screening = this.seat.getScreening();
+        if (screening.timeToScreeningInHours(currentDate) < 24) {
+            throw new BookingCancelTooLateException();
+        }
         this.status = BookingStatus.CANCELLED;
+        this.seat.makeFree();
     }
 
     public boolean hasStatus(BookingStatus status) {

@@ -25,13 +25,13 @@ class BookingUT {
         var userId = 1L;
 
         //when
-        seat.book(currentDate, userId);
+        var booking = Booking.make(seat, currentDate, userId);
 
         //then
+        assertThat(booking.getSeat()).isEqualTo(seat);
+        assertThat(booking.getStatus()).isEqualTo(BookingStatus.ACTIVE);
+        assertThat(booking.getUserId()).isEqualTo(userId);
         assertThat(seat.isFree()).isFalse();
-        assertThat(seat.getBookings()).hasSize(1);
-        assertThat(seat.getBookings().get(0).getStatus()).isEqualTo(BookingStatus.ACTIVE);
-        assertThat(seat.getBookings().get(0).getUserId()).isEqualTo(userId);
     }
 
     @Test
@@ -43,7 +43,7 @@ class BookingUT {
         //when
         assertThrows(
                 BookingAlreadyExists.class,
-                () -> seat.book(currentDate, otherUserId)
+                () -> Booking.make(seat, currentDate, otherUserId)
         );
     }
 
@@ -57,7 +57,7 @@ class BookingUT {
         //when
         assertThrows(
                 BookingTooLateException.class,
-                () -> seat.book(currentDate, userId)
+                () -> Booking.make(seat, currentDate, userId)
         );
     }
 
@@ -122,8 +122,9 @@ class BookingUT {
                 .getSeats()
                 .get(0);
         var userId = 1L;
-        seat.book(currentDate, userId);
-        return seat;
+        return Booking
+                .make(seat, currentDate, userId)
+                .getSeat();
     }
 
     private Booking prepareBooking() {
@@ -137,7 +138,7 @@ class BookingUT {
                 .getSeats()
                 .get(0);
         var userId = 1L;
-        return Booking.make(seat, userId);
+        return Booking.make(seat, currentDate, userId);
     }
 
     private Booking prepareBooking(LocalDateTime screeningDate) {
@@ -150,7 +151,7 @@ class BookingUT {
                 .getSeats()
                 .get(0);
         var userId = 1L;
-        return Booking.make(seat, userId);
+        return Booking.make(seat, currentDate, userId);
     }
 
     private Booking prepareCancelledBooking() {
@@ -164,7 +165,7 @@ class BookingUT {
                 .getSeats()
                 .get(0);
         var userId = 1L;
-        var booking = Booking.make(seat, userId);
+        var booking = Booking.make(seat, currentDate, userId);
         booking.cancel(currentDate);
         return booking;
     }

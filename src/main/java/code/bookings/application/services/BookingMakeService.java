@@ -1,5 +1,6 @@
 package code.bookings.application.services;
 
+import code.bookings.domain.Booking;
 import code.bookings.domain.BookingDetails;
 import code.bookings.domain.ports.BookingRepository;
 import code.bookings.domain.ports.SeatRepository;
@@ -29,7 +30,7 @@ public class BookingMakeService {
                 .readById(seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Seat"));
         var currentUserId = userCurrentService.getCurrentUserId();
-        var booking = seat.book(timeProvider.getCurrentDate(), currentUserId);
+        var booking = Booking.make(seat, timeProvider.getCurrentDate(), currentUserId);
         var screeningId = seat.getScreening().getId();
         var bookingData = screeningDetailsService.readScreeningDetails(screeningId);
         var bookingDetails = BookingDetails.create(

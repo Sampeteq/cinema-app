@@ -1,8 +1,5 @@
 package code.bookings.domain;
 
-import code.bookings.domain.exceptions.BookingAlreadyExists;
-import code.bookings.domain.exceptions.BookingCancelTooLateException;
-import code.bookings.domain.exceptions.BookingTooLateException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -18,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,29 +61,22 @@ public class Seat {
         this.screening = screening;
     }
 
+    public void addBooking(Booking booking) {
+        this.bookings.add(booking);
+    }
 
-    public Booking book(LocalDateTime currentDate, Long userId) {
-        if (this.screening.timeToScreeningInHours(currentDate) < 1) {
-            throw new BookingTooLateException();
-        }
-        var hasSeatActiveBooking = this
+    public boolean hasActiveBooking() {
+        return this
                 .bookings
                 .stream()
                 .anyMatch(booking -> booking.hasStatus(BookingStatus.ACTIVE));
-        if (hasSeatActiveBooking) {
-            throw new BookingAlreadyExists();
-        }
-        this.isFree = false;
-        var newBooking = Booking.make(this, userId);
-        this.bookings.add(newBooking);
-        return newBooking;
     }
 
-    public void cancelBooking(Booking booking, LocalDateTime currentDate) {
-        if (this.screening.timeToScreeningInHours(currentDate) < 24) {
-            throw new BookingCancelTooLateException();
-        }
-        this.bookings.remove(booking);
+    public void makeNotFree() {
+        this.isFree = false;
+    }
+
+    public void makeFree() {
         this.isFree = true;
     }
 

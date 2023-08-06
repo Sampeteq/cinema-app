@@ -28,9 +28,9 @@ public class UserPasswordResetHandlerService {
                 message,
                 MailType.USER_PASSWORD_RESET
         );
-        mailRepository.add(passwordResetMail);
-        log.info("Mail saved in database");
         mailSender.sendMail(passwordResetMail);
         log.info("Mail sent");
+        mailRepository.add(passwordResetMail);
+        log.info("Mail saved in database");
     }
 }

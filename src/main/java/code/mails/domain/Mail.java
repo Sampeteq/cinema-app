@@ -23,21 +23,21 @@ public class Mail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String to;
+    private String receiver;
 
     private String subject;
 
     private String text;
 
-    private MailType mailType;
+    private MailType type;
 
     private LocalDateTime sentAt;
 
-    private Mail(String to, String subject, String text, MailType type) {
-        this.to = to;
+    private Mail(String receiver, String subject, String text, MailType type) {
+        this.receiver = receiver;
         this.subject = subject;
         this.text = text;
-        this.mailType = type;
+        this.type = type;
     }
 
     public static Mail create(String to, String subject, String text, MailType type) {

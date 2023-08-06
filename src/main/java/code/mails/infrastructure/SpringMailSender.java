@@ -20,7 +20,7 @@ public class SpringMailSender implements MailSender {
     @Override
     public void sendMail(Mail mail) {
         var message = new SimpleMailMessage();
-        message.setTo(mail.getTo());
+        message.setTo(mail.getReceiver());
         message.setSubject(mail.getSubject());
         message.setText(mail.getText());
         javaMailSender.send(message);

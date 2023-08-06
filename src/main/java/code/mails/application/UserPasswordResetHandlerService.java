@@ -1,7 +1,7 @@
 package code.mails.application;
 
 import code.mails.domain.Mail;
-import code.mails.domain.MailService;
+import code.mails.domain.ports.MailSender;
 import code.mails.domain.MailType;
 import code.user.domain.events.UserPasswordResetEvent;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserPasswordResetHandlerService {
 
-    private final MailService mailService;
+    private final MailSender mailSender;
 
     @EventListener
     public void handle(UserPasswordResetEvent event) {
@@ -24,6 +24,6 @@ public class UserPasswordResetHandlerService {
                 message,
                 MailType.USER_PASSWORD_RESET
         );
-        mailService.sendMail(passwordResetMail);
+        mailSender.sendMail(passwordResetMail);
     }
 }

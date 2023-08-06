@@ -1,7 +1,7 @@
 package code;
 
 import code.mails.domain.Mail;
-import code.mails.domain.MailService;
+import code.mails.domain.ports.MailSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Profile("test")
 @Slf4j
-public class MockMailService implements MailService {
+public class MockMailSender implements MailSender {
 
     @Override
     public void sendMail(Mail mail) {

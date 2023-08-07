@@ -2,8 +2,8 @@ package code.catalog.infrastructure.rest;
 
 import code.SpringIT;
 import code.catalog.application.dto.FilmDto;
-import code.catalog.domain.exceptions.FilmNotUniqueTitleException;
-import code.catalog.domain.exceptions.FilmWrongYearException;
+import code.catalog.domain.exceptions.FilmTitleNotUniqueException;
+import code.catalog.domain.exceptions.FilmYearOutOfRangeException;
 import code.catalog.domain.ports.FilmRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -88,7 +88,7 @@ public class FilmRestController_createFilm_IT extends SpringIT {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new FilmNotUniqueTitleException().getMessage()));
+                .andExpect(content().string(new FilmTitleNotUniqueException().getMessage()));
     }
 
     @ParameterizedTest
@@ -109,6 +109,6 @@ public class FilmRestController_createFilm_IT extends SpringIT {
         //then
         result
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(new FilmWrongYearException().getMessage()));
+                .andExpect(content().string(new FilmYearOutOfRangeException().getMessage()));
     }
 }

@@ -1,10 +1,11 @@
 package code.catalog.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "SCREENINGS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Screening {
@@ -27,27 +28,19 @@ public class Screening {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     private LocalDateTime date;
 
+    @NonNull
     private LocalDateTime endDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @NonNull
     private Film film;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @NonNull
     private Room room;
-
-    public Screening(
-            LocalDateTime date,
-            LocalDateTime endDate,
-            Film film,
-            Room room
-    ) {
-        this.date = date;
-        this.endDate = endDate;
-        this.film = film;
-        this.room = room;
-    }
 
     public static Screening create(LocalDateTime date, Film film, Room room) {
         var endDate = film.calculateScreeningEndDate(date);

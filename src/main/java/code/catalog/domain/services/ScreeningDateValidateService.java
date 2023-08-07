@@ -1,6 +1,7 @@
 package code.catalog.domain.services;
 
-import code.catalog.domain.exceptions.ScreeningDateException;
+import code.catalog.domain.exceptions.ScreeningDateInPastException;
+import code.catalog.domain.exceptions.ScreeningDateOutOfRangeException;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -14,18 +15,17 @@ public class ScreeningDateValidateService {
 
     public void validate(LocalDateTime screeningDate, LocalDateTime currentDate) {
        if (screeningDate.isBefore(currentDate)) {
-           throw new ScreeningDateException("Screening date cannot be earlier than current");
+           throw new ScreeningDateInPastException();
        }
        var currentAndScreeningDateDifference = Duration
                 .between(screeningDate, currentDate)
                 .abs()
                 .toDays();
-       if (currentAndScreeningDateDifference < 7 || currentAndScreeningDateDifference > 21) {
-           throw new ScreeningDateException(
-                   "Difference between current and screening date " +
-                           "cannot be below " + MIN_BOOKING_DAYS_NUMBER +
-                           " and above " + MAX_BOOKING_DAYS_NUMBER + " days"
-           );
+       var isScreeningDateOutOfRange =
+               currentAndScreeningDateDifference < MIN_BOOKING_DAYS_NUMBER
+                       || currentAndScreeningDateDifference > MAX_BOOKING_DAYS_NUMBER;
+       if (isScreeningDateOutOfRange) {
+           throw new ScreeningDateOutOfRangeException();
        }
     }
 }

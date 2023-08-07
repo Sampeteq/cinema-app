@@ -7,7 +7,8 @@ import code.catalog.application.dto.ScreeningDto;
 import code.catalog.application.services.ScreeningCreateService;
 import code.catalog.domain.Screening;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
-import code.catalog.domain.exceptions.ScreeningDateException;
+import code.catalog.domain.exceptions.ScreeningDateInPastException;
+import code.catalog.domain.exceptions.ScreeningDateOutOfRangeException;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
 import code.shared.time.TimeProvider;
@@ -124,9 +125,7 @@ public class ScreeningRestController_createScreening_IT extends SpringIT {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new ScreeningDateException(
-                                "Screening date cannot be earlier than current"
-                        ).getMessage()
+                        new ScreeningDateInPastException().getMessage()
                 ));
     }
 
@@ -158,11 +157,7 @@ public class ScreeningRestController_createScreening_IT extends SpringIT {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new ScreeningDateException(
-                                "Difference between current and screening date " +
-                                        "cannot be below " + 7 +
-                                        " and above " + 21 + " days"
-                        ).getMessage()
+                        new ScreeningDateOutOfRangeException().getMessage()
                 ));
     }
 
@@ -194,11 +189,7 @@ public class ScreeningRestController_createScreening_IT extends SpringIT {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(
-                        new ScreeningDateException(
-                                "Difference between current and screening date " +
-                                        "cannot be below " + 7 +
-                                        " and above " + 21 + " days"
-                        ).getMessage()
+                        new ScreeningDateOutOfRangeException().getMessage()
                 ));
     }
 

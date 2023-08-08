@@ -5,9 +5,6 @@ import code.catalog.domain.FilmCategory;
 import code.catalog.domain.Screening;
 import code.catalog.domain.ports.ScreeningReadOnlyRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 
@@ -48,10 +45,7 @@ public class SpringDataJpaScreeningReadOnlyRepository implements ScreeningReadOn
 
     @Override
     public Optional<ScreeningDetails> readDetailsBySeatId(Long screeningId) {
-        return jpaScreeningReadOnlyRepository
-                .readDetailsByScreeningId(screeningId, PageRequest.of(0, 1))
-                .stream()
-                .findFirst();
+        return jpaScreeningReadOnlyRepository.readDetailsByScreeningId(screeningId);
     }
 }
 
@@ -74,5 +68,5 @@ interface JpaScreeningReadOnlyRepository extends Repository<Screening, Long> {
                     "screening.film.title" +
                     ") from Screening screening where screening.id = :screeningId"
     )
-    Page<ScreeningDetails> readDetailsByScreeningId(Long screeningId, Pageable pageable);
+    Optional<ScreeningDetails> readDetailsByScreeningId(Long screeningId);
 }

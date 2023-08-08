@@ -53,12 +53,13 @@ public class User implements UserDetails {
         );
     }
 
-    public void setPasswordResetToken(UUID passwordResetToken) {
-        this.passwordResetToken = passwordResetToken;
+    public void setNewPassword(String newPassword) {
+        this.password = newPassword;
+        this.passwordResetToken = null;
     }
 
-    public void changePassword(String newPassword) {
-        this.password = newPassword;
+    public void setPasswordResetToken(UUID passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
     }
 
     public Long getId() {

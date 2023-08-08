@@ -1,9 +1,10 @@
 package code.user.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "USERS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @ToString
 public class User implements UserDetails {
@@ -32,20 +33,17 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NonNull
     private String mail;
 
+    @NonNull
     private String password;
 
     @Enumerated(value = EnumType.STRING)
+    @NonNull
     private UserRole role;
 
     private UUID passwordResetToken;
-
-    public User(String mail, String password, UserRole role) {
-        this.mail = mail;
-        this.password = password;
-        this.role = role;
-    }
 
     public static User create(String mail, String password, UserRole role) {
         return new User(

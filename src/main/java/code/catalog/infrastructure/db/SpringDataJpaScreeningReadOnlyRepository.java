@@ -68,14 +68,11 @@ interface JpaScreeningReadOnlyRepository extends Repository<Screening, Long> {
     List<Screening> findEnded();
 
     @Query(
-            "select new code.catalog.application.dto.ScreeningDetails(" +
-                    "screening.id, " +
-                    "screening.date, " +
-                    "room.id, " +
-                    "room.customId, " +
-                    "film.id, " +
-                    "film.title" +
-                    ") from Screening screening, Room room, Film film where screening.id = :screeningId"
+            "select new code.catalog.application.dto.ScreeningDetails" +
+                    "(" +
+                    "screening.room.customId, " +
+                    "screening.film.title" +
+                    ") from Screening screening where screening.id = :screeningId"
     )
     Page<ScreeningDetails> readDetailsByScreeningId(Long screeningId, Pageable pageable);
 }

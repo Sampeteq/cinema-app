@@ -32,10 +32,10 @@ public class BookingMakeService {
         var currentUserId = userCurrentService.getCurrentUserId();
         var booking = Booking.make(seat, timeProvider.getCurrentDate(), currentUserId);
         var screeningId = seat.getScreening().getId();
-        var bookingData = screeningDetailsService.readScreeningDetails(screeningId);
+        var screeningDetails = screeningDetailsService.readScreeningDetails(screeningId);
         var bookingDetails = BookingDetails.create(
-                bookingData.getFilmTitle(),
-                bookingData.getRoomCustomId(),
+                screeningDetails.getFilmTitle(),
+                screeningDetails.getRoomCustomId(),
                 booking
         );
         booking.setBookingDetails(bookingDetails);

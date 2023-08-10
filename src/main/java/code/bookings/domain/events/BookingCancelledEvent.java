@@ -1,4 +1,6 @@
 package code.bookings.domain.events;
 
-public record BookingCancelledEvent(Long seatId) {
+import code.shared.events.Event;
+
+public record BookingCancelledEvent(Long bookingId) implements Event {
 }

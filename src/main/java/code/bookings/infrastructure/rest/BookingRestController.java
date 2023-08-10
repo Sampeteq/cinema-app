@@ -1,6 +1,6 @@
 package code.bookings.infrastructure.rest;
 
-import code.bookings.application.dto.BookingDetailsDto;
+import code.bookings.application.dto.BookingViewDto;
 import code.bookings.application.services.BookingCancelService;
 import code.bookings.application.services.BookingMakeService;
 import code.bookings.application.services.BookingReadService;
@@ -23,7 +23,7 @@ public class BookingRestController {
 
     private final BookingCancelService bookingCancelHandler;
 
-    private final BookingReadService bookingReadHandler;
+    private final BookingReadService bookingReadService;
 
     @PostMapping
     public void bookSeat(@RequestParam Long seatId) {
@@ -36,13 +36,13 @@ public class BookingRestController {
     }
 
     @GetMapping("/my")
-    public List<BookingDetailsDto> getAllBookings() {
-        return bookingReadHandler.readAll();
+    public List<BookingViewDto> readAllBookings() {
+        return bookingReadService.readAll();
     }
 
     @GetMapping("/my/{bookingId}")
-    public BookingDetailsDto getBookingById(@PathVariable Long bookingId) {
-        return bookingReadHandler.read(bookingId);
+    public BookingViewDto readBookingById(@PathVariable Long bookingId) {
+        return bookingReadService.read(bookingId);
     }
 }
 

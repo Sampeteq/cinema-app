@@ -1,10 +1,10 @@
 package code.bookings.application.services;
 
 import code.bookings.domain.Booking;
-import code.bookings.domain.BookingDetails;
+import code.bookings.domain.events.BookingMadeEvent;
 import code.bookings.domain.ports.BookingRepository;
 import code.bookings.domain.ports.SeatRepository;
-import code.catalog.application.services.ScreeningDetailsService;
+import code.shared.events.EventPublisher;
 import code.shared.exceptions.EntityNotFoundException;
 import code.shared.time.TimeProvider;
 import code.user.application.services.UserCurrentService;
@@ -21,8 +21,8 @@ public class BookingMakeService {
     private final SeatRepository seatRepository;
     private final UserCurrentService userCurrentService;
     private final TimeProvider timeProvider;
-    private final ScreeningDetailsService screeningDetailsService;
     private final BookingRepository bookingRepository;
+    private final EventPublisher eventPublisher;
 
     @Transactional
     public void makeBooking(Long seatId) {
@@ -31,15 +31,18 @@ public class BookingMakeService {
                 .orElseThrow(() -> new EntityNotFoundException("Seat"));
         var currentUserId = userCurrentService.getCurrentUserId();
         var booking = Booking.make(seat, timeProvider.getCurrentDate(), currentUserId);
-        var screeningId = seat.getScreening().getId();
-        var screeningDetails = screeningDetailsService.readScreeningDetails(screeningId);
-        var bookingDetails = BookingDetails.create(
-                screeningDetails.getFilmTitle(),
-                screeningDetails.getRoomCustomId(),
-                booking
-        );
-        booking.setBookingDetails(bookingDetails);
+        var screening = seat.getScreening();
         var addedBooking = bookingRepository.add(booking);
         log.info("Added a booking:{}", addedBooking);
+        var bookingMadeEvent = new BookingMadeEvent(
+                addedBooking.getId(),
+                screening.getId(),
+                screening.getDate(),
+                seat.getRowNumber(),
+                seat.getRowNumber(),
+                currentUserId
+        );
+        eventPublisher.publish(bookingMadeEvent);
+        log.info("Event published: {}", bookingMadeEvent);
     }
 }

@@ -1,18 +1,16 @@
 package code.bookings.application.dto;
 
 import code.bookings.domain.BookingStatus;
-import lombok.With;
 
 import java.time.LocalDateTime;
 
-@With
-public record BookingDetailsDto(
+public record BookingViewDto(
         Long id,
         BookingStatus status,
-        String film,
+        String filmTitle,
         LocalDateTime screeningDate,
-        String room,
-        int row,
-        int seat
+        String roomCustomId,
+        Integer seatRowNumber,
+        Integer seatNumber
 ) {
 }

@@ -16,7 +16,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -32,9 +31,6 @@ public class Booking {
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "booking", fetch = FetchType.LAZY)
-    private BookingDetails bookingDetails;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Seat seat;
@@ -81,10 +77,6 @@ public class Booking {
 
     public boolean hasStatus(BookingStatus status) {
         return this.status.equals(status);
-    }
-
-    public void setBookingDetails(BookingDetails bookingDetails) {
-        this.bookingDetails = bookingDetails;
     }
 
     @Override

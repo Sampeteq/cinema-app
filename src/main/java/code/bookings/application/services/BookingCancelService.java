@@ -1,6 +1,8 @@
 package code.bookings.application.services;
 
+import code.bookings.domain.events.BookingCancelledEvent;
 import code.bookings.domain.ports.BookingRepository;
+import code.shared.events.EventPublisher;
 import code.shared.exceptions.EntityNotFoundException;
 import code.shared.time.TimeProvider;
 import code.user.application.services.UserCurrentService;
@@ -15,6 +17,7 @@ public class BookingCancelService {
     private final UserCurrentService userCurrentService;
     private final BookingRepository bookingRepository;
     private final TimeProvider timeProvider;
+    private final EventPublisher eventPublisher;
 
     @Transactional
     public void cancelBooking(Long bookingId) {
@@ -23,5 +26,7 @@ public class BookingCancelService {
                 .readByIdAndUserId(bookingId, currentUserId)
                 .orElseThrow(() -> new EntityNotFoundException("Booking"));
         booking.cancel(timeProvider.getCurrentDate());
+        var bookingCancelledEvent = new BookingCancelledEvent(bookingId);
+        eventPublisher.publish(bookingCancelledEvent);
     }
 }

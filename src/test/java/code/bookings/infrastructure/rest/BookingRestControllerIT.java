@@ -5,6 +5,8 @@ import code.SpringIT;
 import code.bookings.application.dto.BookingViewDto;
 import code.bookings.application.services.BookingCancelService;
 import code.bookings.application.services.BookingMakeService;
+import code.bookings.application.services.ScreeningCreatedHandlerService;
+import code.bookings.application.services.SeatReadService;
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
@@ -14,6 +16,7 @@ import code.catalog.application.dto.SeatDto;
 import code.catalog.application.services.FilmCreateService;
 import code.catalog.application.services.RoomCreateService;
 import code.catalog.application.services.ScreeningCreateService;
+import code.catalog.domain.events.ScreeningCreatedEvent;
 import code.shared.time.TimeProvider;
 import code.user.application.dto.UserSignUpDto;
 import code.user.application.services.UserSignUpService;
@@ -62,6 +65,12 @@ class BookingRestControllerIT extends SpringIT {
     @Autowired
     private BookingCancelService bookingCancelService;
 
+    @Autowired
+    private ScreeningCreatedHandlerService screeningCreatedHandlerService;
+
+    @Autowired
+    private SeatReadService seatReadService;
+
     @MockInBeans(
             value = {
                     @MockInBean(BookingMakeService.class),
@@ -87,6 +96,22 @@ class BookingRestControllerIT extends SpringIT {
         Mockito
                 .when(timeProvider.getCurrentDate())
                 .thenReturn(currentDate);
+    }
+
+    @Test
+    void should_read_seats_for_screening() throws Exception {
+        //given
+        var seats = prepareSeats(timeProvider.getCurrentDate());
+
+        //when
+        var result = mockMvc.perform(
+                get(BOOKINGS_BASE_ENDPOINT + "seats").param("screeningId", "1")
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(seats)));
     }
 
     @Test
@@ -181,7 +206,7 @@ class BookingRestControllerIT extends SpringIT {
 
         //then
         var searchSeatsResult = mockMvc.perform(
-                get("/seats").param("screeningId", "1")
+                get(BOOKINGS_BASE_ENDPOINT + "seats").param("screeningId", "1")
         );
         var isSeatBusy = getSeatsFromResult(searchSeatsResult).anyMatch(
                 s -> s.id().equals(1L) && !s.isFree()
@@ -223,7 +248,7 @@ class BookingRestControllerIT extends SpringIT {
         //then
         result.andExpect(status().isOk());
         var searchSeatsResult = mockMvc.perform(
-                get("/seats").param("screeningId", "1")
+                get(BOOKINGS_BASE_ENDPOINT + "seats").param("screeningId", "1")
         );
         var isSeatFreeAgain = getSeatsFromResult(searchSeatsResult)
                 .anyMatch(s -> s.id().equals(1L) && s.isFree());
@@ -300,6 +325,21 @@ class BookingRestControllerIT extends SpringIT {
                 )
         );
         assertThat(bookingsFromResult).containsExactlyInAnyOrderElementsOf(expected);
+    }
+
+    private List<SeatDto> prepareSeats(LocalDateTime currentDate) {
+        var id = 1L;
+        var date = currentDate.plusDays(7);
+        var rowsQuantity = 10;
+        var seatsQuantity = 15;
+        var screeningCreatedEvent = new ScreeningCreatedEvent(
+                id,
+                date,
+                rowsQuantity,
+                seatsQuantity
+        );
+        screeningCreatedHandlerService.handle(screeningCreatedEvent);
+        return seatReadService.readSeatsByScreeningId(id);
     }
 
     private void prepareSeat() {

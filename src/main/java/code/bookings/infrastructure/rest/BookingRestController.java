@@ -4,6 +4,8 @@ import code.bookings.application.dto.BookingViewDto;
 import code.bookings.application.services.BookingCancelService;
 import code.bookings.application.services.BookingMakeService;
 import code.bookings.application.services.BookingReadService;
+import code.bookings.application.services.SeatReadService;
+import code.catalog.application.dto.SeatDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,8 @@ public class BookingRestController {
 
     private final BookingReadService bookingReadService;
 
+    private final SeatReadService seatReadService;
+
     @PostMapping
     public void bookSeat(@RequestParam Long seatId) {
         bookingMakeHandler.makeBooking(seatId);
@@ -43,6 +47,11 @@ public class BookingRestController {
     @GetMapping("/my/{bookingId}")
     public BookingViewDto readBookingById(@PathVariable Long bookingId) {
         return bookingReadService.read(bookingId);
+    }
+
+    @GetMapping("/seats")
+    public List<SeatDto> readSeats(@RequestParam Long screeningId) {
+        return seatReadService.readSeatsByScreeningId(screeningId);
     }
 }
 

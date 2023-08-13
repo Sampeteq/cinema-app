@@ -5,10 +5,8 @@ import code.bookings.domain.ports.BookingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -27,11 +25,6 @@ public class SpringDataJpaBookingRepository implements BookingRepository {
     public Optional<Booking> readByIdAndUserId(Long bookingId, Long userId) {
         return jpaBookingRepository.readByIdAndUserId(bookingId, userId);
     }
-
-    @Override
-    public List<Booking> readAllByUserId(Long userId) {
-        return jpaBookingRepository.readAllByUserId(userId);
-    }
 }
 
 interface JpaBookingRepository extends JpaRepository<Booking, Long> {
@@ -41,9 +34,4 @@ interface JpaBookingRepository extends JpaRepository<Booking, Long> {
             "LEFT JOIN FETCH s.screening " +
             "WHERE b.id = :bookingId and b.userId = :userId")
     Optional<Booking> readByIdAndUserId(Long bookingId, Long userId);
-
-    @Query("SELECT DISTINCT b FROM Booking b " +
-            "JOIN FETCH b.seat " +
-            "WHERE b.userId = :userId")
-    List<Booking> readAllByUserId(@Param("userId") Long userId);
 }

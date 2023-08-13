@@ -37,7 +37,8 @@ public class SpringDataJpaBookingRepository implements BookingRepository {
 interface JpaBookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("SELECT b FROM Booking b " +
-            "JOIN FETCH b.seat " +
+            "LEFT JOIN FETCH b.seat s " +
+            "LEFT JOIN FETCH s.screening " +
             "WHERE b.id = :bookingId and b.userId = :userId")
     Optional<Booking> readByIdAndUserId(Long bookingId, Long userId);
 

@@ -271,7 +271,7 @@ class BookingRestControllerIT extends SpringIT {
     }
 
     @Test
-    void should_get_all_user_bookings() throws Exception {
+    void should_read_all_user_bookings() throws Exception {
         //given
         var filmTitle = "Title 1";
         var roomCustomId = "1";

@@ -1,3 +1,5 @@
+Outdated! Will be updated soon.
+
 This is web app to manage a cinema.
 
 Features:

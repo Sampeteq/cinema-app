@@ -1,6 +1,6 @@
 package code.catalog.infrastructure.db;
 
-import code.catalog.application.dto.ScreeningDetails;
+import code.catalog.application.dto.ScreeningDetailsDto;
 import code.catalog.domain.FilmCategory;
 import code.catalog.domain.Screening;
 import code.catalog.domain.ports.ScreeningReadOnlyRepository;
@@ -44,7 +44,7 @@ public class SpringDataJpaScreeningReadOnlyRepository implements ScreeningReadOn
     }
 
     @Override
-    public Optional<ScreeningDetails> readDetailsBySeatId(Long screeningId) {
+    public Optional<ScreeningDetailsDto> readDetailsBySeatId(Long screeningId) {
         return jpaScreeningReadOnlyRepository.readDetailsByScreeningId(screeningId);
     }
 }
@@ -62,11 +62,11 @@ interface JpaScreeningReadOnlyRepository extends Repository<Screening, Long> {
     List<Screening> findEnded();
 
     @Query(
-            "select new code.catalog.application.dto.ScreeningDetails" +
+            "select new code.catalog.application.dto.ScreeningDetailsDto" +
                     "(" +
                     "screening.room.customId, " +
                     "screening.film.title" +
                     ") from Screening screening where screening.id = :screeningId"
     )
-    Optional<ScreeningDetails> readDetailsByScreeningId(Long screeningId);
+    Optional<ScreeningDetailsDto> readDetailsByScreeningId(Long screeningId);
 }

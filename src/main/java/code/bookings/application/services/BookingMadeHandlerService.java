@@ -4,7 +4,7 @@ import code.bookings.domain.BookingStatus;
 import code.bookings.domain.BookingView;
 import code.bookings.domain.events.BookingMadeEvent;
 import code.bookings.domain.ports.BookingViewRepository;
-import code.catalog.application.services.ScreeningDetailsService;
+import code.catalog.application.services.CatalogApiForBookingsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -15,18 +15,18 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class BookingMadeHandlerService {
 
-    private final ScreeningDetailsService screeningDetailsService;
+    private final CatalogApiForBookingsService catalogApiForBookingsService;
     private final BookingViewRepository bookingViewRepository;
 
     @EventListener
     public void handle(BookingMadeEvent event) {
-        var screeningDetails = screeningDetailsService.readScreeningDetails(event.screeningId());
+        var screeningDetails = catalogApiForBookingsService.readScreeningDetails(event.screeningId());
         var bookingView = new BookingView(
                 event.bookingId(),
                 BookingStatus.ACTIVE,
-                screeningDetails.getFilmTitle(),
+                screeningDetails.filmTitle(),
                 event.screeningDate(),
-                screeningDetails.getRoomCustomId(),
+                screeningDetails.roomCustomId(),
                 event.seatRowNumber(),
                 event.seatNumber(),
                 event.userId()

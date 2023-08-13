@@ -1,6 +1,6 @@
 package code.catalog.domain.ports;
 
-import code.catalog.application.dto.ScreeningDetails;
+import code.catalog.application.dto.ScreeningDetailsDto;
 import code.catalog.domain.FilmCategory;
 import code.catalog.domain.Screening;
 import org.springframework.data.jpa.repository.Query;
@@ -21,5 +21,5 @@ public interface ScreeningReadOnlyRepository {
     @Query("select s from Screening s where s.endDate < CURRENT_DATE")
     List<Screening> readEnded();
 
-    Optional<ScreeningDetails> readDetailsBySeatId(Long seatId);
+    Optional<ScreeningDetailsDto> readDetailsBySeatId(Long seatId);
 }

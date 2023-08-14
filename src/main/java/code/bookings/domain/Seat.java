@@ -36,10 +36,10 @@ public class Seat {
 
     private boolean isFree;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Screening screening;
 
-    @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "seat", cascade = CascadeType.PERSIST)
     private List<Booking> bookings = new ArrayList<>();
 
     private Seat(int rowNumber, int number, boolean isFree) {

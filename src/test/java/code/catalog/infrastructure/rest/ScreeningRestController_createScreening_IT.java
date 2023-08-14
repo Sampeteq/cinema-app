@@ -4,7 +4,6 @@ import code.MockTimeProvider;
 import code.SpringIT;
 import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.application.dto.ScreeningDto;
-import code.catalog.application.services.ScreeningCreateService;
 import code.catalog.domain.Screening;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
 import code.catalog.domain.exceptions.ScreeningDateInPastException;
@@ -12,11 +11,11 @@ import code.catalog.domain.exceptions.ScreeningDateOutOfRangeException;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
 import code.shared.time.TimeProvider;
-import com.teketik.test.mockinbean.MockInBean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
@@ -40,7 +39,7 @@ public class ScreeningRestController_createScreening_IT extends SpringIT {
     @Autowired
     private RoomRepository roomRepository;
 
-    @MockInBean(ScreeningCreateService.class)
+    @MockBean
     private TimeProvider timeProvider;
 
     public static final String SCREENING_BASE_ENDPOINT = "/screenings";

@@ -99,13 +99,6 @@
             <version>1.5.3.Final</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.teketik</groupId>
-            <artifactId>mock-in-bean</artifactId>
-            <version>boot2-v1.5.2</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
     <build>

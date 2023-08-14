@@ -20,12 +20,11 @@ import code.catalog.domain.events.ScreeningCreatedEvent;
 import code.shared.time.TimeProvider;
 import code.user.application.dto.UserSignUpDto;
 import code.user.application.services.UserSignUpService;
-import com.teketik.test.mockinbean.MockInBean;
-import com.teketik.test.mockinbean.MockInBeans;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -71,12 +70,7 @@ class BookingRestControllerIT extends SpringIT {
     @Autowired
     private SeatReadService seatReadService;
 
-    @MockInBeans(
-            value = {
-                    @MockInBean(BookingMakeService.class),
-                    @MockInBean(BookingCancelService.class)
-            }
-    )
+    @MockBean
     private TimeProvider timeProvider;
 
     public static final String BOOKINGS_BASE_ENDPOINT = "/bookings/";

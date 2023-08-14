@@ -1,9 +1,9 @@
 package code.mails.application;
 
 import code.mails.domain.Mail;
+import code.mails.domain.MailType;
 import code.mails.domain.ports.MailRepository;
 import code.mails.domain.ports.MailSender;
-import code.mails.domain.MailType;
 import code.user.domain.events.UserPasswordResetEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

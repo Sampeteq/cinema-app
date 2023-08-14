@@ -7,7 +7,6 @@ import code.bookings.domain.exceptions.BookingTooLateException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

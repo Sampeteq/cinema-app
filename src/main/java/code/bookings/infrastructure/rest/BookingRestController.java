@@ -30,8 +30,8 @@ public class BookingRestController {
     private final SeatReadService seatReadService;
 
     @PostMapping
-    public void bookSeat(@RequestParam Long seatId) {
-        bookingMakeHandler.makeBooking(seatId);
+    public void bookSeat(@RequestParam Long screeningId, @RequestParam Long seatId) {
+        bookingMakeHandler.makeBooking(screeningId, seatId);
     }
 
     @PostMapping("/{bookingId}/cancel")

@@ -4,6 +4,7 @@ import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.domain.exceptions.BookingCancelTooLateException;
 import code.bookings.domain.exceptions.BookingTooLateException;
+import code.shared.exceptions.EntityNotFoundException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -32,33 +33,48 @@ public class Booking {
     private BookingStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    private Screening screening;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Seat seat;
 
     private Long userId;
 
     protected Booking() {}
 
-    private Booking(BookingStatus status, Long userId, Seat seat) {
+    private Booking(BookingStatus status, Long userId, Screening screening, Seat seat) {
         this.status = status;
+        this.screening = screening;
         this.seat = seat;
         this.userId = userId;
     }
 
-    public static Booking make(Seat seat, LocalDateTime currentDate, Long userId) {
-        var screening = seat.getScreening();
+    public static Booking make(
+            Screening screening,
+            Long seatId,
+            LocalDateTime currentDate,
+            Long userId
+    ) {
         if (screening.timeToScreeningInHours(currentDate) < 1) {
             throw new BookingTooLateException();
         }
-        if (seat.hasActiveBooking()) {
+        var foundSeat = screening
+                .getSeats()
+                .stream()
+                .filter(s -> s.getId().equals(seatId))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Seat"));
+        if (screening.hasActiveBooking()) {
             throw new BookingAlreadyExists();
         }
         var booking = new Booking(
                 BookingStatus.ACTIVE,
                 userId,
-                seat
+                screening,
+                foundSeat
         );
-        seat.addBooking(booking);
-        seat.makeNotFree();
+        screening.addBooking(booking);
+        foundSeat.makeNotFree();
         return booking;
     }
 
@@ -66,7 +82,6 @@ public class Booking {
         if (status.equals(BookingStatus.CANCELLED)) {
             throw new BookingAlreadyCancelledException();
         }
-        var screening = this.seat.getScreening();
         if (screening.timeToScreeningInHours(currentDate) < 24) {
             throw new BookingCancelTooLateException();
         }

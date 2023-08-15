@@ -1,27 +1,19 @@
 package code.bookings.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "bookings_seats")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Seat {
@@ -36,13 +28,14 @@ public class Seat {
 
     private boolean isFree;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Screening screening;
-
-    @OneToMany(mappedBy = "seat", cascade = CascadeType.PERSIST)
-    private List<Booking> bookings = new ArrayList<>();
-
     private Seat(int rowNumber, int number, boolean isFree) {
+        this.rowNumber = rowNumber;
+        this.number = number;
+        this.isFree = isFree;
+    }
+
+    private Seat(Long id, int rowNumber, int number, boolean isFree) {
+        this.id = id;
         this.rowNumber = rowNumber;
         this.number = number;
         this.isFree = isFree;
@@ -56,20 +49,14 @@ public class Seat {
                 isFree
         );
     }
-
-    public void assignScreening(Screening screening) {
-        this.screening = screening;
-    }
-
-    public void addBooking(Booking booking) {
-        this.bookings.add(booking);
-    }
-
-    public boolean hasActiveBooking() {
-        return this
-                .bookings
-                .stream()
-                .anyMatch(booking -> booking.hasStatus(BookingStatus.ACTIVE));
+    public static Seat create(Long id, int rowNumber, int number) {
+        final var isFree = true;
+        return new Seat(
+                id,
+                rowNumber,
+                number,
+                isFree
+        );
     }
 
     public void makeNotFree() {
@@ -87,7 +74,6 @@ public class Seat {
                 ", rowNumber=" + rowNumber +
                 ", number=" + number +
                 ", isFree=" + isFree +
-                ", screening=" + screening.getId() +
                 '}';
     }
 }

@@ -3,7 +3,7 @@ package code.bookings.application.services;
 import code.bookings.domain.Booking;
 import code.bookings.domain.events.BookingMadeEvent;
 import code.bookings.domain.ports.BookingRepository;
-import code.bookings.domain.ports.SeatRepository;
+import code.bookings.domain.ports.ScreeningRepository;
 import code.shared.events.EventPublisher;
 import code.shared.exceptions.EntityNotFoundException;
 import code.shared.time.TimeProvider;
@@ -18,28 +18,27 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class BookingMakeService {
 
-    private final SeatRepository seatRepository;
+    private final ScreeningRepository screeningRepository;
     private final UserCurrentService userCurrentService;
     private final TimeProvider timeProvider;
     private final BookingRepository bookingRepository;
     private final EventPublisher eventPublisher;
 
     @Transactional
-    public void makeBooking(Long seatId) {
-        var seat = seatRepository
-                .readById(seatId)
-                .orElseThrow(() -> new EntityNotFoundException("Seat"));
+    public void makeBooking(Long screeningId, Long seatId) {
+        var screening = screeningRepository
+                .readByIdWithSeat(screeningId, seatId)
+                .orElseThrow(() -> new EntityNotFoundException("Screening"));
         var currentUserId = userCurrentService.getCurrentUserId();
-        var booking = Booking.make(seat, timeProvider.getCurrentDate(), currentUserId);
+        var booking = Booking.make(screening, seatId, timeProvider.getCurrentDate(), currentUserId);
         var addedBooking = bookingRepository.add(booking);
         log.info("Added a booking:{}", addedBooking);
-        var screening = seat.getScreening();
         var bookingMadeEvent = new BookingMadeEvent(
                 addedBooking.getId(),
-                screening.getId(),
-                screening.getDate(),
-                seat.getRowNumber(),
-                seat.getRowNumber(),
+                addedBooking.getScreening().getId(),
+                addedBooking.getScreening().getDate(),
+                addedBooking.getSeat().getRowNumber(),
+                addedBooking.getSeat().getNumber(),
                 currentUserId
         );
         eventPublisher.publish(bookingMadeEvent);

@@ -21,7 +21,7 @@ public class SeatReadService {
     @Transactional(readOnly = true)
     public List<SeatDto> readSeatsByScreeningId(Long screeningId) {
         return screeningRepository
-                .readById(screeningId)
+                .readByIdWithSeats(screeningId)
                 .map(Screening::getSeats)
                 .map(seatMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));

@@ -9,10 +9,12 @@ import lombok.ToString;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "booking_screening")
@@ -28,8 +30,13 @@ public class Screening {
 
     private LocalDateTime date;
 
-    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "screening_id")
     private List<Seat> seats;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "screening_id")
+    private List<Booking> bookings = new ArrayList<>();
 
     private Screening(Long id, LocalDateTime date, List<Seat> seats) {
         this.id = id;
@@ -38,9 +45,7 @@ public class Screening {
     }
 
     public static Screening create(Long id, LocalDateTime date, List<Seat> seats) {
-        var screening = new Screening(id, date, seats);
-        seats.forEach(seat -> seat.assignScreening(screening));
-        return screening;
+        return new Screening(id, date, seats);
     }
 
     public int timeToScreeningInHours(LocalDateTime currentDate) {
@@ -48,5 +53,16 @@ public class Screening {
                 .between(currentDate, date)
                 .abs()
                 .toHours();
+    }
+
+    public boolean hasActiveBooking() {
+        return this
+                .bookings
+                .stream()
+                .anyMatch(booking -> booking.hasStatus(BookingStatus.ACTIVE));
+    }
+
+    public void addBooking(Booking booking) {
+        this.bookings.add(booking);
     }
 }

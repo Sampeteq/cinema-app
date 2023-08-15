@@ -4,6 +4,8 @@ import code.bookings.domain.Screening;
 import code.bookings.domain.ports.ScreeningRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -20,10 +22,30 @@ public class SpringDataJpaScreeningRepository implements ScreeningRepository {
     }
 
     @Override
-    public Optional<Screening> readById(Long id) {
-        return screeningJpaRepository.findById(id);
+    public Optional<Screening> readByIdWithSeats(Long id) {
+        return screeningJpaRepository.readByIdWithSeats(id);
+    }
+
+    @Override
+    public Optional<Screening> readByIdWithSeat(Long id, Long seatId) {
+        return screeningJpaRepository.readByIdWithSeat(id, seatId);
     }
 }
 
 interface ScreeningJpaRepository extends JpaRepository<Screening, Long> {
+
+    @Query("select s from booking_screening s left join fetch s.seats where s.id = :id")
+    Optional<Screening> readByIdWithSeats(Long id);
+
+    @Query(
+            "select s from booking_screening s " +
+            "left join fetch s.seats se " +
+            "where s.id = :id and se.id = :seatId"
+    )
+    Optional<Screening> readByIdWithSeat(
+            @Param("id")
+            Long id,
+            @Param("seatId")
+            Long seatId
+    );
 }

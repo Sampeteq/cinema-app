@@ -6,5 +6,6 @@ import java.util.Optional;
 
 public interface ScreeningRepository {
     Screening add(Screening screening);
-    Optional<Screening> readById(Long id);
+    Optional<Screening> readByIdWithSeats(Long id);
+    Optional<Screening> readByIdWithSeat(Long id, Long seatId);
 }

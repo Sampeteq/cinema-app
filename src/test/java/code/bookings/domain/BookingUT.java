@@ -21,29 +21,32 @@ class BookingUT {
     void should_booked_seat() {
         //given
         var screeningDate = currentDate.plusDays(2);
-        var seat = prepareSeat(screeningDate);
+        var screening = prepareScreening(screeningDate);
+        var seatId = 1L;
         var userId = 1L;
 
         //when
-        var booking = Booking.make(seat, currentDate, userId);
+        var booking = Booking.make(screening, seatId, currentDate, userId);
 
         //then
-        assertThat(booking.getSeat()).isEqualTo(seat);
+        assertThat(booking.getScreening()).isEqualTo(screening);
+        assertThat(booking.getSeat().getId()).isEqualTo(seatId);
         assertThat(booking.getStatus()).isEqualTo(BookingStatus.ACTIVE);
         assertThat(booking.getUserId()).isEqualTo(userId);
-        assertThat(seat.isFree()).isFalse();
+        assertThat(booking.getSeat().isFree()).isFalse();
     }
 
     @Test
     void should_throw_exception_during_booking_when_booking_already_exists() {
         //given
-        var seat = prepareBookedSeat();
+        var seatId = 1L;
+        var screening = prepareScreeningWithBookedSeat(seatId);
         var otherUserId = 2L;
 
         //when
         assertThrows(
                 BookingAlreadyExists.class,
-                () -> Booking.make(seat, currentDate, otherUserId)
+                () -> Booking.make(screening, seatId, currentDate, otherUserId)
         );
     }
 
@@ -51,13 +54,14 @@ class BookingUT {
     void should_throw_exception_during_booking_when_less_than_1_hour_to_screening() {
         //given
         var screeningDate = currentDate.minusMinutes(59);
-        var seat = prepareSeat(screeningDate);
+        var screening = prepareScreening(screeningDate);
+        var seatId = 1L;
         var userId = 1L;
 
         //when
         assertThrows(
                 BookingTooLateException.class,
-                () -> Booking.make(seat, currentDate, userId)
+                () -> Booking.make(screening, seatId, currentDate, userId)
         );
     }
 
@@ -99,73 +103,62 @@ class BookingUT {
         );
     }
 
-    private Seat prepareSeat(LocalDateTime screeningDate) {
+    private Screening prepareScreening(LocalDateTime screeningDate) {
         var screeningId = 1L;
+        var seatId = 1L;
         var rowNumber = 1;
         var seatNumber = 1;
-        var seats = List.of(Seat.create(rowNumber, seatNumber));
-        return Screening
-                .create(screeningId, screeningDate, seats)
-                .getSeats()
-                .get(0);
+        var seats = List.of(Seat.create(seatId, rowNumber, seatNumber));
+        return Screening.create(screeningId, screeningDate, seats);
     }
 
 
-    private Seat prepareBookedSeat() {
+    private Screening prepareScreeningWithBookedSeat(Long seatId) {
         var screeningId = 1L;
         var screeningDate = currentDate.plusDays(7);
         var rowNumber = 1;
         var seatNumber = 1;
-        var seats = List.of(Seat.create(rowNumber, seatNumber));
-        var seat = Screening
-                .create(screeningId, screeningDate, seats)
-                .getSeats()
-                .get(0);
+        var seats = List.of(Seat.create(seatId, rowNumber, seatNumber));
+        var screening = Screening.create(screeningId, screeningDate, seats);
         var userId = 1L;
         return Booking
-                .make(seat, currentDate, userId)
-                .getSeat();
+                .make(screening, seatId, currentDate, userId)
+                .getScreening();
     }
 
     private Booking prepareBooking() {
         var screeningId = 1L;
+        var seatId = 1L;
         var rowNumber = 1;
         var seatNumber = 1;
-        var seats = List.of(Seat.create(rowNumber, seatNumber));
+        var seats = List.of(Seat.create(seatId, rowNumber, seatNumber));
         var screeningDate = currentDate.plusDays(2);
-        var seat = Screening
-                .create(screeningId, screeningDate, seats)
-                .getSeats()
-                .get(0);
+        var screening = Screening.create(screeningId, screeningDate, seats);
         var userId = 1L;
-        return Booking.make(seat, currentDate, userId);
+        return Booking.make(screening, seatId, currentDate, userId);
     }
 
     private Booking prepareBooking(LocalDateTime screeningDate) {
         var screeningId = 1L;
+        var seatId = 1L;
         var rowNumber = 1;
         var seatNumber = 1;
-        var seats = List.of(Seat.create(rowNumber, seatNumber));
-        var seat = Screening
-                .create(screeningId, screeningDate, seats)
-                .getSeats()
-                .get(0);
+        var seats = List.of(Seat.create(seatId, rowNumber, seatNumber));
+        var screening = Screening.create(screeningId, screeningDate, seats);
         var userId = 1L;
-        return Booking.make(seat, currentDate, userId);
+        return Booking.make(screening, seatId, currentDate, userId);
     }
 
     private Booking prepareCancelledBooking() {
         var screeningId = 1L;
+        var seatId = 1L;
         var screeningDate = currentDate.plusDays(7);
         var rowNumber = 1;
         var seatNumber = 1;
-        var seats = List.of(Seat.create(rowNumber, seatNumber));
-        var seat = Screening
-                .create(screeningId, screeningDate, seats)
-                .getSeats()
-                .get(0);
+        var seats = List.of(Seat.create(seatId, rowNumber, seatNumber));
+        var screening = Screening.create(screeningId, screeningDate, seats);
         var userId = 1L;
-        var booking = Booking.make(seat, currentDate, userId);
+        var booking = Booking.make(screening, seatId, currentDate, userId);
         booking.cancel(currentDate);
         return booking;
     }

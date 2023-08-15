@@ -120,7 +120,9 @@ class BookingRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(BOOKINGS_BASE_ENDPOINT).param("seatId", "1")
+                post(BOOKINGS_BASE_ENDPOINT)
+                        .param("screeningId", "1")
+                        .param("seatId", "1")
         );
 
         //then
@@ -149,7 +151,9 @@ class BookingRestControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(BOOKINGS_BASE_ENDPOINT).param("seatId", String.valueOf(seatId))
+                post(BOOKINGS_BASE_ENDPOINT)
+                        .param("screeningId", "1")
+                        .param("seatId", String.valueOf(seatId))
         );
 
         //then
@@ -176,6 +180,7 @@ class BookingRestControllerIT extends SpringIT {
         //when
         var result = mockMvc.perform(
                 post(BOOKINGS_BASE_ENDPOINT)
+                        .param("screeningId", "1")
                         .param("seatId", "1")
         );
 
@@ -195,6 +200,7 @@ class BookingRestControllerIT extends SpringIT {
         //when
         mockMvc.perform(
                 post(BOOKINGS_BASE_ENDPOINT)
+                        .param("screeningId", "1")
                         .param("seatId", "1")
         );
 
@@ -367,34 +373,39 @@ class BookingRestControllerIT extends SpringIT {
 
     private void prepareBooking() {
         prepareSeat();
+        var screeningId = 1L;
         var seatId = 1L;
-        bookingMakeService.makeBooking(seatId);
+        bookingMakeService.makeBooking(screeningId, seatId);
     }
 
     private void prepareBooking(Long seatId) {
         prepareSeat();
-        bookingMakeService.makeBooking(seatId);
+        var screeningId = 1L;
+        bookingMakeService.makeBooking(screeningId, seatId);
     }
 
     private void prepareBooking(LocalDateTime screeningDate) {
         prepareSeat(screeningDate);
+        var screeningId = 1L;
         var seatId = 1L;
         Mockito
                 .when(timeProvider.getCurrentDate())
                 .thenReturn(screeningDate.plusHours(25));
-        bookingMakeService.makeBooking(seatId);
+        bookingMakeService.makeBooking(screeningId, seatId);
     }
 
     private void prepareBooking(String filmTitle, String roomCustomId, LocalDateTime screeningDate) {
         prepareSeat(filmTitle, roomCustomId, screeningDate);
+        var screeningId = 1L;
         var seat1Id = 1L;
-        bookingMakeService.makeBooking(seat1Id);
+        bookingMakeService.makeBooking(screeningId, seat1Id);
     }
 
     private void prepareCancelledBooking() {
         prepareSeat();
         var seatId = 1L;
-        bookingMakeService.makeBooking(seatId);
+        var screeningId = 1L;
+        bookingMakeService.makeBooking(screeningId, seatId);
         var bookingId = 1L;
         bookingCancelService.cancelBooking(bookingId);
     }

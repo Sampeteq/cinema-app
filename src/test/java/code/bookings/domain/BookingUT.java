@@ -26,7 +26,7 @@ class BookingUT {
         var userId = 1L;
 
         //when
-        var booking = Booking.make(screening, seatId, currentDate, userId);
+        var booking = Booking.make(currentDate, screening, seatId, userId);
 
         //then
         assertThat(booking.getScreening()).isEqualTo(screening);
@@ -46,7 +46,7 @@ class BookingUT {
         //when
         assertThrows(
                 BookingAlreadyExists.class,
-                () -> Booking.make(screening, seatId, currentDate, otherUserId)
+                () -> Booking.make(currentDate, screening, seatId , otherUserId)
         );
     }
 
@@ -61,7 +61,7 @@ class BookingUT {
         //when
         assertThrows(
                 BookingTooLateException.class,
-                () -> Booking.make(screening, seatId, currentDate, userId)
+                () -> Booking.make(currentDate, screening, seatId, userId)
         );
     }
 
@@ -122,7 +122,7 @@ class BookingUT {
         var screening = Screening.create(screeningId, screeningDate, seats);
         var userId = 1L;
         return Booking
-                .make(screening, seatId, currentDate, userId)
+                .make(currentDate, screening, seatId , userId)
                 .getScreening();
     }
 
@@ -135,7 +135,7 @@ class BookingUT {
         var screeningDate = currentDate.plusDays(2);
         var screening = Screening.create(screeningId, screeningDate, seats);
         var userId = 1L;
-        return Booking.make(screening, seatId, currentDate, userId);
+        return Booking.make(currentDate, screening, seatId, userId);
     }
 
     private Booking prepareBooking(LocalDateTime screeningDate) {
@@ -146,7 +146,7 @@ class BookingUT {
         var seats = List.of(Seat.create(seatId, rowNumber, seatNumber));
         var screening = Screening.create(screeningId, screeningDate, seats);
         var userId = 1L;
-        return Booking.make(screening, seatId, currentDate, userId);
+        return Booking.make(currentDate, screening, seatId , userId);
     }
 
     private Booking prepareCancelledBooking() {
@@ -158,7 +158,7 @@ class BookingUT {
         var seats = List.of(Seat.create(seatId, rowNumber, seatNumber));
         var screening = Screening.create(screeningId, screeningDate, seats);
         var userId = 1L;
-        var booking = Booking.make(screening, seatId, currentDate, userId);
+        var booking = Booking.make(currentDate, screening, seatId, userId);
         booking.cancel(currentDate);
         return booking;
     }

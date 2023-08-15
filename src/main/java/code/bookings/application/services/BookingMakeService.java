@@ -30,7 +30,7 @@ public class BookingMakeService {
                 .readByIdWithSeat(screeningId, seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));
         var currentUserId = userCurrentService.getCurrentUserId();
-        var booking = Booking.make(screening, seatId, timeProvider.getCurrentDate(), currentUserId);
+        var booking = Booking.make(timeProvider.getCurrentDate(), screening, seatId, currentUserId);
         var addedBooking = bookingRepository.add(booking);
         log.info("Added a booking:{}", addedBooking);
         var bookingMadeEvent = new BookingMadeEvent(

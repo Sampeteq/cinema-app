@@ -50,9 +50,9 @@ public class Booking {
     }
 
     public static Booking make(
+            LocalDateTime currentDate,
             Screening screening,
             Long seatId,
-            LocalDateTime currentDate,
             Long userId
     ) {
         if (screening.timeToScreeningInHours(currentDate) < 1) {

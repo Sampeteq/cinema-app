@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @org.springframework.stereotype.Repository
 @RequiredArgsConstructor
-public class SpringDataJpaScreeningReadOnlyRepository implements ScreeningReadOnlyRepository {
+class SpringDataJpaScreeningReadOnlyRepository implements ScreeningReadOnlyRepository {
 
     private final JpaScreeningReadOnlyRepository jpaScreeningReadOnlyRepository;
 

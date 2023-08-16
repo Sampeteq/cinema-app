@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserPasswordResetHandlerService {
+class UserPasswordResetHandlerService {
 
     private final MailSender mailSender;
     private final MailRepository mailRepository;
 
     @EventListener
-    public void handle(UserPasswordResetEvent event) {
+    void handle(UserPasswordResetEvent event) {
         var subject = "Password reset";
         var message = "Your password reset token: " + event.userPasswordResetToken();
         var passwordResetMail =  Mail.create(

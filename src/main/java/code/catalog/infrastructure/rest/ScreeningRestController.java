@@ -23,14 +23,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/screenings")
 @RequiredArgsConstructor
-public class ScreeningRestController {
+class ScreeningRestController {
 
     private final ScreeningCreateService screeningCreateService;
     private final ScreeningReadService screeningReadService;
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createScreening(
+    void createScreening(
             @RequestBody
             @Valid
             ScreeningCreateDto dto
@@ -39,22 +39,22 @@ public class ScreeningRestController {
     }
 
     @GetMapping
-    public List<ScreeningDto> readAll() {
+    List<ScreeningDto> readAll() {
         return screeningReadService.readAllScreenings();
     }
 
     @GetMapping("/by/title")
-    public List<ScreeningDto> readByTitle(@RequestParam String title) {
+    List<ScreeningDto> readByTitle(@RequestParam String title) {
         return screeningReadService.readScreeningsByFilmTitle(title);
     }
 
     @GetMapping("/by/category")
-    public List<ScreeningDto> readByCategory(@RequestParam FilmCategory category) {
+    List<ScreeningDto> readByCategory(@RequestParam FilmCategory category) {
         return screeningReadService.readScreeningsByCategory(category);
     }
 
     @GetMapping("/by/date")
-    public List<ScreeningDto> readByDate(
+    List<ScreeningDto> readByDate(
             @RequestParam
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate date

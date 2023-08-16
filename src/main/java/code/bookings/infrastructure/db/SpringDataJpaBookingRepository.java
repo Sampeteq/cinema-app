@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class SpringDataJpaBookingRepository implements BookingRepository {
+class SpringDataJpaBookingRepository implements BookingRepository {
 
     private final JpaBookingRepository jpaBookingRepository;
 

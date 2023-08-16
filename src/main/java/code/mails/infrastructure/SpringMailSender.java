@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Profile("prod")
 @RequiredArgsConstructor
-public class SpringMailSender implements MailSender {
+class SpringMailSender implements MailSender {
 
     private final JavaMailSender javaMailSender;
     private final TimeProvider timeProvider;

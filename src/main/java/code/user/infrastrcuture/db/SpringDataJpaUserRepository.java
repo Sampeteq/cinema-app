@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
-public class SpringDataJpaUserRepository implements UserRepository {
+class SpringDataJpaUserRepository implements UserRepository {
 
     private final JpaUserRepository jpaUserRepository;
 

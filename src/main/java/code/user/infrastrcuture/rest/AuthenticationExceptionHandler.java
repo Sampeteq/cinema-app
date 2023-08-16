@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class AuthenticationExceptionHandler {
+class AuthenticationExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<?> handle(AuthenticationException exception) {
+    ResponseEntity<?> handle(AuthenticationException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 }

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Component
 @Profile("prod")
-public class ProdTimeProvider implements TimeProvider {
+class ProdTimeProvider implements TimeProvider {
 
     @Override
     public LocalDateTime getCurrentDate() {

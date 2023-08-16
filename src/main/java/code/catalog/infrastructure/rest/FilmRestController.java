@@ -19,19 +19,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/films")
 @RequiredArgsConstructor
-public class FilmRestController {
+class FilmRestController {
 
     private final FilmCreateService filmCreateService;
     private final FilmReadService filmReadService;
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createFilm(@RequestBody @Valid FilmCreateDto dto) {
+    void createFilm(@RequestBody @Valid FilmCreateDto dto) {
         filmCreateService.creteFilm(dto);
     }
 
     @GetMapping
-    public List<FilmDto> readAll() {
+    List<FilmDto> readAll() {
         return filmReadService.readAll();
     }
 }

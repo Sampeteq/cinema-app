@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class SpringDataJpaRoomRepository implements RoomRepository {
+class SpringDataJpaRoomRepository implements RoomRepository {
 
     private final JpaRoomRepository jpaRoomRepository;
 

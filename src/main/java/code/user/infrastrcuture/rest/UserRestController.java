@@ -20,7 +20,7 @@ import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
-public class UserRestController {
+class UserRestController {
 
     private final UserSignUpService userSignUpService;
 
@@ -33,31 +33,31 @@ public class UserRestController {
     private final UserPasswordNewService userPasswordNewService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody @Valid UserSignUpDto dto) {
+    ResponseEntity<?> signUp(@RequestBody @Valid UserSignUpDto dto) {
         userSignUpService.signUp(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signIn(@RequestBody UserSignInDto dto) {
+    ResponseEntity<?> signIn(@RequestBody UserSignInDto dto) {
         userSignInService.signIn(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/signout")
-    public ResponseEntity<?> signOut() {
+    ResponseEntity<?> signOut() {
         userSignOutService.signOut();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/password/reset")
-    public ResponseEntity<?> resetPassword(@RequestParam String mail) {
+    ResponseEntity<?> resetPassword(@RequestParam String mail) {
         userPasswordResetService.resetUserPassword(mail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/password/new")
-    public ResponseEntity<?> setNewPassword(@RequestBody UserPasswordNewDto dto) {
+    ResponseEntity<?> setNewPassword(@RequestBody UserPasswordNewDto dto) {
         userPasswordNewService.setNewUserPassword(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/bookings")
 @AllArgsConstructor
-public class BookingRestController {
+class BookingRestController {
 
     private final BookingMakeService bookingMakeHandler;
 
@@ -30,27 +30,27 @@ public class BookingRestController {
     private final SeatReadService seatReadService;
 
     @PostMapping
-    public void bookSeat(@RequestParam Long screeningId, @RequestParam Long seatId) {
+    void bookSeat(@RequestParam Long screeningId, @RequestParam Long seatId) {
         bookingMakeHandler.makeBooking(screeningId, seatId);
     }
 
     @PostMapping("/{bookingId}/cancel")
-    public void cancelBooking(@PathVariable Long bookingId) {
+    void cancelBooking(@PathVariable Long bookingId) {
         bookingCancelHandler.cancelBooking(bookingId);
     }
 
     @GetMapping("/my")
-    public List<BookingViewDto> readAllBookings() {
+    List<BookingViewDto> readAllBookings() {
         return bookingReadService.readAll();
     }
 
     @GetMapping("/my/{bookingId}")
-    public BookingViewDto readBookingById(@PathVariable Long bookingId) {
+    BookingViewDto readBookingById(@PathVariable Long bookingId) {
         return bookingReadService.read(bookingId);
     }
 
     @GetMapping("/seats")
-    public List<SeatDto> readSeats(@RequestParam Long screeningId) {
+    List<SeatDto> readSeats(@RequestParam Long screeningId) {
         return seatReadService.readSeatsByScreeningId(screeningId);
     }
 }

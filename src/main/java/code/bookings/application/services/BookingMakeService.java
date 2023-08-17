@@ -7,7 +7,7 @@ import code.bookings.domain.ports.ScreeningRepository;
 import code.shared.events.EventPublisher;
 import code.shared.exceptions.EntityNotFoundException;
 import code.shared.time.TimeProvider;
-import code.user.application.services.UserCurrentService;
+import code.user.application.services.UserFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookingMakeService {
 
     private final ScreeningRepository screeningRepository;
-    private final UserCurrentService userCurrentService;
+    private final UserFacade userFacade;
     private final TimeProvider timeProvider;
     private final BookingRepository bookingRepository;
     private final EventPublisher eventPublisher;
@@ -29,7 +29,7 @@ public class BookingMakeService {
         var screening = screeningRepository
                 .readByIdWithSeat(screeningId, seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));
-        var currentUserId = userCurrentService.getCurrentUserId();
+        var currentUserId = userFacade.readCurrentUserId();
         var booking = Booking.make(timeProvider.getCurrentDate(), screening, seatId, currentUserId);
         var addedBooking = bookingRepository.add(booking);
         log.info("Added a booking:{}", addedBooking);

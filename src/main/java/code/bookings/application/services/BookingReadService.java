@@ -4,7 +4,7 @@ import code.bookings.application.dto.BookingViewDto;
 import code.bookings.application.dto.BookingViewMapper;
 import code.bookings.domain.ports.BookingViewRepository;
 import code.shared.exceptions.EntityNotFoundException;
-import code.user.application.services.UserCurrentService;
+import code.user.application.services.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingReadService {
 
-    private final UserCurrentService userCurrentService;
+    private final UserFacade userFacade;
     private final BookingViewMapper bookingViewMapper;
     private final BookingViewRepository bookingViewRepository;
 
     public BookingViewDto read(Long id) {
-        var currentUserId = userCurrentService.getCurrentUserId();
+        var currentUserId = userFacade.readCurrentUserId();
         return bookingViewRepository
                 .readByIdAndUserId(id, currentUserId)
                 .map(bookingViewMapper::mapToDto)
@@ -29,7 +29,7 @@ public class BookingReadService {
     }
 
     public List<BookingViewDto> readAll() {
-        var currentUserId = userCurrentService.getCurrentUserId();
+        var currentUserId = userFacade.readCurrentUserId();
         return bookingViewRepository
                 .readAllByUserId(currentUserId)
                 .stream()

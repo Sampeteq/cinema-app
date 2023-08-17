@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserPasswordNewService {
+class UserPasswordNewService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

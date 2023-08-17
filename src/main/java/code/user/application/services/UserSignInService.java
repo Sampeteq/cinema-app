@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserSignInService {
+class UserSignInService {
 
     private final AuthenticationManager authenticationManager;
 
-    public void signIn(UserSignInDto dto) {
+    void signIn(UserSignInDto dto) {
         var username = SecurityContextHolder
                 .getContext()
                 .getAuthentication()

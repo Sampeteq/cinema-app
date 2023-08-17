@@ -12,12 +12,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserSignUpService {
+class UserSignUpService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public void signUp(UserSignUpDto dto) {
+    void signUp(UserSignUpDto dto) {
         if (userRepository.existsByMail(dto.mail())) {
             throw new UserMailAlreadyExistsException();
         }

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Profile("prod")
 @Slf4j
-public class UserAdminCreateService {
+class UserAdminCreateService {
 
     @Value("${admin.mail}")
     private String adminMail;
@@ -26,7 +26,7 @@ public class UserAdminCreateService {
     private final PasswordEncoder passwordEncoder;
 
     @EventListener(ContextRefreshedEvent.class)
-    public void createAdminOnStartUp() {
+    void createAdminOnStartUp() {
         if (userRepository.existsByMail(adminMail)) {
             log.info("Admin already exists");
         } else {

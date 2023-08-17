@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserCurrentService {
+class UserCurrentService {
 
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public Long getCurrentUserId() {
+    public Long readCurrentUserId() {
         var mail = SecurityContextHolder
                 .getContext()
                 .getAuthentication()

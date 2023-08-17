@@ -3,11 +3,7 @@ package code.user.infrastrcuture.rest;
 import code.user.application.dto.UserPasswordNewDto;
 import code.user.application.dto.UserSignInDto;
 import code.user.application.dto.UserSignUpDto;
-import code.user.application.services.UserPasswordNewService;
-import code.user.application.services.UserPasswordResetService;
-import code.user.application.services.UserSignInService;
-import code.user.application.services.UserSignOutService;
-import code.user.application.services.UserSignUpService;
+import code.user.application.services.UserFacade;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,43 +18,35 @@ import javax.validation.Valid;
 @AllArgsConstructor
 class UserRestController {
 
-    private final UserSignUpService userSignUpService;
-
-    private final UserSignInService userSignInService;
-
-    private final UserSignOutService userSignOutService;
-
-    private final UserPasswordResetService userPasswordResetService;
-
-    private final UserPasswordNewService userPasswordNewService;
+    private final UserFacade userFacade;
 
     @PostMapping("/signup")
     ResponseEntity<?> signUp(@RequestBody @Valid UserSignUpDto dto) {
-        userSignUpService.signUp(dto);
+        userFacade.signUpUser(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
     ResponseEntity<?> signIn(@RequestBody UserSignInDto dto) {
-        userSignInService.signIn(dto);
+        userFacade.signInUser(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/signout")
     ResponseEntity<?> signOut() {
-        userSignOutService.signOut();
+        userFacade.signOutUser();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/password/reset")
     ResponseEntity<?> resetPassword(@RequestParam String mail) {
-        userPasswordResetService.resetUserPassword(mail);
+        userFacade.resetUserPassword(mail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/password/new")
     ResponseEntity<?> setNewPassword(@RequestBody UserPasswordNewDto dto) {
-        userPasswordNewService.setNewUserPassword(dto);
+        userFacade.setNewUserPassword(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

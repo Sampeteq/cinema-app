@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UserPasswordResetService {
+class UserPasswordResetService {
 
     private final UserRepository userRepository;
     private final ApplicationEventPublisher applicationEventPublisher;

@@ -17,7 +17,7 @@ import code.catalog.application.services.CatalogFacade;
 import code.catalog.domain.events.ScreeningCreatedEvent;
 import code.shared.time.TimeProvider;
 import code.user.application.dto.UserSignUpDto;
-import code.user.application.services.UserSignUpService;
+import code.user.application.services.UserFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BookingRestControllerIT extends SpringIT {
 
     @Autowired
-    private UserSignUpService userSignUpService;
+    private UserFacade userFacade;
 
     @Autowired
     private CatalogFacade catalogFacade;
@@ -71,7 +71,7 @@ class BookingRestControllerIT extends SpringIT {
     void setUp() {
         var username = "user1@mail.com";
         var password = "12345";
-        userSignUpService.signUp(
+        userFacade.signUpUser(
                 new UserSignUpDto(
                         username,
                         password,

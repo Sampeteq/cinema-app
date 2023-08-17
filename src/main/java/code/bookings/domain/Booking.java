@@ -20,7 +20,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "BOOKINGS")
+@Table(name = "bookings")
 @EqualsAndHashCode(of = "id")
 @Getter
 public class Booking {

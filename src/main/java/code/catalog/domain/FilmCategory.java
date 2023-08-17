@@ -6,5 +6,5 @@ public enum FilmCategory {
     ACTION,
     THRILLER,
     HORROR,
-    FANTASY;
+    FANTASY
 }

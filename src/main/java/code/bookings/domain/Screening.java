@@ -36,7 +36,7 @@ public class Screening {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "screening_id")
-    private List<Booking> bookings = new ArrayList<>();
+    private final List<Booking> bookings = new ArrayList<>();
 
     private Screening(Long id, LocalDateTime date, List<Seat> seats) {
         this.id = id;

@@ -22,7 +22,7 @@ class BookingTests {
     private static final LocalDateTime currentDate = new MockTimeProvider().getCurrentDate();
 
     @Test
-    void should_booked_seat() {
+    void booking_is_made() {
         //given
         var seat = prepareSeat();
         var screening = prepareScreening(seat);
@@ -40,7 +40,7 @@ class BookingTests {
     }
 
     @Test
-    void should_throw_exception_during_booking_when_booking_already_exists() {
+    void booking_is_not_duplicated() {
         //given
         var seat = prepareSeat();
         var screening = prepareScreeningWithBookedSeat(seat);
@@ -55,7 +55,7 @@ class BookingTests {
     }
 
     @Test
-    void should_throw_exception_during_booking_when_less_than_1_hour_to_screening() {
+    void booking_is_made_no_later_than_1_hour_before_screening() {
         //given
         var seat = prepareSeat();
         var screeningDate = currentDate.minusMinutes(59);
@@ -71,7 +71,7 @@ class BookingTests {
     }
 
     @Test
-    void should_cancel_booking() {
+    void booking_is_cancelled() {
         //given
         var booking = prepareBooking();
 
@@ -84,7 +84,7 @@ class BookingTests {
     }
 
     @Test
-    void should_throw_exception_during_booking_cancelling_when_less_than_24_hours_to_screening() {
+    void booking_is_cancelled_no_later_than_24h_hours_before_screening() {
         //given
         var screeningDate = currentDate.minusHours(23);
         var booking = prepareBooking(screeningDate);
@@ -97,7 +97,7 @@ class BookingTests {
     }
 
     @Test
-    void should_throw_exception_during_booking_cancelling_when_booking_is_already_cancelled() {
+    void booking_is_not_canceled_if_it_was_already_cancelled() {
         //given
         var booking = prepareCancelledBooking();
 

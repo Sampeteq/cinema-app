@@ -13,9 +13,7 @@ import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.domain.exceptions.BookingCancelTooLateException;
 import code.bookings.domain.exceptions.BookingTooLateException;
 import code.catalog.application.dto.SeatDto;
-import code.catalog.application.services.FilmCreateService;
-import code.catalog.application.services.RoomCreateService;
-import code.catalog.application.services.ScreeningCreateService;
+import code.catalog.application.services.CatalogFacade;
 import code.catalog.domain.events.ScreeningCreatedEvent;
 import code.shared.time.TimeProvider;
 import code.user.application.dto.UserSignUpDto;
@@ -50,13 +48,7 @@ class BookingRestControllerIT extends SpringIT {
     private UserSignUpService userSignUpService;
 
     @Autowired
-    private FilmCreateService filmCreateService;
-
-    @Autowired
-    private RoomCreateService roomCreateService;
-
-    @Autowired
-    private ScreeningCreateService screeningCreateService;
+    private CatalogFacade catalogFacade;
 
     @Autowired
     private BookingMakeService bookingMakeService;
@@ -343,30 +335,30 @@ class BookingRestControllerIT extends SpringIT {
     }
 
     private void prepareSeat() {
-        filmCreateService.creteFilm(createFilmCreateDto());
-        roomCreateService.createRoom(createRoomCreateDto());
+        catalogFacade.createFilm(createFilmCreateDto());
+        catalogFacade.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
-        screeningCreateService.createScreening(
+        catalogFacade.createScreening(
                 createScreeningCrateDto().withDate(screeningDate)
         );
     }
 
     private void prepareSeat(LocalDateTime screeningDate) {
-        filmCreateService.creteFilm(createFilmCreateDto());
-        roomCreateService.createRoom(createRoomCreateDto());
-        screeningCreateService.createScreening(
+        catalogFacade.createFilm(createFilmCreateDto());
+        catalogFacade.createRoom(createRoomCreateDto());
+        catalogFacade.createScreening(
                 createScreeningCrateDto().withDate(screeningDate)
         );
     }
 
     private void prepareSeat(String filmTitle, String roomCustomId, LocalDateTime screeningDate) {
-        filmCreateService.creteFilm(
+        catalogFacade.createFilm(
                 createFilmCreateDto().withTitle(filmTitle)
         );
-        roomCreateService.createRoom(
+        catalogFacade.createRoom(
                 createRoomCreateDto().withCustomId(roomCustomId)
         );
-        screeningCreateService.createScreening(
+        catalogFacade.createScreening(
                 createScreeningCrateDto().withDate(screeningDate)
         );
     }

@@ -2,8 +2,7 @@ package code.catalog.infrastructure.rest;
 
 import code.catalog.application.dto.FilmCreateDto;
 import code.catalog.application.dto.FilmDto;
-import code.catalog.application.services.FilmCreateService;
-import code.catalog.application.services.FilmReadService;
+import code.catalog.application.services.CatalogFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,17 +20,16 @@ import java.util.List;
 @RequiredArgsConstructor
 class FilmRestController {
 
-    private final FilmCreateService filmCreateService;
-    private final FilmReadService filmReadService;
+    private final CatalogFacade catalogFacade;
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     void createFilm(@RequestBody @Valid FilmCreateDto dto) {
-        filmCreateService.creteFilm(dto);
+        catalogFacade.createFilm(dto);
     }
 
     @GetMapping
-    List<FilmDto> readAll() {
-        return filmReadService.readAll();
+    List<FilmDto> readAllFilms() {
+        return catalogFacade.readAllFilms();
     }
 }

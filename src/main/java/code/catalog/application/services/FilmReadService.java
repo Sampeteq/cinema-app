@@ -17,7 +17,7 @@ import static java.util.Comparator.comparing;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class FilmReadService {
+class FilmReadService {
 
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;

@@ -2,8 +2,7 @@ package code.catalog.infrastructure.rest;
 
 import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.application.dto.ScreeningDto;
-import code.catalog.application.services.ScreeningCreateService;
-import code.catalog.application.services.ScreeningReadService;
+import code.catalog.application.services.CatalogFacade;
 import code.catalog.domain.FilmCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,8 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 class ScreeningRestController {
 
-    private final ScreeningCreateService screeningCreateService;
-    private final ScreeningReadService screeningReadService;
+    private final CatalogFacade catalogFacade;
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -35,22 +33,22 @@ class ScreeningRestController {
             @Valid
             ScreeningCreateDto dto
     ) {
-        screeningCreateService.createScreening(dto);
+        catalogFacade.createScreening(dto);
     }
 
     @GetMapping
-    List<ScreeningDto> readAll() {
-        return screeningReadService.readAllScreenings();
+    List<ScreeningDto> readAllScreenings() {
+        return catalogFacade.readAllScreenings();
     }
 
     @GetMapping("/by/title")
     List<ScreeningDto> readByTitle(@RequestParam String title) {
-        return screeningReadService.readScreeningsByFilmTitle(title);
+        return catalogFacade.readScreeningsByFilmTitle(title);
     }
 
     @GetMapping("/by/category")
     List<ScreeningDto> readByCategory(@RequestParam FilmCategory category) {
-        return screeningReadService.readScreeningsByCategory(category);
+        return catalogFacade.readScreeningsByCategory(category);
     }
 
     @GetMapping("/by/date")
@@ -59,6 +57,6 @@ class ScreeningRestController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
             LocalDate date
     ) {
-        return screeningReadService.readScreeningsByDate(date);
+        return catalogFacade.readScreeningsByDate(date);
     }
 }

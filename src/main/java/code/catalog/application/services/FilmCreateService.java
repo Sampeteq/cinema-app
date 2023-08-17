@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class FilmCreateService {
+class FilmCreateService {
 
     private final FilmRepository filmRepository;
 
-    public void creteFilm(FilmCreateDto dto) {
+    void creteFilm(FilmCreateDto dto) {
         if (filmRepository.existsByTitle(dto.title())) {
             throw new FilmTitleNotUniqueException();
         }

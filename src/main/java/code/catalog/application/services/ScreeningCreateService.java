@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-public class ScreeningCreateService {
+class ScreeningCreateService {
 
     private final ScreeningDateValidateService screeningDateValidateService;
     private final TimeProvider timeProvider;

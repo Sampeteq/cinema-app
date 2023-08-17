@@ -1,7 +1,6 @@
-package code.catalog.application;
+package code.catalog.application.services;
 
 import code.SpringIT;
-import code.catalog.application.services.ScreeningEndService;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
 import code.catalog.domain.ports.ScreeningReadOnlyRepository;
@@ -13,7 +12,7 @@ import static code.catalog.helpers.RoomTestHelper.createRoom;
 import static code.catalog.helpers.ScreeningTestHelper.createScreenings;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RoomFinishHandlerIT extends SpringIT {
+class ScreeningEndServiceIT extends SpringIT {
 
     @Autowired
     private ScreeningEndService screeningFinishHandler;

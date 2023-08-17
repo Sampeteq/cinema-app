@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ScreeningEndService {
+class ScreeningEndService {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
 

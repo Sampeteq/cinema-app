@@ -1,10 +1,12 @@
 package code.catalog.application.services;
 
+import code.catalog.application.dto.ScreeningDetailsDto;
 import code.catalog.application.dto.ScreeningDto;
 import code.catalog.application.dto.ScreeningMapper;
 import code.catalog.domain.FilmCategory;
 import code.catalog.domain.Screening;
 import code.catalog.domain.ports.ScreeningReadOnlyRepository;
+import code.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +19,7 @@ import static java.util.Comparator.comparing;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class ScreeningReadService {
+class ScreeningReadService {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
     private final ScreeningMapper screeningMapper;
@@ -56,5 +58,11 @@ public class ScreeningReadService {
                 .sorted(comparing(Screening::getDate))
                 .map(screeningMapper::mapToDto)
                 .toList();
+    }
+
+    public ScreeningDetailsDto readScreeningDetails(Long screeningId) {
+        return screeningReadOnlyRepository
+                .readDetailsBySeatId(screeningId)
+                .orElseThrow(() -> new EntityNotFoundException("Screening"));
     }
 }

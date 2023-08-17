@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("prod")
-public class RoomCreateConfigService {
+class RoomCreateConfigService {
 
     private final RoomRepository roomRepository;
 
@@ -32,7 +32,7 @@ public class RoomCreateConfigService {
     private String pathToRoomsConfig;
 
     @EventListener(ContextRefreshedEvent.class)
-    public void createRoomsFromConfigOnStartUp() {
+    void createRoomsFromConfigOnStartUp() {
         if(roomRepository.readAll().isEmpty()) {
             try {
                 logIfFileNotExists(pathToRoomsConfig);

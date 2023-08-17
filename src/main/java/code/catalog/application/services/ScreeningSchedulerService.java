@@ -1,6 +1,5 @@
-package code.catalog.application;
+package code.catalog.application.services;
 
-import code.catalog.application.services.ScreeningEndService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -11,13 +10,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("prod")
-public class ScreeningScheduler {
+class ScreeningSchedulerService {
 
     private final ScreeningEndService screeningEndService;
 
     /** 3600000ms - 1h */
     @Scheduled(fixedDelay = 3600000)
-    public void run() {
+    void run() {
       screeningEndService.removeRoomsFromEndedScreenings();
     }
 }

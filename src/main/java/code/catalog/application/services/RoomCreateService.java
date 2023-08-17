@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class RoomCreateService {
+class RoomCreateService {
 
     private final RoomRepository roomRepository;
 
-    public void createRoom(RoomCreateDto dto) {
+    void createRoom(RoomCreateDto dto) {
         if (roomRepository.existsByCustomId(dto.customId())) {
             throw new RoomCustomIdAlreadyExistsException();
         }

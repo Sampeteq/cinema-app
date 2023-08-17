@@ -10,11 +10,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class RoomAvailableService {
+class RoomAvailableService {
 
     private final RoomRepository roomRepository;
 
-    public Optional<Room> getFirstAvailableRoom(LocalDateTime start, LocalDateTime end) {
+    Optional<Room> getFirstAvailableRoom(LocalDateTime start, LocalDateTime end) {
         return roomRepository.readFirstAvailableRoom(start, end);
     }
 }

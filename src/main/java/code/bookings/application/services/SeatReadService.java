@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SeatReadService {
+class SeatReadService {
 
     private final ScreeningRepository screeningRepository;
     private final SeatMapper seatMapper;

@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class BookingMakeService {
+class BookingMakeService {
 
     private final ScreeningRepository screeningRepository;
     private final UserFacade userFacade;

@@ -12,7 +12,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 @Service
 @RequiredArgsConstructor
-public class BookingCancelledHandlerService {
+class BookingCancelledHandlerService {
 
     private final BookingViewRepository bookingViewRepository;
 

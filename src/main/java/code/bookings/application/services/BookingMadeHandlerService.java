@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class BookingMadeHandlerService {
+class BookingMadeHandlerService {
 
     private final CatalogFacade catalogFacade;
     private final BookingViewRepository bookingViewRepository;
 
     @EventListener
-    public void handle(BookingMadeEvent event) {
+    void handle(BookingMadeEvent event) {
         var screeningDetails = catalogFacade.readScreeningDetails(event.screeningId());
         var bookingView = new BookingView(
                 event.bookingId(),

@@ -3,10 +3,7 @@ package code.bookings.infrastructure.rest;
 import code.MockTimeProvider;
 import code.SpringIT;
 import code.bookings.application.dto.BookingViewDto;
-import code.bookings.application.services.BookingCancelService;
-import code.bookings.application.services.BookingMakeService;
-import code.bookings.application.services.ScreeningCreatedHandlerService;
-import code.bookings.application.services.SeatReadService;
+import code.bookings.application.services.BookingFacade;
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
@@ -14,7 +11,6 @@ import code.bookings.domain.exceptions.BookingCancelTooLateException;
 import code.bookings.domain.exceptions.BookingTooLateException;
 import code.catalog.application.dto.SeatDto;
 import code.catalog.application.services.CatalogFacade;
-import code.catalog.domain.events.ScreeningCreatedEvent;
 import code.shared.time.TimeProvider;
 import code.user.application.dto.UserSignUpDto;
 import code.user.application.services.UserFacade;
@@ -51,16 +47,7 @@ class BookingRestControllerIT extends SpringIT {
     private CatalogFacade catalogFacade;
 
     @Autowired
-    private BookingMakeService bookingMakeService;
-
-    @Autowired
-    private BookingCancelService bookingCancelService;
-
-    @Autowired
-    private ScreeningCreatedHandlerService screeningCreatedHandlerService;
-
-    @Autowired
-    private SeatReadService seatReadService;
+    private BookingFacade bookingFacade;
 
     @MockBean
     private TimeProvider timeProvider;
@@ -87,7 +74,7 @@ class BookingRestControllerIT extends SpringIT {
     @Test
     void should_read_seats_for_screening() throws Exception {
         //given
-        var seats = prepareSeats(timeProvider.getCurrentDate());
+        var seats = prepareSeats();
 
         //when
         var result = mockMvc.perform(
@@ -319,19 +306,15 @@ class BookingRestControllerIT extends SpringIT {
         assertThat(bookingsFromResult).containsExactlyInAnyOrderElementsOf(expected);
     }
 
-    private List<SeatDto> prepareSeats(LocalDateTime currentDate) {
-        var id = 1L;
-        var date = currentDate.plusDays(7);
-        var rowsQuantity = 10;
-        var seatsQuantity = 15;
-        var screeningCreatedEvent = new ScreeningCreatedEvent(
-                id,
-                date,
-                rowsQuantity,
-                seatsQuantity
+    private List<SeatDto> prepareSeats() {
+        catalogFacade.createFilm(createFilmCreateDto());
+        catalogFacade.createRoom(createRoomCreateDto());
+        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        catalogFacade.createScreening(
+                createScreeningCrateDto().withDate(screeningDate)
         );
-        screeningCreatedHandlerService.handle(screeningCreatedEvent);
-        return seatReadService.readSeatsByScreeningId(id);
+        var screeningId = 1L;
+        return bookingFacade.readSeatsByScreeningId(screeningId);
     }
 
     private void prepareSeat() {
@@ -367,13 +350,13 @@ class BookingRestControllerIT extends SpringIT {
         prepareSeat();
         var screeningId = 1L;
         var seatId = 1L;
-        bookingMakeService.makeBooking(screeningId, seatId);
+        bookingFacade.makeBooking(screeningId, seatId);
     }
 
     private void prepareBooking(Long seatId) {
         prepareSeat();
         var screeningId = 1L;
-        bookingMakeService.makeBooking(screeningId, seatId);
+        bookingFacade.makeBooking(screeningId, seatId);
     }
 
     private void prepareBooking(LocalDateTime screeningDate) {
@@ -383,23 +366,23 @@ class BookingRestControllerIT extends SpringIT {
         Mockito
                 .when(timeProvider.getCurrentDate())
                 .thenReturn(screeningDate.plusHours(25));
-        bookingMakeService.makeBooking(screeningId, seatId);
+        bookingFacade.makeBooking(screeningId, seatId);
     }
 
     private void prepareBooking(String filmTitle, String roomCustomId, LocalDateTime screeningDate) {
         prepareSeat(filmTitle, roomCustomId, screeningDate);
         var screeningId = 1L;
         var seat1Id = 1L;
-        bookingMakeService.makeBooking(screeningId, seat1Id);
+        bookingFacade.makeBooking(screeningId, seat1Id);
     }
 
     private void prepareCancelledBooking() {
         prepareSeat();
         var seatId = 1L;
         var screeningId = 1L;
-        bookingMakeService.makeBooking(screeningId, seatId);
+        bookingFacade.makeBooking(screeningId, seatId);
         var bookingId = 1L;
-        bookingCancelService.cancelBooking(bookingId);
+        bookingFacade.cancelBooking(bookingId);
     }
 
     private Stream<SeatDto> getSeatsFromResult(ResultActions searchSeatsResult) throws Exception {

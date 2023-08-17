@@ -14,12 +14,12 @@ import static java.util.stream.IntStream.rangeClosed;
 
 @Service
 @RequiredArgsConstructor
-public class ScreeningCreatedHandlerService {
+class ScreeningCreatedHandlerService {
 
     private final ScreeningRepository screeningRepository;
 
     @EventListener(ScreeningCreatedEvent.class)
-    public void handle(ScreeningCreatedEvent event) {
+    void handle(ScreeningCreatedEvent event) {
         var seats = createSeats(event.rowsQuantity(), event.seatsQuantityInOneRow());
         var screening = Screening.create(event.id(), event.date(), seats);
         screeningRepository.add(screening);

@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ScreeningRestController_createScreening_IT extends SpringIT {
+class ScreeningRestController_createScreening_IT extends SpringIT {
 
     @Autowired
     private FilmRepository filmRepository;

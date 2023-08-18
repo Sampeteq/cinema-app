@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class FilmRestController_readFilms_IT extends SpringIT {
+class FilmRestController_readFilms_IT extends SpringIT {
 
     @Autowired
     private FilmRepository filmRepository;

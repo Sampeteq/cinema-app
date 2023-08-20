@@ -1,12 +1,8 @@
 package code.catalog.domain;
 
 import code.catalog.domain.exceptions.FilmYearOutOfRangeException;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.CascadeType;
@@ -25,8 +21,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "films")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString(exclude = "screenings")
@@ -36,27 +30,32 @@ public class Film {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     private String title;
 
     @Enumerated(EnumType.STRING)
-    @NonNull
     private FilmCategory category;
 
-    @NonNull
-    private Integer year;
+    private int year;
 
-    @NonNull
-    private Integer durationInMinutes;
+    private int durationInMinutes;
 
     @OneToMany(mappedBy = "film", cascade = CascadeType.PERSIST)
     private final List<Screening> screenings = new ArrayList<>();
 
+    protected Film() {}
+
+    private Film(String title, FilmCategory category, int year, int durationInMinutes) {
+        this.title = title;
+        this.category = category;
+        this.year = year;
+        this.durationInMinutes = durationInMinutes;
+    }
+
     public static Film create(
             String title,
             FilmCategory category,
-            Integer year,
-            Integer durationInMinutes
+            int year,
+            int durationInMinutes
     ) {
         if (!isFilmYearCorrect(year)) {
             throw new FilmYearOutOfRangeException();

@@ -1,10 +1,7 @@
 package code.catalog.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Entity;
@@ -15,8 +12,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "rooms")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
 @Getter
 @ToString
@@ -28,21 +23,23 @@ public class Room {
 
     private String customId;
 
-    private int rowsQuantity;
+    private int rowsNumber;
 
-    private int seatsInOneRowQuantity;
+    private int rowSeatsNumber;
 
-    private Room(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
+    protected Room() {}
+
+    private Room(String customId, int rowsNumber, int rowSeatsNumber) {
         this.customId = customId;
-        this.rowsQuantity = rowsQuantity;
-        this.seatsInOneRowQuantity = seatsInOneRowQuantity;
+        this.rowsNumber = rowsNumber;
+        this.rowSeatsNumber = rowSeatsNumber;
     }
 
-    public static Room create(String customId, int rowsQuantity, int seatsInOneRowQuantity) {
+    public static Room create(String customId, int rowsNumber, int rowsSeatsNumber) {
         return new Room(
                 customId,
-                rowsQuantity,
-                seatsInOneRowQuantity
+                rowsNumber,
+                rowsSeatsNumber
         );
     }
 }

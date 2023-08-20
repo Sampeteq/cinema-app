@@ -19,8 +19,8 @@ class RoomCreateService {
         }
         var screeningRoom = Room.create(
                 dto.customId(),
-                dto.seatsQuantityInOneRow(),
-                dto.rowsQuantity()
+                dto.rowSeatsNumber(),
+                dto.rowsNumber()
         );
        roomRepository.add(screeningRoom);
     }

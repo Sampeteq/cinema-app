@@ -10,8 +10,8 @@ public record RoomCreateDto(
         @NotNull
         String customId,
         @Positive
-        int rowsQuantity,
+        int rowsNumber,
         @Positive
-        int seatsQuantityInOneRow
+        int rowSeatsNumber
 ) {
 }

@@ -1,12 +1,12 @@
 [
   {
     "customId": "1",
-    "rowsQuantity": 10,
-    "seatsQuantityInOneRow": 15
+    "rowsNumber": 10,
+    "rowSeatsNumber": 15
   },
   {
     "customId": "2",
-    "rowsQuantity": 15,
-    "seatsQuantityInOneRow": 20
+    "rowsNumber": 15,
+    "rowSeatsNumber": 20
   }
 ]

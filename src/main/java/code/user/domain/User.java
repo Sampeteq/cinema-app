@@ -1,10 +1,7 @@
 package code.user.domain;
 
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,9 +20,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "id")
+@Getter
 @ToString
 public class User implements UserDetails {
 
@@ -33,17 +29,23 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     private String mail;
 
-    @NonNull
     private String password;
 
     @Enumerated(value = EnumType.STRING)
-    @NonNull
     private UserRole role;
 
     private UUID passwordResetToken;
+
+    protected User() {
+    }
+
+    private User(String mail, String password, UserRole role) {
+        this.mail = mail;
+        this.password = password;
+        this.role = role;
+    }
 
     public static User create(String mail, String password, UserRole role) {
         return new User(
@@ -60,10 +62,6 @@ public class User implements UserDetails {
 
     public void setPasswordResetToken(UUID passwordResetToken) {
         this.passwordResetToken = passwordResetToken;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     @Override
@@ -99,9 +97,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public UUID getPasswordResetToken() {
-        return passwordResetToken;
     }
 }

@@ -3,7 +3,7 @@ package code.bookings.infrastructure.rest;
 import code.bookings.application.dto.BookingViewDto;
 import code.bookings.application.services.BookingFacade;
 import code.catalog.application.dto.SeatDto;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/bookings")
-@AllArgsConstructor
+@RequiredArgsConstructor
 class BookingController {
 
     private final BookingFacade bookingFacade;

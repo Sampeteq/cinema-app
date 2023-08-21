@@ -4,7 +4,7 @@ import code.user.application.dto.UserPasswordNewDto;
 import code.user.application.dto.UserSignInDto;
 import code.user.application.dto.UserSignUpDto;
 import code.user.application.services.UserFacade;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 class UserController {
 
     private final UserFacade userFacade;

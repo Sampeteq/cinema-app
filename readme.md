@@ -1,8 +1,34 @@
-This is web app to manage a cinema.
 
-Features:
+# Cinema manager
 
-1.Storing and searching films and screenings (catalog)
+This is web app to manage a cinema builded on modular monolith architecture.
+
+
+
+
+## Tech Stack
+
+**Language:** Java 17
+
+**Frameworks:** Spring Boot, Hibernate, Junit
+
+**Libraries:** Open API (Swagger)
+
+**Datebases:** PostgreSQL
+
+**Build tool:** Maven
+
+**UI:** REST API
+
+
+## Features and API
+
+### Available on:
+```http
+  localhot:8080/swagger-ui
+```
+
+### 1.Storing and searching films and screenings
 
 Endpoints:
 
@@ -24,9 +50,7 @@ Admin:
 
 /screenings (POST) - add a new screening
 
-/////////////////////
-
-2.Booking making (bookings)
+### 2.Booking making
 
 Endpoints:
 
@@ -38,9 +62,7 @@ Endpoints:
 
 /bookings/my (GET) - search user bookings
 
-/////////////////////
-
-3.User account (user):
+### 3.User account
 
 Endpoints:
 
@@ -53,13 +75,11 @@ Endpoints:
 /password/reset (POST) - reset password (a mail with token will be sent)
 
 /password/new (POST) - set new password after reset
+## How to run it
 
-Tech stack:Java 17, Maven, Spring Boot, Lombok, Postgres, Open API
+Download docker-compose.yaml file and run this command in the same folder:
 
-API available on localhost:8080/swagger-ui
-
-How to run it:
-
-1.Download docker-compose.yaml file
-
-2.Run cmd in folder where you placed downloaded file and use this command: docker-compose up -d
+```bash
+  docker-compose up -d
+```
+    

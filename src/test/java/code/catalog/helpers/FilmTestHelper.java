@@ -7,7 +7,10 @@ import code.catalog.domain.FilmCategory;
 import java.time.Year;
 import java.util.List;
 
-public class FilmTestHelper {
+public final class FilmTestHelper {
+
+    private FilmTestHelper() {
+    }
 
     public static FilmCreateDto createFilmCreateDto() {
         var title = "Test film 1";

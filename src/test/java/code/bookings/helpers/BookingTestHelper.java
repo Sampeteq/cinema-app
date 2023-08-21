@@ -13,7 +13,10 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.List;
 
-public class BookingTestHelper {
+public final class BookingTestHelper {
+
+    private BookingTestHelper() {
+    }
 
     private static final LocalDateTime currentDate = new MockTimeProvider().getCurrentDate();
 
@@ -94,10 +97,6 @@ public class BookingTestHelper {
     }
 
     public static ScreeningCreateDto createScreeningCrateDto(LocalDateTime date) {
-        var filmId = 1L;
-        return new ScreeningCreateDto(
-                date,
-                filmId
-        );
+        return createScreeningCrateDto().withDate(date);
     }
 }

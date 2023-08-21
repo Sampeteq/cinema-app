@@ -7,7 +7,10 @@ import code.user.domain.UserRole;
 
 import java.util.UUID;
 
-public class UserTestHelper {
+public final class UserTestHelper {
+
+    private UserTestHelper() {
+    }
 
     public static UserSignUpDto createSignUpDto() {
         var mail = "user1@mail.com";
@@ -20,21 +23,13 @@ public class UserTestHelper {
     }
 
     public static UserSignUpDto createSignUpDto(String mail) {
-        var password = "password1";
-        return new UserSignUpDto(
-                mail,
-                password,
-                password
-        );
+        return createSignUpDto().withMail(mail);
     }
 
     public static UserSignUpDto createSignUpDto(String password, String repeatedPassword) {
-        var mail = "user1@mail.com";
-        return new UserSignUpDto(
-                mail,
-                password,
-                repeatedPassword
-        );
+        return createSignUpDto()
+                .withPassword(password)
+                .withRepeatedPassword(repeatedPassword);
     }
 
     public static UserSignInDto createSignInDto(String mail) {

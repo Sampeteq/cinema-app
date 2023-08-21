@@ -9,7 +9,10 @@ import java.util.List;
 
 import static code.TimeHelper.getLocalDateTime;
 
-public class ScreeningTestHelper {
+public final class ScreeningTestHelper {
+
+    private ScreeningTestHelper() {
+    }
 
     public static final LocalDateTime SCREENING_DATE = getLocalDateTime();
 

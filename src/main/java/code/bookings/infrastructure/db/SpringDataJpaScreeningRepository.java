@@ -35,7 +35,7 @@ class SpringDataJpaScreeningRepository implements ScreeningRepository {
 interface ScreeningJpaRepository extends JpaRepository<Screening, Long> {
 
     @Query("select s from booking_screening s left join fetch s.seats where s.id = :id")
-    Optional<Screening> readByIdWithSeats(Long id);
+    Optional<Screening> readByIdWithSeats(@Param("id") Long id);
 
     @Query(
             "select s from booking_screening s " +

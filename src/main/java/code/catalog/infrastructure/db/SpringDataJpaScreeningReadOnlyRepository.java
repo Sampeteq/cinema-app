@@ -7,6 +7,7 @@ import code.catalog.domain.ports.ScreeningReadOnlyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -68,5 +69,5 @@ interface JpaScreeningReadOnlyRepository extends Repository<Screening, Long> {
                     "screening.film.title" +
                     ") from Screening screening where screening.id = :screeningId"
     )
-    Optional<ScreeningDetailsDto> readDetailsByScreeningId(Long screeningId);
+    Optional<ScreeningDetailsDto> readDetailsByScreeningId(@Param("screeningId") Long screeningId);
 }

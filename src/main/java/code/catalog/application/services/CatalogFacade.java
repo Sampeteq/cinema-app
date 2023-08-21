@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -52,8 +51,8 @@ public class CatalogFacade {
         return screeningReadService.readScreeningsByFilmTitle(title);
     }
 
-    public List<ScreeningDto> readScreeningsByCategory(FilmCategory category) {
-        return screeningReadService.readScreeningsByCategory(category);
+    public List<ScreeningDto> readScreeningsByFilmCategory(FilmCategory category) {
+        return screeningReadService.readScreeningsByFilmCategory(category);
     }
 
     public List<ScreeningDto> readScreeningsByDate(LocalDate date) {

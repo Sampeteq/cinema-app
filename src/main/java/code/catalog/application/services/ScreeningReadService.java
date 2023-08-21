@@ -42,7 +42,7 @@ class ScreeningReadService {
                 .toList();
     }
 
-    public List<ScreeningDto> readScreeningsByCategory(FilmCategory category) {
+    public List<ScreeningDto> readScreeningsByFilmCategory(FilmCategory category) {
         return screeningReadOnlyRepository
                 .readByFilmCategory(category)
                 .stream()

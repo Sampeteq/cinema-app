@@ -21,31 +21,31 @@ class UserController {
     private final UserFacade userFacade;
 
     @PostMapping("/signup")
-    ResponseEntity<?> signUp(@RequestBody @Valid UserSignUpDto dto) {
+    ResponseEntity<String> signUpUser(@RequestBody @Valid UserSignUpDto dto) {
         userFacade.signUpUser(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
-    ResponseEntity<?> signIn(@RequestBody UserSignInDto dto) {
+    ResponseEntity<String> signInUser(@RequestBody UserSignInDto dto) {
         userFacade.signInUser(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/signout")
-    ResponseEntity<?> signOut() {
+    ResponseEntity<String> signOutUser() {
         userFacade.signOutUser();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/password/reset")
-    ResponseEntity<?> resetPassword(@RequestParam String mail) {
+    ResponseEntity<String> resetUserPassword(@RequestParam String mail) {
         userFacade.resetUserPassword(mail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/password/new")
-    ResponseEntity<?> setNewPassword(@RequestBody UserPasswordNewDto dto) {
+    ResponseEntity<String> setNewUserPassword(@RequestBody UserPasswordNewDto dto) {
         userFacade.setNewUserPassword(dto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -21,7 +21,7 @@ class BookingController {
     private final BookingFacade bookingFacade;
 
     @PostMapping
-    void bookSeat(@RequestParam Long screeningId, @RequestParam Long seatId) {
+    void makeBooking(@RequestParam Long screeningId, @RequestParam Long seatId) {
         bookingFacade.makeBooking(screeningId, seatId);
     }
 
@@ -41,7 +41,7 @@ class BookingController {
     }
 
     @GetMapping("/seats")
-    List<SeatDto> readSeats(@RequestParam Long screeningId) {
+    List<SeatDto> readSeatsByScreeningId(@RequestParam Long screeningId) {
         return bookingFacade.readSeatsByScreeningId(screeningId);
     }
 }

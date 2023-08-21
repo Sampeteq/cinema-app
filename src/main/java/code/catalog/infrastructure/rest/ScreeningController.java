@@ -42,13 +42,13 @@ class ScreeningController {
     }
 
     @GetMapping("/by/title")
-    List<ScreeningDto> readByTitle(@RequestParam String title) {
+    List<ScreeningDto> readScreeningsByFilmTitle(@RequestParam String title) {
         return catalogFacade.readScreeningsByFilmTitle(title);
     }
 
     @GetMapping("/by/category")
-    List<ScreeningDto> readByCategory(@RequestParam FilmCategory category) {
-        return catalogFacade.readScreeningsByCategory(category);
+    List<ScreeningDto> readScreeningsByFilmCategory(@RequestParam FilmCategory category) {
+        return catalogFacade.readScreeningsByFilmCategory(category);
     }
 
     @GetMapping("/by/date")

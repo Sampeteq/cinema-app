@@ -16,7 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
-class UserRestController {
+class UserController {
 
     private final UserFacade userFacade;
 

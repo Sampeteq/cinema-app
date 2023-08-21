@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class FilmRestController_createFilm_IT extends SpringIT {
+class FilmController_createFilm_IT extends SpringIT {
 
     public static final String FILMS_BASE_ENDPOINT = "/films";
 

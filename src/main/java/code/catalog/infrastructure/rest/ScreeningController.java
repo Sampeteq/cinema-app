@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/screenings")
 @RequiredArgsConstructor
-class ScreeningRestController {
+class ScreeningController {
 
     private final CatalogFacade catalogFacade;
 

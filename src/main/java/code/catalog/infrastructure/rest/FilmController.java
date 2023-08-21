@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/films")
 @RequiredArgsConstructor
-class FilmRestController {
+class FilmController {
 
     private final CatalogFacade catalogFacade;
 

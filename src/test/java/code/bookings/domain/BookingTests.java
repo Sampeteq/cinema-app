@@ -29,7 +29,7 @@ class BookingTests {
         var userId = 1L;
 
         //when
-        var booking = Booking.make(currentDate, screening, seat.getId(), userId);
+        var booking = Booking.make(currentDate, screening, seat.getRowNumber(), seat.getNumber(), userId);
 
         //then
         assertThat(booking.getScreening()).isEqualTo(screening);
@@ -44,13 +44,18 @@ class BookingTests {
         //given
         var seat = prepareSeat();
         var screening = prepareScreeningWithBookedSeat(seat);
-        var seatId = seat.getId();
         var otherUserId = 2L;
 
         //when
         assertThrows(
                 BookingAlreadyExists.class,
-                () -> Booking.make(currentDate, screening, seatId, otherUserId)
+                () -> Booking.make(
+                        currentDate,
+                        screening,
+                        seat.getRowNumber(),
+                        seat.getNumber(),
+                        otherUserId
+                )
         );
     }
 
@@ -60,13 +65,18 @@ class BookingTests {
         var seat = prepareSeat();
         var screeningDate = currentDate.minusMinutes(59);
         var screening = prepareScreening(seat, screeningDate);
-        var seatId = seat.getId();
         var userId = 1L;
 
         //when
         assertThrows(
                 BookingTooLateException.class,
-                () -> Booking.make(currentDate, screening, seatId, userId)
+                () -> Booking.make(
+                        currentDate,
+                        screening,
+                        seat.getRowNumber(),
+                        seat.getNumber(),
+                        userId
+                )
         );
     }
 

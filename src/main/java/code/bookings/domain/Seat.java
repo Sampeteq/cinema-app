@@ -67,6 +67,10 @@ public class Seat {
         this.isFree = true;
     }
 
+    public boolean placedOn(int rowNumber, int seatNumber) {
+        return this.rowNumber == rowNumber && this.number == seatNumber;
+    }
+
     @Override
     public String toString() {
         return "Seat{" +

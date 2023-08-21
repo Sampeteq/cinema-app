@@ -41,7 +41,7 @@ public final class BookingTestHelper {
         var screening = prepareScreening(seat);
         var userId = 1L;
         return Booking
-                .make(currentDate, screening, seat.getId() , userId)
+                .make(currentDate, screening, seat.getRowNumber(), seat.getNumber(), userId)
                 .getScreening();
     }
 
@@ -54,7 +54,7 @@ public final class BookingTestHelper {
         var seat = prepareSeat();
         var screening = prepareScreening(seat, screeningDate);
         var userId = 1L;
-        return Booking.make(currentDate, screening, seat.getId(), userId);
+        return Booking.make(currentDate, screening, seat.getNumber(), seat.getRowNumber(), userId);
     }
 
     public static Booking prepareCancelledBooking() {

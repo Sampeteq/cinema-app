@@ -52,7 +52,8 @@ public class Booking {
     public static Booking make(
             LocalDateTime currentDate,
             Screening screening,
-            Long seatId,
+            int rowNumber,
+            int seatNumber,
             Long userId
     ) {
         if (screening.timeToScreeningInHours(currentDate) < 1) {
@@ -61,7 +62,7 @@ public class Booking {
         var foundSeat = screening
                 .getSeats()
                 .stream()
-                .filter(s -> s.getId().equals(seatId))
+                .filter(s -> s.placedOn(rowNumber, seatNumber))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("Seat"));
         if (screening.hasActiveBooking()) {

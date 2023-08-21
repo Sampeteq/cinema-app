@@ -27,8 +27,8 @@ class SpringDataJpaScreeningRepository implements ScreeningRepository {
     }
 
     @Override
-    public Optional<Screening> readByIdWithSeat(Long id, Long seatId) {
-        return screeningJpaRepository.readByIdWithSeat(id, seatId);
+    public Optional<Screening> readByIdWithSeat(Long id, int rowNumber, int seatNumber) {
+        return screeningJpaRepository.readByIdWithSeat(id, rowNumber, seatNumber);
     }
 }
 
@@ -40,12 +40,16 @@ interface ScreeningJpaRepository extends JpaRepository<Screening, Long> {
     @Query(
             "select s from booking_screening s " +
             "left join fetch s.seats se " +
-            "where s.id = :id and se.id = :seatId"
+            "where s.id = :id and se.rowNumber = :rowNumber and se.number = :seatNumber"
     )
     Optional<Screening> readByIdWithSeat(
             @Param("id")
             Long id,
-            @Param("seatId")
-            Long seatId
+
+            @Param("rowNumber")
+            int rowNumber,
+
+            @Param("seatNumber")
+            int seatNumber
     );
 }

@@ -1,5 +1,6 @@
 package code.bookings.application.services;
 
+import code.bookings.application.dto.BookingMakeDto;
 import code.bookings.domain.Booking;
 import code.bookings.domain.events.BookingMadeEvent;
 import code.bookings.domain.ports.BookingRepository;
@@ -25,12 +26,18 @@ class BookingMakeService {
     private final EventPublisher eventPublisher;
 
     @Transactional
-    public void makeBooking(Long screeningId, Long seatId) {
+    public void makeBooking(BookingMakeDto dto) {
         var screening = screeningRepository
-                .readByIdWithSeat(screeningId, seatId)
+                .readByIdWithSeat(dto.screeningId(), dto.rowNumber(), dto.seatNumber())
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));
         var currentUserId = userFacade.readCurrentUserId();
-        var booking = Booking.make(timeProvider.getCurrentDate(), screening, seatId, currentUserId);
+        var booking = Booking.make(
+                timeProvider.getCurrentDate(),
+                screening,
+                dto.rowNumber(),
+                dto.seatNumber(),
+                currentUserId
+        );
         var addedBooking = bookingRepository.add(booking);
         log.info("Added a booking:{}", addedBooking);
         var bookingMadeEvent = new BookingMadeEvent(

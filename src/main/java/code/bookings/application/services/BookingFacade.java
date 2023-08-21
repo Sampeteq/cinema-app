@@ -1,5 +1,6 @@
 package code.bookings.application.services;
 
+import code.bookings.application.dto.BookingMakeDto;
 import code.bookings.application.dto.BookingViewDto;
 import code.catalog.application.dto.SeatDto;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,8 @@ public class BookingFacade {
     private final BookingReadService bookingReadService;
     private final SeatReadService seatReadService;
 
-    public void makeBooking(Long screeningId, Long seatId) {
-        bookingMakeService.makeBooking(screeningId, seatId);
+    public void makeBooking(BookingMakeDto dto) {
+        bookingMakeService.makeBooking(dto);
     }
 
     public void cancelBooking(Long bookingId) {

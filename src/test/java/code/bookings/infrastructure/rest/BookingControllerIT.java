@@ -2,6 +2,7 @@ package code.bookings.infrastructure.rest;
 
 import code.MockTimeProvider;
 import code.SpringIT;
+import code.bookings.application.dto.BookingMakeDto;
 import code.bookings.application.dto.BookingViewDto;
 import code.bookings.application.services.BookingFacade;
 import code.bookings.domain.BookingStatus;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -93,15 +95,21 @@ class BookingControllerIT extends SpringIT {
         var filmTitle = "Title 1";
         var roomCustomId = "1";
         var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        prepareSeat(filmTitle, roomCustomId, screeningDate);
+        var screeningId = 1L;
         var seatRowNumber = 1;
         var seatNumber = 1;
-        prepareSeat(filmTitle, roomCustomId, screeningDate);
+        var bookingMakeDto = new BookingMakeDto(
+                screeningId,
+                seatRowNumber,
+                seatNumber
+        );
 
         //when
         var result = mockMvc.perform(
                 post(BOOKINGS_BASE_ENDPOINT)
-                        .param("screeningId", "1")
-                        .param("seatId", "1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(bookingMakeDto))
         );
 
         //then
@@ -125,14 +133,21 @@ class BookingControllerIT extends SpringIT {
     @Test
     void should_throw_exception_during_booking_when_booking_already_exists() throws Exception {
         //given
-        var seatId = 1L;
-        prepareBooking(seatId);
+        var screeningId = 1L;
+        var rowNumber = 1;
+        var seatNumber = 1;
+        prepareBooking(screeningId, rowNumber, seatNumber);
+        var bookingMakeDto = new BookingMakeDto(
+                screeningId,
+                rowNumber,
+                seatNumber
+        );
 
         //when
         var result = mockMvc.perform(
                 post(BOOKINGS_BASE_ENDPOINT)
-                        .param("screeningId", "1")
-                        .param("seatId", String.valueOf(seatId))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(bookingMakeDto))
         );
 
         //then
@@ -155,12 +170,20 @@ class BookingControllerIT extends SpringIT {
         Mockito
                 .when(timeProvider.getCurrentDate())
                 .thenReturn(screeningDate.minusMinutes(59));
+        var screeningId = 1L;
+        var rowNumber = 1;
+        var seatNumber = 1;
+        var bookingMakeDto = new BookingMakeDto(
+                screeningId,
+                rowNumber,
+                seatNumber
+        );
 
         //when
         var result = mockMvc.perform(
                 post(BOOKINGS_BASE_ENDPOINT)
-                        .param("screeningId", "1")
-                        .param("seatId", "1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(bookingMakeDto))
         );
 
         //then
@@ -175,12 +198,20 @@ class BookingControllerIT extends SpringIT {
     void should_not_seat_be_free_after_booking() throws Exception {
         //given
         prepareSeat();
+        var screeningId = 1L;
+        var rowNumber = 1;
+        var seatNumber = 1;
+        var bookingMakeDto = new BookingMakeDto(
+                screeningId,
+                rowNumber,
+                seatNumber
+        );
 
         //when
         mockMvc.perform(
                 post(BOOKINGS_BASE_ENDPOINT)
-                        .param("screeningId", "1")
-                        .param("seatId", "1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(bookingMakeDto))
         );
 
         //then
@@ -349,38 +380,66 @@ class BookingControllerIT extends SpringIT {
     private void prepareBooking() {
         prepareSeat();
         var screeningId = 1L;
-        var seatId = 1L;
-        bookingFacade.makeBooking(screeningId, seatId);
+        var rowNumber = 1;
+        var seatNumber = 1;
+        var dto = new BookingMakeDto(
+                screeningId,
+                rowNumber,
+                seatNumber
+        );
+        bookingFacade.makeBooking(dto);
     }
 
-    private void prepareBooking(Long seatId) {
+    private void prepareBooking(Long screeningId, int rowNumber, int seatNumber) {
         prepareSeat();
-        var screeningId = 1L;
-        bookingFacade.makeBooking(screeningId, seatId);
+        var dto = new BookingMakeDto(
+                screeningId,
+                rowNumber,
+                seatNumber
+        );
+        bookingFacade.makeBooking(dto);
     }
 
     private void prepareBooking(LocalDateTime screeningDate) {
         prepareSeat(screeningDate);
         var screeningId = 1L;
-        var seatId = 1L;
         Mockito
                 .when(timeProvider.getCurrentDate())
                 .thenReturn(screeningDate.plusHours(25));
-        bookingFacade.makeBooking(screeningId, seatId);
+        var rowNumber = 1;
+        var seatNumber =  1;
+        var bookingMakeDto = new BookingMakeDto(
+                screeningId,
+                rowNumber,
+                seatNumber
+        );
+        bookingFacade.makeBooking(bookingMakeDto);
     }
 
     private void prepareBooking(String filmTitle, String roomCustomId, LocalDateTime screeningDate) {
         prepareSeat(filmTitle, roomCustomId, screeningDate);
         var screeningId = 1L;
-        var seat1Id = 1L;
-        bookingFacade.makeBooking(screeningId, seat1Id);
+        var rowNumber = 1;
+        var seatNumber =  1;
+        var bookingMakeDto = new BookingMakeDto(
+                screeningId,
+                rowNumber,
+                seatNumber
+        );
+        bookingFacade.makeBooking(bookingMakeDto);
     }
 
     private void prepareCancelledBooking() {
         prepareSeat();
-        var seatId = 1L;
         var screeningId = 1L;
-        bookingFacade.makeBooking(screeningId, seatId);
+        var rowNumber = 1;
+        var seatNumber =  1;
+        var bookingMakeDto = new BookingMakeDto(
+                screeningId,
+                rowNumber,
+                seatNumber
+        );
+        bookingFacade.makeBooking(bookingMakeDto);
         var bookingId = 1L;
         bookingFacade.cancelBooking(bookingId);
     }

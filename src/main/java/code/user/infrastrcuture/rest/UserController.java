@@ -42,7 +42,7 @@ class UserController {
     }
 
     @PostMapping("/password/new")
-    void setNewUserPassword(@RequestBody UserPasswordNewDto dto) {
+    void setNewUserPassword(@RequestBody @Valid UserPasswordNewDto dto) {
         userFacade.setNewUserPassword(dto);
     }
 }

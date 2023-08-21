@@ -23,7 +23,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers(HttpMethod.GET, "/films/**", "/screenings/**", "/seats/**")
                 .permitAll()
-                .mvcMatchers(HttpMethod.POST, "/signup", "/signin", "/password/reset", "/password/new")
+                .mvcMatchers(HttpMethod.POST, "/sign-up", "/sign-in", "/password/reset", "/password/new")
                 .permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**")
                 .permitAll()

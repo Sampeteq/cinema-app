@@ -20,18 +20,18 @@ class UserController {
 
     private final UserFacade userFacade;
 
-    @PostMapping("/signup")
+    @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
     void signUpUser(@RequestBody @Valid UserSignUpDto dto) {
         userFacade.signUpUser(dto);
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/sign-in")
     void signInUser(@RequestBody UserSignInDto dto) {
         userFacade.signInUser(dto);
     }
 
-    @PostMapping("/signout")
+    @PostMapping("/sign-out")
     void signOutUser() {
         userFacade.signOutUser();
     }

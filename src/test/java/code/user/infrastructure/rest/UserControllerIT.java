@@ -35,7 +35,7 @@ class UserControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/signup")
+                post("/sign-up")
                         .content(toJson(signUpDto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -47,7 +47,7 @@ class UserControllerIT extends SpringIT {
                 signUpDto.password()
         );
         mockMvc.perform(
-                post("/signin")
+                post("/sign-in")
                         .content(toJson(signInDto))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
@@ -61,7 +61,7 @@ class UserControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/signup")
+                post("/sign-up")
                         .content(toJson(signUpRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -79,7 +79,7 @@ class UserControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/signup")
+                post("/sign-up")
                         .content(toJson(signUpRequest))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -98,7 +98,7 @@ class UserControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/signin")
+                post("/sign-in")
                         .content(toJson(signInDto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
@@ -152,7 +152,7 @@ class UserControllerIT extends SpringIT {
                 userPasswordNewDto.newPassword()
         );
         mockMvc.perform(
-                post("/signin").content(
+                post("/sign-in").content(
                         toJson(userSignInDto)
                 ).contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());

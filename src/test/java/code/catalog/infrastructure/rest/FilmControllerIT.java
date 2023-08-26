@@ -34,22 +34,8 @@ class FilmControllerIT extends SpringIT {
     private FilmMapper filmMapper;
 
     @Test
-    @WithMockUser(authorities = "COMMON")
-    void should_only_admin_create_film() throws Exception {
-        //given
-
-        //when
-        var result = mockMvc.perform(
-                post(FILMS_BASE_ENDPOINT)
-        );
-
-        //then
-        result.andExpect(status().isForbidden());
-    }
-
-    @Test
     @WithMockUser(authorities = "ADMIN")
-    void should_create_film() throws Exception {
+    void film_is_created() throws Exception {
         //given
         var cmd = createFilmCreateDto();
         var expectedDto = List.of(
@@ -77,8 +63,22 @@ class FilmControllerIT extends SpringIT {
     }
 
     @Test
+    @WithMockUser(authorities = "COMMON")
+    void film_can_be_created_only_by_admin() throws Exception {
+        //given
+
+        //when
+        var result = mockMvc.perform(
+                post(FILMS_BASE_ENDPOINT)
+        );
+
+        //then
+        result.andExpect(status().isForbidden());
+    }
+
+    @Test
     @WithMockUser(authorities = "ADMIN")
-    void should_throw_exception_when_title_is_not_unique() throws Exception {
+    void film_title_is_unique() throws Exception {
         //given
         var film = filmRepository.add(createFilm());
         var filmCreateDto = createFilmCreateDto().withTitle(film.getTitle());
@@ -99,8 +99,7 @@ class FilmControllerIT extends SpringIT {
     @ParameterizedTest
     @MethodSource("code.catalog.helpers.FilmTestHelper#getWrongFilmYears")
     @WithMockUser(authorities = "ADMIN")
-    void should_throw_exception_when_film_year_is_not_previous_or_current_or_next_one(Integer wrongYear)
-            throws Exception {
+    void film_year_is_previous_current_or_nex_one(Integer wrongYear) throws Exception {
         //given
         var cmd = createFilmCreateDto().withYear(wrongYear);
 
@@ -118,7 +117,7 @@ class FilmControllerIT extends SpringIT {
     }
 
     @Test
-    void should_read_all_films() throws Exception {
+    void films_are_read() throws Exception {
         //given
         var films = addFilms();
 

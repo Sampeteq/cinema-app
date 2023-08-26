@@ -63,7 +63,7 @@ class ScreeningControllerIT extends SpringIT {
 
     @Test
     @WithMockUser(authorities = "COMMON")
-    void should_only_admin_create_screening() throws Exception {
+    void screening_is_created_only_by_admin() throws Exception {
         //given
 
         //when
@@ -77,7 +77,7 @@ class ScreeningControllerIT extends SpringIT {
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void should_create_screening() throws Exception {
+    void screening_is_created() throws Exception {
         //given
         var film = filmRepository.add(createFilm());
         roomRepository.add(createRoom());
@@ -109,7 +109,7 @@ class ScreeningControllerIT extends SpringIT {
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void should_throw_exception_when_screening_date_is_earlier_than_current() throws Exception {
+    void screening_date_cannot_be_in_past() throws Exception {
         //given
         var filmId = filmRepository.add(createFilm()).getId();
         roomRepository.add(createRoom());
@@ -140,8 +140,7 @@ class ScreeningControllerIT extends SpringIT {
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void should_throw_exception_when_screening_and_current_date_difference_is_below_7_days()
-            throws Exception {
+    void screening_and_current_date_difference_is_min_7_days() throws Exception {
         //given
         var filmId = filmRepository.add(createFilm()).getId();
         roomRepository.add(createRoom());
@@ -172,8 +171,7 @@ class ScreeningControllerIT extends SpringIT {
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void should_throw_exception_when_screening_and_current_date_difference_is_above_21_days()
-            throws Exception {
+    void screening_and_current_date_difference_is_max_21_days() throws Exception {
         //given
         var filmId = filmRepository.add(createFilm()).getId();
         roomRepository.add(createRoom());
@@ -204,9 +202,9 @@ class ScreeningControllerIT extends SpringIT {
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void should_throw_exception_when_there_is_collision_between_screenings() throws Exception {
+    void screenings_collision_cannot_exist() throws Exception {
         //given
-        var screening = prepareScreening();
+        var screening = addScreening();
         var screeningCreateDto = ScreeningCreateDto
                 .builder()
                 .filmId(1L)
@@ -227,7 +225,7 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    void should_read_all_screenings() throws Exception {
+    void screenings_are_read() throws Exception {
         //given
         var screenings = addScreenings();
 
@@ -243,7 +241,7 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    void should_read_screenings_by_title() throws Exception {
+    void screenings_are_read_by_film_title() throws Exception {
         //given
         var requiredFilmTitle = "Some title";
         var screeningWithRequiredFilmTitle = addScreening(() -> createFilm(requiredFilmTitle));
@@ -262,7 +260,7 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    void should_read_screenings_by_category() throws Exception {
+    void screenings_are_read_by_film_category() throws Exception {
         //given
         var requiredFilmCategory = FilmCategory.COMEDY;
         var screeningWithRequiredFilmCategory = addScreening(() -> createFilm(requiredFilmCategory));
@@ -270,7 +268,7 @@ class ScreeningControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get(SCREENINGS_BASE_ENDPOINT + "by/category")
+                get(SCREENINGS_BASE_ENDPOINT + "/by/category")
                         .param("category", requiredFilmCategory.toString())
         );
 
@@ -281,7 +279,7 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    void should_read_screenings_by_date() throws Exception {
+    void screenings_are_read_by_date() throws Exception {
         //given
         var requiredDate = LocalDate.of(2023, 12, 13);
         var screeningWithRequiredDate = addScreening(requiredDate);
@@ -289,7 +287,7 @@ class ScreeningControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get(SCREENINGS_BASE_ENDPOINT + "by/date")
+                get(SCREENINGS_BASE_ENDPOINT + "/by/date")
                         .param("date", requiredDate.toString())
         );
 
@@ -299,7 +297,7 @@ class ScreeningControllerIT extends SpringIT {
                 .andExpect(content().json(toJson(List.of(screeningWithRequiredDate))));
     }
 
-    private Screening prepareScreening() {
+    private Screening addScreening() {
         var film = createFilm();
         var room = roomRepository.add(createRoom());
         var screeningDate = getScreeningDate(timeProvider.getCurrentDate());

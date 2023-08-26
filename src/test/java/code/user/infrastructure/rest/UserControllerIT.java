@@ -3,6 +3,7 @@ package code.user.infrastructure.rest;
 import code.SpringIT;
 import code.user.application.dto.UserPasswordNewDto;
 import code.user.application.dto.UserSignInDto;
+import code.user.domain.UserRole;
 import code.user.domain.exceptions.UserAlreadyLoggedInException;
 import code.user.domain.exceptions.UserMailAlreadyExistsException;
 import code.user.domain.exceptions.UserNotSamePasswordsException;
@@ -11,6 +12,7 @@ import code.user.helpers.UserTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.UUID;
@@ -19,6 +21,8 @@ import static code.user.helpers.UserTestHelper.createSignInDto;
 import static code.user.helpers.UserTestHelper.createSignUpDto;
 import static code.user.helpers.UserTestHelper.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,10 +32,13 @@ class UserControllerIT extends SpringIT {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Test
-    void should_sign_up_and_sing_in() throws Exception {
+    void user_is_signed_up() throws Exception {
         //given
-        var signUpDto = UserTestHelper.createSignUpDto();
+        var signUpDto = createSignUpDto();
 
         //when
         var result = mockMvc.perform(
@@ -42,19 +49,17 @@ class UserControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isCreated());
-        var signInDto = new UserSignInDto(
-                signUpDto.mail(),
-                signUpDto.password()
-        );
-        mockMvc.perform(
-                post("/sign-in")
-                        .content(toJson(signInDto))
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
+        assertThat(userRepository.readyByMail(signUpDto.mail()))
+                .isNotEmpty()
+                .hasValueSatisfying(user -> {
+                    assertEquals(signUpDto.mail(), user.getUsername());
+                    assertTrue(passwordEncoder.matches(signUpDto.password(), user.getPassword()));
+                    assertEquals(UserRole.COMMON, user.getRole());
+                });
     }
 
     @Test
-    void should_throw_exception_when_username_is_not_unique() throws Exception {
+    void user_name_cannot_be_duplicated() throws Exception {
         //given
         var user = userRepository.add(createUser("user1@mail.com"));
         var signUpRequest = UserTestHelper.createSignUpDto(user.getUsername());
@@ -73,7 +78,7 @@ class UserControllerIT extends SpringIT {
     }
 
     @Test
-    void should_throw_exception_when_password_are_not_the_same() throws Exception {
+    void user_passwords_cannot_be_different() throws Exception {
         //given
         var signUpRequest = createSignUpDto("password1", "password2");
 
@@ -92,7 +97,7 @@ class UserControllerIT extends SpringIT {
 
     @Test
     @WithMockUser(username = "user1@mail.com")
-    void should_throw_exception_when_user_is_already_logged_in() throws Exception {
+    void user_already_logged_cannot_logg_in_again() throws Exception {
         //given
         var signInDto = createSignInDto("user1@mail.com");
 
@@ -110,7 +115,7 @@ class UserControllerIT extends SpringIT {
     }
 
     @Test
-    void should_reset_user_password() throws Exception {
+    void user_password_is_reset() throws Exception {
         //given
         var user = userRepository.add(createUser());
 
@@ -129,7 +134,7 @@ class UserControllerIT extends SpringIT {
     }
 
     @Test
-    void should_set_new_user_password() throws Exception {
+    void user_new_password_is_set() throws Exception {
         //given
         var passwordResetToken = UUID.randomUUID();
         var user = userRepository.add(createUser(passwordResetToken));

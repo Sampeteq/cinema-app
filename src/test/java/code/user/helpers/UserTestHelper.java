@@ -4,6 +4,7 @@ import code.user.application.dto.UserSignInDto;
 import code.user.application.dto.UserSignUpDto;
 import code.user.domain.User;
 import code.user.domain.UserRole;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
@@ -46,6 +47,10 @@ public final class UserTestHelper {
     public static User createUser(String mail) {
         var password = "12345";
         return User.create(mail, password, UserRole.COMMON);
+    }
+
+    public static User createUser(String mail, String password, PasswordEncoder passwordEncoder) {
+        return User.create(mail, passwordEncoder.encode(password), UserRole.COMMON);
     }
 
     public static User createUser(UUID passwordResetToken) {

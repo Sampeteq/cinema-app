@@ -3,10 +3,8 @@ package code.catalog.infrastructure.rest;
 import code.SpringIT;
 import code.catalog.application.dto.ScreeningDto;
 import code.catalog.application.dto.ScreeningMapper;
-import code.catalog.application.dto.SeatMapper;
 import code.catalog.domain.Film;
 import code.catalog.domain.FilmCategory;
-import code.catalog.domain.Screening;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
 import code.shared.time.TimeProvider;
@@ -14,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.time.Year;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -40,14 +37,9 @@ class ScreeningController_readScreenings_IT extends SpringIT {
     private ScreeningMapper screeningMapper;
 
     @Autowired
-    private SeatMapper seatMapper;
-
-    @Autowired
     private TimeProvider timeProvider;
 
     public static final String SCREENINGS_BASE_ENDPOINT = "/screenings/";
-
-    private static final int CURRENT_YEAR = Year.now().getValue();
 
     @Test
     void should_read_all_screenings() throws Exception {
@@ -120,18 +112,6 @@ class ScreeningController_readScreenings_IT extends SpringIT {
         result
                 .andExpect(status().isOk())
                 .andExpect(content().json(toJson(List.of(screeningWithRequiredDate))));
-    }
-
-    private Screening addScreening() {
-        var film = createFilm();
-        var room = roomRepository.add(createRoom());
-        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
-        var screening = createScreening(film, room, screeningDate);
-        film.addScreening(screening);
-        return filmRepository
-                .add(film)
-                .getScreenings()
-                .get(0);
     }
 
     private ScreeningDto addScreening(Supplier<Film> filmSupplier) {

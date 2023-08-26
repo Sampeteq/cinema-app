@@ -4,6 +4,9 @@ import code.MockTimeProvider;
 import code.SpringIT;
 import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.application.dto.ScreeningDto;
+import code.catalog.application.dto.ScreeningMapper;
+import code.catalog.domain.Film;
+import code.catalog.domain.FilmCategory;
 import code.catalog.domain.Screening;
 import code.catalog.domain.exceptions.RoomsNoAvailableException;
 import code.catalog.domain.exceptions.ScreeningDateInPastException;
@@ -19,19 +22,23 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static code.TimeHelper.getLocalDateTime;
 import static code.catalog.helpers.FilmTestHelper.createFilm;
 import static code.catalog.helpers.RoomTestHelper.createRoom;
 import static code.catalog.helpers.ScreeningTestHelper.createScreening;
+import static code.catalog.helpers.ScreeningTestHelper.createScreeningWithSpecificDate;
+import static code.catalog.helpers.ScreeningTestHelper.createScreenings;
 import static code.catalog.helpers.ScreeningTestHelper.getScreeningDate;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ScreeningController_createScreening_IT extends SpringIT {
+class ScreeningControllerIT extends SpringIT {
 
     @Autowired
     private FilmRepository filmRepository;
@@ -39,10 +46,13 @@ class ScreeningController_createScreening_IT extends SpringIT {
     @Autowired
     private RoomRepository roomRepository;
 
+    @Autowired
+    private ScreeningMapper screeningMapper;
+
     @MockBean
     private TimeProvider timeProvider;
 
-    public static final String SCREENING_BASE_ENDPOINT = "/screenings";
+    public static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
 
     @BeforeEach
     void setUpTimeProvider() {
@@ -58,7 +68,7 @@ class ScreeningController_createScreening_IT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(SCREENING_BASE_ENDPOINT)
+                post(SCREENINGS_BASE_ENDPOINT)
         );
 
         //then
@@ -79,7 +89,7 @@ class ScreeningController_createScreening_IT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(SCREENING_BASE_ENDPOINT)
+                post(SCREENINGS_BASE_ENDPOINT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJson(screeningCreateDto))
         );
@@ -93,7 +103,7 @@ class ScreeningController_createScreening_IT extends SpringIT {
                )
         );
         mockMvc
-                .perform(get(SCREENING_BASE_ENDPOINT))
+                .perform(get(SCREENINGS_BASE_ENDPOINT))
                 .andExpect(content().json(toJson(expectedDto)));
     }
 
@@ -115,7 +125,7 @@ class ScreeningController_createScreening_IT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(SCREENING_BASE_ENDPOINT)
+                post(SCREENINGS_BASE_ENDPOINT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJson(screeningCreateDto))
         );
@@ -147,7 +157,7 @@ class ScreeningController_createScreening_IT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(SCREENING_BASE_ENDPOINT)
+                post(SCREENINGS_BASE_ENDPOINT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJson(screeningCreateDto))
         );
@@ -179,7 +189,7 @@ class ScreeningController_createScreening_IT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(SCREENING_BASE_ENDPOINT)
+                post(SCREENINGS_BASE_ENDPOINT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJson(screeningCreateDto))
         );
@@ -205,7 +215,7 @@ class ScreeningController_createScreening_IT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(SCREENING_BASE_ENDPOINT)
+                post(SCREENINGS_BASE_ENDPOINT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(toJson(screeningCreateDto))
         );
@@ -214,6 +224,79 @@ class ScreeningController_createScreening_IT extends SpringIT {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(new RoomsNoAvailableException().getMessage()));
+    }
+
+    @Test
+    void should_read_all_screenings() throws Exception {
+        //given
+        var screenings = addScreenings();
+
+        //when
+        var result = mockMvc.perform(
+                get(SCREENINGS_BASE_ENDPOINT)
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(screenings)));
+    }
+
+    @Test
+    void should_read_screenings_by_title() throws Exception {
+        //given
+        var requiredFilmTitle = "Some title";
+        var screeningWithRequiredFilmTitle = addScreening(() -> createFilm(requiredFilmTitle));
+        addScreening(() -> createFilm("Some other title"));
+
+        //when
+        var result = mockMvc.perform(
+                get(SCREENINGS_BASE_ENDPOINT + "/by/title")
+                        .param("title", requiredFilmTitle)
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(List.of(screeningWithRequiredFilmTitle))));
+    }
+
+    @Test
+    void should_read_screenings_by_category() throws Exception {
+        //given
+        var requiredFilmCategory = FilmCategory.COMEDY;
+        var screeningWithRequiredFilmCategory = addScreening(() -> createFilm(requiredFilmCategory));
+        addScreening(() -> createFilm(FilmCategory.DRAMA));
+
+        //when
+        var result = mockMvc.perform(
+                get(SCREENINGS_BASE_ENDPOINT + "by/category")
+                        .param("category", requiredFilmCategory.toString())
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(List.of(screeningWithRequiredFilmCategory))));
+    }
+
+    @Test
+    void should_read_screenings_by_date() throws Exception {
+        //given
+        var requiredDate = LocalDate.of(2023, 12, 13);
+        var screeningWithRequiredDate = addScreening(requiredDate);
+        addScreening(requiredDate.minusDays(1));
+
+        //when
+        var result = mockMvc.perform(
+                get(SCREENINGS_BASE_ENDPOINT + "by/date")
+                        .param("date", requiredDate.toString())
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(List.of(screeningWithRequiredDate))));
     }
 
     private Screening prepareScreening() {
@@ -226,5 +309,44 @@ class ScreeningController_createScreening_IT extends SpringIT {
                 .add(film)
                 .getScreenings()
                 .get(0);
+    }
+
+    private ScreeningDto addScreening(Supplier<Film> filmSupplier) {
+        var film = filmSupplier.get();
+        var room = roomRepository.add(createRoom());
+        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        var screening = createScreening(film, room, screeningDate);
+        film.addScreening(screening);
+        var addedScreening = filmRepository
+                .add(film)
+                .getScreenings()
+                .get(0);
+        return screeningMapper.mapToDto(addedScreening);
+    }
+
+    private ScreeningDto addScreening(LocalDate date) {
+        var film = createFilm();
+        var room = roomRepository.add(createRoom());
+        var dateTime = date.atStartOfDay().plusHours(16);
+        var screening = createScreeningWithSpecificDate(film, room, dateTime);
+        film.addScreening(screening);
+        var addedScreening = filmRepository
+                .add(film)
+                .getScreenings()
+                .get(0);
+        return screeningMapper.mapToDto(addedScreening);
+    }
+
+    private List<ScreeningDto> addScreenings() {
+        var film = createFilm();
+        var room = roomRepository.add(createRoom());
+        var screenings = createScreenings(film, room);
+        screenings.forEach(film::addScreening);
+        return filmRepository
+                .add(film)
+                .getScreenings()
+                .stream()
+                .map(screeningMapper::mapToDto)
+                .toList();
     }
 }

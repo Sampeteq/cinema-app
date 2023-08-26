@@ -2,6 +2,7 @@ package code.catalog.infrastructure.rest;
 
 import code.SpringIT;
 import code.catalog.application.dto.FilmDto;
+import code.catalog.application.dto.FilmMapper;
 import code.catalog.domain.exceptions.FilmTitleNotUniqueException;
 import code.catalog.domain.exceptions.FilmYearOutOfRangeException;
 import code.catalog.domain.ports.FilmRepository;
@@ -16,17 +17,21 @@ import java.util.List;
 
 import static code.catalog.helpers.FilmTestHelper.createFilm;
 import static code.catalog.helpers.FilmTestHelper.createFilmCreateDto;
+import static code.catalog.helpers.FilmTestHelper.createFilms;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class FilmController_createFilm_IT extends SpringIT {
+class FilmControllerIT extends SpringIT {
 
     public static final String FILMS_BASE_ENDPOINT = "/films";
 
     @Autowired
     private FilmRepository filmRepository;
+
+    @Autowired
+    private FilmMapper filmMapper;
 
     @Test
     @WithMockUser(authorities = "COMMON")
@@ -110,5 +115,29 @@ class FilmController_createFilm_IT extends SpringIT {
         result
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(new FilmYearOutOfRangeException().getMessage()));
+    }
+
+    @Test
+    void should_read_all_films() throws Exception {
+        //given
+        var films = addFilms();
+
+        //when
+        var result = mockMvc.perform(
+                get(FILMS_BASE_ENDPOINT)
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(films)));
+    }
+
+    private List<FilmDto> addFilms() {
+        return createFilms()
+                .stream()
+                .map(filmRepository::add)
+                .map(film -> filmMapper.mapToDto(film))
+                .toList();
     }
 }

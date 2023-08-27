@@ -74,7 +74,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    void should_read_seats_for_screening() throws Exception {
+    void bookings_seats_are_read_by_screening_id() throws Exception {
         //given
         var seats = prepareSeats();
 
@@ -90,7 +90,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    void should_make_booking() throws Exception {
+    void booking_is_made() throws Exception {
         //given
         var filmTitle = "Title 1";
         var roomCustomId = "1";
@@ -131,7 +131,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    void should_throw_exception_during_booking_when_booking_already_exists() throws Exception {
+    void booking_is_unique() throws Exception {
         //given
         var screeningId = 1L;
         var rowNumber = 1;
@@ -163,7 +163,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    void should_throw_exception_during_booking_when_less_than_1h_to_screening() throws Exception {
+    void booking_is_made_at_least_1h_before_screening() throws Exception {
         //given
         var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
         prepareSeat(screeningDate);
@@ -195,7 +195,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    void should_not_seat_be_free_after_booking() throws Exception {
+    void booking_made_makes_seat_not_free() throws Exception {
         //given
         prepareSeat();
         var screeningId = 1L;
@@ -225,7 +225,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    void should_cancel_booking() throws Exception {
+    void booking_is_cancelled() throws Exception {
         //give
         prepareBooking();
 
@@ -246,7 +246,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    void should_seat_be_free_again_after_booking_cancelling() throws Exception {
+    void booking_cancel_makes_seat_free_again() throws Exception {
         //given
         prepareBooking();
 
@@ -266,7 +266,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    void should_throw_exception_during_booking_when_booking_is_already_cancelled() throws Exception {
+    void booking_already_cancelled_cannot_be_cancelled() throws Exception {
         //given
         prepareCancelledBooking();
 
@@ -284,7 +284,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    void should_throw_exception_during_booking_cancelling_when_less_than_24h_to_screening() throws Exception {
+    void booking_is_cancelled_at_least_24h_before_screening() throws Exception {
         //given
         var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
         prepareBooking(screeningDate);
@@ -306,7 +306,7 @@ class BookingControllerIT extends SpringIT {
     }
 
     @Test
-    void should_read_all_user_bookings() throws Exception {
+    void bookings_are_read_by_user_id() throws Exception {
         //given
         var filmTitle = "Title 1";
         var roomCustomId = "1";

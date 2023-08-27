@@ -40,7 +40,7 @@ class BookingTests {
     }
 
     @Test
-    void booking_is_not_duplicated() {
+    void booking_is_unique() {
         //given
         var seat = prepareSeat();
         var screening = prepareScreeningWithBookedSeat(seat);
@@ -60,7 +60,7 @@ class BookingTests {
     }
 
     @Test
-    void booking_is_made_no_later_than_1_hour_before_screening() {
+    void booking_is_made_at_least_1_hour_before_screening() {
         //given
         var seat = prepareSeat();
         var screeningDate = currentDate.minusMinutes(59);
@@ -94,7 +94,7 @@ class BookingTests {
     }
 
     @Test
-    void booking_is_cancelled_no_later_than_24h_hours_before_screening() {
+    void booking_is_cancelled_at_least_24h_hours_before_screening() {
         //given
         var screeningDate = currentDate.minusHours(23);
         var booking = prepareBooking(screeningDate);
@@ -107,7 +107,7 @@ class BookingTests {
     }
 
     @Test
-    void booking_is_not_canceled_if_it_was_already_cancelled() {
+    void booking_already_cancelled_cannot_be_cancelled() {
         //given
         var booking = prepareCancelledBooking();
 

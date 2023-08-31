@@ -35,9 +35,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and()
-                .csrf().disable()
-                .cors().disable()
-                .headers().frameOptions().disable();
+                .csrf()
+                .disable();
     }
 
     @Bean

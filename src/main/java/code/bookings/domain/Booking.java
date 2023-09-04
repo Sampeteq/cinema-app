@@ -7,6 +7,7 @@ import code.bookings.domain.exceptions.BookingTooLateException;
 import code.shared.exceptions.EntityNotFoundException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 @Table(name = "bookings")
 @EqualsAndHashCode(of = "id")
 @Getter
+@ToString
 public class Booking {
 
     @Id
@@ -92,15 +94,5 @@ public class Booking {
 
     public boolean hasStatus(BookingStatus status) {
         return this.status.equals(status);
-    }
-
-    @Override
-    public String toString() {
-        return "Booking{" +
-                "id=" + id +
-                ", status=" + status +
-                ", seat=" + seat.getId() +
-                ", userId=" + userId +
-                '}';
     }
 }

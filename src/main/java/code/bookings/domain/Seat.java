@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import javax.persistence.Table;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
+@ToString
 public class Seat {
 
     @Id
@@ -69,15 +71,5 @@ public class Seat {
 
     public boolean placedOn(int rowNumber, int seatNumber) {
         return this.rowNumber == rowNumber && this.number == seatNumber;
-    }
-
-    @Override
-    public String toString() {
-        return "Seat{" +
-                "id=" + id +
-                ", rowNumber=" + rowNumber +
-                ", number=" + number +
-                ", isFree=" + isFree +
-                '}';
     }
 }

@@ -2,6 +2,7 @@ package code.catalog.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Table(name = "screenings")
 @EqualsAndHashCode(of = "id")
 @Getter
+@ToString
 public class Screening {
 
     @Id
@@ -53,16 +55,5 @@ public class Screening {
 
     public void removeRoom() {
         this.room = null;
-    }
-
-    @Override
-    public String toString() {
-        return "Screening{" +
-                "id=" + id +
-                ", date=" + date +
-                ", end date=" + endDate +
-                ", film=" + film.getId() +
-                ", room=" + room.getId() +
-                '}';
     }
 }

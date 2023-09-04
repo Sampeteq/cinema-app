@@ -68,13 +68,12 @@ Endpoints:
 
 /sign-up (POST) - create a new user account
 
-/sign-in (POST) - logg into a user account
-
-/sign-out (POST) - logg out a user account
-
 /password/reset (POST) - reset password (a mail with token will be sent)
 
 /password/new (POST) - set new password after reset
+
+Auth: basic auth
+
 ## How to run it
 
 Download docker-compose.yaml file and run this command in the same folder:

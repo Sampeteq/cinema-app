@@ -55,11 +55,11 @@ public class Screening {
                 .toHours();
     }
 
-    public boolean hasActiveBooking() {
+    public boolean hasActiveBooking(Seat seat) {
         return this
                 .bookings
                 .stream()
-                .anyMatch(booking -> booking.hasStatus(BookingStatus.ACTIVE));
+                .anyMatch(booking -> booking.hasSeat(seat) && booking.hasStatus(BookingStatus.ACTIVE));
     }
 
     public void addBooking(Booking booking) {

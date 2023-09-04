@@ -67,7 +67,7 @@ public class Booking {
                 .filter(s -> s.placedOn(rowNumber, seatNumber))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("Seat"));
-        if (screening.hasActiveBooking()) {
+        if (screening.hasActiveBooking(foundSeat)) {
             throw new BookingAlreadyExists();
         }
         var booking = new Booking(
@@ -90,6 +90,10 @@ public class Booking {
         }
         this.status = BookingStatus.CANCELLED;
         this.seat.makeFree();
+    }
+
+    public boolean hasSeat(Seat seat) {
+        return this.seat.equals(seat);
     }
 
     public boolean hasStatus(BookingStatus status) {

@@ -32,12 +32,15 @@ class ScreeningEndServiceIT extends SpringIT {
         var film = filmRepository.add(createFilm());
         var room = roomRepository.add(createRoom());
         createScreenings(film, room).forEach(film::addScreening);
+        filmRepository.add(film);
 
         //when
         screeningFinishHandler.removeRoomsFromEndedScreenings();
 
         //then
         var screenings = screeningReadOnlyRepository.readAll();
-        assertThat(screenings).allMatch(screening -> screening.getRoom() == null);
+        assertThat(screenings)
+                .isNotEmpty()
+                .allMatch(screening -> screening.getRoom() == null);
     }
 }

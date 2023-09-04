@@ -4,6 +4,7 @@ import code.catalog.application.dto.ScreeningCreateDto;
 import code.catalog.application.dto.ScreeningDto;
 import code.catalog.application.services.CatalogFacade;
 import code.catalog.domain.FilmCategory;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ class ScreeningController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
+    @SecurityRequirement(name = "basic")
     void createScreening(
             @RequestBody
             @Valid

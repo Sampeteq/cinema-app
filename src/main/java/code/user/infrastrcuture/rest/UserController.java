@@ -1,7 +1,6 @@
 package code.user.infrastrcuture.rest;
 
 import code.user.application.dto.UserPasswordNewDto;
-import code.user.application.dto.UserSignInDto;
 import code.user.application.dto.UserSignUpDto;
 import code.user.application.services.UserFacade;
 import lombok.RequiredArgsConstructor;
@@ -24,16 +23,6 @@ class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     void signUpUser(@RequestBody @Valid UserSignUpDto dto) {
         userFacade.signUpUser(dto);
-    }
-
-    @PostMapping("/sign-in")
-    void signInUser(@RequestBody UserSignInDto dto) {
-        userFacade.signInUser(dto);
-    }
-
-    @PostMapping("/sign-out")
-    void signOutUser() {
-        userFacade.signOutUser();
     }
 
     @PostMapping("/password/reset")

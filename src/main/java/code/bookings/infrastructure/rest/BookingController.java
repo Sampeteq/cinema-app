@@ -4,6 +4,7 @@ import code.bookings.application.dto.BookingMakeDto;
 import code.bookings.application.dto.BookingViewDto;
 import code.bookings.application.services.BookingFacade;
 import code.catalog.application.dto.SeatDto;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,21 +25,25 @@ class BookingController {
     private final BookingFacade bookingFacade;
 
     @PostMapping
+    @SecurityRequirement(name = "basic")
     void makeBooking(@RequestBody @Valid BookingMakeDto dto) {
         bookingFacade.makeBooking(dto);
     }
 
     @PostMapping("/{bookingId}/cancel")
+    @SecurityRequirement(name = "basic")
     void cancelBooking(@PathVariable Long bookingId) {
         bookingFacade.cancelBooking(bookingId);
     }
 
     @GetMapping("/my")
+    @SecurityRequirement(name = "basic")
     List<BookingViewDto> readAllBookings() {
         return bookingFacade.readAllBookings();
     }
 
     @GetMapping("/my/{bookingId}")
+    @SecurityRequirement(name = "basic")
     BookingViewDto readBookingById(@PathVariable Long bookingId) {
         return bookingFacade.readBookingById(bookingId);
     }

@@ -3,6 +3,7 @@ package code.catalog.infrastructure.rest;
 import code.catalog.application.dto.FilmCreateDto;
 import code.catalog.application.dto.FilmDto;
 import code.catalog.application.services.CatalogFacade;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ class FilmController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
+    @SecurityRequirement(name = "basic")
     void createFilm(@RequestBody @Valid FilmCreateDto dto) {
         catalogFacade.createFilm(dto);
     }

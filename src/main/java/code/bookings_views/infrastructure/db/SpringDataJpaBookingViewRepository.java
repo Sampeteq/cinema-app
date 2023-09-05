@@ -1,7 +1,7 @@
-package code.bookings.infrastructure.db;
+package code.bookings_views.infrastructure.db;
 
-import code.bookings.domain.BookingView;
-import code.bookings.domain.ports.BookingViewRepository;
+import code.bookings_views.domain.BookingView;
+import code.bookings_views.domain.ports.BookingViewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

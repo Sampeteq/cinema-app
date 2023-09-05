@@ -1,5 +1,6 @@
-package code.bookings.domain;
+package code.bookings_views.domain;
 
+import code.bookings.domain.BookingStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,8 +1,8 @@
-package code.bookings.application.services;
+package code.bookings_views.application.services;
 
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.events.BookingCancelledEvent;
-import code.bookings.domain.ports.BookingViewRepository;
+import code.bookings_views.domain.ports.BookingViewRepository;
 import code.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

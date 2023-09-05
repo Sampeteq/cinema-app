@@ -1,4 +1,4 @@
-package code.bookings.application.dto;
+package code.bookings_views.application.dto;
 
 import code.bookings.domain.BookingStatus;
 

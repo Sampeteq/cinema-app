@@ -1,9 +1,9 @@
-package code.bookings.application.services;
+package code.bookings_views.application.services;
 
 import code.bookings.domain.BookingStatus;
-import code.bookings.domain.BookingView;
 import code.bookings.domain.events.BookingMadeEvent;
-import code.bookings.domain.ports.BookingViewRepository;
+import code.bookings_views.domain.BookingView;
+import code.bookings_views.domain.ports.BookingViewRepository;
 import code.catalog.application.services.CatalogFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

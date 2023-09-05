@@ -1,6 +1,6 @@
-package code.bookings.domain.ports;
+package code.bookings_views.domain.ports;
 
-import code.bookings.domain.BookingView;
+import code.bookings_views.domain.BookingView;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,6 @@
 package code.bookings.infrastructure.rest;
 
 import code.bookings.application.dto.BookingMakeDto;
-import code.bookings.application.dto.BookingViewDto;
 import code.bookings.application.services.BookingFacade;
 import code.catalog.application.dto.SeatDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -34,18 +33,6 @@ class BookingController {
     @SecurityRequirement(name = "basic")
     void cancelBooking(@PathVariable Long bookingId) {
         bookingFacade.cancelBooking(bookingId);
-    }
-
-    @GetMapping("/my")
-    @SecurityRequirement(name = "basic")
-    List<BookingViewDto> readAllBookings() {
-        return bookingFacade.readAllBookings();
-    }
-
-    @GetMapping("/my/{bookingId}")
-    @SecurityRequirement(name = "basic")
-    BookingViewDto readBookingById(@PathVariable Long bookingId) {
-        return bookingFacade.readBookingById(bookingId);
     }
 
     @GetMapping("/seats")

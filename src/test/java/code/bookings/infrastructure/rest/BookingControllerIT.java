@@ -3,7 +3,7 @@ package code.bookings.infrastructure.rest;
 import code.MockTimeProvider;
 import code.SpringIT;
 import code.bookings.application.dto.BookingMakeDto;
-import code.bookings.application.dto.BookingViewDto;
+import code.bookings_views.application.dto.BookingViewDto;
 import code.bookings.application.services.BookingFacade;
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
@@ -300,38 +300,6 @@ class BookingControllerIT extends SpringIT {
                 ));
     }
 
-    @Test
-    void bookings_are_read_by_user_id() throws Exception {
-        //given
-        var filmTitle = "Title 1";
-        var roomCustomId = "1";
-        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
-        var seatRowNumber = 1;
-        var seatNumber = 1;
-        prepareBooking(filmTitle, roomCustomId, screeningDate);
-
-        //when
-        var result = mockMvc.perform(
-                get("/bookings/my")
-        );
-
-        //then
-        result.andExpect(status().isOk());
-        var bookingsFromResult = getBookingsFromResult(result).toList();
-        var expected = List.of(
-                new BookingViewDto(
-                        1L,
-                        BookingStatus.ACTIVE,
-                        filmTitle,
-                        screeningDate,
-                        roomCustomId,
-                        seatRowNumber,
-                        seatNumber
-                )
-        );
-        assertThat(bookingsFromResult).containsExactlyInAnyOrderElementsOf(expected);
-    }
-
     private List<SeatDto> prepareSeats() {
         catalogFacade.createFilm(createFilmCreateDto());
         catalogFacade.createRoom(createRoomCreateDto());
@@ -401,19 +369,6 @@ class BookingControllerIT extends SpringIT {
         Mockito
                 .when(timeProvider.getCurrentDate())
                 .thenReturn(screeningDate.plusHours(25));
-        var rowNumber = 1;
-        var seatNumber =  1;
-        var bookingMakeDto = new BookingMakeDto(
-                screeningId,
-                rowNumber,
-                seatNumber
-        );
-        bookingFacade.makeBooking(bookingMakeDto);
-    }
-
-    private void prepareBooking(String filmTitle, String roomCustomId, LocalDateTime screeningDate) {
-        prepareSeat(filmTitle, roomCustomId, screeningDate);
-        var screeningId = 1L;
         var rowNumber = 1;
         var seatNumber =  1;
         var bookingMakeDto = new BookingMakeDto(

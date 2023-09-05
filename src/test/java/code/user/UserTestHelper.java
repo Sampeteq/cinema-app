@@ -10,16 +10,18 @@ import java.util.UUID;
 
 public final class UserTestHelper {
 
+    private static final String MAIL = "user1@mail.com";
+
+    private static final String PASSWORD = "password1";
+
     private UserTestHelper() {
     }
 
     public static UserSignUpDto createSignUpDto() {
-        var mail = "user1@mail.com";
-        var password = "password1";
         return new UserSignUpDto(
-                mail,
-                password,
-                password
+                MAIL,
+                PASSWORD,
+                PASSWORD
         );
     }
 
@@ -39,14 +41,11 @@ public final class UserTestHelper {
     }
 
     public static User createUser() {
-        var password = "12345";
-        var mail = "user1@mail.com";
-        return User.create(mail, password, UserRole.COMMON);
+        return User.create(MAIL, PASSWORD, UserRole.COMMON);
     }
 
     public static User createUser(String mail) {
-        var password = "12345";
-        return User.create(mail, password, UserRole.COMMON);
+        return User.create(mail, PASSWORD, UserRole.COMMON);
     }
 
     public static User createUser(String mail, String password, PasswordEncoder passwordEncoder) {
@@ -54,9 +53,7 @@ public final class UserTestHelper {
     }
 
     public static User createUser(UUID passwordResetToken) {
-        var password = "12345";
-        var mail = "user1@mail.com";
-        var user = User.create(mail, password, UserRole.COMMON);
+        var user = User.create(MAIL, PASSWORD, UserRole.COMMON);
         user.setPasswordResetToken(passwordResetToken);
         return user;
     }

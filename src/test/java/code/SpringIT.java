@@ -2,8 +2,6 @@ package code;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,24 +22,23 @@ public abstract class SpringIT {
     @Autowired
     private DataSource dataSource;
 
-    private static final ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @AfterEach
     void cleanDb() {
         new SqlDatabaseCleaner(dataSource).clean();
     }
 
-    public static String toJson(Object object) throws JsonProcessingException {
+    public String toJson(Object object) throws JsonProcessingException {
         return objectMapper.writeValueAsString(object);
     }
 
-    public static <T> T fromJson(String json, Class<T> type) throws JsonProcessingException {
+    public <T> T fromJson(String json, Class<T> type) throws JsonProcessingException {
         return objectMapper.readValue(json, type);
     }
 
-    public static <T> T fromResultActions(ResultActions actions, Class<T> type) throws UnsupportedEncodingException, JsonProcessingException {
+    public <T> T fromResultActions(ResultActions actions, Class<T> type) throws UnsupportedEncodingException, JsonProcessingException {
         var stringContent = actions
                 .andReturn()
                 .getResponse()

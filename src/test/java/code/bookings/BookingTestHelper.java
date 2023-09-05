@@ -15,33 +15,40 @@ import java.util.List;
 
 public final class BookingTestHelper {
 
+    public static final String ROOM_CUSTOM_ID = "1";
+    public static final int ROOM_ROWS_NUMBER = 10;
+    public static final int ROOM_ROW_SEATS_NUMBER = 15;
+    private static final Long FILM_ID = 1L;
+    public static final String FILM_TITLE = "Title 1";
+    public static final FilmCategory FILM_CATEGORY = FilmCategory.COMEDY;
+    public static final int FILM_DURATION_IN_MINUTES = 100;
+    public static final long SCREENING_ID = 1L;
+    private static final LocalDateTime currentDate = new MockTimeProvider().getCurrentDate();
+    public static final LocalDateTime SCREENING_DATE = currentDate.plusDays(7);
+    private static final long SEAT_ID = 1L;
+    private static final int SEAT_ROW_NUMBER = 1;
+    private static final int SEAT_NUMBER = 1;
+    public static final long USER_ID = 1L;
+
     private BookingTestHelper() {
     }
 
-    private static final LocalDateTime currentDate = new MockTimeProvider().getCurrentDate();
-
     public static Seat prepareSeat() {
-        var seatId = 1L;
-        var seatRowNumber = 1;
-        var seatNumber = 1;
-        return Seat.create(seatId, seatRowNumber, seatNumber);
+        return Seat.create(SEAT_ID, SEAT_ROW_NUMBER, SEAT_NUMBER);
     }
 
     public static Screening prepareScreening(Seat seat) {
-        var screeningDate = currentDate.plusDays(7);
-        return prepareScreening(seat, screeningDate);
+        return prepareScreening(seat, SCREENING_DATE);
     }
 
     public static Screening prepareScreening(Seat seat, LocalDateTime screeningDate) {
-        var screeningId = 1L;
-        return Screening.create(screeningId, screeningDate, List.of(seat));
+        return Screening.create(SCREENING_ID, screeningDate, List.of(seat));
     }
 
     public static Screening prepareScreeningWithBookedSeat(Seat seat) {
         var screening = prepareScreening(seat);
-        var userId = 1L;
         return Booking
-                .make(currentDate, screening, seat.getRowNumber(), seat.getNumber(), userId)
+                .make(currentDate, screening, seat.getRowNumber(), seat.getNumber(), USER_ID)
                 .getScreening();
     }
 
@@ -53,8 +60,7 @@ public final class BookingTestHelper {
     public static Booking prepareBooking(LocalDateTime screeningDate) {
         var seat = prepareSeat();
         var screening = prepareScreening(seat, screeningDate);
-        var userId = 1L;
-        return Booking.make(currentDate, screening, seat.getNumber(), seat.getRowNumber(), userId);
+        return Booking.make(currentDate, screening, seat.getNumber(), seat.getRowNumber(), USER_ID);
     }
 
     public static Booking prepareCancelledBooking() {
@@ -64,35 +70,27 @@ public final class BookingTestHelper {
     }
 
     public static FilmCreateDto createFilmCreateDto() {
-        var tile = "Title 1";
-        var category = FilmCategory.COMEDY;
         var year = Year.now().getValue();
-        var durationInMinutes = 100;
         return new FilmCreateDto(
-                tile,
-                category,
+                FILM_TITLE,
+                FILM_CATEGORY,
                 year,
-                durationInMinutes
+                FILM_DURATION_IN_MINUTES
         );
     }
 
     public static RoomCreateDto createRoomCreateDto() {
-        var customId = "1";
-        var rowsNumber = 10;
-        var seatsInOneRowsNumber = 15;
         return new RoomCreateDto(
-                customId,
-                rowsNumber,
-                seatsInOneRowsNumber
+                ROOM_CUSTOM_ID,
+                ROOM_ROWS_NUMBER,
+                ROOM_ROW_SEATS_NUMBER
         );
     }
 
     public static ScreeningCreateDto createScreeningCrateDto() {
-        var date = LocalDateTime.of(2023, 10, 1, 16, 30);
-        var filmId = 1L;
         return new ScreeningCreateDto(
-                date,
-                filmId
+                SCREENING_DATE,
+                FILM_ID
         );
     }
 

@@ -13,12 +13,10 @@ import code.catalog.domain.exceptions.ScreeningDateInPastException;
 import code.catalog.domain.exceptions.ScreeningDateOutOfRangeException;
 import code.catalog.domain.ports.FilmRepository;
 import code.catalog.domain.ports.RoomRepository;
-import code.shared.time.TimeProvider;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
@@ -49,17 +47,10 @@ class ScreeningControllerIT extends SpringIT {
     @Autowired
     private ScreeningMapper screeningMapper;
 
-    @MockBean
-    private TimeProvider timeProvider;
+    @SpyBean
+    private MockTimeProvider timeProvider;
 
     public static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
-
-    @BeforeEach
-    void setUpTimeProvider() {
-        Mockito
-                .when(timeProvider.getCurrentDate())
-                .thenReturn(new MockTimeProvider().getCurrentDate());
-    }
 
     @Test
     @WithMockUser(authorities = "COMMON")

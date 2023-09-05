@@ -12,14 +12,13 @@ import code.bookings.domain.exceptions.BookingCancelTooLateException;
 import code.bookings.domain.exceptions.BookingTooLateException;
 import code.catalog.application.dto.SeatDto;
 import code.catalog.application.services.CatalogFacade;
-import code.shared.time.TimeProvider;
 import code.user.application.dto.UserSignUpDto;
 import code.user.application.services.UserFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
@@ -51,8 +50,8 @@ class BookingControllerIT extends SpringIT {
     @Autowired
     private BookingFacade bookingFacade;
 
-    @MockBean
-    private TimeProvider timeProvider;
+    @SpyBean
+    private MockTimeProvider timeProvider;
 
     public static final String BOOKINGS_BASE_ENDPOINT = "/bookings/";
 
@@ -67,10 +66,6 @@ class BookingControllerIT extends SpringIT {
                         password
                 )
         );
-        var currentDate = new MockTimeProvider().getCurrentDate();
-        Mockito
-                .when(timeProvider.getCurrentDate())
-                .thenReturn(currentDate);
     }
 
     @Test

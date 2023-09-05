@@ -30,19 +30,32 @@ public abstract class SpringIT {
         new SqlDatabaseCleaner(dataSource).clean();
     }
 
-    public String toJson(Object object) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(object);
+    public String toJson(Object object) {
+        try {
+            return objectMapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public <T> T fromJson(String json, Class<T> type) throws JsonProcessingException {
-        return objectMapper.readValue(json, type);
+    public <T> T fromJson(String json, Class<T> type) {
+        try {
+            return objectMapper.readValue(json, type);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public <T> T fromResultActions(ResultActions actions, Class<T> type) throws UnsupportedEncodingException, JsonProcessingException {
-        var stringContent = actions
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+    public <T> T fromResultActions(ResultActions actions, Class<T> type) {
+        String stringContent;
+        try {
+            stringContent = actions
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         return fromJson(stringContent, type);
     }
 }

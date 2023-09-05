@@ -9,13 +9,13 @@ import java.util.List;
 
 public final class FilmTestHelper {
 
-    public static final String TITLE = "TITLE 1";
+    private static final String TITLE = "TITLE 1";
 
-    public static final FilmCategory CATEGORY = FilmCategory.COMEDY;
+    private static final FilmCategory CATEGORY = FilmCategory.COMEDY;
 
-    public static final int YEAR = Year.now().getValue();
+    private static final int YEAR = Year.now().getValue();
 
-    public static final int DURATION_IN_MINUTES = 100;
+    private static final int DURATION_IN_MINUTES = 100;
 
     private FilmTestHelper() {
     }

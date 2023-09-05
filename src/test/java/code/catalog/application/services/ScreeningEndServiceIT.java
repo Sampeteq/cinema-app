@@ -7,9 +7,9 @@ import code.catalog.domain.ports.ScreeningReadOnlyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static code.catalog.helpers.FilmTestHelper.createFilm;
-import static code.catalog.helpers.RoomTestHelper.createRoom;
-import static code.catalog.helpers.ScreeningTestHelper.createScreenings;
+import static code.catalog.FilmTestHelper.createFilm;
+import static code.catalog.RoomTestHelper.createRoom;
+import static code.catalog.ScreeningTestHelper.createScreenings;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ScreeningEndServiceIT extends SpringIT {

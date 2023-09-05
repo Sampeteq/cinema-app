@@ -1,4 +1,4 @@
-package code.catalog.helpers;
+package code.catalog;
 
 import code.catalog.application.dto.FilmCreateDto;
 import code.catalog.domain.Film;

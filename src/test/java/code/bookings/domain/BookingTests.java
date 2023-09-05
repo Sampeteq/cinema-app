@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static code.bookings.helpers.BookingTestHelper.prepareBooking;
-import static code.bookings.helpers.BookingTestHelper.prepareCancelledBooking;
-import static code.bookings.helpers.BookingTestHelper.prepareScreening;
-import static code.bookings.helpers.BookingTestHelper.prepareScreeningWithBookedSeat;
-import static code.bookings.helpers.BookingTestHelper.prepareSeat;
+import static code.bookings.BookingTestHelper.prepareBooking;
+import static code.bookings.BookingTestHelper.prepareCancelledBooking;
+import static code.bookings.BookingTestHelper.prepareScreening;
+import static code.bookings.BookingTestHelper.prepareScreeningWithBookedSeat;
+import static code.bookings.BookingTestHelper.prepareSeat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

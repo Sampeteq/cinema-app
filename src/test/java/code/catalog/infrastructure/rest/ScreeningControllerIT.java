@@ -27,12 +27,12 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static code.TimeHelper.getLocalDateTime;
-import static code.catalog.helpers.FilmTestHelper.createFilm;
-import static code.catalog.helpers.RoomTestHelper.createRoom;
-import static code.catalog.helpers.ScreeningTestHelper.createScreening;
-import static code.catalog.helpers.ScreeningTestHelper.createScreeningWithSpecificDate;
-import static code.catalog.helpers.ScreeningTestHelper.createScreenings;
-import static code.catalog.helpers.ScreeningTestHelper.getScreeningDate;
+import static code.catalog.FilmTestHelper.createFilm;
+import static code.catalog.RoomTestHelper.createRoom;
+import static code.catalog.ScreeningTestHelper.createScreening;
+import static code.catalog.ScreeningTestHelper.createScreeningWithSpecificDate;
+import static code.catalog.ScreeningTestHelper.createScreenings;
+import static code.catalog.ScreeningTestHelper.getScreeningDate;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

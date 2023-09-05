@@ -15,9 +15,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 
-import static code.catalog.helpers.FilmTestHelper.createFilm;
-import static code.catalog.helpers.FilmTestHelper.createFilmCreateDto;
-import static code.catalog.helpers.FilmTestHelper.createFilms;
+import static code.catalog.FilmTestHelper.createFilm;
+import static code.catalog.FilmTestHelper.createFilmCreateDto;
+import static code.catalog.FilmTestHelper.createFilms;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -97,7 +97,7 @@ class FilmControllerIT extends SpringIT {
     }
 
     @ParameterizedTest
-    @MethodSource("code.catalog.helpers.FilmTestHelper#getWrongFilmYears")
+    @MethodSource("code.catalog.FilmTestHelper#getWrongFilmYears")
     @WithMockUser(authorities = "ADMIN")
     void film_year_is_previous_current_or_nex_one(Integer wrongYear) throws Exception {
         //given

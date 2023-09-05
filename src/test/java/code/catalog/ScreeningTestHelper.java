@@ -1,4 +1,4 @@
-package code.catalog.helpers;
+package code.catalog;
 
 import code.catalog.domain.Film;
 import code.catalog.domain.Room;

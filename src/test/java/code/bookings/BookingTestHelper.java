@@ -1,4 +1,4 @@
-package code.bookings.helpers;
+package code.bookings;
 
 import code.MockTimeProvider;
 import code.bookings.domain.Booking;

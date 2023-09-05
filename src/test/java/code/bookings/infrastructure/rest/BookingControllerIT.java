@@ -29,10 +29,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static code.bookings.helpers.BookingTestHelper.createFilmCreateDto;
-import static code.bookings.helpers.BookingTestHelper.createRoomCreateDto;
-import static code.bookings.helpers.BookingTestHelper.createScreeningCrateDto;
-import static code.catalog.helpers.ScreeningTestHelper.getScreeningDate;
+import static code.bookings.BookingTestHelper.createFilmCreateDto;
+import static code.bookings.BookingTestHelper.createRoomCreateDto;
+import static code.bookings.BookingTestHelper.createScreeningCrateDto;
+import static code.catalog.ScreeningTestHelper.getScreeningDate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

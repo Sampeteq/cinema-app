@@ -1,4 +1,4 @@
-package code.user.helpers;
+package code.user;
 
 import code.user.application.dto.UserSignInDto;
 import code.user.application.dto.UserSignUpDto;

@@ -28,7 +28,7 @@ class BookingMakeService {
     @Transactional
     public void makeBooking(BookingMakeDto dto) {
         var screening = screeningRepository
-                .readByIdWithSeat(dto.screeningId(), dto.rowNumber(), dto.seatNumber())
+                .readByIdWithSeats(dto.screeningId())
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));
         var currentUserId = userFacade.readCurrentUserId();
         var booking = Booking.make(

@@ -394,16 +394,15 @@ class BookingControllerIT extends SpringIT {
         bookingFacade.cancelBooking(bookingId);
     }
 
-    private Stream<SeatDto> getSeatsFromResult(ResultActions searchSeatsResult) throws Exception {
+    private Stream<SeatDto> getSeatsFromResult(ResultActions searchSeatsResult) {
         return Arrays.stream(
                 fromResultActions(searchSeatsResult, SeatDto[].class)
         );
     }
 
-    private Stream<BookingViewDto> getBookingsFromResult(ResultActions searchSeatsResult) throws Exception {
+    private Stream<BookingViewDto> getBookingsFromResult(ResultActions searchSeatsResult) {
         return Arrays.stream(
                 fromResultActions(searchSeatsResult, BookingViewDto[].class)
         );
     }
-
 }

@@ -3,13 +3,13 @@ package code.bookings.infrastructure.rest;
 import code.MockTimeProvider;
 import code.SpringIT;
 import code.bookings.application.dto.BookingMakeDto;
+import code.bookings_views.application.dto.BookingViewDto;
 import code.bookings.application.services.BookingFacade;
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.domain.exceptions.BookingCancelTooLateException;
 import code.bookings.domain.exceptions.BookingTooLateException;
-import code.bookings_views.application.dto.BookingViewDto;
 import code.catalog.application.dto.SeatDto;
 import code.catalog.application.services.CatalogFacade;
 import code.shared.exceptions.EntityNotFoundException;
@@ -113,6 +113,39 @@ class BookingControllerIT extends SpringIT {
                 .andExpect(
                         content().string(
                                 new EntityNotFoundException("Screening").getMessage()
+                        )
+                );
+    }
+
+    @Test
+    void booking_is_made_for_existing_seat() throws Exception {
+        //given
+        prepareSeat();
+        var screeningId = 1L;
+        var nonExistingSeatRowNumber = 100;
+        var nonExistingSeatNumber = 100;
+        var bookingMakeDto = new BookingMakeDto(
+                screeningId,
+                nonExistingSeatRowNumber,
+                nonExistingSeatNumber
+        );
+
+
+        //when
+        var result = mockMvc.perform(
+                post(BOOKINGS_BASE_ENDPOINT)
+                        .content(toJson(bookingMakeDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result
+                .andExpect(
+                        status().isNotFound()
+                )
+                .andExpect(
+                        content().string(
+                                new EntityNotFoundException("Seat").getMessage()
                         )
                 );
     }

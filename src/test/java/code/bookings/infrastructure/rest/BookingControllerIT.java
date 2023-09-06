@@ -3,15 +3,16 @@ package code.bookings.infrastructure.rest;
 import code.MockTimeProvider;
 import code.SpringIT;
 import code.bookings.application.dto.BookingMakeDto;
-import code.bookings_views.application.dto.BookingViewDto;
 import code.bookings.application.services.BookingFacade;
 import code.bookings.domain.BookingStatus;
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
 import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.domain.exceptions.BookingCancelTooLateException;
 import code.bookings.domain.exceptions.BookingTooLateException;
+import code.bookings_views.application.dto.BookingViewDto;
 import code.catalog.application.dto.SeatDto;
 import code.catalog.application.services.CatalogFacade;
+import code.shared.exceptions.EntityNotFoundException;
 import code.user.application.dto.UserSignUpDto;
 import code.user.application.services.UserFacade;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,6 +83,38 @@ class BookingControllerIT extends SpringIT {
         result
                 .andExpect(status().isOk())
                 .andExpect(content().json(toJson(seats)));
+    }
+
+    @Test
+    void booking_is_made_for_existing_screening() throws Exception {
+        //given
+        var nonExistingScreeningId = 0L;
+        var seatRowNumber = 1;
+        var seatNumber = 1;
+        var bookingMakeDto = new BookingMakeDto(
+                nonExistingScreeningId,
+                seatRowNumber,
+                seatNumber
+        );
+
+
+        //when
+        var result = mockMvc.perform(
+                post(BOOKINGS_BASE_ENDPOINT)
+                        .content(toJson(bookingMakeDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result
+                .andExpect(
+                        status().isNotFound()
+                )
+                .andExpect(
+                        content().string(
+                                new EntityNotFoundException("Screening").getMessage()
+                        )
+                );
     }
 
     @Test

@@ -13,18 +13,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "bookings_seats")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString(exclude = {"screening", "bookings"})
+@ToString(exclude = {"screening", "booking"})
 public class Seat {
 
     @Id
@@ -40,8 +38,8 @@ public class Seat {
     @ManyToOne(fetch = FetchType.LAZY)
     private Screening screening;
 
-    @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
-    private final List<Booking> bookings = new ArrayList<>();
+    @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
+    private Booking booking;
 
     private Seat(int rowNumber, int number, boolean isFree) {
         this.rowNumber = rowNumber;
@@ -79,10 +77,10 @@ public class Seat {
     }
 
     public boolean hasActiveBooking() {
-        return this
-                .bookings
-                .stream()
-                .anyMatch(booking -> booking.hasSeat(this) && booking.hasStatus(BookingStatus.ACTIVE));
+        return
+                this.booking != null &&
+                this.booking.hasSeat(this) &&
+                this.booking.hasStatus(BookingStatus.ACTIVE);
     }
 
     public void makeNotFree() {
@@ -102,6 +100,6 @@ public class Seat {
     }
 
     public void addBooking(Booking booking) {
-        this.bookings.add(booking);
+        this.booking = booking;
     }
 }

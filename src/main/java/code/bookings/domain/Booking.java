@@ -80,7 +80,6 @@ public class Booking {
             throw new BookingCancelTooLateException();
         }
         this.status = BookingStatus.CANCELLED;
-        this.seat.makeFree();
         this.seat.removeBooking();
     }
 

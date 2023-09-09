@@ -77,10 +77,6 @@ public class Seat {
         this.screening = screening;
     }
 
-    public void makeFree() {
-        this.isFree = true;
-    }
-
     public boolean placedOn(int rowNumber, int seatNumber) {
         return this.rowNumber == rowNumber && this.number == seatNumber;
     }
@@ -99,6 +95,7 @@ public class Seat {
 
     public void removeBooking() {
         this.booking = null;
+        this.isFree = true;
     }
 
     private boolean hasActiveBooking() {

@@ -47,9 +47,8 @@ public final class BookingTestHelper {
 
     public static Screening prepareScreeningWithBookedSeat(Seat seat) {
         var screening = prepareScreening(seat);
-        return Booking
-                .make(currentDate, screening, seat.getRowNumber(), seat.getNumber(), USER_ID)
-                .getScreening();
+        Booking.make(currentDate, screening, seat.getRowNumber(), seat.getNumber(), USER_ID);
+        return screening;
     }
 
     public static Booking prepareBooking() {

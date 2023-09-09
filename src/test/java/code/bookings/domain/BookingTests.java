@@ -32,7 +32,6 @@ class BookingTests {
         var booking = Booking.make(currentDate, screening, seat.getRowNumber(), seat.getNumber(), userId);
 
         //then
-        assertThat(booking.getScreening()).isEqualTo(screening);
         assertThat(booking.getSeat()).isEqualTo(seat);
         assertThat(booking.getStatus()).isEqualTo(BookingStatus.ACTIVE);
         assertThat(booking.getUserId()).isEqualTo(userId);

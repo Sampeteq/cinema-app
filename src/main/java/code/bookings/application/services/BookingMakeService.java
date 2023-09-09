@@ -42,8 +42,8 @@ class BookingMakeService {
         log.info("Added a booking:{}", addedBooking);
         var bookingMadeEvent = new BookingMadeEvent(
                 addedBooking.getId(),
-                addedBooking.getScreening().getId(),
-                addedBooking.getScreening().getDate(),
+                screening.getId(),
+                screening.getDate(),
                 addedBooking.getSeat().getRowNumber(),
                 addedBooking.getSeat().getNumber(),
                 currentUserId

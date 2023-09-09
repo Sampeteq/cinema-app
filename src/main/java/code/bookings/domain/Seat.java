@@ -6,18 +6,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "bookings_seats")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString
+@ToString(exclude = {"screening", "bookings"})
 public class Seat {
 
     @Id
@@ -29,6 +36,12 @@ public class Seat {
     private int number;
 
     private boolean isFree;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Screening screening;
+
+    @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
+    private final List<Booking> bookings = new ArrayList<>();
 
     private Seat(int rowNumber, int number, boolean isFree) {
         this.rowNumber = rowNumber;
@@ -61,6 +74,17 @@ public class Seat {
         );
     }
 
+    public void assignScreening(Screening screening) {
+        this.screening = screening;
+    }
+
+    public boolean hasActiveBooking() {
+        return this
+                .bookings
+                .stream()
+                .anyMatch(booking -> booking.hasSeat(this) && booking.hasStatus(BookingStatus.ACTIVE));
+    }
+
     public void makeNotFree() {
         this.isFree = false;
     }
@@ -71,5 +95,13 @@ public class Seat {
 
     public boolean placedOn(int rowNumber, int seatNumber) {
         return this.rowNumber == rowNumber && this.number == seatNumber;
+    }
+
+    public long timeToScreeningInHours(LocalDateTime currentDate) {
+        return this.screening.timeToScreeningInHours(currentDate);
+    }
+
+    public void addBooking(Booking booking) {
+        this.bookings.add(booking);
     }
 }

@@ -10,12 +10,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "booking_screening")
@@ -23,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = "bookings")
+@ToString(exclude = "seats")
 public class Screening {
 
     @Id
@@ -31,13 +29,8 @@ public class Screening {
 
     private LocalDateTime date;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "screening_id")
+    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Seat> seats;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "screening_id")
-    private final List<Booking> bookings = new ArrayList<>();
 
     private Screening(Long id, LocalDateTime date, List<Seat> seats) {
         this.id = id;
@@ -46,7 +39,9 @@ public class Screening {
     }
 
     public static Screening create(Long id, LocalDateTime date, List<Seat> seats) {
-        return new Screening(id, date, seats);
+        var screening = new Screening(id, date, seats);
+        seats.forEach(seat -> seat.assignScreening(screening));
+        return screening;
     }
 
     public long timeToScreeningInHours(LocalDateTime currentDate) {
@@ -54,16 +49,5 @@ public class Screening {
                 .between(currentDate, date)
                 .abs()
                 .toHours();
-    }
-
-    public boolean hasActiveBooking(Seat seat) {
-        return this
-                .bookings
-                .stream()
-                .anyMatch(booking -> booking.hasSeat(seat) && booking.hasStatus(BookingStatus.ACTIVE));
-    }
-
-    public void addBooking(Booking booking) {
-        this.bookings.add(booking);
     }
 }

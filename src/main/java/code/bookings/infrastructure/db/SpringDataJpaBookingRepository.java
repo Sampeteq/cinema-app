@@ -32,7 +32,7 @@ interface JpaBookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("SELECT b FROM Booking b " +
             "LEFT JOIN FETCH b.seat s " +
-            "LEFT JOIN FETCH b.screening " +
+            "LEFT JOIN FETCH s.screening " +
             "WHERE b.id = :bookingId and b.userId = :userId")
     Optional<Booking> readByIdAndUserId(@Param("bookingId") Long bookingId, @Param("userId") Long userId);
 }

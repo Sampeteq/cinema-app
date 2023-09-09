@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @Table(name = "bookings")
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString
+@ToString(exclude = "seat")
 public class Booking {
 
     @Id
@@ -35,18 +35,14 @@ public class Booking {
     private BookingStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Screening screening;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     private Seat seat;
 
     private Long userId;
 
     protected Booking() {}
 
-    private Booking(BookingStatus status, Long userId, Screening screening, Seat seat) {
+    private Booking(BookingStatus status, Long userId, Seat seat) {
         this.status = status;
-        this.screening = screening;
         this.seat = seat;
         this.userId = userId;
     }
@@ -67,16 +63,15 @@ public class Booking {
                 .filter(s -> s.placedOn(rowNumber, seatNumber))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("Seat"));
-        if (screening.hasActiveBooking(foundSeat)) {
+        if (foundSeat.hasActiveBooking()) {
             throw new BookingAlreadyExists();
         }
         var booking = new Booking(
                 BookingStatus.ACTIVE,
                 userId,
-                screening,
                 foundSeat
         );
-        screening.addBooking(booking);
+        foundSeat.addBooking(booking);
         foundSeat.makeNotFree();
         return booking;
     }
@@ -85,7 +80,7 @@ public class Booking {
         if (status.equals(BookingStatus.CANCELLED)) {
             throw new BookingAlreadyCancelledException();
         }
-        if (screening.timeToScreeningInHours(currentDate) < 24) {
+        if (this.seat.timeToScreeningInHours(currentDate) < 24) {
             throw new BookingCancelTooLateException();
         }
         this.status = BookingStatus.CANCELLED;

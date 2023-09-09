@@ -102,4 +102,8 @@ public class Seat {
     public void addBooking(Booking booking) {
         this.booking = booking;
     }
+
+    public void removeBooking() {
+        this.booking = null;
+    }
 }

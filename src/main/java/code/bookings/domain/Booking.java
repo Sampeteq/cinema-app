@@ -85,6 +85,7 @@ public class Booking {
         }
         this.status = BookingStatus.CANCELLED;
         this.seat.makeFree();
+        this.seat.removeBooking();
     }
 
     public boolean hasSeat(Seat seat) {

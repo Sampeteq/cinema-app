@@ -90,6 +90,7 @@ class BookingTests {
         //then
         assertThat(booking.getStatus()).isEqualTo(BookingStatus.CANCELLED);
         assertThat(booking.getSeat().isFree()).isTrue();
+        assertThat(booking.getSeat().getBooking()).isNull();
     }
 
     @Test

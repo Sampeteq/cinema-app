@@ -63,16 +63,12 @@ public class Booking {
                 .filter(s -> s.placedOn(rowNumber, seatNumber))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("Seat"));
-        if (foundSeat.hasActiveBooking()) {
-            throw new BookingAlreadyExists();
-        }
         var booking = new Booking(
                 BookingStatus.ACTIVE,
                 userId,
                 foundSeat
         );
         foundSeat.addBooking(booking);
-        foundSeat.makeNotFree();
         return booking;
     }
 

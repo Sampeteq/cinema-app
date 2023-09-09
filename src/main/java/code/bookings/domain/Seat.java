@@ -1,5 +1,6 @@
 package code.bookings.domain;
 
+import code.bookings.domain.exceptions.BookingAlreadyExists;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -76,17 +77,6 @@ public class Seat {
         this.screening = screening;
     }
 
-    public boolean hasActiveBooking() {
-        return
-                this.booking != null &&
-                this.booking.hasSeat(this) &&
-                this.booking.hasStatus(BookingStatus.ACTIVE);
-    }
-
-    public void makeNotFree() {
-        this.isFree = false;
-    }
-
     public void makeFree() {
         this.isFree = true;
     }
@@ -100,10 +90,21 @@ public class Seat {
     }
 
     public void addBooking(Booking booking) {
+        if (this.hasActiveBooking()) {
+            throw new BookingAlreadyExists();
+        }
         this.booking = booking;
+        this.isFree = false;
     }
 
     public void removeBooking() {
         this.booking = null;
+    }
+
+    private boolean hasActiveBooking() {
+        return
+                this.booking != null &&
+                        this.booking.hasSeat(this) &&
+                        this.booking.hasStatus(BookingStatus.ACTIVE);
     }
 }

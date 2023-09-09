@@ -1,7 +1,6 @@
 package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
-import code.bookings.domain.exceptions.BookingAlreadyExists;
 import code.bookings.domain.exceptions.BookingCancelTooLateException;
 import code.bookings.domain.exceptions.BookingTooLateException;
 import code.shared.exceptions.EntityNotFoundException;

@@ -1,12 +1,12 @@
 package code.user.infrastructure.rest;
 
 import code.SpringIT;
+import code.user.UserTestHelper;
 import code.user.application.dto.UserPasswordNewDto;
 import code.user.domain.UserRole;
 import code.user.domain.exceptions.UserMailAlreadyExistsException;
 import code.user.domain.exceptions.UserNotSamePasswordsException;
 import code.user.domain.ports.UserRepository;
-import code.user.UserTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

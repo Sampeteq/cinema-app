@@ -1,6 +1,5 @@
 package code.user;
 
-import code.user.application.dto.UserSignInDto;
 import code.user.application.dto.UserSignUpDto;
 import code.user.domain.User;
 import code.user.domain.UserRole;
@@ -33,11 +32,6 @@ public final class UserTestHelper {
         return createSignUpDto()
                 .withPassword(password)
                 .withRepeatedPassword(repeatedPassword);
-    }
-
-    public static UserSignInDto createSignInDto(String mail) {
-        var password = "12345";
-        return new UserSignInDto(mail, password);
     }
 
     public static User createUser() {

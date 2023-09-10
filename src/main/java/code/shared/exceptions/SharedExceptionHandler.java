@@ -11,10 +11,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class SharedExceptionHandler {
+class SharedExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handle(MethodArgumentNotValidException exception) {
+    ResponseEntity<Map<String, String>> handle(MethodArgumentNotValidException exception) {
         var errors = exception
                 .getBindingResult()
                 .getFieldErrors()
@@ -24,14 +24,14 @@ public class SharedExceptionHandler {
     }
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<String> handle(ValidationException exception) {
+    ResponseEntity<String> handle(ValidationException exception) {
         return ResponseEntity
                 .badRequest()
                 .body(exception.getMessage());
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handle(EntityNotFoundException exception) {
+    ResponseEntity<String> handle(EntityNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

@@ -50,25 +50,9 @@ public class Seat {
         this.isFree = isFree;
     }
 
-    private Seat(Long id, int rowNumber, int number, boolean isFree) {
-        this.id = id;
-        this.rowNumber = rowNumber;
-        this.number = number;
-        this.isFree = isFree;
-    }
-
     public static Seat create(int rowNumber, int number) {
         final var isFree = true;
         return new Seat(
-                rowNumber,
-                number,
-                isFree
-        );
-    }
-    public static Seat create(Long id, int rowNumber, int number) {
-        final var isFree = true;
-        return new Seat(
-                id,
                 rowNumber,
                 number,
                 isFree

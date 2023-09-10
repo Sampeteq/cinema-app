@@ -25,7 +25,6 @@ public final class BookingTestHelper {
     public static final long SCREENING_ID = 1L;
     private static final LocalDateTime currentDate = new MockTimeProvider().getCurrentDate();
     public static final LocalDateTime SCREENING_DATE = currentDate.plusDays(7);
-    private static final long SEAT_ID = 1L;
     private static final int SEAT_ROW_NUMBER = 1;
     private static final int SEAT_NUMBER = 1;
     public static final long USER_ID = 1L;
@@ -34,7 +33,7 @@ public final class BookingTestHelper {
     }
 
     public static Seat prepareSeat() {
-        return Seat.create(SEAT_ID, SEAT_ROW_NUMBER, SEAT_NUMBER);
+        return Seat.create(SEAT_ROW_NUMBER, SEAT_NUMBER);
     }
 
     public static Screening prepareScreening(Seat seat) {

@@ -21,7 +21,7 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "bookings_seats")
+@Table(name = "seats")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter

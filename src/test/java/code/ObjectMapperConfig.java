@@ -1,4 +1,4 @@
-package code.user;
+package code;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

@@ -1,8 +1,6 @@
 package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
-import code.bookings.domain.exceptions.BookingCancelTooLateException;
-import code.bookings.domain.exceptions.BookingTooLateException;
 import code.shared.exceptions.EntityNotFoundException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -53,9 +51,6 @@ public class Booking {
             int seatNumber,
             Long userId
     ) {
-        if (screening.timeToScreeningInHours(currentDate) < 1) {
-            throw new BookingTooLateException();
-        }
         var foundSeat = screening
                 .getSeats()
                 .stream()
@@ -67,7 +62,7 @@ public class Booking {
                 userId,
                 foundSeat
         );
-        foundSeat.addBooking(booking);
+        foundSeat.addBooking(currentDate, booking);
         return booking;
     }
 
@@ -75,11 +70,8 @@ public class Booking {
         if (status.equals(BookingStatus.CANCELLED)) {
             throw new BookingAlreadyCancelledException();
         }
-        if (this.seat.timeToScreeningInHours(currentDate) < 24) {
-            throw new BookingCancelTooLateException();
-        }
+        this.seat.removeBooking(currentDate);
         this.status = BookingStatus.CANCELLED;
-        this.seat.removeBooking();
     }
 
     public boolean hasSeat(Seat seat) {

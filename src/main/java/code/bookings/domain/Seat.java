@@ -1,6 +1,8 @@
 package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingAlreadyExists;
+import code.bookings.domain.exceptions.BookingCancelTooLateException;
+import code.bookings.domain.exceptions.BookingTooLateException;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -81,11 +83,10 @@ public class Seat {
         return this.rowNumber == rowNumber && this.number == seatNumber;
     }
 
-    public long timeToScreeningInHours(LocalDateTime currentDate) {
-        return this.screening.timeToScreeningInHours(currentDate);
-    }
-
-    public void addBooking(Booking booking) {
+    public void addBooking(LocalDateTime currentDate, Booking booking) {
+        if (screening.timeToScreeningInHours(currentDate) < 1) {
+            throw new BookingTooLateException();
+        }
         if (this.hasActiveBooking()) {
             throw new BookingAlreadyExists();
         }
@@ -93,7 +94,10 @@ public class Seat {
         this.isFree = false;
     }
 
-    public void removeBooking() {
+    public void removeBooking(LocalDateTime currentDate) {
+        if (this.screening.timeToScreeningInHours(currentDate) < 24) {
+            throw new BookingCancelTooLateException();
+        }
         this.booking = null;
         this.isFree = true;
     }

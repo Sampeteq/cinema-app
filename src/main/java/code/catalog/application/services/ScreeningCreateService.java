@@ -23,9 +23,9 @@ class ScreeningCreateService {
 
     private final ScreeningDateValidateService screeningDateValidateService;
     private final TimeProvider timeProvider;
+    private final TransactionTemplate transactionTemplate;
     private final FilmRepository filmRepository;
     private final RoomAvailableService roomAvailableService;
-    private final TransactionTemplate transactionTemplate;
     private final EventPublisher eventPublisher;
 
     public void createScreening(ScreeningCreateDto dto) {

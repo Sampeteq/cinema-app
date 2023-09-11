@@ -32,10 +32,9 @@ class ScreeningCreateService {
         screeningDateValidateService.validate(dto.date(), timeProvider.getCurrentDate());
         var addedScreening = transactionTemplate.execute(status -> {
             var film = readFilm(dto.filmId());
-            var screeningDate = dto.date();
-            var screeningEndDate = film.calculateScreeningEndDate(screeningDate);
-            var availableRoom = findAvailableRoom(screeningDate, screeningEndDate);
-            var newScreening = Screening.create(screeningDate, film, availableRoom);
+            var endDate = film.calculateScreeningEndDate(dto.date());
+            var availableRoom = findAvailableRoom(dto.date(), endDate);
+            var newScreening = Screening.create(dto.date(), film, availableRoom);
             film.addScreening(newScreening);
             return newScreening;
         });

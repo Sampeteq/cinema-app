@@ -31,10 +31,10 @@ class ScreeningCreateService {
     public void createScreening(ScreeningCreateDto dto) {
         screeningDateValidateService.validate(dto.date(), timeProvider.getCurrentDate());
         var addedScreening = transactionTemplate.execute(status -> {
-            var film = getFilmOrThrow(dto.filmId());
+            var film = readFilm(dto.filmId());
             var screeningDate = dto.date();
             var screeningEndDate = film.calculateScreeningEndDate(screeningDate);
-            var availableRoom = getAvailableRoomOrThrow(screeningDate, screeningEndDate);
+            var availableRoom = findAvailableRoom(screeningDate, screeningEndDate);
             var newScreening = Screening.create(screeningDate, film, availableRoom);
             film.addScreening(newScreening);
             return newScreening;
@@ -48,14 +48,14 @@ class ScreeningCreateService {
         eventPublisher.publish(screeningCreatedEvent);
     }
 
-    private Film getFilmOrThrow(Long filmId) {
+    private Film readFilm(Long filmId) {
         return filmRepository
                 .readById(filmId)
                 .orElseThrow(() -> new EntityNotFoundException("Film"));
     }
 
-    private Room getAvailableRoomOrThrow(LocalDateTime screeningDate, LocalDateTime screeningEndDate) {
-        return roomAvailableService.getFirstAvailableRoom(
+    private Room findAvailableRoom(LocalDateTime screeningDate, LocalDateTime screeningEndDate) {
+        return roomAvailableService.findAvailableRoom(
                 screeningDate,
                 screeningEndDate
         ).orElseThrow(RoomsNoAvailableException::new);

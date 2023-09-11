@@ -14,7 +14,7 @@ class RoomAvailableService {
 
     private final RoomRepository roomRepository;
 
-    Optional<Room> getFirstAvailableRoom(LocalDateTime start, LocalDateTime end) {
+    Optional<Room> findAvailableRoom(LocalDateTime start, LocalDateTime end) {
         return roomRepository.readFirstAvailableRoom(start, end);
     }
 }

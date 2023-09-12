@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("prod")
-class RoomCreateConfigService {
+class RoomConfigService {
 
     private final RoomRepository roomRepository;
 

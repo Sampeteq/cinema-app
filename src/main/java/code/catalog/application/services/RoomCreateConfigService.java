@@ -33,7 +33,7 @@ class RoomCreateConfigService {
 
     @EventListener(ContextRefreshedEvent.class)
     void createRoomsFromConfigOnStartUp() {
-        if(roomRepository.readAll().isEmpty()) {
+        if(roomRepository.count() == 0) {
             try {
                 logIfFileNotExists(pathToRoomsConfig);
                 var json = readJsonFromRoomsConfig(pathToRoomsConfig);

@@ -32,8 +32,8 @@ class SpringDataJpaRoomRepository implements RoomRepository {
     }
 
     @Override
-    public List<Room> readAll() {
-        return jpaRoomRepository.findAll();
+    public Long count() {
+        return jpaRoomRepository.count();
     }
 
     @Override

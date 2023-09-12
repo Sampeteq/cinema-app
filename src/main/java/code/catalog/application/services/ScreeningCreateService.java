@@ -28,7 +28,7 @@ class ScreeningCreateService {
     private final RoomAvailableService roomAvailableService;
     private final EventPublisher eventPublisher;
 
-    public void createScreening(ScreeningCreateDto dto) {
+    void createScreening(ScreeningCreateDto dto) {
         screeningDateValidateService.validate(dto.date(), timeProvider.getCurrentDate());
         var addedScreening = transactionTemplate.execute(status -> {
             var film = readFilm(dto.filmId());

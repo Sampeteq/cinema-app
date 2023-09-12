@@ -17,7 +17,7 @@ class FilmReadService {
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
 
-    public List<FilmDto> readAll() {
+    List<FilmDto> readAll() {
         return filmRepository
                 .readAll()
                 .stream()

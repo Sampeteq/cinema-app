@@ -16,7 +16,7 @@ class UserPasswordResetService {
     private final UserRepository userRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public void resetUserPassword(String mail) {
+    void resetUserPassword(String mail) {
         var user = userRepository
                 .readyByMail(mail)
                 .orElseThrow(() -> new EntityNotFoundException("User"));

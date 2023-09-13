@@ -1,7 +1,6 @@
 package code.bookings.domain;
 
 import code.bookings.domain.exceptions.BookingAlreadyCancelledException;
-import code.shared.exceptions.EntityNotFoundException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -51,12 +50,7 @@ public class Booking {
             int seatNumber,
             Long userId
     ) {
-        var foundSeat = screening
-                .getSeats()
-                .stream()
-                .filter(s -> s.placedOn(rowNumber, seatNumber))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Seat"));
+        var foundSeat = screening.findSeat(rowNumber, seatNumber);
         var booking = new Booking(
                 BookingStatus.ACTIVE,
                 userId,

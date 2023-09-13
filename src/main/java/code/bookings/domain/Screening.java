@@ -1,5 +1,6 @@
 package code.bookings.domain;
 
+import code.shared.exceptions.EntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,6 +43,15 @@ public class Screening {
         var screening = new Screening(id, date, seats);
         seats.forEach(seat -> seat.assignScreening(screening));
         return screening;
+    }
+
+    public Seat findSeat(int rowNumber, int number) {
+        return this
+                .seats
+                .stream()
+                .filter(s -> s.placedOn(rowNumber, number))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Seat"));
     }
 
     public long timeToScreeningInHours(LocalDateTime currentDate) {

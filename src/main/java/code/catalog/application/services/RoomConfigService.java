@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,15 +29,18 @@ class RoomConfigService {
 
     private final RoomCreateService roomCreateService;
 
-    @Value("${rooms.pathToRoomsConfig}")
-    private String pathToRoomsConfig;
+    @Value("${rooms.roomsConfigFileName}")
+    private String roomsConfigFileName;
 
     @EventListener(ContextRefreshedEvent.class)
     void createRoomsFromConfigOnStartUp() {
         if(roomRepository.count() == 0) {
             try {
-                logIfFileNotExists(pathToRoomsConfig);
-                var json = readJsonFromRoomsConfig(pathToRoomsConfig);
+                var roomsConfigFilePath = ResourceUtils
+                        .getFile(roomsConfigFileName)
+                        .getPath();
+                logIfFileNotExists(roomsConfigFilePath);
+                var json = readJsonFromRoomsConfig(roomsConfigFilePath);
                 logIfFileIsEmpty(json);
                 createRoomsFromJson(json);
             }

@@ -71,7 +71,7 @@ public class Seat {
         if (screening.timeToScreeningInHours(currentDate) < 1) {
             throw new BookingTooLateException();
         }
-        if (this.hasActiveBooking()) {
+        if (this.booking != null) {
             throw new BookingAlreadyExists();
         }
         this.booking = booking;
@@ -84,12 +84,5 @@ public class Seat {
         }
         this.booking = null;
         this.isFree = true;
-    }
-
-    private boolean hasActiveBooking() {
-        return
-                this.booking != null &&
-                        this.booking.hasSeat(this) &&
-                        this.booking.hasStatus(BookingStatus.ACTIVE);
     }
 }

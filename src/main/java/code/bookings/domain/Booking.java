@@ -73,12 +73,4 @@ public class Booking {
         this.seat.removeBooking(currentDate);
         this.status = BookingStatus.CANCELLED;
     }
-
-    public boolean hasSeat(Seat seat) {
-        return this.seat.equals(seat);
-    }
-
-    public boolean hasStatus(BookingStatus status) {
-        return this.status.equals(status);
-    }
 }

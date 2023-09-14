@@ -38,6 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class ScreeningControllerIT extends SpringIT {
 
+    private static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
+
     @Autowired
     private FilmRepository filmRepository;
 
@@ -49,8 +51,6 @@ class ScreeningControllerIT extends SpringIT {
 
     @SpyBean
     private MockTimeProvider timeProvider;
-
-    public static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
 
     @Test
     @WithMockUser(authorities = "COMMON")

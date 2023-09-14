@@ -42,6 +42,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(username = "user1@mail.com")
 class BookingControllerIT extends SpringIT {
 
+    private static final String BOOKINGS_BASE_ENDPOINT = "/bookings";
+
     @Autowired
     private UserFacade userFacade;
 
@@ -53,8 +55,6 @@ class BookingControllerIT extends SpringIT {
 
     @SpyBean
     private MockTimeProvider timeProvider;
-
-    public static final String BOOKINGS_BASE_ENDPOINT = "/bookings/";
 
     @BeforeEach
     void setUp() {
@@ -76,7 +76,7 @@ class BookingControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                get(BOOKINGS_BASE_ENDPOINT + "seats").param("screeningId", "1")
+                get(BOOKINGS_BASE_ENDPOINT + "/seats").param("screeningId", "1")
         );
 
         //then
@@ -187,7 +187,7 @@ class BookingControllerIT extends SpringIT {
                 )
         );
         mockMvc.perform(
-                get(BOOKINGS_BASE_ENDPOINT + "my/")
+                get(BOOKINGS_BASE_ENDPOINT + "/my")
         ).andExpect(content().json(toJson(expectedDto)));
     }
 
@@ -277,7 +277,7 @@ class BookingControllerIT extends SpringIT {
 
         //then
         var searchSeatsResult = mockMvc.perform(
-                get(BOOKINGS_BASE_ENDPOINT + "seats").param("screeningId", "1")
+                get(BOOKINGS_BASE_ENDPOINT + "/seats").param("screeningId", "1")
         );
         var isSeatBusy = getSeatsFromResult(searchSeatsResult).anyMatch(
                 s -> s.id().equals(1L) && !s.isFree()
@@ -292,7 +292,7 @@ class BookingControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(BOOKINGS_BASE_ENDPOINT + 1L + "/cancel")
+                post(BOOKINGS_BASE_ENDPOINT + "/" + 1L + "/cancel")
         );
 
         //then
@@ -313,13 +313,13 @@ class BookingControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(BOOKINGS_BASE_ENDPOINT + 1 + "/cancel")
+                post(BOOKINGS_BASE_ENDPOINT + "/" + 1 + "/cancel")
         );
 
         //then
         result.andExpect(status().isOk());
         var searchSeatsResult = mockMvc.perform(
-                get(BOOKINGS_BASE_ENDPOINT + "seats").param("screeningId", "1")
+                get(BOOKINGS_BASE_ENDPOINT + "/seats").param("screeningId", "1")
         );
         var isSeatFreeAgain = getSeatsFromResult(searchSeatsResult)
                 .anyMatch(s -> s.id().equals(1L) && s.isFree());
@@ -333,7 +333,7 @@ class BookingControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(BOOKINGS_BASE_ENDPOINT + 1L + "/cancel")
+                post(BOOKINGS_BASE_ENDPOINT + "/" + 1L + "/cancel")
         );
 
         //then
@@ -355,7 +355,7 @@ class BookingControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(BOOKINGS_BASE_ENDPOINT + 1L + "/cancel")
+                post(BOOKINGS_BASE_ENDPOINT + "/" + 1L + "/cancel")
         );
 
         //then

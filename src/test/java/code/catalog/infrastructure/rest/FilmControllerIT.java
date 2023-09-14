@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class FilmControllerIT extends SpringIT {
 
-    public static final String FILMS_BASE_ENDPOINT = "/films";
+    private static final String FILMS_BASE_ENDPOINT = "/films";
 
     @Autowired
     private FilmRepository filmRepository;

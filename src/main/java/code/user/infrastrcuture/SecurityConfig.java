@@ -33,24 +33,24 @@ class SecurityConfig {
         return http
                 .authorizeHttpRequests(
                         configurer -> configurer
-                                .mvcMatchers(
+                                .requestMatchers(
                                         HttpMethod.GET,
                                         "/films/**",
                                         "/screenings/**",
                                         "/seats/**"
                                 ).permitAll()
-                                .mvcMatchers(
+                                .requestMatchers(
                                         HttpMethod.POST,
                                         "/sign-up",
                                         "/sign-in",
                                         "/password/reset",
                                         "/password/new"
                                 ).permitAll()
-                                .mvcMatchers(
+                                .requestMatchers(
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**"
                                 ).permitAll()
-                                .mvcMatchers(
+                                .requestMatchers(
                                         HttpMethod.POST,
                                         "/films",
                                         "/screenings"

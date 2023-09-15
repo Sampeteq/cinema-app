@@ -2,9 +2,9 @@ package code.user.application.dto;
 
 import lombok.With;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @With
 public record UserSignUpDto(

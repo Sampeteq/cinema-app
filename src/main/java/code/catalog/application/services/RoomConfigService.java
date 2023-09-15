@@ -11,12 +11,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
@@ -29,46 +28,50 @@ class RoomConfigService {
 
     private final RoomCreateService roomCreateService;
 
+    private final ResourceLoader resourceLoader;
+
     @Value("${rooms.roomsConfigFileName}")
     private String roomsConfigFileName;
 
     @EventListener(ContextRefreshedEvent.class)
     void createRoomsFromConfigOnStartUp() {
-        if(roomRepository.count() == 0) {
-            try {
-                var roomsConfigFilePath = ResourceUtils
-                        .getFile(roomsConfigFileName)
-                        .getPath();
-                logIfFileNotExists(roomsConfigFilePath);
-                var json = readJsonFromRoomsConfig(roomsConfigFilePath);
-                logIfFileIsEmpty(json);
-                createRoomsFromJson(json);
-            }
-            catch (IOException exception) {
-                log.error(exception.getMessage());
-            }
+        if (roomRepository.count() == 0) {
+            var json = readRoomsConfigAsJson();
+            logIfFileIsEmpty(json);
+            createRoomsFromJson(json);
+            log.info("Rooms added");
+        } else {
+            log.info("Rooms already exists");
         }
     }
 
-    private void logIfFileNotExists(String pathToRoomsConfig) {
-        if (Files.notExists(Path.of(pathToRoomsConfig))) {
-            log.warn("Rooms configs file not found");
+    private String readRoomsConfigAsJson() {
+        try {
+            var bytesArray = resourceLoader
+                    .getResource("classpath:" + roomsConfigFileName)
+                    .getInputStream()
+                    .readAllBytes();
+            return new String(bytesArray, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            log.error(e.toString());
+            throw new RuntimeException(e);
         }
-    }
-
-    private String readJsonFromRoomsConfig(String pathToRoomsConfig) throws IOException {
-        return Files.readString(Path.of(pathToRoomsConfig));
     }
 
     private void logIfFileIsEmpty(String json) {
         if (json.isEmpty()) {
-            log.info("Empty commands config file");
+            log.error("Empty rooms config file");
         }
     }
 
-    private void createRoomsFromJson(String json) throws JsonProcessingException {
-        new ObjectMapper()
-                .readValue(json, new TypeReference<List<RoomCreateDto>>() {})
-                .forEach(roomCreateService::createRoom);
+    private void createRoomsFromJson(String json) {
+        try {
+            new ObjectMapper()
+                    .readValue(json, new TypeReference<List<RoomCreateDto>>() {
+                    })
+                    .forEach(roomCreateService::createRoom);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

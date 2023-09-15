@@ -14,7 +14,7 @@ This is web app to manage a cinema builded on modular monolith architecture.
 
 **Libraries:** Open API (Swagger)
 
-**Datebases:** PostgreSQL
+**Databases:** PostgresSQL
 
 **Build tool:** Maven
 

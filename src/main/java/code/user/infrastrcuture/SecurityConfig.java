@@ -8,13 +8,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 @Configuration
@@ -24,32 +26,49 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
         type = SecuritySchemeType.HTTP,
         in = SecuritySchemeIn.HEADER
 )
-class SecurityConfig extends WebSecurityConfigurerAdapter {
+class SecurityConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/films/**", "/screenings/**", "/seats/**")
-                .permitAll()
-                .mvcMatchers(HttpMethod.POST, "/sign-up", "/sign-in", "/password/reset", "/password/new")
-                .permitAll()
-                .antMatchers("/swagger-ui/**", "/v3/api-docs/**")
-                .permitAll()
-                .mvcMatchers(HttpMethod.POST, "/films", "/screenings")
-                .hasAuthority("ADMIN")
-                .anyRequest()
-                .authenticated()
-                .and()
-                .httpBasic()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                .and()
-                .csrf()
-                .disable();
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .authorizeHttpRequests(
+                        configurer -> configurer
+                                .mvcMatchers(
+                                        HttpMethod.GET,
+                                        "/films/**",
+                                        "/screenings/**",
+                                        "/seats/**"
+                                ).permitAll()
+                                .mvcMatchers(
+                                        HttpMethod.POST,
+                                        "/sign-up",
+                                        "/sign-in",
+                                        "/password/reset",
+                                        "/password/new"
+                                ).permitAll()
+                                .mvcMatchers(
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**"
+                                ).permitAll()
+                                .mvcMatchers(
+                                        HttpMethod.POST,
+                                        "/films",
+                                        "/screenings"
+                                ).hasAuthority("ADMIN")
+                                .anyRequest()
+                                .authenticated()
+                )
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(configurer -> configurer
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .exceptionHandling(configurer -> configurer
+                        .authenticationEntryPoint(
+                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
+                        )
+                )
+                .csrf(AbstractHttpConfigurer::disable)
+                .build();
     }
 
     @Bean

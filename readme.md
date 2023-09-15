@@ -10,7 +10,7 @@ This is web app to manage a cinema builded on modular monolith architecture.
 
 **Language:** Java 17
 
-**Frameworks:** Spring Boot, Hibernate, Junit
+**Frameworks:** Spring Boot 3, Hibernate, Junit
 
 **Libraries:** Open API (Swagger)
 

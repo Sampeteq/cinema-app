@@ -21,7 +21,7 @@ public final class ScreeningTestHelper {
             Room room,
             LocalDateTime currentDate
     ) {
-        return Screening.create(
+        return new Screening(
                 getScreeningDate(currentDate),
                 film,
                 room
@@ -33,7 +33,7 @@ public final class ScreeningTestHelper {
             Room room,
             LocalDateTime screeningDate
     ) {
-        return Screening.create(
+        return new Screening(
                screeningDate,
                 film,
                 room
@@ -41,12 +41,12 @@ public final class ScreeningTestHelper {
     }
 
     public static List<Screening> createScreenings(Film film, Room room) {
-        var screening1 = Screening.create(
+        var screening1 = new Screening(
                 SCREENING_DATE,
                 film,
                 room
         );
-        var screening2 = Screening.create(
+        var screening2 = new Screening(
                 SCREENING_DATE.plusDays(1),
                 film,
                 room

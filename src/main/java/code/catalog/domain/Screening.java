@@ -31,21 +31,11 @@ public class Screening {
 
     protected Screening() {}
 
-    private Screening(LocalDateTime date, LocalDateTime endDate, Film film, Room room) {
+    public Screening(LocalDateTime date, Film film, Room room) {
         this.date = date;
-        this.endDate = endDate;
+        this.endDate = film.calculateScreeningEndDate(date);
         this.film = film;
         this.room = room;
-    }
-
-    public static Screening create(LocalDateTime date, Film film, Room room) {
-        var endDate = film.calculateScreeningEndDate(date);
-        return new Screening(
-                date,
-                endDate,
-                film,
-                room
-        );
     }
 
     public void removeRoom() {

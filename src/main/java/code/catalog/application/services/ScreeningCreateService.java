@@ -34,7 +34,7 @@ class ScreeningCreateService {
             var film = readFilm(dto.filmId());
             var endDate = film.calculateScreeningEndDate(dto.date());
             var availableRoom = findAvailableRoom(dto.date(), endDate);
-            var newScreening = Screening.create(dto.date(), film, availableRoom);
+            var newScreening = new Screening(dto.date(), film, availableRoom);
             film.addScreening(newScreening);
             return newScreening;
         });

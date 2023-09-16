@@ -1,9 +1,6 @@
 package code.catalog.domain;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,9 +9,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "rooms")
-@EqualsAndHashCode(of = "id")
 @Getter
-@ToString
 public class Room {
 
     @Id

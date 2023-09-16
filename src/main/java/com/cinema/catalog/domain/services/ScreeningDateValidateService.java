@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @Component
 public class ScreeningDateValidateService {
 
-    private static final int MIN_BOOKING_DAYS = 7;
-    private static final int MAX_BOOKING_DAYS = 21;
+    private static final int MIN_DAYS_NUMBER = 7;
+    private static final int MAX_DAYS_NUMBER = 21;
 
     public void validate(LocalDateTime screeningDate, LocalDateTime currentDate) {
        if (screeningDate.isBefore(currentDate)) {
@@ -21,7 +21,7 @@ public class ScreeningDateValidateService {
                 .between(screeningDate, currentDate)
                 .abs()
                 .toDays();
-       var isDateOutOfRange = datesDifference < MIN_BOOKING_DAYS || datesDifference > MAX_BOOKING_DAYS;
+       var isDateOutOfRange = datesDifference < MIN_DAYS_NUMBER || datesDifference > MAX_DAYS_NUMBER;
        if (isDateOutOfRange) {
            throw new ScreeningDateOutOfRangeException();
        }

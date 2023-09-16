@@ -1,6 +1,6 @@
 package com.cinema.catalog.application.dto;
 
-import com.cinema.bookings.domain.Seat;
+import com.cinema.tickets.domain.Seat;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

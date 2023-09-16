@@ -1,0 +1,54 @@
+package com.cinema.tickets.application.services;
+
+import com.cinema.tickets.application.dto.TicketBookDto;
+import com.cinema.tickets.domain.Ticket;
+import com.cinema.tickets.domain.events.TicketBookedEvent;
+import com.cinema.tickets.domain.ports.TicketRepository;
+import com.cinema.tickets.domain.ports.ScreeningRepository;
+import com.cinema.shared.events.EventPublisher;
+import com.cinema.shared.exceptions.EntityNotFoundException;
+import com.cinema.shared.time.TimeProvider;
+import com.cinema.user.application.services.UserFacade;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+class TicketBookService {
+
+    private final ScreeningRepository screeningRepository;
+    private final UserFacade userFacade;
+    private final TimeProvider timeProvider;
+    private final TicketRepository ticketRepository;
+    private final EventPublisher eventPublisher;
+
+    @Transactional
+    public void bookTicket(TicketBookDto dto) {
+        var screening = screeningRepository
+                .readByIdWithSeats(dto.screeningId())
+                .orElseThrow(() -> new EntityNotFoundException("Screening"));
+        var currentUserId = userFacade.readCurrentUserId();
+        var ticket = Ticket.book(
+                timeProvider.getCurrentDate(),
+                screening,
+                dto.rowNumber(),
+                dto.seatNumber(),
+                currentUserId
+        );
+        var addedTicket = ticketRepository.add(ticket);
+        log.info("Added a ticket:{}", addedTicket);
+        var ticketBookedEvent = new TicketBookedEvent(
+                addedTicket.getId(),
+                screening.getId(),
+                screening.getDate(),
+                addedTicket.getSeat().getRowNumber(),
+                addedTicket.getSeat().getNumber(),
+                currentUserId
+        );
+        eventPublisher.publish(ticketBookedEvent);
+        log.info("Event published: {}", ticketBookedEvent);
+    }
+}

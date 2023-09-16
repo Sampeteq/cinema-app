@@ -1,7 +1,7 @@
 
 # Cinema manager
 
-This is web app to manage a cinema builded on modular monolith architecture.
+This is web app to manage a cinema built on modular monolith architecture.
 
 
 
@@ -50,17 +50,17 @@ Admin:
 
 /screenings (POST) - add a new screening
 
-### 2.Booking making
+### 2.Tickets booking
 
 Endpoints:
 
 /seats?screeningId= (GET) - search screening seats
 
-/bookings (POST) - make a booking for seat
+/tickets (POST) - book a ticket
 
-/bookings/{bookingId}/cancelled (POST) - cancel booking
+/tickets/{ticketId}/cancelled (POST) - cancel ticket
 
-/bookings/my (GET) - search user bookings
+/tickets/my (GET) - search user tickets
 
 ### 3.User account
 

@@ -3,7 +3,6 @@ package com.cinema.user;
 import com.cinema.user.application.dto.UserSignUpDto;
 import com.cinema.user.domain.User;
 import com.cinema.user.domain.UserRole;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
@@ -40,10 +39,6 @@ public final class UserTestHelper {
 
     public static User createUser(String mail) {
         return new User(mail, PASSWORD, UserRole.COMMON);
-    }
-
-    public static User createUser(String mail, String password, PasswordEncoder passwordEncoder) {
-        return new User(mail, passwordEncoder.encode(password), UserRole.COMMON);
     }
 
     public static User createUser(UUID passwordResetToken) {

@@ -1,18 +1,17 @@
 package code.bookings.domain;
 
 import code.shared.exceptions.EntityNotFoundException;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +20,6 @@ import java.util.List;
 @Table(name = "bookings_screenings")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@EqualsAndHashCode(of = "id")
 @ToString(exclude = "seats")
 public class Screening {
 

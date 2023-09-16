@@ -1,0 +1,61 @@
+package com.cinema.catalog.application.services;
+
+import com.cinema.catalog.application.dto.FilmCreateDto;
+import com.cinema.catalog.application.dto.FilmDto;
+import com.cinema.catalog.application.dto.RoomCreateDto;
+import com.cinema.catalog.application.dto.ScreeningCreateDto;
+import com.cinema.catalog.application.dto.ScreeningDetailsDto;
+import com.cinema.catalog.application.dto.ScreeningDto;
+import com.cinema.catalog.domain.FilmCategory;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@Component
+@RequiredArgsConstructor
+public class CatalogFacade {
+
+    private final FilmCreateService filmCreateService;
+    private final FilmReadService filmReadService;
+    private final ScreeningCreateService screeningCreateService;
+    private final RoomCreateService roomCreateService;
+    private final ScreeningReadService screeningReadService;
+
+    public void createFilm(FilmCreateDto dto) {
+        filmCreateService.creteFilm(dto);
+    }
+
+    public List<FilmDto> readAllFilms() {
+        return filmReadService.readAll();
+    }
+
+    public void createScreening(ScreeningCreateDto dto) {
+        screeningCreateService.createScreening(dto);
+    }
+
+    public void createRoom(RoomCreateDto dto) {
+        roomCreateService.createRoom(dto);
+    }
+
+    public ScreeningDetailsDto readScreeningDetails(Long screeningId) {
+        return screeningReadService.readScreeningDetails(screeningId);
+    }
+
+    public List<ScreeningDto> readAllScreenings() {
+        return screeningReadService.readAllScreenings();
+    }
+
+    public List<ScreeningDto> readScreeningsByFilmTitle(String title) {
+        return screeningReadService.readScreeningsByFilmTitle(title);
+    }
+
+    public List<ScreeningDto> readScreeningsByFilmCategory(FilmCategory category) {
+        return screeningReadService.readScreeningsByFilmCategory(category);
+    }
+
+    public List<ScreeningDto> readScreeningsByDate(LocalDate date) {
+        return screeningReadService.readScreeningsByDate(date);
+    }
+}

@@ -8,6 +8,5 @@ import java.util.Optional;
 public interface TicketViewRepository {
     TicketView add(TicketView ticketView);
     Optional<TicketView> readById(Long id);
-    Optional<TicketView> readByIdAndUserId(Long id, Long userId);
     List<TicketView> readAllByUserId(Long userId);
 }

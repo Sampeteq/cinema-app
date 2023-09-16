@@ -26,17 +26,11 @@ class SpringDataJpaTicketViewRepository implements TicketViewRepository {
     }
 
     @Override
-    public Optional<TicketView> readByIdAndUserId(Long id, Long userId) {
-        return jpaTicketViewRepository.readByIdAndUserId(id, userId);
-    }
-
-    @Override
     public List<TicketView> readAllByUserId(Long userId) {
         return jpaTicketViewRepository.readAllByUserId(userId);
     }
 }
 
 interface JpaTicketViewRepository extends JpaRepository<TicketView, Long> {
-    Optional<TicketView> readByIdAndUserId(Long id, Long userId);
     List<TicketView> readAllByUserId(Long userId);
 }

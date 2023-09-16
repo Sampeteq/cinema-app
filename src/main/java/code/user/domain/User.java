@@ -41,18 +41,10 @@ public class User implements UserDetails {
     protected User() {
     }
 
-    private User(String mail, String password, UserRole role) {
+    public User(String mail, String password, UserRole role) {
         this.mail = mail;
         this.password = password;
         this.role = role;
-    }
-
-    public static User create(String mail, String password, UserRole role) {
-        return new User(
-                mail,
-                password,
-                role
-        );
     }
 
     public void setNewPassword(String newPassword) {

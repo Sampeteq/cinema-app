@@ -35,19 +35,19 @@ public final class UserTestHelper {
     }
 
     public static User createUser() {
-        return User.create(MAIL, PASSWORD, UserRole.COMMON);
+        return new User(MAIL, PASSWORD, UserRole.COMMON);
     }
 
     public static User createUser(String mail) {
-        return User.create(mail, PASSWORD, UserRole.COMMON);
+        return new User(mail, PASSWORD, UserRole.COMMON);
     }
 
     public static User createUser(String mail, String password, PasswordEncoder passwordEncoder) {
-        return User.create(mail, passwordEncoder.encode(password), UserRole.COMMON);
+        return new User(mail, passwordEncoder.encode(password), UserRole.COMMON);
     }
 
     public static User createUser(UUID passwordResetToken) {
-        var user = User.create(MAIL, PASSWORD, UserRole.COMMON);
+        var user = new User(MAIL, PASSWORD, UserRole.COMMON);
         user.setPasswordResetToken(passwordResetToken);
         return user;
     }

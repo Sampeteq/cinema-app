@@ -1,9 +1,6 @@
 package code.catalog.domain;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,9 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "screenings")
-@EqualsAndHashCode(of = "id")
 @Getter
-@ToString
 public class Screening {
 
     @Id

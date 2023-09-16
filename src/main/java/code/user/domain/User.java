@@ -1,6 +1,5 @@
 package code.user.domain;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +19,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@EqualsAndHashCode(of = "id")
 @Getter
 @ToString
 public class User implements UserDetails {

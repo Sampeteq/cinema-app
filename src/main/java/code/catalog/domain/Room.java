@@ -29,17 +29,9 @@ public class Room {
 
     protected Room() {}
 
-    private Room(String customId, int rowsNumber, int rowSeatsNumber) {
+    public Room(String customId, int rowsNumber, int rowSeatsNumber) {
         this.customId = customId;
         this.rowsNumber = rowsNumber;
         this.rowSeatsNumber = rowSeatsNumber;
-    }
-
-    public static Room create(String customId, int rowsNumber, int rowsSeatsNumber) {
-        return new Room(
-                customId,
-                rowsNumber,
-                rowsSeatsNumber
-        );
     }
 }

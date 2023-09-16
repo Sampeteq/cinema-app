@@ -14,7 +14,7 @@ public final class RoomTestHelper {
     }
 
     public static Room createRoom() {
-        return Room.create(
+        return new Room(
                 CUSTOM_ID,
                 ROWS_NUMBER,
                 ROW_SEATS_NUMBER

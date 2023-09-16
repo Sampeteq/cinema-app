@@ -17,7 +17,7 @@ class RoomCreateService {
         if (roomRepository.existsByCustomId(dto.customId())) {
             throw new RoomCustomIdAlreadyExistsException();
         }
-        var screeningRoom = Room.create(
+        var screeningRoom = new Room(
                 dto.customId(),
                 dto.rowSeatsNumber(),
                 dto.rowsNumber()

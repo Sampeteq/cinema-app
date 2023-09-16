@@ -33,20 +33,11 @@ public class Mail {
 
     private LocalDateTime sentAt;
 
-    private Mail(String receiver, String subject, String text, MailType type) {
+    public Mail(String receiver, String subject, String text, MailType type) {
         this.receiver = receiver;
         this.subject = subject;
         this.text = text;
         this.type = type;
-    }
-
-    public static Mail create(String to, String subject, String text, MailType type) {
-        return new Mail(
-                to,
-                subject,
-                text,
-                type
-        );
     }
 
     public void sentAt(LocalDateTime dateTime) {

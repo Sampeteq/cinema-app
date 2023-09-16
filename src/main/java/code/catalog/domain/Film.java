@@ -1,7 +1,6 @@
 package code.catalog.domain;
 
 import code.catalog.domain.exceptions.FilmYearOutOfRangeException;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -21,7 +20,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "films")
-@EqualsAndHashCode(of = "id")
 @Getter
 @ToString(exclude = "screenings")
 public class Film {

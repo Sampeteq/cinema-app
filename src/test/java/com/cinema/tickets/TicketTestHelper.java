@@ -41,7 +41,13 @@ public final class TicketTestHelper {
     }
 
     public static Screening prepareScreening(Seat seat, LocalDateTime screeningDate) {
-        return Screening.create(SCREENING_ID, screeningDate, List.of(seat));
+        return Screening.create(
+                SCREENING_ID,
+                screeningDate,
+                FILM_TITLE,
+                ROOM_CUSTOM_ID,
+                List.of(seat)
+        );
     }
 
     public static Screening prepareScreeningWithBookedSeat(Seat seat) {

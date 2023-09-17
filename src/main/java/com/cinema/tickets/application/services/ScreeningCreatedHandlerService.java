@@ -21,7 +21,13 @@ class ScreeningCreatedHandlerService {
     @EventListener(ScreeningCreatedEvent.class)
     void handle(ScreeningCreatedEvent event) {
         var seats = createSeats(event.rowsQuantity(), event.seatsQuantityInOneRow());
-        var screening = Screening.create(event.id(), event.date(), seats);
+        var screening = Screening.create(
+                event.id(),
+                event.date(),
+                event.filmTitle(),
+                event.roomCustomId(),
+                seats
+        );
         screeningRepository.add(screening);
     }
 

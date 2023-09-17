@@ -9,7 +9,7 @@ import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
-import com.cinema.tickets_views.application.dto.TicketViewDto;
+import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.catalog.application.services.CatalogFacade;
 import com.cinema.shared.exceptions.EntityNotFoundException;
@@ -176,7 +176,7 @@ class TicketControllerIT extends SpringIT {
         //then
         result.andExpect(status().isOk());
         var expectedDto = List.of(
-                new TicketViewDto(
+                new TicketDto(
                         1L,
                         TicketStatus.ACTIVE,
                         filmTitle,
@@ -366,6 +366,38 @@ class TicketControllerIT extends SpringIT {
                 ));
     }
 
+    @Test
+    void tickets_are_read_by_user_id() throws Exception {
+        //given
+        var filmTitle = "Title 1";
+        var roomCustomId = "1";
+        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        var seatRowNumber = 1;
+        var seatNumber = 1;
+        prepareTicket(filmTitle, roomCustomId, screeningDate);
+
+        //when
+        var result = mockMvc.perform(
+                get("/tickets/my")
+        );
+
+        //then
+        result.andExpect(status().isOk());
+        var ticketsFromResult = getTicketsFromResult(result).toList();
+        var expected = List.of(
+                new TicketDto(
+                        1L,
+                        TicketStatus.ACTIVE,
+                        filmTitle,
+                        screeningDate,
+                        roomCustomId,
+                        seatRowNumber,
+                        seatNumber
+                )
+        );
+        assertThat(ticketsFromResult).containsExactlyInAnyOrderElementsOf(expected);
+    }
+
     private List<SeatDto> prepareSeats() {
         catalogFacade.createFilm(createFilmCreateDto());
         catalogFacade.createRoom(createRoomCreateDto());
@@ -445,6 +477,19 @@ class TicketControllerIT extends SpringIT {
         ticketFacade.bookTicket(ticketBookDto);
     }
 
+    private void prepareTicket(String filmTitle, String roomCustomId, LocalDateTime screeningDate) {
+        prepareSeat(filmTitle, roomCustomId, screeningDate);
+        var screeningId = 1L;
+        var rowNumber = 1;
+        var seatNumber =  1;
+        var ticketBookDto = new TicketBookDto(
+                screeningId,
+                rowNumber,
+                seatNumber
+        );
+        ticketFacade.bookTicket(ticketBookDto);
+    }
+
     private void prepareCancelledTicket() {
         prepareSeat();
         var screeningId = 1L;
@@ -466,9 +511,9 @@ class TicketControllerIT extends SpringIT {
         );
     }
 
-    private Stream<TicketViewDto> getTicketsFromResult(ResultActions searchSeatsResult) {
+    private Stream<TicketDto> getTicketsFromResult(ResultActions searchSeatsResult) {
         return Arrays.stream(
-                fromResultActions(searchSeatsResult, TicketViewDto[].class)
+                fromResultActions(searchSeatsResult, TicketDto[].class)
         );
     }
 }

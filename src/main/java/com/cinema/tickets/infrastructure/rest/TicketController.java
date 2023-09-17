@@ -1,6 +1,7 @@
 package com.cinema.tickets.infrastructure.rest;
 
 import com.cinema.tickets.application.dto.TicketBookDto;
+import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.application.services.TicketFacade;
 import com.cinema.catalog.application.dto.SeatDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -33,6 +34,12 @@ class TicketController {
     @SecurityRequirement(name = "basic")
     void cancelTicket(@PathVariable Long ticketId) {
         ticketFacade.cancelTicket(ticketId);
+    }
+
+    @GetMapping("/my")
+    @SecurityRequirement(name = "basic")
+    List<TicketDto> readAllTickets() {
+        return ticketFacade.readTicketsByCurrentUser();
     }
 
     @GetMapping("/seats")

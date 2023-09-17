@@ -28,17 +28,35 @@ public class Screening {
 
     private LocalDateTime date;
 
+    private String filmTitle;
+
+    private String roomCustomId;
+
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Seat> seats;
 
-    private Screening(Long id, LocalDateTime date, List<Seat> seats) {
+    public Screening(
+            Long id,
+            LocalDateTime date,
+            String filmTitle,
+            String roomCustomId,
+            List<Seat> seats
+    ) {
         this.id = id;
         this.date = date;
+        this.filmTitle = filmTitle;
+        this.roomCustomId = roomCustomId;
         this.seats = seats;
     }
 
-    public static Screening create(Long id, LocalDateTime date, List<Seat> seats) {
-        var screening = new Screening(id, date, seats);
+    public static Screening create(
+            Long id,
+            LocalDateTime date,
+            String filmTitle,
+            String roomCustomId,
+            List<Seat> seats
+    ) {
+        var screening = new Screening(id, date, filmTitle, roomCustomId, seats);
         seats.forEach(seat -> seat.assignScreening(screening));
         return screening;
     }

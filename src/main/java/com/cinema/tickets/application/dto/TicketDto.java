@@ -1,10 +1,10 @@
-package com.cinema.tickets_views.application.dto;
+package com.cinema.tickets.application.dto;
 
 import com.cinema.tickets.domain.TicketStatus;
 
 import java.time.LocalDateTime;
 
-public record TicketViewDto(
+public record TicketDto(
         Long id,
         TicketStatus status,
         String filmTitle,

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,6 +27,11 @@ class SpringDataJpaTicketRepository implements TicketRepository {
     public Optional<Ticket> readByIdAndUserId(Long ticketId, Long userId) {
         return jpaTicketRepository.readByIdAndUserId(ticketId, userId);
     }
+
+    @Override
+    public List<Ticket> readAllByUserId(Long userId) {
+        return jpaTicketRepository.readAllByUserId(userId);
+    }
 }
 
 interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
@@ -35,4 +41,6 @@ interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
             "LEFT JOIN FETCH s.screening " +
             "WHERE t.id = :ticketId and t.userId = :userId")
     Optional<Ticket> readByIdAndUserId(@Param("ticketId") Long ticketId, @Param("userId") Long userId);
+
+    List<Ticket> readAllByUserId(Long userId);
 }

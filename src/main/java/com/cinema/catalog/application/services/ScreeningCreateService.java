@@ -41,6 +41,8 @@ class ScreeningCreateService {
         var screeningCreatedEvent = new ScreeningCreatedEvent(
                 addedScreening.getId(),
                 addedScreening.getDate(),
+                addedScreening.getFilm().getTitle(),
+                addedScreening.getRoom().getCustomId(),
                 addedScreening.getRoom().getRowsNumber(),
                 addedScreening.getRoom().getRowSeatsNumber()
         );

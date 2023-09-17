@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import javax.sql.DataSource;
 import java.io.UnsupportedEncodingException;
 
 @SpringBootTest
@@ -17,17 +16,17 @@ import java.io.UnsupportedEncodingException;
 public abstract class SpringIT {
 
     @Autowired
-    protected MockMvc mockMvc;
+    private SqlDatabaseCleaner sqlDatabaseCleaner;
 
     @Autowired
-    private DataSource dataSource;
+    protected MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @AfterEach
     void cleanDb() {
-        new SqlDatabaseCleaner(dataSource).clean();
+        sqlDatabaseCleaner.clean();
     }
 
     public String toJson(Object object) {

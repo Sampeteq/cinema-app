@@ -5,7 +5,6 @@ import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,7 +37,7 @@ public class Seat {
 
     private boolean isFree;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Screening screening;
 
     @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)

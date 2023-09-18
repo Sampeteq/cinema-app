@@ -1,13 +1,13 @@
 package com.cinema.tickets;
 
 import com.cinema.MockTimeProvider;
-import com.cinema.tickets.domain.Ticket;
-import com.cinema.tickets.domain.Screening;
-import com.cinema.tickets.domain.Seat;
 import com.cinema.catalog.application.dto.FilmCreateDto;
 import com.cinema.catalog.application.dto.RoomCreateDto;
 import com.cinema.catalog.application.dto.ScreeningCreateDto;
 import com.cinema.catalog.domain.FilmCategory;
+import com.cinema.tickets.domain.Screening;
+import com.cinema.tickets.domain.Seat;
+import com.cinema.tickets.domain.Ticket;
 
 import java.time.LocalDateTime;
 import java.time.Year;

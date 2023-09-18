@@ -4,17 +4,17 @@ import com.cinema.MockTimeProvider;
 import com.cinema.tickets.TicketTestHelper;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
-import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
+import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static com.cinema.tickets.TicketTestHelper.prepareTicket;
 import static com.cinema.tickets.TicketTestHelper.prepareCancelledTicket;
 import static com.cinema.tickets.TicketTestHelper.prepareScreening;
 import static com.cinema.tickets.TicketTestHelper.prepareScreeningWithBookedSeat;
 import static com.cinema.tickets.TicketTestHelper.prepareSeat;
+import static com.cinema.tickets.TicketTestHelper.prepareTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

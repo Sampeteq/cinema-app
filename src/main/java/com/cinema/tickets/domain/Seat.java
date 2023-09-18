@@ -1,8 +1,8 @@
 package com.cinema.tickets.domain;
 
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
-import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
+import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

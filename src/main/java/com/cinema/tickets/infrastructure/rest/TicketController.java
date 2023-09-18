@@ -1,9 +1,9 @@
 package com.cinema.tickets.infrastructure.rest;
 
+import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.application.services.TicketFacade;
-import com.cinema.catalog.application.dto.SeatDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,10 @@
 package com.cinema.tickets.application.services;
 
-import com.cinema.tickets.domain.Screening;
-import com.cinema.tickets.domain.ports.ScreeningRepository;
 import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.catalog.application.dto.SeatMapper;
 import com.cinema.shared.exceptions.EntityNotFoundException;
+import com.cinema.tickets.domain.Screening;
+import com.cinema.tickets.domain.ports.ScreeningRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

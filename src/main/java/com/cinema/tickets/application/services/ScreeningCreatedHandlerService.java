@@ -1,9 +1,9 @@
 package com.cinema.tickets.application.services;
 
+import com.cinema.catalog.domain.events.ScreeningCreatedEvent;
 import com.cinema.tickets.domain.Screening;
 import com.cinema.tickets.domain.Seat;
 import com.cinema.tickets.domain.ports.ScreeningRepository;
-import com.cinema.catalog.domain.events.ScreeningCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;

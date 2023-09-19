@@ -4,8 +4,8 @@ import com.cinema.catalog.application.dto.FilmCreateDto;
 import com.cinema.catalog.application.dto.FilmDto;
 import com.cinema.catalog.application.dto.RoomCreateDto;
 import com.cinema.catalog.application.dto.ScreeningCreateDto;
-import com.cinema.catalog.application.dto.ScreeningDetailsDto;
 import com.cinema.catalog.application.dto.ScreeningDto;
+import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.catalog.domain.FilmCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,6 +22,7 @@ public class CatalogFacade {
     private final ScreeningCreateService screeningCreateService;
     private final RoomCreateService roomCreateService;
     private final ScreeningReadService screeningReadService;
+    private final SeatReadService seatReadService;
 
     public void createFilm(FilmCreateDto dto) {
         filmCreateService.creteFilm(dto);
@@ -39,10 +40,6 @@ public class CatalogFacade {
         roomCreateService.createRoom(dto);
     }
 
-    public ScreeningDetailsDto readScreeningDetails(Long screeningId) {
-        return screeningReadService.readScreeningDetails(screeningId);
-    }
-
     public List<ScreeningDto> readAllScreenings() {
         return screeningReadService.readAllScreenings();
     }
@@ -57,5 +54,9 @@ public class CatalogFacade {
 
     public List<ScreeningDto> readScreeningsByDate(LocalDate date) {
         return screeningReadService.readScreeningsByDate(date);
+    }
+
+    public List<SeatDto> readSeatsByScreeningId(Long id) {
+        return seatReadService.readSeatsByScreeningId(id);
     }
 }

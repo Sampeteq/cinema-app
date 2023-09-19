@@ -70,22 +70,6 @@ class TicketControllerIT extends SpringIT {
     }
 
     @Test
-    void seats_are_read_by_screening_id() throws Exception {
-        //given
-        var seats = prepareSeats();
-
-        //when
-        var result = mockMvc.perform(
-                get(TICKETS_BASE_ENDPOINT + "/seats").param("screeningId", "1")
-        );
-
-        //then
-        result
-                .andExpect(status().isOk())
-                .andExpect(content().json(toJson(seats)));
-    }
-
-    @Test
     void ticket_is_made_for_existing_screening() throws Exception {
         //given
         var nonExistingScreeningId = 0L;
@@ -277,7 +261,7 @@ class TicketControllerIT extends SpringIT {
 
         //then
         var searchSeatsResult = mockMvc.perform(
-                get(TICKETS_BASE_ENDPOINT + "/seats").param("screeningId", "1")
+                get("/screenings/1/seats")
         );
         var isSeatBusy = getSeatsFromResult(searchSeatsResult).anyMatch(
                 s -> s.id().equals(1L) && !s.isFree()
@@ -319,7 +303,7 @@ class TicketControllerIT extends SpringIT {
         //then
         result.andExpect(status().isOk());
         var searchSeatsResult = mockMvc.perform(
-                get(TICKETS_BASE_ENDPOINT + "/seats").param("screeningId", "1")
+                get("/screenings/1/seats")
         );
         var isSeatFreeAgain = getSeatsFromResult(searchSeatsResult)
                 .anyMatch(s -> s.id().equals(1L) && s.isFree());
@@ -396,17 +380,6 @@ class TicketControllerIT extends SpringIT {
                 )
         );
         assertThat(ticketsFromResult).containsExactlyInAnyOrderElementsOf(expected);
-    }
-
-    private List<SeatDto> prepareSeats() {
-        catalogFacade.createFilm(createFilmCreateDto());
-        catalogFacade.createRoom(createRoomCreateDto());
-        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
-        catalogFacade.createScreening(
-                createScreeningCrateDto().withDate(screeningDate)
-        );
-        var screeningId = 1L;
-        return ticketFacade.readSeatsByScreeningId(screeningId);
     }
 
     private void prepareSeat() {

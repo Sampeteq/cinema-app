@@ -1,5 +1,7 @@
 package com.cinema.tickets.domain;
 
+import com.cinema.catalog.domain.Screening;
+import com.cinema.catalog.domain.Seat;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

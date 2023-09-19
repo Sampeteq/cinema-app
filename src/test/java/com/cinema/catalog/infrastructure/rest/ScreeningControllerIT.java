@@ -5,6 +5,8 @@ import com.cinema.SpringIT;
 import com.cinema.catalog.application.dto.ScreeningCreateDto;
 import com.cinema.catalog.application.dto.ScreeningDto;
 import com.cinema.catalog.application.dto.ScreeningMapper;
+import com.cinema.catalog.application.dto.SeatDto;
+import com.cinema.catalog.application.services.CatalogFacade;
 import com.cinema.catalog.domain.Film;
 import com.cinema.catalog.domain.FilmCategory;
 import com.cinema.catalog.domain.Screening;
@@ -31,6 +33,9 @@ import static com.cinema.catalog.ScreeningTestHelper.createScreening;
 import static com.cinema.catalog.ScreeningTestHelper.createScreeningWithSpecificDate;
 import static com.cinema.catalog.ScreeningTestHelper.createScreenings;
 import static com.cinema.catalog.ScreeningTestHelper.getScreeningDate;
+import static com.cinema.tickets.TicketTestHelper.createFilmCreateDto;
+import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
+import static com.cinema.tickets.TicketTestHelper.createScreeningCrateDto;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -39,6 +44,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ScreeningControllerIT extends SpringIT {
 
     private static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
+
+    @Autowired
+    private CatalogFacade catalogFacade;
 
     @Autowired
     private FilmRepository filmRepository;
@@ -288,6 +296,22 @@ class ScreeningControllerIT extends SpringIT {
                 .andExpect(content().json(toJson(List.of(screeningWithRequiredDate))));
     }
 
+    @Test
+    void seats_are_read_by_screening_id() throws Exception {
+        //given
+        var seats = prepareSeats();
+
+        //when
+        var result = mockMvc.perform(
+                get(SCREENINGS_BASE_ENDPOINT + "/1/seats")
+        );
+
+        //then
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(seats)));
+    }
+
     private Screening addScreening() {
         var film = createFilm();
         var room = roomRepository.add(createRoom());
@@ -337,5 +361,16 @@ class ScreeningControllerIT extends SpringIT {
                 .stream()
                 .map(screeningMapper::mapToDto)
                 .toList();
+    }
+
+    private List<SeatDto> prepareSeats() {
+        catalogFacade.createFilm(createFilmCreateDto());
+        catalogFacade.createRoom(createRoomCreateDto());
+        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        catalogFacade.createScreening(
+                createScreeningCrateDto().withDate(screeningDate)
+        );
+        var screeningId = 1L;
+        return catalogFacade.readSeatsByScreeningId(screeningId);
     }
 }

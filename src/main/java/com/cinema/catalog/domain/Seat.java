@@ -1,5 +1,6 @@
-package com.cinema.tickets.domain;
+package com.cinema.catalog.domain;
 
+import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;

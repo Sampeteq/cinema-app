@@ -1,13 +1,11 @@
 package com.cinema.catalog.infrastructure.db;
 
-import com.cinema.catalog.application.dto.ScreeningDetailsDto;
 import com.cinema.catalog.domain.FilmCategory;
 import com.cinema.catalog.domain.Screening;
 import com.cinema.catalog.domain.ports.ScreeningReadOnlyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
-import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +16,11 @@ import java.util.Optional;
 class SpringDataJpaScreeningReadOnlyRepository implements ScreeningReadOnlyRepository {
 
     private final JpaScreeningReadOnlyRepository jpaScreeningReadOnlyRepository;
+
+    @Override
+    public Optional<Screening> readByIdWithSeats(Long id) {
+        return jpaScreeningReadOnlyRepository.findById(id);
+    }
 
     @Override
     public List<Screening> readAll() {
@@ -43,14 +46,11 @@ class SpringDataJpaScreeningReadOnlyRepository implements ScreeningReadOnlyRepos
     public List<Screening> readEnded() {
         return jpaScreeningReadOnlyRepository.findEnded();
     }
-
-    @Override
-    public Optional<ScreeningDetailsDto> readDetailsBySeatId(Long screeningId) {
-        return jpaScreeningReadOnlyRepository.readDetailsByScreeningId(screeningId);
-    }
 }
 
 interface JpaScreeningReadOnlyRepository extends Repository<Screening, Long> {
+    Optional<Screening> findById(Long id);
+
     List<Screening> findAll();
 
     List<Screening> findByFilm_Title(String filmTitle);
@@ -61,13 +61,4 @@ interface JpaScreeningReadOnlyRepository extends Repository<Screening, Long> {
 
     @Query("select s from Screening s where s.endDate < CURRENT_DATE")
     List<Screening> findEnded();
-
-    @Query(
-            "select new com.cinema.catalog.application.dto.ScreeningDetailsDto" +
-                    "(" +
-                    "screening.room.customId, " +
-                    "screening.film.title" +
-                    ") from Screening screening where screening.id = :screeningId"
-    )
-    Optional<ScreeningDetailsDto> readDetailsByScreeningId(@Param("screeningId") Long screeningId);
 }

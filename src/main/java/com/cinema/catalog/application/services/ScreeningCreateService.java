@@ -11,11 +11,14 @@ import com.cinema.catalog.domain.services.ScreeningDateValidateService;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.shared.time.TimeProvider;
+import com.cinema.catalog.domain.Seat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +37,8 @@ class ScreeningCreateService {
             var film = readFilm(dto.filmId());
             var endDate = film.calculateScreeningEndDate(dto.date());
             var availableRoom = findAvailableRoom(dto.date(), endDate);
-            var newScreening = new Screening(dto.date(), film, availableRoom);
+            var seats = createSeats(availableRoom.getRowsNumber(), availableRoom.getRowSeatsNumber());
+            var newScreening = Screening.create(dto.date(), film, availableRoom, seats);
             film.addScreening(newScreening);
             return newScreening;
         });
@@ -60,5 +64,15 @@ class ScreeningCreateService {
                 screeningDate,
                 screeningEndDate
         ).orElseThrow(RoomsNoAvailableException::new);
+    }
+
+    private List<Seat> createSeats(int rowsQuantity, int seatsQuantityInOneRow) {
+        return IntStream
+                .rangeClosed(1, rowsQuantity)
+                .boxed()
+                .flatMap(rowNumber -> IntStream.rangeClosed(1, seatsQuantityInOneRow)
+                        .mapToObj(seatNumber -> Seat.create(rowNumber, seatNumber))
+                )
+                .toList();
     }
 }

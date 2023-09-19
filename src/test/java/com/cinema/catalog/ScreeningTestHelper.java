@@ -3,6 +3,7 @@ package com.cinema.catalog;
 import com.cinema.catalog.domain.Film;
 import com.cinema.catalog.domain.Room;
 import com.cinema.catalog.domain.Screening;
+import com.cinema.catalog.domain.Seat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,10 +22,12 @@ public final class ScreeningTestHelper {
             Room room,
             LocalDateTime currentDate
     ) {
-        return new Screening(
+        var seat = Seat.create(1,2);
+        return Screening.create(
                 getScreeningDate(currentDate),
                 film,
-                room
+                room,
+                List.of(seat)
         );
     }
 
@@ -33,23 +36,28 @@ public final class ScreeningTestHelper {
             Room room,
             LocalDateTime screeningDate
     ) {
-        return new Screening(
+        var seat = Seat.create(1,2);
+        return Screening.create(
                screeningDate,
                 film,
-                room
+                room,
+                List.of(seat)
         );
     }
 
     public static List<Screening> createScreenings(Film film, Room room) {
-        var screening1 = new Screening(
+        var seat = Seat.create(1,2);
+        var screening1 = Screening.create(
                 SCREENING_DATE,
                 film,
-                room
+                room,
+                List.of(seat)
         );
-        var screening2 = new Screening(
+        var screening2 = Screening.create(
                 SCREENING_DATE.plusDays(1),
                 film,
-                room
+                room,
+                List.of(seat)
         );
         return List.of(screening1, screening2);
     }

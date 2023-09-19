@@ -1,6 +1,5 @@
 package com.cinema.tickets.infrastructure.rest;
 
-import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.application.services.TicketFacade;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -40,11 +38,6 @@ class TicketController {
     @SecurityRequirement(name = "basic")
     List<TicketDto> readAllTickets() {
         return ticketFacade.readTicketsByCurrentUser();
-    }
-
-    @GetMapping("/seats")
-    List<SeatDto> readSeatsByScreeningId(@RequestParam Long screeningId) {
-        return ticketFacade.readSeatsByScreeningId(screeningId);
     }
 }
 

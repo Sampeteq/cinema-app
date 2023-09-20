@@ -1,25 +1,23 @@
 package com.cinema.tickets.domain;
 
-import com.cinema.catalog.domain.Screening;
-import com.cinema.catalog.domain.Seat;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
+import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
+import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.ToString;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tickets")
 @Getter
-@ToString(exclude = "seat")
 public class Ticket {
 
     @Id
@@ -29,41 +27,60 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
 
-    @OneToOne
-    private Seat seat;
+    private String filmTitle;
+
+    private LocalDateTime screeningDate;
+
+    private Long screeningId;
+
+    private String roomCustomId;
+
+    private int rowNumber;
+
+    private int seatNumber;
 
     private Long userId;
 
     protected Ticket() {}
 
-    private Ticket(TicketStatus status, Long userId, Seat seat) {
-        this.status = status;
-        this.seat = seat;
+    public Ticket(
+            String filmTitle,
+            Long screeningId,
+            LocalDateTime screeningDate,
+            String roomCustomId,
+            int rowNumber,
+            int seatNumber
+    ) {
+        this.filmTitle = filmTitle;
+        this.screeningId = screeningId;
+        this.screeningDate = screeningDate;
+        this.roomCustomId = roomCustomId;
+        this.rowNumber = rowNumber;
+        this.seatNumber = seatNumber;
+    }
+
+    public void book(LocalDateTime currentDate, Long userId) {
+        if (timeToScreeningInHours(currentDate) < 1) {
+            throw new TicketBookTooLateException();
+        }
+        this.status = TicketStatus.ACTIVE;
         this.userId = userId;
     }
 
-    public static Ticket book(
-            LocalDateTime currentDate,
-            Screening screening,
-            int rowNumber,
-            int seatNumber,
-            Long userId
-    ) {
-        var foundSeat = screening.findSeat(rowNumber, seatNumber);
-        var ticket = new Ticket(
-                TicketStatus.ACTIVE,
-                userId,
-                foundSeat
-        );
-        foundSeat.addTicket(currentDate, ticket);
-        return ticket;
-    }
-
     public void cancel(LocalDateTime currentDate) {
+        if (timeToScreeningInHours(currentDate) < 24) {
+            throw new TicketCancelTooLateException();
+        }
         if (status.equals(TicketStatus.CANCELLED)) {
             throw new TicketAlreadyCancelledException();
         }
-        this.seat.removeTicket(currentDate);
         this.status = TicketStatus.CANCELLED;
+    }
+
+    private long timeToScreeningInHours(LocalDateTime currentDate) {
+        return Duration
+                .between(currentDate, this.screeningDate)
+                .abs()
+                .toHours();
     }
 }

@@ -12,7 +12,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -77,12 +76,5 @@ public class Screening {
                 .filter(s -> s.placedOn(rowNumber, seatNumber))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("Seat"));
-    }
-
-    public long timeToScreeningInHours(LocalDateTime currentDate) {
-        return Duration
-                .between(currentDate, date)
-                .abs()
-                .toHours();
     }
 }

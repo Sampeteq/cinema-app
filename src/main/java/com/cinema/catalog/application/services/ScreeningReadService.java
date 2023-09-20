@@ -5,6 +5,7 @@ import com.cinema.catalog.application.dto.ScreeningMapper;
 import com.cinema.catalog.domain.FilmCategory;
 import com.cinema.catalog.domain.Screening;
 import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
+import com.cinema.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,5 +57,11 @@ class ScreeningReadService {
                 .sorted(comparing(Screening::getDate))
                 .map(screeningMapper::mapToDto)
                 .toList();
+    }
+
+    public Screening readByIdWithSeats(Long id) {
+        return screeningReadOnlyRepository
+                .readByIdWithSeats(id)
+                .orElseThrow(() -> new EntityNotFoundException("Screening"));
     }
 }

@@ -3,9 +3,13 @@
 
 create table if not exists tickets
 (
-    id           bigint generated always as identity primary key,
-    status       varchar,
-    seat_id      bigint,
-    user_id      bigint,
-    foreign key (seat_id) references seats (id)
+    id             bigint generated always as identity primary key,
+    status         varchar,
+    film_title     varchar,
+    screening_id   bigint,
+    screening_date timestamp,
+    room_custom_id varchar,
+    row_number     int,
+    seat_number    int,
+    user_id        bigint
 );

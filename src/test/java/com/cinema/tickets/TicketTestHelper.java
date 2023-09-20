@@ -5,16 +5,10 @@ import com.cinema.catalog.application.dto.FilmCreateDto;
 import com.cinema.catalog.application.dto.RoomCreateDto;
 import com.cinema.catalog.application.dto.ScreeningCreateDto;
 import com.cinema.catalog.domain.FilmCategory;
-import com.cinema.catalog.domain.Screening;
-import com.cinema.catalog.domain.Seat;
 import com.cinema.tickets.domain.Ticket;
 
 import java.time.LocalDateTime;
 import java.time.Year;
-import java.util.List;
-
-import static com.cinema.catalog.FilmTestHelper.createFilm;
-import static com.cinema.catalog.RoomTestHelper.createRoom;
 
 public final class TicketTestHelper {
 
@@ -25,54 +19,36 @@ public final class TicketTestHelper {
     public static final String FILM_TITLE = "Title 1";
     public static final FilmCategory FILM_CATEGORY = FilmCategory.COMEDY;
     public static final int FILM_DURATION_IN_MINUTES = 100;
-    private static final LocalDateTime currentDate = new MockTimeProvider().getCurrentDate();
-    public static final LocalDateTime SCREENING_DATE = currentDate.plusDays(7);
-    private static final int SEAT_ROW_NUMBER = 1;
-    private static final int SEAT_NUMBER = 1;
+    public static final LocalDateTime CURRENT_DATE = new MockTimeProvider().getCurrentDate();
+    public static final Long SCREENING_ID = 1L;
+    public static final LocalDateTime SCREENING_DATE = CURRENT_DATE.plusDays(7);
+    public static final int SEAT_NUMBER = 1;
+    public static final int ROW_NUMBER = 1;
     public static final long USER_ID = 1L;
 
     private TicketTestHelper() {
     }
 
-    public static Seat prepareSeat() {
-        return Seat.create(SEAT_ROW_NUMBER, SEAT_NUMBER);
-    }
-
-    public static Screening prepareScreening(Seat seat) {
-        return prepareScreening(seat, SCREENING_DATE);
-    }
-
-    public static Screening prepareScreening(Seat seat, LocalDateTime screeningDate) {
-        var film = createFilm();
-        var room = createRoom();
-        return Screening.create(
-                screeningDate,
-                film,
-                room,
-                List.of(seat)
-        );
-    }
-
-    public static Screening prepareScreeningWithBookedSeat(Seat seat) {
-        var screening = prepareScreening(seat);
-        Ticket.book(currentDate, screening, seat.getRowNumber(), seat.getNumber(), USER_ID);
-        return screening;
-    }
-
     public static Ticket prepareTicket() {
-        var screeningDate = currentDate.plusDays(7);
+        var screeningDate = CURRENT_DATE.plusDays(7);
         return prepareTicket(screeningDate);
     }
 
     public static Ticket prepareTicket(LocalDateTime screeningDate) {
-        var seat = prepareSeat();
-        var screening = prepareScreening(seat, screeningDate);
-        return Ticket.book(currentDate, screening, seat.getNumber(), seat.getRowNumber(), USER_ID);
+        return new Ticket(
+                FILM_TITLE,
+                SCREENING_ID,
+                screeningDate,
+                ROOM_CUSTOM_ID,
+                ROW_NUMBER,
+                SEAT_NUMBER
+        );
     }
 
     public static Ticket prepareCancelledTicket() {
         var ticket = prepareTicket();
-        ticket.cancel(currentDate);
+        ticket.book(CURRENT_DATE, USER_ID);
+        ticket.cancel(CURRENT_DATE);
         return ticket;
     }
 

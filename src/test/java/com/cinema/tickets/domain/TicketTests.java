@@ -1,82 +1,60 @@
 package com.cinema.tickets.domain;
 
-import com.cinema.MockTimeProvider;
-import com.cinema.tickets.TicketTestHelper;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
-import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
+import static com.cinema.tickets.TicketTestHelper.CURRENT_DATE;
+import static com.cinema.tickets.TicketTestHelper.FILM_TITLE;
+import static com.cinema.tickets.TicketTestHelper.ROOM_CUSTOM_ID;
+import static com.cinema.tickets.TicketTestHelper.ROW_NUMBER;
+import static com.cinema.tickets.TicketTestHelper.SCREENING_DATE;
+import static com.cinema.tickets.TicketTestHelper.SCREENING_ID;
+import static com.cinema.tickets.TicketTestHelper.SEAT_NUMBER;
+import static com.cinema.tickets.TicketTestHelper.USER_ID;
 import static com.cinema.tickets.TicketTestHelper.prepareCancelledTicket;
-import static com.cinema.tickets.TicketTestHelper.prepareScreening;
-import static com.cinema.tickets.TicketTestHelper.prepareScreeningWithBookedSeat;
-import static com.cinema.tickets.TicketTestHelper.prepareSeat;
 import static com.cinema.tickets.TicketTestHelper.prepareTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TicketTests {
 
-    private static final LocalDateTime currentDate = new MockTimeProvider().getCurrentDate();
-
     @Test
     void ticket_is_booked() {
         //given
-        var seat = prepareSeat();
-        var screening = prepareScreening(seat);
-        var userId = 1L;
+        var ticket = new Ticket(
+                FILM_TITLE,
+                SCREENING_ID,
+                SCREENING_DATE,
+                ROOM_CUSTOM_ID,
+                ROW_NUMBER,
+                SEAT_NUMBER
+        );
 
         //when
-        var ticket = Ticket.book(currentDate, screening, seat.getRowNumber(), seat.getNumber(), userId);
+        ticket.book(CURRENT_DATE, USER_ID);
 
         //then
-        assertThat(ticket.getSeat()).isEqualTo(seat);
         assertThat(ticket.getStatus()).isEqualTo(TicketStatus.ACTIVE);
-        assertThat(ticket.getUserId()).isEqualTo(userId);
-        assertThat(ticket.getSeat().isFree()).isFalse();
-    }
-
-    @Test
-    void ticket_is_unique() {
-        //given
-        var seat = prepareSeat();
-        var screening = prepareScreeningWithBookedSeat(seat);
-        var otherUserId = 2L;
-
-        //when
-        assertThrows(
-                TicketAlreadyExists.class,
-                () -> Ticket.book(
-                        currentDate,
-                        screening,
-                        seat.getRowNumber(),
-                        seat.getNumber(),
-                        otherUserId
-                )
-        );
+        assertThat(ticket.getFilmTitle()).isEqualTo(FILM_TITLE);
+        assertThat(ticket.getScreeningDate()).isEqualTo(SCREENING_DATE);
+        assertThat(ticket.getRoomCustomId()).isEqualTo(ROOM_CUSTOM_ID);
+        assertThat(ticket.getRowNumber()).isEqualTo(ROW_NUMBER);
+        assertThat(ticket.getSeatNumber()).isEqualTo(SEAT_NUMBER);
+        assertThat(ticket.getUserId()).isEqualTo(USER_ID);
     }
 
     @Test
     void ticket_is_booked_at_least_1_hour_before_screening() {
         //given
-        var seat = prepareSeat();
-        var screeningDate = currentDate.minusMinutes(59);
-        var screening = prepareScreening(seat, screeningDate);
-        var userId = 1L;
+        var screeningDate = CURRENT_DATE.minusMinutes(59);
+        var ticket = prepareTicket(screeningDate);
 
         //when
         assertThrows(
                 TicketBookTooLateException.class,
-                () -> Ticket.book(
-                        currentDate,
-                        screening,
-                        seat.getRowNumber(),
-                        seat.getNumber(),
-                        userId
-                )
+                () -> ticket.book(CURRENT_DATE, USER_ID)
         );
     }
 
@@ -84,26 +62,25 @@ class TicketTests {
     void ticket_is_cancelled() {
         //given
         var ticket = prepareTicket();
+        ticket.book(CURRENT_DATE, USER_ID);
 
         //when
-        ticket.cancel(currentDate);
+        ticket.cancel(CURRENT_DATE);
 
         //then
         assertThat(ticket.getStatus()).isEqualTo(TicketStatus.CANCELLED);
-        assertThat(ticket.getSeat().isFree()).isTrue();
-        assertThat(ticket.getSeat().getTicket()).isNull();
     }
 
     @Test
     void ticket_is_cancelled_at_least_24h_hours_before_screening() {
         //given
-        var screeningDate = currentDate.minusHours(23);
-        var ticket = TicketTestHelper.prepareTicket(screeningDate);
+        var screeningDate = CURRENT_DATE.minusHours(23);
+        var ticket = prepareTicket(screeningDate);
 
         //when
         assertThrows(
                 TicketCancelTooLateException.class,
-                () -> ticket.cancel(currentDate)
+                () -> ticket.cancel(CURRENT_DATE)
         );
     }
 
@@ -115,7 +92,7 @@ class TicketTests {
         //when
         assertThrows(
                 TicketAlreadyCancelledException.class,
-                () -> ticket.cancel(currentDate)
+                () -> ticket.cancel(CURRENT_DATE)
         );
     }
 }

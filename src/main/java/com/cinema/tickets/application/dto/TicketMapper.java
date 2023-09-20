@@ -7,10 +7,10 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface TicketMapper {
 
-    @Mapping(target = "filmTitle", source = "ticket.seat.screening.film.title")
-    @Mapping(target = "screeningDate", source = "ticket.seat.screening.date")
-    @Mapping(target = "roomCustomId", source = "ticket.seat.screening.room.customId")
-    @Mapping(target = "seatRowNumber", source = "ticket.seat.rowNumber")
-    @Mapping(target = "seatNumber", source = "ticket.seat.number")
+    @Mapping(target = "filmTitle", source = "ticket.filmTitle")
+    @Mapping(target = "screeningDate", source = "ticket.screeningDate")
+    @Mapping(target = "roomCustomId", source = "ticket.roomCustomId")
+    @Mapping(target = "seatRowNumber", source = "ticket.rowNumber")
+    @Mapping(target = "seatNumber", source = "ticket.seatNumber")
     TicketDto mapToDto(Ticket ticket);
 }

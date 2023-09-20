@@ -31,6 +31,15 @@ class SpringDataJpaTicketRepository implements TicketRepository {
     public List<Ticket> readAllByUserId(Long userId) {
         return jpaTicketRepository.readAllByUserId(userId);
     }
+
+    @Override
+    public boolean exists(Long screeningId, int rowNumber, int seatNumber) {
+        return jpaTicketRepository.existsByScreeningIdAndRowNumberAndSeatNumber(
+                screeningId,
+                rowNumber,
+                seatNumber
+        );
+    }
 }
 
 interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
@@ -38,4 +47,10 @@ interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
     Optional<Ticket> readByIdAndUserId(@Param("ticketId") Long ticketId, @Param("userId") Long userId);
 
     List<Ticket> readAllByUserId(Long userId);
+
+    boolean existsByScreeningIdAndRowNumberAndSeatNumber(
+            Long screeningId,
+            int rowNumber,
+            int seatNumber
+    );
 }

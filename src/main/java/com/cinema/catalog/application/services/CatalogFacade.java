@@ -4,6 +4,7 @@ import com.cinema.catalog.application.dto.FilmCreateDto;
 import com.cinema.catalog.application.dto.FilmDto;
 import com.cinema.catalog.application.dto.RoomCreateDto;
 import com.cinema.catalog.application.dto.ScreeningCreateDto;
+import com.cinema.catalog.application.dto.ScreeningDetailsDto;
 import com.cinema.catalog.application.dto.ScreeningDto;
 import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.catalog.domain.FilmCategory;
@@ -58,5 +59,15 @@ public class CatalogFacade {
 
     public List<SeatDto> readSeatsByScreeningId(Long id) {
         return seatReadService.readSeatsByScreeningId(id);
+    }
+
+    public ScreeningDetailsDto readScreeningDetails(Long id, int rowNumber, int seatNumber) {
+        var screening = screeningReadService.readByIdWithSeats(id);
+        screening.findSeat(rowNumber, seatNumber);
+        return new ScreeningDetailsDto(
+                screening.getFilm().getTitle(),
+                screening.getDate(),
+                screening.getRoom().getCustomId()
+        );
     }
 }

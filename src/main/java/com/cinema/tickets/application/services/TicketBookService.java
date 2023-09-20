@@ -1,11 +1,13 @@
 package com.cinema.tickets.application.services;
 
-import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
-import com.cinema.shared.exceptions.EntityNotFoundException;
+import com.cinema.catalog.application.services.CatalogFacade;
+import com.cinema.shared.events.EventPublisher;
 import com.cinema.shared.time.TimeProvider;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
+import com.cinema.tickets.domain.events.TicketBookedEvent;
+import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
 import com.cinema.user.application.services.UserFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,25 +19,40 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 class TicketBookService {
 
-    private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
+    private final TicketRepository ticketRepository;
+    private final CatalogFacade catalogFacade;
     private final UserFacade userFacade;
     private final TimeProvider timeProvider;
-    private final TicketRepository ticketRepository;
+    private final EventPublisher eventPublisher;
 
     @Transactional
     public void bookTicket(TicketBookDto dto) {
-        var screening = screeningReadOnlyRepository
-                .readByIdWithSeats(dto.screeningId())
-                .orElseThrow(() -> new EntityNotFoundException("Screening"));
-        var currentUserId = userFacade.readCurrentUserId();
-        var ticket = Ticket.book(
-                timeProvider.getCurrentDate(),
-                screening,
+        if (ticketRepository.exists(dto.screeningId(), dto.rowNumber(), dto.seatNumber())) {
+            throw new TicketAlreadyExists();
+        }
+        var screeningDetails = catalogFacade.readScreeningDetails(
+                dto.screeningId(),
                 dto.rowNumber(),
-                dto.seatNumber(),
-                currentUserId
+                dto.rowNumber()
         );
+        var currentUserId = userFacade.readCurrentUserId();
+        var ticket = new Ticket(
+                screeningDetails.filmTitle(),
+                dto.screeningId(),
+                screeningDetails.date(),
+                screeningDetails.roomCustomId(),
+                dto.rowNumber(),
+                dto.seatNumber()
+        );
+        ticket.book(timeProvider.getCurrentDate(), currentUserId);
         var addedTicket = ticketRepository.add(ticket);
         log.info("Added a ticket:{}", addedTicket);
+        var ticketBookedEvent = new TicketBookedEvent(
+                dto.screeningId(),
+                dto.rowNumber(),
+                dto.seatNumber()
+        );
+        eventPublisher.publish(ticketBookedEvent);
+        log.info("Event published:{}", ticketBookedEvent);
     }
 }

@@ -1,16 +1,10 @@
 package com.cinema.catalog.domain;
 
-import com.cinema.tickets.domain.Ticket;
-import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
-import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
-import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -18,14 +12,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "seats")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString(exclude = {"screening", "ticket"})
+@ToString(exclude = "screening")
 public class Seat {
 
     @Id
@@ -40,9 +32,6 @@ public class Seat {
 
     @ManyToOne
     private Screening screening;
-
-    @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
-    private Ticket ticket;
 
     private Seat(int rowNumber, int number, boolean isFree) {
         this.rowNumber = rowNumber;
@@ -67,22 +56,11 @@ public class Seat {
         return this.rowNumber == rowNumber && this.number == seatNumber;
     }
 
-    public void addTicket(LocalDateTime currentDate, Ticket ticket) {
-        if (screening.timeToScreeningInHours(currentDate) < 1) {
-            throw new TicketBookTooLateException();
-        }
-        if (this.ticket != null) {
-            throw new TicketAlreadyExists();
-        }
-        this.ticket = ticket;
+    public void makeNotFree() {
         this.isFree = false;
     }
 
-    public void removeTicket(LocalDateTime currentDate) {
-        if (this.screening.timeToScreeningInHours(currentDate) < 24) {
-            throw new TicketCancelTooLateException();
-        }
-        this.ticket = null;
+    public void makeFree() {
         this.isFree = true;
     }
 }

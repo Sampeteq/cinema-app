@@ -1,7 +1,7 @@
 package com.cinema.mails.infrastructure;
 
 import com.cinema.mails.domain.Mail;
-import com.cinema.mails.domain.ports.MailSender;
+import com.cinema.mails.domain.MailSender;
 import com.cinema.shared.time.TimeProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;

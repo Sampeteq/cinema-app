@@ -6,7 +6,7 @@ import com.cinema.user.application.dto.UserPasswordNewDto;
 import com.cinema.user.domain.UserRole;
 import com.cinema.user.domain.exceptions.UserMailAlreadyExistsException;
 import com.cinema.user.domain.exceptions.UserNotSamePasswordsException;
-import com.cinema.user.domain.ports.UserRepository;
+import com.cinema.user.domain.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

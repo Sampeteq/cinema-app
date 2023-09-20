@@ -3,7 +3,7 @@ package com.cinema.catalog.application.services;
 import com.cinema.catalog.application.dto.FilmCreateDto;
 import com.cinema.catalog.domain.Film;
 import com.cinema.catalog.domain.exceptions.FilmTitleNotUniqueException;
-import com.cinema.catalog.domain.ports.FilmRepository;
+import com.cinema.catalog.domain.FilmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,7 @@ package com.cinema.catalog.infrastructure.db;
 
 import com.cinema.catalog.domain.FilmCategory;
 import com.cinema.catalog.domain.Screening;
-import com.cinema.catalog.domain.ports.ScreeningReadOnlyRepository;
+import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;

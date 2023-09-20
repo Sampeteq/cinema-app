@@ -1,7 +1,7 @@
 package com.cinema.catalog.infrastructure.db;
 
 import com.cinema.catalog.domain.Room;
-import com.cinema.catalog.domain.ports.RoomRepository;
+import com.cinema.catalog.domain.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

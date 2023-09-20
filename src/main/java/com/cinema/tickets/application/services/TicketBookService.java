@@ -1,11 +1,11 @@
 package com.cinema.tickets.application.services;
 
-import com.cinema.catalog.domain.ports.ScreeningReadOnlyRepository;
+import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.shared.time.TimeProvider;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.domain.Ticket;
-import com.cinema.tickets.domain.ports.TicketRepository;
+import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.user.application.services.UserFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

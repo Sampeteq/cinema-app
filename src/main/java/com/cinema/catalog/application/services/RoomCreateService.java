@@ -3,7 +3,7 @@ package com.cinema.catalog.application.services;
 import com.cinema.catalog.application.dto.RoomCreateDto;
 import com.cinema.catalog.domain.Room;
 import com.cinema.catalog.domain.exceptions.RoomCustomIdAlreadyExistsException;
-import com.cinema.catalog.domain.ports.RoomRepository;
+import com.cinema.catalog.domain.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

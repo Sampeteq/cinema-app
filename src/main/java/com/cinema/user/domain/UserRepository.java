@@ -1,4 +1,4 @@
-package com.cinema.user.domain.ports;
+package com.cinema.user.domain;
 
 import com.cinema.user.domain.User;
 

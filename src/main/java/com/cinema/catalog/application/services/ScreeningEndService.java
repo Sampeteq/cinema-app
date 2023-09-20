@@ -1,7 +1,7 @@
 package com.cinema.catalog.application.services;
 
 import com.cinema.catalog.domain.Screening;
-import com.cinema.catalog.domain.ports.ScreeningReadOnlyRepository;
+import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

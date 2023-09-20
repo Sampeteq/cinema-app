@@ -1,7 +1,7 @@
 package com.cinema.catalog.infrastructure.db;
 
 import com.cinema.catalog.domain.Film;
-import com.cinema.catalog.domain.ports.FilmRepository;
+import com.cinema.catalog.domain.FilmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

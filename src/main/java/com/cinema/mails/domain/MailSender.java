@@ -1,4 +1,4 @@
-package com.cinema.mails.domain.ports;
+package com.cinema.mails.domain;
 
 import com.cinema.mails.domain.Mail;
 

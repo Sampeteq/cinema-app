@@ -5,7 +5,7 @@ import com.cinema.user.domain.User;
 import com.cinema.user.domain.UserRole;
 import com.cinema.user.domain.exceptions.UserMailAlreadyExistsException;
 import com.cinema.user.domain.exceptions.UserNotSamePasswordsException;
-import com.cinema.user.domain.ports.UserRepository;
+import com.cinema.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

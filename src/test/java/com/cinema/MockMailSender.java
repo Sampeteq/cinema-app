@@ -1,7 +1,7 @@
 package com.cinema;
 
 import com.cinema.mails.domain.Mail;
-import com.cinema.mails.domain.ports.MailSender;
+import com.cinema.mails.domain.MailSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

@@ -2,7 +2,7 @@ package com.cinema.user.application.services;
 
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.user.application.dto.UserPasswordNewDto;
-import com.cinema.user.domain.ports.UserRepository;
+import com.cinema.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

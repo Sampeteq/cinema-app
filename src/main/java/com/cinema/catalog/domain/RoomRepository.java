@@ -1,4 +1,4 @@
-package com.cinema.catalog.domain.ports;
+package com.cinema.catalog.domain;
 
 import com.cinema.catalog.domain.Room;
 

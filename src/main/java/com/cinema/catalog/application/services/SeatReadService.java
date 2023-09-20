@@ -3,7 +3,7 @@ package com.cinema.catalog.application.services;
 import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.catalog.application.dto.SeatMapper;
 import com.cinema.catalog.domain.Screening;
-import com.cinema.catalog.domain.ports.ScreeningReadOnlyRepository;
+import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

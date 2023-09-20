@@ -1,7 +1,7 @@
 package com.cinema.mails.infrastructure;
 
 import com.cinema.mails.domain.Mail;
-import com.cinema.mails.domain.ports.MailRepository;
+import com.cinema.mails.domain.MailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

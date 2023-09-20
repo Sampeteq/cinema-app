@@ -1,7 +1,7 @@
 package com.cinema.user.application.services;
 
 import com.cinema.user.domain.User;
-import com.cinema.user.domain.ports.UserRepository;
+import com.cinema.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

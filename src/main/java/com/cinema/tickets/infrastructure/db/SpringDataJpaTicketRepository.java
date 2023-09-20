@@ -1,7 +1,7 @@
 package com.cinema.tickets.infrastructure.db;
 
 import com.cinema.tickets.domain.Ticket;
-import com.cinema.tickets.domain.ports.TicketRepository;
+import com.cinema.tickets.domain.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;

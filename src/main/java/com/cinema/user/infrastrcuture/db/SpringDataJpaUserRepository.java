@@ -1,7 +1,7 @@
 package com.cinema.user.infrastrcuture.db;
 
 import com.cinema.user.domain.User;
-import com.cinema.user.domain.ports.UserRepository;
+import com.cinema.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

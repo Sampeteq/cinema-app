@@ -5,7 +5,7 @@ import com.cinema.catalog.application.dto.FilmDto;
 import com.cinema.catalog.application.dto.FilmMapper;
 import com.cinema.catalog.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.catalog.domain.exceptions.FilmYearOutOfRangeException;
-import com.cinema.catalog.domain.ports.FilmRepository;
+import com.cinema.catalog.domain.FilmRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;

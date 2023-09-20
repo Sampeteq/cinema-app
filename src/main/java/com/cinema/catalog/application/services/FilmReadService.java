@@ -2,7 +2,7 @@ package com.cinema.catalog.application.services;
 
 import com.cinema.catalog.application.dto.FilmDto;
 import com.cinema.catalog.application.dto.FilmMapper;
-import com.cinema.catalog.domain.ports.FilmRepository;
+import com.cinema.catalog.domain.FilmRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -2,9 +2,9 @@ package com.cinema.catalog.application.services;
 
 import com.cinema.SpringIT;
 import com.cinema.catalog.ScreeningTestHelper;
-import com.cinema.catalog.domain.ports.FilmRepository;
-import com.cinema.catalog.domain.ports.RoomRepository;
-import com.cinema.catalog.domain.ports.ScreeningReadOnlyRepository;
+import com.cinema.catalog.domain.FilmRepository;
+import com.cinema.catalog.domain.RoomRepository;
+import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

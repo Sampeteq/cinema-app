@@ -6,7 +6,7 @@ import com.cinema.catalog.domain.Room;
 import com.cinema.catalog.domain.Screening;
 import com.cinema.catalog.domain.Seat;
 import com.cinema.catalog.domain.exceptions.RoomsNoAvailableException;
-import com.cinema.catalog.domain.ports.FilmRepository;
+import com.cinema.catalog.domain.FilmRepository;
 import com.cinema.catalog.domain.services.ScreeningDateValidateService;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.shared.time.TimeProvider;

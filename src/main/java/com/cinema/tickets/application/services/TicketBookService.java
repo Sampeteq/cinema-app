@@ -1,12 +1,10 @@
 package com.cinema.tickets.application.services;
 
 import com.cinema.catalog.domain.ports.ScreeningReadOnlyRepository;
-import com.cinema.shared.events.EventPublisher;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.shared.time.TimeProvider;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.domain.Ticket;
-import com.cinema.tickets.domain.events.TicketBookedEvent;
 import com.cinema.tickets.domain.ports.TicketRepository;
 import com.cinema.user.application.services.UserFacade;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +21,6 @@ class TicketBookService {
     private final UserFacade userFacade;
     private final TimeProvider timeProvider;
     private final TicketRepository ticketRepository;
-    private final EventPublisher eventPublisher;
 
     @Transactional
     public void bookTicket(TicketBookDto dto) {
@@ -40,15 +37,5 @@ class TicketBookService {
         );
         var addedTicket = ticketRepository.add(ticket);
         log.info("Added a ticket:{}", addedTicket);
-        var ticketBookedEvent = new TicketBookedEvent(
-                addedTicket.getId(),
-                screening.getId(),
-                screening.getDate(),
-                addedTicket.getSeat().getRowNumber(),
-                addedTicket.getSeat().getNumber(),
-                currentUserId
-        );
-        eventPublisher.publish(ticketBookedEvent);
-        log.info("Event published: {}", ticketBookedEvent);
     }
 }

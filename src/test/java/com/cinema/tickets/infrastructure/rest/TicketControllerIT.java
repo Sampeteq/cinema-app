@@ -208,7 +208,7 @@ class TicketControllerIT extends SpringIT {
     }
 
     @Test
-    void tikcet_is_booked_at_least_1h_before_screening() throws Exception {
+    void ticket_is_booked_at_least_1h_before_screening() throws Exception {
         //given
         var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
         prepareSeat(screeningDate);

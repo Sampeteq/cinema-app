@@ -52,13 +52,7 @@ public class Room {
         var foundOccupation = this
                 .occupations
                 .stream()
-                .filter(
-                        occupation -> occupation
-                                .getStartAt()
-                                .equals(start) && occupation
-                                .getEndAt()
-                                .equals(end)
-                )
+                .filter(occupation -> occupation.on(start, end))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("Occupation"));
         this.occupations.remove(foundOccupation);

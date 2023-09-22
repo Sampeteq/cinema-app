@@ -1,6 +1,6 @@
 package com.cinema.catalog;
 
-import com.cinema.catalog.domain.Room;
+import com.cinema.rooms.domain.Room;
 
 public final class RoomTestHelper {
 

@@ -2,6 +2,8 @@ package com.cinema.catalog.application.services;
 
 import com.cinema.catalog.domain.Screening;
 import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
+import com.cinema.catalog.domain.events.ScreeningEndedEvent;
+import com.cinema.shared.events.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 class ScreeningEndService {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
+    private final EventPublisher eventPublisher;
 
     @Transactional
     public void removeRoomsFromEndedScreenings() {
@@ -23,7 +26,14 @@ class ScreeningEndService {
         } else {
             log.info("Found ended screenings:");
             endedScreenings.forEach(screening -> log.info(screening.toString()));
-            endedScreenings.forEach(Screening::removeRoom);
+//            endedScreenings.forEach(Screening::removeRoom);
+            endedScreenings
+                    .stream()
+                    .map(screening -> new ScreeningEndedEvent(
+                            screening.getRoomCustomId(),
+                            screening.getDate(),
+                            screening.getEndDate()
+                    )).forEach(eventPublisher::publish);
         }
     }
 }

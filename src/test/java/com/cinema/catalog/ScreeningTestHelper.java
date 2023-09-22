@@ -1,7 +1,6 @@
 package com.cinema.catalog;
 
 import com.cinema.catalog.domain.Film;
-import com.cinema.catalog.domain.Room;
 import com.cinema.catalog.domain.Screening;
 import com.cinema.catalog.domain.Seat;
 
@@ -19,44 +18,45 @@ public final class ScreeningTestHelper {
 
     public static Screening createScreening(
             Film film,
-            Room room,
             LocalDateTime currentDate
     ) {
         var seat = Seat.create(1,2);
+        var roomCustomId = "1";
         return Screening.create(
                 getScreeningDate(currentDate),
                 film,
-                room,
+                roomCustomId,
                 List.of(seat)
         );
     }
 
     public static Screening createScreeningWithSpecificDate(
             Film film,
-            Room room,
             LocalDateTime screeningDate
     ) {
         var seat = Seat.create(1,2);
+        var roomCustomId = "1";
         return Screening.create(
                screeningDate,
                 film,
-                room,
+                roomCustomId,
                 List.of(seat)
         );
     }
 
-    public static List<Screening> createScreenings(Film film, Room room) {
+    public static List<Screening> createScreenings(Film film) {
         var seat = Seat.create(1,2);
+        var roomCustomId = "1";
         var screening1 = Screening.create(
                 SCREENING_DATE,
                 film,
-                room,
+                roomCustomId,
                 List.of(seat)
         );
         var screening2 = Screening.create(
                 SCREENING_DATE.plusDays(1),
                 film,
-                room,
+                roomCustomId,
                 List.of(seat)
         );
         return List.of(screening1, screening2);

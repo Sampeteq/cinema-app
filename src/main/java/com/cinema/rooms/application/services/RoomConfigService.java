@@ -1,7 +1,7 @@
-package com.cinema.catalog.application.services;
+package com.cinema.rooms.application.services;
 
-import com.cinema.catalog.application.dto.RoomCreateDto;
-import com.cinema.catalog.domain.RoomRepository;
+import com.cinema.rooms.application.dto.RoomCreateDto;
+import com.cinema.rooms.domain.RoomRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

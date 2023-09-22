@@ -1,9 +1,9 @@
-package com.cinema.catalog.application.services;
+package com.cinema.rooms.application.services;
 
-import com.cinema.catalog.application.dto.RoomCreateDto;
-import com.cinema.catalog.domain.Room;
-import com.cinema.catalog.domain.exceptions.RoomCustomIdAlreadyExistsException;
-import com.cinema.catalog.domain.RoomRepository;
+import com.cinema.rooms.application.dto.RoomCreateDto;
+import com.cinema.rooms.domain.Room;
+import com.cinema.rooms.domain.exceptions.RoomCustomIdAlreadyExistsException;
+import com.cinema.rooms.domain.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

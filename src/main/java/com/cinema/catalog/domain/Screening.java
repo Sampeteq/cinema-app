@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "screenings")
 @Getter
+@ToString(exclude = "seats")
 public class Screening {
 
     @Id
@@ -31,8 +33,7 @@ public class Screening {
     @ManyToOne(fetch = FetchType.LAZY)
     private Film film;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Room room;
+    private String roomCustomId;
 
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Seat> seats;
@@ -43,30 +44,30 @@ public class Screening {
             LocalDateTime date,
             LocalDateTime endDate,
             Film film,
-            Room room,
+            String roomCustomId,
             List<Seat> seats
     ) {
         this.date = date;
         this.endDate = endDate;
         this.film = film;
-        this.room = room;
+        this.roomCustomId = roomCustomId;
         this.seats = seats;
     }
 
     public static Screening create(
             LocalDateTime date,
             Film film,
-            Room room,
+            String roomCustomId,
             List<Seat> seats
     ) {
         var endDate = film.calculateScreeningEndDate(date);
-        var screening = new Screening(date, endDate, film, room, seats);
+        var screening = new Screening(date, endDate, film, roomCustomId, seats);
         seats.forEach(seat -> seat.assignScreening(screening));
         return screening;
     }
 
     public void removeRoom() {
-        this.room = null;
+        this.roomCustomId = null;
     }
 
     public Seat findSeat(int rowNumber, int seatNumber) {

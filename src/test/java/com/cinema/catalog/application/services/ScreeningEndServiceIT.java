@@ -3,13 +3,13 @@ package com.cinema.catalog.application.services;
 import com.cinema.SpringIT;
 import com.cinema.catalog.ScreeningTestHelper;
 import com.cinema.catalog.domain.FilmRepository;
-import com.cinema.catalog.domain.RoomRepository;
 import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
+import com.cinema.rooms.application.services.RoomFacade;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.cinema.catalog.FilmTestHelper.createFilm;
-import static com.cinema.catalog.RoomTestHelper.createRoom;
+import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ScreeningEndServiceIT extends SpringIT {
@@ -21,7 +21,7 @@ class ScreeningEndServiceIT extends SpringIT {
     private FilmRepository filmRepository;
 
     @Autowired
-    private RoomRepository roomRepository;
+    private RoomFacade roomFacade;
 
     @Autowired
     private ScreeningReadOnlyRepository screeningReadOnlyRepository;
@@ -30,8 +30,8 @@ class ScreeningEndServiceIT extends SpringIT {
     void shouldRemoveRoomsFromFinishedScreenings() {
         //given
         var film = filmRepository.add(createFilm());
-        var room = roomRepository.add(createRoom());
-        ScreeningTestHelper.createScreenings(film, room).forEach(film::addScreening);
+        roomFacade.createRoom(createRoomCreateDto());
+        ScreeningTestHelper.createScreenings(film).forEach(film::addScreening);
         filmRepository.add(film);
 
         //when
@@ -41,6 +41,6 @@ class ScreeningEndServiceIT extends SpringIT {
         var screenings = screeningReadOnlyRepository.readAll();
         assertThat(screenings)
                 .isNotEmpty()
-                .allMatch(screening -> screening.getRoom() == null);
+                .allMatch(screening -> screening.getRoomCustomId() == null);
     }
 }

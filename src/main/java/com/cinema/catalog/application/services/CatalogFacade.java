@@ -2,7 +2,6 @@ package com.cinema.catalog.application.services;
 
 import com.cinema.catalog.application.dto.FilmCreateDto;
 import com.cinema.catalog.application.dto.FilmDto;
-import com.cinema.catalog.application.dto.RoomCreateDto;
 import com.cinema.catalog.application.dto.ScreeningCreateDto;
 import com.cinema.catalog.application.dto.ScreeningDetailsDto;
 import com.cinema.catalog.application.dto.ScreeningDto;
@@ -21,7 +20,6 @@ public class CatalogFacade {
     private final FilmCreateService filmCreateService;
     private final FilmReadService filmReadService;
     private final ScreeningCreateService screeningCreateService;
-    private final RoomCreateService roomCreateService;
     private final ScreeningReadService screeningReadService;
     private final SeatReadService seatReadService;
 
@@ -35,10 +33,6 @@ public class CatalogFacade {
 
     public void createScreening(ScreeningCreateDto dto) {
         screeningCreateService.createScreening(dto);
-    }
-
-    public void createRoom(RoomCreateDto dto) {
-        roomCreateService.createRoom(dto);
     }
 
     public List<ScreeningDto> readAllScreenings() {
@@ -67,7 +61,7 @@ public class CatalogFacade {
         return new ScreeningDetailsDto(
                 screening.getFilm().getTitle(),
                 screening.getDate(),
-                screening.getRoom().getCustomId()
+                screening.getRoomCustomId()
         );
     }
 }

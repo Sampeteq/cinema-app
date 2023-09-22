@@ -1,4 +1,4 @@
-package com.cinema.catalog.domain.exceptions;
+package com.cinema.rooms.domain.exceptions;
 
 import com.cinema.shared.exceptions.ValidationException;
 

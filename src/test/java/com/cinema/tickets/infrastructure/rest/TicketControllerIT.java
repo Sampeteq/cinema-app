@@ -4,6 +4,7 @@ import com.cinema.MockTimeProvider;
 import com.cinema.SpringIT;
 import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.catalog.application.services.CatalogFacade;
+import com.cinema.rooms.application.services.RoomFacade;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;
@@ -49,6 +50,9 @@ class TicketControllerIT extends SpringIT {
 
     @Autowired
     private CatalogFacade catalogFacade;
+
+    @Autowired
+    private RoomFacade roomFacade;
 
     @Autowired
     private TicketFacade ticketFacade;
@@ -384,7 +388,7 @@ class TicketControllerIT extends SpringIT {
 
     private void prepareSeat() {
         catalogFacade.createFilm(createFilmCreateDto());
-        catalogFacade.createRoom(createRoomCreateDto());
+        roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
         catalogFacade.createScreening(
                 createScreeningCrateDto().withDate(screeningDate)
@@ -393,7 +397,7 @@ class TicketControllerIT extends SpringIT {
 
     private void prepareSeat(LocalDateTime screeningDate) {
         catalogFacade.createFilm(createFilmCreateDto());
-        catalogFacade.createRoom(createRoomCreateDto());
+        roomFacade.createRoom(createRoomCreateDto());
         catalogFacade.createScreening(
                 createScreeningCrateDto().withDate(screeningDate)
         );
@@ -403,7 +407,7 @@ class TicketControllerIT extends SpringIT {
         catalogFacade.createFilm(
                 createFilmCreateDto().withTitle(filmTitle)
         );
-        catalogFacade.createRoom(
+        roomFacade.createRoom(
                 createRoomCreateDto().withCustomId(roomCustomId)
         );
         catalogFacade.createScreening(

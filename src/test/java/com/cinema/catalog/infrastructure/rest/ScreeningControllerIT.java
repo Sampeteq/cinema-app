@@ -9,12 +9,12 @@ import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.catalog.application.services.CatalogFacade;
 import com.cinema.catalog.domain.Film;
 import com.cinema.catalog.domain.FilmCategory;
+import com.cinema.catalog.domain.FilmRepository;
 import com.cinema.catalog.domain.Screening;
-import com.cinema.catalog.domain.exceptions.RoomsNoAvailableException;
 import com.cinema.catalog.domain.exceptions.ScreeningDateInPastException;
 import com.cinema.catalog.domain.exceptions.ScreeningDateOutOfRangeException;
-import com.cinema.catalog.domain.FilmRepository;
-import com.cinema.catalog.domain.RoomRepository;
+import com.cinema.rooms.application.services.RoomFacade;
+import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,6 @@ import java.util.function.Supplier;
 
 import static com.cinema.TimeHelper.getLocalDateTime;
 import static com.cinema.catalog.FilmTestHelper.createFilm;
-import static com.cinema.catalog.RoomTestHelper.createRoom;
 import static com.cinema.catalog.ScreeningTestHelper.createScreening;
 import static com.cinema.catalog.ScreeningTestHelper.createScreeningWithSpecificDate;
 import static com.cinema.catalog.ScreeningTestHelper.createScreenings;
@@ -52,7 +51,7 @@ class ScreeningControllerIT extends SpringIT {
     private FilmRepository filmRepository;
 
     @Autowired
-    private RoomRepository roomRepository;
+    private RoomFacade roomFacade;
 
     @Autowired
     private ScreeningMapper screeningMapper;
@@ -79,7 +78,7 @@ class ScreeningControllerIT extends SpringIT {
     void screening_is_created() throws Exception {
         //given
         var film = filmRepository.add(createFilm());
-        roomRepository.add(createRoom());
+        roomFacade.createRoom(createRoomCreateDto());
         var screeningCreateDto = ScreeningCreateDto
                 .builder()
                 .filmId(film.getId())
@@ -111,7 +110,7 @@ class ScreeningControllerIT extends SpringIT {
     void screening_date_cannot_be_in_past() throws Exception {
         //given
         var filmId = filmRepository.add(createFilm()).getId();
-        roomRepository.add(createRoom());
+        roomFacade.createRoom(createRoomCreateDto());
         var currentDate = getLocalDateTime();
         Mockito
                 .when(timeProvider.getCurrentDate())
@@ -142,7 +141,7 @@ class ScreeningControllerIT extends SpringIT {
     void screening_and_current_date_difference_is_min_7_days() throws Exception {
         //given
         var filmId = filmRepository.add(createFilm()).getId();
-        roomRepository.add(createRoom());
+        roomFacade.createRoom(createRoomCreateDto());
         var currentDate = getLocalDateTime();
         Mockito
                 .when(timeProvider.getCurrentDate())
@@ -173,7 +172,7 @@ class ScreeningControllerIT extends SpringIT {
     void screening_and_current_date_difference_is_max_21_days() throws Exception {
         //given
         var filmId = filmRepository.add(createFilm()).getId();
-        roomRepository.add(createRoom());
+        roomFacade.createRoom(createRoomCreateDto());
         var currentDate = getLocalDateTime();
         Mockito
                 .when(timeProvider.getCurrentDate())
@@ -314,9 +313,8 @@ class ScreeningControllerIT extends SpringIT {
 
     private Screening addScreening() {
         var film = createFilm();
-        var room = roomRepository.add(createRoom());
         var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
-        var screening = createScreening(film, room, screeningDate);
+        var screening = createScreening(film, screeningDate);
         film.addScreening(screening);
         return filmRepository
                 .add(film)
@@ -326,9 +324,8 @@ class ScreeningControllerIT extends SpringIT {
 
     private ScreeningDto addScreening(Supplier<Film> filmSupplier) {
         var film = filmSupplier.get();
-        var room = roomRepository.add(createRoom());
         var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
-        var screening = createScreening(film, room, screeningDate);
+        var screening = createScreening(film, screeningDate);
         film.addScreening(screening);
         var addedScreening = filmRepository
                 .add(film)
@@ -339,9 +336,8 @@ class ScreeningControllerIT extends SpringIT {
 
     private ScreeningDto addScreening(LocalDate date) {
         var film = createFilm();
-        var room = roomRepository.add(createRoom());
         var dateTime = date.atStartOfDay().plusHours(16);
-        var screening = createScreeningWithSpecificDate(film, room, dateTime);
+        var screening = createScreeningWithSpecificDate(film, dateTime);
         film.addScreening(screening);
         var addedScreening = filmRepository
                 .add(film)
@@ -352,8 +348,7 @@ class ScreeningControllerIT extends SpringIT {
 
     private List<ScreeningDto> addScreenings() {
         var film = createFilm();
-        var room = roomRepository.add(createRoom());
-        var screenings = createScreenings(film, room);
+        var screenings = createScreenings(film);
         screenings.forEach(film::addScreening);
         return filmRepository
                 .add(film)
@@ -365,7 +360,7 @@ class ScreeningControllerIT extends SpringIT {
 
     private List<SeatDto> prepareSeats() {
         catalogFacade.createFilm(createFilmCreateDto());
-        catalogFacade.createRoom(createRoomCreateDto());
+        roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
         catalogFacade.createScreening(
                 createScreeningCrateDto().withDate(screeningDate)

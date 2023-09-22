@@ -7,7 +7,6 @@ create table if not exists screenings
     date    timestamp,
     end_date timestamp,
     film_id bigint,
-    room_id bigint,
-    foreign key (film_id) references films (id),
-    foreign key (room_id) references rooms (id)
+    room_custom_id varchar,
+    foreign key (film_id) references films (id)
 );

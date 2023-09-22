@@ -1,4 +1,4 @@
-package com.cinema.catalog.application.dto;
+package com.cinema.rooms.application.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

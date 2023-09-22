@@ -3,9 +3,9 @@ package com.cinema.catalog.infrastructure.rest;
 import com.cinema.SpringIT;
 import com.cinema.catalog.application.dto.FilmDto;
 import com.cinema.catalog.application.dto.FilmMapper;
+import com.cinema.catalog.domain.FilmRepository;
 import com.cinema.catalog.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.catalog.domain.exceptions.FilmYearOutOfRangeException;
-import com.cinema.catalog.domain.FilmRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,6 +18,8 @@ import java.util.List;
 import static com.cinema.catalog.FilmTestHelper.createFilm;
 import static com.cinema.catalog.FilmTestHelper.createFilmCreateDto;
 import static com.cinema.catalog.FilmTestHelper.createFilms;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -37,29 +39,25 @@ class FilmControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void film_is_created() throws Exception {
         //given
-        var cmd = createFilmCreateDto();
-        var expectedDto = List.of(
-                new FilmDto(
-                1L,
-                cmd.title(),
-                cmd.category(),
-                cmd.year(),
-                cmd.durationInMinutes()
-                )
-        );
+        var dto = createFilmCreateDto();
 
         //when
         var result = mockMvc.perform(
                 post(FILMS_BASE_ENDPOINT)
-                        .content(toJson(cmd))
+                        .content(toJson(dto))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
         //then
         result.andExpect(status().isCreated());
-        mockMvc
-                .perform(get(FILMS_BASE_ENDPOINT))
-                .andExpect(content().json(toJson(expectedDto)));
+        assertThat(filmRepository.readById(1L))
+                .isNotEmpty()
+                .hasValueSatisfying(film -> {
+                    assertEquals(dto.title(), film.getTitle());
+                    assertEquals(dto.category(), film.getCategory());
+                    assertEquals(dto.year(), film.getYear());
+                    assertEquals(dto.durationInMinutes(), film.getDurationInMinutes());
+                });
     }
 
     @Test

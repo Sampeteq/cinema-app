@@ -1,8 +1,8 @@
 package com.cinema.users.application.services;
 
 import com.cinema.users.domain.User;
-import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.UserRepository;
+import com.cinema.users.domain.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

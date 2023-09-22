@@ -2,10 +2,10 @@ package com.cinema.users.application.services;
 
 import com.cinema.users.application.dto.UserSignUpDto;
 import com.cinema.users.domain.User;
+import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.exceptions.UserMailAlreadyExistsException;
 import com.cinema.users.domain.exceptions.UserNotSamePasswordsException;
-import com.cinema.users.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,5 @@
 package com.cinema.catalog.domain;
 
-import com.cinema.catalog.domain.Film;
-
 import java.util.List;
 import java.util.Optional;
 

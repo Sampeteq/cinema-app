@@ -1,8 +1,8 @@
 package com.cinema.users.application.services;
 
 import com.cinema.shared.exceptions.EntityNotFoundException;
-import com.cinema.users.domain.events.UserPasswordResetEvent;
 import com.cinema.users.domain.UserRepository;
+import com.cinema.users.domain.events.UserPasswordResetEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

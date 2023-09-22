@@ -1,9 +1,9 @@
 package com.cinema.mails.application;
 
 import com.cinema.mails.domain.Mail;
-import com.cinema.mails.domain.MailType;
 import com.cinema.mails.domain.MailRepository;
 import com.cinema.mails.domain.MailSender;
+import com.cinema.mails.domain.MailType;
 import com.cinema.users.domain.events.UserPasswordResetEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,5 @@
 package com.cinema.catalog.application.services;
 
-import com.cinema.catalog.domain.Screening;
 import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
 import com.cinema.catalog.domain.events.ScreeningEndedEvent;
 import com.cinema.shared.events.EventPublisher;

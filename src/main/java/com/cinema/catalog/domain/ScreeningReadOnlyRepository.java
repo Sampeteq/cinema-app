@@ -1,7 +1,5 @@
 package com.cinema.catalog.domain;
 
-import com.cinema.catalog.domain.FilmCategory;
-import com.cinema.catalog.domain.Screening;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;

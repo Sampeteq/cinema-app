@@ -2,7 +2,6 @@ package com.cinema.catalog.application.services;
 
 import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.catalog.application.dto.SeatMapper;
-import com.cinema.catalog.domain.Screening;
 import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +21,10 @@ class SeatReadService {
     public List<SeatDto> readSeatsByScreeningId(Long id) {
         return screeningReadOnlyRepository
                 .readByIdWithSeats(id)
-                .map(Screening::getSeats)
+                .orElseThrow(() -> new EntityNotFoundException("Screening"))
+                .getSeats()
+                .stream()
                 .map(seatMapper::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("Screening"));
+                .toList();
     }
 }

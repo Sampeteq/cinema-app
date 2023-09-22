@@ -8,7 +8,7 @@ import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.events.TicketBookedEvent;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
-import com.cinema.user.application.services.UserFacade;
+import com.cinema.users.application.services.UserFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -3,7 +3,7 @@ package com.cinema.tickets.application.services;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.application.dto.TicketMapper;
 import com.cinema.tickets.domain.TicketRepository;
-import com.cinema.user.application.services.UserFacade;
+import com.cinema.users.application.services.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

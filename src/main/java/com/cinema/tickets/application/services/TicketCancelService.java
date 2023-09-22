@@ -5,7 +5,7 @@ import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.shared.time.TimeProvider;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.events.TicketCancelledEvent;
-import com.cinema.user.application.services.UserFacade;
+import com.cinema.users.application.services.UserFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

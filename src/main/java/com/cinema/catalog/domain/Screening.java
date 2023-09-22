@@ -66,10 +66,6 @@ public class Screening {
         return screening;
     }
 
-    public void removeRoom() {
-        this.roomCustomId = null;
-    }
-
     public Seat findSeat(int rowNumber, int seatNumber) {
         return this
                 .seats

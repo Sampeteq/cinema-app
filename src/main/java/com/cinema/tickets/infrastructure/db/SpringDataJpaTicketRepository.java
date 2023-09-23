@@ -4,7 +4,6 @@ import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,8 +22,8 @@ class SpringDataJpaTicketRepository implements TicketRepository {
 
 
     @Override
-    public Optional<Ticket> readByIdAndUserId(Long ticketId, Long userId) {
-        return jpaTicketRepository.readByIdAndUserId(ticketId, userId);
+    public Optional<Ticket> readById(Long id) {
+        return jpaTicketRepository.findById(id);
     }
 
     @Override
@@ -43,8 +42,6 @@ class SpringDataJpaTicketRepository implements TicketRepository {
 }
 
 interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
-
-    Optional<Ticket> readByIdAndUserId(@Param("ticketId") Long ticketId, @Param("userId") Long userId);
 
     List<Ticket> readAllByUserId(Long userId);
 

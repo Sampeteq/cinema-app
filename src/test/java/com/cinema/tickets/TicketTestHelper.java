@@ -62,6 +62,12 @@ public final class TicketTestHelper {
         return ticket;
     }
 
+    public static Ticket prepareBookedTicket(Long userId) {
+        var ticket = prepareTicket(SCREENING_DATE);
+        ticket.book(CLOCK, userId);
+        return ticket;
+    }
+
     public static Ticket prepareCancelledTicket() {
         var ticket = prepareTicket();
         ticket.book(CLOCK, USER_ID);

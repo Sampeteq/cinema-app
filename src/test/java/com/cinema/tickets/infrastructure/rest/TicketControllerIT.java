@@ -16,6 +16,7 @@ import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
+import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
 import com.cinema.users.application.dto.UserSignUpDto;
 import com.cinema.users.application.services.UserFacade;
 import org.junit.jupiter.api.BeforeEach;
@@ -173,7 +174,7 @@ class TicketControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isOk());
-        assertThat(ticketRepository.readByIdAndUserId(1L, 1L))
+        assertThat(ticketRepository.readById(1L))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
                     assertEquals(TicketStatus.ACTIVE, ticket.getStatus());
@@ -287,7 +288,7 @@ class TicketControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isOk());
-        assertThat(ticketRepository.readByIdAndUserId(1L, 1L))
+        assertThat(ticketRepository.readById(1L))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket ->
                         assertEquals(TicketStatus.CANCELLED, ticket.getStatus())
@@ -353,6 +354,23 @@ class TicketControllerIT extends SpringIT {
                 .andExpect(content().string(
                         new TicketCancelTooLateException().getMessage()
                 ));
+    }
+
+    @Test
+    void ticket_is_cancelled_if_belongs_to_current_user() throws Exception {
+        //given
+        var notCurrentUserId = 2L;
+        ticketRepository.add(prepareBookedTicket(notCurrentUserId));
+
+        //when
+        var result = mockMvc.perform(
+                patch(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+        );
+
+        //then
+        result
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(new TicketNotBelongsToUser().getMessage()));
     }
 
     @Test

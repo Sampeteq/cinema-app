@@ -4,6 +4,7 @@ import com.cinema.shared.events.EventPublisher;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.events.TicketCancelledEvent;
+import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
 import com.cinema.users.application.services.UserFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +24,14 @@ class TicketCancelService {
     private final EventPublisher eventPublisher;
 
     @Transactional
-    public void cancelTicket(Long ticketId) {
-        var currentUserId = userFacade.readCurrentUserId();
+    public void cancelTicket(Long id) {
         var ticket = ticketRepository
-                .readByIdAndUserId(ticketId, currentUserId)
+                .readById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ticket"));
+        var currentUserId = userFacade.readCurrentUserId();
+        if (!ticket.belongsTo(currentUserId)) {
+            throw new TicketNotBelongsToUser();
+        }
         ticket.cancel(clock);
         var ticketCancelledEvent = new TicketCancelledEvent(
                 ticket.getScreeningId(),

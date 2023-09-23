@@ -85,4 +85,8 @@ public class Ticket {
                 .abs()
                 .toHours();
     }
+
+    public boolean belongsTo(Long userId) {
+        return this.userId.equals(userId);
+    }
 }

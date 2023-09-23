@@ -33,19 +33,10 @@ public class Seat {
     @ManyToOne
     private Screening screening;
 
-    private Seat(int rowNumber, int number, boolean isFree) {
+    public Seat(int rowNumber, int number, boolean isFree) {
         this.rowNumber = rowNumber;
         this.number = number;
         this.isFree = isFree;
-    }
-
-    public static Seat create(int rowNumber, int number) {
-        final var isFree = true;
-        return new Seat(
-                rowNumber,
-                number,
-                isFree
-        );
     }
 
     public void assignScreening(Screening screening) {

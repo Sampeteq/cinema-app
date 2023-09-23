@@ -57,11 +57,12 @@ class ScreeningCreateService {
     }
 
     private List<Seat> createSeats(int rowsQuantity, int seatsQuantityInOneRow) {
+        var isFree = true;
         return IntStream
                 .rangeClosed(1, rowsQuantity)
                 .boxed()
                 .flatMap(rowNumber -> IntStream.rangeClosed(1, seatsQuantityInOneRow)
-                        .mapToObj(seatNumber -> Seat.create(rowNumber, seatNumber))
+                        .mapToObj(seatNumber -> new Seat(rowNumber, seatNumber, isFree))
                 )
                 .toList();
     }

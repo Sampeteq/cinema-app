@@ -20,7 +20,8 @@ public final class ScreeningTestHelper {
             Film film,
             LocalDateTime currentDate
     ) {
-        var seat = Seat.create(1,2);
+        var isFree = true;
+        var seat = new Seat(1,2, isFree);
         var roomCustomId = "1";
         return Screening.create(
                 getScreeningDate(currentDate),
@@ -34,7 +35,8 @@ public final class ScreeningTestHelper {
             Film film,
             LocalDateTime screeningDate
     ) {
-        var seat = Seat.create(1,2);
+        var isFree = true;
+        var seat = new Seat(1,2, isFree);
         var roomCustomId = "1";
         return Screening.create(
                screeningDate,
@@ -45,7 +47,8 @@ public final class ScreeningTestHelper {
     }
 
     public static List<Screening> createScreenings(Film film) {
-        var seat = Seat.create(1,2);
+        var isFree = true;
+        var seat = new Seat(1,2, isFree);
         var roomCustomId = "1";
         var screening1 = Screening.create(
                 SCREENING_DATE,

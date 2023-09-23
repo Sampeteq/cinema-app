@@ -9,6 +9,7 @@ import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.application.services.TicketFacade;
+import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
@@ -35,6 +36,7 @@ import static com.cinema.tickets.TicketTestHelper.createFilmCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createScreeningCrateDto;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -60,6 +62,9 @@ class TicketControllerIT extends SpringIT {
 
     @SpyBean
     private MockTimeProvider timeProvider;
+
+    @Autowired
+    private TicketRepository ticketRepository;
 
     @BeforeEach
     void setUp() {
@@ -164,20 +169,18 @@ class TicketControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isOk());
-        var expectedDto = List.of(
-                new TicketDto(
-                        1L,
-                        TicketStatus.ACTIVE,
-                        filmTitle,
-                        screeningDate,
-                        roomCustomId,
-                        seatRowNumber,
-                        seatNumber
-                )
-        );
-        mockMvc.perform(
-                get(TICKETS_BASE_ENDPOINT + "/my")
-        ).andExpect(content().json(toJson(expectedDto)));
+        assertThat(ticketRepository.readByIdAndUserId(1L, 1L))
+                .isNotEmpty()
+                .hasValueSatisfying(ticket -> {
+                    assertEquals(TicketStatus.ACTIVE, ticket.getStatus());
+                    assertEquals(filmTitle, ticket.getFilmTitle());
+                    assertEquals(screeningDate, ticket.getScreeningDate());
+                    assertEquals(screeningId, ticket.getScreeningId());
+                    assertEquals(roomCustomId, ticket.getRoomCustomId());
+                    assertEquals(seatRowNumber, ticket.getSeatNumber());
+                    assertEquals(seatNumber, ticket.getSeatNumber());
+                    assertEquals(1L, ticket.getUserId());
+                });
     }
 
     @Test
@@ -286,13 +289,11 @@ class TicketControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isOk());
-        var searchTicketsResult = mockMvc.perform(
-                get(TICKETS_BASE_ENDPOINT + "/my")
-        );
-        var isTicketCancelled = getTicketsFromResult(searchTicketsResult).anyMatch(
-                b -> b.id().equals(1L) && b.status().equals(TicketStatus.CANCELLED)
-        );
-        assertThat(isTicketCancelled).isTrue();
+        assertThat(ticketRepository.readByIdAndUserId(1L, 1L))
+                .isNotEmpty()
+                .hasValueSatisfying(ticket ->
+                        assertEquals(TicketStatus.CANCELLED, ticket.getStatus())
+                );
     }
 
     @Test
@@ -371,8 +372,6 @@ class TicketControllerIT extends SpringIT {
         );
 
         //then
-        result.andExpect(status().isOk());
-        var ticketsFromResult = getTicketsFromResult(result).toList();
         var expected = List.of(
                 new TicketDto(
                         1L,
@@ -384,7 +383,9 @@ class TicketControllerIT extends SpringIT {
                         seatNumber
                 )
         );
-        assertThat(ticketsFromResult).containsExactlyInAnyOrderElementsOf(expected);
+        result
+                .andExpect(status().isOk())
+                .andExpect(content().json(toJson(expected)));
     }
 
     private void prepareSeat() {
@@ -486,12 +487,6 @@ class TicketControllerIT extends SpringIT {
     private Stream<SeatDto> getSeatsFromResult(ResultActions searchSeatsResult) {
         return Arrays.stream(
                 fromResultActions(searchSeatsResult, SeatDto[].class)
-        );
-    }
-
-    private Stream<TicketDto> getTicketsFromResult(ResultActions searchSeatsResult) {
-        return Arrays.stream(
-                fromResultActions(searchSeatsResult, TicketDto[].class)
         );
     }
 }

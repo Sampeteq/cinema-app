@@ -6,9 +6,9 @@ import com.cinema.catalog.application.services.CatalogFacade;
 import com.cinema.rooms.application.services.RoomFacade;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.shared.exceptions.EntityNotFoundException;
+import com.cinema.tickets.TicketTestHelper;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;
-import com.cinema.tickets.application.services.TicketFacade;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.events.TicketBookedEvent;
@@ -35,6 +35,7 @@ import static com.cinema.catalog.ScreeningTestHelper.getScreeningDate;
 import static com.cinema.tickets.TicketTestHelper.createFilmCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createScreeningCrateDto;
+import static com.cinema.tickets.TicketTestHelper.prepareBookedTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
@@ -51,6 +52,9 @@ class TicketControllerIT extends SpringIT {
     private static final String TICKETS_BASE_ENDPOINT = "/tickets";
 
     @Autowired
+    private TicketRepository ticketRepository;
+
+    @Autowired
     private UserFacade userFacade;
 
     @Autowired
@@ -58,12 +62,6 @@ class TicketControllerIT extends SpringIT {
 
     @Autowired
     private RoomFacade roomFacade;
-
-    @Autowired
-    private TicketFacade ticketFacade;
-
-    @Autowired
-    private TicketRepository ticketRepository;
 
     @SpyBean
     private MockTimeProvider timeProvider;
@@ -191,14 +189,12 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_unique() throws Exception {
         //given
-        var screeningId = 1L;
-        var rowNumber = 1;
-        var seatNumber = 1;
-        prepareTicket(screeningId, rowNumber, seatNumber);
+        prepareSeat();
+        var ticket = ticketRepository.add(TicketTestHelper.prepareTicket());
         var ticketBookDto = new TicketBookDto(
-                screeningId,
-                rowNumber,
-                seatNumber
+                ticket.getScreeningId(),
+                ticket.getRowNumber(),
+                ticket.getSeatNumber()
         );
 
         //when
@@ -280,7 +276,8 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_cancelled() throws Exception {
         //give
-        prepareTicket();
+        prepareSeat();
+        ticketRepository.add(prepareBookedTicket());
 
         //when
         var result = mockMvc.perform(
@@ -299,10 +296,8 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_cancelled_event_is_published() throws Exception {
         //given
-        var screeningId = 1L;
-        var rowNumber = 1;
-        var seatNumber = 1;
-        prepareTicket(screeningId, rowNumber, seatNumber);
+        prepareSeat();
+        var ticket = ticketRepository.add(TicketTestHelper.prepareBookedTicket());
 
         //when
         mockMvc.perform(
@@ -310,14 +305,19 @@ class TicketControllerIT extends SpringIT {
         );
 
         //then
-        var expectedEvent = new TicketCancelledEvent(screeningId, rowNumber, seatNumber);
+        var expectedEvent = new TicketCancelledEvent(
+                ticket.getScreeningId(),
+                ticket.getRowNumber(),
+                ticket.getSeatNumber()
+        );
         verify(eventPublisher, times(1)).publish(expectedEvent);
     }
 
     @Test
     void ticket_already_cancelled_cannot_be_cancelled() throws Exception {
         //given
-        prepareCancelledTicket();
+        prepareSeat();
+        ticketRepository.add(TicketTestHelper.prepareCancelledTicket());
 
         //when
         var result = mockMvc.perform(
@@ -336,7 +336,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_is_cancelled_at_least_24h_before_screening() throws Exception {
         //given
         var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
-        prepareTicket(screeningDate);
+        ticketRepository.add(TicketTestHelper.prepareBookedTicket(screeningDate));
         Mockito
                 .when(timeProvider.getCurrentDate())
                 .thenReturn(screeningDate.minusHours(23));
@@ -357,12 +357,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void tickets_are_read_by_user_id() throws Exception {
         //given
-        var filmTitle = "Title 1";
-        var roomCustomId = "1";
-        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
-        var seatRowNumber = 1;
-        var seatNumber = 1;
-        prepareTicket(filmTitle, roomCustomId, screeningDate);
+        var ticket = ticketRepository.add(TicketTestHelper.prepareBookedTicket());
 
         //when
         var result = mockMvc.perform(
@@ -373,12 +368,12 @@ class TicketControllerIT extends SpringIT {
         var expected = List.of(
                 new TicketDto(
                         1L,
-                        TicketStatus.ACTIVE,
-                        filmTitle,
-                        screeningDate,
-                        roomCustomId,
-                        seatRowNumber,
-                        seatNumber
+                        ticket.getStatus(),
+                        ticket.getFilmTitle(),
+                        ticket.getScreeningDate(),
+                        ticket.getRoomCustomId(),
+                        ticket.getRowNumber(),
+                        ticket.getSeatNumber()
                 )
         );
         result
@@ -413,72 +408,5 @@ class TicketControllerIT extends SpringIT {
         catalogFacade.createScreening(
                 createScreeningCrateDto().withDate(screeningDate)
         );
-    }
-
-    private void prepareTicket() {
-        prepareSeat();
-        var screeningId = 1L;
-        var rowNumber = 1;
-        var seatNumber = 1;
-        var dto = new TicketBookDto(
-                screeningId,
-                rowNumber,
-                seatNumber
-        );
-        ticketFacade.bookTicket(dto);
-    }
-
-    private void prepareTicket(Long screeningId, int rowNumber, int seatNumber) {
-        prepareSeat();
-        var dto = new TicketBookDto(
-                screeningId,
-                rowNumber,
-                seatNumber
-        );
-        ticketFacade.bookTicket(dto);
-    }
-
-    private void prepareTicket(LocalDateTime screeningDate) {
-        prepareSeat(screeningDate);
-        var screeningId = 1L;
-        Mockito
-                .when(timeProvider.getCurrentDate())
-                .thenReturn(screeningDate.plusHours(25));
-        var rowNumber = 1;
-        var seatNumber =  1;
-        var ticketBookDto = new TicketBookDto(
-                screeningId,
-                rowNumber,
-                seatNumber
-        );
-        ticketFacade.bookTicket(ticketBookDto);
-    }
-
-    private void prepareTicket(String filmTitle, String roomCustomId, LocalDateTime screeningDate) {
-        prepareSeat(filmTitle, roomCustomId, screeningDate);
-        var screeningId = 1L;
-        var rowNumber = 1;
-        var seatNumber =  1;
-        var ticketBookDto = new TicketBookDto(
-                screeningId,
-                rowNumber,
-                seatNumber
-        );
-        ticketFacade.bookTicket(ticketBookDto);
-    }
-
-    private void prepareCancelledTicket() {
-        prepareSeat();
-        var screeningId = 1L;
-        var rowNumber = 1;
-        var seatNumber =  1;
-        var ticketBookDto = new TicketBookDto(
-                screeningId,
-                rowNumber,
-                seatNumber
-        );
-        ticketFacade.bookTicket(ticketBookDto);
-        var ticketId = 1L;
-        ticketFacade.cancelTicket(ticketId);
     }
 }

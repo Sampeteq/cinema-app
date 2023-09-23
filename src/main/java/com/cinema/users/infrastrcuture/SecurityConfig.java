@@ -42,7 +42,10 @@ class SecurityConfig {
                                 .requestMatchers(
                                         HttpMethod.POST,
                                         "/sign-up",
-                                        "/sign-in",
+                                        "/sign-in"
+                                ).permitAll()
+                                .requestMatchers(
+                                        HttpMethod.PATCH,
                                         "/password/reset",
                                         "/password/new"
                                 ).permitAll()

@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -95,7 +96,7 @@ class UserControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/password/reset").param("mail", user.getUsername())
+                patch("/password/reset").param("mail", user.getUsername())
         );
 
         //then
@@ -119,7 +120,7 @@ class UserControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post("/password/new").content(
+                patch("/password/new").content(
                         toJson(userPasswordNewDto)
                 ).contentType(MediaType.APPLICATION_JSON)
         );

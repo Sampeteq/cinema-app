@@ -6,6 +6,7 @@ import com.cinema.users.application.services.UserFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,12 +25,12 @@ class UserController {
         userFacade.signUpUser(dto);
     }
 
-    @PostMapping("/password/reset")
+    @PatchMapping("/password/reset")
     void resetUserPassword(@RequestParam String mail) {
         userFacade.resetUserPassword(mail);
     }
 
-    @PostMapping("/password/new")
+    @PatchMapping("/password/new")
     void setNewUserPassword(@RequestBody @Valid UserPasswordNewDto dto) {
         userFacade.setNewUserPassword(dto);
     }

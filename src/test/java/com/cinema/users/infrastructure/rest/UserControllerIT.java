@@ -1,13 +1,11 @@
 package com.cinema.users.infrastructure.rest;
 
 import com.cinema.SpringIT;
-import com.cinema.users.UserTestHelper;
 import com.cinema.users.application.dto.UserPasswordNewDto;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.exceptions.UserMailAlreadyExistsException;
 import com.cinema.users.domain.exceptions.UserNotSamePasswordsException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,6 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
+import static com.cinema.users.UserTestHelper.createSignUpDto;
+import static com.cinema.users.UserTestHelper.createUser;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,7 +34,7 @@ class UserControllerIT extends SpringIT {
     @Test
     void user_is_signed_up() throws Exception {
         //given
-        var signUpDto = UserTestHelper.createSignUpDto();
+        var signUpDto = createSignUpDto();
 
         //when
         var result = mockMvc.perform(
@@ -43,20 +45,20 @@ class UserControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isCreated());
-        Assertions.assertThat(userRepository.readyByMail(signUpDto.mail()))
+        assertThat(userRepository.readyByMail(signUpDto.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {
-                    org.junit.jupiter.api.Assertions.assertEquals(signUpDto.mail(), user.getUsername());
+                    assertEquals(signUpDto.mail(), user.getUsername());
                     assertTrue(passwordEncoder.matches(signUpDto.password(), user.getPassword()));
-                    org.junit.jupiter.api.Assertions.assertEquals(UserRole.COMMON, user.getRole());
+                    assertEquals(UserRole.COMMON, user.getRole());
                 });
     }
 
     @Test
     void user_name_cannot_be_duplicated() throws Exception {
         //given
-        var user = userRepository.add(UserTestHelper.createUser("user1@mail.com"));
-        var signUpRequest = UserTestHelper.createSignUpDto(user.getUsername());
+        var user = userRepository.add(createUser("user1@mail.com"));
+        var signUpRequest = createSignUpDto(user.getUsername());
 
         //when
         var result = mockMvc.perform(
@@ -74,7 +76,7 @@ class UserControllerIT extends SpringIT {
     @Test
     void user_passwords_cannot_be_different() throws Exception {
         //given
-        var signUpRequest = UserTestHelper.createSignUpDto("password1", "password2");
+        var signUpRequest = createSignUpDto("password1", "password2");
 
         //when
         var result = mockMvc.perform(
@@ -92,7 +94,7 @@ class UserControllerIT extends SpringIT {
     @Test
     void user_password_is_reset() throws Exception {
         //given
-        var user = userRepository.add(UserTestHelper.createUser());
+        var user = userRepository.add(createUser());
 
         //when
         var result = mockMvc.perform(
@@ -105,14 +107,14 @@ class UserControllerIT extends SpringIT {
                 .readyByMail(user.getUsername())
                 .orElseThrow()
                 .getPasswordResetToken();
-        Assertions.assertThat(userPasswordResetToken).isNotNull();
+        assertThat(userPasswordResetToken).isNotNull();
     }
 
     @Test
     void user_new_password_is_set() throws Exception {
         //given
         var passwordResetToken = UUID.randomUUID();
-        var addedUser = userRepository.add(UserTestHelper.createUser(passwordResetToken));
+        var addedUser = userRepository.add(createUser(passwordResetToken));
         var userPasswordNewDto = new UserPasswordNewDto(
                 passwordResetToken,
                 addedUser.getPassword() + "new"
@@ -127,7 +129,7 @@ class UserControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isOk());
-        Assertions.assertThat(
+        assertThat(
                 userRepository.readyByMail(addedUser.getMail())
         ).hasValueSatisfying(
                 user -> assertTrue(

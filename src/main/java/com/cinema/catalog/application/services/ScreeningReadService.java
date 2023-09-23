@@ -61,7 +61,7 @@ class ScreeningReadService {
 
     public Screening readByIdWithSeats(Long id) {
         return screeningReadOnlyRepository
-                .readByIdWithSeats(id)
+                .readById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));
     }
 }

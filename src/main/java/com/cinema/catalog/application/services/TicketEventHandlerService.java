@@ -36,7 +36,7 @@ class TicketEventHandlerService {
 
     private Seat readSeat(Long screeningId, int rowNumber, int seatNumber) {
         return screeningReadOnlyRepository
-                .readByIdWithSeats(screeningId)
+                .readById(screeningId)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"))
                 .findSeat(rowNumber, seatNumber);
     }

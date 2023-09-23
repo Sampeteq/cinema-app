@@ -20,7 +20,7 @@ class SeatReadService {
     @Transactional(readOnly = true)
     public List<SeatDto> readSeatsByScreeningId(Long id) {
         return screeningReadOnlyRepository
-                .readByIdWithSeats(id)
+                .readById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"))
                 .getSeats()
                 .stream()

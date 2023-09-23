@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface ScreeningReadOnlyRepository {
 
-    Optional<Screening> readByIdWithSeats(Long id);
+    Optional<Screening> readById(Long id);
 
     List<Screening> readAll();
 

@@ -18,7 +18,7 @@ class SpringDataJpaScreeningReadOnlyRepository implements ScreeningReadOnlyRepos
     private final JpaScreeningReadOnlyRepository jpaScreeningReadOnlyRepository;
 
     @Override
-    public Optional<Screening> readByIdWithSeats(Long id) {
+    public Optional<Screening> readById(Long id) {
         return jpaScreeningReadOnlyRepository.findById(id);
     }
 

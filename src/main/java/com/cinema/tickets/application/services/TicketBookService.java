@@ -2,7 +2,6 @@ package com.cinema.tickets.application.services;
 
 import com.cinema.catalog.application.services.CatalogFacade;
 import com.cinema.shared.events.EventPublisher;
-import com.cinema.shared.time.TimeProvider;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
@@ -14,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -22,7 +23,7 @@ class TicketBookService {
     private final TicketRepository ticketRepository;
     private final CatalogFacade catalogFacade;
     private final UserFacade userFacade;
-    private final TimeProvider timeProvider;
+    private final Clock clock;
     private final EventPublisher eventPublisher;
 
     @Transactional
@@ -44,7 +45,7 @@ class TicketBookService {
                 dto.rowNumber(),
                 dto.seatNumber()
         );
-        ticket.book(timeProvider.getCurrentDate(), currentUserId);
+        ticket.book(clock, currentUserId);
         var addedTicket = ticketRepository.add(ticket);
         log.info("Added a ticket:{}", addedTicket);
         var ticketBookedEvent = new TicketBookedEvent(

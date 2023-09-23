@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -59,16 +60,16 @@ public class Ticket {
         this.seatNumber = seatNumber;
     }
 
-    public void book(LocalDateTime currentDate, Long userId) {
-        if (timeToScreeningInHours(currentDate) < 1) {
+    public void book(Clock clock, Long userId) {
+        if (timeToScreeningInHours(clock) < 1) {
             throw new TicketBookTooLateException();
         }
         this.status = TicketStatus.ACTIVE;
         this.userId = userId;
     }
 
-    public void cancel(LocalDateTime currentDate) {
-        if (timeToScreeningInHours(currentDate) < 24) {
+    public void cancel(Clock clock) {
+        if (timeToScreeningInHours(clock) < 24) {
             throw new TicketCancelTooLateException();
         }
         if (status.equals(TicketStatus.CANCELLED)) {
@@ -77,7 +78,8 @@ public class Ticket {
         this.status = TicketStatus.CANCELLED;
     }
 
-    private long timeToScreeningInHours(LocalDateTime currentDate) {
+    private long timeToScreeningInHours(Clock clock) {
+        var currentDate = LocalDateTime.now(clock);
         return Duration
                 .between(currentDate, this.screeningDate)
                 .abs()

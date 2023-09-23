@@ -4,6 +4,7 @@ import com.cinema.catalog.domain.Film;
 import com.cinema.catalog.domain.Screening;
 import com.cinema.catalog.domain.Seat;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,21 +18,6 @@ public final class ScreeningTestHelper {
     public static final LocalDateTime SCREENING_DATE = getLocalDateTime();
 
     public static Screening createScreening(
-            Film film,
-            LocalDateTime currentDate
-    ) {
-        var isFree = true;
-        var seat = new Seat(1,2, isFree);
-        var roomCustomId = "1";
-        return Screening.create(
-                getScreeningDate(currentDate),
-                film,
-                roomCustomId,
-                List.of(seat)
-        );
-    }
-
-    public static Screening createScreeningWithSpecificDate(
             Film film,
             LocalDateTime screeningDate
     ) {
@@ -66,7 +52,7 @@ public final class ScreeningTestHelper {
     }
 
     /** Difference between current and screening date must be at least 7 days */
-    public static LocalDateTime getScreeningDate(LocalDateTime currentDate) {
-        return currentDate.plusDays(7);
+    public static LocalDateTime getScreeningDate(Clock clock) {
+        return LocalDateTime.now(clock).plusDays(7);
     }
 }

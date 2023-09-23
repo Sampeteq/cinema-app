@@ -1,6 +1,5 @@
 package com.cinema.tickets.infrastructure.rest;
 
-import com.cinema.MockTimeProvider;
 import com.cinema.SpringIT;
 import com.cinema.catalog.application.services.CatalogFacade;
 import com.cinema.rooms.application.services.RoomFacade;
@@ -28,7 +27,9 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static com.cinema.catalog.ScreeningTestHelper.getScreeningDate;
@@ -64,7 +65,7 @@ class TicketControllerIT extends SpringIT {
     private RoomFacade roomFacade;
 
     @SpyBean
-    private MockTimeProvider timeProvider;
+    private Clock clock;
 
     @MockBean
     private EventPublisher eventPublisher;
@@ -152,7 +153,7 @@ class TicketControllerIT extends SpringIT {
         //given
         var filmTitle = "Title 1";
         var roomCustomId = "1";
-        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        var screeningDate = getScreeningDate(clock);
         prepareSeat(filmTitle, roomCustomId, screeningDate);
         var screeningId = 1L;
         var seatRowNumber = 1;
@@ -219,11 +220,11 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_booked_at_least_1h_before_screening() throws Exception {
         //given
-        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        var screeningDate = getScreeningDate(clock);
         prepareSeat(screeningDate);
         Mockito
-                .when(timeProvider.getCurrentDate())
-                .thenReturn(screeningDate.minusMinutes(59));
+                .when(clock.instant())
+                .thenReturn(screeningDate.minusMinutes(59).toInstant(ZoneOffset.UTC));
         var screeningId = 1L;
         var rowNumber = 1;
         var seatNumber = 1;
@@ -335,11 +336,11 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_cancelled_at_least_24h_before_screening() throws Exception {
         //given
-        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        var screeningDate = getScreeningDate(clock);
         ticketRepository.add(TicketTestHelper.prepareBookedTicket(screeningDate));
         Mockito
-                .when(timeProvider.getCurrentDate())
-                .thenReturn(screeningDate.minusHours(23));
+                .when(clock.instant())
+                .thenReturn(screeningDate.minusHours(23).toInstant(ZoneOffset.UTC));
 
         //when
         var result = mockMvc.perform(
@@ -384,7 +385,7 @@ class TicketControllerIT extends SpringIT {
     private void prepareSeat() {
         catalogFacade.createFilm(createFilmCreateDto());
         roomFacade.createRoom(createRoomCreateDto());
-        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        var screeningDate = getScreeningDate(clock);
         catalogFacade.createScreening(
                 createScreeningCrateDto().withDate(screeningDate)
         );

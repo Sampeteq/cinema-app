@@ -1,7 +1,7 @@
 package com.cinema.catalog.infrastructure.rest;
 
-import com.cinema.MockTimeProvider;
 import com.cinema.SpringIT;
+import com.cinema.catalog.ScreeningTestHelper;
 import com.cinema.catalog.application.dto.ScreeningCreateDto;
 import com.cinema.catalog.application.dto.ScreeningDto;
 import com.cinema.catalog.application.dto.ScreeningMapper;
@@ -22,14 +22,15 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.function.Supplier;
 
 import static com.cinema.TimeHelper.getLocalDateTime;
 import static com.cinema.catalog.FilmTestHelper.createFilm;
 import static com.cinema.catalog.ScreeningTestHelper.createScreening;
-import static com.cinema.catalog.ScreeningTestHelper.createScreeningWithSpecificDate;
 import static com.cinema.catalog.ScreeningTestHelper.createScreenings;
 import static com.cinema.catalog.ScreeningTestHelper.getScreeningDate;
 import static com.cinema.tickets.TicketTestHelper.createFilmCreateDto;
@@ -57,7 +58,7 @@ class ScreeningControllerIT extends SpringIT {
     private ScreeningMapper screeningMapper;
 
     @SpyBean
-    private MockTimeProvider timeProvider;
+    private Clock clock;
 
     @Test
     @WithMockUser(authorities = "COMMON")
@@ -82,7 +83,7 @@ class ScreeningControllerIT extends SpringIT {
         var screeningCreateDto = ScreeningCreateDto
                 .builder()
                 .filmId(film.getId())
-                .date(getScreeningDate(timeProvider.getCurrentDate()))
+                .date(getScreeningDate(clock))
                 .build();
 
         //when
@@ -113,8 +114,8 @@ class ScreeningControllerIT extends SpringIT {
         roomFacade.createRoom(createRoomCreateDto());
         var currentDate = getLocalDateTime();
         Mockito
-                .when(timeProvider.getCurrentDate())
-                .thenReturn(currentDate);
+                .when(clock.instant())
+                .thenReturn(currentDate.toInstant(ZoneOffset.UTC));
         var screeningCreateDto = ScreeningCreateDto
                 .builder()
                 .filmId(filmId)
@@ -144,8 +145,8 @@ class ScreeningControllerIT extends SpringIT {
         roomFacade.createRoom(createRoomCreateDto());
         var currentDate = getLocalDateTime();
         Mockito
-                .when(timeProvider.getCurrentDate())
-                .thenReturn(currentDate);
+                .when(clock.instant())
+                .thenReturn(currentDate.toInstant(ZoneOffset.UTC));
         var screeningCreateDto = ScreeningCreateDto
                 .builder()
                 .filmId(filmId)
@@ -175,8 +176,8 @@ class ScreeningControllerIT extends SpringIT {
         roomFacade.createRoom(createRoomCreateDto());
         var currentDate = getLocalDateTime();
         Mockito
-                .when(timeProvider.getCurrentDate())
-                .thenReturn(currentDate);
+                .when(clock.instant())
+                .thenReturn(currentDate.toInstant(ZoneOffset.UTC));
         var screeningCreateDto = ScreeningCreateDto
                 .builder()
                 .filmId(filmId)
@@ -313,7 +314,7 @@ class ScreeningControllerIT extends SpringIT {
 
     private Screening addScreening() {
         var film = createFilm();
-        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        var screeningDate = getScreeningDate(clock);
         var screening = createScreening(film, screeningDate);
         film.addScreening(screening);
         return filmRepository
@@ -324,7 +325,7 @@ class ScreeningControllerIT extends SpringIT {
 
     private ScreeningDto addScreening(Supplier<Film> filmSupplier) {
         var film = filmSupplier.get();
-        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        var screeningDate = getScreeningDate(clock);
         var screening = createScreening(film, screeningDate);
         film.addScreening(screening);
         var addedScreening = filmRepository
@@ -337,7 +338,7 @@ class ScreeningControllerIT extends SpringIT {
     private ScreeningDto addScreening(LocalDate date) {
         var film = createFilm();
         var dateTime = date.atStartOfDay().plusHours(16);
-        var screening = createScreeningWithSpecificDate(film, dateTime);
+        var screening = ScreeningTestHelper.createScreening(film, dateTime);
         film.addScreening(screening);
         var addedScreening = filmRepository
                 .add(film)
@@ -361,7 +362,7 @@ class ScreeningControllerIT extends SpringIT {
     private List<SeatDto> prepareSeats() {
         catalogFacade.createFilm(createFilmCreateDto());
         roomFacade.createRoom(createRoomCreateDto());
-        var screeningDate = getScreeningDate(timeProvider.getCurrentDate());
+        var screeningDate = getScreeningDate(clock);
         catalogFacade.createScreening(
                 createScreeningCrateDto().withDate(screeningDate)
         );

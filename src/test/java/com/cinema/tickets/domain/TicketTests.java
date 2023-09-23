@@ -5,7 +5,9 @@ import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import org.junit.jupiter.api.Test;
 
-import static com.cinema.tickets.TicketTestHelper.CURRENT_DATE;
+import java.time.LocalDateTime;
+
+import static com.cinema.tickets.TicketTestHelper.CLOCK;
 import static com.cinema.tickets.TicketTestHelper.FILM_TITLE;
 import static com.cinema.tickets.TicketTestHelper.ROOM_CUSTOM_ID;
 import static com.cinema.tickets.TicketTestHelper.ROW_NUMBER;
@@ -33,7 +35,7 @@ class TicketTests {
         );
 
         //when
-        ticket.book(CURRENT_DATE, USER_ID);
+        ticket.book(CLOCK, USER_ID);
 
         //then
         assertThat(ticket.getStatus()).isEqualTo(TicketStatus.ACTIVE);
@@ -48,13 +50,13 @@ class TicketTests {
     @Test
     void ticket_is_booked_at_least_1_hour_before_screening() {
         //given
-        var screeningDate = CURRENT_DATE.minusMinutes(59);
+        var screeningDate = LocalDateTime.now(CLOCK).minusMinutes(59);
         var ticket = prepareTicket(screeningDate);
 
         //when
         assertThrows(
                 TicketBookTooLateException.class,
-                () -> ticket.book(CURRENT_DATE, USER_ID)
+                () -> ticket.book(CLOCK, USER_ID)
         );
     }
 
@@ -62,10 +64,10 @@ class TicketTests {
     void ticket_is_cancelled() {
         //given
         var ticket = prepareTicket();
-        ticket.book(CURRENT_DATE, USER_ID);
+        ticket.book(CLOCK, USER_ID);
 
         //when
-        ticket.cancel(CURRENT_DATE);
+        ticket.cancel(CLOCK);
 
         //then
         assertThat(ticket.getStatus()).isEqualTo(TicketStatus.CANCELLED);
@@ -74,13 +76,13 @@ class TicketTests {
     @Test
     void ticket_is_cancelled_at_least_24h_hours_before_screening() {
         //given
-        var screeningDate = CURRENT_DATE.minusHours(23);
+        var screeningDate = LocalDateTime.now(CLOCK).minusHours(23);
         var ticket = prepareTicket(screeningDate);
 
         //when
         assertThrows(
                 TicketCancelTooLateException.class,
-                () -> ticket.cancel(CURRENT_DATE)
+                () -> ticket.cancel(CLOCK)
         );
     }
 
@@ -92,7 +94,7 @@ class TicketTests {
         //when
         assertThrows(
                 TicketAlreadyCancelledException.class,
-                () -> ticket.cancel(CURRENT_DATE)
+                () -> ticket.cancel(CLOCK)
         );
     }
 }

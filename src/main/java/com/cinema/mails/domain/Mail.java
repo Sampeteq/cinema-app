@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 @Entity
@@ -38,7 +39,7 @@ public class Mail {
         this.type = type;
     }
 
-    public void sentAt(LocalDateTime dateTime) {
-        this.sentAt = dateTime;
+    public void sentAt(Clock clock) {
+        this.sentAt = LocalDateTime.now(clock);
     }
 }

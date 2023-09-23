@@ -2,15 +2,17 @@ package com.cinema.tickets.infrastructure.rest;
 
 import com.cinema.MockTimeProvider;
 import com.cinema.SpringIT;
-import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.catalog.application.services.CatalogFacade;
 import com.cinema.rooms.application.services.RoomFacade;
+import com.cinema.shared.events.EventPublisher;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.application.services.TicketFacade;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
+import com.cinema.tickets.domain.events.TicketBookedEvent;
+import com.cinema.tickets.domain.events.TicketCancelledEvent;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
@@ -21,15 +23,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static com.cinema.catalog.ScreeningTestHelper.getScreeningDate;
 import static com.cinema.tickets.TicketTestHelper.createFilmCreateDto;
@@ -37,6 +37,8 @@ import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createScreeningCrateDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -60,11 +62,14 @@ class TicketControllerIT extends SpringIT {
     @Autowired
     private TicketFacade ticketFacade;
 
+    @Autowired
+    private TicketRepository ticketRepository;
+
     @SpyBean
     private MockTimeProvider timeProvider;
 
-    @Autowired
-    private TicketRepository ticketRepository;
+    @MockBean
+    private EventPublisher eventPublisher;
 
     @BeforeEach
     void setUp() {
@@ -248,7 +253,7 @@ class TicketControllerIT extends SpringIT {
     }
 
     @Test
-    void ticket_booking_makes_seat_not_free() throws Exception {
+    void ticket_booked_event_is_published() throws Exception {
         //given
         prepareSeat();
         var screeningId = 1L;
@@ -268,13 +273,8 @@ class TicketControllerIT extends SpringIT {
         );
 
         //then
-        var searchSeatsResult = mockMvc.perform(
-                get("/screenings/1/seats")
-        );
-        var isSeatBusy = getSeatsFromResult(searchSeatsResult).anyMatch(
-                s -> s.id().equals(1L) && !s.isFree()
-        );
-        assertThat(isSeatBusy).isTrue();
+        var expectedEvent = new TicketBookedEvent(screeningId, rowNumber, seatNumber);
+        verify(eventPublisher, times(1)).publish(expectedEvent);
     }
 
     @Test
@@ -297,23 +297,21 @@ class TicketControllerIT extends SpringIT {
     }
 
     @Test
-    void ticket_cancel_makes_seat_free_again() throws Exception {
+    void ticket_cancelled_event_is_published() throws Exception {
         //given
-        prepareTicket();
+        var screeningId = 1L;
+        var rowNumber = 1;
+        var seatNumber = 1;
+        prepareTicket(screeningId, rowNumber, seatNumber);
 
         //when
-        var result = mockMvc.perform(
+        mockMvc.perform(
                 patch(TICKETS_BASE_ENDPOINT + "/" + 1 + "/cancel")
         );
 
         //then
-        result.andExpect(status().isOk());
-        var searchSeatsResult = mockMvc.perform(
-                get("/screenings/1/seats")
-        );
-        var isSeatFreeAgain = getSeatsFromResult(searchSeatsResult)
-                .anyMatch(s -> s.id().equals(1L) && s.isFree());
-        assertThat(isSeatFreeAgain).isTrue();
+        var expectedEvent = new TicketCancelledEvent(screeningId, rowNumber, seatNumber);
+        verify(eventPublisher, times(1)).publish(expectedEvent);
     }
 
     @Test
@@ -482,11 +480,5 @@ class TicketControllerIT extends SpringIT {
         ticketFacade.bookTicket(ticketBookDto);
         var ticketId = 1L;
         ticketFacade.cancelTicket(ticketId);
-    }
-
-    private Stream<SeatDto> getSeatsFromResult(ResultActions searchSeatsResult) {
-        return Arrays.stream(
-                fromResultActions(searchSeatsResult, SeatDto[].class)
-        );
     }
 }

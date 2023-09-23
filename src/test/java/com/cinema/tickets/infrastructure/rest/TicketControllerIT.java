@@ -36,6 +36,7 @@ import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createScreeningCrateDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -280,7 +281,7 @@ class TicketControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                patch(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
         );
 
         //then
@@ -301,7 +302,7 @@ class TicketControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(TICKETS_BASE_ENDPOINT + "/" + 1 + "/cancel")
+                patch(TICKETS_BASE_ENDPOINT + "/" + 1 + "/cancel")
         );
 
         //then
@@ -321,7 +322,7 @@ class TicketControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                patch(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
         );
 
         //then
@@ -343,7 +344,7 @@ class TicketControllerIT extends SpringIT {
 
         //when
         var result = mockMvc.perform(
-                post(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                patch(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
         );
 
         //then

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,7 @@ class TicketController {
         ticketFacade.bookTicket(dto);
     }
 
-    @PostMapping("/{ticketId}/cancel")
+    @PatchMapping("/{ticketId}/cancel")
     @SecurityRequirement(name = "basic")
     void cancelTicket(@PathVariable Long ticketId) {
         ticketFacade.cancelTicket(ticketId);

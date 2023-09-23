@@ -41,8 +41,7 @@ class SecurityConfig {
                                 ).permitAll()
                                 .requestMatchers(
                                         HttpMethod.POST,
-                                        "/sign-up",
-                                        "/sign-in"
+                                        "/sign-up"
                                 ).permitAll()
                                 .requestMatchers(
                                         HttpMethod.PATCH,

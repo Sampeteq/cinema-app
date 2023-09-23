@@ -1,6 +1,5 @@
 package com.cinema.catalog.domain;
 
-import com.cinema.catalog.domain.exceptions.FilmYearOutOfRangeException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,7 +13,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,33 +40,11 @@ public class Film {
 
     protected Film() {}
 
-    private Film(String title, FilmCategory category, int year, int durationInMinutes) {
+    public Film(String title, FilmCategory category, int year, int durationInMinutes) {
         this.title = title;
         this.category = category;
         this.year = year;
         this.durationInMinutes = durationInMinutes;
-    }
-
-    public static Film create(
-            String title,
-            FilmCategory category,
-            int year,
-            int durationInMinutes
-    ) {
-        if (!isFilmYearCorrect(year)) {
-            throw new FilmYearOutOfRangeException();
-        }
-        return new Film(
-                title,
-                category,
-                year,
-                durationInMinutes
-        );
-    }
-
-    private static boolean isFilmYearCorrect(Integer year) {
-        var currentYear = Year.now().getValue();
-        return year == currentYear - 1 || year == currentYear || year == currentYear + 1;
     }
 
     public LocalDateTime calculateScreeningEndDate(LocalDateTime screeningDate) {

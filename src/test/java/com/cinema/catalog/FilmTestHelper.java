@@ -30,7 +30,7 @@ public final class FilmTestHelper {
     }
 
     public static Film createFilm() {
-        return Film.create(
+        return new Film(
                 TITLE,
                 CATEGORY,
                 YEAR,
@@ -39,7 +39,7 @@ public final class FilmTestHelper {
     }
 
     public static Film createFilm(FilmCategory category) {
-        return Film.create(
+        return new Film(
                 TITLE,
                 category,
                 YEAR,
@@ -48,7 +48,7 @@ public final class FilmTestHelper {
     }
 
     public static Film createFilm(String title) {
-        return Film.create(
+        return new Film(
                 title,
                 CATEGORY,
                 YEAR,
@@ -57,13 +57,13 @@ public final class FilmTestHelper {
     }
 
     public static List<Film> createFilms() {
-        var film1 = Film.create(
+        var film1 = new Film(
                 TITLE,
                 CATEGORY,
                 YEAR,
                 DURATION_IN_MINUTES
         );
-        var film2 = Film.create(
+        var film2 = new Film(
                 TITLE + "another",
                 FilmCategory.DRAMA,
                 YEAR + 1,
@@ -73,13 +73,13 @@ public final class FilmTestHelper {
     }
 
     public static List<Film> createFilms(FilmCategory filmCategory) {
-        var film1 = Film.create(
+        var film1 = new Film(
                 TITLE,
                 filmCategory,
                 YEAR,
                 DURATION_IN_MINUTES
         );
-        var film2 = Film.create(
+        var film2 = new Film(
                 TITLE + "another",
                 filmCategory,
                 YEAR + 1,

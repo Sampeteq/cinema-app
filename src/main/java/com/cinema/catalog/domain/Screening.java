@@ -7,6 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -35,7 +36,8 @@ public class Screening {
 
     private String roomCustomId;
 
-    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "screening_id")
     private List<Seat> seats;
 
     protected Screening() {}
@@ -61,9 +63,7 @@ public class Screening {
             List<Seat> seats
     ) {
         var endDate = film.calculateScreeningEndDate(date);
-        var screening = new Screening(date, endDate, film, roomCustomId, seats);
-        seats.forEach(seat -> seat.assignScreening(screening));
-        return screening;
+        return new Screening(date, endDate, film, roomCustomId, seats);
     }
 
     public Seat findSeat(int rowNumber, int seatNumber) {

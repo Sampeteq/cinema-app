@@ -4,20 +4,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Table(name = "seats")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 @Getter
-@ToString(exclude = "screening")
 public class Seat {
 
     @Id
@@ -30,17 +27,10 @@ public class Seat {
 
     private boolean isFree;
 
-    @ManyToOne
-    private Screening screening;
-
     public Seat(int rowNumber, int number, boolean isFree) {
         this.rowNumber = rowNumber;
         this.number = number;
         this.isFree = isFree;
-    }
-
-    public void assignScreening(Screening screening) {
-        this.screening = screening;
     }
 
     public boolean placedOn(int rowNumber, int seatNumber) {

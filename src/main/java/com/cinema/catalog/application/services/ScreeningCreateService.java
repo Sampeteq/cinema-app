@@ -35,8 +35,9 @@ class ScreeningCreateService {
         var endDate = film.calculateScreeningEndDate(dto.date());
         var roomDto = roomFacade.findFirstAvailableRoom(dto.date(), endDate);
         var seats = createSeats(roomDto.rowsNumber(), roomDto.rowSeatsNumber());
-        var newScreening = Screening.create(
+        var newScreening = new Screening(
                 dto.date(),
+                endDate,
                 film,
                 roomDto.customId(),
                 seats

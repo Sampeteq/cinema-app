@@ -42,7 +42,7 @@ public class Screening {
 
     protected Screening() {}
 
-    private Screening(
+    public Screening(
             LocalDateTime date,
             LocalDateTime endDate,
             Film film,
@@ -54,16 +54,6 @@ public class Screening {
         this.film = film;
         this.roomCustomId = roomCustomId;
         this.seats = seats;
-    }
-
-    public static Screening create(
-            LocalDateTime date,
-            Film film,
-            String roomCustomId,
-            List<Seat> seats
-    ) {
-        var endDate = film.calculateScreeningEndDate(date);
-        return new Screening(date, endDate, film, roomCustomId, seats);
     }
 
     public Seat findSeat(int rowNumber, int seatNumber) {

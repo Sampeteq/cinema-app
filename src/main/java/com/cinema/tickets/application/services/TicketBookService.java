@@ -40,7 +40,6 @@ class TicketBookService {
         if (!screeningDetails.seatExists()) {
             throw new EntityNotFoundException("Seat");
         }
-        var currentUserId = userFacade.readCurrentUserId();
         var ticket = new Ticket(
                 screeningDetails.filmTitle(),
                 dto.screeningId(),
@@ -49,6 +48,7 @@ class TicketBookService {
                 dto.rowNumber(),
                 dto.seatNumber()
         );
+        var currentUserId = userFacade.readCurrentUserId();
         ticket.book(clock, currentUserId);
         var addedTicket = ticketRepository.add(ticket);
         log.info("Added a ticket:{}", addedTicket);

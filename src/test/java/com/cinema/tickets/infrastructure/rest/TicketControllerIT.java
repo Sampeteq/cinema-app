@@ -4,7 +4,6 @@ import com.cinema.SpringIT;
 import com.cinema.catalog.application.services.CatalogFacade;
 import com.cinema.rooms.application.services.RoomFacade;
 import com.cinema.shared.events.EventPublisher;
-import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.tickets.TicketTestHelper;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;
@@ -105,14 +104,8 @@ class TicketControllerIT extends SpringIT {
         );
 
         //then
-        result
-                .andExpect(
+        result.andExpect(
                         status().isNotFound()
-                )
-                .andExpect(
-                        content().string(
-                                new EntityNotFoundException("Screening").getMessage()
-                        )
                 );
     }
 
@@ -138,14 +131,8 @@ class TicketControllerIT extends SpringIT {
         );
 
         //then
-        result
-                .andExpect(
+        result.andExpect(
                         status().isNotFound()
-                )
-                .andExpect(
-                        content().string(
-                                new EntityNotFoundException("Seat").getMessage()
-                        )
                 );
     }
 

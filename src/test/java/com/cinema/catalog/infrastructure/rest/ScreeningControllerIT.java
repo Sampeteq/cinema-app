@@ -93,7 +93,8 @@ class ScreeningControllerIT extends SpringIT {
         var expectedDto = List.of(
                new ScreeningDto(
                        1L,
-                       screeningCreateDto.date()
+                       screeningCreateDto.date(),
+                       film.getTitle()
                )
         );
         mockMvc

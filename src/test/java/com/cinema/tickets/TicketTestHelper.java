@@ -101,6 +101,9 @@ public final class TicketTestHelper {
     }
 
     public static ScreeningCreateDto createScreeningCrateDto(LocalDateTime date) {
-        return createScreeningCrateDto().withDate(date);
+        return new ScreeningCreateDto(
+                date,
+                FILM_ID
+        );
     }
 }

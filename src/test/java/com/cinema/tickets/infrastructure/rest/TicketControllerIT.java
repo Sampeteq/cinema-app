@@ -404,17 +404,13 @@ class TicketControllerIT extends SpringIT {
         catalogFacade.createFilm(createFilmCreateDto());
         roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(clock);
-        catalogFacade.createScreening(
-                createScreeningCrateDto().withDate(screeningDate)
-        );
+        catalogFacade.createScreening(createScreeningCrateDto(screeningDate));
     }
 
     private void prepareSeat(LocalDateTime screeningDate) {
         catalogFacade.createFilm(createFilmCreateDto());
         roomFacade.createRoom(createRoomCreateDto());
-        catalogFacade.createScreening(
-                createScreeningCrateDto().withDate(screeningDate)
-        );
+        catalogFacade.createScreening(createScreeningCrateDto(screeningDate));
     }
 
     private void prepareSeat(String filmTitle, String roomCustomId, LocalDateTime screeningDate) {
@@ -424,8 +420,6 @@ class TicketControllerIT extends SpringIT {
         roomFacade.createRoom(
                 createRoomCreateDto().withCustomId(roomCustomId)
         );
-        catalogFacade.createScreening(
-                createScreeningCrateDto().withDate(screeningDate)
-        );
+        catalogFacade.createScreening(createScreeningCrateDto(screeningDate));
     }
 }

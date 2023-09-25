@@ -35,7 +35,6 @@ import static com.cinema.catalog.ScreeningTestHelper.createScreenings;
 import static com.cinema.catalog.ScreeningTestHelper.getScreeningDate;
 import static com.cinema.tickets.TicketTestHelper.createFilmCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
-import static com.cinema.tickets.TicketTestHelper.createScreeningCrateDto;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -80,11 +79,7 @@ class ScreeningControllerIT extends SpringIT {
         //given
         var film = filmRepository.add(createFilm());
         roomFacade.createRoom(createRoomCreateDto());
-        var screeningCreateDto = ScreeningCreateDto
-                .builder()
-                .filmId(film.getId())
-                .date(getScreeningDate(clock))
-                .build();
+        var screeningCreateDto = new ScreeningCreateDto(getScreeningDate(clock), film.getId());
 
         //when
         var result = mockMvc.perform(
@@ -116,11 +111,7 @@ class ScreeningControllerIT extends SpringIT {
         Mockito
                 .when(clock.instant())
                 .thenReturn(currentDate.toInstant(ZoneOffset.UTC));
-        var screeningCreateDto = ScreeningCreateDto
-                .builder()
-                .filmId(filmId)
-                .date(currentDate.minusMinutes(1))
-                .build();
+        var screeningCreateDto = new ScreeningCreateDto(currentDate.minusMinutes(1), filmId);
 
         //when
         var result = mockMvc.perform(
@@ -147,11 +138,7 @@ class ScreeningControllerIT extends SpringIT {
         Mockito
                 .when(clock.instant())
                 .thenReturn(currentDate.toInstant(ZoneOffset.UTC));
-        var screeningCreateDto = ScreeningCreateDto
-                .builder()
-                .filmId(filmId)
-                .date(currentDate.plusDays(6))
-                .build();
+        var screeningCreateDto = new ScreeningCreateDto(currentDate.plusDays(6), filmId);
 
         //when
         var result = mockMvc.perform(
@@ -178,11 +165,7 @@ class ScreeningControllerIT extends SpringIT {
         Mockito
                 .when(clock.instant())
                 .thenReturn(currentDate.toInstant(ZoneOffset.UTC));
-        var screeningCreateDto = ScreeningCreateDto
-                .builder()
-                .filmId(filmId)
-                .date(currentDate.plusDays(22))
-                .build();
+        var screeningCreateDto = new ScreeningCreateDto(currentDate.plusDays(22), filmId);
 
         //when
         var result = mockMvc.perform(
@@ -204,11 +187,7 @@ class ScreeningControllerIT extends SpringIT {
     void screenings_collision_cannot_exist() throws Exception {
         //given
         var screening = addScreening();
-        var screeningCreateDto = ScreeningCreateDto
-                .builder()
-                .filmId(1L)
-                .date(screening.getDate().plusMinutes(10))
-                .build();
+        var screeningCreateDto = new ScreeningCreateDto(screening.getDate().plusMinutes(10), 1L);
 
         //when
         var result = mockMvc.perform(
@@ -363,8 +342,12 @@ class ScreeningControllerIT extends SpringIT {
         catalogFacade.createFilm(createFilmCreateDto());
         roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(clock);
+        var filmId = 1L;
         catalogFacade.createScreening(
-                createScreeningCrateDto().withDate(screeningDate)
+                new ScreeningCreateDto(
+                        screeningDate,
+                       filmId
+                )
         );
         var screeningId = 1L;
         return catalogFacade.readSeatsByScreeningId(screeningId);

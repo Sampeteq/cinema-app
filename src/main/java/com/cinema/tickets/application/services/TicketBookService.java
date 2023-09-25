@@ -2,6 +2,7 @@ package com.cinema.tickets.application.services;
 
 import com.cinema.catalog.application.services.CatalogFacade;
 import com.cinema.shared.events.EventPublisher;
+import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
@@ -36,6 +37,9 @@ class TicketBookService {
                 dto.rowNumber(),
                 dto.rowNumber()
         );
+        if (!screeningDetails.seatExists()) {
+            throw new EntityNotFoundException("Seat");
+        }
         var currentUserId = userFacade.readCurrentUserId();
         var ticket = new Ticket(
                 screeningDetails.filmTitle(),

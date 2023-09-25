@@ -57,11 +57,13 @@ public class CatalogFacade {
 
     public ScreeningDetailsDto readScreeningDetails(Long id, int rowNumber, int seatNumber) {
         var screening = screeningReadService.readByIdWithSeats(id);
-        screening.findSeat(rowNumber, seatNumber);
+        var seat = screening.findSeat(rowNumber, seatNumber);
+        var seatExists = seat.isPresent();
         return new ScreeningDetailsDto(
                 screening.getFilm().getTitle(),
                 screening.getDate(),
-                screening.getRoomCustomId()
+                screening.getRoomCustomId(),
+                seatExists
         );
     }
 }

@@ -1,6 +1,5 @@
 package com.cinema.catalog.domain;
 
-import com.cinema.shared.exceptions.EntityNotFoundException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +15,7 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "screenings")
@@ -56,12 +56,11 @@ public class Screening {
         this.seats = seats;
     }
 
-    public Seat findSeat(int rowNumber, int seatNumber) {
+    public Optional<Seat> findSeat(int rowNumber, int seatNumber) {
         return this
                 .seats
                 .stream()
                 .filter(s -> s.placedOn(rowNumber, seatNumber))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Seat"));
+                .findFirst();
     }
 }

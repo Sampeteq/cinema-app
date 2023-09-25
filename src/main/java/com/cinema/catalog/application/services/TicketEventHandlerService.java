@@ -38,6 +38,7 @@ class TicketEventHandlerService {
         return screeningReadOnlyRepository
                 .readById(screeningId)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"))
-                .findSeat(rowNumber, seatNumber);
+                .findSeat(rowNumber, seatNumber)
+                .orElseThrow(() -> new EntityNotFoundException("Seat"));
     }
 }

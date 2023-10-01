@@ -9,18 +9,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 class ScreeningEndService {
 
     private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
+    private final Clock clock;
     private final EventPublisher eventPublisher;
 
     @Transactional
     public void removeRoomsFromEndedScreenings() {
         log.info("Searching for ended screenings");
-        var endedScreenings = screeningReadOnlyRepository.readEnded();
+        var currentDate = LocalDateTime.now(clock);
+        var endedScreenings = screeningReadOnlyRepository.readEnded(currentDate);
         if (endedScreenings.isEmpty()) {
             log.info("Ended screenings not found");
         } else {

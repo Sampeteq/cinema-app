@@ -16,5 +16,5 @@ public interface ScreeningReadOnlyRepository {
 
     List<Screening> readByDateBetween(LocalDateTime from, LocalDateTime to);
 
-    List<Screening> readEnded();
+    List<Screening> readEnded(LocalDateTime currentDate);
 }

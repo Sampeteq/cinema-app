@@ -12,14 +12,14 @@ import java.time.ZoneOffset;
 
 @Configuration
 @Profile("test")
-public class MockClock {
+public class ClockMockConfig {
 
     private static final Instant CURRENT_DATE = LocalDateTime
             .of(Year.now().getValue(), 12, 13, 16, 30)
             .toInstant(ZoneOffset.UTC);
 
     @Bean
-    public Clock clock() {
+    public Clock clockMock() {
         return Clock.fixed(CURRENT_DATE, ZoneOffset.UTC);
     }
 }

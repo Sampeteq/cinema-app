@@ -65,7 +65,7 @@ class TicketControllerIT extends SpringIT {
     private RoomFacade roomFacade;
 
     @SpyBean
-    private Clock clock;
+    private Clock clockMock;
 
     @MockBean
     private EventPublisher eventPublisher;
@@ -141,7 +141,7 @@ class TicketControllerIT extends SpringIT {
         //given
         var filmTitle = "Title 1";
         var roomCustomId = "1";
-        var screeningDate = getScreeningDate(clock);
+        var screeningDate = getScreeningDate(clockMock);
         prepareSeat(filmTitle, roomCustomId, screeningDate);
         var screeningId = 1L;
         var seatRowNumber = 1;
@@ -208,10 +208,10 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_booked_at_least_1h_before_screening() throws Exception {
         //given
-        var screeningDate = getScreeningDate(clock);
+        var screeningDate = getScreeningDate(clockMock);
         prepareSeat(screeningDate);
         Mockito
-                .when(clock.instant())
+                .when(clockMock.instant())
                 .thenReturn(screeningDate.minusMinutes(59).toInstant(ZoneOffset.UTC));
         var screeningId = 1L;
         var rowNumber = 1;
@@ -324,10 +324,10 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_cancelled_at_least_24h_before_screening() throws Exception {
         //given
-        var screeningDate = getScreeningDate(clock);
+        var screeningDate = getScreeningDate(clockMock);
         ticketRepository.add(TicketTestHelper.prepareBookedTicket(screeningDate));
         Mockito
-                .when(clock.instant())
+                .when(clockMock.instant())
                 .thenReturn(screeningDate.minusHours(23).toInstant(ZoneOffset.UTC));
 
         //when
@@ -390,7 +390,7 @@ class TicketControllerIT extends SpringIT {
     private void prepareSeat() {
         catalogFacade.createFilm(createFilmCreateDto());
         roomFacade.createRoom(createRoomCreateDto());
-        var screeningDate = getScreeningDate(clock);
+        var screeningDate = getScreeningDate(clockMock);
         catalogFacade.createScreening(createScreeningCrateDto(screeningDate));
     }
 

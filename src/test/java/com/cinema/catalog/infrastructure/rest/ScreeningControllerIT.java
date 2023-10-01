@@ -57,7 +57,7 @@ class ScreeningControllerIT extends SpringIT {
     private ScreeningMapper screeningMapper;
 
     @SpyBean
-    private Clock clock;
+    private Clock clockMock;
 
     @Test
     @WithMockUser(authorities = "COMMON")
@@ -79,7 +79,7 @@ class ScreeningControllerIT extends SpringIT {
         //given
         var film = filmRepository.add(createFilm());
         roomFacade.createRoom(createRoomCreateDto());
-        var screeningCreateDto = new ScreeningCreateDto(getScreeningDate(clock), film.getId());
+        var screeningCreateDto = new ScreeningCreateDto(getScreeningDate(clockMock), film.getId());
 
         //when
         var result = mockMvc.perform(
@@ -110,7 +110,7 @@ class ScreeningControllerIT extends SpringIT {
         roomFacade.createRoom(createRoomCreateDto());
         var currentDate = getLocalDateTime();
         Mockito
-                .when(clock.instant())
+                .when(clockMock.instant())
                 .thenReturn(currentDate.toInstant(ZoneOffset.UTC));
         var screeningCreateDto = new ScreeningCreateDto(currentDate.minusMinutes(1), filmId);
 
@@ -137,7 +137,7 @@ class ScreeningControllerIT extends SpringIT {
         roomFacade.createRoom(createRoomCreateDto());
         var currentDate = getLocalDateTime();
         Mockito
-                .when(clock.instant())
+                .when(clockMock.instant())
                 .thenReturn(currentDate.toInstant(ZoneOffset.UTC));
         var screeningCreateDto = new ScreeningCreateDto(currentDate.plusDays(6), filmId);
 
@@ -164,7 +164,7 @@ class ScreeningControllerIT extends SpringIT {
         roomFacade.createRoom(createRoomCreateDto());
         var currentDate = getLocalDateTime();
         Mockito
-                .when(clock.instant())
+                .when(clockMock.instant())
                 .thenReturn(currentDate.toInstant(ZoneOffset.UTC));
         var screeningCreateDto = new ScreeningCreateDto(currentDate.plusDays(22), filmId);
 
@@ -294,7 +294,7 @@ class ScreeningControllerIT extends SpringIT {
 
     private Screening addScreening() {
         var film = createFilm();
-        var screeningDate = getScreeningDate(clock);
+        var screeningDate = getScreeningDate(clockMock);
         var screening = createScreening(film, screeningDate);
         film.addScreening(screening);
         return filmRepository
@@ -305,7 +305,7 @@ class ScreeningControllerIT extends SpringIT {
 
     private ScreeningDto addScreening(Supplier<Film> filmSupplier) {
         var film = filmSupplier.get();
-        var screeningDate = getScreeningDate(clock);
+        var screeningDate = getScreeningDate(clockMock);
         var screening = createScreening(film, screeningDate);
         film.addScreening(screening);
         var addedScreening = filmRepository
@@ -342,7 +342,7 @@ class ScreeningControllerIT extends SpringIT {
     private List<SeatDto> prepareSeats() {
         catalogFacade.createFilm(createFilmCreateDto());
         roomFacade.createRoom(createRoomCreateDto());
-        var screeningDate = getScreeningDate(clock);
+        var screeningDate = getScreeningDate(clockMock);
         var filmId = 1L;
         catalogFacade.createScreening(
                 new ScreeningCreateDto(

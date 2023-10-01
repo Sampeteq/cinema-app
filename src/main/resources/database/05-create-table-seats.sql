@@ -8,6 +8,5 @@ create table if not exists seats
     number       int,
     is_free      boolean,
     screening_id bigint,
-    booking_id   bigint,
-    foreign key (screening_id) references screenings (id)
+    booking_id   bigint
 );

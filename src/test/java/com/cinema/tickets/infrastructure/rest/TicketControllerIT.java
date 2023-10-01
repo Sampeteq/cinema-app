@@ -160,7 +160,7 @@ class TicketControllerIT extends SpringIT {
         );
 
         //then
-        result.andExpect(status().isOk());
+        result.andExpect(status().isCreated());
         assertThat(ticketRepository.readById(1L))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {

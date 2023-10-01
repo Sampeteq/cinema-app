@@ -1,11 +1,11 @@
 [
   {
-    "customId": "1",
+    "id": "1",
     "rowsNumber": 10,
     "rowSeatsNumber": 15
   },
   {
-    "customId": "2",
+    "id": "2",
     "rowsNumber": 15,
     "rowSeatsNumber": 20
   }

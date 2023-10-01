@@ -140,9 +140,9 @@ class TicketControllerIT extends SpringIT {
     void ticket_is_booked() throws Exception {
         //given
         var filmTitle = "Title 1";
-        var roomCustomId = "1";
+        var roomId = "1";
         var screeningDate = getScreeningDate(clockMock);
-        prepareSeat(filmTitle, roomCustomId, screeningDate);
+        prepareSeat(filmTitle, roomId, screeningDate);
         var screeningId = 1L;
         var seatRowNumber = 1;
         var seatNumber = 1;
@@ -168,7 +168,7 @@ class TicketControllerIT extends SpringIT {
                     assertEquals(filmTitle, ticket.getFilmTitle());
                     assertEquals(screeningDate, ticket.getScreeningDate());
                     assertEquals(screeningId, ticket.getScreeningId());
-                    assertEquals(roomCustomId, ticket.getRoomCustomId());
+                    assertEquals(roomId, ticket.getRoomId());
                     assertEquals(seatRowNumber, ticket.getSeatNumber());
                     assertEquals(seatNumber, ticket.getSeatNumber());
                     assertEquals(1L, ticket.getUserId());
@@ -377,7 +377,7 @@ class TicketControllerIT extends SpringIT {
                         ticket.getStatus(),
                         ticket.getFilmTitle(),
                         ticket.getScreeningDate(),
-                        ticket.getRoomCustomId(),
+                        ticket.getRoomId(),
                         ticket.getRowNumber(),
                         ticket.getSeatNumber()
                 )
@@ -400,12 +400,12 @@ class TicketControllerIT extends SpringIT {
         catalogFacade.createScreening(createScreeningCrateDto(screeningDate));
     }
 
-    private void prepareSeat(String filmTitle, String roomCustomId, LocalDateTime screeningDate) {
+    private void prepareSeat(String filmTitle, String roomId, LocalDateTime screeningDate) {
         catalogFacade.createFilm(
                 createFilmCreateDto().withTitle(filmTitle)
         );
         roomFacade.createRoom(
-                createRoomCreateDto().withCustomId(roomCustomId)
+                createRoomCreateDto().withId(roomId)
         );
         catalogFacade.createScreening(createScreeningCrateDto(screeningDate));
     }

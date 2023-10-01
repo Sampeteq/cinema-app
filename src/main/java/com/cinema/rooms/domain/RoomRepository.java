@@ -6,11 +6,11 @@ import java.util.Optional;
 public interface RoomRepository {
     Room add(Room room);
 
-    Optional<Room> readByCustomId(String customId);
+    Optional<Room> readById(String id);
 
     List<Room> readAll();
 
     Long count();
 
-    boolean existsByCustomId(String customId);
+    boolean existsById(String id);
 }

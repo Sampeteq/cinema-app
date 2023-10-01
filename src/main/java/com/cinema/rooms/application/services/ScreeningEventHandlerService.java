@@ -18,7 +18,7 @@ class ScreeningEventHandlerService {
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handle(ScreeningCreatedEvent event) {
         roomRepository
-                .readByCustomId(event.roomCustomId())
+                .readById(event.roomId())
                 .orElseThrow(() -> new EntityNotFoundException("Room"))
                 .addOccupation(event.start(), event.end());
     }
@@ -26,7 +26,7 @@ class ScreeningEventHandlerService {
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handle(ScreeningEndedEvent event) {
         roomRepository
-                .readByCustomId(event.roomCustomId())
+                .readById(event.roomId())
                 .orElseThrow(() -> new EntityNotFoundException("Room"))
                 .removeOccupation(event.start(), event.end());
     }

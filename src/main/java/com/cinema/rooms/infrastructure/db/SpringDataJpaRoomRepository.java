@@ -21,8 +21,8 @@ class SpringDataJpaRoomRepository implements RoomRepository {
     }
 
     @Override
-    public Optional<Room> readByCustomId(String customId) {
-        return jpaRoomRepository.readByCustomId(customId);
+    public Optional<Room> readById(String id) {
+        return jpaRoomRepository.findById(id);
     }
 
     @Override
@@ -36,13 +36,12 @@ class SpringDataJpaRoomRepository implements RoomRepository {
     }
 
     @Override
-    public boolean existsByCustomId(String customId) {
-        return jpaRoomRepository.existsByCustomId(customId);
+    public boolean existsById(String id) {
+        return jpaRoomRepository.existsById(id);
     }
 }
 
-interface JpaRoomRepository extends JpaRepository<Room, Long> {
-    Optional<Room> readByCustomId(String customId);
+interface JpaRoomRepository extends JpaRepository<Room, String> {
 
-    boolean existsByCustomId(String customId);
+    boolean existsById(String id);
 }

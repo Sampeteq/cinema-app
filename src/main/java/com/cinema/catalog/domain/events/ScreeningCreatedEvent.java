@@ -7,6 +7,6 @@ import java.time.LocalDateTime;
 public record ScreeningCreatedEvent(
         LocalDateTime start,
         LocalDateTime end,
-        String roomCustomId
+        String roomId
 ) implements Event {
 }

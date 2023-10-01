@@ -21,13 +21,13 @@ public final class ScreeningTestHelper {
     ) {
         var isFree = true;
         var seat = new Seat(1,2, isFree);
-        var roomCustomId = "1";
+        var roomId = "1";
         var screeningEndDate = film.calculateScreeningEndDate(screeningDate);
         return new Screening(
                screeningDate,
                 screeningEndDate,
                 film,
-                roomCustomId,
+                roomId,
                 List.of(seat)
         );
     }
@@ -35,13 +35,13 @@ public final class ScreeningTestHelper {
     public static List<Screening> createScreenings(Film film) {
         var isFree = true;
         var seat = new Seat(1,2, isFree);
-        var roomCustomId = "1";
+        var roomId = "1";
         var screeningEndDate1 = film.calculateScreeningEndDate(SCREENING_DATE);
         var screening1 = new Screening(
                 SCREENING_DATE,
                 screeningEndDate1,
                 film,
-                roomCustomId,
+                roomId,
                 List.of(seat)
         );
         var screeningEndDate2 = film.calculateScreeningEndDate(SCREENING_DATE.plusDays(1));
@@ -49,7 +49,7 @@ public final class ScreeningTestHelper {
                 SCREENING_DATE.plusDays(1),
                 screeningEndDate2,
                 film,
-                roomCustomId,
+                roomId,
                 List.of(seat)
         );
         return List.of(screening1, screening2);

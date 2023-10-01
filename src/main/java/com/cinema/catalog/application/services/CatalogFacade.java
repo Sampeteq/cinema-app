@@ -62,7 +62,7 @@ public class CatalogFacade {
         return new ScreeningDetailsDto(
                 screening.getFilm().getTitle(),
                 screening.getDate(),
-                screening.getRoomCustomId(),
+                screening.getRoomId(),
                 seatExists
         );
     }

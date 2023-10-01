@@ -44,7 +44,7 @@ class TicketBookService {
                 screeningDetails.filmTitle(),
                 dto.screeningId(),
                 screeningDetails.date(),
-                screeningDetails.roomCustomId(),
+                screeningDetails.roomId(),
                 dto.rowNumber(),
                 dto.seatNumber()
         );

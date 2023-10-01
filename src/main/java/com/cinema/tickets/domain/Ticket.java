@@ -34,7 +34,7 @@ public class Ticket {
 
     private Long screeningId;
 
-    private String roomCustomId;
+    private String roomId;
 
     private int rowNumber;
 
@@ -48,14 +48,14 @@ public class Ticket {
             String filmTitle,
             Long screeningId,
             LocalDateTime screeningDate,
-            String roomCustomId,
+            String roomId,
             int rowNumber,
             int seatNumber
     ) {
         this.filmTitle = filmTitle;
         this.screeningId = screeningId;
         this.screeningDate = screeningDate;
-        this.roomCustomId = roomCustomId;
+        this.roomId = roomId;
         this.rowNumber = rowNumber;
         this.seatNumber = seatNumber;
     }

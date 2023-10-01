@@ -8,7 +8,7 @@ create table if not exists tickets
     film_title     varchar,
     screening_id   bigint,
     screening_date timestamp,
-    room_custom_id varchar,
+    room_id varchar,
     row_number     int,
     seat_number    int,
     user_id        bigint

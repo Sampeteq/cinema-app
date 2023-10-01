@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public record ScreeningDetailsDto(
         String filmTitle,
         LocalDateTime date,
-        String roomCustomId,
+        String roomId,
         boolean seatExists
 ) {
 }

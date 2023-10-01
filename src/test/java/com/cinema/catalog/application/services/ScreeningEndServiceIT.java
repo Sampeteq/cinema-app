@@ -41,6 +41,6 @@ class ScreeningEndServiceIT extends SpringIT {
         var screenings = screeningReadOnlyRepository.readAll();
         assertThat(screenings)
                 .isNotEmpty()
-                .allMatch(screening -> screening.getRoomCustomId() == null);
+                .allMatch(screening -> screening.getRoomId() == null);
     }
 }

@@ -6,7 +6,7 @@ import com.cinema.shared.events.Event;
 import java.time.LocalDateTime;
 
 public record ScreeningEndedEvent(
-        String roomCustomId,
+        String roomId,
         LocalDateTime start,
         LocalDateTime end
 ) implements Event {

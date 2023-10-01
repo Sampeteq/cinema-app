@@ -3,8 +3,6 @@ package com.cinema.rooms.domain;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -21,10 +19,7 @@ import java.util.List;
 public class Room {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String customId;
+    private String id;
 
     private int rowsNumber;
 
@@ -36,8 +31,8 @@ public class Room {
 
     protected Room() {}
 
-    public Room(String customId, int rowsNumber, int rowSeatsNumber) {
-        this.customId = customId;
+    public Room(String id, int rowsNumber, int rowSeatsNumber) {
+        this.id = id;
         this.rowsNumber = rowsNumber;
         this.rowSeatsNumber = rowSeatsNumber;
         this.occupations = new ArrayList<>();

@@ -7,7 +7,7 @@ import lombok.With;
 @With
 public record RoomCreateDto(
         @NotNull
-        String customId,
+        String id,
         @Positive
         int rowsNumber,
         @Positive

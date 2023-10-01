@@ -9,7 +9,7 @@ public record TicketDto(
         TicketStatus status,
         String filmTitle,
         LocalDateTime screeningDate,
-        String roomCustomId,
+        String roomId,
         Integer rowNumber,
         Integer seatNumber
 ) {

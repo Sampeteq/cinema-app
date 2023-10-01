@@ -41,7 +41,7 @@ class TicketTests {
         assertThat(ticket.getStatus()).isEqualTo(TicketStatus.ACTIVE);
         assertThat(ticket.getFilmTitle()).isEqualTo(FILM_TITLE);
         assertThat(ticket.getScreeningDate()).isEqualTo(SCREENING_DATE);
-        assertThat(ticket.getRoomCustomId()).isEqualTo(ROOM_CUSTOM_ID);
+        assertThat(ticket.getRoomId()).isEqualTo(ROOM_CUSTOM_ID);
         assertThat(ticket.getRowNumber()).isEqualTo(ROW_NUMBER);
         assertThat(ticket.getSeatNumber()).isEqualTo(SEAT_NUMBER);
         assertThat(ticket.getUserId()).isEqualTo(USER_ID);

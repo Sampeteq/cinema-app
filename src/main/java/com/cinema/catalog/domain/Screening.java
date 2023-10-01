@@ -34,7 +34,7 @@ public class Screening {
     @ManyToOne(fetch = FetchType.LAZY)
     private Film film;
 
-    private String roomCustomId;
+    private String roomId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "screening_id")
@@ -46,13 +46,13 @@ public class Screening {
             LocalDateTime date,
             LocalDateTime endDate,
             Film film,
-            String roomCustomId,
+            String roomId,
             List<Seat> seats
     ) {
         this.date = date;
         this.endDate = endDate;
         this.film = film;
-        this.roomCustomId = roomCustomId;
+        this.roomId = roomId;
         this.seats = seats;
     }
 
@@ -65,6 +65,6 @@ public class Screening {
     }
 
     public void removeRoom() {
-        this.roomCustomId = null;
+        this.roomId = null;
     }
 }

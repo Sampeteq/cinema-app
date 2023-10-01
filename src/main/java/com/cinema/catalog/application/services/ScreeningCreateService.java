@@ -39,14 +39,14 @@ class ScreeningCreateService {
                 dto.date(),
                 endDate,
                 film,
-                roomDto.customId(),
+                roomDto.id(),
                 seats
         );
         film.addScreening(newScreening);
         var screeningCreatedEvent = new ScreeningCreatedEvent(
                 newScreening.getDate(),
                 newScreening.getEndDate(),
-                newScreening.getRoomCustomId()
+                newScreening.getRoomId()
         );
         eventPublisher.publish(screeningCreatedEvent);
     }

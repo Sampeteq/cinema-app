@@ -35,7 +35,7 @@ class ScreeningEndService {
             endedScreenings
                     .stream()
                     .map(screening -> new ScreeningEndedEvent(
-                            screening.getRoomCustomId(),
+                            screening.getRoomId(),
                             screening.getDate(),
                             screening.getEndDate()
                     )).forEach(eventPublisher::publish);

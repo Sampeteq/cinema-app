@@ -33,9 +33,11 @@ import static com.cinema.catalog.ScreeningTestHelper.createScreenings;
 import static com.cinema.catalog.ScreeningTestHelper.getScreeningDate;
 import static com.cinema.tickets.TicketTestHelper.createFilmCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ScreeningControllerIT extends SpringIT {
@@ -119,11 +121,10 @@ class ScreeningControllerIT extends SpringIT {
         );
 
         //then
+        var expectedMessage = new ScreeningDateInPastException().getMessage();
         result
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(
-                        new ScreeningDateInPastException().getMessage()
-                ));
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test
@@ -145,11 +146,10 @@ class ScreeningControllerIT extends SpringIT {
         );
 
         //then
+        var expectedMessage = new ScreeningDateOutOfRangeException().getMessage();
         result
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(
-                        new ScreeningDateOutOfRangeException().getMessage()
-                ));
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test
@@ -171,11 +171,10 @@ class ScreeningControllerIT extends SpringIT {
         );
 
         //then
+        var expectedMessage = new ScreeningDateOutOfRangeException().getMessage();
         result
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(
-                        new ScreeningDateOutOfRangeException().getMessage()
-                ));
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test
@@ -193,9 +192,10 @@ class ScreeningControllerIT extends SpringIT {
         );
 
         //then
+        var expectedMessage = new RoomsNoAvailableException().getMessage();
         result
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(new RoomsNoAvailableException().getMessage()));
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test

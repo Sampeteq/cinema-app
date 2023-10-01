@@ -38,6 +38,7 @@ import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createScreeningCrateDto;
 import static com.cinema.tickets.TicketTestHelper.prepareBookedTicket;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -45,6 +46,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WithMockUser(username = "user1@mail.com")
@@ -194,15 +196,10 @@ class TicketControllerIT extends SpringIT {
         );
 
         //then
+        var expectedMessage = new TicketAlreadyExists().getMessage();
         result
-                .andExpect(
-                        status().isUnprocessableEntity()
-                )
-                .andExpect(
-                        content().string(
-                                new TicketAlreadyExists().getMessage()
-                        )
-                );
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test
@@ -230,11 +227,10 @@ class TicketControllerIT extends SpringIT {
         );
 
         //then
+        var expectedMessage = new TicketBookTooLateException().getMessage();
         result
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(
-                        new TicketBookTooLateException().getMessage()
-                ));
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test
@@ -314,11 +310,10 @@ class TicketControllerIT extends SpringIT {
         );
 
         //then
+        var expectedMessage = new TicketAlreadyCancelledException().getMessage();
         result
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(
-                        new TicketAlreadyCancelledException().getMessage()
-                ));
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test
@@ -336,11 +331,10 @@ class TicketControllerIT extends SpringIT {
         );
 
         //then
+        var expectedMessage = new TicketCancelTooLateException().getMessage();
         result
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(
-                        new TicketCancelTooLateException().getMessage()
-                ));
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test
@@ -355,9 +349,10 @@ class TicketControllerIT extends SpringIT {
         );
 
         //then
+        var expectedMessage = new TicketNotBelongsToUser().getMessage();
         result
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(new TicketNotBelongsToUser().getMessage()));
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test

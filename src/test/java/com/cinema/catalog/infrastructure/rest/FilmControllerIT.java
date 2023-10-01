@@ -19,10 +19,12 @@ import static com.cinema.catalog.FilmTestHelper.createFilm;
 import static com.cinema.catalog.FilmTestHelper.createFilmCreateDto;
 import static com.cinema.catalog.FilmTestHelper.createFilms;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class FilmControllerIT extends SpringIT {
@@ -89,9 +91,11 @@ class FilmControllerIT extends SpringIT {
         );
 
         //then
+
+        var expectedMessage = new FilmTitleNotUniqueException().getMessage();
         result
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(new FilmTitleNotUniqueException().getMessage()));
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @ParameterizedTest
@@ -109,9 +113,10 @@ class FilmControllerIT extends SpringIT {
         );
 
         //then
+        var expectedMessage = new FilmYearOutOfRangeException().getMessage();
         result
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(new FilmYearOutOfRangeException().getMessage()));
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test

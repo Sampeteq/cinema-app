@@ -16,11 +16,12 @@ import java.util.UUID;
 import static com.cinema.users.UserTestHelper.createSignUpDto;
 import static com.cinema.users.UserTestHelper.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UserControllerIT extends SpringIT {
@@ -68,9 +69,10 @@ class UserControllerIT extends SpringIT {
         );
 
         //then
+        var expectedMessage = new UserMailAlreadyExistsException().getMessage();
         result
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(new UserMailAlreadyExistsException().getMessage()));
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test
@@ -86,9 +88,11 @@ class UserControllerIT extends SpringIT {
         );
 
         //then
+
+        var expectedMessage = new UserNotSamePasswordsException().getMessage();
         result
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(new UserNotSamePasswordsException().getMessage()));
+                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test

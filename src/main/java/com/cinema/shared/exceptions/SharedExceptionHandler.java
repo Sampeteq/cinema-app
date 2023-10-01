@@ -24,10 +24,10 @@ class SharedExceptionHandler {
     }
 
     @ExceptionHandler(ValidationException.class)
-    ResponseEntity<String> handle(ValidationException exception) {
+    ResponseEntity<ErrorMessage> handle(ValidationException exception) {
         return ResponseEntity
                 .unprocessableEntity()
-                .body(exception.getMessage());
+                .body(new ErrorMessage(exception.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

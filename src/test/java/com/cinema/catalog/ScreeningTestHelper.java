@@ -8,14 +8,12 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.cinema.TimeHelper.getLocalDateTime;
-
 public final class ScreeningTestHelper {
 
     private ScreeningTestHelper() {
     }
 
-    public static final LocalDateTime SCREENING_DATE = getLocalDateTime();
+    public static final LocalDateTime SCREENING_DATE = LocalDateTime.of(2023, 12, 13, 16, 30);
 
     public static Screening createScreening(
             Film film,

@@ -16,7 +16,6 @@ import com.cinema.catalog.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.rooms.application.services.RoomFacade;
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
@@ -24,11 +23,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.Clock;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static com.cinema.TimeHelper.getLocalDateTime;
 import static com.cinema.catalog.FilmTestHelper.createFilm;
 import static com.cinema.catalog.ScreeningTestHelper.createScreening;
 import static com.cinema.catalog.ScreeningTestHelper.createScreenings;
@@ -108,11 +106,10 @@ class ScreeningControllerIT extends SpringIT {
         //given
         var filmId = filmRepository.add(createFilm()).getId();
         roomFacade.createRoom(createRoomCreateDto());
-        var currentDate = getLocalDateTime();
-        Mockito
-                .when(clockMock.instant())
-                .thenReturn(currentDate.toInstant(ZoneOffset.UTC));
-        var screeningCreateDto = new ScreeningCreateDto(currentDate.minusMinutes(1), filmId);
+        var screeningDate = LocalDateTime
+                .now(clockMock)
+                .minusMinutes(1);
+        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmId);
 
         //when
         var result = mockMvc.perform(
@@ -135,11 +132,10 @@ class ScreeningControllerIT extends SpringIT {
         //given
         var filmId = filmRepository.add(createFilm()).getId();
         roomFacade.createRoom(createRoomCreateDto());
-        var currentDate = getLocalDateTime();
-        Mockito
-                .when(clockMock.instant())
-                .thenReturn(currentDate.toInstant(ZoneOffset.UTC));
-        var screeningCreateDto = new ScreeningCreateDto(currentDate.plusDays(6), filmId);
+        var screeningDate = LocalDateTime
+                .now(clockMock)
+                .plusDays(6);
+        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmId);
 
         //when
         var result = mockMvc.perform(
@@ -162,11 +158,10 @@ class ScreeningControllerIT extends SpringIT {
         //given
         var filmId = filmRepository.add(createFilm()).getId();
         roomFacade.createRoom(createRoomCreateDto());
-        var currentDate = getLocalDateTime();
-        Mockito
-                .when(clockMock.instant())
-                .thenReturn(currentDate.toInstant(ZoneOffset.UTC));
-        var screeningCreateDto = new ScreeningCreateDto(currentDate.plusDays(22), filmId);
+        var screeningDate = LocalDateTime
+                .now(clockMock)
+                .plusDays(22);
+        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmId);
 
         //when
         var result = mockMvc.perform(

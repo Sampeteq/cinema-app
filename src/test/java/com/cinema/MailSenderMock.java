@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Profile("test")
 @Slf4j
-public class MockMailSender implements MailSender {
+public class MailSenderMock implements MailSender {
 
     @Override
     public void sendMail(Mail mail) {

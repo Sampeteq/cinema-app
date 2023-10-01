@@ -1,5 +1,6 @@
 package com.cinema.catalog.application.services;
 
+import com.cinema.catalog.domain.Screening;
 import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
 import com.cinema.catalog.domain.events.ScreeningEndedEvent;
 import com.cinema.shared.events.EventPublisher;
@@ -25,7 +26,7 @@ class ScreeningEndService {
         } else {
             log.info("Found ended screenings:");
             endedScreenings.forEach(screening -> log.info(screening.toString()));
-//            endedScreenings.forEach(Screening::removeRoom);
+            endedScreenings.forEach(Screening::removeRoom);
             endedScreenings
                     .stream()
                     .map(screening -> new ScreeningEndedEvent(

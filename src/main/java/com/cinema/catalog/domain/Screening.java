@@ -63,4 +63,8 @@ public class Screening {
                 .filter(s -> s.placedOn(rowNumber, seatNumber))
                 .findFirst();
     }
+
+    public void removeRoom() {
+        this.roomCustomId = null;
+    }
 }

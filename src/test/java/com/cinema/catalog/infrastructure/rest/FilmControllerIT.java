@@ -90,7 +90,7 @@ class FilmControllerIT extends SpringIT {
 
         //then
         result
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(new FilmTitleNotUniqueException().getMessage()));
     }
 
@@ -110,7 +110,7 @@ class FilmControllerIT extends SpringIT {
 
         //then
         result
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(new FilmYearOutOfRangeException().getMessage()));
     }
 

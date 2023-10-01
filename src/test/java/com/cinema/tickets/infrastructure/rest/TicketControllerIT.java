@@ -196,7 +196,7 @@ class TicketControllerIT extends SpringIT {
         //then
         result
                 .andExpect(
-                        status().isBadRequest()
+                        status().isUnprocessableEntity()
                 )
                 .andExpect(
                         content().string(
@@ -231,7 +231,7 @@ class TicketControllerIT extends SpringIT {
 
         //then
         result
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(
                         new TicketBookTooLateException().getMessage()
                 ));
@@ -315,7 +315,7 @@ class TicketControllerIT extends SpringIT {
 
         //then
         result
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(
                         new TicketAlreadyCancelledException().getMessage()
                 ));
@@ -337,7 +337,7 @@ class TicketControllerIT extends SpringIT {
 
         //then
         result
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(
                         new TicketCancelTooLateException().getMessage()
                 ));
@@ -356,7 +356,7 @@ class TicketControllerIT extends SpringIT {
 
         //then
         result
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(new TicketNotBelongsToUser().getMessage()));
     }
 

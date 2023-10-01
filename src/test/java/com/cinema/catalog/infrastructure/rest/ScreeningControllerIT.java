@@ -123,7 +123,7 @@ class ScreeningControllerIT extends SpringIT {
 
         //then
         result
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(
                         new ScreeningDateInPastException().getMessage()
                 ));
@@ -150,7 +150,7 @@ class ScreeningControllerIT extends SpringIT {
 
         //then
         result
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(
                         new ScreeningDateOutOfRangeException().getMessage()
                 ));
@@ -177,7 +177,7 @@ class ScreeningControllerIT extends SpringIT {
 
         //then
         result
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(
                         new ScreeningDateOutOfRangeException().getMessage()
                 ));
@@ -199,7 +199,7 @@ class ScreeningControllerIT extends SpringIT {
 
         //then
         result
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(new RoomsNoAvailableException().getMessage()));
     }
 

@@ -26,7 +26,7 @@ class SharedExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     ResponseEntity<String> handle(ValidationException exception) {
         return ResponseEntity
-                .badRequest()
+                .unprocessableEntity()
                 .body(exception.getMessage());
     }
 

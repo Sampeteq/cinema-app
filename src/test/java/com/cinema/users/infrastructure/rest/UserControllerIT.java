@@ -69,7 +69,7 @@ class UserControllerIT extends SpringIT {
 
         //then
         result
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(new UserMailAlreadyExistsException().getMessage()));
     }
 
@@ -87,7 +87,7 @@ class UserControllerIT extends SpringIT {
 
         //then
         result
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(new UserNotSamePasswordsException().getMessage()));
     }
 

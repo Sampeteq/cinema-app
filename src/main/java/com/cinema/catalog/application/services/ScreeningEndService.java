@@ -25,7 +25,7 @@ class ScreeningEndService {
     public void removeRoomsFromEndedScreenings() {
         log.info("Searching for ended screenings");
         var currentDate = LocalDateTime.now(clock);
-        var endedScreenings = screeningReadOnlyRepository.readEnded(currentDate);
+        var endedScreenings = screeningReadOnlyRepository.readEndedWithRoom(currentDate);
         if (endedScreenings.isEmpty()) {
             log.info("Ended screenings not found");
         } else {

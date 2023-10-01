@@ -43,8 +43,8 @@ class SpringDataJpaScreeningReadOnlyRepository implements ScreeningReadOnlyRepos
     }
 
     @Override
-    public List<Screening> readEnded(LocalDateTime currentDate) {
-        return jpaScreeningReadOnlyRepository.findEnded(currentDate);
+    public List<Screening> readEndedWithRoom(LocalDateTime currentDate) {
+        return jpaScreeningReadOnlyRepository.findEndedWithRoom(currentDate);
     }
 }
 
@@ -59,6 +59,6 @@ interface JpaScreeningReadOnlyRepository extends Repository<Screening, Long> {
 
     List<Screening> findByDateBetween(LocalDateTime from, LocalDateTime to);
 
-    @Query("select s from Screening s where s.endDate < :currentDate")
-    List<Screening> findEnded(LocalDateTime currentDate);
+    @Query("select s from Screening s where s.endDate < :currentDate and s.roomCustomId is not null")
+    List<Screening> findEndedWithRoom(LocalDateTime currentDate);
 }

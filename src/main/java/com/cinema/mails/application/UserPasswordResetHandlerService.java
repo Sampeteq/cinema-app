@@ -1,7 +1,6 @@
 package com.cinema.mails.application;
 
 import com.cinema.mails.domain.Mail;
-import com.cinema.mails.domain.MailRepository;
 import com.cinema.mails.domain.MailSender;
 import com.cinema.mails.domain.MailType;
 import com.cinema.users.domain.events.UserPasswordResetEvent;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 class UserPasswordResetHandlerService {
 
     private final MailSender mailSender;
-    private final MailRepository mailRepository;
 
     @EventListener
     void handle(UserPasswordResetEvent event) {
@@ -30,7 +28,5 @@ class UserPasswordResetHandlerService {
         );
         mailSender.sendMail(passwordResetMail);
         log.info("Mail sent");
-        mailRepository.add(passwordResetMail);
-        log.info("Mail saved in database");
     }
 }

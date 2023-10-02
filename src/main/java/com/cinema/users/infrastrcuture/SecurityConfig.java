@@ -57,6 +57,10 @@ class SecurityConfig {
                                         "/films",
                                         "/screenings"
                                 ).hasAuthority("ADMIN")
+                                .requestMatchers(
+                                        HttpMethod.DELETE,
+                                        "/films/{title}"
+                                ).hasAuthority("ADMIN")
                                 .anyRequest()
                                 .authenticated()
                 )

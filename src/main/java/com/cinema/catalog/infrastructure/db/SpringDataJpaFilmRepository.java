@@ -21,6 +21,11 @@ class SpringDataJpaFilmRepository implements FilmRepository {
     }
 
     @Override
+    public void delete(Film film) {
+        jpaFilmRepository.delete(film);
+    }
+
+    @Override
     public Optional<Film> readById(Long filmId) {
         return jpaFilmRepository.findById(filmId);
     }

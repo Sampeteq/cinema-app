@@ -18,6 +18,7 @@ import java.util.List;
 public class CatalogFacade {
 
     private final FilmCreateService filmCreateService;
+    private final FilmDeleteService filmDeleteService;
     private final FilmReadService filmReadService;
     private final ScreeningCreateService screeningCreateService;
     private final ScreeningReadService screeningReadService;
@@ -25,6 +26,10 @@ public class CatalogFacade {
 
     public void createFilm(FilmCreateDto dto) {
         filmCreateService.creteFilm(dto);
+    }
+
+    public void deleteFilm(String title) {
+        filmDeleteService.delete(title);
     }
 
     public List<FilmDto> readAllFilms() {

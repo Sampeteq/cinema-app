@@ -21,6 +21,7 @@ import static com.cinema.catalog.FilmTestHelper.createFilms;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -117,6 +118,32 @@ class FilmControllerIT extends SpringIT {
         result
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void film_is_deleted() throws Exception {
+        //given
+        var film = filmRepository.add(createFilm());
+
+        //when
+        var result = mockMvc.perform(delete(FILMS_BASE_ENDPOINT + "/" + film.getTitle()));
+
+        //then
+        result.andExpect(status().isNoContent());
+        assertThat(filmRepository.existsByTitle(film.getTitle())).isFalse();
+    }
+
+    @Test
+    @WithMockUser(authorities = "USER")
+    void film_is_deleted_only_by_admin() throws Exception {
+        //given
+
+        //when
+        var result = mockMvc.perform(delete(FILMS_BASE_ENDPOINT + "/Film 1"));
+
+        //then
+        result.andExpect(status().isForbidden());
     }
 
     @Test

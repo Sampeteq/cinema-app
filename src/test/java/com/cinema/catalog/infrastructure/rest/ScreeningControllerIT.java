@@ -11,7 +11,6 @@ import com.cinema.catalog.domain.Film;
 import com.cinema.catalog.domain.FilmCategory;
 import com.cinema.catalog.domain.FilmRepository;
 import com.cinema.catalog.domain.Screening;
-import com.cinema.catalog.domain.exceptions.ScreeningDateInPastException;
 import com.cinema.catalog.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.rooms.application.services.RoomFacade;
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
@@ -100,31 +99,6 @@ class ScreeningControllerIT extends SpringIT {
         mockMvc
                 .perform(get(SCREENINGS_BASE_ENDPOINT))
                 .andExpect(content().json(toJson(expectedDto)));
-    }
-
-    @Test
-    @WithMockUser(authorities = "ADMIN")
-    void screening_date_cannot_be_in_past() throws Exception {
-        //given
-        var filmId = filmRepository.add(createFilm()).getId();
-        roomFacade.createRoom(createRoomCreateDto());
-        var screeningDate = LocalDateTime
-                .now(clockMock)
-                .minusMinutes(1);
-        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmId);
-
-        //when
-        var result = mockMvc.perform(
-                post(SCREENINGS_BASE_ENDPOINT)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJson(screeningCreateDto))
-        );
-
-        //then
-        var expectedMessage = new ScreeningDateInPastException().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
     }
 
     @Test

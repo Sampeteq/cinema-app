@@ -1,6 +1,5 @@
 package com.cinema.catalog.domain.services;
 
-import com.cinema.catalog.domain.exceptions.ScreeningDateInPastException;
 import com.cinema.catalog.domain.exceptions.ScreeningDateOutOfRangeException;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +15,6 @@ public class ScreeningDateValidateService {
 
     public void validate(LocalDateTime screeningDate, Clock clock) {
         var currentDate = getCurrentDate(clock);
-        if (screeningDate.isBefore(currentDate)) {
-            throw new ScreeningDateInPastException();
-        }
         var datesDifference = Duration
                 .between(screeningDate, currentDate)
                 .abs()

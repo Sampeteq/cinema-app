@@ -2,7 +2,6 @@ package com.cinema.catalog.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,12 +30,12 @@ public class Screening {
 
     private LocalDateTime endDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Film film;
 
     private String roomId;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "screening_id")
     private List<Seat> seats;
 

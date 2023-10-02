@@ -21,6 +21,7 @@ public class CatalogFacade {
     private final FilmDeleteService filmDeleteService;
     private final FilmReadService filmReadService;
     private final ScreeningCreateService screeningCreateService;
+    private final ScreeningDeleteService screeningDeleteService;
     private final ScreeningReadService screeningReadService;
     private final SeatReadService seatReadService;
 
@@ -38,6 +39,10 @@ public class CatalogFacade {
 
     public void createScreening(ScreeningCreateDto dto) {
         screeningCreateService.createScreening(dto);
+    }
+
+    public void deleteScreening(Long id) {
+        screeningDeleteService.delete(id);
     }
 
     public List<ScreeningDto> readAllScreenings() {

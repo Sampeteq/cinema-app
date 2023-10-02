@@ -11,6 +11,7 @@ import com.cinema.catalog.domain.Film;
 import com.cinema.catalog.domain.FilmCategory;
 import com.cinema.catalog.domain.FilmRepository;
 import com.cinema.catalog.domain.Screening;
+import com.cinema.catalog.domain.ScreeningRepository;
 import com.cinema.catalog.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.rooms.application.services.RoomFacade;
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
@@ -32,7 +33,9 @@ import static com.cinema.catalog.ScreeningTestHelper.createScreenings;
 import static com.cinema.catalog.ScreeningTestHelper.getScreeningDate;
 import static com.cinema.tickets.TicketTestHelper.createFilmCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -48,6 +51,9 @@ class ScreeningControllerIT extends SpringIT {
 
     @Autowired
     private FilmRepository filmRepository;
+
+    @Autowired
+    private ScreeningRepository screeningRepository;
 
     @Autowired
     private RoomFacade roomFacade;
@@ -173,6 +179,35 @@ class ScreeningControllerIT extends SpringIT {
         result
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void screening_is_deleted() throws Exception {
+        //given
+        var screening = addScreening();
+
+        //when
+        var result = mockMvc.perform(delete(SCREENINGS_BASE_ENDPOINT + "/" + screening.getId()));
+
+        //then
+        result.andExpect(status().isNoContent());
+        assertThat(screeningRepository.readById(screening.getId())).isEmpty();
+    }
+
+    @Test
+    @WithMockUser(authorities = "USER")
+    void screening_is_deleted_only_by_admin() throws Exception {
+        //given
+        var screeningId = 1L;
+
+        //when
+        var result = mockMvc.perform(
+                delete(SCREENINGS_BASE_ENDPOINT + "/" + screeningId)
+        );
+
+        //then
+        result.andExpect(status().isForbidden());
     }
 
     @Test

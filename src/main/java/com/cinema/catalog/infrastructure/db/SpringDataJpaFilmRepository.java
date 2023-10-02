@@ -36,6 +36,11 @@ class SpringDataJpaFilmRepository implements FilmRepository {
     }
 
     @Override
+    public Optional<Film> readByScreeningId(Long id) {
+        return jpaFilmRepository.readByScreenings_id(id);
+    }
+
+    @Override
     public List<Film> readAll() {
         return jpaFilmRepository.findAll();
     }
@@ -48,5 +53,6 @@ class SpringDataJpaFilmRepository implements FilmRepository {
 
 interface JpaFilmRepository extends JpaRepository<Film, Long> {
     Optional<Film> readByTitle(String title);
+    Optional<Film> readByScreenings_id(Long id);
     boolean existsByTitle(String title);
 }

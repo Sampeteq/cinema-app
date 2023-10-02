@@ -8,6 +8,7 @@ public interface FilmRepository  {
     void delete(Film film);
     Optional<Film> readById(Long filmId);
     Optional<Film> readByTitle(String title);
+    Optional<Film> readByScreeningId(Long id);
     List<Film> readAll();
     boolean existsByTitle(String title);
 }

@@ -48,7 +48,11 @@ Admin:
 
 /films (POST) - add a new film
 
+/films/{title} (DELETE) - delete a film
+
 /screenings (POST) - add a new screening
+
+/screenings{id} (DELETE) - delete a screening
 
 ### 2.Tickets booking
 

@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +39,13 @@ class ScreeningController {
             ScreeningCreateDto dto
     ) {
         catalogFacade.createScreening(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    @SecurityRequirement(name = "basic")
+    void deleteScreening(@PathVariable Long id) {
+        catalogFacade.deleteScreening(id);
     }
 
     @GetMapping

@@ -11,7 +11,7 @@ class SpringEventPublisher implements EventPublisher {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
-    public void publish(Event event) {
+    public void publish(Object event) {
         applicationEventPublisher.publishEvent(event);
     }
 }

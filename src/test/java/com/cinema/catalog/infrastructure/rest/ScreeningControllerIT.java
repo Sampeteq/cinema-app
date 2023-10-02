@@ -78,7 +78,7 @@ class ScreeningControllerIT extends SpringIT {
         //given
         var film = filmRepository.add(createFilm());
         roomFacade.createRoom(createRoomCreateDto());
-        var screeningCreateDto = new ScreeningCreateDto(getScreeningDate(clockMock), film.getId());
+        var screeningCreateDto = new ScreeningCreateDto(getScreeningDate(clockMock), film.getTitle());
 
         //when
         var result = mockMvc.perform(
@@ -105,12 +105,12 @@ class ScreeningControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void screening_and_current_date_difference_is_min_7_days() throws Exception {
         //given
-        var filmId = filmRepository.add(createFilm()).getId();
+        var film = filmRepository.add(createFilm());
         roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = LocalDateTime
                 .now(clockMock)
                 .plusDays(6);
-        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmId);
+        var screeningCreateDto = new ScreeningCreateDto(screeningDate, film.getTitle());
 
         //when
         var result = mockMvc.perform(
@@ -130,12 +130,12 @@ class ScreeningControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void screening_and_current_date_difference_is_max_21_days() throws Exception {
         //given
-        var filmId = filmRepository.add(createFilm()).getId();
+        var film = filmRepository.add(createFilm());
         roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = LocalDateTime
                 .now(clockMock)
                 .plusDays(22);
-        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmId);
+        var screeningCreateDto = new ScreeningCreateDto(screeningDate, film.getTitle());
 
         //when
         var result = mockMvc.perform(
@@ -156,7 +156,10 @@ class ScreeningControllerIT extends SpringIT {
     void screenings_collision_cannot_exist() throws Exception {
         //given
         var screening = addScreening();
-        var screeningCreateDto = new ScreeningCreateDto(screening.getDate().plusMinutes(10), 1L);
+        var screeningCreateDto = new ScreeningCreateDto(
+                screening.getDate().plusMinutes(10),
+                screening.getFilm().getTitle()
+        );
 
         //when
         var result = mockMvc.perform(
@@ -309,14 +312,14 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     private List<SeatDto> prepareSeats() {
-        catalogFacade.createFilm(createFilmCreateDto());
+        var filmCreateDto = createFilmCreateDto();
+        catalogFacade.createFilm(filmCreateDto);
         roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(clockMock);
-        var filmId = 1L;
         catalogFacade.createScreening(
                 new ScreeningCreateDto(
                         screeningDate,
-                       filmId
+                        filmCreateDto.title()
                 )
         );
         var screeningId = 1L;

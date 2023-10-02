@@ -31,7 +31,7 @@ class ScreeningCreateService {
     @Transactional
     public void createScreening(ScreeningCreateDto dto) {
         screeningDateValidateService.validate(dto.date(), clock);
-        var film = readFilm(dto.filmId());
+        var film = readFilm(dto.filmTitle());
         var endDate = film.calculateScreeningEndDate(dto.date());
         var roomDto = roomFacade.findFirstAvailableRoom(dto.date(), endDate);
         var seats = createSeats(roomDto.rowsNumber(), roomDto.rowSeatsNumber());
@@ -51,9 +51,9 @@ class ScreeningCreateService {
         eventPublisher.publish(screeningCreatedEvent);
     }
 
-    private Film readFilm(Long filmId) {
+    private Film readFilm(String filmTitle) {
         return filmRepository
-                .readById(filmId)
+                .readByTitle(filmTitle)
                 .orElseThrow(() -> new EntityNotFoundException("Film"));
     }
 

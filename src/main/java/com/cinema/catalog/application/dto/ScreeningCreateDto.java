@@ -12,6 +12,6 @@ public record ScreeningCreateDto(
         LocalDateTime date,
 
         @NotNull
-        Long filmId
+        String filmTitle
 ) {
 }

@@ -2,8 +2,6 @@ package com.cinema.catalog.infrastructure.rest;
 
 import com.cinema.SpringIT;
 import com.cinema.catalog.application.dto.FilmCreateDto;
-import com.cinema.catalog.application.dto.FilmDto;
-import com.cinema.catalog.application.dto.FilmMapper;
 import com.cinema.catalog.domain.FilmCategory;
 import com.cinema.catalog.domain.FilmRepository;
 import com.cinema.catalog.domain.exceptions.FilmTitleNotUniqueException;
@@ -15,18 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import java.util.List;
-
 import static com.cinema.catalog.FilmTestHelper.createFilm;
 import static com.cinema.catalog.FilmTestHelper.createFilmCreateDto;
-import static com.cinema.catalog.FilmTestHelper.createFilms;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,9 +33,6 @@ class FilmControllerIT extends SpringIT {
 
     @Autowired
     private FilmRepository filmRepository;
-
-    @Autowired
-    private FilmMapper filmMapper;
 
     @Test
     @WithMockUser(authorities = "COMMON")
@@ -160,7 +154,7 @@ class FilmControllerIT extends SpringIT {
     @Test
     void films_are_read() throws Exception {
         //given
-        var films = addFilms();
+        var film = filmRepository.add(createFilm());
 
         //when
         var result = mockMvc.perform(
@@ -168,16 +162,12 @@ class FilmControllerIT extends SpringIT {
         );
 
         //then
-        result
-                .andExpect(status().isOk())
-                .andExpect(content().json(toJson(films)));
-    }
-
-    private List<FilmDto> addFilms() {
-        return createFilms()
-                .stream()
-                .map(filmRepository::add)
-                .map(film -> filmMapper.mapToDto(film))
-                .toList();
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$[*]", hasSize(1)))
+                .andExpect(jsonPath("$[*].*", everyItem(notNullValue())))
+                .andExpect(jsonPath("$[0].title").value(film.getTitle()))
+                .andExpect(jsonPath("$[0].category").value(film.getCategory().name()))
+                .andExpect(jsonPath("$[0].year").value(film.getYear()))
+                .andExpect(jsonPath("$[0].durationInMinutes").value(film.getDurationInMinutes()));
     }
 }

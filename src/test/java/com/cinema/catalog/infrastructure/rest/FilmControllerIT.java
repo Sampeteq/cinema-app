@@ -41,6 +41,20 @@ class FilmControllerIT extends SpringIT {
     private FilmMapper filmMapper;
 
     @Test
+    @WithMockUser(authorities = "COMMON")
+    void film_can_be_created_only_by_admin() throws Exception {
+        //given
+
+        //when
+        var result = mockMvc.perform(
+                post(FILMS_BASE_ENDPOINT)
+        );
+
+        //then
+        result.andExpect(status().isForbidden());
+    }
+
+    @Test
     @WithMockUser(authorities = "ADMIN")
     void film_is_created() throws Exception {
         //given
@@ -72,20 +86,6 @@ class FilmControllerIT extends SpringIT {
                     assertEquals(dto.year(), film.getYear());
                     assertEquals(dto.durationInMinutes(), film.getDurationInMinutes());
                 });
-    }
-
-    @Test
-    @WithMockUser(authorities = "COMMON")
-    void film_can_be_created_only_by_admin() throws Exception {
-        //given
-
-        //when
-        var result = mockMvc.perform(
-                post(FILMS_BASE_ENDPOINT)
-        );
-
-        //then
-        result.andExpect(status().isForbidden());
     }
 
     @Test
@@ -132,6 +132,18 @@ class FilmControllerIT extends SpringIT {
     }
 
     @Test
+    @WithMockUser(authorities = "USER")
+    void film_is_deleted_only_by_admin() throws Exception {
+        //given
+
+        //when
+        var result = mockMvc.perform(delete(FILMS_BASE_ENDPOINT + "/Film 1"));
+
+        //then
+        result.andExpect(status().isForbidden());
+    }
+
+    @Test
     @WithMockUser(authorities = "ADMIN")
     void film_is_deleted() throws Exception {
         //given
@@ -143,18 +155,6 @@ class FilmControllerIT extends SpringIT {
         //then
         result.andExpect(status().isNoContent());
         assertThat(filmRepository.existsByTitle(film.getTitle())).isFalse();
-    }
-
-    @Test
-    @WithMockUser(authorities = "USER")
-    void film_is_deleted_only_by_admin() throws Exception {
-        //given
-
-        //when
-        var result = mockMvc.perform(delete(FILMS_BASE_ENDPOINT + "/Film 1"));
-
-        //then
-        result.andExpect(status().isForbidden());
     }
 
     @Test

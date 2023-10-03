@@ -182,20 +182,6 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
-    void screening_is_deleted() throws Exception {
-        //given
-        var screening = addScreening();
-
-        //when
-        var result = mockMvc.perform(delete(SCREENINGS_BASE_ENDPOINT + "/" + screening.getId()));
-
-        //then
-        result.andExpect(status().isNoContent());
-        assertThat(screeningRepository.readById(screening.getId())).isEmpty();
-    }
-
-    @Test
     @WithMockUser(authorities = "USER")
     void screening_is_deleted_only_by_admin() throws Exception {
         //given
@@ -208,6 +194,20 @@ class ScreeningControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
+    void screening_is_deleted() throws Exception {
+        //given
+        var screening = addScreening();
+
+        //when
+        var result = mockMvc.perform(delete(SCREENINGS_BASE_ENDPOINT + "/" + screening.getId()));
+
+        //then
+        result.andExpect(status().isNoContent());
+        assertThat(screeningRepository.readById(screening.getId())).isEmpty();
     }
 
     @Test

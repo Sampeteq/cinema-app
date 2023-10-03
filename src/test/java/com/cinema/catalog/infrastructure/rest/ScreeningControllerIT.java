@@ -4,10 +4,8 @@ import com.cinema.SpringIT;
 import com.cinema.catalog.ScreeningTestHelper;
 import com.cinema.catalog.application.dto.ScreeningCreateDto;
 import com.cinema.catalog.application.dto.ScreeningDto;
-import com.cinema.catalog.application.dto.ScreeningMapper;
 import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.catalog.application.services.CatalogFacade;
-import com.cinema.catalog.domain.Film;
 import com.cinema.catalog.domain.FilmCategory;
 import com.cinema.catalog.domain.FilmRepository;
 import com.cinema.catalog.domain.Screening;
@@ -25,16 +23,17 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.function.Supplier;
 
 import static com.cinema.catalog.FilmTestHelper.createFilm;
 import static com.cinema.catalog.ScreeningTestHelper.createScreening;
-import static com.cinema.catalog.ScreeningTestHelper.createScreenings;
 import static com.cinema.catalog.ScreeningTestHelper.getScreeningDate;
 import static com.cinema.tickets.TicketTestHelper.createFilmCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -57,9 +56,6 @@ class ScreeningControllerIT extends SpringIT {
 
     @Autowired
     private RoomFacade roomFacade;
-
-    @Autowired
-    private ScreeningMapper screeningMapper;
 
     @SpyBean
     private Clock clockMock;
@@ -99,7 +95,8 @@ class ScreeningControllerIT extends SpringIT {
                new ScreeningDto(
                        1L,
                        screeningCreateDto.date(),
-                       film.getTitle()
+                       film.getTitle(),
+                       film.getCategory()
                )
         );
         mockMvc
@@ -213,7 +210,7 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screenings_are_read() throws Exception {
         //given
-        var screenings = addScreenings();
+        var screening = addScreening();
 
         //when
         var result = mockMvc.perform(
@@ -223,15 +220,19 @@ class ScreeningControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJson(screenings)));
+                .andExpect(jsonPath("$[*]", hasSize(1)))
+                .andExpect(jsonPath("$[*].*", everyItem(notNullValue())))
+                .andExpect(jsonPath("$[0].date", equalTo(screening.getDate().toString())))
+                .andExpect(jsonPath("$[0].filmTitle", equalTo(screening.getFilm().getTitle())));
     }
 
     @Test
     void screenings_are_read_by_film_title() throws Exception {
         //given
-        var requiredFilmTitle = "Some title";
-        var screeningWithRequiredFilmTitle = addScreening(() -> createFilm(requiredFilmTitle));
-        addScreening(() -> createFilm("Some other title"));
+        var requiredFilmTitle = "Some film title";
+        var otherFilmTitle = "Some other film title";
+        addScreening(requiredFilmTitle);
+        addScreening(otherFilmTitle);
 
         //when
         var result = mockMvc.perform(
@@ -242,26 +243,37 @@ class ScreeningControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJson(List.of(screeningWithRequiredFilmTitle))));
+                .andExpect(
+                        jsonPath(
+                                "$.[*].filmTitle",
+                                everyItem(equalTo(requiredFilmTitle))
+                        )
+                );
     }
 
     @Test
     void screenings_are_read_by_film_category() throws Exception {
         //given
         var requiredFilmCategory = FilmCategory.COMEDY;
-        var screeningWithRequiredFilmCategory = addScreening(() -> createFilm(requiredFilmCategory));
-        addScreening(() -> createFilm(FilmCategory.DRAMA));
+        var otherFilmCategory = FilmCategory.DRAMA;
+        addScreening(requiredFilmCategory);
+        addScreening(otherFilmCategory);
 
         //when
         var result = mockMvc.perform(
                 get(SCREENINGS_BASE_ENDPOINT + "/by/category")
-                        .param("category", requiredFilmCategory.toString())
+                        .param("category", requiredFilmCategory.name())
         );
 
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJson(List.of(screeningWithRequiredFilmCategory))));
+                .andExpect(
+                        jsonPath(
+                                "$.[*].filmCategory",
+                                everyItem(equalTo(requiredFilmCategory.name()))
+                        )
+                );
     }
 
     @Test
@@ -280,7 +292,11 @@ class ScreeningControllerIT extends SpringIT {
         //then
         result
                 .andExpect(status().isOk())
-                .andExpect(content().json(toJson(List.of(screeningWithRequiredDate))));
+                .andExpect(
+                        jsonPath(
+                                "$.[*].date",
+                                everyItem(equalTo(screeningWithRequiredDate.getDate().toString())))
+                );
     }
 
     @Test
@@ -310,40 +326,33 @@ class ScreeningControllerIT extends SpringIT {
                 .get(0);
     }
 
-    private ScreeningDto addScreening(Supplier<Film> filmSupplier) {
-        var film = filmSupplier.get();
+    private void addScreening(String filmTitle) {
+        var film = createFilm(filmTitle);
         var screeningDate = getScreeningDate(clockMock);
         var screening = createScreening(film, screeningDate);
         film.addScreening(screening);
-        var addedScreening = filmRepository
-                .add(film)
-                .getScreenings()
-                .get(0);
-        return screeningMapper.mapToDto(addedScreening);
+        filmRepository
+                .add(film);
     }
 
-    private ScreeningDto addScreening(LocalDate date) {
+    private void addScreening(FilmCategory filmCategory) {
+        var film = createFilm(filmCategory);
+        var screeningDate = getScreeningDate(clockMock);
+        var screening = createScreening(film, screeningDate);
+        film.addScreening(screening);
+        filmRepository
+                .add(film);
+    }
+
+    private Screening addScreening(LocalDate date) {
         var film = createFilm();
         var dateTime = date.atStartOfDay().plusHours(16);
         var screening = ScreeningTestHelper.createScreening(film, dateTime);
         film.addScreening(screening);
-        var addedScreening = filmRepository
-                .add(film)
-                .getScreenings()
-                .get(0);
-        return screeningMapper.mapToDto(addedScreening);
-    }
-
-    private List<ScreeningDto> addScreenings() {
-        var film = createFilm();
-        var screenings = createScreenings(film);
-        screenings.forEach(film::addScreening);
         return filmRepository
                 .add(film)
                 .getScreenings()
-                .stream()
-                .map(screeningMapper::mapToDto)
-                .toList();
+                .get(0);
     }
 
     private List<SeatDto> prepareSeats() {

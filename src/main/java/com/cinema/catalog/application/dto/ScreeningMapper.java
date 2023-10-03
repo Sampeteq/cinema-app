@@ -8,5 +8,6 @@ import org.mapstruct.Mapping;
 public interface ScreeningMapper {
 
     @Mapping(target = "filmTitle", source = "screening.film.title")
+    @Mapping(target = "filmCategory", source = "screening.film.category")
     ScreeningDto mapToDto(Screening screening);
 }

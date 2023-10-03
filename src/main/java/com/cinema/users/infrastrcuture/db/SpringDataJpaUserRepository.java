@@ -22,12 +22,12 @@ class SpringDataJpaUserRepository implements UserRepository {
 
     @Override
     public Optional<User> readyByMail(String mail) {
-        return jpaUserRepository.readByMail(mail);
+        return jpaUserRepository.findByMail(mail);
     }
 
     @Override
     public Optional<User> readByPasswordResetToken(UUID passwordResetToken) {
-        return jpaUserRepository.readByPasswordResetToken(passwordResetToken);
+        return jpaUserRepository.findByPasswordResetToken(passwordResetToken);
     }
 
     @Override
@@ -37,7 +37,7 @@ class SpringDataJpaUserRepository implements UserRepository {
 }
 
 interface JpaUserRepository extends JpaRepository<User, String> {
-    Optional<User> readByMail(String mail);
-    Optional<User> readByPasswordResetToken(UUID passwordResetToken);
+    Optional<User> findByMail(String mail);
+    Optional<User> findByPasswordResetToken(UUID passwordResetToken);
     boolean existsByMail(String mail);
 }

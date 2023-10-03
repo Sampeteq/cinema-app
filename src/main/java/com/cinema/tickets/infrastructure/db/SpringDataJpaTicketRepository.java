@@ -28,7 +28,7 @@ class SpringDataJpaTicketRepository implements TicketRepository {
 
     @Override
     public List<Ticket> readAllByUserId(Long userId) {
-        return jpaTicketRepository.readAllByUserId(userId);
+        return jpaTicketRepository.findAllByUserId(userId);
     }
 
     @Override
@@ -43,7 +43,7 @@ class SpringDataJpaTicketRepository implements TicketRepository {
 
 interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
 
-    List<Ticket> readAllByUserId(Long userId);
+    List<Ticket> findAllByUserId(Long userId);
 
     boolean existsByScreeningIdAndRowNumberAndSeatNumber(
             Long screeningId,

@@ -42,6 +42,4 @@ class SpringDataJpaRoomRepository implements RoomRepository {
 }
 
 interface JpaRoomRepository extends JpaRepository<Room, String> {
-
-    boolean existsById(String id);
 }

@@ -7,6 +7,5 @@ create table if not exists seats
     row_number   int,
     number       int,
     is_free      boolean,
-    screening_id bigint,
-    booking_id   bigint
+    screening_id bigint
 );

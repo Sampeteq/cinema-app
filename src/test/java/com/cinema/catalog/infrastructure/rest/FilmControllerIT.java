@@ -1,8 +1,10 @@
 package com.cinema.catalog.infrastructure.rest;
 
 import com.cinema.SpringIT;
+import com.cinema.catalog.application.dto.FilmCreateDto;
 import com.cinema.catalog.application.dto.FilmDto;
 import com.cinema.catalog.application.dto.FilmMapper;
+import com.cinema.catalog.domain.FilmCategory;
 import com.cinema.catalog.domain.FilmRepository;
 import com.cinema.catalog.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.catalog.domain.exceptions.FilmYearOutOfRangeException;
@@ -42,7 +44,16 @@ class FilmControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void film_is_created() throws Exception {
         //given
-        var dto = createFilmCreateDto();
+        var title = "Some title";
+        var category = FilmCategory.COMEDY;
+        var year = 2023;
+        var durationInMinutes = 100;
+        var dto = new FilmCreateDto(
+                title,
+                category,
+                year,
+                durationInMinutes
+        );
 
         //when
         var result = mockMvc.perform(

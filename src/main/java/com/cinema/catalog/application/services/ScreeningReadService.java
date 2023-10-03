@@ -4,7 +4,7 @@ import com.cinema.catalog.application.dto.ScreeningDto;
 import com.cinema.catalog.application.dto.ScreeningMapper;
 import com.cinema.catalog.domain.FilmCategory;
 import com.cinema.catalog.domain.Screening;
-import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
+import com.cinema.catalog.domain.ScreeningRepository;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,11 +20,11 @@ import static java.util.Comparator.comparing;
 @Transactional(readOnly = true)
 class ScreeningReadService {
 
-    private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
+    private final ScreeningRepository screeningRepository;
     private final ScreeningMapper screeningMapper;
 
     public List<ScreeningDto> readAllScreenings() {
-        return screeningReadOnlyRepository
+        return screeningRepository
                 .readAll()
                 .stream()
                 .sorted(comparing(Screening::getDate))
@@ -33,7 +33,7 @@ class ScreeningReadService {
     }
 
     public List<ScreeningDto> readScreeningsByFilmTitle(String filmTitle) {
-        return screeningReadOnlyRepository
+        return screeningRepository
                 .readByFilmTitle(filmTitle)
                 .stream()
                 .sorted(comparing(Screening::getDate))
@@ -42,7 +42,7 @@ class ScreeningReadService {
     }
 
     public List<ScreeningDto> readScreeningsByFilmCategory(FilmCategory category) {
-        return screeningReadOnlyRepository
+        return screeningRepository
                 .readByFilmCategory(category)
                 .stream()
                 .sorted(comparing(Screening::getDate))
@@ -51,7 +51,7 @@ class ScreeningReadService {
     }
 
     public List<ScreeningDto> readScreeningsByDate(LocalDate date) {
-        return screeningReadOnlyRepository
+        return screeningRepository
                 .readByDateBetween(date.atStartOfDay(), date.plusDays(1).atStartOfDay())
                 .stream()
                 .sorted(comparing(Screening::getDate))
@@ -60,7 +60,7 @@ class ScreeningReadService {
     }
 
     public Screening readByIdWithSeats(Long id) {
-        return screeningReadOnlyRepository
+        return screeningRepository
                 .readById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));
     }

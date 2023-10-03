@@ -1,7 +1,7 @@
 package com.cinema.catalog.application.services;
 
 import com.cinema.catalog.domain.Screening;
-import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
+import com.cinema.catalog.domain.ScreeningRepository;
 import com.cinema.catalog.domain.events.ScreeningEndedEvent;
 import com.cinema.shared.events.EventPublisher;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Slf4j
 class ScreeningEndService {
 
-    private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
+    private final ScreeningRepository screeningRepository;
     private final Clock clock;
     private final EventPublisher eventPublisher;
 
@@ -25,7 +25,7 @@ class ScreeningEndService {
     public void removeRoomsFromEndedScreenings() {
         log.info("Searching for ended screenings");
         var currentDate = LocalDateTime.now(clock);
-        var endedScreenings = screeningReadOnlyRepository.readEndedWithRoom(currentDate);
+        var endedScreenings = screeningRepository.readEndedWithRoom(currentDate);
         if (endedScreenings.isEmpty()) {
             log.info("Ended screenings not found");
         } else {

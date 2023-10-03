@@ -2,7 +2,7 @@ package com.cinema.catalog.application.services;
 
 import com.cinema.SpringIT;
 import com.cinema.catalog.domain.FilmRepository;
-import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
+import com.cinema.catalog.domain.ScreeningRepository;
 import com.cinema.rooms.application.services.RoomFacade;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ class ScreeningEndServiceIT extends SpringIT {
     private RoomFacade roomFacade;
 
     @Autowired
-    private ScreeningReadOnlyRepository screeningReadOnlyRepository;
+    private ScreeningRepository screeningRepository;
 
     @Autowired
     private Clock clockMock;
@@ -46,7 +46,7 @@ class ScreeningEndServiceIT extends SpringIT {
         screeningEndService.removeRoomsFromEndedScreenings();
 
         //then
-        var screenings = screeningReadOnlyRepository.readAll();
+        var screenings = screeningRepository.readAll();
         assertThat(screenings)
                 .isNotEmpty()
                 .allMatch(it -> it.getRoomId() == null);

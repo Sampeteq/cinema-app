@@ -1,6 +1,6 @@
 package com.cinema.catalog.application.services;
 
-import com.cinema.catalog.domain.ScreeningReadOnlyRepository;
+import com.cinema.catalog.domain.ScreeningRepository;
 import com.cinema.catalog.domain.Seat;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.tickets.domain.events.TicketBookedEvent;
@@ -14,7 +14,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 class TicketEventHandlerService {
 
-    private final ScreeningReadOnlyRepository screeningReadOnlyRepository;
+    private final ScreeningRepository screeningRepository;
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handle(TicketBookedEvent event) {
@@ -35,7 +35,7 @@ class TicketEventHandlerService {
     }
 
     private Seat readSeat(Long screeningId, int rowNumber, int seatNumber) {
-        return screeningReadOnlyRepository
+        return screeningRepository
                 .readById(screeningId)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"))
                 .findSeat(rowNumber, seatNumber)

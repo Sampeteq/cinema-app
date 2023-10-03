@@ -53,7 +53,7 @@ class FilmControllerIT extends SpringIT {
 
         //then
         result.andExpect(status().isCreated());
-        assertThat(filmRepository.readById(1L))
+        assertThat(filmRepository.readByTitle(dto.title()))
                 .isNotEmpty()
                 .hasValueSatisfying(film -> {
                     assertEquals(dto.title(), film.getTitle());

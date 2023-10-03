@@ -26,11 +26,6 @@ class SpringDataJpaFilmRepository implements FilmRepository {
     }
 
     @Override
-    public Optional<Film> readById(Long filmId) {
-        return jpaFilmRepository.findById(filmId);
-    }
-
-    @Override
     public Optional<Film> readByTitle(String title) {
         return jpaFilmRepository.readByTitle(title);
     }

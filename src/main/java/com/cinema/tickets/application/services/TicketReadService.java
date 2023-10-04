@@ -16,8 +16,8 @@ import java.util.List;
 class TicketReadService {
 
     private final UserFacade userFacade;
-    private final TicketMapper ticketMapper;
     private final TicketRepository ticketRepository;
+    private final TicketMapper ticketMapper;
 
     public List<TicketDto> readByCurrentUser() {
         var currentUserId = userFacade.readCurrentUserId();

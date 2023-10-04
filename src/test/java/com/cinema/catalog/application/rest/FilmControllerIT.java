@@ -1,4 +1,4 @@
-package com.cinema.catalog.infrastructure.rest;
+package com.cinema.catalog.application.rest;
 
 import com.cinema.SpringIT;
 import com.cinema.catalog.application.dto.FilmCreateDto;

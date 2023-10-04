@@ -1,4 +1,4 @@
-package com.cinema.tickets.infrastructure.rest;
+package com.cinema.tickets.application.rest;
 
 import com.cinema.SpringIT;
 import com.cinema.catalog.application.services.CatalogFacade;

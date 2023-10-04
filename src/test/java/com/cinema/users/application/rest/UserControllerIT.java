@@ -1,4 +1,4 @@
-package com.cinema.users.infrastructure.rest;
+package com.cinema.users.application.rest;
 
 import com.cinema.SpringIT;
 import com.cinema.users.application.dto.UserPasswordNewDto;

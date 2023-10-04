@@ -6,12 +6,16 @@ import com.cinema.catalog.domain.FilmCategory;
 import com.cinema.catalog.domain.FilmRepository;
 import com.cinema.catalog.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.catalog.domain.exceptions.FilmYearOutOfRangeException;
+import com.cinema.users.domain.User;
+import com.cinema.users.domain.UserRepository;
+import com.cinema.users.domain.UserRole;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import static com.cinema.catalog.FilmTestHelper.createFilm;
@@ -24,19 +28,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class FilmControllerIT extends SpringIT {
 
     private static final String FILMS_BASE_ENDPOINT = "/films";
+    private static final String USERNAME = "user";
+    private static final String PASSWORD = "12345";
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private FilmRepository filmRepository;
 
     @Test
-    @WithMockUser(authorities = "COMMON")
     void film_can_be_created_only_by_admin() {
         //given
+        addUser(UserRole.COMMON);
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(FILMS_BASE_ENDPOINT)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -44,9 +57,10 @@ class FilmControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
     void film_is_created() {
         //given
+        addUser(UserRole.ADMIN);
+
         var title = "Some title";
         var category = FilmCategory.COMEDY;
         var year = 2023;
@@ -64,6 +78,7 @@ class FilmControllerIT extends SpringIT {
                 .uri(FILMS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(dto)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -79,9 +94,9 @@ class FilmControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
     void film_title_is_unique() {
         //given
+        addUser(UserRole.ADMIN);
         var film = filmRepository.add(createFilm());
         var filmCreateDto = createFilmCreateDto().withTitle(film.getTitle());
 
@@ -91,6 +106,7 @@ class FilmControllerIT extends SpringIT {
                 .uri(FILMS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(filmCreateDto)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -105,9 +121,9 @@ class FilmControllerIT extends SpringIT {
 
     @ParameterizedTest
     @MethodSource("com.cinema.catalog.FilmTestHelper#getWrongFilmYears")
-    @WithMockUser(authorities = "ADMIN")
     void film_year_is_previous_current_or_nex_one(Integer wrongYear) {
         //given
+        addUser(UserRole.ADMIN);
         var dto = createFilmCreateDto().withYear(wrongYear);
 
         //when
@@ -116,6 +132,7 @@ class FilmControllerIT extends SpringIT {
                 .uri(FILMS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(dto)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -128,14 +145,15 @@ class FilmControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(authorities = "USER")
     void film_is_deleted_only_by_admin() {
         //given
+        addUser(UserRole.COMMON);
 
         //when
         var spec = webTestClient
                 .delete()
                 .uri(FILMS_BASE_ENDPOINT + "/Film 1")
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -146,12 +164,14 @@ class FilmControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void film_is_deleted() {
         //given
+        addUser(UserRole.ADMIN);
         var film = filmRepository.add(createFilm());
 
         //when
         var spec = webTestClient
                 .delete()
                 .uri(FILMS_BASE_ENDPOINT + "/" + film.getTitle())
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -163,11 +183,13 @@ class FilmControllerIT extends SpringIT {
     void films_are_read() {
         //given
         var film = filmRepository.add(createFilm());
+        userRepository.add(new User(USERNAME, passwordEncoder.encode(PASSWORD), UserRole.ADMIN));
 
         //when
         var spec = webTestClient
                 .get()
                 .uri(FILMS_BASE_ENDPOINT)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -180,5 +202,9 @@ class FilmControllerIT extends SpringIT {
                 .jsonPath("$[0].category").isEqualTo(film.getCategory().name())
                 .jsonPath("$[0].year").isEqualTo(film.getYear())
                 .jsonPath("$[0].durationInMinutes").isEqualTo(film.getDurationInMinutes());
+    }
+
+    private void addUser(UserRole role) {
+        userRepository.add(new User(USERNAME, passwordEncoder.encode(PASSWORD), role));
     }
 }

@@ -26,7 +26,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -44,10 +43,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@WithMockUser(username = "user1@mail.com")
 class TicketControllerIT extends SpringIT {
 
     private static final String TICKETS_BASE_ENDPOINT = "/tickets";
+    private static final String username = "user1@mail.com";
+    private static final String password = "12345";
 
     @Autowired
     private TicketRepository ticketRepository;
@@ -69,8 +69,6 @@ class TicketControllerIT extends SpringIT {
 
     @BeforeEach
     void setUp() {
-        var username = "user1@mail.com";
-        var password = "12345";
         userFacade.signUpUser(
                 new UserSignUpDto(
                         username,
@@ -99,6 +97,7 @@ class TicketControllerIT extends SpringIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(ticketBookDto)
+                .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
         //then
@@ -125,6 +124,7 @@ class TicketControllerIT extends SpringIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(ticketBookDto)
+                .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
         //then
@@ -153,6 +153,7 @@ class TicketControllerIT extends SpringIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(ticketBookDto)
+                .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
         //then
@@ -188,6 +189,7 @@ class TicketControllerIT extends SpringIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(ticketBookDto)
+                .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
         //then
@@ -222,6 +224,7 @@ class TicketControllerIT extends SpringIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(ticketBookDto)
+                .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
         //then
@@ -252,6 +255,7 @@ class TicketControllerIT extends SpringIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(ticketBookDto)
+                .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
         //then
@@ -269,6 +273,7 @@ class TicketControllerIT extends SpringIT {
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
         //then
@@ -290,6 +295,7 @@ class TicketControllerIT extends SpringIT {
         webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
         //then
@@ -311,6 +317,7 @@ class TicketControllerIT extends SpringIT {
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
         //then
@@ -335,6 +342,7 @@ class TicketControllerIT extends SpringIT {
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
         //then
@@ -356,6 +364,7 @@ class TicketControllerIT extends SpringIT {
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
         //then
@@ -376,6 +385,7 @@ class TicketControllerIT extends SpringIT {
         var spec = webTestClient
                 .get()
                 .uri("/tickets/my")
+                .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
         //then

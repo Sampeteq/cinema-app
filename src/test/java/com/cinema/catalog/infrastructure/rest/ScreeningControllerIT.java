@@ -13,12 +13,15 @@ import com.cinema.catalog.domain.ScreeningRepository;
 import com.cinema.catalog.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.rooms.application.services.RoomFacade;
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
+import com.cinema.users.domain.User;
+import com.cinema.users.domain.UserRepository;
+import com.cinema.users.domain.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -39,6 +42,14 @@ import static org.hamcrest.Matchers.notNullValue;
 class ScreeningControllerIT extends SpringIT {
 
     private static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
+    private static final String USERNAME = "user";
+    private static final String PASSWORD = "12345";
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private CatalogFacade catalogFacade;
@@ -56,14 +67,15 @@ class ScreeningControllerIT extends SpringIT {
     private Clock clockMock;
 
     @Test
-    @WithMockUser(authorities = "COMMON")
     void screening_is_created_only_by_admin() {
         //given
+        addUser(UserRole.COMMON);
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_BASE_ENDPOINT)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -71,9 +83,9 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
     void screening_is_created() {
         //given
+        addUser(UserRole.ADMIN);
         var film = filmRepository.add(createFilm());
         roomFacade.createRoom(createRoomCreateDto());
         var screeningCreateDto = new ScreeningCreateDto(getScreeningDate(clockMock), film.getTitle());
@@ -84,6 +96,7 @@ class ScreeningControllerIT extends SpringIT {
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(screeningCreateDto)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -105,9 +118,9 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
     void screening_and_current_date_difference_is_min_7_days() {
         //given
+        addUser(UserRole.ADMIN);
         var film = filmRepository.add(createFilm());
         roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = LocalDateTime
@@ -121,6 +134,7 @@ class ScreeningControllerIT extends SpringIT {
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(screeningCreateDto)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -133,9 +147,9 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
     void screening_and_current_date_difference_is_max_21_days() {
         //given
+        addUser(UserRole.ADMIN);
         var film = filmRepository.add(createFilm());
         roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = LocalDateTime
@@ -149,6 +163,7 @@ class ScreeningControllerIT extends SpringIT {
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(screeningCreateDto)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -161,9 +176,9 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
     void screenings_collision_cannot_exist() {
         //given
+        addUser(UserRole.ADMIN);
         var screening = addScreening();
         var screeningCreateDto = new ScreeningCreateDto(
                 screening.getDate().plusMinutes(10),
@@ -176,6 +191,7 @@ class ScreeningControllerIT extends SpringIT {
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(screeningCreateDto)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -188,15 +204,16 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(authorities = "USER")
     void screening_is_deleted_only_by_admin() {
         //given
+        addUser(UserRole.COMMON);
         var screeningId = 1L;
 
         //when
         var spec = webTestClient
                 .delete()
                 .uri(SCREENINGS_BASE_ENDPOINT + "/" + screeningId)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -204,15 +221,16 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
     void screening_is_deleted() {
         //given
+        addUser(UserRole.ADMIN);
         var screening = addScreening();
 
         //when
         var spec = webTestClient
                 .delete()
                 .uri(SCREENINGS_BASE_ENDPOINT + "/" + screening.getId())
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -391,5 +409,9 @@ class ScreeningControllerIT extends SpringIT {
         );
         var screeningId = 1L;
         return catalogFacade.readSeatsByScreeningId(screeningId);
+    }
+
+    private void addUser(UserRole role) {
+        userRepository.add(new User(USERNAME, passwordEncoder.encode(PASSWORD), role));
     }
 }

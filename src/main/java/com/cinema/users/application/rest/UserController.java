@@ -1,4 +1,4 @@
-package com.cinema.users.infrastrcuture.rest;
+package com.cinema.users.application.rest;
 
 import com.cinema.users.application.dto.UserPasswordNewDto;
 import com.cinema.users.application.dto.UserSignUpDto;

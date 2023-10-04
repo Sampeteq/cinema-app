@@ -1,4 +1,4 @@
-package com.cinema.catalog.infrastructure.rest;
+package com.cinema.catalog.application.rest;
 
 import com.cinema.catalog.application.dto.ScreeningCreateDto;
 import com.cinema.catalog.application.dto.ScreeningDto;

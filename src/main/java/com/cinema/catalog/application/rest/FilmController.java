@@ -1,14 +1,14 @@
-package com.cinema.tickets.infrastructure.rest;
+package com.cinema.catalog.application.rest;
 
-import com.cinema.tickets.application.dto.TicketBookDto;
-import com.cinema.tickets.application.dto.TicketDto;
-import com.cinema.tickets.application.services.TicketFacade;
+import com.cinema.catalog.application.dto.FilmCreateDto;
+import com.cinema.catalog.application.dto.FilmDto;
+import com.cinema.catalog.application.services.CatalogFacade;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,29 +19,28 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tickets")
+@RequestMapping("/films")
 @RequiredArgsConstructor
-class TicketController {
+class FilmController {
 
-    private final TicketFacade ticketFacade;
+    private final CatalogFacade catalogFacade;
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     @SecurityRequirement(name = "basic")
-    void bookTicket(@RequestBody @Valid TicketBookDto dto) {
-        ticketFacade.bookTicket(dto);
+    void createFilm(@RequestBody @Valid FilmCreateDto dto) {
+        catalogFacade.createFilm(dto);
     }
 
-    @PatchMapping("/{ticketId}/cancel")
+    @DeleteMapping("/{title}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
-    void cancelTicket(@PathVariable Long ticketId) {
-        ticketFacade.cancelTicket(ticketId);
+    void deleteFilm(@PathVariable String title) {
+        catalogFacade.deleteFilm(title);
     }
 
-    @GetMapping("/my")
-    @SecurityRequirement(name = "basic")
-    List<TicketDto> readAllTickets() {
-        return ticketFacade.readTicketsByCurrentUser();
+    @GetMapping
+    List<FilmDto> readAllFilms() {
+        return catalogFacade.readAllFilms();
     }
 }
-

@@ -1,4 +1,4 @@
-package com.cinema.users.infrastrcuture.rest;
+package com.cinema.users.application.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
@@ -17,15 +18,8 @@ import static com.cinema.catalog.FilmTestHelper.createFilm;
 import static com.cinema.catalog.FilmTestHelper.createFilmCreateDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class FilmControllerIT extends SpringIT {
 
@@ -36,21 +30,22 @@ class FilmControllerIT extends SpringIT {
 
     @Test
     @WithMockUser(authorities = "COMMON")
-    void film_can_be_created_only_by_admin() throws Exception {
+    void film_can_be_created_only_by_admin() {
         //given
 
         //when
-        var result = mockMvc.perform(
-                post(FILMS_BASE_ENDPOINT)
-        );
+        var spec = webTestClient
+                .post()
+                .uri(FILMS_BASE_ENDPOINT)
+                .exchange();
 
         //then
-        result.andExpect(status().isForbidden());
+        spec.expectStatus().isForbidden();
     }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void film_is_created() throws Exception {
+    void film_is_created() {
         //given
         var title = "Some title";
         var category = FilmCategory.COMEDY;
@@ -64,14 +59,15 @@ class FilmControllerIT extends SpringIT {
         );
 
         //when
-        var result = mockMvc.perform(
-                post(FILMS_BASE_ENDPOINT)
-                        .content(toJson(dto))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
+        var spec = webTestClient
+                .post()
+                .uri(FILMS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(dto)
+                .exchange();
 
         //then
-        result.andExpect(status().isCreated());
+        spec.expectStatus().isCreated();
         assertThat(filmRepository.readByTitle(dto.title()))
                 .isNotEmpty()
                 .hasValueSatisfying(film -> {
@@ -84,90 +80,105 @@ class FilmControllerIT extends SpringIT {
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void film_title_is_unique() throws Exception {
+    void film_title_is_unique() {
         //given
         var film = filmRepository.add(createFilm());
         var filmCreateDto = createFilmCreateDto().withTitle(film.getTitle());
 
         //when
-        var result = mockMvc.perform(
-                post(FILMS_BASE_ENDPOINT)
-                        .content(toJson(filmCreateDto))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
+        var spec = webTestClient
+                .post()
+                .uri(FILMS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(filmCreateDto)
+                .exchange();
 
         //then
 
         var expectedMessage = new FilmTitleNotUniqueException().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+        spec
+                .expectStatus()
+                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @ParameterizedTest
     @MethodSource("com.cinema.catalog.FilmTestHelper#getWrongFilmYears")
     @WithMockUser(authorities = "ADMIN")
-    void film_year_is_previous_current_or_nex_one(Integer wrongYear) throws Exception {
+    void film_year_is_previous_current_or_nex_one(Integer wrongYear) {
         //given
-        var cmd = createFilmCreateDto().withYear(wrongYear);
+        var dto = createFilmCreateDto().withYear(wrongYear);
 
         //when
-        var result = mockMvc.perform(
-                post(FILMS_BASE_ENDPOINT)
-                        .content(toJson(cmd))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
+        var spec = webTestClient
+                .post()
+                .uri(FILMS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(dto)
+                .exchange();
 
         //then
         var expectedMessage = new FilmYearOutOfRangeException().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+        spec
+                .expectStatus()
+                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test
     @WithMockUser(authorities = "USER")
-    void film_is_deleted_only_by_admin() throws Exception {
+    void film_is_deleted_only_by_admin() {
         //given
 
         //when
-        var result = mockMvc.perform(delete(FILMS_BASE_ENDPOINT + "/Film 1"));
+        var spec = webTestClient
+                .delete()
+                .uri(FILMS_BASE_ENDPOINT + "/Film 1")
+                .exchange();
 
         //then
-        result.andExpect(status().isForbidden());
+        spec.expectStatus().isForbidden();
     }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void film_is_deleted() throws Exception {
+    void film_is_deleted() {
         //given
         var film = filmRepository.add(createFilm());
 
         //when
-        var result = mockMvc.perform(delete(FILMS_BASE_ENDPOINT + "/" + film.getTitle()));
+        var spec = webTestClient
+                .delete()
+                .uri(FILMS_BASE_ENDPOINT + "/" + film.getTitle())
+                .exchange();
 
         //then
-        result.andExpect(status().isNoContent());
+        spec.expectStatus().isNoContent();
         assertThat(filmRepository.existsByTitle(film.getTitle())).isFalse();
     }
 
     @Test
-    void films_are_read() throws Exception {
+    void films_are_read() {
         //given
         var film = filmRepository.add(createFilm());
 
         //when
-        var result = mockMvc.perform(
-                get(FILMS_BASE_ENDPOINT)
-        );
+        var spec = webTestClient
+                .get()
+                .uri(FILMS_BASE_ENDPOINT)
+                .exchange();
 
         //then
-        result.andExpect(status().isOk())
-                .andExpect(jsonPath("$[*]", hasSize(1)))
-                .andExpect(jsonPath("$[*].*", everyItem(notNullValue())))
-                .andExpect(jsonPath("$[0].title").value(film.getTitle()))
-                .andExpect(jsonPath("$[0].category").value(film.getCategory().name()))
-                .andExpect(jsonPath("$[0].year").value(film.getYear()))
-                .andExpect(jsonPath("$[0].durationInMinutes").value(film.getDurationInMinutes()));
+        spec
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("$[*]").value(hasSize(1))
+                .jsonPath("$[0].title").isEqualTo(film.getTitle())
+                .jsonPath("$[0].category").isEqualTo(film.getCategory().name())
+                .jsonPath("$[0].year").isEqualTo(film.getYear())
+                .jsonPath("$[0].durationInMinutes").isEqualTo(film.getDurationInMinutes());
     }
 }

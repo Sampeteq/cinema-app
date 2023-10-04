@@ -24,6 +24,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
@@ -42,12 +43,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WithMockUser(username = "user1@mail.com")
 class TicketControllerIT extends SpringIT {
@@ -86,7 +81,7 @@ class TicketControllerIT extends SpringIT {
     }
 
     @Test
-    void ticket_is_made_for_existing_screening() throws Exception {
+    void ticket_is_made_for_existing_screening() {
         //given
         var nonExistingScreeningId = 0L;
         var seatRowNumber = 1;
@@ -99,20 +94,19 @@ class TicketControllerIT extends SpringIT {
 
 
         //when
-        var result = mockMvc.perform(
-                post(TICKETS_BASE_ENDPOINT)
-                        .content(toJson(ticketBookDto))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
+        var spec = webTestClient
+                .post()
+                .uri(TICKETS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(ticketBookDto)
+                .exchange();
 
         //then
-        result.andExpect(
-                        status().isNotFound()
-                );
+        spec.expectStatus().isNotFound();
     }
 
     @Test
-    void ticket_is_booked_for_existing_seat() throws Exception {
+    void ticket_is_booked_for_existing_seat() {
         //given
         prepareSeat();
         var screeningId = 1L;
@@ -126,20 +120,19 @@ class TicketControllerIT extends SpringIT {
 
 
         //when
-        var result = mockMvc.perform(
-                post(TICKETS_BASE_ENDPOINT)
-                        .content(toJson(ticketBookDto))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
+        var spec = webTestClient
+                .post()
+                .uri(TICKETS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(ticketBookDto)
+                .exchange();
 
         //then
-        result.andExpect(
-                        status().isNotFound()
-                );
+        spec.expectStatus().isNotFound();
     }
 
     @Test
-    void ticket_is_booked() throws Exception {
+    void ticket_is_booked() {
         //given
         var filmTitle = "Title 1";
         var roomId = "1";
@@ -155,14 +148,15 @@ class TicketControllerIT extends SpringIT {
         );
 
         //when
-        var result = mockMvc.perform(
-                post(TICKETS_BASE_ENDPOINT)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJson(ticketBookDto))
-        );
+        var spec = webTestClient
+                .post()
+                .uri(TICKETS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(ticketBookDto)
+                .exchange();
 
         //then
-        result.andExpect(status().isCreated());
+        spec.expectStatus().isCreated();
         assertThat(ticketRepository.readById(1L))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
@@ -178,7 +172,7 @@ class TicketControllerIT extends SpringIT {
     }
 
     @Test
-    void ticket_is_unique() throws Exception {
+    void ticket_is_unique() {
         //given
         prepareSeat();
         var ticket = ticketRepository.add(TicketTestHelper.prepareTicket());
@@ -189,21 +183,24 @@ class TicketControllerIT extends SpringIT {
         );
 
         //when
-        var result = mockMvc.perform(
-                post(TICKETS_BASE_ENDPOINT)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJson(ticketBookDto))
-        );
+        var spec = webTestClient
+                .post()
+                .uri(TICKETS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(ticketBookDto)
+                .exchange();
 
         //then
         var expectedMessage = new TicketAlreadyExists().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+        spec
+                .expectStatus()
+                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test
-    void ticket_is_booked_at_least_1h_before_screening() throws Exception {
+    void ticket_is_booked_at_least_1h_before_screening() {
         //given
         var screeningDate = getScreeningDate(clockMock);
         prepareSeat(screeningDate);
@@ -220,21 +217,24 @@ class TicketControllerIT extends SpringIT {
         );
 
         //when
-        var result = mockMvc.perform(
-                post(TICKETS_BASE_ENDPOINT)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJson(ticketBookDto))
-        );
+        var spec = webTestClient
+                .post()
+                .uri(TICKETS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(ticketBookDto)
+                .exchange();
 
         //then
         var expectedMessage = new TicketBookTooLateException().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+        spec
+                .expectStatus()
+                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test
-    void ticket_booked_event_is_published() throws Exception {
+    void ticket_booked_event_is_published() {
         //given
         prepareSeat();
         var screeningId = 1L;
@@ -247,11 +247,12 @@ class TicketControllerIT extends SpringIT {
         );
 
         //when
-        mockMvc.perform(
-                post(TICKETS_BASE_ENDPOINT)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJson(ticketBookDto))
-        );
+        webTestClient
+                .post()
+                .uri(TICKETS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(ticketBookDto)
+                .exchange();
 
         //then
         var expectedEvent = new TicketBookedEvent(screeningId, rowNumber, seatNumber);
@@ -259,18 +260,19 @@ class TicketControllerIT extends SpringIT {
     }
 
     @Test
-    void ticket_is_cancelled() throws Exception {
+    void ticket_is_cancelled() {
         //give
         prepareSeat();
         ticketRepository.add(prepareBookedTicket());
 
         //when
-        var result = mockMvc.perform(
-                patch(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
-        );
+        var spec = webTestClient
+                .patch()
+                .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .exchange();
 
         //then
-        result.andExpect(status().isOk());
+        spec.expectStatus().isOk();
         assertThat(ticketRepository.readById(1L))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket ->
@@ -279,15 +281,16 @@ class TicketControllerIT extends SpringIT {
     }
 
     @Test
-    void ticket_cancelled_event_is_published() throws Exception {
+    void ticket_cancelled_event_is_published() {
         //given
         prepareSeat();
         var ticket = ticketRepository.add(TicketTestHelper.prepareBookedTicket());
 
         //when
-        mockMvc.perform(
-                patch(TICKETS_BASE_ENDPOINT + "/" + 1 + "/cancel")
-        );
+        webTestClient
+                .patch()
+                .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .exchange();
 
         //then
         var expectedEvent = new TicketCancelledEvent(
@@ -299,25 +302,28 @@ class TicketControllerIT extends SpringIT {
     }
 
     @Test
-    void ticket_already_cancelled_cannot_be_cancelled() throws Exception {
+    void ticket_already_cancelled_cannot_be_cancelled() {
         //given
         prepareSeat();
         ticketRepository.add(TicketTestHelper.prepareCancelledTicket());
 
         //when
-        var result = mockMvc.perform(
-                patch(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
-        );
+        var spec = webTestClient
+                .patch()
+                .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .exchange();
 
         //then
         var expectedMessage = new TicketAlreadyCancelledException().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+        spec
+                .expectStatus()
+                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test
-    void ticket_is_cancelled_at_least_24h_before_screening() throws Exception {
+    void ticket_is_cancelled_at_least_24h_before_screening() {
         //given
         var screeningDate = getScreeningDate(clockMock);
         ticketRepository.add(TicketTestHelper.prepareBookedTicket(screeningDate));
@@ -326,44 +332,51 @@ class TicketControllerIT extends SpringIT {
                 .thenReturn(screeningDate.minusHours(23).toInstant(ZoneOffset.UTC));
 
         //when
-        var result = mockMvc.perform(
-                patch(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
-        );
+        var spec = webTestClient
+                .patch()
+                .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .exchange();
 
         //then
         var expectedMessage = new TicketCancelTooLateException().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+        spec
+                .expectStatus()
+                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test
-    void ticket_is_cancelled_if_belongs_to_current_user() throws Exception {
+    void ticket_is_cancelled_if_belongs_to_current_user() {
         //given
         var notCurrentUserId = 2L;
         ticketRepository.add(prepareBookedTicket(notCurrentUserId));
 
         //when
-        var result = mockMvc.perform(
-                patch(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
-        );
+        var spec = webTestClient
+                .patch()
+                .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .exchange();
 
         //then
         var expectedMessage = new TicketNotBelongsToUser().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+        spec
+                .expectStatus()
+                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test
-    void tickets_are_read_by_user_id() throws Exception {
+    void tickets_are_read_by_user_id() {
         //given
         var ticket = ticketRepository.add(TicketTestHelper.prepareBookedTicket());
 
         //when
-        var result = mockMvc.perform(
-                get("/tickets/my")
-        );
+        var spec = webTestClient
+                .get()
+                .uri("/tickets/my")
+                .exchange();
 
         //then
         var expected = List.of(
@@ -377,9 +390,11 @@ class TicketControllerIT extends SpringIT {
                         ticket.getSeatNumber()
                 )
         );
-        result
-                .andExpect(status().isOk())
-                .andExpect(content().json(toJson(expected)));
+        spec
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .json(toJson(expected));
     }
 
     private void prepareSeat() {

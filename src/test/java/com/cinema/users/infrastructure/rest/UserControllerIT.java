@@ -8,6 +8,7 @@ import com.cinema.users.domain.exceptions.UserMailAlreadyExistsException;
 import com.cinema.users.domain.exceptions.UserNotSamePasswordsException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -19,10 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UserControllerIT extends SpringIT {
 
@@ -33,19 +30,20 @@ class UserControllerIT extends SpringIT {
     private PasswordEncoder passwordEncoder;
 
     @Test
-    void user_is_signed_up() throws Exception {
+    void user_is_signed_up() {
         //given
         var signUpDto = createSignUpDto();
 
-        //when
-        var result = mockMvc.perform(
-                post("/sign-up")
-                        .content(toJson(signUpDto))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
-
         //then
-        result.andExpect(status().isCreated());
+        var spec = webTestClient
+                .post()
+                .uri("/sign-up")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(signUpDto)
+                .exchange();
+
+
+        spec.expectStatus().isCreated();
         assertThat(userRepository.readyByMail(signUpDto.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {
@@ -56,57 +54,67 @@ class UserControllerIT extends SpringIT {
     }
 
     @Test
-    void user_name_cannot_be_duplicated() throws Exception {
+    void user_name_cannot_be_duplicated() {
         //given
         var user = userRepository.add(createUser("user1@mail.com"));
         var signUpRequest = createSignUpDto(user.getUsername());
 
         //when
-        var result = mockMvc.perform(
-                post("/sign-up")
-                        .content(toJson(signUpRequest))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
+        var spec = webTestClient
+                .post()
+                .uri("/sign-up")
+                .bodyValue(signUpRequest)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange();
 
         //then
         var expectedMessage = new UserMailAlreadyExistsException().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+        spec
+                .expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test
-    void user_passwords_cannot_be_different() throws Exception {
+    void user_passwords_cannot_be_different() {
         //given
-        var signUpRequest = createSignUpDto("password1", "password2");
+        var signUpDto = createSignUpDto("password1", "password2");
 
         //when
-        var result = mockMvc.perform(
-                post("/sign-up")
-                        .content(toJson(signUpRequest))
-                        .contentType(MediaType.APPLICATION_JSON)
-        );
+        var spec = webTestClient
+                .post()
+                .uri("/sign-up")
+                .bodyValue(signUpDto)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange();
 
         //then
 
         var expectedMessage = new UserNotSamePasswordsException().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+        spec
+                .expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test
-    void user_password_is_reset() throws Exception {
+    void user_password_is_reset() {
         //given
         var user = userRepository.add(createUser());
 
         //when
-        var result = mockMvc.perform(
-                patch("/password/reset").param("mail", user.getUsername())
-        );
+        var spec = webTestClient
+                .patch()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/password/reset")
+                        .queryParam("mail", user.getMail())
+                        .build()
+                )
+                .attribute("mail", user.getMail())
+                .exchange();
 
         //then
-        result.andExpect(status().isOk());
+        spec.expectStatus().isOk();
         var userPasswordResetToken = userRepository
                 .readyByMail(user.getUsername())
                 .orElseThrow()
@@ -115,7 +123,7 @@ class UserControllerIT extends SpringIT {
     }
 
     @Test
-    void user_new_password_is_set() throws Exception {
+    void user_new_password_is_set() {
         //given
         var passwordResetToken = UUID.randomUUID();
         var addedUser = userRepository.add(createUser(passwordResetToken));
@@ -125,14 +133,15 @@ class UserControllerIT extends SpringIT {
         );
 
         //when
-        var result = mockMvc.perform(
-                patch("/password/new").content(
-                        toJson(userPasswordNewDto)
-                ).contentType(MediaType.APPLICATION_JSON)
-        );
+        var spec = webTestClient
+                .patch()
+                .uri("/password/new")
+                .bodyValue(userPasswordNewDto)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange();
 
         //then
-        result.andExpect(status().isOk());
+        spec.expectStatus().isOk();
         assertThat(
                 userRepository.readyByMail(addedUser.getMail())
         ).hasValueSatisfying(

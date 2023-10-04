@@ -16,6 +16,7 @@ import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
@@ -34,12 +35,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ScreeningControllerIT extends SpringIT {
 
@@ -62,35 +57,37 @@ class ScreeningControllerIT extends SpringIT {
 
     @Test
     @WithMockUser(authorities = "COMMON")
-    void screening_is_created_only_by_admin() throws Exception {
+    void screening_is_created_only_by_admin() {
         //given
 
         //when
-        var result = mockMvc.perform(
-                post(SCREENINGS_BASE_ENDPOINT)
-        );
+        var spec = webTestClient
+                .post()
+                .uri(SCREENINGS_BASE_ENDPOINT)
+                .exchange();
 
         //then
-        result.andExpect(status().isForbidden());
+        spec.expectStatus().isForbidden();
     }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void screening_is_created() throws Exception {
+    void screening_is_created() {
         //given
         var film = filmRepository.add(createFilm());
         roomFacade.createRoom(createRoomCreateDto());
         var screeningCreateDto = new ScreeningCreateDto(getScreeningDate(clockMock), film.getTitle());
 
         //when
-        var result = mockMvc.perform(
-                post(SCREENINGS_BASE_ENDPOINT)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJson(screeningCreateDto))
-        );
+        var spec = webTestClient
+                .post()
+                .uri(SCREENINGS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(screeningCreateDto)
+                .exchange();
 
         //then
-        result.andExpect(status().isCreated());
+        spec.expectStatus().isCreated();
         var expectedDto = List.of(
                new ScreeningDto(
                        1L,
@@ -99,14 +96,17 @@ class ScreeningControllerIT extends SpringIT {
                        film.getCategory()
                )
         );
-        mockMvc
-                .perform(get(SCREENINGS_BASE_ENDPOINT))
-                .andExpect(content().json(toJson(expectedDto)));
+        webTestClient
+                .get()
+                .uri(SCREENINGS_BASE_ENDPOINT)
+                .exchange()
+                .expectBody()
+                .json(toJson(expectedDto));
     }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void screening_and_current_date_difference_is_min_7_days() throws Exception {
+    void screening_and_current_date_difference_is_min_7_days() {
         //given
         var film = filmRepository.add(createFilm());
         roomFacade.createRoom(createRoomCreateDto());
@@ -116,22 +116,25 @@ class ScreeningControllerIT extends SpringIT {
         var screeningCreateDto = new ScreeningCreateDto(screeningDate, film.getTitle());
 
         //when
-        var result = mockMvc.perform(
-                post(SCREENINGS_BASE_ENDPOINT)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJson(screeningCreateDto))
-        );
+        var spec = webTestClient
+                .post()
+                .uri(SCREENINGS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(screeningCreateDto)
+                .exchange();
 
         //then
         var expectedMessage = new ScreeningDateOutOfRangeException().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+        spec
+                .expectStatus()
+                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void screening_and_current_date_difference_is_max_21_days() throws Exception {
+    void screening_and_current_date_difference_is_max_21_days() {
         //given
         var film = filmRepository.add(createFilm());
         roomFacade.createRoom(createRoomCreateDto());
@@ -141,22 +144,25 @@ class ScreeningControllerIT extends SpringIT {
         var screeningCreateDto = new ScreeningCreateDto(screeningDate, film.getTitle());
 
         //when
-        var result = mockMvc.perform(
-                post(SCREENINGS_BASE_ENDPOINT)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJson(screeningCreateDto))
-        );
+        var spec = webTestClient
+                .post()
+                .uri(SCREENINGS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(screeningCreateDto)
+                .exchange();
 
         //then
         var expectedMessage = new ScreeningDateOutOfRangeException().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+        spec
+                .expectStatus()
+                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void screenings_collision_cannot_exist() throws Exception {
+    void screenings_collision_cannot_exist() {
         //given
         var screening = addScreening();
         var screeningCreateDto = new ScreeningCreateDto(
@@ -165,69 +171,79 @@ class ScreeningControllerIT extends SpringIT {
         );
 
         //when
-        var result = mockMvc.perform(
-                post(SCREENINGS_BASE_ENDPOINT)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJson(screeningCreateDto))
-        );
+        var spec = webTestClient
+                .post()
+                .uri(SCREENINGS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(screeningCreateDto)
+                .exchange();
 
         //then
         var expectedMessage = new RoomsNoAvailableException().getMessage();
-        result
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(jsonPath("$.message", equalTo(expectedMessage)));
+        spec
+                .expectStatus()
+                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test
     @WithMockUser(authorities = "USER")
-    void screening_is_deleted_only_by_admin() throws Exception {
+    void screening_is_deleted_only_by_admin() {
         //given
         var screeningId = 1L;
 
         //when
-        var result = mockMvc.perform(
-                delete(SCREENINGS_BASE_ENDPOINT + "/" + screeningId)
-        );
+        var spec = webTestClient
+                .delete()
+                .uri(SCREENINGS_BASE_ENDPOINT + "/" + screeningId)
+                .exchange();
 
         //then
-        result.andExpect(status().isForbidden());
+        spec.expectStatus().isForbidden();
     }
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void screening_is_deleted() throws Exception {
+    void screening_is_deleted() {
         //given
         var screening = addScreening();
 
         //when
-        var result = mockMvc.perform(delete(SCREENINGS_BASE_ENDPOINT + "/" + screening.getId()));
+        var spec = webTestClient
+                .delete()
+                .uri(SCREENINGS_BASE_ENDPOINT + "/" + screening.getId())
+                .exchange();
 
         //then
-        result.andExpect(status().isNoContent());
+        spec.expectStatus().isNoContent();
         assertThat(screeningRepository.readById(screening.getId())).isEmpty();
     }
 
     @Test
-    void screenings_are_read() throws Exception {
+    void screenings_are_read() {
         //given
         var screening = addScreening();
 
         //when
-        var result = mockMvc.perform(
-                get(SCREENINGS_BASE_ENDPOINT)
-        );
+        var spec = webTestClient
+                .get()
+                .uri(SCREENINGS_BASE_ENDPOINT)
+                .exchange();
 
         //then
-        result
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[*]", hasSize(1)))
-                .andExpect(jsonPath("$[*].*", everyItem(notNullValue())))
-                .andExpect(jsonPath("$[0].date", equalTo(screening.getDate().toString())))
-                .andExpect(jsonPath("$[0].filmTitle", equalTo(screening.getFilm().getTitle())));
+        spec
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("$[*]").value(hasSize(1))
+                .jsonPath("$[*].*").value(everyItem(notNullValue()))
+                .jsonPath("$[0].date").isEqualTo(screening.getDate().toString())
+                .jsonPath("$[0].filmTitle").isEqualTo(screening.getFilm().getTitle());
     }
 
     @Test
-    void screenings_are_read_by_film_title() throws Exception {
+    void screenings_are_read_by_film_title() {
         //given
         var requiredFilmTitle = "Some film title";
         var otherFilmTitle = "Some other film title";
@@ -235,24 +251,25 @@ class ScreeningControllerIT extends SpringIT {
         addScreening(otherFilmTitle);
 
         //when
-        var result = mockMvc.perform(
-                get(SCREENINGS_BASE_ENDPOINT + "/by/title")
-                        .param("title", requiredFilmTitle)
-        );
+        var spec = webTestClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(SCREENINGS_BASE_ENDPOINT + "/by/title")
+                        .queryParam("title", requiredFilmTitle)
+                        .build()
+                )
+                .exchange();
 
         //then
-        result
-                .andExpect(status().isOk())
-                .andExpect(
-                        jsonPath(
-                                "$.[*].filmTitle",
-                                everyItem(equalTo(requiredFilmTitle))
-                        )
-                );
+        spec
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("$.[*].filmTitle").isEqualTo(requiredFilmTitle);
     }
 
     @Test
-    void screenings_are_read_by_film_category() throws Exception {
+    void screenings_are_read_by_film_category() {
         //given
         var requiredFilmCategory = FilmCategory.COMEDY;
         var otherFilmCategory = FilmCategory.DRAMA;
@@ -260,59 +277,65 @@ class ScreeningControllerIT extends SpringIT {
         addScreening(otherFilmCategory);
 
         //when
-        var result = mockMvc.perform(
-                get(SCREENINGS_BASE_ENDPOINT + "/by/category")
-                        .param("category", requiredFilmCategory.name())
-        );
+        var spec = webTestClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(SCREENINGS_BASE_ENDPOINT + "/by/category")
+                        .queryParam("category", requiredFilmCategory.name())
+                        .build()
+                )
+                .exchange();
 
         //then
-        result
-                .andExpect(status().isOk())
-                .andExpect(
-                        jsonPath(
-                                "$.[*].filmCategory",
-                                everyItem(equalTo(requiredFilmCategory.name()))
-                        )
-                );
+        spec
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("$.[*].filmCategory").isEqualTo(requiredFilmCategory.name());
     }
 
     @Test
-    void screenings_are_read_by_date() throws Exception {
+    void screenings_are_read_by_date() {
         //given
         var requiredDate = LocalDate.of(2023, 12, 13);
         var screeningWithRequiredDate = addScreening(requiredDate);
         addScreening(requiredDate.minusDays(1));
 
         //when
-        var result = mockMvc.perform(
-                get(SCREENINGS_BASE_ENDPOINT + "/by/date")
-                        .param("date", requiredDate.toString())
-        );
+        var spec = webTestClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(SCREENINGS_BASE_ENDPOINT + "/by/date")
+                        .queryParam("date", requiredDate.toString())
+                        .build()
+                )
+                .exchange();
 
         //then
-        result
-                .andExpect(status().isOk())
-                .andExpect(
-                        jsonPath(
-                                "$.[*].date",
-                                everyItem(equalTo(screeningWithRequiredDate.getDate().toString())))
-                );
+        spec
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("$.[*].date").isEqualTo(screeningWithRequiredDate.getDate().toString());
     }
 
     @Test
-    void seats_are_read_by_screening_id() throws Exception {
+    void seats_are_read_by_screening_id() {
         //given
         var seats = prepareSeats();
 
         //when
-        var result = mockMvc.perform(
-                get(SCREENINGS_BASE_ENDPOINT + "/1/seats")
-        );
+        var spec = webTestClient
+                .get()
+                .uri(SCREENINGS_BASE_ENDPOINT + "/1/seats")
+                .exchange();
 
         //then
-        result
-                .andExpect(status().isOk())
-                .andExpect(content().json(toJson(seats)));
+        spec
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .json(toJson(seats));
     }
 
     private Screening addScreening() {

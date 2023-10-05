@@ -44,8 +44,8 @@ public class SpringDataJpaScreeningRepository implements ScreeningRepository {
     }
 
     @Override
-    public List<Screening> readEndedWithRoom(LocalDateTime currentDate) {
-        return jpaScreeningRepository.findEndedWithRoom(currentDate);
+    public List<Screening> readWithRoom() {
+        return jpaScreeningRepository.findEndedWithRoom();
     }
 
     @Override
@@ -61,6 +61,6 @@ interface JpaScreeningRepository extends JpaRepository<Screening, Long> {
 
     List<Screening> findByDateBetween(LocalDateTime from, LocalDateTime to);
 
-    @Query("select s from Screening s where s.endDate < :currentDate and s.roomId is not null")
-    List<Screening> findEndedWithRoom(LocalDateTime currentDate);
+    @Query("select s from Screening s where s.roomId is not null")
+    List<Screening> findEndedWithRoom();
 }

@@ -37,7 +37,6 @@ class ScreeningCreateService {
         var seats = createSeats(roomDto.rowsNumber(), roomDto.rowSeatsNumber());
         var newScreening = new Screening(
                 dto.date(),
-                endDate,
                 film,
                 roomDto.id(),
                 seats
@@ -45,7 +44,7 @@ class ScreeningCreateService {
         film.addScreening(newScreening);
         var screeningCreatedEvent = new ScreeningCreatedEvent(
                 newScreening.getDate(),
-                newScreening.getEndDate(),
+                endDate,
                 newScreening.getRoomId()
         );
         eventPublisher.publish(screeningCreatedEvent);

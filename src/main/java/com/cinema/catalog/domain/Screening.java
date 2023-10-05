@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +29,6 @@ public class Screening {
 
     private LocalDateTime date;
 
-    private LocalDateTime endDate;
-
     @ManyToOne
     private Film film;
 
@@ -43,13 +42,11 @@ public class Screening {
 
     public Screening(
             LocalDateTime date,
-            LocalDateTime endDate,
             Film film,
             String roomId,
             List<Seat> seats
     ) {
         this.date = date;
-        this.endDate = endDate;
         this.film = film;
         this.roomId = roomId;
         this.seats = seats;
@@ -63,7 +60,17 @@ public class Screening {
                 .findFirst();
     }
 
+    public boolean isEnded(Clock clock) {
+        var currentDate = LocalDateTime.now(clock);
+        var screeningEndDate = this.film.calculateScreeningEndDate(this.date);
+        return screeningEndDate.isBefore(currentDate);
+    }
+
     public void removeRoom() {
         this.roomId = null;
+    }
+
+    public LocalDateTime calculateEndDate() {
+        return film.calculateScreeningEndDate(this.date);
     }
 }

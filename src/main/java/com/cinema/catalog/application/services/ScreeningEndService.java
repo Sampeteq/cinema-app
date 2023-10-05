@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +23,11 @@ class ScreeningEndService {
     @Transactional
     public void removeRoomsFromEndedScreenings() {
         log.info("Searching for ended screenings");
-        var currentDate = LocalDateTime.now(clock);
-        var endedScreenings = screeningRepository.readEndedWithRoom(currentDate);
+        var endedScreenings = screeningRepository
+                .readWithRoom()
+                .stream()
+                .filter(screening -> screening.isEnded(clock))
+                .toList();
         if (endedScreenings.isEmpty()) {
             log.info("Ended screenings not found");
         } else {
@@ -37,7 +39,7 @@ class ScreeningEndService {
                     .map(screening -> new ScreeningEndedEvent(
                             screening.getRoomId(),
                             screening.getDate(),
-                            screening.getEndDate()
+                            screening.calculateEndDate()
                     )).forEach(eventPublisher::publish);
         }
     }

@@ -9,7 +9,7 @@ public interface ScreeningRepository {
     List<Screening> readByFilmTitle(String filmTitle);
     List<Screening> readByFilmCategory(FilmCategory category);
     List<Screening> readByDateBetween(LocalDateTime from, LocalDateTime to);
-    List<Screening> readEndedWithRoom(LocalDateTime currentDate);
+    List<Screening> readWithRoom();
     Optional<Screening> readById(Long id);
     void delete(Screening screening);
 }

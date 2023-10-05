@@ -22,10 +22,8 @@ public final class ScreeningTestHelper {
         var isFree = true;
         var seat = new Seat(1,2, isFree);
         var roomId = "1";
-        var screeningEndDate = film.calculateScreeningEndDate(screeningDate);
         return new Screening(
                screeningDate,
-                screeningEndDate,
                 film,
                 roomId,
                 List.of(seat)
@@ -36,18 +34,14 @@ public final class ScreeningTestHelper {
         var isFree = true;
         var seat = new Seat(1,2, isFree);
         var roomId = "1";
-        var screeningEndDate1 = film.calculateScreeningEndDate(SCREENING_DATE);
         var screening1 = new Screening(
                 SCREENING_DATE,
-                screeningEndDate1,
                 film,
                 roomId,
                 List.of(seat)
         );
-        var screeningEndDate2 = film.calculateScreeningEndDate(SCREENING_DATE.plusDays(1));
         var screening2 = new Screening(
                 SCREENING_DATE.plusDays(1),
-                screeningEndDate2,
                 film,
                 roomId,
                 List.of(seat)

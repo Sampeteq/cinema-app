@@ -1,14 +1,15 @@
 package com.cinema.catalog.infrastructure.db;
 
-import com.cinema.catalog.domain.FilmCategory;
+import com.cinema.catalog.application.dto.ScreeningQueryDto;
 import com.cinema.catalog.domain.Screening;
 import com.cinema.catalog.domain.ScreeningRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,37 +35,34 @@ public class SpringDataJpaScreeningRepository implements ScreeningRepository {
     }
 
     @Override
-    public List<Screening> readAll() {
-        return jpaScreeningRepository.findAll();
-    }
-
-    @Override
-    public List<Screening> readByFilmTitle(String filmTitle) {
-        return jpaScreeningRepository.findByFilm_Title(filmTitle);
-    }
-
-    @Override
-    public List<Screening> readByFilmCategory(FilmCategory category) {
-        return jpaScreeningRepository.findByFilm_Category(category);
-    }
-
-    @Override
-    public List<Screening> readByDateBetween(LocalDateTime from, LocalDateTime to) {
-        return jpaScreeningRepository.findByDateBetween(from, to);
-    }
-
-    @Override
     public List<Screening> readWithRoom() {
         return jpaScreeningRepository.findEndedWithRoom();
     }
+
+    @Override
+    public List<Screening> readAllBy(ScreeningQueryDto queryDto) {
+        Specification<Screening> dateSpec =
+                (root, query, criteriaBuilder) -> queryDto.date() == null ?
+                        criteriaBuilder.conjunction() :
+                        criteriaBuilder.between(root.get("date"), queryDto.date(), queryDto.date().plusDays(1));
+        Specification<Screening> categorySpec =
+                (root, query, criteriaBuilder) -> queryDto.filmCategory() == null ?
+                        criteriaBuilder.conjunction() :
+                        criteriaBuilder.equal(root.get("film").get("category"), queryDto.filmCategory());
+        Specification<Screening> titleSpec =
+                (root, query, criteriaBuilder) -> queryDto.filmTitle() == null ?
+                        criteriaBuilder.conjunction() :
+                        criteriaBuilder.equal(root.get("film").get("title"), queryDto.filmTitle());
+        return jpaScreeningRepository.findAll(
+                categorySpec
+                        .and(dateSpec)
+                        .and(categorySpec)
+                        .and(titleSpec)
+        );
+    }
 }
 
-interface JpaScreeningRepository extends JpaRepository<Screening, Long> {
-    List<Screening> findByFilm_Title(String filmTitle);
-
-    List<Screening> findByFilm_Category(FilmCategory filmCategory);
-
-    List<Screening> findByDateBetween(LocalDateTime from, LocalDateTime to);
+interface JpaScreeningRepository extends JpaRepository<Screening, Long>, JpaSpecificationExecutor<Screening> {
 
     @Query("select s from Screening s where s.roomId is not null")
     List<Screening> findEndedWithRoom();

@@ -263,8 +263,8 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screenings_are_read_by_film_title() {
         //given
-        var requiredFilmTitle = "Some film title";
-        var otherFilmTitle = "Some other film title";
+        var requiredFilmTitle = "Some film filmTitle";
+        var otherFilmTitle = "Some other film filmTitle";
         addScreening(requiredFilmTitle);
         addScreening(otherFilmTitle);
 
@@ -272,8 +272,8 @@ class ScreeningControllerIT extends SpringIT {
         var spec = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(SCREENINGS_BASE_ENDPOINT + "/by/title")
-                        .queryParam("title", requiredFilmTitle)
+                        .path(SCREENINGS_BASE_ENDPOINT)
+                        .queryParam("filmTitle", requiredFilmTitle)
                         .build()
                 )
                 .exchange();
@@ -298,8 +298,8 @@ class ScreeningControllerIT extends SpringIT {
         var spec = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(SCREENINGS_BASE_ENDPOINT + "/by/category")
-                        .queryParam("category", requiredFilmCategory.name())
+                        .path(SCREENINGS_BASE_ENDPOINT)
+                        .queryParam("filmCategory", requiredFilmCategory.name())
                         .build()
                 )
                 .exchange();
@@ -323,7 +323,7 @@ class ScreeningControllerIT extends SpringIT {
         var spec = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(SCREENINGS_BASE_ENDPOINT + "/by/date")
+                        .path(SCREENINGS_BASE_ENDPOINT)
                         .queryParam("date", requiredDate.toString())
                         .build()
                 )

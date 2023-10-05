@@ -61,7 +61,7 @@ class FilmControllerIT extends SpringIT {
         //given
         addUser(UserRole.ADMIN);
 
-        var title = "Some title";
+        var title = "Some filmTitle";
         var category = FilmCategory.COMEDY;
         var year = 2023;
         var durationInMinutes = 100;

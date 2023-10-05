@@ -2,13 +2,13 @@ package com.cinema.catalog.application.rest;
 
 import com.cinema.catalog.application.dto.ScreeningCreateDto;
 import com.cinema.catalog.application.dto.ScreeningDto;
+import com.cinema.catalog.application.dto.ScreeningQueryDto;
 import com.cinema.catalog.application.dto.SeatDto;
 import com.cinema.catalog.application.services.CatalogFacade;
 import com.cinema.catalog.domain.FilmCategory;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,27 +49,18 @@ class ScreeningController {
     }
 
     @GetMapping
-    List<ScreeningDto> readAllScreenings() {
-        return catalogFacade.readAllScreenings();
-    }
-
-    @GetMapping("/by/title")
-    List<ScreeningDto> readScreeningsByFilmTitle(@RequestParam String title) {
-        return catalogFacade.readScreeningsByFilmTitle(title);
-    }
-
-    @GetMapping("/by/category")
-    List<ScreeningDto> readScreeningsByFilmCategory(@RequestParam FilmCategory category) {
-        return catalogFacade.readScreeningsByFilmCategory(category);
-    }
-
-    @GetMapping("/by/date")
-    List<ScreeningDto> readByDate(
-            @RequestParam
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate date
+    List<ScreeningDto> readAllScreenings(
+            @RequestParam(required = false) LocalDate date,
+            @RequestParam(required = false) String filmTitle,
+            @RequestParam(required = false) FilmCategory filmCategory
     ) {
-        return catalogFacade.readScreeningsByDate(date);
+        var queryDto = ScreeningQueryDto
+                .builder()
+                .date(date)
+                .filmTitle(filmTitle)
+                .filmCategory(filmCategory)
+                .build();
+        return catalogFacade.readAllBy(queryDto);
     }
 
     @GetMapping("/{id}/seats")

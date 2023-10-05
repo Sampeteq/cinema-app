@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class FilmTitleNotUniqueException extends ValidationException {
 
     public FilmTitleNotUniqueException() {
-        super("Film title not unique");
+        super("Film filmTitle not unique");
     }
 }

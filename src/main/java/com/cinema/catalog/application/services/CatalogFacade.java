@@ -5,12 +5,11 @@ import com.cinema.catalog.application.dto.FilmDto;
 import com.cinema.catalog.application.dto.ScreeningCreateDto;
 import com.cinema.catalog.application.dto.ScreeningDetailsDto;
 import com.cinema.catalog.application.dto.ScreeningDto;
+import com.cinema.catalog.application.dto.ScreeningQueryDto;
 import com.cinema.catalog.application.dto.SeatDto;
-import com.cinema.catalog.domain.FilmCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -45,20 +44,8 @@ public class CatalogFacade {
         screeningDeleteService.delete(id);
     }
 
-    public List<ScreeningDto> readAllScreenings() {
-        return screeningReadService.readAllScreenings();
-    }
-
-    public List<ScreeningDto> readScreeningsByFilmTitle(String title) {
-        return screeningReadService.readScreeningsByFilmTitle(title);
-    }
-
-    public List<ScreeningDto> readScreeningsByFilmCategory(FilmCategory category) {
-        return screeningReadService.readScreeningsByFilmCategory(category);
-    }
-
-    public List<ScreeningDto> readScreeningsByDate(LocalDate date) {
-        return screeningReadService.readScreeningsByDate(date);
+    public List<ScreeningDto> readAllBy(ScreeningQueryDto queryDto) {
+        return screeningReadService.readAllScreenings(queryDto);
     }
 
     public List<SeatDto> readSeatsByScreeningId(Long id) {

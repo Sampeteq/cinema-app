@@ -357,43 +357,31 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     private Screening addScreening() {
-        var film = createFilm();
+        var film = filmRepository.add(createFilm());
         var screeningDate = getScreeningDate(clockMock);
         var screening = createScreening(film, screeningDate);
-        film.addScreening(screening);
-        return filmRepository
-                .add(film)
-                .getScreenings()
-                .get(0);
+        return screeningRepository.add(screening);
     }
 
     private void addScreening(String filmTitle) {
-        var film = createFilm(filmTitle);
+        var film = filmRepository.add(createFilm(filmTitle));
         var screeningDate = getScreeningDate(clockMock);
         var screening = createScreening(film, screeningDate);
-        film.addScreening(screening);
-        filmRepository
-                .add(film);
+        screeningRepository.add(screening);
     }
 
     private void addScreening(FilmCategory filmCategory) {
-        var film = createFilm(filmCategory);
+        var film = filmRepository.add(createFilm(filmCategory));
         var screeningDate = getScreeningDate(clockMock);
         var screening = createScreening(film, screeningDate);
-        film.addScreening(screening);
-        filmRepository
-                .add(film);
+        screeningRepository.add(screening);
     }
 
     private Screening addScreening(LocalDate date) {
-        var film = createFilm();
+        var film = filmRepository.add(createFilm());
         var dateTime = date.atStartOfDay().plusHours(16);
         var screening = ScreeningTestHelper.createScreening(film, dateTime);
-        film.addScreening(screening);
-        return filmRepository
-                .add(film)
-                .getScreenings()
-                .get(0);
+        return screeningRepository.add(screening);
     }
 
     private List<SeatDto> prepareSeats() {

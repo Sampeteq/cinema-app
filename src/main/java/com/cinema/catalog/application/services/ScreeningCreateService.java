@@ -4,6 +4,7 @@ import com.cinema.catalog.application.dto.ScreeningCreateDto;
 import com.cinema.catalog.domain.Film;
 import com.cinema.catalog.domain.FilmRepository;
 import com.cinema.catalog.domain.Screening;
+import com.cinema.catalog.domain.ScreeningRepository;
 import com.cinema.catalog.domain.Seat;
 import com.cinema.catalog.domain.events.ScreeningCreatedEvent;
 import com.cinema.catalog.domain.services.ScreeningDateValidateService;
@@ -26,6 +27,7 @@ class ScreeningCreateService {
     private final Clock clock;
     private final FilmRepository filmRepository;
     private final RoomFacade roomFacade;
+    private final ScreeningRepository screeningRepository;
     private final EventPublisher eventPublisher;
 
     @Transactional
@@ -35,17 +37,17 @@ class ScreeningCreateService {
         var endDate = film.calculateScreeningEndDate(dto.date());
         var roomDto = roomFacade.findFirstAvailableRoom(dto.date(), endDate);
         var seats = createSeats(roomDto.rowsNumber(), roomDto.rowSeatsNumber());
-        var newScreening = new Screening(
+        var screening = new Screening(
                 dto.date(),
                 film,
                 roomDto.id(),
                 seats
         );
-        film.addScreening(newScreening);
+        screeningRepository.add(screening);
         var screeningCreatedEvent = new ScreeningCreatedEvent(
-                newScreening.getDate(),
+                screening.getDate(),
                 endDate,
-                newScreening.getRoomId()
+                screening.getRoomId()
         );
         eventPublisher.publish(screeningCreatedEvent);
     }

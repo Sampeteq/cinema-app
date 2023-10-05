@@ -19,6 +19,16 @@ public class SpringDataJpaScreeningRepository implements ScreeningRepository {
     private final JpaScreeningRepository jpaScreeningRepository;
 
     @Override
+    public Screening add(Screening screening) {
+        return jpaScreeningRepository.save(screening);
+    }
+
+    @Override
+    public void delete(Screening screening) {
+        jpaScreeningRepository.delete(screening);
+    }
+
+    @Override
     public Optional<Screening> readById(Long id) {
         return jpaScreeningRepository.findById(id);
     }
@@ -46,11 +56,6 @@ public class SpringDataJpaScreeningRepository implements ScreeningRepository {
     @Override
     public List<Screening> readWithRoom() {
         return jpaScreeningRepository.findEndedWithRoom();
-    }
-
-    @Override
-    public void delete(Screening screening) {
-        jpaScreeningRepository.delete(screening);
     }
 }
 

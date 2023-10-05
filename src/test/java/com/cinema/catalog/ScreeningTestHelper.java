@@ -28,7 +28,6 @@ public final class ScreeningTestHelper {
         );
     }
 
-    /** Difference between current and screening date must be at least 7 days */
     public static LocalDateTime getScreeningDate(Clock clock) {
         return LocalDateTime.now(clock).plusDays(7);
     }

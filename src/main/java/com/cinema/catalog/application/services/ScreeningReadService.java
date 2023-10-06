@@ -22,6 +22,12 @@ class ScreeningReadService {
     private final ScreeningRepository screeningRepository;
     private final ScreeningMapper screeningMapper;
 
+    public Screening readById(Long id) {
+        return screeningRepository
+                .readById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Screening"));
+    }
+
     public List<ScreeningDto> readAllScreenings(ScreeningQueryDto queryDto) {
         return screeningRepository
                 .readAllBy(queryDto)
@@ -29,11 +35,5 @@ class ScreeningReadService {
                 .sorted(comparing(Screening::getDate))
                 .map(screeningMapper::mapToDto)
                 .toList();
-    }
-
-    public Screening readByIdWithSeats(Long id) {
-        return screeningRepository
-                .readById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Screening"));
     }
 }

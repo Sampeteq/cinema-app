@@ -7,7 +7,7 @@ import com.cinema.catalog.domain.Screening;
 import com.cinema.catalog.domain.ScreeningRepository;
 import com.cinema.catalog.domain.Seat;
 import com.cinema.catalog.domain.events.ScreeningCreatedEvent;
-import com.cinema.catalog.domain.services.ScreeningDateValidateService;
+import com.cinema.catalog.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.rooms.application.services.RoomFacade;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.shared.exceptions.EntityNotFoundException;
@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -23,7 +25,6 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 class ScreeningCreateService {
 
-    private final ScreeningDateValidateService screeningDateValidateService;
     private final Clock clock;
     private final FilmRepository filmRepository;
     private final RoomFacade roomFacade;
@@ -32,7 +33,9 @@ class ScreeningCreateService {
 
     @Transactional
     public void createScreening(ScreeningCreateDto dto) {
-        screeningDateValidateService.validate(dto.date(), clock);
+        if (isScreeningDateOutOfRange(dto.date())) {
+            throw new ScreeningDateOutOfRangeException();
+        }
         var film = readFilm(dto.filmTitle());
         var endDate = film.calculateScreeningEndDate(dto.date());
         var roomDto = roomFacade.findFirstAvailableRoom(dto.date(), endDate);
@@ -56,6 +59,15 @@ class ScreeningCreateService {
         return filmRepository
                 .readByTitle(filmTitle)
                 .orElseThrow(() -> new EntityNotFoundException("Film"));
+    }
+
+    private boolean isScreeningDateOutOfRange(LocalDateTime screeningDate) {
+        var currentDate = LocalDateTime.now(clock);
+        var datesDifference = Duration
+                .between(screeningDate, currentDate)
+                .abs()
+                .toDays();
+        return datesDifference < 7 || datesDifference > 21;
     }
 
     private List<Seat> createSeats(int rowsQuantity, int seatsQuantityInOneRow) {

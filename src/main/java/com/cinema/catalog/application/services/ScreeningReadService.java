@@ -1,5 +1,6 @@
 package com.cinema.catalog.application.services;
 
+import com.cinema.catalog.application.dto.ScreeningDetailsDto;
 import com.cinema.catalog.application.dto.ScreeningDto;
 import com.cinema.catalog.application.dto.ScreeningMapper;
 import com.cinema.catalog.application.dto.ScreeningQueryDto;
@@ -35,5 +36,19 @@ class ScreeningReadService {
                 .sorted(comparing(Screening::getDate))
                 .map(screeningMapper::mapToDto)
                 .toList();
+    }
+
+    public ScreeningDetailsDto readScreeningDetails(Long id, int rowNumber, int seatNumber) {
+        var screening = screeningRepository
+                .readById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Screening"));
+        var seat = screening.findSeat(rowNumber, seatNumber);
+        var seatExists = seat.isPresent();
+        return new ScreeningDetailsDto(
+                screening.getFilm().getTitle(),
+                screening.getDate(),
+                screening.getRoomId(),
+                seatExists
+        );
     }
 }

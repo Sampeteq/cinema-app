@@ -40,7 +40,7 @@ class TicketController {
 
     @GetMapping("/my")
     @SecurityRequirement(name = "basic")
-    List<TicketDto> readAllTickets() {
+    List<TicketDto> readAllTicketsByCurrentUser() {
         return ticketFacade.readTicketsByCurrentUser();
     }
 }

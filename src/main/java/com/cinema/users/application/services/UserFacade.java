@@ -15,7 +15,7 @@ public class UserFacade {
     private final UserCurrentService userCurrentService;
 
     public void signUpUser(UserSignUpDto dto) {
-        userSignUpService.signUp(dto);
+        userSignUpService.signUpUser(dto);
     }
 
     public void resetUserPassword(String mail) {

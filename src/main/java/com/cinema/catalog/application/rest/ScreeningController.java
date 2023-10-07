@@ -49,7 +49,7 @@ class ScreeningController {
     }
 
     @GetMapping
-    List<ScreeningDto> readAllScreenings(
+    List<ScreeningDto> readAllScreeningsBy(
             @RequestParam(required = false) LocalDate date,
             @RequestParam(required = false) String filmTitle,
             @RequestParam(required = false) FilmCategory filmCategory
@@ -60,7 +60,7 @@ class ScreeningController {
                 .filmTitle(filmTitle)
                 .filmCategory(filmCategory)
                 .build();
-        return catalogFacade.readAllBy(queryDto);
+        return catalogFacade.readAllScreeningsBy(queryDto);
     }
 
     @GetMapping("/{id}/seats")

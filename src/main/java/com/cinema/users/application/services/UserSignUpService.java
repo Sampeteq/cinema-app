@@ -17,7 +17,7 @@ class UserSignUpService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    void signUp(UserSignUpDto dto) {
+    void signUpUser(UserSignUpDto dto) {
         if (userRepository.existsByMail(dto.mail())) {
             throw new UserMailAlreadyExistsException();
         }

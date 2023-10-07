@@ -15,7 +15,7 @@ public class RoomFacade {
     private final RoomCreateService roomCreateService;
 
     public RoomDto findFirstAvailableRoom(LocalDateTime start, LocalDateTime end) {
-        return roomAvailableService.findAvailableRoom(start, end);
+        return roomAvailableService.findFirstAvailableRoom(start, end);
     }
 
     public void createRoom(RoomCreateDto dto) {

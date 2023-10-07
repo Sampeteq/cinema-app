@@ -23,7 +23,7 @@ class ScreeningReadService {
     private final ScreeningRepository screeningRepository;
     private final ScreeningMapper screeningMapper;
 
-    public List<ScreeningDto> readAllScreenings(ScreeningQueryDto queryDto) {
+    public List<ScreeningDto> readAllScreeningsBy(ScreeningQueryDto queryDto) {
         return screeningRepository
                 .readAllBy(queryDto)
                 .stream()

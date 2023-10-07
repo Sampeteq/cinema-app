@@ -44,8 +44,8 @@ public class CatalogFacade {
         screeningDeleteService.delete(id);
     }
 
-    public List<ScreeningDto> readAllBy(ScreeningQueryDto queryDto) {
-        return screeningReadService.readAllScreenings(queryDto);
+    public List<ScreeningDto> readAllScreeningsBy(ScreeningQueryDto queryDto) {
+        return screeningReadService.readAllScreeningsBy(queryDto);
     }
 
     public List<SeatDto> readSeatsByScreeningId(Long id) {

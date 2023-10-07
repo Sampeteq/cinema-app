@@ -18,7 +18,7 @@ class RoomAvailableService {
     private final RoomMapper roomMapper;
 
     @Transactional(readOnly = true)
-    public RoomDto findAvailableRoom(LocalDateTime start, LocalDateTime end) {
+    public RoomDto findFirstAvailableRoom(LocalDateTime start, LocalDateTime end) {
         return roomRepository
                 .readAll()
                 .stream()

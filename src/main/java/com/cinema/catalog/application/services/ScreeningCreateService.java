@@ -13,7 +13,6 @@ import com.cinema.shared.events.EventPublisher;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -31,7 +30,6 @@ class ScreeningCreateService {
     private final ScreeningRepository screeningRepository;
     private final EventPublisher eventPublisher;
 
-    @Transactional
     public void createScreening(ScreeningCreateDto dto) {
         if (isScreeningDateOutOfRange(dto.date())) {
             throw new ScreeningDateOutOfRangeException();

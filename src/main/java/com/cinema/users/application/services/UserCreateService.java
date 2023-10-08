@@ -1,6 +1,6 @@
 package com.cinema.users.application.services;
 
-import com.cinema.users.application.dto.UserSignUpDto;
+import com.cinema.users.application.dto.UserCreateDto;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-class UserSignUpService {
+class UserCreateService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    void signUpUser(UserSignUpDto dto) {
+    void createUser(UserCreateDto dto) {
         if (userRepository.existsByMail(dto.mail())) {
             throw new UserMailAlreadyExistsException();
         }

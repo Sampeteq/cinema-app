@@ -1,7 +1,7 @@
 package com.cinema.users.application.services;
 
 import com.cinema.users.application.dto.UserPasswordNewDto;
-import com.cinema.users.application.dto.UserSignUpDto;
+import com.cinema.users.application.dto.UserCreateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserFacade {
 
-    private final UserSignUpService userSignUpService;
+    private final UserCreateService userCreateService;
     private final UserPasswordResetService userPasswordResetService;
     private final UserPasswordNewService userPasswordNewService;
     private final UserCurrentService userCurrentService;
 
-    public void signUpUser(UserSignUpDto dto) {
-        userSignUpService.signUpUser(dto);
+    public void createUser(UserCreateDto dto) {
+        userCreateService.createUser(dto);
     }
 
     public void resetUserPassword(String mail) {

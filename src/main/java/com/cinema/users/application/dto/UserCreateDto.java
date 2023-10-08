@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.With;
 
 @With
-public record UserSignUpDto(
+public record UserCreateDto(
 
         @NotBlank
         @Email

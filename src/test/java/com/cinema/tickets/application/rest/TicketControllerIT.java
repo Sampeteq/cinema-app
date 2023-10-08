@@ -16,7 +16,7 @@ import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
-import com.cinema.users.application.dto.UserSignUpDto;
+import com.cinema.users.application.dto.UserCreateDto;
 import com.cinema.users.application.services.UserFacade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,8 +69,8 @@ class TicketControllerIT extends SpringIT {
 
     @BeforeEach
     void setUp() {
-        userFacade.signUpUser(
-                new UserSignUpDto(
+        userFacade.createUser(
+                new UserCreateDto(
                         username,
                         password,
                         password

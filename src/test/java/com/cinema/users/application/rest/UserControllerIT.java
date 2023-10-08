@@ -1,6 +1,7 @@
 package com.cinema.users.application.rest;
 
 import com.cinema.SpringIT;
+import com.cinema.users.UserTestHelper;
 import com.cinema.users.application.dto.UserPasswordNewDto;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
@@ -14,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
-import static com.cinema.users.UserTestHelper.createSignUpDto;
+import static com.cinema.users.UserTestHelper.createUserCreateDto;
 import static com.cinema.users.UserTestHelper.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -23,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserControllerIT extends SpringIT {
 
+    private static final String USERS_BASE_ENDPOINT = "/users";
+
     @Autowired
     private UserRepository userRepository;
 
@@ -30,25 +33,25 @@ class UserControllerIT extends SpringIT {
     private PasswordEncoder passwordEncoder;
 
     @Test
-    void user_is_signed_up() {
+    void user_is_created() {
         //given
-        var signUpDto = createSignUpDto();
+        var dto = createUserCreateDto();
 
         //then
         var spec = webTestClient
                 .post()
-                .uri("/sign-up")
+                .uri(USERS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(signUpDto)
+                .bodyValue(dto)
                 .exchange();
 
 
         spec.expectStatus().isCreated();
-        assertThat(userRepository.readyByMail(signUpDto.mail()))
+        assertThat(userRepository.readyByMail(dto.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {
-                    assertEquals(signUpDto.mail(), user.getUsername());
-                    assertTrue(passwordEncoder.matches(signUpDto.password(), user.getPassword()));
+                    assertEquals(dto.mail(), user.getUsername());
+                    assertTrue(passwordEncoder.matches(dto.password(), user.getPassword()));
                     assertEquals(UserRole.COMMON, user.getRole());
                 });
     }
@@ -57,13 +60,13 @@ class UserControllerIT extends SpringIT {
     void user_name_cannot_be_duplicated() {
         //given
         var user = userRepository.add(createUser("user1@mail.com"));
-        var signUpRequest = createSignUpDto(user.getUsername());
+        var dto = createUserCreateDto(user.getUsername());
 
         //when
         var spec = webTestClient
                 .post()
-                .uri("/sign-up")
-                .bodyValue(signUpRequest)
+                .uri(USERS_BASE_ENDPOINT)
+                .bodyValue(dto)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange();
 
@@ -78,13 +81,13 @@ class UserControllerIT extends SpringIT {
     @Test
     void user_passwords_cannot_be_different() {
         //given
-        var signUpDto = createSignUpDto("password1", "password2");
+        var dto = createUserCreateDto("password1", "password2");
 
         //when
         var spec = webTestClient
                 .post()
-                .uri("/sign-up")
-                .bodyValue(signUpDto)
+                .uri(USERS_BASE_ENDPOINT)
+                .bodyValue(dto)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange();
 
@@ -106,7 +109,7 @@ class UserControllerIT extends SpringIT {
         var spec = webTestClient
                 .patch()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/password/reset")
+                        .path(USERS_BASE_ENDPOINT + "/password/reset")
                         .queryParam("mail", user.getMail())
                         .build()
                 )
@@ -135,7 +138,7 @@ class UserControllerIT extends SpringIT {
         //when
         var spec = webTestClient
                 .patch()
-                .uri("/password/new")
+                .uri(USERS_BASE_ENDPOINT + "/password/new")
                 .bodyValue(userPasswordNewDto)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange();

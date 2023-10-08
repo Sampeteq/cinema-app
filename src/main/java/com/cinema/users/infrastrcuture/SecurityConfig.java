@@ -41,12 +41,12 @@ class SecurityConfig {
                                 ).permitAll()
                                 .requestMatchers(
                                         HttpMethod.POST,
-                                        "/sign-up"
+                                        "/users"
                                 ).permitAll()
                                 .requestMatchers(
                                         HttpMethod.PATCH,
-                                        "/password/reset",
-                                        "/password/new"
+                                        "/users/password/reset",
+                                        "/users/password/new"
                                 ).permitAll()
                                 .requestMatchers(
                                         "/swagger-ui/**",

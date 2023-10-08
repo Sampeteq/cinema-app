@@ -1,6 +1,6 @@
 package com.cinema.users;
 
-import com.cinema.users.application.dto.UserSignUpDto;
+import com.cinema.users.application.dto.UserCreateDto;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRole;
 
@@ -15,20 +15,20 @@ public final class UserTestHelper {
     private UserTestHelper() {
     }
 
-    public static UserSignUpDto createSignUpDto() {
-        return new UserSignUpDto(
+    public static UserCreateDto createUserCreateDto() {
+        return new UserCreateDto(
                 MAIL,
                 PASSWORD,
                 PASSWORD
         );
     }
 
-    public static UserSignUpDto createSignUpDto(String mail) {
-        return createSignUpDto().withMail(mail);
+    public static UserCreateDto createUserCreateDto(String mail) {
+        return createUserCreateDto().withMail(mail);
     }
 
-    public static UserSignUpDto createSignUpDto(String password, String repeatedPassword) {
-        return createSignUpDto()
+    public static UserCreateDto createUserCreateDto(String password, String repeatedPassword) {
+        return createUserCreateDto()
                 .withPassword(password)
                 .withRepeatedPassword(repeatedPassword);
     }

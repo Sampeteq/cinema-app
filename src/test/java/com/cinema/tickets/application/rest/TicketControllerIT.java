@@ -1,7 +1,7 @@
 package com.cinema.tickets.application.rest;
 
 import com.cinema.SpringIT;
-import com.cinema.catalog.application.services.CatalogFacade;
+import com.cinema.repertoire.application.services.RepertoireFacade;
 import com.cinema.rooms.application.services.RoomFacade;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.TicketTestHelper;
@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-import static com.cinema.catalog.ScreeningTestHelper.getScreeningDate;
+import static com.cinema.repertoire.ScreeningTestHelper.getScreeningDate;
 import static com.cinema.tickets.TicketTestHelper.createFilmCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createScreeningCrateDto;
@@ -56,7 +56,7 @@ class TicketControllerIT extends SpringIT {
     private UserFacade userFacade;
 
     @Autowired
-    private CatalogFacade catalogFacade;
+    private RepertoireFacade repertoireFacade;
 
     @Autowired
     private RoomFacade roomFacade;
@@ -408,25 +408,25 @@ class TicketControllerIT extends SpringIT {
     }
 
     private void prepareSeat() {
-        catalogFacade.createFilm(createFilmCreateDto());
+        repertoireFacade.createFilm(createFilmCreateDto());
         roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(clockMock);
-        catalogFacade.createScreening(createScreeningCrateDto(screeningDate));
+        repertoireFacade.createScreening(createScreeningCrateDto(screeningDate));
     }
 
     private void prepareSeat(LocalDateTime screeningDate) {
-        catalogFacade.createFilm(createFilmCreateDto());
+        repertoireFacade.createFilm(createFilmCreateDto());
         roomFacade.createRoom(createRoomCreateDto());
-        catalogFacade.createScreening(createScreeningCrateDto(screeningDate));
+        repertoireFacade.createScreening(createScreeningCrateDto(screeningDate));
     }
 
     private void prepareSeat(String filmTitle, String roomId, LocalDateTime screeningDate) {
-        catalogFacade.createFilm(
+        repertoireFacade.createFilm(
                 createFilmCreateDto().withTitle(filmTitle)
         );
         roomFacade.createRoom(
                 createRoomCreateDto().withId(roomId)
         );
-        catalogFacade.createScreening(createScreeningCrateDto(screeningDate));
+        repertoireFacade.createScreening(createScreeningCrateDto(screeningDate));
     }
 }

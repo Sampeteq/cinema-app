@@ -6,6 +6,6 @@ create table if not exists seats
     id           bigint generated always as identity primary key,
     row_number   int,
     number       int,
-    is_free      boolean,
+    status       varchar,
     screening_id bigint
 );

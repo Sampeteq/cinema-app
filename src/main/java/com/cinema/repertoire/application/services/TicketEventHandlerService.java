@@ -22,7 +22,7 @@ class TicketEventHandlerService {
                 event.screeningId(),
                 event.rowNumber(),
                 event.seatNumber()
-        ).makeNotFree();
+        ).makeTaken();
     }
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)

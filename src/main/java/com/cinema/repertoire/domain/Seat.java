@@ -1,6 +1,8 @@
 package com.cinema.repertoire.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,23 +27,24 @@ public class Seat {
 
     private int number;
 
-    private boolean isFree;
+    @Enumerated(value = EnumType.STRING)
+    private SeatStatus status;
 
-    public Seat(int rowNumber, int number, boolean isFree) {
+    public Seat(int rowNumber, int number, SeatStatus status) {
         this.rowNumber = rowNumber;
         this.number = number;
-        this.isFree = isFree;
+        this.status = status;
     }
 
     public boolean placedOn(int rowNumber, int seatNumber) {
         return this.rowNumber == rowNumber && this.number == seatNumber;
     }
 
-    public void makeNotFree() {
-        this.isFree = false;
+    public void makeTaken() {
+        this.status = SeatStatus.TAKEN;
     }
 
     public void makeFree() {
-        this.isFree = true;
+        this.status = SeatStatus.FREE;
     }
 }

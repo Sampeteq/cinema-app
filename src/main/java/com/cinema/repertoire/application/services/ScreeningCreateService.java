@@ -6,6 +6,7 @@ import com.cinema.repertoire.domain.FilmRepository;
 import com.cinema.repertoire.domain.Screening;
 import com.cinema.repertoire.domain.ScreeningRepository;
 import com.cinema.repertoire.domain.Seat;
+import com.cinema.repertoire.domain.SeatStatus;
 import com.cinema.repertoire.domain.events.ScreeningCreatedEvent;
 import com.cinema.repertoire.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.rooms.application.services.RoomFacade;
@@ -69,12 +70,11 @@ class ScreeningCreateService {
     }
 
     private List<Seat> createSeats(int rowsQuantity, int seatsQuantityInOneRow) {
-        var isFree = true;
         return IntStream
                 .rangeClosed(1, rowsQuantity)
                 .boxed()
                 .flatMap(rowNumber -> IntStream.rangeClosed(1, seatsQuantityInOneRow)
-                        .mapToObj(seatNumber -> new Seat(rowNumber, seatNumber, isFree))
+                        .mapToObj(seatNumber -> new Seat(rowNumber, seatNumber, SeatStatus.FREE))
                 )
                 .toList();
     }

@@ -36,13 +36,13 @@ import static java.util.Comparator.comparing;
 @Slf4j
 public class ScreeningService {
 
-    private final Clock clock;
-    private final FilmRepository filmRepository;
-    private final RoomFacade roomFacade;
     private final ScreeningRepository screeningRepository;
-    private final EventPublisher eventPublisher;
     private final ScreeningMapper screeningMapper;
     private final SeatMapper seatMapper;
+    private final FilmRepository filmRepository;
+    private final RoomFacade roomFacade;
+    private final Clock clock;
+    private final EventPublisher eventPublisher;
 
     public void createScreening(ScreeningCreateDto dto) {
         if (isScreeningDateOutOfRange(dto.date())) {

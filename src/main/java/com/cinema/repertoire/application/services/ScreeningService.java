@@ -44,7 +44,12 @@ public class ScreeningService {
     private final EventPublisher eventPublisher;
 
     public void createScreening(ScreeningCreateDto dto) {
-        if (isScreeningDateOutOfRange(dto.date())) {
+        var daysDifference = Duration
+                .between(LocalDateTime.now(clock), dto.date())
+                .abs()
+                .toDays();
+        var isScreeningDateOutOfRange = daysDifference < 7 || daysDifference > 21;
+        if (isScreeningDateOutOfRange) {
             throw new ScreeningDateOutOfRangeException();
         }
         var film = filmRepository
@@ -109,15 +114,6 @@ public class ScreeningService {
                 .readById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));
         screeningRepository.delete(screening);
-    }
-
-    private boolean isScreeningDateOutOfRange(LocalDateTime screeningDate) {
-        var currentDate = LocalDateTime.now(clock);
-        var daysDifference = Duration
-                .between(currentDate, screeningDate)
-                .abs()
-                .toDays();
-        return daysDifference < 7 || daysDifference > 21;
     }
 
     private List<Seat> createSeats(int rowsQuantity, int seatsQuantityInOneRow) {

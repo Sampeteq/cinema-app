@@ -16,23 +16,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RepertoireFacade {
 
-    private final FilmCreateService filmCreateService;
-    private final FilmDeleteService filmDeleteService;
-    private final FilmReadService filmReadService;
+    private final FilmService filmService;
     private final ScreeningCreateService screeningCreateService;
     private final ScreeningDeleteService screeningDeleteService;
     private final ScreeningReadService screeningReadService;
 
     public void createFilm(FilmCreateDto dto) {
-        filmCreateService.creteFilm(dto);
+        filmService.creteFilm(dto);
     }
 
     public void deleteFilm(String title) {
-        filmDeleteService.delete(title);
+        filmService.delete(title);
     }
 
     public List<FilmDto> readAllFilms() {
-        return filmReadService.readAll();
+        return filmService.readAll();
     }
 
     public void createScreening(ScreeningCreateDto dto) {

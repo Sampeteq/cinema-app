@@ -37,19 +37,19 @@ class FilmService {
         filmRepository.add(film);
     }
 
-    void delete(String title) {
-        var film = filmRepository
-                .readByTitle(title)
-                .orElseThrow(() -> new EntityNotFoundException("Film"));
-        filmRepository.delete(film);
-    }
-
     List<FilmDto> readAll() {
         return filmRepository
                 .readAll()
                 .stream()
                 .map(filmMapper::mapToDto)
                 .toList();
+    }
+
+    void delete(String title) {
+        var film = filmRepository
+                .readByTitle(title)
+                .orElseThrow(() -> new EntityNotFoundException("Film"));
+        filmRepository.delete(film);
     }
 
     private static boolean isFilmYearOutOfRange(Integer year) {

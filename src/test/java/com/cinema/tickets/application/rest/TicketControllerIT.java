@@ -1,7 +1,8 @@
 package com.cinema.tickets.application.rest;
 
 import com.cinema.SpringIT;
-import com.cinema.repertoire.application.services.RepertoireFacade;
+import com.cinema.repertoire.application.services.FilmService;
+import com.cinema.repertoire.application.services.ScreeningService;
 import com.cinema.rooms.application.services.RoomFacade;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.TicketTestHelper;
@@ -56,7 +57,10 @@ class TicketControllerIT extends SpringIT {
     private UserService userService;
 
     @Autowired
-    private RepertoireFacade repertoireFacade;
+    private FilmService filmService;
+
+    @Autowired
+    private ScreeningService screeningService;
 
     @Autowired
     private RoomFacade roomFacade;
@@ -408,25 +412,25 @@ class TicketControllerIT extends SpringIT {
     }
 
     private void prepareSeat() {
-        repertoireFacade.createFilm(createFilmCreateDto());
+        filmService.creteFilm(createFilmCreateDto());
         roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(clockMock);
-        repertoireFacade.createScreening(createScreeningCrateDto(screeningDate));
+        screeningService.createScreening(createScreeningCrateDto(screeningDate));
     }
 
     private void prepareSeat(LocalDateTime screeningDate) {
-        repertoireFacade.createFilm(createFilmCreateDto());
+        filmService.creteFilm(createFilmCreateDto());
         roomFacade.createRoom(createRoomCreateDto());
-        repertoireFacade.createScreening(createScreeningCrateDto(screeningDate));
+        screeningService.createScreening(createScreeningCrateDto(screeningDate));
     }
 
     private void prepareSeat(String filmTitle, String roomId, LocalDateTime screeningDate) {
-        repertoireFacade.createFilm(
+        filmService.creteFilm(
                 createFilmCreateDto().withTitle(filmTitle)
         );
         roomFacade.createRoom(
                 createRoomCreateDto().withId(roomId)
         );
-        repertoireFacade.createScreening(createScreeningCrateDto(screeningDate));
+        screeningService.createScreening(createScreeningCrateDto(screeningDate));
     }
 }

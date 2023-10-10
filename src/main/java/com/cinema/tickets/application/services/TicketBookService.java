@@ -1,6 +1,6 @@
 package com.cinema.tickets.application.services;
 
-import com.cinema.repertoire.application.services.RepertoireFacade;
+import com.cinema.repertoire.application.services.ScreeningService;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.tickets.application.dto.TicketBookDto;
@@ -22,7 +22,7 @@ import java.time.Clock;
 class TicketBookService {
 
     private final TicketRepository ticketRepository;
-    private final RepertoireFacade repertoireFacade;
+    private final ScreeningService screeningService;
     private final UserService userService;
     private final Clock clock;
     private final EventPublisher eventPublisher;
@@ -32,7 +32,7 @@ class TicketBookService {
         if (ticketRepository.exists(dto.screeningId(), dto.rowNumber(), dto.seatNumber())) {
             throw new TicketAlreadyExists();
         }
-        var screeningDetails = repertoireFacade.readScreeningDetails(
+        var screeningDetails = screeningService.readScreeningDetails(
                 dto.screeningId(),
                 dto.rowNumber(),
                 dto.rowNumber()

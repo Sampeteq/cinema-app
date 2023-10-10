@@ -4,7 +4,7 @@ import com.cinema.repertoire.application.dto.ScreeningCreateDto;
 import com.cinema.repertoire.application.dto.ScreeningDto;
 import com.cinema.repertoire.application.dto.ScreeningQueryDto;
 import com.cinema.repertoire.application.dto.SeatDto;
-import com.cinema.repertoire.application.services.RepertoireFacade;
+import com.cinema.repertoire.application.services.ScreeningService;
 import com.cinema.repertoire.domain.FilmCategory;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -28,7 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 class ScreeningController {
 
-    private final RepertoireFacade repertoireFacade;
+    private final ScreeningService screeningService;
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -38,14 +38,14 @@ class ScreeningController {
             @Valid
             ScreeningCreateDto dto
     ) {
-        repertoireFacade.createScreening(dto);
+        screeningService.createScreening(dto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
     void deleteScreening(@PathVariable Long id) {
-        repertoireFacade.deleteScreening(id);
+        screeningService.delete(id);
     }
 
     @GetMapping
@@ -60,11 +60,11 @@ class ScreeningController {
                 .filmTitle(filmTitle)
                 .filmCategory(filmCategory)
                 .build();
-        return repertoireFacade.readAllScreeningsBy(queryDto);
+        return screeningService.readAllScreeningsBy(queryDto);
     }
 
     @GetMapping("/{id}/seats")
     List<SeatDto> readSeatsByScreeningId(@PathVariable Long id) {
-        return repertoireFacade.readSeatsByScreeningId(id);
+        return screeningService.readSeatsByScreeningId(id);
     }
 }

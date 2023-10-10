@@ -16,12 +16,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-class FilmService {
+public class FilmService {
 
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
 
-    void creteFilm(FilmCreateDto dto) {
+    public void creteFilm(FilmCreateDto dto) {
         var currentYear = Year.now().getValue();
         var isFilmYearOfRange = dto.year() < currentYear - 1 || dto.year() > currentYear + 1;
         if (isFilmYearOfRange) {
@@ -39,7 +39,7 @@ class FilmService {
         filmRepository.add(film);
     }
 
-    List<FilmDto> readAll() {
+    public List<FilmDto> readAll() {
         return filmRepository
                 .readAll()
                 .stream()
@@ -47,7 +47,7 @@ class FilmService {
                 .toList();
     }
 
-    void delete(String title) {
+    public void delete(String title) {
         var film = filmRepository
                 .readByTitle(title)
                 .orElseThrow(() -> new EntityNotFoundException("Film"));

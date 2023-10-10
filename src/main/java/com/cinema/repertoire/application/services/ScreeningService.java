@@ -109,7 +109,7 @@ public class ScreeningService {
                 .toList();
     }
 
-    void delete(Long id) {
+    public void delete(Long id) {
         var screening = screeningRepository
                 .readById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));

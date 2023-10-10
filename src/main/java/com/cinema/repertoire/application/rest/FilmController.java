@@ -2,7 +2,7 @@ package com.cinema.repertoire.application.rest;
 
 import com.cinema.repertoire.application.dto.FilmCreateDto;
 import com.cinema.repertoire.application.dto.FilmDto;
-import com.cinema.repertoire.application.services.RepertoireFacade;
+import com.cinema.repertoire.application.services.FilmService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,24 +23,24 @@ import java.util.List;
 @RequiredArgsConstructor
 class FilmController {
 
-    private final RepertoireFacade repertoireFacade;
+    private final FilmService filmService;
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     @SecurityRequirement(name = "basic")
     void createFilm(@RequestBody @Valid FilmCreateDto dto) {
-        repertoireFacade.createFilm(dto);
+        filmService.creteFilm(dto);
     }
 
     @DeleteMapping("/{title}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
     void deleteFilm(@PathVariable String title) {
-        repertoireFacade.deleteFilm(title);
+        filmService.delete(title);
     }
 
     @GetMapping
     List<FilmDto> readAllFilms() {
-        return repertoireFacade.readAllFilms();
+        return filmService.readAll();
     }
 }

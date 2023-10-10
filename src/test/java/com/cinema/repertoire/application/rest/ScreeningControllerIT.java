@@ -5,7 +5,8 @@ import com.cinema.repertoire.ScreeningTestHelper;
 import com.cinema.repertoire.application.dto.ScreeningCreateDto;
 import com.cinema.repertoire.application.dto.ScreeningDto;
 import com.cinema.repertoire.application.dto.SeatDto;
-import com.cinema.repertoire.application.services.RepertoireFacade;
+import com.cinema.repertoire.application.services.FilmService;
+import com.cinema.repertoire.application.services.ScreeningService;
 import com.cinema.repertoire.domain.FilmCategory;
 import com.cinema.repertoire.domain.FilmRepository;
 import com.cinema.repertoire.domain.Screening;
@@ -52,10 +53,13 @@ class ScreeningControllerIT extends SpringIT {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private RepertoireFacade repertoireFacade;
+    private FilmService filmService;
 
     @Autowired
     private FilmRepository filmRepository;
+
+    @Autowired
+    private ScreeningService screeningService;
 
     @Autowired
     private ScreeningRepository screeningRepository;
@@ -386,17 +390,17 @@ class ScreeningControllerIT extends SpringIT {
 
     private List<SeatDto> prepareSeats() {
         var filmCreateDto = createFilmCreateDto();
-        repertoireFacade.createFilm(filmCreateDto);
+        filmService.creteFilm(filmCreateDto);
         roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(clockMock);
-        repertoireFacade.createScreening(
+        screeningService.createScreening(
                 new ScreeningCreateDto(
                         screeningDate,
                         filmCreateDto.title()
                 )
         );
         var screeningId = 1L;
-        return repertoireFacade.readSeatsByScreeningId(screeningId);
+        return screeningService.readSeatsByScreeningId(screeningId);
     }
 
     private void addUser(UserRole role) {

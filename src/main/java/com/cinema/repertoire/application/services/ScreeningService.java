@@ -7,7 +7,6 @@ import com.cinema.repertoire.application.dto.ScreeningMapper;
 import com.cinema.repertoire.application.dto.ScreeningQueryDto;
 import com.cinema.repertoire.application.dto.SeatDto;
 import com.cinema.repertoire.application.dto.SeatMapper;
-import com.cinema.repertoire.domain.Film;
 import com.cinema.repertoire.domain.FilmRepository;
 import com.cinema.repertoire.domain.Screening;
 import com.cinema.repertoire.domain.ScreeningRepository;
@@ -48,7 +47,9 @@ public class ScreeningService {
         if (isScreeningDateOutOfRange(dto.date())) {
             throw new ScreeningDateOutOfRangeException();
         }
-        var film = readFilm(dto.filmTitle());
+        var film = filmRepository
+                .readByTitle(dto.filmTitle())
+                .orElseThrow(() -> new EntityNotFoundException("Film"));
         var endDate = film.calculateScreeningEndDate(dto.date());
         var roomDto = roomFacade.findFirstAvailableRoom(dto.date(), endDate);
         var seats = createSeats(roomDto.rowsNumber(), roomDto.rowSeatsNumber());
@@ -108,12 +109,6 @@ public class ScreeningService {
                 .readById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));
         screeningRepository.delete(screening);
-    }
-
-    private Film readFilm(String filmTitle) {
-        return filmRepository
-                .readByTitle(filmTitle)
-                .orElseThrow(() -> new EntityNotFoundException("Film"));
     }
 
     private boolean isScreeningDateOutOfRange(LocalDateTime screeningDate) {

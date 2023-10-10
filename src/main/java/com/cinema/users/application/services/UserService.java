@@ -21,13 +21,13 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-class UserService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EventPublisher eventPublisher;
 
-    void createUser(UserCreateDto dto) {
+    public void createUser(UserCreateDto dto) {
         if (userRepository.existsByMail(dto.mail())) {
             throw new UserMailAlreadyExistsException();
         }
@@ -42,7 +42,7 @@ class UserService {
         userRepository.add(user);
     }
 
-    void resetUserPassword(String mail) {
+    public void resetUserPassword(String mail) {
         var user = userRepository
                 .readyByMail(mail)
                 .orElseThrow(() -> new EntityNotFoundException("User"));

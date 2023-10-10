@@ -8,7 +8,7 @@ import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.events.TicketBookedEvent;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
-import com.cinema.users.application.services.UserFacade;
+import com.cinema.users.application.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ class TicketBookService {
 
     private final TicketRepository ticketRepository;
     private final RepertoireFacade repertoireFacade;
-    private final UserFacade userFacade;
+    private final UserService userService;
     private final Clock clock;
     private final EventPublisher eventPublisher;
 
@@ -48,7 +48,7 @@ class TicketBookService {
                 dto.rowNumber(),
                 dto.seatNumber()
         );
-        var currentUserId = userFacade.readCurrentUserId();
+        var currentUserId = userService.readCurrentUserId();
         ticket.book(clock, currentUserId);
         var addedTicket = ticketRepository.add(ticket);
         log.info("Added a ticket:{}", addedTicket);

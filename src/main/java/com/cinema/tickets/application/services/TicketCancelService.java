@@ -5,7 +5,7 @@ import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.events.TicketCancelledEvent;
 import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
-import com.cinema.users.application.services.UserFacade;
+import com.cinema.users.application.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.time.Clock;
 @Slf4j
 class TicketCancelService {
 
-    private final UserFacade userFacade;
+    private final UserService userService;
     private final TicketRepository ticketRepository;
     private final Clock clock;
     private final EventPublisher eventPublisher;
@@ -28,7 +28,7 @@ class TicketCancelService {
         var ticket = ticketRepository
                 .readById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ticket"));
-        var currentUserId = userFacade.readCurrentUserId();
+        var currentUserId = userService.readCurrentUserId();
         if (!ticket.belongsTo(currentUserId)) {
             throw new TicketNotBelongsToUser();
         }

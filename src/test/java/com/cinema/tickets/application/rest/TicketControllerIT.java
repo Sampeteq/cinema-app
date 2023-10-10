@@ -17,7 +17,7 @@ import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
 import com.cinema.users.application.dto.UserCreateDto;
-import com.cinema.users.application.services.UserFacade;
+import com.cinema.users.application.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -53,7 +53,7 @@ class TicketControllerIT extends SpringIT {
     private TicketRepository ticketRepository;
 
     @Autowired
-    private UserFacade userFacade;
+    private UserService userService;
 
     @Autowired
     private RepertoireFacade repertoireFacade;
@@ -69,7 +69,7 @@ class TicketControllerIT extends SpringIT {
 
     @BeforeEach
     void setUp() {
-        userFacade.createUser(
+        userService.createUser(
                 new UserCreateDto(
                         username,
                         password,

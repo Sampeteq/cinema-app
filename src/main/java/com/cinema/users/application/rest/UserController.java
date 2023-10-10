@@ -2,7 +2,7 @@ package com.cinema.users.application.rest;
 
 import com.cinema.users.application.dto.UserPasswordNewDto;
 import com.cinema.users.application.dto.UserCreateDto;
-import com.cinema.users.application.services.UserFacade;
+import com.cinema.users.application.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,22 +19,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 class UserController {
 
-    private final UserFacade userFacade;
+    private final UserService userService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     void createUser(@RequestBody @Valid UserCreateDto dto) {
-        userFacade.createUser(dto);
+        userService.createUser(dto);
     }
 
     @PatchMapping("/password/reset")
     void resetUserPassword(@RequestParam String mail) {
-        userFacade.resetUserPassword(mail);
+        userService.resetUserPassword(mail);
     }
 
     @PatchMapping("/password/new")
     void setNewUserPassword(@RequestBody @Valid UserPasswordNewDto dto) {
-        userFacade.setNewUserPassword(dto);
+        userService.setNewUserPassword(dto);
     }
 }
 

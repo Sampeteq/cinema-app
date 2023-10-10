@@ -25,10 +25,9 @@ import java.util.List;
 class RoomConfigService {
 
     private final RoomRepository roomRepository;
-
     private final RoomCreateService roomCreateService;
-
     private final ResourceLoader resourceLoader;
+    private final ObjectMapper objectMapper;
 
     @Value("${rooms.roomsConfigFileName}")
     private String roomsConfigFileName;
@@ -67,7 +66,7 @@ class RoomConfigService {
 
     private void createRoomsFromJson(String json) {
         try {
-            new ObjectMapper()
+            objectMapper
                     .readValue(json, new TypeReference<List<RoomCreateDto>>() {
                     })
                     .forEach(roomCreateService::createRoom);

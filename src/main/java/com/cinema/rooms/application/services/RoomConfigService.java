@@ -46,12 +46,13 @@ class RoomConfigService {
     }
 
     private String readRoomsConfigAsJson() {
-        try {
-            var bytesArray = resourceLoader
-                    .getResource("classpath:" + roomsConfigFileName)
-                    .getInputStream()
-                    .readAllBytes();
-            return new String(bytesArray, StandardCharsets.UTF_8);
+        try (
+                var inputStream = resourceLoader
+                .getResource("classpath:" + roomsConfigFileName)
+                .getInputStream()
+        ) {
+            var bytes = inputStream.readAllBytes();
+            return new String(bytes, StandardCharsets.UTF_8);
         } catch (IOException e) {
             log.error("IOException was thrown");
             throw new RuntimeException(e);

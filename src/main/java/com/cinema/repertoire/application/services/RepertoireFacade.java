@@ -17,9 +17,7 @@ import java.util.List;
 public class RepertoireFacade {
 
     private final FilmService filmService;
-    private final ScreeningCreateService screeningCreateService;
-    private final ScreeningDeleteService screeningDeleteService;
-    private final ScreeningReadService screeningReadService;
+    private final ScreeningService screeningService;
 
     public void createFilm(FilmCreateDto dto) {
         filmService.creteFilm(dto);
@@ -34,22 +32,22 @@ public class RepertoireFacade {
     }
 
     public void createScreening(ScreeningCreateDto dto) {
-        screeningCreateService.createScreening(dto);
+        screeningService.createScreening(dto);
     }
 
     public void deleteScreening(Long id) {
-        screeningDeleteService.delete(id);
+        screeningService.delete(id);
     }
 
     public List<ScreeningDto> readAllScreeningsBy(ScreeningQueryDto queryDto) {
-        return screeningReadService.readAllScreeningsBy(queryDto);
+        return screeningService.readAllScreeningsBy(queryDto);
     }
 
     public List<SeatDto> readSeatsByScreeningId(Long id) {
-        return screeningReadService.readSeatsByScreeningId(id);
+        return screeningService.readSeatsByScreeningId(id);
     }
 
     public ScreeningDetailsDto readScreeningDetails(Long id, int rowNumber, int seatNumber) {
-        return screeningReadService.readScreeningDetails(id, rowNumber, seatNumber);
+        return screeningService.readScreeningDetails(id, rowNumber, seatNumber);
     }
 }

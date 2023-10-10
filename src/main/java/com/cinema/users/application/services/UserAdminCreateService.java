@@ -3,7 +3,6 @@ package com.cinema.users.application.services;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -13,17 +12,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 @Profile("prod")
 @Slf4j
 class UserAdminCreateService {
 
-    @Value("${admin.mail}")
-    private String adminMail;
-    @Value("${admin.password}")
-    private String adminPassword;
+    private final String adminMail;
+    private final String adminPassword;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public UserAdminCreateService(
+            @Value("${admin.mail}") String adminMail,
+            @Value("${admin.password}") String adminPassword,
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
+    ) {
+        this.adminMail = adminMail;
+        this.adminPassword = adminPassword;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @EventListener(ContextRefreshedEvent.class)
     void createAdminOnStartUp() {

@@ -4,6 +4,8 @@ import com.cinema.repertoire.application.dto.ScreeningDetailsDto;
 import com.cinema.repertoire.application.dto.ScreeningDto;
 import com.cinema.repertoire.application.dto.ScreeningMapper;
 import com.cinema.repertoire.application.dto.ScreeningQueryDto;
+import com.cinema.repertoire.application.dto.SeatDto;
+import com.cinema.repertoire.application.dto.SeatMapper;
 import com.cinema.repertoire.domain.Screening;
 import com.cinema.repertoire.domain.ScreeningRepository;
 import com.cinema.shared.exceptions.EntityNotFoundException;
@@ -22,6 +24,7 @@ class ScreeningReadService {
 
     private final ScreeningRepository screeningRepository;
     private final ScreeningMapper screeningMapper;
+    private final SeatMapper seatMapper;
 
     public List<ScreeningDto> readAllScreeningsBy(ScreeningQueryDto queryDto) {
         return screeningRepository
@@ -44,5 +47,15 @@ class ScreeningReadService {
                 screening.getRoomId(),
                 seatExists
         );
+    }
+
+    public List<SeatDto> readSeatsByScreeningId(Long id) {
+        return screeningRepository
+                .readById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Screening"))
+                .getSeats()
+                .stream()
+                .map(seatMapper::toDto)
+                .toList();
     }
 }

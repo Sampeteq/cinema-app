@@ -22,7 +22,6 @@ public class RepertoireFacade {
     private final ScreeningCreateService screeningCreateService;
     private final ScreeningDeleteService screeningDeleteService;
     private final ScreeningReadService screeningReadService;
-    private final SeatReadService seatReadService;
 
     public void createFilm(FilmCreateDto dto) {
         filmCreateService.creteFilm(dto);
@@ -49,7 +48,7 @@ public class RepertoireFacade {
     }
 
     public List<SeatDto> readSeatsByScreeningId(Long id) {
-        return seatReadService.readSeatsByScreeningId(id);
+        return screeningReadService.readSeatsByScreeningId(id);
     }
 
     public ScreeningDetailsDto readScreeningDetails(Long id, int rowNumber, int seatNumber) {

@@ -53,7 +53,7 @@ class RoomConfigService {
                     .readAllBytes();
             return new String(bytesArray, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            log.error(e.toString());
+            log.error("IOException was thrown");
             throw new RuntimeException(e);
         }
     }

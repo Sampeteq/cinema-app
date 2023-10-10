@@ -113,11 +113,11 @@ public class ScreeningService {
 
     private boolean isScreeningDateOutOfRange(LocalDateTime screeningDate) {
         var currentDate = LocalDateTime.now(clock);
-        var datesDifference = Duration
-                .between(screeningDate, currentDate)
+        var daysDifference = Duration
+                .between(currentDate, screeningDate)
                 .abs()
                 .toDays();
-        return datesDifference < 7 || datesDifference > 21;
+        return daysDifference < 7 || daysDifference > 21;
     }
 
     private List<Seat> createSeats(int rowsQuantity, int seatsQuantityInOneRow) {

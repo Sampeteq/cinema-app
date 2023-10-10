@@ -54,6 +54,6 @@ class FilmService {
 
     private static boolean isFilmYearOutOfRange(Integer year) {
         var currentYear = Year.now().getValue();
-        return year != currentYear - 1 && year != currentYear && year != currentYear + 1;
+        return year < currentYear - 1 || year > currentYear + 1;
     }
 }

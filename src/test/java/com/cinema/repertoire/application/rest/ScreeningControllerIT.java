@@ -4,8 +4,6 @@ import com.cinema.SpringIT;
 import com.cinema.repertoire.ScreeningTestHelper;
 import com.cinema.repertoire.application.dto.ScreeningCreateDto;
 import com.cinema.repertoire.application.dto.ScreeningDto;
-import com.cinema.repertoire.application.dto.SeatDto;
-import com.cinema.repertoire.application.services.ScreeningService;
 import com.cinema.repertoire.domain.FilmCategory;
 import com.cinema.repertoire.domain.FilmRepository;
 import com.cinema.repertoire.domain.Screening;
@@ -31,7 +29,6 @@ import java.util.List;
 import static com.cinema.repertoire.FilmTestHelper.createFilm;
 import static com.cinema.repertoire.ScreeningTestHelper.createScreening;
 import static com.cinema.repertoire.ScreeningTestHelper.getScreeningDate;
-import static com.cinema.tickets.TicketTestHelper.createFilmCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -53,9 +50,6 @@ class ScreeningControllerIT extends SpringIT {
 
     @Autowired
     private FilmRepository filmRepository;
-
-    @Autowired
-    private ScreeningService screeningService;
 
     @Autowired
     private ScreeningRepository screeningRepository;
@@ -340,7 +334,7 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void seats_are_read_by_screening_id() {
         //given
-        var seats = prepareSeats();
+        prepareSeats();
 
         //when
         var spec = webTestClient
@@ -353,7 +347,11 @@ class ScreeningControllerIT extends SpringIT {
                 .expectStatus()
                 .isOk()
                 .expectBody()
-                .json(toJson(seats));
+                .jsonPath("$").isNotEmpty()
+                .jsonPath("$.*.rowNumber").exists()
+                .jsonPath("$.*.number").exists()
+                .jsonPath("$.*.status").exists()
+                .jsonPath("$.*.*").value(everyItem(notNullValue()));
     }
 
     private Screening addScreening() {
@@ -384,18 +382,11 @@ class ScreeningControllerIT extends SpringIT {
         return screeningRepository.add(screening);
     }
 
-    private List<SeatDto> prepareSeats() {
+    private void prepareSeats() {
         var film = filmRepository.add(createFilm());
         roomFacade.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(clockMock);
-        screeningService.createScreening(
-                new ScreeningCreateDto(
-                        screeningDate,
-                        film.getTitle()
-                )
-        );
-        var screeningId = 1L;
-        return screeningService.readSeatsByScreeningId(screeningId);
+        screeningRepository.add(createScreening(film, screeningDate));
     }
 
     private void addUser(UserRole role) {

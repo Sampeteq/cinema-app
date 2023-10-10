@@ -22,7 +22,9 @@ class FilmService {
     private final FilmMapper filmMapper;
 
     void creteFilm(FilmCreateDto dto) {
-        if (isFilmYearOutOfRange(dto.year())) {
+        var currentYear = Year.now().getValue();
+        var isFilmYearOfRange = dto.year() < currentYear - 1 || dto.year() > currentYear + 1;
+        if (isFilmYearOfRange) {
             throw new FilmYearOutOfRangeException();
         }
         if (filmRepository.existsByTitle(dto.title())) {
@@ -50,10 +52,5 @@ class FilmService {
                 .readByTitle(title)
                 .orElseThrow(() -> new EntityNotFoundException("Film"));
         filmRepository.delete(film);
-    }
-
-    private static boolean isFilmYearOutOfRange(Integer year) {
-        var currentYear = Year.now().getValue();
-        return year < currentYear - 1 || year > currentYear + 1;
     }
 }

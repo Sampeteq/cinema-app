@@ -2,7 +2,7 @@ package com.cinema.tickets.application.rest;
 
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;
-import com.cinema.tickets.application.services.TicketFacade;
+import com.cinema.tickets.application.services.TicketService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,25 +23,25 @@ import java.util.List;
 @RequiredArgsConstructor
 class TicketController {
 
-    private final TicketFacade ticketFacade;
+    private final TicketService ticketService;
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     @SecurityRequirement(name = "basic")
     void bookTicket(@RequestBody @Valid TicketBookDto dto) {
-        ticketFacade.bookTicket(dto);
+        ticketService.bookTicket(dto);
     }
 
     @PatchMapping("/{ticketId}/cancel")
     @SecurityRequirement(name = "basic")
     void cancelTicket(@PathVariable Long ticketId) {
-        ticketFacade.cancelTicket(ticketId);
+        ticketService.cancelTicket(ticketId);
     }
 
     @GetMapping("/my")
     @SecurityRequirement(name = "basic")
     List<TicketDto> readAllTicketsByCurrentUser() {
-        return ticketFacade.readTicketsByCurrentUser();
+        return ticketService.readByCurrentUser();
     }
 }
 

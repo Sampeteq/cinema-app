@@ -9,7 +9,7 @@ import com.cinema.repertoire.domain.FilmRepository;
 import com.cinema.repertoire.domain.Screening;
 import com.cinema.repertoire.domain.ScreeningRepository;
 import com.cinema.repertoire.domain.exceptions.ScreeningDateOutOfRangeException;
-import com.cinema.rooms.application.services.RoomFacade;
+import com.cinema.rooms.application.services.RoomService;
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
@@ -55,7 +55,7 @@ class ScreeningControllerIT extends SpringIT {
     private ScreeningRepository screeningRepository;
 
     @Autowired
-    private RoomFacade roomFacade;
+    private RoomService roomService;
 
     @SpyBean
     private Clock clockMock;
@@ -81,7 +81,7 @@ class ScreeningControllerIT extends SpringIT {
         //given
         addUser(UserRole.ADMIN);
         var film = filmRepository.add(createFilm());
-        roomFacade.createRoom(createRoomCreateDto());
+        roomService.createRoom(createRoomCreateDto());
         var screeningCreateDto = new ScreeningCreateDto(getScreeningDate(clockMock), film.getTitle());
 
         //when
@@ -116,7 +116,7 @@ class ScreeningControllerIT extends SpringIT {
         //given
         addUser(UserRole.ADMIN);
         var film = filmRepository.add(createFilm());
-        roomFacade.createRoom(createRoomCreateDto());
+        roomService.createRoom(createRoomCreateDto());
         var screeningDate = LocalDateTime
                 .now(clockMock)
                 .plusDays(6);
@@ -145,7 +145,7 @@ class ScreeningControllerIT extends SpringIT {
         //given
         addUser(UserRole.ADMIN);
         var film = filmRepository.add(createFilm());
-        roomFacade.createRoom(createRoomCreateDto());
+        roomService.createRoom(createRoomCreateDto());
         var screeningDate = LocalDateTime
                 .now(clockMock)
                 .plusDays(22);
@@ -384,7 +384,7 @@ class ScreeningControllerIT extends SpringIT {
 
     private void prepareSeats() {
         var film = filmRepository.add(createFilm());
-        roomFacade.createRoom(createRoomCreateDto());
+        roomService.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(clockMock);
         screeningRepository.add(createScreening(film, screeningDate));
     }

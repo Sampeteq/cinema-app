@@ -25,7 +25,7 @@ import java.util.List;
 class RoomConfigService {
 
     private final RoomRepository roomRepository;
-    private final RoomCreateService roomCreateService;
+    private final RoomService roomService;
     private final ResourceLoader resourceLoader;
     private final ObjectMapper objectMapper;
 
@@ -69,7 +69,7 @@ class RoomConfigService {
             objectMapper
                     .readValue(json, new TypeReference<List<RoomCreateDto>>() {
                     })
-                    .forEach(roomCreateService::createRoom);
+                    .forEach(roomService::createRoom);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

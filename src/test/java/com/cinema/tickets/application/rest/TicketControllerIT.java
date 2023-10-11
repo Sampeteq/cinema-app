@@ -3,7 +3,7 @@ package com.cinema.tickets.application.rest;
 import com.cinema.SpringIT;
 import com.cinema.repertoire.application.services.FilmService;
 import com.cinema.repertoire.application.services.ScreeningService;
-import com.cinema.rooms.application.services.RoomFacade;
+import com.cinema.rooms.application.services.RoomService;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.TicketTestHelper;
 import com.cinema.tickets.application.dto.TicketBookDto;
@@ -63,7 +63,7 @@ class TicketControllerIT extends SpringIT {
     private ScreeningService screeningService;
 
     @Autowired
-    private RoomFacade roomFacade;
+    private RoomService roomService;
 
     @SpyBean
     private Clock clockMock;
@@ -413,14 +413,14 @@ class TicketControllerIT extends SpringIT {
 
     private void prepareSeat() {
         filmService.creteFilm(createFilmCreateDto());
-        roomFacade.createRoom(createRoomCreateDto());
+        roomService.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(clockMock);
         screeningService.createScreening(createScreeningCrateDto(screeningDate));
     }
 
     private void prepareSeat(LocalDateTime screeningDate) {
         filmService.creteFilm(createFilmCreateDto());
-        roomFacade.createRoom(createRoomCreateDto());
+        roomService.createRoom(createRoomCreateDto());
         screeningService.createScreening(createScreeningCrateDto(screeningDate));
     }
 
@@ -428,7 +428,7 @@ class TicketControllerIT extends SpringIT {
         filmService.creteFilm(
                 createFilmCreateDto().withTitle(filmTitle)
         );
-        roomFacade.createRoom(
+        roomService.createRoom(
                 createRoomCreateDto().withId(roomId)
         );
         screeningService.createScreening(createScreeningCrateDto(screeningDate));

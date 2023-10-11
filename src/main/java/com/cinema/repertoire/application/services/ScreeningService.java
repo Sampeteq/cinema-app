@@ -14,7 +14,7 @@ import com.cinema.repertoire.domain.Seat;
 import com.cinema.repertoire.domain.SeatStatus;
 import com.cinema.repertoire.domain.events.ScreeningCreatedEvent;
 import com.cinema.repertoire.domain.exceptions.ScreeningDateOutOfRangeException;
-import com.cinema.rooms.application.services.RoomFacade;
+import com.cinema.rooms.application.services.RoomService;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class ScreeningService {
     private final ScreeningMapper screeningMapper;
     private final SeatMapper seatMapper;
     private final FilmRepository filmRepository;
-    private final RoomFacade roomFacade;
+    private final RoomService roomService;
     private final Clock clock;
     private final EventPublisher eventPublisher;
 
@@ -56,7 +56,7 @@ public class ScreeningService {
                 .readByTitle(dto.filmTitle())
                 .orElseThrow(() -> new EntityNotFoundException("Film"));
         var endDate = film.calculateScreeningEndDate(dto.date());
-        var roomDto = roomFacade.findFirstAvailableRoom(dto.date(), endDate);
+        var roomDto = roomService.findFirstAvailableRoom(dto.date(), endDate);
         var seats = createSeats(roomDto.rowsNumber(), roomDto.rowSeatsNumber());
         var screening = new Screening(
                 dto.date(),

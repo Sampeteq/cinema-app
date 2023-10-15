@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class SpringDataJpaTicketRepository implements TicketRepository {
+class JpaTicketRepositoryAdapter implements TicketRepository {
 
     private final JpaTicketRepository jpaTicketRepository;
 

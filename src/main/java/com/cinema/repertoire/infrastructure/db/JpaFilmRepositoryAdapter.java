@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class SpringDataJpaFilmRepository implements FilmRepository {
+class JpaFilmRepositoryAdapter implements FilmRepository {
 
     private final JpaFilmRepository jpaFilmRepository;
 

@@ -41,18 +41,22 @@ public class JpaScreeningAdapter implements ScreeningRepository {
 
     @Override
     public List<Screening> readAllBy(ScreeningQueryDto queryDto) {
+
         Specification<Screening> dateSpec =
                 (root, query, criteriaBuilder) -> queryDto.date() == null ?
                         criteriaBuilder.conjunction() :
                         criteriaBuilder.between(root.get("date"), queryDto.date(), queryDto.date().plusDays(1));
+
         Specification<Screening> categorySpec =
                 (root, query, criteriaBuilder) -> queryDto.filmCategory() == null ?
                         criteriaBuilder.conjunction() :
                         criteriaBuilder.equal(root.get("film").get("category"), queryDto.filmCategory());
+
         Specification<Screening> titleSpec =
                 (root, query, criteriaBuilder) -> queryDto.filmTitle() == null ?
                         criteriaBuilder.conjunction() :
                         criteriaBuilder.equal(root.get("film").get("title"), queryDto.filmTitle());
+
         return jpaScreeningRepository.findAll(
                 categorySpec
                         .and(dateSpec)

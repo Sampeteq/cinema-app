@@ -14,14 +14,14 @@ import org.springframework.stereotype.Service;
 @Service
 @Profile("prod")
 @Slf4j
-class UserAdminCreateService {
+class UserAdminService {
 
     private final String adminMail;
     private final String adminPassword;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserAdminCreateService(
+    public UserAdminService(
             @Value("${admin.mail}") String adminMail,
             @Value("${admin.password}") String adminPassword,
             UserRepository userRepository,

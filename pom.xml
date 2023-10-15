@@ -23,6 +23,7 @@
 
     <properties>
         <java.version>21</java.version>
+        <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
         <testcontainers.version>1.19.0</testcontainers.version>
     </properties>
 
@@ -114,7 +115,7 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.5.3.Final</version>
+            <version>${org.mapstruct.version}</version>
         </dependency>
 
     </dependencies>
@@ -155,7 +156,7 @@
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>1.5.3.Final</version>
+                            <version>${org.mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>

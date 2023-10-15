@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "seats")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Seat {
 
@@ -27,6 +26,9 @@ public class Seat {
 
     @Enumerated(value = EnumType.STRING)
     private SeatStatus status;
+
+    protected Seat() {
+    }
 
     public Seat(int rowNumber, int number, SeatStatus status) {
         this.rowNumber = rowNumber;

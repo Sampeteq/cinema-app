@@ -15,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -53,16 +52,15 @@ public class UserService {
         eventPublisher.publish(userPasswordResetEvent);
     }
 
-    @Transactional
     public void setNewUserPassword(UserPasswordNewDto dto) {
         var user = userRepository
                 .readByPasswordResetToken(dto.passwordResetToken())
                 .orElseThrow(() -> new EntityNotFoundException("User"));
         var encodedPassword = passwordEncoder.encode(dto.newPassword());
         user.setNewPassword(encodedPassword);
+        userRepository.add(user);
     }
 
-    @Transactional(readOnly = true)
     public Long readCurrentUserId() {
         var mail = SecurityContextHolder
                 .getContext()

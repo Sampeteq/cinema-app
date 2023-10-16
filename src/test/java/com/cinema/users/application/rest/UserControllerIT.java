@@ -1,7 +1,6 @@
 package com.cinema.users.application.rest;
 
 import com.cinema.SpringIT;
-import com.cinema.users.UserTestHelper;
 import com.cinema.users.application.dto.UserPasswordNewDto;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
@@ -15,8 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
-import static com.cinema.users.UserTestHelper.createUserCreateDto;
 import static com.cinema.users.UserTestHelper.createUser;
+import static com.cinema.users.UserTestHelper.createUserCreateDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;

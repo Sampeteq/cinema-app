@@ -1,7 +1,7 @@
 package com.cinema.users.application.rest;
 
-import com.cinema.users.application.dto.UserPasswordNewDto;
 import com.cinema.users.application.dto.UserCreateDto;
+import com.cinema.users.application.dto.UserPasswordNewDto;
 import com.cinema.users.application.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

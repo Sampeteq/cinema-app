@@ -111,7 +111,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_booked_for_existing_seat() {
         //given
-        prepareSeat();
+        addSeat();
         var screeningId = 1L;
         var nonExistingSeatRowNumber = 100;
         var nonExistingSeatNumber = 100;
@@ -140,7 +140,7 @@ class TicketControllerIT extends SpringIT {
         //given
         var filmTitle = "Title 1";
         var roomId = "1";
-        prepareSeat(filmTitle, roomId);
+        addSeat(filmTitle, roomId);
         var screeningId = 1L;
         var seatRowNumber = 1;
         var seatNumber = 1;
@@ -175,7 +175,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_unique() {
         //given
-        prepareSeat();
+        addSeat();
         var ticket = ticketRepository.add(TicketFixture.createTicket());
         var ticketBookDto = new TicketBookDto(
                 ticket.getScreeningId(),
@@ -205,7 +205,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_is_booked_at_least_1h_before_screening() {
         //given
         var screeningDate = SCREENING_DATE;
-        prepareSeat(screeningDate);
+        addSeat(screeningDate);
         Mockito
                 .when(clockMock.instant())
                 .thenReturn(screeningDate.minusMinutes(59).toInstant(ZoneOffset.UTC));
@@ -239,7 +239,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_booked_event_is_published() {
         //given
-        prepareSeat();
+        addSeat();
         var screeningId = 1L;
         var rowNumber = 1;
         var seatNumber = 1;
@@ -266,7 +266,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_cancelled() {
         //give
-        prepareSeat();
+        addSeat();
         ticketRepository.add(TicketFixture.createActiveTicket());
 
         //when
@@ -288,7 +288,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_cancelled_event_is_published() {
         //given
-        prepareSeat();
+        addSeat();
         var ticket = ticketRepository.add(TicketFixture.createActiveTicket());
 
         //when
@@ -310,7 +310,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_already_cancelled_cannot_be_cancelled() {
         //given
-        prepareSeat();
+        addSeat();
         ticketRepository.add(TicketFixture.createCancelledTicket());
 
         //when
@@ -420,19 +420,19 @@ class TicketControllerIT extends SpringIT {
                 .json(toJson(expected));
     }
 
-    private void prepareSeat() {
+    private void addSeat() {
         filmService.creteFilm(createFilmCreateDto());
         roomService.createRoom(createRoomCreateDto());
         screeningService.createScreening(createScreeningCrateDto(SCREENING_DATE));
     }
 
-    private void prepareSeat(LocalDateTime screeningDate) {
+    private void addSeat(LocalDateTime screeningDate) {
         filmService.creteFilm(createFilmCreateDto());
         roomService.createRoom(createRoomCreateDto());
         screeningService.createScreening(createScreeningCrateDto(screeningDate));
     }
 
-    private void prepareSeat(String filmTitle, String roomId) {
+    private void addSeat(String filmTitle, String roomId) {
         filmService.creteFilm(
                 createFilmCreateDto().withTitle(filmTitle)
         );

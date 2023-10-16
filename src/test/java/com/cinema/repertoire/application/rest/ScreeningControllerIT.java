@@ -334,7 +334,7 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void seats_are_read_by_screening_id() {
         //given
-        prepareSeats();
+        addSeats();
 
         //when
         var spec = webTestClient
@@ -382,7 +382,7 @@ class ScreeningControllerIT extends SpringIT {
         return screeningRepository.add(screening);
     }
 
-    private void prepareSeats() {
+    private void addSeats() {
         var film = filmRepository.add(createFilm());
         roomService.createRoom(createRoomCreateDto());
         var screeningDate = getScreeningDate(clockMock);

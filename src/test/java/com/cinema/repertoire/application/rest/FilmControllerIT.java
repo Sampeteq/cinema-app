@@ -120,7 +120,7 @@ class FilmControllerIT extends SpringIT {
     }
 
     @ParameterizedTest
-    @MethodSource("com.cinema.repertoire.FilmTestHelper#getWrongFilmYears")
+    @MethodSource("com.cinema.repertoire.FilmFixture#getWrongFilmYears")
     void film_year_is_previous_current_or_nex_one(Integer wrongYear) {
         //given
         addUser(UserRole.ADMIN);

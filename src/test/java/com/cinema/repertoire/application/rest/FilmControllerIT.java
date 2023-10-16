@@ -18,8 +18,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import static com.cinema.repertoire.FilmTestHelper.createFilm;
-import static com.cinema.repertoire.FilmTestHelper.createFilmCreateDto;
+import static com.cinema.repertoire.FilmFixture.createFilm;
+import static com.cinema.repertoire.FilmFixture.createFilmCreateDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.ZoneOffset;
 
-public final class TicketTestHelper {
+public final class TicketFixture {
 
     public static final String ROOM_CUSTOM_ID = "1";
     public static final int ROOM_ROWS_NUMBER = 10;
@@ -31,7 +31,7 @@ public final class TicketTestHelper {
     public static final int ROW_NUMBER = 1;
     public static final long USER_ID = 1L;
 
-    private TicketTestHelper() {
+    private TicketFixture() {
     }
 
     public static Ticket prepareTicket() {

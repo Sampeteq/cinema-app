@@ -6,13 +6,13 @@ import com.cinema.users.domain.UserRole;
 
 import java.util.UUID;
 
-public final class UserTestHelper {
+public final class UserFixture {
 
     private static final String MAIL = "user1@mail.com";
 
     private static final String PASSWORD = "password1";
 
-    private UserTestHelper() {
+    private UserFixture() {
     }
 
     public static UserCreateDto createUserCreateDto() {

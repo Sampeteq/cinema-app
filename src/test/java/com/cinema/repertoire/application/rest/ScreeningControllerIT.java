@@ -1,7 +1,7 @@
 package com.cinema.repertoire.application.rest;
 
 import com.cinema.SpringIT;
-import com.cinema.repertoire.ScreeningTestHelper;
+import com.cinema.repertoire.ScreeningFixture;
 import com.cinema.repertoire.application.dto.ScreeningCreateDto;
 import com.cinema.repertoire.application.dto.ScreeningDto;
 import com.cinema.repertoire.domain.FilmCategory;
@@ -26,10 +26,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.cinema.repertoire.FilmTestHelper.createFilm;
-import static com.cinema.repertoire.ScreeningTestHelper.createRoomCreateDto;
-import static com.cinema.repertoire.ScreeningTestHelper.createScreening;
-import static com.cinema.repertoire.ScreeningTestHelper.getScreeningDate;
+import static com.cinema.repertoire.FilmFixture.createFilm;
+import static com.cinema.repertoire.ScreeningFixture.createRoomCreateDto;
+import static com.cinema.repertoire.ScreeningFixture.createScreening;
+import static com.cinema.repertoire.ScreeningFixture.getScreeningDate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -378,7 +378,7 @@ class ScreeningControllerIT extends SpringIT {
     private Screening addScreening(LocalDate date) {
         var film = filmRepository.add(createFilm());
         var dateTime = date.atStartOfDay().plusHours(16);
-        var screening = ScreeningTestHelper.createScreening(film, dateTime);
+        var screening = ScreeningFixture.createScreening(film, dateTime);
         return screeningRepository.add(screening);
     }
 

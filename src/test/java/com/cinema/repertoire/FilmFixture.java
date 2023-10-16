@@ -7,7 +7,7 @@ import com.cinema.repertoire.domain.FilmCategory;
 import java.time.Year;
 import java.util.List;
 
-public final class FilmTestHelper {
+public final class FilmFixture {
 
     private static final String TITLE = "TITLE 1";
 
@@ -17,7 +17,7 @@ public final class FilmTestHelper {
 
     private static final int DURATION_IN_MINUTES = 100;
 
-    private FilmTestHelper() {
+    private FilmFixture() {
     }
 
     public static FilmCreateDto createFilmCreateDto() {

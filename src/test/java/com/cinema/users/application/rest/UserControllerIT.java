@@ -14,8 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
-import static com.cinema.users.UserTestHelper.createUser;
-import static com.cinema.users.UserTestHelper.createUserCreateDto;
+import static com.cinema.users.UserFixture.createUser;
+import static com.cinema.users.UserFixture.createUserCreateDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;

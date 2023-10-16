@@ -10,13 +10,13 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public final class ScreeningTestHelper {
+public final class ScreeningFixture {
 
     public static final String ROOM_CUSTOM_ID = "1";
     public static final int ROOM_ROWS_NUMBER = 10;
     public static final int ROOM_ROW_SEATS_NUMBER = 15;
 
-    private ScreeningTestHelper() {
+    private ScreeningFixture() {
     }
 
     public static Screening createScreening(

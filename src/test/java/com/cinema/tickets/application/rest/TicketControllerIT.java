@@ -33,10 +33,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-import static com.cinema.repertoire.ScreeningTestHelper.getScreeningDate;
 import static com.cinema.tickets.TicketTestHelper.createFilmCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
 import static com.cinema.tickets.TicketTestHelper.createScreeningCrateDto;
+import static com.cinema.tickets.TicketTestHelper.getScreeningDate;
 import static com.cinema.tickets.TicketTestHelper.prepareBookedTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;

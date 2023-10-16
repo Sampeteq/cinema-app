@@ -56,38 +56,6 @@ public final class FilmTestHelper {
         );
     }
 
-    public static List<Film> createFilms() {
-        var film1 = new Film(
-                TITLE,
-                CATEGORY,
-                YEAR,
-                DURATION_IN_MINUTES
-        );
-        var film2 = new Film(
-                TITLE + "another",
-                FilmCategory.DRAMA,
-                YEAR + 1,
-                DURATION_IN_MINUTES + 30
-        );
-        return List.of(film1, film2);
-    }
-
-    public static List<Film> createFilms(FilmCategory filmCategory) {
-        var film1 = new Film(
-                TITLE,
-                filmCategory,
-                YEAR,
-                DURATION_IN_MINUTES
-        );
-        var film2 = new Film(
-                TITLE + "another",
-                filmCategory,
-                YEAR + 1,
-                DURATION_IN_MINUTES + 30
-        );
-        return List.of(film1, film2);
-    }
-
     public static List<Integer> getWrongFilmYears() {
         return List.of(
                 YEAR - 2,

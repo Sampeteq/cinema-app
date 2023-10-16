@@ -27,9 +27,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.cinema.repertoire.FilmTestHelper.createFilm;
+import static com.cinema.repertoire.ScreeningTestHelper.createRoomCreateDto;
 import static com.cinema.repertoire.ScreeningTestHelper.createScreening;
 import static com.cinema.repertoire.ScreeningTestHelper.getScreeningDate;
-import static com.cinema.tickets.TicketTestHelper.createRoomCreateDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;

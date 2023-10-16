@@ -4,12 +4,17 @@ import com.cinema.repertoire.domain.Film;
 import com.cinema.repertoire.domain.Screening;
 import com.cinema.repertoire.domain.Seat;
 import com.cinema.repertoire.domain.SeatStatus;
+import com.cinema.rooms.application.dto.RoomCreateDto;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public final class ScreeningTestHelper {
+
+    public static final String ROOM_CUSTOM_ID = "1";
+    public static final int ROOM_ROWS_NUMBER = 10;
+    public static final int ROOM_ROW_SEATS_NUMBER = 15;
 
     private ScreeningTestHelper() {
     }
@@ -25,6 +30,14 @@ public final class ScreeningTestHelper {
                 film,
                 roomId,
                 List.of(seat)
+        );
+    }
+
+    public static RoomCreateDto createRoomCreateDto() {
+        return new RoomCreateDto(
+                ROOM_CUSTOM_ID,
+                ROOM_ROWS_NUMBER,
+                ROOM_ROW_SEATS_NUMBER
         );
     }
 

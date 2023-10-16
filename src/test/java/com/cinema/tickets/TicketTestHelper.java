@@ -92,4 +92,8 @@ public final class TicketTestHelper {
                 FILM_TITLE
         );
     }
+
+    public static LocalDateTime getScreeningDate(Clock clock) {
+        return LocalDateTime.now(clock).plusDays(7);
+    }
 }

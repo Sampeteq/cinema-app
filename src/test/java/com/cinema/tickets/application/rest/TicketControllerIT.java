@@ -166,10 +166,7 @@ class TicketControllerIT extends SpringIT {
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
                     assertEquals(TicketStatus.ACTIVE, ticket.getStatus());
-                    assertEquals(filmTitle, ticket.getFilmTitle());
-                    assertEquals(screeningDate, ticket.getScreeningDate());
                     assertEquals(screeningId, ticket.getScreeningId());
-                    assertEquals(roomId, ticket.getRoomId());
                     assertEquals(seatRowNumber, ticket.getSeatNumber());
                     assertEquals(seatNumber, ticket.getSeatNumber());
                     assertEquals(1L, ticket.getUserId());
@@ -336,11 +333,15 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_cancelled_at_least_24h_before_screening() {
         //given
-        var screeningDate = getScreeningDate(clockMock);
-        ticketRepository.add(TicketTestHelper.prepareBookedTicket(screeningDate));
+        filmService.creteFilm(createFilmCreateDto());
+        roomService.createRoom(createRoomCreateDto());
+        var dto = createScreeningCrateDto();
+        screeningService.createScreening(dto);
+
+        ticketRepository.add(TicketTestHelper.prepareBookedTicket());
         Mockito
                 .when(clockMock.instant())
-                .thenReturn(screeningDate.minusHours(23).toInstant(ZoneOffset.UTC));
+                .thenReturn(dto.date().minusHours(23).toInstant(ZoneOffset.UTC));
 
         //when
         var spec = webTestClient
@@ -383,7 +384,16 @@ class TicketControllerIT extends SpringIT {
     @Test
     void tickets_are_read_by_user_id() {
         //given
-        var ticket = ticketRepository.add(TicketTestHelper.prepareBookedTicket());
+        var filmCreateDto = createFilmCreateDto();
+        filmService.creteFilm(filmCreateDto);
+
+        var roomCreateDto = createRoomCreateDto();
+        roomService.createRoom(roomCreateDto);
+
+        var screeningCreateDto = createScreeningCrateDto();
+        screeningService.createScreening(screeningCreateDto);
+
+        var ticket = ticketRepository.add(prepareBookedTicket());
 
         //when
         var spec = webTestClient
@@ -397,9 +407,9 @@ class TicketControllerIT extends SpringIT {
                 new TicketDto(
                         1L,
                         ticket.getStatus(),
-                        ticket.getFilmTitle(),
-                        ticket.getScreeningDate(),
-                        ticket.getRoomId(),
+                        filmCreateDto.title(),
+                        screeningCreateDto.date(),
+                        roomCreateDto.id(),
                         ticket.getRowNumber(),
                         ticket.getSeatNumber()
                 )

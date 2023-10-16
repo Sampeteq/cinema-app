@@ -52,6 +52,13 @@ public class Screening {
         this.seats = seats;
     }
 
+    public boolean hasSeat(int rowNumber, int seatNumber) {
+        return this
+                .seats
+                .stream()
+                .anyMatch(seat -> seat.placedOn(rowNumber, seatNumber));
+    }
+
     public Optional<Seat> findSeat(int rowNumber, int seatNumber) {
         return this
                 .seats

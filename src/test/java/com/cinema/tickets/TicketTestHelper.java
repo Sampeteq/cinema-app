@@ -35,15 +35,8 @@ public final class TicketTestHelper {
     }
 
     public static Ticket prepareTicket() {
-        return prepareTicket(SCREENING_DATE);
-    }
-
-    public static Ticket prepareTicket(LocalDateTime screeningDate) {
         return new Ticket(
-                FILM_TITLE,
                 SCREENING_ID,
-                screeningDate,
-                ROOM_CUSTOM_ID,
                 ROW_NUMBER,
                 SEAT_NUMBER
         );
@@ -51,26 +44,20 @@ public final class TicketTestHelper {
 
     public static Ticket prepareBookedTicket() {
         var ticket = prepareTicket();
-        ticket.book(CLOCK, USER_ID);
-        return ticket;
-    }
-
-    public static Ticket prepareBookedTicket(LocalDateTime screeningDate) {
-        var ticket = prepareTicket(screeningDate);
-        ticket.book(CLOCK, USER_ID);
+        ticket.makeActive(USER_ID);
         return ticket;
     }
 
     public static Ticket prepareBookedTicket(Long userId) {
-        var ticket = prepareTicket(SCREENING_DATE);
-        ticket.book(CLOCK, userId);
+        var ticket = prepareTicket();
+        ticket.makeActive(userId);
         return ticket;
     }
 
     public static Ticket prepareCancelledTicket() {
         var ticket = prepareTicket();
-        ticket.book(CLOCK, USER_ID);
-        ticket.cancel(CLOCK);
+        ticket.makeActive(USER_ID);
+        ticket.makeCancelled();
         return ticket;
     }
 

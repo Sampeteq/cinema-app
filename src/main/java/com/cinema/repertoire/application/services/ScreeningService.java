@@ -83,19 +83,29 @@ public class ScreeningService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
-    public ScreeningDetailsDto readScreeningDetails(Long id, int rowNumber, int seatNumber) {
+    public LocalDateTime readScreeningDate(Long screeningId) {
+        return screeningRepository
+                .readById(screeningId)
+                .orElseThrow(() -> new EntityNotFoundException("Screening"))
+                .getDate();
+    }
+
+    public ScreeningDetailsDto readScreeningDetails(Long screeningId) {
         var screening = screeningRepository
-                .readById(id)
+                .readById(screeningId)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"));
-        var seat = screening.findSeat(rowNumber, seatNumber);
-        var seatExists = seat.isPresent();
         return new ScreeningDetailsDto(
-                screening.getFilm().getTitle(),
                 screening.getDate(),
-                screening.getRoomId(),
-                seatExists
+                screening.getFilm().getTitle(),
+                screening.getRoomId()
         );
+    }
+
+    public boolean seatExists(Long screeningId, int rowNumber, int seatNumber) {
+        return screeningRepository
+                .readById(screeningId)
+                .orElseThrow(() -> new EntityNotFoundException("Screening"))
+                .hasSeat(rowNumber, seatNumber);
     }
 
     @Transactional(readOnly = true)

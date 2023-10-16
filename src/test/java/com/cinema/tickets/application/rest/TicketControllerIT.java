@@ -33,11 +33,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
+import static com.cinema.tickets.TicketFixture.SCREENING_DATE;
+import static com.cinema.tickets.TicketFixture.createActiveTicket;
 import static com.cinema.tickets.TicketFixture.createFilmCreateDto;
 import static com.cinema.tickets.TicketFixture.createRoomCreateDto;
 import static com.cinema.tickets.TicketFixture.createScreeningCrateDto;
-import static com.cinema.tickets.TicketFixture.getScreeningDate;
-import static com.cinema.tickets.TicketFixture.prepareBookedTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -140,8 +140,7 @@ class TicketControllerIT extends SpringIT {
         //given
         var filmTitle = "Title 1";
         var roomId = "1";
-        var screeningDate = getScreeningDate(clockMock);
-        prepareSeat(filmTitle, roomId, screeningDate);
+        prepareSeat(filmTitle, roomId);
         var screeningId = 1L;
         var seatRowNumber = 1;
         var seatNumber = 1;
@@ -177,7 +176,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_is_unique() {
         //given
         prepareSeat();
-        var ticket = ticketRepository.add(TicketFixture.prepareTicket());
+        var ticket = ticketRepository.add(TicketFixture.createTicket());
         var ticketBookDto = new TicketBookDto(
                 ticket.getScreeningId(),
                 ticket.getRowNumber(),
@@ -205,7 +204,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_booked_at_least_1h_before_screening() {
         //given
-        var screeningDate = getScreeningDate(clockMock);
+        var screeningDate = SCREENING_DATE;
         prepareSeat(screeningDate);
         Mockito
                 .when(clockMock.instant())
@@ -268,7 +267,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_is_cancelled() {
         //give
         prepareSeat();
-        ticketRepository.add(prepareBookedTicket());
+        ticketRepository.add(TicketFixture.createActiveTicket());
 
         //when
         var spec = webTestClient
@@ -290,7 +289,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_cancelled_event_is_published() {
         //given
         prepareSeat();
-        var ticket = ticketRepository.add(TicketFixture.prepareBookedTicket());
+        var ticket = ticketRepository.add(TicketFixture.createActiveTicket());
 
         //when
         webTestClient
@@ -312,7 +311,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_already_cancelled_cannot_be_cancelled() {
         //given
         prepareSeat();
-        ticketRepository.add(TicketFixture.prepareCancelledTicket());
+        ticketRepository.add(TicketFixture.createCancelledTicket());
 
         //when
         var spec = webTestClient
@@ -338,7 +337,7 @@ class TicketControllerIT extends SpringIT {
         var dto = createScreeningCrateDto();
         screeningService.createScreening(dto);
 
-        ticketRepository.add(TicketFixture.prepareBookedTicket());
+        ticketRepository.add(TicketFixture.createActiveTicket());
         Mockito
                 .when(clockMock.instant())
                 .thenReturn(dto.date().minusHours(23).toInstant(ZoneOffset.UTC));
@@ -363,7 +362,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_is_cancelled_if_belongs_to_current_user() {
         //given
         var notCurrentUserId = 2L;
-        ticketRepository.add(prepareBookedTicket(notCurrentUserId));
+        ticketRepository.add(createActiveTicket(notCurrentUserId));
 
         //when
         var spec = webTestClient
@@ -393,7 +392,7 @@ class TicketControllerIT extends SpringIT {
         var screeningCreateDto = createScreeningCrateDto();
         screeningService.createScreening(screeningCreateDto);
 
-        var ticket = ticketRepository.add(prepareBookedTicket());
+        var ticket = ticketRepository.add(TicketFixture.createActiveTicket());
 
         //when
         var spec = webTestClient
@@ -424,8 +423,7 @@ class TicketControllerIT extends SpringIT {
     private void prepareSeat() {
         filmService.creteFilm(createFilmCreateDto());
         roomService.createRoom(createRoomCreateDto());
-        var screeningDate = getScreeningDate(clockMock);
-        screeningService.createScreening(createScreeningCrateDto(screeningDate));
+        screeningService.createScreening(createScreeningCrateDto(SCREENING_DATE));
     }
 
     private void prepareSeat(LocalDateTime screeningDate) {
@@ -434,13 +432,13 @@ class TicketControllerIT extends SpringIT {
         screeningService.createScreening(createScreeningCrateDto(screeningDate));
     }
 
-    private void prepareSeat(String filmTitle, String roomId, LocalDateTime screeningDate) {
+    private void prepareSeat(String filmTitle, String roomId) {
         filmService.creteFilm(
                 createFilmCreateDto().withTitle(filmTitle)
         );
         roomService.createRoom(
                 createRoomCreateDto().withId(roomId)
         );
-        screeningService.createScreening(createScreeningCrateDto(screeningDate));
+        screeningService.createScreening(createScreeningCrateDto(TicketFixture.SCREENING_DATE));
     }
 }

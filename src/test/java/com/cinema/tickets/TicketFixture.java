@@ -1,5 +1,6 @@
 package com.cinema.tickets;
 
+import com.cinema.ClockMockConfig;
 import com.cinema.repertoire.application.dto.FilmCreateDto;
 import com.cinema.repertoire.application.dto.ScreeningCreateDto;
 import com.cinema.repertoire.domain.FilmCategory;
@@ -9,7 +10,6 @@ import com.cinema.tickets.domain.Ticket;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Year;
-import java.time.ZoneOffset;
 
 public final class TicketFixture {
 
@@ -19,12 +19,7 @@ public final class TicketFixture {
     public static final String FILM_TITLE = "Title 1";
     public static final FilmCategory FILM_CATEGORY = FilmCategory.COMEDY;
     public static final int FILM_DURATION_IN_MINUTES = 100;
-    public static final Clock CLOCK = Clock.fixed(
-            LocalDateTime
-                    .of(Year.now().getValue(), 12, 13, 16, 30)
-                    .toInstant(ZoneOffset.UTC),
-            ZoneOffset.UTC
-    );
+    public static final Clock CLOCK = new ClockMockConfig().clockMock();
     public static final Long SCREENING_ID = 1L;
     public static final LocalDateTime SCREENING_DATE = LocalDateTime.now(CLOCK).plusDays(7);
     public static final int SEAT_NUMBER = 1;
@@ -34,7 +29,7 @@ public final class TicketFixture {
     private TicketFixture() {
     }
 
-    public static Ticket prepareTicket() {
+    public static Ticket createTicket() {
         return new Ticket(
                 SCREENING_ID,
                 ROW_NUMBER,
@@ -42,20 +37,20 @@ public final class TicketFixture {
         );
     }
 
-    public static Ticket prepareBookedTicket() {
-        var ticket = prepareTicket();
+    public static Ticket createActiveTicket() {
+        var ticket = createTicket();
         ticket.makeActive(USER_ID);
         return ticket;
     }
 
-    public static Ticket prepareBookedTicket(Long userId) {
-        var ticket = prepareTicket();
+    public static Ticket createActiveTicket(Long userId) {
+        var ticket = createTicket();
         ticket.makeActive(userId);
         return ticket;
     }
 
-    public static Ticket prepareCancelledTicket() {
-        var ticket = prepareTicket();
+    public static Ticket createCancelledTicket() {
+        var ticket = createTicket();
         ticket.makeActive(USER_ID);
         ticket.makeCancelled();
         return ticket;
@@ -91,9 +86,5 @@ public final class TicketFixture {
                 date,
                 FILM_TITLE
         );
-    }
-
-    public static LocalDateTime getScreeningDate(Clock clock) {
-        return LocalDateTime.now(clock).plusDays(7);
     }
 }

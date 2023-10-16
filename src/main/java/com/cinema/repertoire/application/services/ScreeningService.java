@@ -20,7 +20,6 @@ import com.cinema.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -73,7 +72,6 @@ public class ScreeningService {
         eventPublisher.publish(screeningCreatedEvent);
     }
 
-    @Transactional(readOnly = true)
     public List<ScreeningDto> readAllScreeningsBy(ScreeningQueryDto queryDto) {
         return screeningRepository
                 .readAllBy(queryDto)
@@ -108,7 +106,6 @@ public class ScreeningService {
                 .hasSeat(rowNumber, seatNumber);
     }
 
-    @Transactional(readOnly = true)
     public List<SeatDto> readSeatsByScreeningId(Long id) {
         return screeningRepository
                 .readById(id)

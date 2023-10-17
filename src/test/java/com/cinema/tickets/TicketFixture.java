@@ -6,6 +6,7 @@ import com.cinema.repertoire.application.dto.ScreeningCreateDto;
 import com.cinema.repertoire.domain.FilmCategory;
 import com.cinema.rooms.application.dto.RoomCreateDto;
 import com.cinema.tickets.domain.Ticket;
+import com.cinema.tickets.domain.TicketStatus;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -30,26 +31,24 @@ public final class TicketFixture {
 
     public static Ticket createTicket() {
         return new Ticket(
+                TicketStatus.ACTIVE,
                 SCREENING_ID,
-                SEAT_ID
+                SEAT_ID,
+                USER_ID
         );
     }
 
-    public static Ticket createActiveTicket() {
-        var ticket = createTicket();
-        ticket.makeActive(USER_ID);
-        return ticket;
-    }
-
-    public static Ticket createActiveTicket(Long userId) {
-        var ticket = createTicket();
-        ticket.makeActive(userId);
-        return ticket;
+    public static Ticket createTicket(Long userId) {
+        return new Ticket(
+                TicketStatus.ACTIVE,
+                SCREENING_ID,
+                SEAT_ID,
+                userId
+        );
     }
 
     public static Ticket createCancelledTicket() {
         var ticket = createTicket();
-        ticket.makeActive(USER_ID);
         ticket.makeCancelled();
         return ticket;
     }

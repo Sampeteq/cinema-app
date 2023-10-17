@@ -7,6 +7,7 @@ import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
+import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.events.TicketBookedEvent;
 import com.cinema.tickets.domain.events.TicketCancelledEvent;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
@@ -48,9 +49,13 @@ public class TicketService {
         if (!seatExists) {
             throw new EntityNotFoundException("Seat");
         }
-        var ticket = new Ticket(dto.screeningId(), dto.seatId());
         var currentUserId = userService.readCurrentUserId();
-        ticket.makeActive(currentUserId);
+        var ticket = new Ticket(
+                TicketStatus.ACTIVE,
+                dto.screeningId(),
+                dto.seatId(),
+                currentUserId
+        );
         var addedTicket = ticketRepository.add(ticket);
         log.info("Added a ticket:{}", addedTicket);
         var ticketBookedEvent = new TicketBookedEvent(

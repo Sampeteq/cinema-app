@@ -32,13 +32,10 @@ public class Ticket {
 
     protected Ticket() {}
 
-    public Ticket(Long screeningId, Long seatId) {
+    public Ticket(TicketStatus status, Long screeningId, Long seatId, Long userId) {
+        this.status = status;
         this.screeningId = screeningId;
         this.seatId = seatId;
-    }
-
-    public void makeActive(Long userId) {
-        this.status = TicketStatus.ACTIVE;
         this.userId = userId;
     }
 

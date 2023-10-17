@@ -34,10 +34,10 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 import static com.cinema.tickets.TicketFixture.SCREENING_DATE;
-import static com.cinema.tickets.TicketFixture.createActiveTicket;
 import static com.cinema.tickets.TicketFixture.createFilmCreateDto;
 import static com.cinema.tickets.TicketFixture.createRoomCreateDto;
 import static com.cinema.tickets.TicketFixture.createScreeningCrateDto;
+import static com.cinema.tickets.TicketFixture.createTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -169,7 +169,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_is_unique() {
         //given
         addSeat();
-        var ticket = ticketRepository.add(TicketFixture.createTicket());
+        var ticket = ticketRepository.add(createTicket());
         var ticketBookDto = new TicketBookDto(
                 ticket.getScreeningId(),
                 ticket.getSeatId()
@@ -255,7 +255,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_is_cancelled() {
         //give
         addSeat();
-        ticketRepository.add(TicketFixture.createActiveTicket());
+        ticketRepository.add(createTicket());
 
         //when
         var spec = webTestClient
@@ -277,7 +277,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_cancelled_event_is_published() {
         //given
         addSeat();
-        var ticket = ticketRepository.add(TicketFixture.createActiveTicket());
+        var ticket = ticketRepository.add(createTicket());
 
         //when
         webTestClient
@@ -324,7 +324,7 @@ class TicketControllerIT extends SpringIT {
         var dto = createScreeningCrateDto();
         screeningService.createScreening(dto);
 
-        ticketRepository.add(TicketFixture.createActiveTicket());
+        ticketRepository.add(createTicket());
         Mockito
                 .when(clockMock.instant())
                 .thenReturn(dto.date().minusHours(23).toInstant(ZoneOffset.UTC));
@@ -349,7 +349,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_is_cancelled_if_belongs_to_current_user() {
         //given
         var notCurrentUserId = 2L;
-        ticketRepository.add(createActiveTicket(notCurrentUserId));
+        ticketRepository.add(createTicket(notCurrentUserId));
 
         //when
         var spec = webTestClient
@@ -379,7 +379,7 @@ class TicketControllerIT extends SpringIT {
         var screeningCreateDto = createScreeningCrateDto();
         screeningService.createScreening(screeningCreateDto);
 
-        var ticket = ticketRepository.add(TicketFixture.createActiveTicket());
+        var ticket = ticketRepository.add(createTicket());
 
         var rowNumber = 1;
         var seatNumber = 1;

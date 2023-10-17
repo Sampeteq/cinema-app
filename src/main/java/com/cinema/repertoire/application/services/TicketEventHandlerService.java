@@ -20,8 +20,7 @@ class TicketEventHandlerService {
     public void handle(TicketBookedEvent event) {
         readSeat(
                 event.screeningId(),
-                event.rowNumber(),
-                event.seatNumber()
+                event.seatId()
         ).makeTaken();
     }
 
@@ -29,16 +28,15 @@ class TicketEventHandlerService {
     public void handle(TicketCancelledEvent event) {
         readSeat(
                 event.screeningId(),
-                event.rowNumber(),
-                event.seatNumber()
+                event.seatId()
         ).makeFree();
     }
 
-    private Seat readSeat(Long screeningId, int rowNumber, int seatNumber) {
+    private Seat readSeat(Long screeningId, Long seatId) {
         return screeningRepository
                 .readById(screeningId)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"))
-                .findSeat(rowNumber, seatNumber)
+                .findSeat(seatId)
                 .orElseThrow(() -> new EntityNotFoundException("Seat"));
     }
 }

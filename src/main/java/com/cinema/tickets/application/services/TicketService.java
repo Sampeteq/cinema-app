@@ -37,30 +37,25 @@ public class TicketService {
 
     @Transactional
     public void bookTicket(TicketBookDto dto) {
-        if (ticketRepository.exists(dto.screeningId(), dto.rowNumber(), dto.seatNumber())) {
+        if (ticketRepository.exists(dto.screeningId(), dto.seatId())) {
             throw new TicketAlreadyExists();
         }
         var screeningDate = screeningService.readScreeningDate(dto.screeningId());
         if (timeToScreeningInHours(clock, screeningDate) < 1) {
             throw new TicketBookTooLateException();
         }
-        var seatExists = screeningService.seatExists(dto.screeningId(), dto.rowNumber(), dto.seatNumber());
+        var seatExists = screeningService.seatExists(dto.screeningId(), dto.seatId());
         if (!seatExists) {
             throw new EntityNotFoundException("Seat");
         }
-        var ticket = new Ticket(
-                dto.screeningId(),
-                dto.rowNumber(),
-                dto.seatNumber()
-        );
+        var ticket = new Ticket(dto.screeningId(), dto.seatId());
         var currentUserId = userService.readCurrentUserId();
         ticket.makeActive(currentUserId);
         var addedTicket = ticketRepository.add(ticket);
         log.info("Added a ticket:{}", addedTicket);
         var ticketBookedEvent = new TicketBookedEvent(
                 dto.screeningId(),
-                dto.rowNumber(),
-                dto.seatNumber()
+                dto.seatId()
         );
         eventPublisher.publish(ticketBookedEvent);
         log.info("Event published:{}", ticketBookedEvent);
@@ -82,8 +77,7 @@ public class TicketService {
         ticket.makeCancelled();
         var ticketCancelledEvent = new TicketCancelledEvent(
                 ticket.getScreeningId(),
-                ticket.getRowNumber(),
-                ticket.getSeatNumber()
+                ticket.getSeatId()
         );
         eventPublisher.publish(ticketCancelledEvent);
         log.info("Event published:{}", ticketCancelledEvent);
@@ -96,15 +90,21 @@ public class TicketService {
                 .readAllByUserId(currentUserId)
                 .stream()
                 .map(ticket -> {
-                    var screeningDetails = screeningService.readScreeningDetails(ticket.getScreeningId());
+                    var screeningDetails = screeningService.readScreeningDetails(
+                            ticket.getScreeningId()
+                    );
+                    var seatDetails = screeningService.readSeatDetails(
+                            ticket.getScreeningId(),
+                            ticket.getSeatId()
+                    );
                     return new TicketDto(
                             ticket.getId(),
                             ticket.getStatus(),
                             screeningDetails.filmTitle(),
                             screeningDetails.date(),
                             screeningDetails.roomId(),
-                            ticket.getRowNumber(),
-                            ticket.getRowNumber()
+                            seatDetails.rowNumber(),
+                            seatDetails.seatNumber()
                     );
                 })
                 .toList();

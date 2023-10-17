@@ -26,22 +26,15 @@ public class Ticket {
 
     private Long screeningId;
 
-    private int rowNumber;
-
-    private int seatNumber;
+    private Long seatId;
 
     private Long userId;
 
     protected Ticket() {}
 
-    public Ticket(
-            Long screeningId,
-            int rowNumber,
-            int seatNumber
-    ) {
+    public Ticket(Long screeningId, Long seatId) {
         this.screeningId = screeningId;
-        this.rowNumber = rowNumber;
-        this.seatNumber = seatNumber;
+        this.seatId = seatId;
     }
 
     public void makeActive(Long userId) {

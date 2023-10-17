@@ -86,12 +86,10 @@ class TicketControllerIT extends SpringIT {
     void ticket_is_made_for_existing_screening() {
         //given
         var nonExistingScreeningId = 0L;
-        var seatRowNumber = 1;
-        var seatNumber = 1;
+        var seatId = 1L;
         var ticketBookDto = new TicketBookDto(
                 nonExistingScreeningId,
-                seatRowNumber,
-                seatNumber
+                seatId
         );
 
 
@@ -113,12 +111,10 @@ class TicketControllerIT extends SpringIT {
         //given
         addSeat();
         var screeningId = 1L;
-        var nonExistingSeatRowNumber = 100;
-        var nonExistingSeatNumber = 100;
+        var nonExistingSeatId = 0L;
         var ticketBookDto = new TicketBookDto(
                 screeningId,
-                nonExistingSeatRowNumber,
-                nonExistingSeatNumber
+                nonExistingSeatId
         );
 
 
@@ -142,12 +138,10 @@ class TicketControllerIT extends SpringIT {
         var roomId = "1";
         addSeat(filmTitle, roomId);
         var screeningId = 1L;
-        var seatRowNumber = 1;
-        var seatNumber = 1;
+        var seatId = 1L;
         var ticketBookDto = new TicketBookDto(
                 screeningId,
-                seatRowNumber,
-                seatNumber
+                seatId
         );
 
         //when
@@ -166,8 +160,7 @@ class TicketControllerIT extends SpringIT {
                 .hasValueSatisfying(ticket -> {
                     assertEquals(TicketStatus.ACTIVE, ticket.getStatus());
                     assertEquals(screeningId, ticket.getScreeningId());
-                    assertEquals(seatRowNumber, ticket.getSeatNumber());
-                    assertEquals(seatNumber, ticket.getSeatNumber());
+                    assertEquals(seatId, ticket.getSeatId());
                     assertEquals(1L, ticket.getUserId());
                 });
     }
@@ -179,8 +172,7 @@ class TicketControllerIT extends SpringIT {
         var ticket = ticketRepository.add(TicketFixture.createTicket());
         var ticketBookDto = new TicketBookDto(
                 ticket.getScreeningId(),
-                ticket.getRowNumber(),
-                ticket.getSeatNumber()
+                ticket.getSeatId()
         );
 
         //when
@@ -210,12 +202,10 @@ class TicketControllerIT extends SpringIT {
                 .when(clockMock.instant())
                 .thenReturn(screeningDate.minusMinutes(59).toInstant(ZoneOffset.UTC));
         var screeningId = 1L;
-        var rowNumber = 1;
-        var seatNumber = 1;
+        var seatId =  1L;
         var ticketBookDto = new TicketBookDto(
                 screeningId,
-                rowNumber,
-                seatNumber
+                seatId
         );
 
         //when
@@ -241,12 +231,10 @@ class TicketControllerIT extends SpringIT {
         //given
         addSeat();
         var screeningId = 1L;
-        var rowNumber = 1;
-        var seatNumber = 1;
+        var seatId = 1L;
         var ticketBookDto = new TicketBookDto(
                 screeningId,
-                rowNumber,
-                seatNumber
+                seatId
         );
 
         //when
@@ -259,7 +247,7 @@ class TicketControllerIT extends SpringIT {
                 .exchange();
 
         //then
-        var expectedEvent = new TicketBookedEvent(screeningId, rowNumber, seatNumber);
+        var expectedEvent = new TicketBookedEvent(screeningId, seatId);
         verify(eventPublisher, times(1)).publish(expectedEvent);
     }
 
@@ -301,8 +289,7 @@ class TicketControllerIT extends SpringIT {
         //then
         var expectedEvent = new TicketCancelledEvent(
                 ticket.getScreeningId(),
-                ticket.getRowNumber(),
-                ticket.getSeatNumber()
+                ticket.getSeatId()
         );
         verify(eventPublisher, times(1)).publish(expectedEvent);
     }
@@ -394,6 +381,9 @@ class TicketControllerIT extends SpringIT {
 
         var ticket = ticketRepository.add(TicketFixture.createActiveTicket());
 
+        var rowNumber = 1;
+        var seatNumber = 1;
+
         //when
         var spec = webTestClient
                 .get()
@@ -409,8 +399,8 @@ class TicketControllerIT extends SpringIT {
                         filmCreateDto.title(),
                         screeningCreateDto.date(),
                         roomCreateDto.id(),
-                        ticket.getRowNumber(),
-                        ticket.getSeatNumber()
+                        rowNumber,
+                        seatNumber
                 )
         );
         spec

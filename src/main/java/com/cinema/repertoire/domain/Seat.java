@@ -34,8 +34,8 @@ public class Seat {
         this.status = status;
     }
 
-    public boolean placedOn(int rowNumber, int seatNumber) {
-        return this.rowNumber == rowNumber && this.number == seatNumber;
+    public boolean hasId(Long id) {
+        return this.id.equals(id);
     }
 
     public void makeTaken() {

@@ -22,8 +22,7 @@ public final class TicketFixture {
     public static final Clock CLOCK = new ClockMockConfig().clockMock();
     public static final Long SCREENING_ID = 1L;
     public static final LocalDateTime SCREENING_DATE = LocalDateTime.now(CLOCK).plusDays(7);
-    public static final int SEAT_NUMBER = 1;
-    public static final int ROW_NUMBER = 1;
+    public static final long SEAT_ID = 1L;
     public static final long USER_ID = 1L;
 
     private TicketFixture() {
@@ -32,8 +31,7 @@ public final class TicketFixture {
     public static Ticket createTicket() {
         return new Ticket(
                 SCREENING_ID,
-                ROW_NUMBER,
-                SEAT_NUMBER
+                SEAT_ID
         );
     }
 

@@ -52,18 +52,18 @@ public class Screening {
         this.seats = seats;
     }
 
-    public boolean hasSeat(int rowNumber, int seatNumber) {
+    public boolean hasSeat(Long id) {
         return this
                 .seats
                 .stream()
-                .anyMatch(seat -> seat.placedOn(rowNumber, seatNumber));
+                .anyMatch(seat -> seat.hasId(id));
     }
 
-    public Optional<Seat> findSeat(int rowNumber, int seatNumber) {
+    public Optional<Seat> findSeat(Long id) {
         return this
                 .seats
                 .stream()
-                .filter(s -> s.placedOn(rowNumber, seatNumber))
+                .filter(s -> s.getId().equals(id))
                 .findFirst();
     }
 

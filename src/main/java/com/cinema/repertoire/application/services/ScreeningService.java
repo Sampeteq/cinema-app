@@ -5,6 +5,7 @@ import com.cinema.repertoire.application.dto.ScreeningDetailsDto;
 import com.cinema.repertoire.application.dto.ScreeningDto;
 import com.cinema.repertoire.application.dto.ScreeningMapper;
 import com.cinema.repertoire.application.dto.ScreeningQueryDto;
+import com.cinema.repertoire.application.dto.SeatDetailsDto;
 import com.cinema.repertoire.application.dto.SeatDto;
 import com.cinema.repertoire.application.dto.SeatMapper;
 import com.cinema.repertoire.domain.FilmRepository;
@@ -99,11 +100,23 @@ public class ScreeningService {
         );
     }
 
-    public boolean seatExists(Long screeningId, int rowNumber, int seatNumber) {
+    public SeatDetailsDto readSeatDetails(Long screeningId, Long seatId) {
+        var seat = screeningRepository
+                .readById(screeningId)
+                .orElseThrow(() -> new EntityNotFoundException("Screening"))
+                .findSeat(seatId)
+                .orElseThrow(() -> new EntityNotFoundException("Seat"));
+        return new SeatDetailsDto(
+                seat.getRowNumber(),
+                seat.getNumber()
+        );
+    }
+
+    public boolean seatExists(Long screeningId, Long seatId) {
         return screeningRepository
                 .readById(screeningId)
                 .orElseThrow(() -> new EntityNotFoundException("Screening"))
-                .hasSeat(rowNumber, seatNumber);
+                .hasSeat(seatId);
     }
 
     public List<SeatDto> readSeatsByScreeningId(Long id) {

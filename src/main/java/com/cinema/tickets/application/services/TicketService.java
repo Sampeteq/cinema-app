@@ -96,7 +96,7 @@ public class TicketService {
                 .readAllByUserId(currentUserId)
                 .stream()
                 .map(ticket -> {
-                    var screeningDetails = screeningService.readScreeningDetails(ticket.getId());
+                    var screeningDetails = screeningService.readScreeningDetails(ticket.getScreeningId());
                     return new TicketDto(
                             ticket.getId(),
                             ticket.getStatus(),

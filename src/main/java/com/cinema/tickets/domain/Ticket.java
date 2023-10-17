@@ -39,7 +39,7 @@ public class Ticket {
         this.userId = userId;
     }
 
-    public void makeCancelled() {
+    public void cancel() {
         if (status.equals(TicketStatus.CANCELLED)) {
             throw new TicketAlreadyCancelledException();
         }

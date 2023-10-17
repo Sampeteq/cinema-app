@@ -79,7 +79,7 @@ public class TicketService {
         if (timeToScreeningInHours(clock, screeningDate) < 24) {
             throw new TicketCancelTooLateException();
         }
-        ticket.makeCancelled();
+        ticket.cancel();
         var ticketCancelledEvent = new TicketCancelledEvent(
                 ticket.getScreeningId(),
                 ticket.getSeatId()

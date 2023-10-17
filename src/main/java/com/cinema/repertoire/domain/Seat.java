@@ -38,11 +38,11 @@ public class Seat {
         return this.id.equals(id);
     }
 
-    public void makeTaken() {
+    public void take() {
         this.status = SeatStatus.TAKEN;
     }
 
-    public void makeFree() {
+    public void free() {
         this.status = SeatStatus.FREE;
     }
 }

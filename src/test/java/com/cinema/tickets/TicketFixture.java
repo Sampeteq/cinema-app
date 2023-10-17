@@ -49,7 +49,7 @@ public final class TicketFixture {
 
     public static Ticket createCancelledTicket() {
         var ticket = createTicket();
-        ticket.makeCancelled();
+        ticket.cancel();
         return ticket;
     }
 

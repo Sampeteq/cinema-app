@@ -21,7 +21,7 @@ class TicketEventHandlerService {
         readSeat(
                 event.screeningId(),
                 event.seatId()
-        ).makeTaken();
+        ).take();
     }
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
@@ -29,7 +29,7 @@ class TicketEventHandlerService {
         readSeat(
                 event.screeningId(),
                 event.seatId()
-        ).makeFree();
+        ).free();
     }
 
     private Seat readSeat(Long screeningId, Long seatId) {

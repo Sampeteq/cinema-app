@@ -2,7 +2,8 @@ package com.cinema.repertoire.application.services;
 
 import com.cinema.repertoire.domain.ScreeningRepository;
 import com.cinema.repertoire.domain.Seat;
-import com.cinema.shared.exceptions.EntityNotFoundException;
+import com.cinema.repertoire.domain.exceptions.ScreeningNotFoundException;
+import com.cinema.repertoire.domain.exceptions.SeatNotFoundException;
 import com.cinema.tickets.domain.events.TicketBookedEvent;
 import com.cinema.tickets.domain.events.TicketCancelledEvent;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +36,8 @@ class TicketEventHandlerService {
     private Seat readSeat(Long screeningId, Long seatId) {
         return screeningRepository
                 .readById(screeningId)
-                .orElseThrow(() -> new EntityNotFoundException("Screening"))
+                .orElseThrow(ScreeningNotFoundException::new)
                 .findSeat(seatId)
-                .orElseThrow(() -> new EntityNotFoundException("Seat"));
+                .orElseThrow(SeatNotFoundException::new);
     }
 }

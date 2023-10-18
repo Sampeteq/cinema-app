@@ -1,4 +1,4 @@
-package com.cinema.repertoire.application.rest;
+package com.cinema.repertoire.application.rest.controllers;
 
 import com.cinema.repertoire.application.dto.ScreeningCreateDto;
 import com.cinema.repertoire.application.dto.ScreeningDto;

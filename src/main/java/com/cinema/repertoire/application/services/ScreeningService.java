@@ -14,10 +14,12 @@ import com.cinema.repertoire.domain.ScreeningRepository;
 import com.cinema.repertoire.domain.Seat;
 import com.cinema.repertoire.domain.SeatStatus;
 import com.cinema.repertoire.domain.events.ScreeningCreatedEvent;
+import com.cinema.repertoire.domain.exceptions.FilmNotFoundException;
 import com.cinema.repertoire.domain.exceptions.ScreeningDateOutOfRangeException;
+import com.cinema.repertoire.domain.exceptions.ScreeningNotFoundException;
+import com.cinema.repertoire.domain.exceptions.SeatNotFoundException;
 import com.cinema.rooms.application.services.RoomService;
 import com.cinema.shared.events.EventPublisher;
-import com.cinema.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -54,7 +56,7 @@ public class ScreeningService {
         }
         var film = filmRepository
                 .readByTitle(dto.filmTitle())
-                .orElseThrow(() -> new EntityNotFoundException("Film"));
+                .orElseThrow(FilmNotFoundException::new);
         var endDate = film.calculateScreeningEndDate(dto.date());
         var roomDto = roomService.findFirstAvailableRoom(dto.date(), endDate);
         var seats = createSeats(roomDto.rowsNumber(), roomDto.rowSeatsNumber());
@@ -85,14 +87,14 @@ public class ScreeningService {
     public LocalDateTime readScreeningDate(Long screeningId) {
         return screeningRepository
                 .readById(screeningId)
-                .orElseThrow(() -> new EntityNotFoundException("Screening"))
+                .orElseThrow(ScreeningNotFoundException::new)
                 .getDate();
     }
 
     public ScreeningDetailsDto readScreeningDetails(Long screeningId) {
         var screening = screeningRepository
                 .readById(screeningId)
-                .orElseThrow(() -> new EntityNotFoundException("Screening"));
+                .orElseThrow(ScreeningNotFoundException::new);
         return new ScreeningDetailsDto(
                 screening.getDate(),
                 screening.getFilm().getTitle(),
@@ -103,9 +105,9 @@ public class ScreeningService {
     public SeatDetailsDto readSeatDetails(Long screeningId, Long seatId) {
         var seat = screeningRepository
                 .readById(screeningId)
-                .orElseThrow(() -> new EntityNotFoundException("Screening"))
+                .orElseThrow(ScreeningNotFoundException::new)
                 .findSeat(seatId)
-                .orElseThrow(() -> new EntityNotFoundException("Seat"));
+                .orElseThrow(SeatNotFoundException::new);
         return new SeatDetailsDto(
                 seat.getRowNumber(),
                 seat.getNumber()
@@ -115,14 +117,14 @@ public class ScreeningService {
     public boolean seatExists(Long screeningId, Long seatId) {
         return screeningRepository
                 .readById(screeningId)
-                .orElseThrow(() -> new EntityNotFoundException("Screening"))
+                .orElseThrow(ScreeningNotFoundException::new)
                 .hasSeat(seatId);
     }
 
     public List<SeatDto> readSeatsByScreeningId(Long id) {
         return screeningRepository
                 .readById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Screening"))
+                .orElseThrow(ScreeningNotFoundException::new)
                 .getSeats()
                 .stream()
                 .map(seatMapper::toDto)
@@ -132,7 +134,7 @@ public class ScreeningService {
     public void delete(Long id) {
         var screening = screeningRepository
                 .readById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Screening"));
+                .orElseThrow(ScreeningNotFoundException::new);
         screeningRepository.delete(screening);
     }
 

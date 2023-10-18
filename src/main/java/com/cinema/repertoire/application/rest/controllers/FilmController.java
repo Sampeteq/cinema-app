@@ -1,4 +1,4 @@
-package com.cinema.repertoire.application.rest;
+package com.cinema.repertoire.application.rest.controllers;
 
 import com.cinema.repertoire.application.dto.FilmCreateDto;
 import com.cinema.repertoire.application.dto.FilmDto;

@@ -1,8 +1,6 @@
 package com.cinema.repertoire.domain.exceptions;
 
-import com.cinema.shared.exceptions.ValidationException;
-
-public class ScreeningDateOutOfRangeException extends ValidationException {
+public class ScreeningDateOutOfRangeException extends RuntimeException {
 
     private static final int MIN_DAYS_NUMBER = 7;
     private static final int MAX_DAYS_NUMBER = 21;

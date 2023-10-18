@@ -5,9 +5,9 @@ import com.cinema.repertoire.application.dto.FilmDto;
 import com.cinema.repertoire.application.dto.FilmMapper;
 import com.cinema.repertoire.domain.Film;
 import com.cinema.repertoire.domain.FilmRepository;
+import com.cinema.repertoire.domain.exceptions.FilmNotFoundException;
 import com.cinema.repertoire.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.repertoire.domain.exceptions.FilmYearOutOfRangeException;
-import com.cinema.shared.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +50,7 @@ public class FilmService {
     public void delete(String title) {
         var film = filmRepository
                 .readByTitle(title)
-                .orElseThrow(() -> new EntityNotFoundException("Film"));
+                .orElseThrow(FilmNotFoundException::new);
         filmRepository.delete(film);
     }
 }

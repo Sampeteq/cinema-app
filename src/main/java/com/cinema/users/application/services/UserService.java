@@ -1,7 +1,6 @@
 package com.cinema.users.application.services;
 
 import com.cinema.shared.events.EventPublisher;
-import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.users.application.dto.UserCreateDto;
 import com.cinema.users.application.dto.UserPasswordNewDto;
 import com.cinema.users.domain.User;
@@ -9,6 +8,7 @@ import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.events.UserPasswordResetEvent;
 import com.cinema.users.domain.exceptions.UserMailAlreadyExistsException;
+import com.cinema.users.domain.exceptions.UserNotFoundException;
 import com.cinema.users.domain.exceptions.UserNotSamePasswordsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,7 +44,7 @@ public class UserService {
     public void resetUserPassword(String mail) {
         var user = userRepository
                 .readyByMail(mail)
-                .orElseThrow(() -> new EntityNotFoundException("User"));
+                .orElseThrow(UserNotFoundException::new);
         var passwordResetToken = UUID.randomUUID();
         user.setPasswordResetToken(passwordResetToken);
         userRepository.add(user);
@@ -55,7 +55,7 @@ public class UserService {
     public void setNewUserPassword(UserPasswordNewDto dto) {
         var user = userRepository
                 .readByPasswordResetToken(dto.passwordResetToken())
-                .orElseThrow(() -> new EntityNotFoundException("User"));
+                .orElseThrow(UserNotFoundException::new);
         var encodedPassword = passwordEncoder.encode(dto.newPassword());
         user.setNewPassword(encodedPassword);
         userRepository.add(user);

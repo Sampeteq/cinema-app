@@ -1,4 +1,4 @@
-package com.cinema.users.application.rest;
+package com.cinema.users.application.rest.controllers;
 
 import com.cinema.users.application.dto.UserCreateDto;
 import com.cinema.users.application.dto.UserPasswordNewDto;

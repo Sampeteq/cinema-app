@@ -22,18 +22,4 @@ class SharedExceptionHandler {
                 .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(ValidationException.class)
-    ResponseEntity<ErrorMessage> handle(ValidationException exception) {
-        return ResponseEntity
-                .unprocessableEntity()
-                .body(new ErrorMessage(exception.getMessage()));
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    ResponseEntity<Void> handle() {
-        return ResponseEntity
-                .notFound()
-                .build();
-    }
 }

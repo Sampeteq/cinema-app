@@ -1,8 +1,6 @@
 package com.cinema.tickets.domain.exceptions;
 
-import com.cinema.shared.exceptions.ValidationException;
-
-public class TicketBookTooLateException extends ValidationException {
+public class TicketBookTooLateException extends RuntimeException {
 
     public TicketBookTooLateException() {
         super("Too late for ticket booking");

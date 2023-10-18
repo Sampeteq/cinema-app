@@ -362,7 +362,7 @@ class TicketControllerIT extends SpringIT {
         var expectedMessage = new TicketNotBelongsToUser().getMessage();
         spec
                 .expectStatus()
-                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
+                .isEqualTo(HttpStatus.FORBIDDEN)
                 .expectBody()
                 .jsonPath("$.message", equalTo(expectedMessage));
     }

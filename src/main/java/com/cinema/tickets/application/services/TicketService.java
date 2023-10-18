@@ -1,8 +1,8 @@
 package com.cinema.tickets.application.services;
 
 import com.cinema.repertoire.application.services.ScreeningService;
+import com.cinema.repertoire.domain.exceptions.SeatNotFoundException;
 import com.cinema.shared.events.EventPublisher;
-import com.cinema.shared.exceptions.EntityNotFoundException;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.domain.Ticket;
@@ -14,6 +14,7 @@ import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
+import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.users.application.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +48,7 @@ public class TicketService {
         }
         var seatExists = screeningService.seatExists(dto.screeningId(), dto.seatId());
         if (!seatExists) {
-            throw new EntityNotFoundException("Seat");
+            throw new SeatNotFoundException();
         }
         var currentUserId = userService.readCurrentUserId();
         var ticket = new Ticket(
@@ -70,7 +71,7 @@ public class TicketService {
     public void cancelTicket(Long id) {
         var ticket = ticketRepository
                 .readById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Ticket"));
+                .orElseThrow(TicketNotFoundException::new);
         var currentUserId = userService.readCurrentUserId();
         if (!ticket.belongsTo(currentUserId)) {
             throw new TicketNotBelongsToUser();

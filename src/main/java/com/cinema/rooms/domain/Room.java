@@ -1,6 +1,6 @@
 package com.cinema.rooms.domain;
 
-import com.cinema.shared.exceptions.EntityNotFoundException;
+import com.cinema.rooms.domain.exceptions.RoomOccupationNotFoundException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -49,7 +49,7 @@ public class Room {
                 .stream()
                 .filter(occupation -> occupation.on(start, end))
                 .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Occupation"));
+                .orElseThrow(RoomOccupationNotFoundException::new);
         this.occupations.remove(foundOccupation);
     }
 

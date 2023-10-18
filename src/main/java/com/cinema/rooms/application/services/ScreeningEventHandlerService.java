@@ -3,7 +3,7 @@ package com.cinema.rooms.application.services;
 import com.cinema.repertoire.domain.events.ScreeningCreatedEvent;
 import com.cinema.repertoire.domain.events.ScreeningEndedEvent;
 import com.cinema.rooms.domain.RoomRepository;
-import com.cinema.shared.exceptions.EntityNotFoundException;
+import com.cinema.rooms.domain.exceptions.RoomNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionPhase;
@@ -19,7 +19,7 @@ class ScreeningEventHandlerService {
     public void handle(ScreeningCreatedEvent event) {
         roomRepository
                 .readById(event.roomId())
-                .orElseThrow(() -> new EntityNotFoundException("Room"))
+                .orElseThrow(RoomNotFoundException::new)
                 .addOccupation(event.start(), event.end());
     }
 
@@ -27,7 +27,7 @@ class ScreeningEventHandlerService {
     public void handle(ScreeningEndedEvent event) {
         roomRepository
                 .readById(event.roomId())
-                .orElseThrow(() -> new EntityNotFoundException("Room"))
+                .orElseThrow(RoomNotFoundException::new)
                 .removeOccupation(event.start(), event.end());
     }
 }

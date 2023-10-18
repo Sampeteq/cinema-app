@@ -1,8 +1,6 @@
 package com.cinema.rooms.domain.exceptions;
 
-import com.cinema.shared.exceptions.ValidationException;
-
-public class RoomIdAlreadyExistsException extends ValidationException {
+public class RoomIdAlreadyExistsException extends RuntimeException {
 
     public RoomIdAlreadyExistsException() {
         super("A room id already exists");

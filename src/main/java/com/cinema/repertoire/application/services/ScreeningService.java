@@ -15,17 +15,15 @@ import com.cinema.repertoire.domain.Seat;
 import com.cinema.repertoire.domain.SeatStatus;
 import com.cinema.repertoire.domain.events.ScreeningCreatedEvent;
 import com.cinema.repertoire.domain.exceptions.FilmNotFoundException;
-import com.cinema.repertoire.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.repertoire.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.repertoire.domain.exceptions.SeatNotFoundException;
+import com.cinema.repertoire.domain.policies.ScreeningDatePolicy;
 import com.cinema.rooms.application.services.RoomService;
 import com.cinema.shared.events.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -37,23 +35,16 @@ import static java.util.Comparator.comparing;
 @Slf4j
 public class ScreeningService {
 
+    private final ScreeningDatePolicy screeningDatePolicy;
     private final ScreeningRepository screeningRepository;
     private final ScreeningMapper screeningMapper;
     private final SeatMapper seatMapper;
     private final FilmRepository filmRepository;
     private final RoomService roomService;
-    private final Clock clock;
     private final EventPublisher eventPublisher;
 
     public void createScreening(ScreeningCreateDto dto) {
-        var daysDifference = Duration
-                .between(LocalDateTime.now(clock), dto.date())
-                .abs()
-                .toDays();
-        var isScreeningDateOutOfRange = daysDifference < 7 || daysDifference > 21;
-        if (isScreeningDateOutOfRange) {
-            throw new ScreeningDateOutOfRangeException();
-        }
+        screeningDatePolicy.checkScreeningDate(dto.date());
         var film = filmRepository
                 .readByTitle(dto.filmTitle())
                 .orElseThrow(FilmNotFoundException::new);

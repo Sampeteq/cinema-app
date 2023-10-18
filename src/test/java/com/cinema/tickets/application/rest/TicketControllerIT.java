@@ -66,7 +66,7 @@ class TicketControllerIT extends SpringIT {
     private RoomService roomService;
 
     @SpyBean
-    private Clock clockMock;
+    private Clock clock;
 
     @MockBean
     private EventPublisher eventPublisher;
@@ -199,7 +199,7 @@ class TicketControllerIT extends SpringIT {
         var screeningDate = SCREENING_DATE;
         addSeat(screeningDate);
         Mockito
-                .when(clockMock.instant())
+                .when(clock.instant())
                 .thenReturn(screeningDate.minusMinutes(59).toInstant(ZoneOffset.UTC));
         var screeningId = 1L;
         var seatId =  1L;
@@ -326,7 +326,7 @@ class TicketControllerIT extends SpringIT {
 
         ticketRepository.add(createTicket());
         Mockito
-                .when(clockMock.instant())
+                .when(clock.instant())
                 .thenReturn(dto.date().minusHours(23).toInstant(ZoneOffset.UTC));
 
         //when

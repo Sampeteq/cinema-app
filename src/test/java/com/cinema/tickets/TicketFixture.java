@@ -1,6 +1,5 @@
 package com.cinema.tickets;
 
-import com.cinema.ClockMockConfig;
 import com.cinema.repertoire.application.dto.FilmCreateDto;
 import com.cinema.repertoire.application.dto.ScreeningCreateDto;
 import com.cinema.repertoire.domain.FilmCategory;
@@ -8,9 +7,9 @@ import com.cinema.rooms.application.dto.RoomCreateDto;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketStatus;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Year;
+import java.time.temporal.ChronoUnit;
 
 public final class TicketFixture {
 
@@ -20,9 +19,11 @@ public final class TicketFixture {
     public static final String FILM_TITLE = "Title 1";
     public static final FilmCategory FILM_CATEGORY = FilmCategory.COMEDY;
     public static final int FILM_DURATION_IN_MINUTES = 100;
-    public static final Clock CLOCK = new ClockMockConfig().clockMock();
     public static final Long SCREENING_ID = 1L;
-    public static final LocalDateTime SCREENING_DATE = LocalDateTime.now(CLOCK).plusDays(7);
+    public static final LocalDateTime SCREENING_DATE = LocalDateTime
+            .now()
+            .plusDays(8)
+            .truncatedTo(ChronoUnit.MINUTES);
     public static final long SEAT_ID = 1L;
     public static final long USER_ID = 1L;
 

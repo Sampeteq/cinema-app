@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.cinema.repertoire.FilmFixture.createFilm;
+import static com.cinema.repertoire.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.repertoire.ScreeningFixture.createRoomCreateDto;
 import static com.cinema.repertoire.ScreeningFixture.createScreening;
 import static com.cinema.repertoire.ScreeningFixture.getScreeningDate;
@@ -58,7 +59,7 @@ class ScreeningControllerIT extends SpringIT {
     private RoomService roomService;
 
     @SpyBean
-    private Clock clockMock;
+    private Clock clock;
 
     @Test
     void screening_is_created_only_by_admin() {
@@ -82,7 +83,7 @@ class ScreeningControllerIT extends SpringIT {
         addUser(UserRole.ADMIN);
         var film = filmRepository.add(createFilm());
         roomService.createRoom(createRoomCreateDto());
-        var screeningCreateDto = new ScreeningCreateDto(getScreeningDate(clockMock), film.getTitle());
+        var screeningCreateDto = new ScreeningCreateDto(SCREENING_DATE, film.getTitle());
 
         //when
         var spec = webTestClient
@@ -118,7 +119,7 @@ class ScreeningControllerIT extends SpringIT {
         var film = filmRepository.add(createFilm());
         roomService.createRoom(createRoomCreateDto());
         var screeningDate = LocalDateTime
-                .now(clockMock)
+                .now(clock)
                 .plusDays(6);
         var screeningCreateDto = new ScreeningCreateDto(screeningDate, film.getTitle());
 
@@ -147,8 +148,8 @@ class ScreeningControllerIT extends SpringIT {
         var film = filmRepository.add(createFilm());
         roomService.createRoom(createRoomCreateDto());
         var screeningDate = LocalDateTime
-                .now(clockMock)
-                .plusDays(22);
+                .now(clock)
+                .plusDays(23);
         var screeningCreateDto = new ScreeningCreateDto(screeningDate, film.getTitle());
 
         //when
@@ -356,21 +357,20 @@ class ScreeningControllerIT extends SpringIT {
 
     private Screening addScreening() {
         var film = filmRepository.add(createFilm());
-        var screeningDate = getScreeningDate(clockMock);
-        var screening = createScreening(film, screeningDate);
+        var screening = createScreening(film, SCREENING_DATE);
         return screeningRepository.add(screening);
     }
 
     private void addScreening(String filmTitle) {
         var film = filmRepository.add(createFilm(filmTitle));
-        var screeningDate = getScreeningDate(clockMock);
+        var screeningDate = getScreeningDate(clock);
         var screening = createScreening(film, screeningDate);
         screeningRepository.add(screening);
     }
 
     private void addScreening(FilmCategory filmCategory) {
         var film = filmRepository.add(createFilm(filmCategory));
-        var screeningDate = getScreeningDate(clockMock);
+        var screeningDate = getScreeningDate(clock);
         var screening = createScreening(film, screeningDate);
         screeningRepository.add(screening);
     }
@@ -385,7 +385,7 @@ class ScreeningControllerIT extends SpringIT {
     private void addSeats() {
         var film = filmRepository.add(createFilm());
         roomService.createRoom(createRoomCreateDto());
-        var screeningDate = getScreeningDate(clockMock);
+        var screeningDate = getScreeningDate(clock);
         screeningRepository.add(createScreening(film, screeningDate));
     }
 

@@ -7,26 +7,22 @@ import com.cinema.repertoire.domain.Film;
 import com.cinema.repertoire.domain.FilmRepository;
 import com.cinema.repertoire.domain.exceptions.FilmNotFoundException;
 import com.cinema.repertoire.domain.exceptions.FilmTitleNotUniqueException;
-import com.cinema.repertoire.domain.exceptions.FilmYearOutOfRangeException;
+import com.cinema.repertoire.domain.policies.FilmYearPolicy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Year;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class FilmService {
 
+    private final FilmYearPolicy filmYearPolicy;
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
 
     public void creteFilm(FilmCreateDto dto) {
-        var currentYear = Year.now().getValue();
-        var isFilmYearOfRange = dto.year() < currentYear - 1 || dto.year() > currentYear + 1;
-        if (isFilmYearOfRange) {
-            throw new FilmYearOutOfRangeException();
-        }
+        filmYearPolicy.checkFilmYear(dto.year());
         if (filmRepository.existsByTitle(dto.title())) {
             throw new FilmTitleNotUniqueException();
         }

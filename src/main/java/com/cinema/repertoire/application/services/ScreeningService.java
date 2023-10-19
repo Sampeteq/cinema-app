@@ -48,7 +48,7 @@ public class ScreeningService {
         var film = filmRepository
                 .readByTitle(dto.filmTitle())
                 .orElseThrow(FilmNotFoundException::new);
-        var endDate = film.calculateScreeningEndDate(dto.date());
+        var endDate = dto.date().plusMinutes(film.getDurationInMinutes());
         var roomDto = roomService.findFirstAvailableRoom(dto.date(), endDate);
         var seats = createSeats(roomDto.rowsNumber(), roomDto.rowSeatsNumber());
         var screening = new Screening(

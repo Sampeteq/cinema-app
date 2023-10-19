@@ -42,7 +42,7 @@ class ScreeningSchedulerService {
                     .map(screening -> new ScreeningEndedEvent(
                             screening.getRoomId(),
                             screening.getDate(),
-                            screening.calculateEndDate()
+                            screening.getEndDate()
                     )).forEach(eventPublisher::publish);
         }
     }

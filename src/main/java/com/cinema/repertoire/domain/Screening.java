@@ -69,7 +69,7 @@ public class Screening {
 
     public boolean isEnded(Clock clock) {
         var currentDate = LocalDateTime.now(clock);
-        var screeningEndDate = this.film.calculateScreeningEndDate(this.date);
+        var screeningEndDate = this.endDate();
         return screeningEndDate.isBefore(currentDate);
     }
 
@@ -77,7 +77,11 @@ public class Screening {
         this.roomId = null;
     }
 
-    public LocalDateTime calculateEndDate() {
-        return film.calculateScreeningEndDate(this.date);
+    public LocalDateTime getEndDate() {
+        return this.endDate();
+    }
+
+    private LocalDateTime endDate() {
+        return this.date.plusMinutes(film.getDurationInMinutes());
     }
 }

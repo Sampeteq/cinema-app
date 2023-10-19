@@ -9,8 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "films")
 @Getter
@@ -36,9 +34,5 @@ public class Film {
         this.category = category;
         this.year = year;
         this.durationInMinutes = durationInMinutes;
-    }
-
-    public LocalDateTime calculateScreeningEndDate(LocalDateTime screeningDate) {
-        return screeningDate.plusMinutes(this.durationInMinutes);
     }
 }

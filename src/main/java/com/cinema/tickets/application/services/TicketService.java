@@ -11,19 +11,16 @@ import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.events.TicketBookedEvent;
 import com.cinema.tickets.domain.events.TicketCancelledEvent;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
-import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
-import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
+import com.cinema.tickets.domain.policies.TicketBookingPolicy;
+import com.cinema.tickets.domain.policies.TicketCancellingPolicy;
 import com.cinema.users.application.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Clock;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,9 +29,10 @@ import java.util.List;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
+    private final TicketBookingPolicy ticketBookingPolicy;
+    private final TicketCancellingPolicy ticketCancellingPolicy;
     private final ScreeningService screeningService;
     private final UserService userService;
-    private final Clock clock;
     private final EventPublisher eventPublisher;
 
     @Transactional
@@ -43,9 +41,7 @@ public class TicketService {
             throw new TicketAlreadyExists();
         }
         var screeningDate = screeningService.readScreeningDate(dto.screeningId());
-        if (timeToScreeningInHours(clock, screeningDate) < 1) {
-            throw new TicketBookTooLateException();
-        }
+        ticketBookingPolicy.checkScreeningDate(screeningDate);
         var seatExists = screeningService.seatExists(dto.screeningId(), dto.seatId());
         if (!seatExists) {
             throw new SeatNotFoundException();
@@ -77,9 +73,7 @@ public class TicketService {
             throw new TicketNotBelongsToUser();
         }
         var screeningDate = screeningService.readScreeningDate(ticket.getScreeningId());
-        if (timeToScreeningInHours(clock, screeningDate) < 24) {
-            throw new TicketCancelTooLateException();
-        }
+        ticketCancellingPolicy.checkScreeningDate(screeningDate);
         ticket.cancel();
         var ticketCancelledEvent = new TicketCancelledEvent(
                 ticket.getScreeningId(),
@@ -114,13 +108,5 @@ public class TicketService {
                     );
                 })
                 .toList();
-    }
-
-    private long timeToScreeningInHours(Clock clock, LocalDateTime screeningDate) {
-        var currentDate = LocalDateTime.now(clock);
-        return Duration
-                .between(currentDate, screeningDate)
-                .abs()
-                .toHours();
     }
 }

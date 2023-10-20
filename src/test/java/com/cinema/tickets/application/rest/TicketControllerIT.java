@@ -1,8 +1,8 @@
 package com.cinema.tickets.application.rest;
 
 import com.cinema.SpringIT;
-import com.cinema.repertoire.application.services.FilmService;
-import com.cinema.repertoire.application.services.ScreeningService;
+import com.cinema.films.application.services.FilmService;
+import com.cinema.screenings.application.services.ScreeningService;
 import com.cinema.rooms.application.services.RoomService;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.TicketFixture;

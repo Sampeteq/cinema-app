@@ -1,7 +1,7 @@
 package com.cinema.rooms.application.services;
 
-import com.cinema.repertoire.domain.events.ScreeningCreatedEvent;
-import com.cinema.repertoire.domain.events.ScreeningEndedEvent;
+import com.cinema.screenings.domain.events.ScreeningCreatedEvent;
+import com.cinema.screenings.domain.events.ScreeningEndedEvent;
 import com.cinema.rooms.domain.RoomRepository;
 import com.cinema.rooms.domain.exceptions.RoomNotFoundException;
 import lombok.RequiredArgsConstructor;

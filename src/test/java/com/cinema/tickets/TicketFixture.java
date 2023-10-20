@@ -1,8 +1,8 @@
 package com.cinema.tickets;
 
-import com.cinema.repertoire.application.dto.FilmCreateDto;
-import com.cinema.repertoire.application.dto.ScreeningCreateDto;
-import com.cinema.repertoire.domain.FilmCategory;
+import com.cinema.films.application.dto.FilmCreateDto;
+import com.cinema.screenings.application.dto.ScreeningCreateDto;
+import com.cinema.films.domain.FilmCategory;
 import com.cinema.rooms.application.dto.RoomCreateDto;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketStatus;

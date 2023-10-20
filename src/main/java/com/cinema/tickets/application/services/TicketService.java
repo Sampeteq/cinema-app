@@ -1,7 +1,7 @@
 package com.cinema.tickets.application.services;
 
-import com.cinema.repertoire.application.services.ScreeningService;
-import com.cinema.repertoire.domain.exceptions.SeatNotFoundException;
+import com.cinema.screenings.application.services.ScreeningService;
+import com.cinema.screenings.domain.exceptions.SeatNotFoundException;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;

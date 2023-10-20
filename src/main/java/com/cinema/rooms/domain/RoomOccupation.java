@@ -32,8 +32,8 @@ public class RoomOccupation {
         this.endAt = endAt;
     }
 
-    public boolean on(LocalDateTime start, LocalDateTime end) {
-        return this.startAt.equals(start) && this.endAt.equals(end);
+    public boolean on(LocalDateTime start) {
+        return this.startAt.equals(start);
     }
 
     public boolean hasCollision(LocalDateTime startAt, LocalDateTime endAt) {

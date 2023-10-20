@@ -43,11 +43,11 @@ public class Room {
         this.occupations.add(roomOccupation);
     }
 
-    public void removeOccupation(LocalDateTime start, LocalDateTime end) {
+    public void removeOccupation(LocalDateTime start) {
         var foundOccupation = this
                 .occupations
                 .stream()
-                .filter(occupation -> occupation.on(start, end))
+                .filter(occupation -> occupation.on(start))
                 .findFirst()
                 .orElseThrow(RoomOccupationNotFoundException::new);
         this.occupations.remove(foundOccupation);

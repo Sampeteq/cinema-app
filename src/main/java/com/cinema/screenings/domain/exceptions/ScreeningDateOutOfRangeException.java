@@ -7,7 +7,7 @@ public class ScreeningDateOutOfRangeException extends RuntimeException {
 
     public ScreeningDateOutOfRangeException() {
         super(
-                "Difference between current and screening date " +
+                "Difference between current and screening screeningDate " +
                 "cannot be below " + MIN_DAYS_NUMBER +
                 " and above " + MAX_DAYS_NUMBER + " days"
         );

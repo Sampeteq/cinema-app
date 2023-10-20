@@ -28,6 +28,6 @@ class ScreeningEventHandlerService {
         roomRepository
                 .readById(event.roomId())
                 .orElseThrow(RoomNotFoundException::new)
-                .removeOccupation(event.start(), event.end());
+                .removeOccupation(event.screeningDate());
     }
 }

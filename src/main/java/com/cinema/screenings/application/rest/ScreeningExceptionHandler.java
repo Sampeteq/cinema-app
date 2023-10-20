@@ -1,4 +1,4 @@
-package com.cinema.screenings.application.rest.exception_handlers;
+package com.cinema.screenings.application.rest;
 
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;

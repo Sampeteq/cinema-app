@@ -1,4 +1,4 @@
-package com.cinema.rooms.application.exceptions_handlers;
+package com.cinema.rooms.application.rest;
 
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
 import com.cinema.shared.exceptions.ExceptionMessage;

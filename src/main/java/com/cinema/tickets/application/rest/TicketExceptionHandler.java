@@ -1,4 +1,4 @@
-package com.cinema.tickets.application.rest.exception_handlers;
+package com.cinema.tickets.application.rest;
 
 import com.cinema.shared.exceptions.ExceptionMessage;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;

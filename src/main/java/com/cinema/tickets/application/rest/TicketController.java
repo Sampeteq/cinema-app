@@ -1,4 +1,4 @@
-package com.cinema.tickets.application.rest.controllers;
+package com.cinema.tickets.application.rest;
 
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;

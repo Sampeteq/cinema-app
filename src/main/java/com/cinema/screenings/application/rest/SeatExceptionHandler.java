@@ -1,4 +1,4 @@
-package com.cinema.screenings.application.rest.exception_handlers;
+package com.cinema.screenings.application.rest;
 
 import com.cinema.screenings.domain.exceptions.SeatNotFoundException;
 import com.cinema.shared.exceptions.ExceptionMessage;

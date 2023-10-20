@@ -1,4 +1,4 @@
-package com.cinema.users.application.rest.exception_handlers;
+package com.cinema.users.application.rest;
 
 import com.cinema.shared.exceptions.ExceptionMessage;
 import com.cinema.users.domain.exceptions.UserMailAlreadyExistsException;

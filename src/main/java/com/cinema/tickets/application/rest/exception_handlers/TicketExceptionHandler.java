@@ -1,5 +1,6 @@
 package com.cinema.tickets.application.rest.exception_handlers;
 
+import com.cinema.shared.exceptions.ExceptionMessage;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;

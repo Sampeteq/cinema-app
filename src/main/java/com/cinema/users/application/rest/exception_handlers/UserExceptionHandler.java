@@ -1,5 +1,6 @@
 package com.cinema.users.application.rest.exception_handlers;
 
+import com.cinema.shared.exceptions.ExceptionMessage;
 import com.cinema.users.domain.exceptions.UserMailAlreadyExistsException;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
 import com.cinema.users.domain.exceptions.UserNotSamePasswordsException;

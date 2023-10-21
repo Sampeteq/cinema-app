@@ -2,10 +2,9 @@ package com.cinema.tickets.application.rest;
 
 import com.cinema.SpringIT;
 import com.cinema.films.application.services.FilmService;
-import com.cinema.screenings.application.services.ScreeningService;
 import com.cinema.rooms.application.services.RoomService;
+import com.cinema.screenings.application.services.ScreeningService;
 import com.cinema.shared.events.EventPublisher;
-import com.cinema.tickets.TicketFixture;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.domain.TicketRepository;
@@ -34,6 +33,7 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 import static com.cinema.tickets.TicketFixture.SCREENING_DATE;
+import static com.cinema.tickets.TicketFixture.createCancelledTicket;
 import static com.cinema.tickets.TicketFixture.createFilmCreateDto;
 import static com.cinema.tickets.TicketFixture.createRoomCreateDto;
 import static com.cinema.tickets.TicketFixture.createScreeningCrateDto;
@@ -109,7 +109,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_booked_for_existing_seat() {
         //given
-        addSeat();
+        addScreening();
         var screeningId = 1L;
         var nonExistingSeatId = 0L;
         var ticketBookDto = new TicketBookDto(
@@ -136,7 +136,7 @@ class TicketControllerIT extends SpringIT {
         //given
         var filmTitle = "Title 1";
         var roomId = "1";
-        addSeat(filmTitle, roomId);
+        addScreening(filmTitle, roomId);
         var screeningId = 1L;
         var seatId = 1L;
         var ticketBookDto = new TicketBookDto(
@@ -168,7 +168,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_unique() {
         //given
-        addSeat();
+        addScreening();
         var ticket = ticketRepository.add(createTicket());
         var ticketBookDto = new TicketBookDto(
                 ticket.getScreeningId(),
@@ -197,7 +197,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_is_booked_at_least_1h_before_screening() {
         //given
         var screeningDate = SCREENING_DATE;
-        addSeat(screeningDate);
+        addScreening(screeningDate);
         Mockito
                 .when(clock.instant())
                 .thenReturn(screeningDate.minusMinutes(59).toInstant(ZoneOffset.UTC));
@@ -229,7 +229,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_booked_event_is_published() {
         //given
-        addSeat();
+        addScreening();
         var screeningId = 1L;
         var seatId = 1L;
         var ticketBookDto = new TicketBookDto(
@@ -254,7 +254,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_is_cancelled() {
         //give
-        addSeat();
+        addScreening();
         ticketRepository.add(createTicket());
 
         //when
@@ -276,7 +276,7 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_cancelled_event_is_published() {
         //given
-        addSeat();
+        addScreening();
         var ticket = ticketRepository.add(createTicket());
 
         //when
@@ -297,8 +297,8 @@ class TicketControllerIT extends SpringIT {
     @Test
     void ticket_already_cancelled_cannot_be_cancelled() {
         //given
-        addSeat();
-        ticketRepository.add(TicketFixture.createCancelledTicket());
+        addScreening();
+        ticketRepository.add(createCancelledTicket());
 
         //when
         var spec = webTestClient
@@ -410,25 +410,25 @@ class TicketControllerIT extends SpringIT {
                 .json(toJson(expected));
     }
 
-    private void addSeat() {
+    private void addScreening() {
         filmService.creteFilm(createFilmCreateDto());
         roomService.createRoom(createRoomCreateDto());
         screeningService.createScreening(createScreeningCrateDto(SCREENING_DATE));
     }
 
-    private void addSeat(LocalDateTime screeningDate) {
+    private void addScreening(LocalDateTime screeningDate) {
         filmService.creteFilm(createFilmCreateDto());
         roomService.createRoom(createRoomCreateDto());
         screeningService.createScreening(createScreeningCrateDto(screeningDate));
     }
 
-    private void addSeat(String filmTitle, String roomId) {
+    private void addScreening(String filmTitle, String roomId) {
         filmService.creteFilm(
                 createFilmCreateDto().withTitle(filmTitle)
         );
         roomService.createRoom(
                 createRoomCreateDto().withId(roomId)
         );
-        screeningService.createScreening(createScreeningCrateDto(TicketFixture.SCREENING_DATE));
+        screeningService.createScreening(createScreeningCrateDto(SCREENING_DATE));
     }
 }

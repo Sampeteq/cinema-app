@@ -184,13 +184,11 @@ class FilmControllerIT extends SpringIT {
     void films_are_read() {
         //given
         var film = filmRepository.add(createFilm());
-        userRepository.add(new User(USERNAME, passwordEncoder.encode(PASSWORD), UserRole.ADMIN));
 
         //when
         var spec = webTestClient
                 .get()
                 .uri(FILMS_BASE_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then

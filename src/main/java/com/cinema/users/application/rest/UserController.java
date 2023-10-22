@@ -24,7 +24,7 @@ class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     void createUser(@RequestBody @Valid UserCreateDto dto) {
-        userService.createUser(dto);
+        userService.createCommonUser(dto);
     }
 
     @PatchMapping("/password/reset")

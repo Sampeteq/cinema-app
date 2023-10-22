@@ -1,14 +1,12 @@
 package com.cinema.users.application.services;
 
-import com.cinema.users.domain.User;
-import com.cinema.users.domain.UserRepository;
-import com.cinema.users.domain.UserRole;
+import com.cinema.users.application.dto.UserCreateDto;
+import com.cinema.users.domain.exceptions.UserMailAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,33 +16,26 @@ class UserAdminService {
 
     private final String adminMail;
     private final String adminPassword;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     public UserAdminService(
             @Value("${admin.mail}") String adminMail,
             @Value("${admin.password}") String adminPassword,
-            UserRepository userRepository,
-            PasswordEncoder passwordEncoder
+            UserService userService
     ) {
+        this.userService = userService;
         this.adminMail = adminMail;
         this.adminPassword = adminPassword;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @EventListener(ContextRefreshedEvent.class)
     void createAdminOnStartUp() {
-        if (userRepository.existsByMail(adminMail)) {
-            log.info("Admin already exists");
-        } else {
-            var admin = new User(
-                    adminMail,
-                    passwordEncoder.encode(adminPassword),
-                    UserRole.ADMIN
-            );
-            userRepository.add(admin);
+        try {
+            var userCreateDto = new UserCreateDto(adminMail, adminPassword, adminPassword);
+            userService.createAdmin(userCreateDto);
             log.info("Admin added");
+        } catch (UserMailAlreadyExistsException exception) {
+            log.info("Admin already exists");
         }
     }
 }

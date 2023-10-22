@@ -26,19 +26,12 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final EventPublisher eventPublisher;
 
-    public void createUser(UserCreateDto dto) {
-        if (userRepository.existsByMail(dto.mail())) {
-            throw new UserMailAlreadyExistsException();
-        }
-        if (!(dto.password().equals(dto.repeatedPassword()))) {
-            throw new UserNotSamePasswordsException();
-        }
-        var user = new User(
-                dto.mail(),
-                passwordEncoder.encode(dto.password()),
-                UserRole.COMMON
-        );
-        userRepository.add(user);
+    public void createCommonUser(UserCreateDto dto) {
+        createUser(dto, UserRole.COMMON);
+    }
+
+    public void createAdmin(UserCreateDto dto) {
+        createUser(dto, UserRole.ADMIN);
     }
 
     public void resetUserPassword(String mail) {
@@ -70,5 +63,20 @@ public class UserService {
                 .readyByMail(mail)
                 .map(User::getId)
                 .orElseThrow(() -> new UsernameNotFoundException(mail));
+    }
+
+    private void createUser(UserCreateDto dto, UserRole role) {
+        if (userRepository.existsByMail(dto.mail())) {
+            throw new UserMailAlreadyExistsException();
+        }
+        if (!(dto.password().equals(dto.repeatedPassword()))) {
+            throw new UserNotSamePasswordsException();
+        }
+        var user = new User(
+                dto.mail(),
+                passwordEncoder.encode(dto.password()),
+                role
+        );
+        userRepository.add(user);
     }
 }

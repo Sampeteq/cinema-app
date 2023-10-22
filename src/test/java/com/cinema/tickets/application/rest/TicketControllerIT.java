@@ -73,7 +73,7 @@ class TicketControllerIT extends SpringIT {
 
     @BeforeEach
     void setUp() {
-        userService.createUser(
+        userService.createCommonUser(
                 new UserCreateDto(
                         username,
                         password,

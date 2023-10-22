@@ -6,16 +6,14 @@ import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.films.domain.exceptions.FilmYearOutOfRangeException;
-import com.cinema.users.domain.User;
-import com.cinema.users.domain.UserRepository;
-import com.cinema.users.domain.UserRole;
+import com.cinema.users.application.dto.UserCreateDto;
+import com.cinema.users.application.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import static com.cinema.films.FilmFixture.createFilm;
@@ -33,10 +31,7 @@ class FilmControllerIT extends SpringIT {
     private static final String PASSWORD = "12345";
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @Autowired
     private FilmRepository filmRepository;
@@ -44,7 +39,7 @@ class FilmControllerIT extends SpringIT {
     @Test
     void film_can_be_created_only_by_admin() {
         //given
-        addUser(UserRole.COMMON);
+        addCommonUser();
 
         //when
         var spec = webTestClient
@@ -60,7 +55,7 @@ class FilmControllerIT extends SpringIT {
     @Test
     void film_is_created() {
         //given
-        addUser(UserRole.ADMIN);
+        addAdminUser();
 
         var title = "Some filmTitle";
         var category = FilmCategory.COMEDY;
@@ -97,7 +92,7 @@ class FilmControllerIT extends SpringIT {
     @Test
     void film_title_is_unique() {
         //given
-        addUser(UserRole.ADMIN);
+        addAdminUser();
         var film = filmRepository.add(createFilm());
         var filmCreateDto = createFilmCreateDto().withTitle(film.getTitle());
 
@@ -124,7 +119,7 @@ class FilmControllerIT extends SpringIT {
     @MethodSource("com.cinema.films.FilmFixture#getWrongFilmYears")
     void film_year_is_previous_current_or_nex_one(Integer wrongYear) {
         //given
-        addUser(UserRole.ADMIN);
+        addAdminUser();
         var dto = createFilmCreateDto().withYear(wrongYear);
 
         //when
@@ -148,7 +143,7 @@ class FilmControllerIT extends SpringIT {
     @Test
     void film_is_deleted_only_by_admin() {
         //given
-        addUser(UserRole.COMMON);
+        addCommonUser();
 
         //when
         var spec = webTestClient
@@ -165,7 +160,7 @@ class FilmControllerIT extends SpringIT {
     @WithMockUser(authorities = "ADMIN")
     void film_is_deleted() {
         //given
-        addUser(UserRole.ADMIN);
+        addAdminUser();
         var film = filmRepository.add(createFilm());
 
         //when
@@ -251,7 +246,21 @@ class FilmControllerIT extends SpringIT {
                 .jsonPath("$.*.category").value(everyItem(equalTo(category.name())));
     }
 
-    private void addUser(UserRole role) {
-        userRepository.add(new User(USERNAME, passwordEncoder.encode(PASSWORD), role));
+    private void addCommonUser() {
+        var userCreateDto = new UserCreateDto(
+                USERNAME,
+                PASSWORD,
+                PASSWORD
+        );
+        userService.createCommonUser(userCreateDto);
+    }
+
+    private void addAdminUser() {
+        var userCreateDto = new UserCreateDto(
+                USERNAME,
+                PASSWORD,
+                PASSWORD
+        );
+        userService.createAdmin(userCreateDto);
     }
 }

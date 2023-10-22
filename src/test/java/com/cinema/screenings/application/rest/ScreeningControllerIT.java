@@ -2,22 +2,20 @@ package com.cinema.screenings.application.rest;
 
 import com.cinema.SpringIT;
 import com.cinema.films.application.services.FilmService;
+import com.cinema.rooms.application.services.RoomService;
+import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
 import com.cinema.screenings.application.dto.ScreeningCreateDto;
 import com.cinema.screenings.application.dto.ScreeningDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
-import com.cinema.rooms.application.services.RoomService;
-import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
-import com.cinema.users.domain.User;
-import com.cinema.users.domain.UserRepository;
-import com.cinema.users.domain.UserRole;
+import com.cinema.users.application.dto.UserCreateDto;
+import com.cinema.users.application.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -42,10 +40,7 @@ class ScreeningControllerIT extends SpringIT {
     private static final String PASSWORD = "12345";
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @Autowired
     private ScreeningRepository screeningRepository;
@@ -62,7 +57,7 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screening_is_created_only_by_admin() {
         //given
-        addUser(UserRole.COMMON);
+        addCommonUser();
 
         //when
         var spec = webTestClient
@@ -78,7 +73,7 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screening_is_created() {
         //given
-        addUser(UserRole.ADMIN);
+        addAdminUser();
         var filmCreateDto = createFilmCreateDto();
         filmService.creteFilm(filmCreateDto);
         roomService.createRoom(createRoomCreateDto());
@@ -113,7 +108,7 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screening_and_current_date_difference_is_min_7_days() {
         //given
-        addUser(UserRole.ADMIN);
+        addAdminUser();
         var filmCreateDto = createFilmCreateDto();
         filmService.creteFilm(filmCreateDto);
         roomService.createRoom(createRoomCreateDto());
@@ -143,7 +138,7 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screening_and_current_date_difference_is_max_21_days() {
         //given
-        addUser(UserRole.ADMIN);
+        addAdminUser();
         var filmCreateDto = createFilmCreateDto();
         filmService.creteFilm(filmCreateDto);
         roomService.createRoom(createRoomCreateDto());
@@ -173,7 +168,7 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screenings_collision_cannot_exist() {
         //given
-        addUser(UserRole.ADMIN);
+        addAdminUser();
         filmService.creteFilm(createFilmCreateDto());
         var screening = addScreening();
         var screeningCreateDto = new ScreeningCreateDto(
@@ -202,7 +197,7 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screening_is_deleted_only_by_admin() {
         //given
-        addUser(UserRole.COMMON);
+        addCommonUser();
         var screeningId = 1L;
 
         //when
@@ -219,7 +214,7 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screening_is_deleted() {
         //given
-        addUser(UserRole.ADMIN);
+        addAdminUser();
         var screening = addScreening();
 
         //when
@@ -321,7 +316,21 @@ class ScreeningControllerIT extends SpringIT {
         screeningRepository.add(createScreening(screeningDate));
     }
 
-    private void addUser(UserRole role) {
-        userRepository.add(new User(USERNAME, passwordEncoder.encode(PASSWORD), role));
+    private void addCommonUser() {
+        var userCreateDto = new UserCreateDto(
+                USERNAME,
+                PASSWORD,
+                PASSWORD
+        );
+        userService.createCommonUser(userCreateDto);
+    }
+
+    private void addAdminUser() {
+        var userCreateDto = new UserCreateDto(
+                USERNAME,
+                PASSWORD,
+                PASSWORD
+        );
+        userService.createAdmin(userCreateDto);
     }
 }

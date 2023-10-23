@@ -13,11 +13,9 @@ import com.cinema.users.application.dto.UserCreateDto;
 import com.cinema.users.application.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,9 +47,6 @@ class ScreeningControllerIT extends SpringIT {
 
     @Autowired
     private RoomService roomService;
-
-    @SpyBean
-    private Clock clock;
 
     @Test
     void screening_is_created_only_by_admin() {
@@ -113,9 +108,7 @@ class ScreeningControllerIT extends SpringIT {
         addAdminUser();
         addFilm(filmTitle);
         addRoom();
-        var screeningDate = LocalDateTime
-                .now(clock)
-                .plusDays(6);
+        var screeningDate = LocalDateTime.now().plusDays(6);
         var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmId);
 
         //when
@@ -144,9 +137,7 @@ class ScreeningControllerIT extends SpringIT {
         addAdminUser();
         addRoom();
         addFilm(filmTitle);
-        var screeningDate = LocalDateTime
-                .now(clock)
-                .plusDays(23);
+        var screeningDate = LocalDateTime.now().plusDays(23);
         var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmId);
 
         //when

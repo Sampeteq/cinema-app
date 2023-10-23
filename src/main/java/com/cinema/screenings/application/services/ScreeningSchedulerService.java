@@ -60,14 +60,14 @@ class ScreeningSchedulerService {
                 .readWithRoom()
                 .stream()
                 .filter(screening -> {
-                    var endDate = calculateScreeningEndDate(screening.getDate(), screening.getFilmTitle());
+                    var endDate = calculateScreeningEndDate(screening.getDate(), screening.getFilmId());
                     return endDate.isBefore(LocalDateTime.now(clock));
                 })
                 .toList();
     }
 
-    private LocalDateTime calculateScreeningEndDate(LocalDateTime screeningDate, String filmTitle) {
-        var filmDurationInMinutes = filmService.readFilmDurationInMinutes(filmTitle);
+    private LocalDateTime calculateScreeningEndDate(LocalDateTime screeningDate, Long filmId) {
+        var filmDurationInMinutes = filmService.readFilmDurationInMinutes(filmId);
         return screeningDate.plusMinutes(filmDurationInMinutes);
     }
 }

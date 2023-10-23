@@ -29,8 +29,8 @@ class JpaFilmRepositoryAdapter implements FilmRepository {
     }
 
     @Override
-    public Optional<Film> readByTitle(String title) {
-        return jpaFilmRepository.findByTitle(title);
+    public Optional<Film> readById(Long id) {
+        return jpaFilmRepository.findById(id);
     }
 
     @Override
@@ -65,6 +65,5 @@ class JpaFilmRepositoryAdapter implements FilmRepository {
 }
 
 interface JpaFilmRepository extends JpaRepository<Film, Long>, JpaSpecificationExecutor<Film> {
-    Optional<Film> findByTitle(String title);
     boolean existsByTitle(String title);
 }

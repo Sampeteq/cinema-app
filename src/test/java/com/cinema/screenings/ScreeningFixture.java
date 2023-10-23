@@ -15,6 +15,7 @@ import java.util.List;
 
 public final class ScreeningFixture {
 
+    public static final Long FILM_ID = 1L;
     public static final String FILM_TITLE = "FILM 1";
     public static final FilmCategory FILM_CATEGORY = FilmCategory.COMEDY;
     public static final int FILM_YEAR = Year.now().getValue();
@@ -34,8 +35,8 @@ public final class ScreeningFixture {
         var seat = new Seat(1,2, SeatStatus.FREE);
         var roomId = "1";
         return new Screening(
-               screeningDate,
-                FILM_TITLE,
+                screeningDate,
+                FILM_ID,
                 roomId,
                 List.of(seat)
         );

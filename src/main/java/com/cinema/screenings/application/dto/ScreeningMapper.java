@@ -5,5 +5,5 @@ import org.mapstruct.Mapper;
 
 @Mapper
 public interface ScreeningMapper {
-    ScreeningDto mapToDto(Screening screening);
+    ScreeningDto mapToDto(Screening screening, String filmTitle);
 }

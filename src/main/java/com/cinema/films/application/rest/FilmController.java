@@ -35,11 +35,11 @@ class FilmController {
         filmService.creteFilm(dto);
     }
 
-    @DeleteMapping("/{title}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
-    void deleteFilm(@PathVariable String title) {
-        filmService.delete(title);
+    void deleteFilm(@PathVariable Long id) {
+        filmService.delete(id);
     }
 
     @GetMapping

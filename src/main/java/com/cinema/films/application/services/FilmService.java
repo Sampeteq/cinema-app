@@ -44,16 +44,23 @@ public class FilmService {
                 .toList();
     }
 
-    public int readFilmDurationInMinutes(String filmTitle) {
+    public int readFilmDurationInMinutes(Long id) {
         return filmRepository
-                .readByTitle(filmTitle)
+                .readById(id)
                 .orElseThrow(FilmNotFoundException::new)
                 .getDurationInMinutes();
     }
 
-    public void delete(String title) {
+    public String readFilmTitle(Long id) {
+        return filmRepository
+                .readById(id)
+                .orElseThrow(FilmNotFoundException::new)
+                .getTitle();
+    }
+
+    public void delete(Long id) {
         var film = filmRepository
-                .readByTitle(title)
+                .readById(id)
                 .orElseThrow(FilmNotFoundException::new);
         filmRepository.delete(film);
     }

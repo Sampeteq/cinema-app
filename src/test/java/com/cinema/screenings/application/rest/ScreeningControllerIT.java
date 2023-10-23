@@ -72,11 +72,12 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screening_is_created() {
         //given
+        var filmId = 1L;
         var filmTitle = "Sample title";
         addAdminUser();
         addFilm(filmTitle);
         addRoom();
-        var screeningCreateDto = new ScreeningCreateDto(SCREENING_DATE, filmTitle);
+        var screeningCreateDto = new ScreeningCreateDto(SCREENING_DATE, filmId);
 
         //when
         var spec = webTestClient
@@ -107,6 +108,7 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screening_and_current_date_difference_is_min_7_days() {
         //given
+        var filmId = 1L;
         var filmTitle = "Sample title";
         addAdminUser();
         addFilm(filmTitle);
@@ -114,7 +116,7 @@ class ScreeningControllerIT extends SpringIT {
         var screeningDate = LocalDateTime
                 .now(clock)
                 .plusDays(6);
-        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmTitle);
+        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmId);
 
         //when
         var spec = webTestClient
@@ -137,6 +139,7 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screening_and_current_date_difference_is_max_21_days() {
         //given
+        var filmId = 1L;
         var filmTitle = "Sample film";
         addAdminUser();
         addRoom();
@@ -144,7 +147,7 @@ class ScreeningControllerIT extends SpringIT {
         var screeningDate = LocalDateTime
                 .now(clock)
                 .plusDays(23);
-        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmTitle);
+        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmId);
 
         //when
         var spec = webTestClient
@@ -167,13 +170,14 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screenings_collision_cannot_exist() {
         //given
+        var filmId = 1L;
         var filmTitle = "Sample title";
         addAdminUser();
         addFilm(filmTitle);
         var screening = addScreening();
         var screeningCreateDto = new ScreeningCreateDto(
                 screening.getDate().plusMinutes(10),
-                filmTitle
+                filmId
         );
 
         //when
@@ -232,6 +236,8 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screenings_are_read() {
         //given
+        var filmTitle = "Sample title";
+        addFilm(filmTitle);
         var screening = addScreening();
 
         //when
@@ -248,12 +254,13 @@ class ScreeningControllerIT extends SpringIT {
                 .jsonPath("$[*]").value(hasSize(1))
                 .jsonPath("$[*].*").value(everyItem(notNullValue()))
                 .jsonPath("$[0].date").isEqualTo(screening.getDate().toString())
-                .jsonPath("$[0].filmTitle").isEqualTo(screening.getFilmTitle());
+                .jsonPath("$[0].filmTitle").isEqualTo(filmTitle);
     }
 
     @Test
     void screenings_are_read_by_date() {
         //given
+        addFilm();
         var requiredDate = LocalDate.of(2023, 12, 13);
         var screeningWithRequiredDate = addScreening(requiredDate);
         addScreening(requiredDate.minusDays(1));
@@ -313,6 +320,10 @@ class ScreeningControllerIT extends SpringIT {
 
     private void addRoom() {
         roomService.createRoom(createRoomCreateDto());
+    }
+
+    private void addFilm() {
+        filmService.creteFilm(createFilmCreateDto());
     }
 
     private void addFilm(String title) {

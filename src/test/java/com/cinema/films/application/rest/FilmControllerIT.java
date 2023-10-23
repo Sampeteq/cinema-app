@@ -57,7 +57,8 @@ class FilmControllerIT extends SpringIT {
         //given
         addAdminUser();
 
-        var title = "Some filmTitle";
+        var id = 1L;
+        var title = "Some filmId";
         var category = FilmCategory.COMEDY;
         var year = 2023;
         var durationInMinutes = 100;
@@ -79,7 +80,7 @@ class FilmControllerIT extends SpringIT {
 
         //then
         spec.expectStatus().isCreated();
-        assertThat(filmRepository.readByTitle(dto.title()))
+        assertThat(filmRepository.readById(id))
                 .isNotEmpty()
                 .hasValueSatisfying(film -> {
                     assertEquals(dto.title(), film.getTitle());
@@ -166,7 +167,7 @@ class FilmControllerIT extends SpringIT {
         //when
         var spec = webTestClient
                 .delete()
-                .uri(FILMS_BASE_ENDPOINT + "/" + film.getTitle())
+                .uri(FILMS_BASE_ENDPOINT + "/" + film.getId())
                 .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 

@@ -44,13 +44,13 @@ public class ScreeningService {
 
     public void createScreening(ScreeningCreateDto dto) {
         screeningDatePolicy.checkScreeningDate(dto.date());
-        var filmDurationInMinutes = filmService.readFilmDurationInMinutes(dto.filmTitle());
+        var filmDurationInMinutes = filmService.readFilmDurationInMinutes(dto.filmId());
         var endDate = dto.date().plusMinutes(filmDurationInMinutes);
         var roomDto = roomService.findFirstAvailableRoom(dto.date(), endDate);
         var seats = createSeats(roomDto.rowsNumber(), roomDto.rowSeatsNumber());
         var screening = new Screening(
                 dto.date(),
-                dto.filmTitle(),
+                dto.filmId(),
                 roomDto.id(),
                 seats
         );
@@ -68,7 +68,10 @@ public class ScreeningService {
                 .readAllBy(queryDto)
                 .stream()
                 .sorted(comparing(Screening::getDate))
-                .map(screeningMapper::mapToDto)
+                .map(screening -> {
+                    var filmTitle = filmService.readFilmTitle(screening.getFilmId());
+                    return screeningMapper.mapToDto(screening, filmTitle);
+                })
                 .toList();
     }
 
@@ -83,9 +86,10 @@ public class ScreeningService {
         var screening = screeningRepository
                 .readById(screeningId)
                 .orElseThrow(ScreeningNotFoundException::new);
+        var filmTitle = filmService.readFilmTitle(screening.getFilmId());
         return new ScreeningDetailsDto(
                 screening.getDate(),
-                screening.getFilmTitle(),
+                filmTitle,
                 screening.getRoomId()
         );
     }

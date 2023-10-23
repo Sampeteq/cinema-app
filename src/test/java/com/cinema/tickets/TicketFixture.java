@@ -16,6 +16,7 @@ public final class TicketFixture {
     public static final String ROOM_CUSTOM_ID = "1";
     public static final int ROOM_ROWS_NUMBER = 10;
     public static final int ROOM_ROW_SEATS_NUMBER = 15;
+    public static final Long FILM_ID = 1L;
     public static final String FILM_TITLE = "Title 1";
     public static final FilmCategory FILM_CATEGORY = FilmCategory.COMEDY;
     public static final int FILM_DURATION_IN_MINUTES = 100;
@@ -75,14 +76,14 @@ public final class TicketFixture {
     public static ScreeningCreateDto createScreeningCrateDto() {
         return new ScreeningCreateDto(
                 SCREENING_DATE,
-                FILM_TITLE
+                FILM_ID
         );
     }
 
     public static ScreeningCreateDto createScreeningCrateDto(LocalDateTime date) {
         return new ScreeningCreateDto(
                 date,
-                FILM_TITLE
+                FILM_ID
         );
     }
 }

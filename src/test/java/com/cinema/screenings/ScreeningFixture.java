@@ -2,12 +2,11 @@ package com.cinema.screenings;
 
 import com.cinema.films.application.dto.FilmCreateDto;
 import com.cinema.films.domain.FilmCategory;
+import com.cinema.rooms.application.dto.RoomCreateDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.Seat;
 import com.cinema.screenings.domain.SeatStatus;
-import com.cinema.rooms.application.dto.RoomCreateDto;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.temporal.ChronoUnit;
@@ -57,9 +56,5 @@ public final class ScreeningFixture {
                 ROOM_ROWS_NUMBER,
                 ROOM_ROW_SEATS_NUMBER
         );
-    }
-
-    public static LocalDateTime getScreeningDate(Clock clock) {
-        return LocalDateTime.now(clock).plusDays(7);
     }
 }

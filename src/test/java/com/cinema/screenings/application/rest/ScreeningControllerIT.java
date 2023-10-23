@@ -26,7 +26,6 @@ import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createFilmCreateDto;
 import static com.cinema.screenings.ScreeningFixture.createRoomCreateDto;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
-import static com.cinema.screenings.ScreeningFixture.getScreeningDate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -73,11 +72,11 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screening_is_created() {
         //given
+        var filmTitle = "Sample title";
         addAdminUser();
-        var filmCreateDto = createFilmCreateDto();
-        filmService.creteFilm(filmCreateDto);
-        roomService.createRoom(createRoomCreateDto());
-        var screeningCreateDto = new ScreeningCreateDto(SCREENING_DATE, filmCreateDto.title());
+        addFilm(filmTitle);
+        addRoom();
+        var screeningCreateDto = new ScreeningCreateDto(SCREENING_DATE, filmTitle);
 
         //when
         var spec = webTestClient
@@ -94,7 +93,7 @@ class ScreeningControllerIT extends SpringIT {
                new ScreeningDto(
                        1L,
                        screeningCreateDto.date(),
-                       createFilmCreateDto().title()
+                       filmTitle
                )
         );
         webTestClient
@@ -108,14 +107,14 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screening_and_current_date_difference_is_min_7_days() {
         //given
+        var filmTitle = "Sample title";
         addAdminUser();
-        var filmCreateDto = createFilmCreateDto();
-        filmService.creteFilm(filmCreateDto);
-        roomService.createRoom(createRoomCreateDto());
+        addFilm(filmTitle);
+        addRoom();
         var screeningDate = LocalDateTime
                 .now(clock)
                 .plusDays(6);
-        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmCreateDto.title());
+        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmTitle);
 
         //when
         var spec = webTestClient
@@ -138,14 +137,14 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screening_and_current_date_difference_is_max_21_days() {
         //given
+        var filmTitle = "Sample film";
         addAdminUser();
-        var filmCreateDto = createFilmCreateDto();
-        filmService.creteFilm(filmCreateDto);
-        roomService.createRoom(createRoomCreateDto());
+        addRoom();
+        addFilm(filmTitle);
         var screeningDate = LocalDateTime
                 .now(clock)
                 .plusDays(23);
-        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmCreateDto.title());
+        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmTitle);
 
         //when
         var spec = webTestClient
@@ -168,12 +167,13 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void screenings_collision_cannot_exist() {
         //given
+        var filmTitle = "Sample title";
         addAdminUser();
-        filmService.creteFilm(createFilmCreateDto());
+        addFilm(filmTitle);
         var screening = addScreening();
         var screeningCreateDto = new ScreeningCreateDto(
                 screening.getDate().plusMinutes(10),
-                screening.getFilmTitle()
+                filmTitle
         );
 
         //when
@@ -279,12 +279,13 @@ class ScreeningControllerIT extends SpringIT {
     @Test
     void seats_are_read_by_screening_id() {
         //given
-        addSeats();
+        addRoom();
+        var screening = addScreening();
 
         //when
         var spec = webTestClient
                 .get()
-                .uri(SCREENINGS_BASE_ENDPOINT + "/1/seats")
+                .uri(SCREENINGS_BASE_ENDPOINT + "/" +  screening.getId() + "/seats")
                 .exchange();
 
         //then
@@ -310,10 +311,12 @@ class ScreeningControllerIT extends SpringIT {
         return screeningRepository.add(screening);
     }
 
-    private void addSeats() {
+    private void addRoom() {
         roomService.createRoom(createRoomCreateDto());
-        var screeningDate = getScreeningDate(clock);
-        screeningRepository.add(createScreening(screeningDate));
+    }
+
+    private void addFilm(String title) {
+        filmService.creteFilm(createFilmCreateDto().withTitle(title));
     }
 
     private void addCommonUser() {

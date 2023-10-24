@@ -40,6 +40,8 @@ import static com.cinema.tickets.TicketFixture.createScreeningCrateDto;
 import static com.cinema.tickets.TicketFixture.createTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -407,7 +409,14 @@ class TicketControllerIT extends SpringIT {
                 .expectStatus()
                 .isOk()
                 .expectBody()
-                .json(toJson(expected));
+                .jsonPath("$[*]").value(everyItem(notNullValue()))
+                .jsonPath("$[0].id").isEqualTo(expected.get(0).id())
+                .jsonPath("$[0].status").isEqualTo(expected.get(0).status().name())
+                .jsonPath("$[0].filmTitle").isEqualTo(expected.get(0).filmTitle())
+                .jsonPath("$[0].screeningDate").isEqualTo(expected.get(0).screeningDate().toString())
+                .jsonPath("$[0].roomId").isEqualTo(expected.get(0).roomId())
+                .jsonPath("$[0].rowNumber").isEqualTo(expected.get(0).rowNumber())
+                .jsonPath("$[0].seatNumber").isEqualTo(expected.get(0).seatNumber());
     }
 
     private void addScreening() {

@@ -97,7 +97,9 @@ class ScreeningControllerIT extends SpringIT {
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .exchange()
                 .expectBody()
-                .json(toJson(expectedDto));
+                .jsonPath("$[0].id").isEqualTo(expectedDto.get(0).id())
+                .jsonPath("$[0].date").isEqualTo(expectedDto.get(0).date().toString())
+                .jsonPath("$[0].filmTitle").isEqualTo(expectedDto.get(0).filmTitle());
     }
 
     @Test

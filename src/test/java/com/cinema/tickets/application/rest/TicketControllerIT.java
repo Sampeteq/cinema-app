@@ -78,7 +78,6 @@ class TicketControllerIT extends SpringIT {
         userService.createCommonUser(
                 new UserCreateDto(
                         username,
-                        password,
                         password
                 )
         );

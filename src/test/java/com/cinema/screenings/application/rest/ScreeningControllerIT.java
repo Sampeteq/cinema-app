@@ -326,7 +326,6 @@ class ScreeningControllerIT extends SpringIT {
     private void addCommonUser() {
         var userCreateDto = new UserCreateDto(
                 USERNAME,
-                PASSWORD,
                 PASSWORD
         );
         userService.createCommonUser(userCreateDto);
@@ -335,7 +334,6 @@ class ScreeningControllerIT extends SpringIT {
     private void addAdminUser() {
         var userCreateDto = new UserCreateDto(
                 USERNAME,
-                PASSWORD,
                 PASSWORD
         );
         userService.createAdmin(userCreateDto);

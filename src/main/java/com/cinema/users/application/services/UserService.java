@@ -9,7 +9,6 @@ import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.events.UserPasswordResetEvent;
 import com.cinema.users.domain.exceptions.UserMailAlreadyExistsException;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
-import com.cinema.users.domain.exceptions.UserNotSamePasswordsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -68,9 +67,6 @@ public class UserService {
     private void createUser(UserCreateDto dto, UserRole role) {
         if (userRepository.existsByMail(dto.mail())) {
             throw new UserMailAlreadyExistsException();
-        }
-        if (!(dto.password().equals(dto.repeatedPassword()))) {
-            throw new UserNotSamePasswordsException();
         }
         var user = new User(
                 dto.mail(),

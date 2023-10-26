@@ -5,7 +5,6 @@ import com.cinema.users.application.dto.UserPasswordNewDto;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.exceptions.UserMailAlreadyExistsException;
-import com.cinema.users.domain.exceptions.UserNotSamePasswordsException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,28 +70,6 @@ class UserControllerIT extends SpringIT {
 
         //then
         var expectedMessage = new UserMailAlreadyExistsException().getMessage();
-        spec
-                .expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-                .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
-    }
-
-    @Test
-    void user_passwords_cannot_be_different() {
-        //given
-        var dto = createUserCreateDto("password1", "password2");
-
-        //when
-        var spec = webTestClient
-                .post()
-                .uri(USERS_BASE_ENDPOINT)
-                .bodyValue(dto)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange();
-
-        //then
-
-        var expectedMessage = new UserNotSamePasswordsException().getMessage();
         spec
                 .expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()

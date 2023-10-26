@@ -24,7 +24,6 @@ class UserAdminService {
         try {
             var userCreateDto = new UserCreateDto(
                     adminProperties.getMail(),
-                    adminProperties.getPassword(),
                     adminProperties.getPassword()
             );
             userService.createAdmin(userCreateDto);

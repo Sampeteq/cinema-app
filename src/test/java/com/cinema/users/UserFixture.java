@@ -18,19 +18,12 @@ public final class UserFixture {
     public static UserCreateDto createUserCreateDto() {
         return new UserCreateDto(
                 MAIL,
-                PASSWORD,
                 PASSWORD
         );
     }
 
     public static UserCreateDto createUserCreateDto(String mail) {
         return createUserCreateDto().withMail(mail);
-    }
-
-    public static UserCreateDto createUserCreateDto(String password, String repeatedPassword) {
-        return createUserCreateDto()
-                .withPassword(password)
-                .withRepeatedPassword(repeatedPassword);
     }
 
     public static User createUser() {

@@ -14,10 +14,6 @@ public record UserCreateDto(
 
         @NotBlank
         @Size(min = 5, max = 20)
-        String password,
-
-        @NotBlank
-        @Size(min = 5, max = 20)
-        String repeatedPassword
+        String password
 ) {
 }

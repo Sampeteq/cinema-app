@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +42,13 @@ public class RoomService {
                 .findFirst()
                 .map(roomMapper::toDto)
                 .orElseThrow(RoomsNoAvailableException::new);
+    }
+
+    public List<RoomDto> readAllRooms() {
+        return roomRepository
+                .readAll()
+                .stream()
+                .map(roomMapper::toDto)
+                .toList();
     }
 }

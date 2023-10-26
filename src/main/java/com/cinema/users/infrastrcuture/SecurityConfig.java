@@ -53,6 +53,10 @@ class SecurityConfig {
                                         "/v3/api-docs/**"
                                 ).permitAll()
                                 .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/rooms"
+                                ).hasAuthority("ADMIN")
+                                .requestMatchers(
                                         HttpMethod.POST,
                                         "/films",
                                         "/screenings"

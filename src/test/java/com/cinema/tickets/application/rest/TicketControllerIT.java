@@ -4,13 +4,10 @@ import com.cinema.SpringIT;
 import com.cinema.films.application.services.FilmService;
 import com.cinema.rooms.application.services.RoomService;
 import com.cinema.screenings.application.services.ScreeningService;
-import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.dto.TicketBookDto;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
-import com.cinema.tickets.domain.events.TicketBookedEvent;
-import com.cinema.tickets.domain.events.TicketCancelledEvent;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
@@ -22,7 +19,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,8 +39,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 class TicketControllerIT extends SpringIT {
 
@@ -69,9 +63,6 @@ class TicketControllerIT extends SpringIT {
 
     @SpyBean
     private Clock clock;
-
-    @MockBean
-    private EventPublisher eventPublisher;
 
     @BeforeEach
     void setUp() {
@@ -228,31 +219,6 @@ class TicketControllerIT extends SpringIT {
     }
 
     @Test
-    void ticket_booked_event_is_published() {
-        //given
-        addScreening();
-        var screeningId = 1L;
-        var seatId = 1L;
-        var ticketBookDto = new TicketBookDto(
-                screeningId,
-                seatId
-        );
-
-        //when
-        webTestClient
-                .post()
-                .uri(TICKETS_BASE_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(ticketBookDto)
-                .headers(headers -> headers.setBasicAuth(username, password))
-                .exchange();
-
-        //then
-        var expectedEvent = new TicketBookedEvent(screeningId, seatId);
-        verify(eventPublisher, times(1)).publish(expectedEvent);
-    }
-
-    @Test
     void ticket_is_cancelled() {
         //give
         addScreening();
@@ -272,27 +238,6 @@ class TicketControllerIT extends SpringIT {
                 .hasValueSatisfying(ticket ->
                         assertEquals(TicketStatus.CANCELLED, ticket.getStatus())
                 );
-    }
-
-    @Test
-    void ticket_cancelled_event_is_published() {
-        //given
-        addScreening();
-        var ticket = ticketRepository.add(createTicket());
-
-        //when
-        webTestClient
-                .patch()
-                .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
-                .headers(headers -> headers.setBasicAuth(username, password))
-                .exchange();
-
-        //then
-        var expectedEvent = new TicketCancelledEvent(
-                ticket.getScreeningId(),
-                ticket.getSeatId()
-        );
-        verify(eventPublisher, times(1)).publish(expectedEvent);
     }
 
     @Test

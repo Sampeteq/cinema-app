@@ -2,7 +2,7 @@ package com.cinema.users.application.services;
 
 import com.cinema.users.application.dto.UserCreateDto;
 import com.cinema.users.application.properties.AdminProperties;
-import com.cinema.users.domain.exceptions.UserMailAlreadyExistsException;
+import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -28,7 +28,7 @@ class UserAdminService {
             );
             userService.createAdmin(userCreateDto);
             log.info("Admin added");
-        } catch (UserMailAlreadyExistsException exception) {
+        } catch (UserMailNotUniqueException exception) {
             log.info("Admin already exists");
         }
     }

@@ -1,7 +1,7 @@
 package com.cinema.users.application.rest;
 
 import com.cinema.shared.exceptions.ExceptionMessage;
-import com.cinema.users.domain.exceptions.UserMailAlreadyExistsException;
+import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +17,8 @@ class UserExceptionHandler {
         return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(UserMailAlreadyExistsException.class)
-    ResponseEntity<ExceptionMessage> handle(UserMailAlreadyExistsException exception) {
+    @ExceptionHandler(UserMailNotUniqueException.class)
+    ResponseEntity<ExceptionMessage> handle(UserMailNotUniqueException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);
     }

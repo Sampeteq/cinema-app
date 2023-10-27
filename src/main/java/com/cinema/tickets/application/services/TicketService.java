@@ -42,6 +42,7 @@ public class TicketService {
             throw new TicketAlreadyExists();
         }
         var screeningDate = screeningService.readScreeningDate(dto.screeningId());
+        log.info("Screening date:{}", screeningDate);
         ticketBookingPolicy.checkScreeningDate(screeningDate);
         var seatExists = screeningService.seatExists(dto.screeningId(), dto.seatId());
         if (!seatExists) {

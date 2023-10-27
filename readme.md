@@ -70,11 +70,11 @@ Endpoints:
 
 Endpoints:
 
-/sign-up (POST) - create a new user account
+/users (POST) - create a new user account
 
-/password/reset (POST) - reset password (a mail with token will be sent)
+/users/password/reset (POST) - reset password (a mail with token will be sent)
 
-/password/new (POST) - set new password after reset
+/users/password/new (POST) - set new password after reset
 
 Auth: basic auth
 

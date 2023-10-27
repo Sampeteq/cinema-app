@@ -77,6 +77,7 @@ public class TicketService {
             throw new TicketNotBelongsToUser();
         }
         var screeningDate = screeningService.readScreeningDate(ticket.getScreeningId());
+        log.info("Screening date:{}", screeningDate);
         ticketCancellingPolicy.checkScreeningDate(screeningDate);
         ticket.cancel();
         log.info("Ticket cancelled:{}", ticket);

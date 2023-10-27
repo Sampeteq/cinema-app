@@ -75,6 +75,7 @@ public class TicketService {
         var screeningDate = screeningService.readScreeningDate(ticket.getScreeningId());
         ticketCancellingPolicy.checkScreeningDate(screeningDate);
         ticket.cancel();
+        log.info("Ticket cancelled:{}", ticket);
         var ticketCancelledEvent = new TicketCancelledEvent(
                 ticket.getScreeningId(),
                 ticket.getSeatId()

@@ -32,10 +32,13 @@ class TicketEventHandlerService {
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handle(TicketCancelledEvent event) {
-        readSeat(
+        log.info("Handled event:{}", event);
+        var seat = readSeat(
                 event.screeningId(),
                 event.seatId()
-        ).free();
+        );
+        seat.free();
+        log.info("Freed seat:{}", seat);
     }
 
     private Seat readSeat(Long screeningId, Long seatId) {

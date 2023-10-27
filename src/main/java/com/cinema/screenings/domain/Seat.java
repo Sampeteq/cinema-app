@@ -8,10 +8,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "seats")
 @Getter
+@ToString
 public class Seat {
 
     @Id

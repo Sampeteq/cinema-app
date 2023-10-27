@@ -57,12 +57,14 @@ public class ScreeningService {
                 seats
         );
         screeningRepository.add(screening);
+        log.info("Screening added:{}", screening);
         var screeningCreatedEvent = new ScreeningCreatedEvent(
                 screening.getDate(),
                 endDate,
                 screening.getRoomId()
         );
         eventPublisher.publish(screeningCreatedEvent);
+        log.info("Published event:{}", screeningCreatedEvent);
     }
 
     public List<ScreeningDto> readAllScreeningsBy(ScreeningQueryDto queryDto) {

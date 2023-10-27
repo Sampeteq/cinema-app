@@ -38,9 +38,10 @@ public class Room {
         this.occupations = new ArrayList<>();
     }
 
-    public void addOccupation(LocalDateTime start, LocalDateTime end) {
+    public RoomOccupation addOccupation(LocalDateTime start, LocalDateTime end) {
         var roomOccupation = new RoomOccupation(start, end);
         this.occupations.add(roomOccupation);
+        return roomOccupation;
     }
 
     public void removeOccupation(LocalDateTime start) {

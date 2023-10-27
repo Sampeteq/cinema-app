@@ -70,6 +70,7 @@ public class TicketService {
         var ticket = ticketRepository
                 .readById(id)
                 .orElseThrow(TicketNotFoundException::new);
+        log.info("Found ticket:{}", ticket);
         var currentUserId = userService.readCurrentUserId();
         if (!ticket.belongsTo(currentUserId)) {
             throw new TicketNotBelongsToUser();

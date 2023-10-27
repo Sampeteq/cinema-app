@@ -66,6 +66,7 @@ public class TicketService {
 
     @Transactional
     public void cancelTicket(Long id) {
+        log.info("Ticket id:{}", id);
         var ticket = ticketRepository
                 .readById(id)
                 .orElseThrow(TicketNotFoundException::new);

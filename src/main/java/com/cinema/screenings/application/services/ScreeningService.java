@@ -45,19 +45,24 @@ public class ScreeningService {
 
     @Transactional
     public void createScreening(ScreeningCreateDto dto) {
+        log.info("DTO:{}", dto);
         screeningDatePolicy.checkScreeningDate(dto.date());
         var filmDurationInMinutes = filmService.readFilmDurationInMinutes(dto.filmId());
+        log.info("Film duration in minutes:{}", filmDurationInMinutes);
         var endDate = dto.date().plusMinutes(filmDurationInMinutes);
+        log.info("Screening end date:{}", endDate);
         var roomDto = roomService.findFirstAvailableRoom(dto.date(), endDate);
+        log.info("Found room:{}", roomDto);
         var seats = createSeats(roomDto.rowsNumber(), roomDto.rowSeatsNumber());
+        log.info("Created seats number:{}", seats.size());
         var screening = new Screening(
                 dto.date(),
                 dto.filmId(),
                 roomDto.id(),
                 seats
         );
-        screeningRepository.add(screening);
-        log.info("Screening added:{}", screening);
+        var addedScreening = screeningRepository.add(screening);
+        log.info("Screening added:{}", addedScreening);
         var screeningCreatedEvent = new ScreeningCreatedEvent(
                 screening.getDate(),
                 endDate,

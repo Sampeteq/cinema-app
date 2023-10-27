@@ -39,8 +39,12 @@ class TicketController {
 
     @PatchMapping("/{ticketId}/cancel")
     @SecurityRequirement(name = "basic")
-    void cancelTicket(@PathVariable Long ticketId) {
+    ResponseEntity<Object> cancelTicket(@PathVariable Long ticketId) {
+        log.info("Ticket id:{}", ticketId);
         ticketService.cancelTicket(ticketId);
+        var responseEntity = ResponseEntity.ok().build();
+        log.info("Response entity:{}", responseEntity);
+        return responseEntity;
     }
 
     @GetMapping("/my")

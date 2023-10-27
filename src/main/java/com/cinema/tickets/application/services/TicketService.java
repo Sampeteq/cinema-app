@@ -37,6 +37,7 @@ public class TicketService {
 
     @Transactional
     public void bookTicket(TicketBookDto dto) {
+        log.info("DTO:{}", dto);
         if (ticketRepository.exists(dto.screeningId(), dto.seatId())) {
             throw new TicketAlreadyExists();
         }

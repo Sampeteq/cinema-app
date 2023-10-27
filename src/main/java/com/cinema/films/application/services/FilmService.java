@@ -10,12 +10,14 @@ import com.cinema.films.domain.exceptions.FilmNotFoundException;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.films.domain.policies.FilmYearPolicy;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FilmService {
 
     private final FilmYearPolicy filmYearPolicy;
@@ -23,6 +25,7 @@ public class FilmService {
     private final FilmMapper filmMapper;
 
     public void creteFilm(FilmCreateDto dto) {
+        log.info("DTO:{}", dto);
         filmYearPolicy.checkFilmYear(dto.year());
         if (filmRepository.existsByTitle(dto.title())) {
             throw new FilmTitleNotUniqueException();
@@ -33,7 +36,8 @@ public class FilmService {
                 dto.year(),
                 dto.durationInMinutes()
         );
-        filmRepository.add(film);
+        var addedFilm = filmRepository.add(film);
+        log.info("Added film:{}", addedFilm);
     }
 
     public List<FilmDto> readAll(FilmQueryDto queryDto) {

@@ -25,7 +25,7 @@ public class Room {
 
     private int rowSeatsNumber;
 
-    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "room_id")
     private List<RoomOccupation> occupations;
 

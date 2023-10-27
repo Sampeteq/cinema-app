@@ -1,9 +1,9 @@
 package com.cinema.rooms.application.services;
 
-import com.cinema.screenings.domain.events.ScreeningCreatedEvent;
-import com.cinema.screenings.domain.events.ScreeningEndedEvent;
 import com.cinema.rooms.domain.RoomRepository;
 import com.cinema.rooms.domain.exceptions.RoomNotFoundException;
+import com.cinema.screenings.domain.events.ScreeningCreatedEvent;
+import com.cinema.screenings.domain.events.ScreeningEndedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,9 +29,11 @@ class ScreeningEventHandlerService {
 
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handle(ScreeningEndedEvent event) {
+        log.info("Handled event:{}", event);
         roomRepository
                 .readById(event.roomId())
                 .orElseThrow(RoomNotFoundException::new)
                 .removeOccupation(event.screeningDate());
+        log.info("Removed room occupation");
     }
 }

@@ -55,7 +55,7 @@ public class TicketService {
                 currentUserId
         );
         var addedTicket = ticketRepository.add(ticket);
-        log.info("Booked ticket:{}", addedTicket);
+        log.info("Added ticket:{}", addedTicket);
         var ticketBookedEvent = new TicketBookedEvent(
                 dto.screeningId(),
                 dto.seatId()

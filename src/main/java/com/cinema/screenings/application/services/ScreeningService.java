@@ -22,6 +22,7 @@ import com.cinema.shared.events.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,6 +43,7 @@ public class ScreeningService {
     private final RoomService roomService;
     private final EventPublisher eventPublisher;
 
+    @Transactional
     public void createScreening(ScreeningCreateDto dto) {
         screeningDatePolicy.checkScreeningDate(dto.date());
         var filmDurationInMinutes = filmService.readFilmDurationInMinutes(dto.filmId());

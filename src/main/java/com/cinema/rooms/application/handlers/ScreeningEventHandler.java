@@ -1,4 +1,4 @@
-package com.cinema.rooms.application.services;
+package com.cinema.rooms.application.handlers;
 
 import com.cinema.rooms.domain.RoomRepository;
 import com.cinema.rooms.domain.exceptions.RoomNotFoundException;
@@ -13,7 +13,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-class ScreeningEventHandlerService {
+class ScreeningEventHandler {
 
     private final RoomRepository roomRepository;
 

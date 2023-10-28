@@ -1,6 +1,7 @@
-package com.cinema.rooms.application.services;
+package com.cinema.rooms.application.handlers;
 
-import com.cinema.rooms.application.dto.RoomCreateDto;
+import com.cinema.rooms.application.commands.CreateRoom;
+import com.cinema.rooms.application.handlers.CreateRoomHandler;
 import com.cinema.rooms.domain.RoomRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -22,10 +23,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("prod")
-class RoomConfigService {
+class RoomConfigHandler {
 
     private final RoomRepository roomRepository;
-    private final RoomService roomService;
+    private final CreateRoomHandler createRoomHandler;
     private final ResourceLoader resourceLoader;
     private final ObjectMapper objectMapper;
 
@@ -67,9 +68,9 @@ class RoomConfigService {
     private void createRoomsFromJson(String json) {
         try {
             objectMapper
-                    .readValue(json, new TypeReference<List<RoomCreateDto>>() {
+                    .readValue(json, new TypeReference<List<CreateRoom>>() {
                     })
-                    .forEach(roomService::createRoom);
+                    .forEach(createRoomHandler::handle);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

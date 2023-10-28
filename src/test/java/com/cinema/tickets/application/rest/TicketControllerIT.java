@@ -2,7 +2,7 @@ package com.cinema.tickets.application.rest;
 
 import com.cinema.SpringIT;
 import com.cinema.films.application.handlers.CreateFilmHandler;
-import com.cinema.rooms.application.services.RoomService;
+import com.cinema.rooms.application.handlers.CreateRoomHandler;
 import com.cinema.screenings.application.handlers.CreateScreeningHandler;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.dto.TicketDto;
@@ -32,7 +32,7 @@ import static com.cinema.tickets.TicketFixture.SCREENING_DATE;
 import static com.cinema.tickets.TicketFixture.createCancelledTicket;
 import static com.cinema.tickets.TicketFixture.createCreateFilmCommand;
 import static com.cinema.tickets.TicketFixture.createCreateScreeningCommand;
-import static com.cinema.tickets.TicketFixture.createRoomCreateDto;
+import static com.cinema.tickets.TicketFixture.createCreateRoomCommand;
 import static com.cinema.tickets.TicketFixture.createTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -59,7 +59,7 @@ class TicketControllerIT extends SpringIT {
     private CreateScreeningHandler createScreeningHandler;
 
     @Autowired
-    private RoomService roomService;
+    private CreateRoomHandler createRoomHandler;
 
     @SpyBean
     private Clock clock;
@@ -266,7 +266,7 @@ class TicketControllerIT extends SpringIT {
     void ticket_is_cancelled_at_least_24h_before_screening() {
         //given
         createFilmHandler.handle(createCreateFilmCommand());
-        roomService.createRoom(createRoomCreateDto());
+        createRoomHandler.handle(createCreateRoomCommand());
         var command = createCreateScreeningCommand();
         createScreeningHandler.handle(command);
 
@@ -319,8 +319,8 @@ class TicketControllerIT extends SpringIT {
         var createFilmCommand = createCreateFilmCommand();
         createFilmHandler.handle(createFilmCommand);
 
-        var roomCreateDto = createRoomCreateDto();
-        roomService.createRoom(roomCreateDto);
+        var createRoomCommand = createCreateRoomCommand();
+        createRoomHandler.handle(createRoomCommand);
 
         var createScreeningCommand = createCreateScreeningCommand();
         createScreeningHandler.handle(createScreeningCommand);
@@ -344,7 +344,7 @@ class TicketControllerIT extends SpringIT {
                         ticket.getStatus(),
                         createFilmCommand.title(),
                         createScreeningCommand.date(),
-                        roomCreateDto.id(),
+                        createRoomCommand.id(),
                         rowNumber,
                         seatNumber
                 )
@@ -365,21 +365,19 @@ class TicketControllerIT extends SpringIT {
 
     private void addScreening() {
         createFilmHandler.handle(createCreateFilmCommand());
-        roomService.createRoom(createRoomCreateDto());
+        createRoomHandler.handle(createCreateRoomCommand());
         createScreeningHandler.handle(createCreateScreeningCommand(SCREENING_DATE));
     }
 
     private void addScreening(LocalDateTime screeningDate) {
         createFilmHandler.handle(createCreateFilmCommand());
-        roomService.createRoom(createRoomCreateDto());
+        createRoomHandler.handle(createCreateRoomCommand());
         createScreeningHandler.handle(createCreateScreeningCommand(screeningDate));
     }
 
     private void addScreening(String filmTitle, String roomId) {
         createFilmHandler.handle(createCreateFilmCommand().withTitle(filmTitle));
-        roomService.createRoom(
-                createRoomCreateDto().withId(roomId)
-        );
+        createRoomHandler.handle(createCreateRoomCommand().withId(roomId));
         createScreeningHandler.handle(createCreateScreeningCommand(SCREENING_DATE));
     }
 }

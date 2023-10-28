@@ -3,7 +3,7 @@ package com.cinema.tickets;
 import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.films.domain.FilmCategory;
-import com.cinema.rooms.application.dto.RoomCreateDto;
+import com.cinema.rooms.application.commands.CreateRoom;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketStatus;
 
@@ -65,8 +65,8 @@ public final class TicketFixture {
         );
     }
 
-    public static RoomCreateDto createRoomCreateDto() {
-        return new RoomCreateDto(
+    public static CreateRoom createCreateRoomCommand() {
+        return new CreateRoom(
                 ROOM_CUSTOM_ID,
                 ROOM_ROWS_NUMBER,
                 ROOM_ROW_SEATS_NUMBER

@@ -2,7 +2,7 @@ package com.cinema.screenings.application.rest;
 
 import com.cinema.SpringIT;
 import com.cinema.films.application.handlers.CreateFilmHandler;
-import com.cinema.rooms.application.services.RoomService;
+import com.cinema.rooms.application.handlers.CreateRoomHandler;
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.application.dto.ScreeningDto;
@@ -46,7 +46,7 @@ class ScreeningControllerIT extends SpringIT {
     private CreateFilmHandler createFilmHandler;
 
     @Autowired
-    private RoomService roomService;
+    private CreateRoomHandler createRoomHandler;
 
     @Test
     void screening_is_created_only_by_admin() {
@@ -312,7 +312,7 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     private void addRoom() {
-        roomService.createRoom(createRoomCreateDto());
+        createRoomHandler.handle(createRoomCreateDto());
     }
 
     private void addFilm() {

@@ -2,7 +2,7 @@ package com.cinema.screenings;
 
 import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.films.domain.FilmCategory;
-import com.cinema.rooms.application.dto.RoomCreateDto;
+import com.cinema.rooms.application.commands.CreateRoom;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.Seat;
 import com.cinema.screenings.domain.SeatStatus;
@@ -50,8 +50,8 @@ public final class ScreeningFixture {
         );
     }
 
-    public static RoomCreateDto createRoomCreateDto() {
-        return new RoomCreateDto(
+    public static CreateRoom createRoomCreateDto() {
+        return new CreateRoom(
                 ROOM_CUSTOM_ID,
                 ROOM_ROWS_NUMBER,
                 ROOM_ROW_SEATS_NUMBER

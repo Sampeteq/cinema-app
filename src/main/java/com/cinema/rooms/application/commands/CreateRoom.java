@@ -1,11 +1,11 @@
-package com.cinema.rooms.application.dto;
+package com.cinema.rooms.application.commands;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.With;
 
 @With
-public record RoomCreateDto(
+public record CreateRoom(
         @NotNull
         String id,
         @Positive

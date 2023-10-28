@@ -9,8 +9,9 @@ import com.cinema.screenings.application.dto.ScreeningDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
-import com.cinema.users.application.dto.UserCreateDto;
-import com.cinema.users.application.services.UserService;
+import com.cinema.users.application.commands.CreateUser;
+import com.cinema.users.application.handlers.CreateUserHandler;
+import com.cinema.users.domain.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ class ScreeningControllerIT extends SpringIT {
     private static final String PASSWORD = "12345";
 
     @Autowired
-    private UserService userService;
+    private CreateUserHandler createUserHandler;
 
     @Autowired
     private ScreeningRepository screeningRepository;
@@ -324,18 +325,18 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     private void addCommonUser() {
-        var userCreateDto = new UserCreateDto(
+        var command = new CreateUser(
                 USERNAME,
                 PASSWORD
         );
-        userService.createCommonUser(userCreateDto);
+        createUserHandler.handle(command, UserRole.COMMON);
     }
 
     private void addAdminUser() {
-        var userCreateDto = new UserCreateDto(
+        var command = new CreateUser(
                 USERNAME,
                 PASSWORD
         );
-        userService.createAdmin(userCreateDto);
+        createUserHandler.handle(command, UserRole.ADMIN);
     }
 }

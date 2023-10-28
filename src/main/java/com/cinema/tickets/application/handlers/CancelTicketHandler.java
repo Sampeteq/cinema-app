@@ -9,7 +9,8 @@ import com.cinema.tickets.domain.events.TicketCancelledEvent;
 import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.tickets.domain.policies.TicketCancellingPolicy;
-import com.cinema.users.application.services.UserService;
+import com.cinema.users.application.handlers.ReadCurrentUserIdHandler;
+import com.cinema.users.application.queries.ReadCurrentUserId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,7 @@ public class CancelTicketHandler {
     private final TicketRepository ticketRepository;
     private final TicketCancellingPolicy ticketCancellingPolicy;
     private final ReadScreeningDateHandler readScreeningDateHandler;
-    private final UserService userService;
+    private final ReadCurrentUserIdHandler readCurrentUserIdHandler;
     private final EventPublisher eventPublisher;
 
     @Transactional
@@ -33,7 +34,8 @@ public class CancelTicketHandler {
                 .readById(command.ticketId())
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
-        var currentUserId = userService.readCurrentUserId();
+        var readCurrentUserIdQuery = new ReadCurrentUserId();
+        var currentUserId = readCurrentUserIdHandler.handle(readCurrentUserIdQuery);
         if (!ticket.belongsTo(currentUserId)) {
             throw new TicketNotBelongsToUser();
         }

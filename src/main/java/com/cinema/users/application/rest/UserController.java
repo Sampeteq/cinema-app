@@ -1,8 +1,12 @@
 package com.cinema.users.application.rest;
 
-import com.cinema.users.application.dto.UserCreateDto;
-import com.cinema.users.application.dto.UserPasswordNewDto;
-import com.cinema.users.application.services.UserService;
+import com.cinema.users.application.commands.CreateUser;
+import com.cinema.users.application.commands.ResetUserPassword;
+import com.cinema.users.application.commands.SetNewUserPassword;
+import com.cinema.users.application.handlers.CreateUserHandler;
+import com.cinema.users.application.handlers.ResetUserPasswordHandler;
+import com.cinema.users.application.handlers.SetNewUserPasswordHandler;
+import com.cinema.users.domain.UserRole;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,22 +23,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 class UserController {
 
-    private final UserService userService;
+    private final CreateUserHandler createUserHandler;
+    private final ResetUserPasswordHandler resetUserPasswordHandler;
+    private final SetNewUserPasswordHandler setNewUserPasswordHandler;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    void createUser(@RequestBody @Valid UserCreateDto dto) {
-        userService.createCommonUser(dto);
+    void createUser(@RequestBody @Valid CreateUser command) {
+        createUserHandler.handle(command, UserRole.COMMON);
     }
 
     @PatchMapping("/password/reset")
     void resetUserPassword(@RequestParam String mail) {
-        userService.resetUserPassword(mail);
+        var resetUserPassword = new ResetUserPassword(mail);
+        resetUserPasswordHandler.handle(resetUserPassword);
     }
 
     @PatchMapping("/password/new")
-    void setNewUserPassword(@RequestBody @Valid UserPasswordNewDto dto) {
-        userService.setNewUserPassword(dto);
+    void setNewUserPassword(@RequestBody @Valid SetNewUserPassword command) {
+        setNewUserPasswordHandler.handle(command);
     }
 }
 

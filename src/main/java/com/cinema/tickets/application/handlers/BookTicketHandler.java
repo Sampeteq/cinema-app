@@ -13,7 +13,8 @@ import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.events.TicketBookedEvent;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
 import com.cinema.tickets.domain.policies.TicketBookingPolicy;
-import com.cinema.users.application.services.UserService;
+import com.cinema.users.application.handlers.ReadCurrentUserIdHandler;
+import com.cinema.users.application.queries.ReadCurrentUserId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,7 @@ public class BookTicketHandler {
     private final TicketBookingPolicy ticketBookingPolicy;
     private final ReadScreeningDateHandler readScreeningDateHandler;
     private final SeatExistsHandler seatExistsHandler;
-    private final UserService userService;
+    private final ReadCurrentUserIdHandler readCurrentUserIdHandler;
     private final EventPublisher eventPublisher;
 
     @Transactional
@@ -46,7 +47,8 @@ public class BookTicketHandler {
         if (!seatExists) {
             throw new SeatNotFoundException();
         }
-        var currentUserId = userService.readCurrentUserId();
+        var readCurrentUserIdCommand = new ReadCurrentUserId();
+        var currentUserId = readCurrentUserIdHandler.handle(readCurrentUserIdCommand);
         var ticket = new Ticket(
                 TicketStatus.ACTIVE,
                 command.screeningId(),

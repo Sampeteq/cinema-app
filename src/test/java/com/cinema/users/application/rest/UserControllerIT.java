@@ -1,7 +1,8 @@
 package com.cinema.users.application.rest;
 
 import com.cinema.SpringIT;
-import com.cinema.users.application.dto.UserPasswordNewDto;
+import com.cinema.users.UserFixture;
+import com.cinema.users.application.commands.SetNewUserPassword;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
@@ -14,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
 import static com.cinema.users.UserFixture.createUser;
-import static com.cinema.users.UserFixture.createUserCreateDto;
+import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +34,7 @@ class UserControllerIT extends SpringIT {
     @Test
     void user_is_created() {
         //given
-        var dto = createUserCreateDto();
+        var dto = UserFixture.createCrateUserCommand();
 
         //then
         var spec = webTestClient
@@ -58,7 +59,7 @@ class UserControllerIT extends SpringIT {
     void user_name_cannot_be_duplicated() {
         //given
         var user = userRepository.add(createUser("user1@mail.com"));
-        var dto = createUserCreateDto(user.getUsername());
+        var dto = createCrateUserCommand(user.getUsername());
 
         //when
         var spec = webTestClient
@@ -106,7 +107,7 @@ class UserControllerIT extends SpringIT {
         //given
         var passwordResetToken = UUID.randomUUID();
         var addedUser = userRepository.add(createUser(passwordResetToken));
-        var userPasswordNewDto = new UserPasswordNewDto(
+        var command = new SetNewUserPassword(
                 passwordResetToken,
                 addedUser.getPassword() + "new"
         );
@@ -115,7 +116,7 @@ class UserControllerIT extends SpringIT {
         var spec = webTestClient
                 .patch()
                 .uri(USERS_BASE_ENDPOINT + "/password/new")
-                .bodyValue(userPasswordNewDto)
+                .bodyValue(command)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange();
 
@@ -125,7 +126,7 @@ class UserControllerIT extends SpringIT {
                 userRepository.readyByMail(addedUser.getMail())
         ).hasValueSatisfying(
                 user -> assertTrue(
-                        passwordEncoder.matches(userPasswordNewDto.newPassword(), user.getPassword())
+                        passwordEncoder.matches(command.newPassword(), user.getPassword())
                 )
         );
     }

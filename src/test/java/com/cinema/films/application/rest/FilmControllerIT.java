@@ -6,8 +6,9 @@ import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.films.domain.exceptions.FilmYearOutOfRangeException;
-import com.cinema.users.application.dto.UserCreateDto;
-import com.cinema.users.application.services.UserService;
+import com.cinema.users.application.commands.CreateUser;
+import com.cinema.users.application.handlers.CreateUserHandler;
+import com.cinema.users.domain.UserRole;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,8 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import static com.cinema.films.FilmFixture.createFilm;
 import static com.cinema.films.FilmFixture.createCreateFilmCommand;
+import static com.cinema.films.FilmFixture.createFilm;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -31,7 +32,7 @@ class FilmControllerIT extends SpringIT {
     private static final String PASSWORD = "12345";
 
     @Autowired
-    private UserService userService;
+    private CreateUserHandler createUserHandler;
 
     @Autowired
     private FilmRepository filmRepository;
@@ -248,18 +249,18 @@ class FilmControllerIT extends SpringIT {
     }
 
     private void addCommonUser() {
-        var userCreateDto = new UserCreateDto(
+        var command = new CreateUser(
                 USERNAME,
                 PASSWORD
         );
-        userService.createCommonUser(userCreateDto);
+        createUserHandler.handle(command, UserRole.COMMON);
     }
 
     private void addAdminUser() {
-        var userCreateDto = new UserCreateDto(
+        var command = new CreateUser(
                 USERNAME,
                 PASSWORD
         );
-        userService.createAdmin(userCreateDto);
+        createUserHandler.handle(command, UserRole.ADMIN);
     }
 }

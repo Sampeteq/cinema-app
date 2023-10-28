@@ -13,8 +13,9 @@ import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
-import com.cinema.users.application.dto.UserCreateDto;
-import com.cinema.users.application.services.UserService;
+import com.cinema.users.application.commands.CreateUser;
+import com.cinema.users.application.handlers.CreateUserHandler;
+import com.cinema.users.domain.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,8 +32,8 @@ import java.util.List;
 import static com.cinema.tickets.TicketFixture.SCREENING_DATE;
 import static com.cinema.tickets.TicketFixture.createCancelledTicket;
 import static com.cinema.tickets.TicketFixture.createCreateFilmCommand;
-import static com.cinema.tickets.TicketFixture.createCreateScreeningCommand;
 import static com.cinema.tickets.TicketFixture.createCreateRoomCommand;
+import static com.cinema.tickets.TicketFixture.createCreateScreeningCommand;
 import static com.cinema.tickets.TicketFixture.createTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -50,7 +51,7 @@ class TicketControllerIT extends SpringIT {
     private TicketRepository ticketRepository;
 
     @Autowired
-    private UserService userService;
+    private CreateUserHandler createUserHandler;
 
     @Autowired
     private CreateFilmHandler createFilmHandler;
@@ -66,11 +67,12 @@ class TicketControllerIT extends SpringIT {
 
     @BeforeEach
     void setUp() {
-        userService.createCommonUser(
-                new UserCreateDto(
+        createUserHandler.handle(
+                new CreateUser(
                         username,
                         password
-                )
+                ),
+                UserRole.COMMON
         );
     }
 

@@ -2,8 +2,9 @@ package com.cinema.rooms.application.rest;
 
 import com.cinema.SpringIT;
 import com.cinema.rooms.domain.RoomRepository;
-import com.cinema.users.application.dto.UserCreateDto;
-import com.cinema.users.application.services.UserService;
+import com.cinema.users.application.commands.CreateUser;
+import com.cinema.users.application.handlers.CreateUserHandler;
+import com.cinema.users.domain.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,7 +18,7 @@ class RoomControllerIT extends SpringIT {
     private RoomRepository roomRepository;
 
     @Autowired
-    private UserService userService;
+    private CreateUserHandler createUserHandler;
 
     @Test
     void rooms_are_read() {
@@ -25,14 +26,14 @@ class RoomControllerIT extends SpringIT {
         var room = roomRepository.add(createRoom());
         var adminMail = "admin@mail.com";
         var adminPassword = "12345";
-        var userCreateDto = new UserCreateDto(adminMail, adminPassword);
-        userService.createAdmin(userCreateDto);
+        var command = new CreateUser(adminMail, adminPassword);
+        createUserHandler.handle(command, UserRole.ADMIN);
 
         //when
         var responseSpec = webTestClient
                 .get()
                 .uri(ROOMS_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(userCreateDto.mail(), userCreateDto.password()))
+                .headers(headers -> headers.setBasicAuth(command.mail(), command.password()))
                 .exchange();
 
         //then
@@ -62,14 +63,14 @@ class RoomControllerIT extends SpringIT {
         //given
         var userMail = "user1@mail.com";
         var userPassword = "12345";
-        var userCreateDto = new UserCreateDto(userMail, userPassword);
-        userService.createCommonUser(userCreateDto);
+        var command = new CreateUser(userMail, userPassword);
+        createUserHandler.handle(command, UserRole.COMMON);
 
         //when
         var responseSpec = webTestClient
                 .get()
                 .uri(ROOMS_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(userCreateDto.mail(), userCreateDto.password()))
+                .headers(headers -> headers.setBasicAuth(command.mail(), command.password()))
                 .exchange();
 
         //then

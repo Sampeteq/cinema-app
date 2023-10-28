@@ -1,7 +1,7 @@
 package com.cinema.screenings.application.rest;
 
 import com.cinema.SpringIT;
-import com.cinema.films.application.services.FilmService;
+import com.cinema.films.application.handlers.CreateFilmHandler;
 import com.cinema.rooms.application.services.RoomService;
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
 import com.cinema.screenings.application.commands.CreateScreening;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
-import static com.cinema.screenings.ScreeningFixture.createFilmCreateDto;
+import static com.cinema.screenings.ScreeningFixture.createCreateFilmCommand;
 import static com.cinema.screenings.ScreeningFixture.createRoomCreateDto;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,7 +43,7 @@ class ScreeningControllerIT extends SpringIT {
     private ScreeningRepository screeningRepository;
 
     @Autowired
-    private FilmService filmService;
+    private CreateFilmHandler createFilmHandler;
 
     @Autowired
     private RoomService roomService;
@@ -316,11 +316,11 @@ class ScreeningControllerIT extends SpringIT {
     }
 
     private void addFilm() {
-        filmService.creteFilm(createFilmCreateDto());
+        createFilmHandler.handle(createCreateFilmCommand());
     }
 
     private void addFilm(String title) {
-        filmService.creteFilm(createFilmCreateDto().withTitle(title));
+        createFilmHandler.handle(createCreateFilmCommand().withTitle(title));
     }
 
     private void addCommonUser() {

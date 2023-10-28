@@ -1,9 +1,12 @@
 package com.cinema.films.application.rest;
 
-import com.cinema.films.application.dto.FilmCreateDto;
+import com.cinema.films.application.commands.CreateFilm;
+import com.cinema.films.application.commands.DeleteFilm;
 import com.cinema.films.application.dto.FilmDto;
-import com.cinema.films.application.dto.FilmQueryDto;
-import com.cinema.films.application.services.FilmService;
+import com.cinema.films.application.handlers.CreateFilmHandler;
+import com.cinema.films.application.handlers.DeleteFilmHandler;
+import com.cinema.films.application.handlers.ReadFilmsHandler;
+import com.cinema.films.application.queries.ReadFilms;
 import com.cinema.films.domain.FilmCategory;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -30,14 +33,16 @@ import java.util.List;
 @Slf4j
 class FilmController {
 
-    private final FilmService filmService;
+    private final CreateFilmHandler createFilmHandler;
+    private final ReadFilmsHandler readFilmsHandler;
+    private final DeleteFilmHandler deleteFilmHandler;
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     @SecurityRequirement(name = "basic")
-    ResponseEntity<Object> createFilm(@RequestBody @Valid FilmCreateDto dto) {
-        log.info("DTO:{}", dto);
-        filmService.creteFilm(dto);
+    ResponseEntity<Object> createFilm(@RequestBody @Valid CreateFilm command) {
+        log.info("Command:{}", command);
+        createFilmHandler.handle(command);
         var responseEntity = ResponseEntity.created(URI.create("/films")).build();
         log.info("Response entity{}", responseEntity);
         return responseEntity;
@@ -47,7 +52,9 @@ class FilmController {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
     void deleteFilm(@PathVariable Long id) {
-        filmService.delete(id);
+        var command = new DeleteFilm(id);
+        log.info("Command:{}", command);
+        deleteFilmHandler.handle(command);
     }
 
     @GetMapping
@@ -55,11 +62,11 @@ class FilmController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) FilmCategory category
     ) {
-        var queryDto = FilmQueryDto
+        var queryDto = ReadFilms
                 .builder()
                 .title(title)
                 .category(category)
                 .build();
-        return filmService.readAll(queryDto);
+        return readFilmsHandler.handle(queryDto);
     }
 }

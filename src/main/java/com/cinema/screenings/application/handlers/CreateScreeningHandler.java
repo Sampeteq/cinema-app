@@ -1,6 +1,7 @@
 package com.cinema.screenings.application.handlers;
 
-import com.cinema.films.application.services.FilmService;
+import com.cinema.films.application.handlers.ReadFilmDurationInMinutesHandler;
+import com.cinema.films.application.queries.ReadFilmDurationInMinutes;
 import com.cinema.rooms.application.services.RoomService;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.domain.Screening;
@@ -25,7 +26,7 @@ public class CreateScreeningHandler {
 
     private final ScreeningDatePolicy screeningDatePolicy;
     private final ScreeningRepository screeningRepository;
-    private final FilmService filmService;
+    private final ReadFilmDurationInMinutesHandler readFilmDurationInMinutesHandler;
     private final RoomService roomService;
     private final EventPublisher eventPublisher;
 
@@ -33,7 +34,8 @@ public class CreateScreeningHandler {
     public void handle(CreateScreening command) {
         log.info("Command:{}", command);
         screeningDatePolicy.checkScreeningDate(command.date());
-        var filmDurationInMinutes = filmService.readFilmDurationInMinutes(command.filmId());
+        var readFilmDurationInMinutesCommand = new ReadFilmDurationInMinutes(command.filmId());
+        var filmDurationInMinutes = readFilmDurationInMinutesHandler.handle(readFilmDurationInMinutesCommand);
         log.info("Film duration in minutes:{}", filmDurationInMinutes);
         var endDate = command.date().plusMinutes(filmDurationInMinutes);
         log.info("Screening end date:{}", endDate);

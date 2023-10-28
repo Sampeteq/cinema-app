@@ -1,6 +1,6 @@
 package com.cinema.tickets;
 
-import com.cinema.films.application.dto.FilmCreateDto;
+import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.films.domain.FilmCategory;
 import com.cinema.rooms.application.dto.RoomCreateDto;
@@ -55,9 +55,9 @@ public final class TicketFixture {
         return ticket;
     }
 
-    public static FilmCreateDto createFilmCreateDto() {
+    public static CreateFilm createCreateFilmCommand() {
         var year = Year.now().getValue();
-        return new FilmCreateDto(
+        return new CreateFilm(
                 FILM_TITLE,
                 FILM_CATEGORY,
                 year,

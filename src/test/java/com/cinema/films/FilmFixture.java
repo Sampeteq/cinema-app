@@ -1,6 +1,6 @@
 package com.cinema.films;
 
-import com.cinema.films.application.dto.FilmCreateDto;
+import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmCategory;
 
@@ -20,8 +20,8 @@ public final class FilmFixture {
     private FilmFixture() {
     }
 
-    public static FilmCreateDto createFilmCreateDto() {
-        return new FilmCreateDto(
+    public static CreateFilm createCreateFilmCommand() {
+        return new CreateFilm(
                 TITLE,
                 CATEGORY,
                 YEAR,

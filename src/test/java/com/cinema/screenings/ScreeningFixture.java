@@ -1,6 +1,6 @@
 package com.cinema.screenings;
 
-import com.cinema.films.application.dto.FilmCreateDto;
+import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.films.domain.FilmCategory;
 import com.cinema.rooms.application.dto.RoomCreateDto;
 import com.cinema.screenings.domain.Screening;
@@ -41,8 +41,8 @@ public final class ScreeningFixture {
         );
     }
 
-    public static FilmCreateDto createFilmCreateDto() {
-        return new FilmCreateDto(
+    public static CreateFilm createCreateFilmCommand() {
+        return new CreateFilm(
                 FILM_TITLE,
                 FILM_CATEGORY,
                 FILM_YEAR,

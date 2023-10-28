@@ -1,6 +1,6 @@
 package com.cinema.films.infrastructure;
 
-import com.cinema.films.application.dto.FilmQueryDto;
+import com.cinema.films.application.queries.ReadFilms;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ class JpaFilmRepositoryAdapter implements FilmRepository {
     }
 
     @Override
-    public List<Film> readAll(FilmQueryDto queryDto) {
+    public List<Film> readAll(ReadFilms queryDto) {
         return jpaFilmRepository.findAll(
                 titleSpec(queryDto).and(categorySpec(queryDto))
         );
@@ -45,7 +45,7 @@ class JpaFilmRepositoryAdapter implements FilmRepository {
         return jpaFilmRepository.existsByTitle(title);
     }
 
-    private static Specification<Film> titleSpec(FilmQueryDto queryDto) {
+    private static Specification<Film> titleSpec(ReadFilms queryDto) {
         return (root, query, criteriaBuilder) -> queryDto.title() == null ?
                 criteriaBuilder.conjunction() :
                 criteriaBuilder.equal(
@@ -54,7 +54,7 @@ class JpaFilmRepositoryAdapter implements FilmRepository {
                 );
     }
 
-    private static Specification<Film> categorySpec(FilmQueryDto queryDto) {
+    private static Specification<Film> categorySpec(ReadFilms queryDto) {
         return (root, query, criteriaBuilder) -> queryDto.category() == null ?
                 criteriaBuilder.conjunction() :
                 criteriaBuilder.equal(

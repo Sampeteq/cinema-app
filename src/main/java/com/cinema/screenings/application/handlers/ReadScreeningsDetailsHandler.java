@@ -1,6 +1,7 @@
 package com.cinema.screenings.application.handlers;
 
-import com.cinema.films.application.services.FilmService;
+import com.cinema.films.application.handlers.ReadFilmTitleHandler;
+import com.cinema.films.application.queries.ReadFilmTitle;
 import com.cinema.screenings.application.dto.ScreeningDetailsDto;
 import com.cinema.screenings.application.queries.ReadScreeningsDetails;
 import com.cinema.screenings.domain.ScreeningRepository;
@@ -15,13 +16,14 @@ import org.springframework.stereotype.Component;
 public class ReadScreeningsDetailsHandler {
 
     private final ScreeningRepository screeningRepository;
-    private final FilmService filmService;
+    private final ReadFilmTitleHandler readFilmTitleHandler;
 
     public ScreeningDetailsDto handle(ReadScreeningsDetails query) {
         var screening = screeningRepository
                 .readById(query.screeningId())
                 .orElseThrow(ScreeningNotFoundException::new);
-        var filmTitle = filmService.readFilmTitle(screening.getFilmId());
+        var readFilmTitleQuery = new ReadFilmTitle(screening.getFilmId());
+        var filmTitle = readFilmTitleHandler.handle(readFilmTitleQuery);
         return new ScreeningDetailsDto(
                 screening.getDate(),
                 filmTitle,

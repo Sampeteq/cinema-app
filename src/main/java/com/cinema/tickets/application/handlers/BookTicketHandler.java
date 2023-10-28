@@ -1,6 +1,9 @@
 package com.cinema.tickets.application.handlers;
 
-import com.cinema.screenings.application.services.ScreeningService;
+import com.cinema.screenings.application.handlers.ReadScreeningDateHandler;
+import com.cinema.screenings.application.handlers.SeatExistsHandler;
+import com.cinema.screenings.application.queries.ReadScreeningDate;
+import com.cinema.screenings.application.queries.SeatExists;
 import com.cinema.screenings.domain.exceptions.SeatNotFoundException;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.commands.BookTicket;
@@ -23,7 +26,8 @@ public class BookTicketHandler {
 
     private final TicketRepository ticketRepository;
     private final TicketBookingPolicy ticketBookingPolicy;
-    private final ScreeningService screeningService;
+    private final ReadScreeningDateHandler readScreeningDateHandler;
+    private final SeatExistsHandler seatExistsHandler;
     private final UserService userService;
     private final EventPublisher eventPublisher;
 
@@ -33,10 +37,12 @@ public class BookTicketHandler {
         if (ticketRepository.exists(command.screeningId(), command.seatId())) {
             throw new TicketAlreadyExists();
         }
-        var screeningDate = screeningService.readScreeningDate(command.screeningId());
+        var readScreeningDate = new ReadScreeningDate(command.screeningId());
+        var screeningDate = readScreeningDateHandler.handle(readScreeningDate);
         log.info("Screening date:{}", screeningDate);
         ticketBookingPolicy.checkScreeningDate(screeningDate);
-        var seatExists = screeningService.seatExists(command.screeningId(), command.seatId());
+        var seatExistsQuery = new SeatExists(command.screeningId(), command.seatId());
+        var seatExists = seatExistsHandler.handle(seatExistsQuery);
         if (!seatExists) {
             throw new SeatNotFoundException();
         }

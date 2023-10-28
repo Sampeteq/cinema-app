@@ -3,7 +3,7 @@ package com.cinema.tickets.application.rest;
 import com.cinema.SpringIT;
 import com.cinema.films.application.services.FilmService;
 import com.cinema.rooms.application.services.RoomService;
-import com.cinema.screenings.application.services.ScreeningService;
+import com.cinema.screenings.application.handlers.CreateScreeningHandler;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.domain.TicketRepository;
@@ -30,9 +30,9 @@ import java.util.List;
 
 import static com.cinema.tickets.TicketFixture.SCREENING_DATE;
 import static com.cinema.tickets.TicketFixture.createCancelledTicket;
+import static com.cinema.tickets.TicketFixture.createCreateScreeningCommand;
 import static com.cinema.tickets.TicketFixture.createFilmCreateDto;
 import static com.cinema.tickets.TicketFixture.createRoomCreateDto;
-import static com.cinema.tickets.TicketFixture.createScreeningCrateDto;
 import static com.cinema.tickets.TicketFixture.createTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -56,7 +56,7 @@ class TicketControllerIT extends SpringIT {
     private FilmService filmService;
 
     @Autowired
-    private ScreeningService screeningService;
+    private CreateScreeningHandler createScreeningHandler;
 
     @Autowired
     private RoomService roomService;
@@ -267,13 +267,13 @@ class TicketControllerIT extends SpringIT {
         //given
         filmService.creteFilm(createFilmCreateDto());
         roomService.createRoom(createRoomCreateDto());
-        var dto = createScreeningCrateDto();
-        screeningService.createScreening(dto);
+        var command = createCreateScreeningCommand();
+        createScreeningHandler.handle(command);
 
         ticketRepository.add(createTicket());
         Mockito
                 .when(clock.instant())
-                .thenReturn(dto.date().minusHours(23).toInstant(ZoneOffset.UTC));
+                .thenReturn(command.date().minusHours(23).toInstant(ZoneOffset.UTC));
 
         //when
         var spec = webTestClient
@@ -322,8 +322,8 @@ class TicketControllerIT extends SpringIT {
         var roomCreateDto = createRoomCreateDto();
         roomService.createRoom(roomCreateDto);
 
-        var screeningCreateDto = createScreeningCrateDto();
-        screeningService.createScreening(screeningCreateDto);
+        var command = createCreateScreeningCommand();
+        createScreeningHandler.handle(command);
 
         var ticket = ticketRepository.add(createTicket());
 
@@ -343,7 +343,7 @@ class TicketControllerIT extends SpringIT {
                         1L,
                         ticket.getStatus(),
                         filmCreateDto.title(),
-                        screeningCreateDto.date(),
+                        command.date(),
                         roomCreateDto.id(),
                         rowNumber,
                         seatNumber
@@ -366,13 +366,13 @@ class TicketControllerIT extends SpringIT {
     private void addScreening() {
         filmService.creteFilm(createFilmCreateDto());
         roomService.createRoom(createRoomCreateDto());
-        screeningService.createScreening(createScreeningCrateDto(SCREENING_DATE));
+        createScreeningHandler.handle(createCreateScreeningCommand(SCREENING_DATE));
     }
 
     private void addScreening(LocalDateTime screeningDate) {
         filmService.creteFilm(createFilmCreateDto());
         roomService.createRoom(createRoomCreateDto());
-        screeningService.createScreening(createScreeningCrateDto(screeningDate));
+        createScreeningHandler.handle(createCreateScreeningCommand(screeningDate));
     }
 
     private void addScreening(String filmTitle, String roomId) {
@@ -382,6 +382,6 @@ class TicketControllerIT extends SpringIT {
         roomService.createRoom(
                 createRoomCreateDto().withId(roomId)
         );
-        screeningService.createScreening(createScreeningCrateDto(SCREENING_DATE));
+        createScreeningHandler.handle(createCreateScreeningCommand(SCREENING_DATE));
     }
 }

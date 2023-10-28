@@ -1,6 +1,9 @@
 package com.cinema.tickets.application.handlers;
 
-import com.cinema.screenings.application.services.ScreeningService;
+import com.cinema.screenings.application.handlers.ReadScreeningsDetailsHandler;
+import com.cinema.screenings.application.handlers.ReadSeatDetailsHandler;
+import com.cinema.screenings.application.queries.ReadScreeningsDetails;
+import com.cinema.screenings.application.queries.ReadSeatDetails;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.application.queries.ReadAllTicketsByCurrentUser;
 import com.cinema.tickets.domain.TicketRepository;
@@ -18,7 +21,8 @@ public class ReadAllTicketsByCurrentUserHandler {
 
     private final UserService userService;
     private final TicketRepository ticketRepository;
-    private final ScreeningService screeningService;
+    private final ReadScreeningsDetailsHandler readScreeningsDetailsHandler;
+    private final ReadSeatDetailsHandler readSeatDetailsHandler;
 
     public List<TicketDto> handle(ReadAllTicketsByCurrentUser query) {
         log.info("Query:{}", query);
@@ -27,13 +31,10 @@ public class ReadAllTicketsByCurrentUserHandler {
                 .readAllByUserId(currentUserId)
                 .stream()
                 .map(ticket -> {
-                    var screeningDetails = screeningService.readScreeningDetails(
-                            ticket.getScreeningId()
-                    );
-                    var seatDetails = screeningService.readSeatDetails(
-                            ticket.getScreeningId(),
-                            ticket.getSeatId()
-                    );
+                    var readScreeningsDetails = new ReadScreeningsDetails(ticket.getScreeningId());
+                    var screeningDetails = readScreeningsDetailsHandler.handle(readScreeningsDetails);
+                    var readSeatDetails = new ReadSeatDetails(ticket.getScreeningId(), ticket.getSeatId());
+                    var seatDetails = readSeatDetailsHandler.handle(readSeatDetails);
                     return new TicketDto(
                             ticket.getId(),
                             ticket.getStatus(),

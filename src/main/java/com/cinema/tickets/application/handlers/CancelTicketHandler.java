@@ -1,6 +1,7 @@
 package com.cinema.tickets.application.handlers;
 
-import com.cinema.screenings.application.services.ScreeningService;
+import com.cinema.screenings.application.handlers.ReadScreeningDateHandler;
+import com.cinema.screenings.application.queries.ReadScreeningDate;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.commands.CancelTicket;
 import com.cinema.tickets.domain.TicketRepository;
@@ -21,7 +22,7 @@ public class CancelTicketHandler {
 
     private final TicketRepository ticketRepository;
     private final TicketCancellingPolicy ticketCancellingPolicy;
-    private final ScreeningService screeningService;
+    private final ReadScreeningDateHandler readScreeningDateHandler;
     private final UserService userService;
     private final EventPublisher eventPublisher;
 
@@ -36,7 +37,8 @@ public class CancelTicketHandler {
         if (!ticket.belongsTo(currentUserId)) {
             throw new TicketNotBelongsToUser();
         }
-        var screeningDate = screeningService.readScreeningDate(ticket.getScreeningId());
+        var readScreeningDate = new ReadScreeningDate(ticket.getScreeningId());
+        var screeningDate = readScreeningDateHandler.handle(readScreeningDate);
         log.info("Screening date:{}", screeningDate);
         ticketCancellingPolicy.checkScreeningDate(screeningDate);
         ticket.cancel();

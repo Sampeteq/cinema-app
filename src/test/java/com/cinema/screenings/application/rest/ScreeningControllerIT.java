@@ -4,7 +4,7 @@ import com.cinema.SpringIT;
 import com.cinema.films.application.services.FilmService;
 import com.cinema.rooms.application.services.RoomService;
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
-import com.cinema.screenings.application.dto.ScreeningCreateDto;
+import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.application.dto.ScreeningDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
@@ -72,14 +72,14 @@ class ScreeningControllerIT extends SpringIT {
         addAdminUser();
         addFilm(filmTitle);
         addRoom();
-        var screeningCreateDto = new ScreeningCreateDto(SCREENING_DATE, filmId);
+        var command = new CreateScreening(SCREENING_DATE, filmId);
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(screeningCreateDto)
+                .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
@@ -88,7 +88,7 @@ class ScreeningControllerIT extends SpringIT {
         var expectedDto = List.of(
                new ScreeningDto(
                        1L,
-                       screeningCreateDto.date(),
+                       command.date(),
                        filmTitle
                )
         );
@@ -111,14 +111,14 @@ class ScreeningControllerIT extends SpringIT {
         addFilm(filmTitle);
         addRoom();
         var screeningDate = LocalDateTime.now().plusDays(6);
-        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmId);
+        var command = new CreateScreening(screeningDate, filmId);
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(screeningCreateDto)
+                .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
@@ -140,14 +140,14 @@ class ScreeningControllerIT extends SpringIT {
         addRoom();
         addFilm(filmTitle);
         var screeningDate = LocalDateTime.now().plusDays(23);
-        var screeningCreateDto = new ScreeningCreateDto(screeningDate, filmId);
+        var command = new CreateScreening(screeningDate, filmId);
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(screeningCreateDto)
+                .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
@@ -168,7 +168,7 @@ class ScreeningControllerIT extends SpringIT {
         addAdminUser();
         addFilm(filmTitle);
         var screening = addScreening();
-        var screeningCreateDto = new ScreeningCreateDto(
+        var command = new CreateScreening(
                 screening.getDate().plusMinutes(10),
                 filmId
         );
@@ -178,7 +178,7 @@ class ScreeningControllerIT extends SpringIT {
                 .post()
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(screeningCreateDto)
+                .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 

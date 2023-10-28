@@ -1,10 +1,15 @@
 package com.cinema.screenings.application.rest;
 
-import com.cinema.screenings.application.dto.ScreeningCreateDto;
+import com.cinema.screenings.application.commands.CreateScreening;
+import com.cinema.screenings.application.commands.DeleteScreening;
 import com.cinema.screenings.application.dto.ScreeningDto;
-import com.cinema.screenings.application.dto.ScreeningQueryDto;
 import com.cinema.screenings.application.dto.SeatDto;
-import com.cinema.screenings.application.services.ScreeningService;
+import com.cinema.screenings.application.handlers.CreateScreeningHandler;
+import com.cinema.screenings.application.handlers.DeleteScreeningHandler;
+import com.cinema.screenings.application.handlers.ReadScreeningsByHandler;
+import com.cinema.screenings.application.handlers.ReadSeatsByScreeningIdHandler;
+import com.cinema.screenings.application.queries.ReadScreeningsBy;
+import com.cinema.screenings.application.queries.ReadSeatsByScreeningId;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,17 +36,20 @@ import java.util.List;
 @Slf4j
 class ScreeningController {
 
-    private final ScreeningService screeningService;
+    private final CreateScreeningHandler createScreeningHandler;
+    private final DeleteScreeningHandler deleteScreeningHandler;
+    private final ReadScreeningsByHandler readScreeningsByHandler;
+    private final ReadSeatsByScreeningIdHandler readSeatsByScreeningIdHandler;
 
     @PostMapping
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> createScreening(
             @RequestBody
             @Valid
-            ScreeningCreateDto dto
+            CreateScreening command
     ) {
-        log.info("DTO:{}", dto);
-        screeningService.createScreening(dto);
+        log.info("Command:{}", command);
+        createScreeningHandler.handle(command);
         var responseEntity = ResponseEntity.created(URI.create("/screenings")).build();
         log.info("Response entity:{}", responseEntity);
         return responseEntity;
@@ -51,20 +59,24 @@ class ScreeningController {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
     void deleteScreening(@PathVariable Long id) {
-        screeningService.delete(id);
+        var command = new DeleteScreening(id);
+        deleteScreeningHandler.handle(command);
     }
 
     @GetMapping
-    List<ScreeningDto> readAllScreeningsBy(@RequestParam(required = false) LocalDate date) {
-        var queryDto = ScreeningQueryDto
+    List<ScreeningDto> readScreeningsBy(@RequestParam(required = false) LocalDate date) {
+        var query = ReadScreeningsBy
                 .builder()
                 .date(date)
                 .build();
-        return screeningService.readAllScreeningsBy(queryDto);
+        log.info("Query:{}", query);
+        return readScreeningsByHandler.handle(query);
     }
 
     @GetMapping("/{id}/seats")
     List<SeatDto> readSeatsByScreeningId(@PathVariable Long id) {
-        return screeningService.readSeatsByScreeningId(id);
+        var query = new ReadSeatsByScreeningId(id);
+        log.info("Query:{}", query);
+        return readSeatsByScreeningIdHandler.handle(query);
     }
 }

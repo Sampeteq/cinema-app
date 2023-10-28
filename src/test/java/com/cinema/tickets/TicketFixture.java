@@ -1,7 +1,7 @@
 package com.cinema.tickets;
 
 import com.cinema.films.application.dto.FilmCreateDto;
-import com.cinema.screenings.application.dto.ScreeningCreateDto;
+import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.films.domain.FilmCategory;
 import com.cinema.rooms.application.dto.RoomCreateDto;
 import com.cinema.tickets.domain.Ticket;
@@ -73,15 +73,15 @@ public final class TicketFixture {
         );
     }
 
-    public static ScreeningCreateDto createScreeningCrateDto() {
-        return new ScreeningCreateDto(
+    public static CreateScreening createCreateScreeningCommand() {
+        return new CreateScreening(
                 SCREENING_DATE,
                 FILM_ID
         );
     }
 
-    public static ScreeningCreateDto createScreeningCrateDto(LocalDateTime date) {
-        return new ScreeningCreateDto(
+    public static CreateScreening createCreateScreeningCommand(LocalDateTime date) {
+        return new CreateScreening(
                 date,
                 FILM_ID
         );

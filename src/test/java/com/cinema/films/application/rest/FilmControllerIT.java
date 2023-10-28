@@ -6,9 +6,10 @@ import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.films.domain.exceptions.FilmYearOutOfRangeException;
+import com.cinema.users.application.commands.CreateAdmin;
 import com.cinema.users.application.commands.CreateUser;
+import com.cinema.users.application.handlers.CreateAdminHandler;
 import com.cinema.users.application.handlers.CreateUserHandler;
-import com.cinema.users.domain.UserRole;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -33,6 +34,9 @@ class FilmControllerIT extends SpringIT {
 
     @Autowired
     private CreateUserHandler createUserHandler;
+
+    @Autowired
+    private CreateAdminHandler createAdminHandler;
 
     @Autowired
     private FilmRepository filmRepository;
@@ -253,14 +257,14 @@ class FilmControllerIT extends SpringIT {
                 USERNAME,
                 PASSWORD
         );
-        createUserHandler.handle(command, UserRole.COMMON);
+        createUserHandler.handle(command);
     }
 
     private void addAdminUser() {
-        var command = new CreateUser(
+        var command = new CreateAdmin(
                 USERNAME,
                 PASSWORD
         );
-        createUserHandler.handle(command, UserRole.ADMIN);
+        createAdminHandler.handle(command);
     }
 }

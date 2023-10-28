@@ -15,7 +15,6 @@ import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
 import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.handlers.CreateUserHandler;
-import com.cinema.users.domain.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -71,8 +70,7 @@ class TicketControllerIT extends SpringIT {
                 new CreateUser(
                         username,
                         password
-                ),
-                UserRole.COMMON
+                )
         );
     }
 

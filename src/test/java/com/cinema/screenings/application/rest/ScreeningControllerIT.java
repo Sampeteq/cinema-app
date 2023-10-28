@@ -9,9 +9,10 @@ import com.cinema.screenings.application.dto.ScreeningDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
+import com.cinema.users.application.commands.CreateAdmin;
 import com.cinema.users.application.commands.CreateUser;
+import com.cinema.users.application.handlers.CreateAdminHandler;
 import com.cinema.users.application.handlers.CreateUserHandler;
-import com.cinema.users.domain.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,9 +39,6 @@ class ScreeningControllerIT extends SpringIT {
     private static final String PASSWORD = "12345";
 
     @Autowired
-    private CreateUserHandler createUserHandler;
-
-    @Autowired
     private ScreeningRepository screeningRepository;
 
     @Autowired
@@ -48,6 +46,12 @@ class ScreeningControllerIT extends SpringIT {
 
     @Autowired
     private CreateRoomHandler createRoomHandler;
+
+    @Autowired
+    private CreateAdminHandler createAdminHandler;
+
+    @Autowired
+    private CreateUserHandler createUserHandler;
 
     @Test
     void screening_is_created_only_by_admin() {
@@ -329,14 +333,14 @@ class ScreeningControllerIT extends SpringIT {
                 USERNAME,
                 PASSWORD
         );
-        createUserHandler.handle(command, UserRole.COMMON);
+        createUserHandler.handle(command);
     }
 
     private void addAdminUser() {
-        var command = new CreateUser(
+        var command = new CreateAdmin(
                 USERNAME,
                 PASSWORD
         );
-        createUserHandler.handle(command, UserRole.ADMIN);
+        createAdminHandler.handle(command);
     }
 }

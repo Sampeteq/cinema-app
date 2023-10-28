@@ -6,7 +6,6 @@ import com.cinema.users.application.commands.SetNewUserPassword;
 import com.cinema.users.application.handlers.CreateUserHandler;
 import com.cinema.users.application.handlers.ResetUserPasswordHandler;
 import com.cinema.users.application.handlers.SetNewUserPasswordHandler;
-import com.cinema.users.domain.UserRole;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,7 @@ class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     void createUser(@RequestBody @Valid CreateUser command) {
-        createUserHandler.handle(command, UserRole.COMMON);
+        createUserHandler.handle(command);
     }
 
     @PatchMapping("/password/reset")

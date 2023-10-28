@@ -1,8 +1,12 @@
 package com.cinema.tickets.application.rest;
 
-import com.cinema.tickets.application.dto.TicketBookDto;
+import com.cinema.tickets.application.commands.BookTicket;
+import com.cinema.tickets.application.commands.CancelTicket;
 import com.cinema.tickets.application.dto.TicketDto;
-import com.cinema.tickets.application.services.TicketService;
+import com.cinema.tickets.application.handlers.BookTicketHandler;
+import com.cinema.tickets.application.handlers.CancelTicketHandler;
+import com.cinema.tickets.application.handlers.ReadAllTicketsByCurrentUserHandler;
+import com.cinema.tickets.application.queries.ReadAllTicketsByCurrentUser;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +29,15 @@ import java.util.List;
 @Slf4j
 class TicketController {
 
-    private final TicketService ticketService;
+    private final BookTicketHandler bookTicketHandler;
+    private final CancelTicketHandler cancelTicketHandler;
+    private final ReadAllTicketsByCurrentUserHandler readAllTicketsByCurrentUserHandler;
 
     @PostMapping
     @SecurityRequirement(name = "basic")
-    ResponseEntity<Object> bookTicket(@RequestBody @Valid TicketBookDto dto) {
-        log.info("DTO:{}", dto);
-        ticketService.bookTicket(dto);
+    ResponseEntity<Object> bookTicket(@RequestBody @Valid BookTicket command) {
+        log.info("Command:{}", command);
+        bookTicketHandler.handle(command);
         var responseEntity = ResponseEntity.created(URI.create("/my/tickets")).build();
         log.info("Response entity:{}", responseEntity);
         return responseEntity;
@@ -41,7 +47,8 @@ class TicketController {
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> cancelTicket(@PathVariable Long ticketId) {
         log.info("Ticket id:{}", ticketId);
-        ticketService.cancelTicket(ticketId);
+        var command = new CancelTicket(ticketId);
+        cancelTicketHandler.handle(command);
         var responseEntity = ResponseEntity.ok().build();
         log.info("Response entity:{}", responseEntity);
         return responseEntity;
@@ -50,7 +57,8 @@ class TicketController {
     @GetMapping("/my")
     @SecurityRequirement(name = "basic")
     List<TicketDto> readAllTicketsByCurrentUser() {
-        return ticketService.readByCurrentUser();
+        var query = new ReadAllTicketsByCurrentUser();
+        return readAllTicketsByCurrentUserHandler.handle(query);
     }
 }
 

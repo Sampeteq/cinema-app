@@ -4,7 +4,7 @@ import com.cinema.SpringIT;
 import com.cinema.films.application.services.FilmService;
 import com.cinema.rooms.application.services.RoomService;
 import com.cinema.screenings.application.services.ScreeningService;
-import com.cinema.tickets.application.dto.TicketBookDto;
+import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
@@ -79,7 +79,7 @@ class TicketControllerIT extends SpringIT {
         //given
         var nonExistingScreeningId = 0L;
         var seatId = 1L;
-        var ticketBookDto = new TicketBookDto(
+        var command = new BookTicket(
                 nonExistingScreeningId,
                 seatId
         );
@@ -90,7 +90,7 @@ class TicketControllerIT extends SpringIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(ticketBookDto)
+                .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
@@ -104,7 +104,7 @@ class TicketControllerIT extends SpringIT {
         addScreening();
         var screeningId = 1L;
         var nonExistingSeatId = 0L;
-        var ticketBookDto = new TicketBookDto(
+        var command = new BookTicket(
                 screeningId,
                 nonExistingSeatId
         );
@@ -115,7 +115,7 @@ class TicketControllerIT extends SpringIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(ticketBookDto)
+                .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
@@ -131,7 +131,7 @@ class TicketControllerIT extends SpringIT {
         addScreening(filmTitle, roomId);
         var screeningId = 1L;
         var seatId = 1L;
-        var ticketBookDto = new TicketBookDto(
+        var command = new BookTicket(
                 screeningId,
                 seatId
         );
@@ -141,7 +141,7 @@ class TicketControllerIT extends SpringIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(ticketBookDto)
+                .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
@@ -162,7 +162,7 @@ class TicketControllerIT extends SpringIT {
         //given
         addScreening();
         var ticket = ticketRepository.add(createTicket());
-        var ticketBookDto = new TicketBookDto(
+        var command = new BookTicket(
                 ticket.getScreeningId(),
                 ticket.getSeatId()
         );
@@ -172,7 +172,7 @@ class TicketControllerIT extends SpringIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(ticketBookDto)
+                .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 
@@ -195,7 +195,7 @@ class TicketControllerIT extends SpringIT {
                 .thenReturn(screeningDate.minusMinutes(59).toInstant(ZoneOffset.UTC));
         var screeningId = 1L;
         var seatId =  1L;
-        var ticketBookDto = new TicketBookDto(
+        var command = new BookTicket(
                 screeningId,
                 seatId
         );
@@ -205,7 +205,7 @@ class TicketControllerIT extends SpringIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(ticketBookDto)
+                .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(username, password))
                 .exchange();
 

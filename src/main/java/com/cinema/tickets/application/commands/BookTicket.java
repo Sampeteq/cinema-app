@@ -1,8 +1,8 @@
-package com.cinema.tickets.application.dto;
+package com.cinema.tickets.application.commands;
 
 import jakarta.validation.constraints.NotNull;
 
-public record TicketBookDto(
+public record BookTicket(
         @NotNull
         Long screeningId,
 

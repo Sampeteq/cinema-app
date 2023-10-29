@@ -1,32 +1,21 @@
 package com.cinema.users.application.commands.handlers;
 
 import com.cinema.users.application.commands.CreateUser;
-import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
-import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
+import com.cinema.users.domain.factories.UserFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class CreateUserHandler {
 
+    private final UserFactory userFactory;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     public void handle(CreateUser command) {
-        if (userRepository.existsByMail(command.mail())) {
-            throw new UserMailNotUniqueException();
-        }
-        var user = new User(
-                command.mail(),
-                passwordEncoder.encode(command.password()),
-                UserRole.COMMON
-        );
+        var user = userFactory.createUser(command.mail(), command.password(), UserRole.COMMON);
         userRepository.add(user);
     }
 }

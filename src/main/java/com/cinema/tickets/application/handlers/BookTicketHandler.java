@@ -1,10 +1,9 @@
 package com.cinema.tickets.application.handlers;
 
 import com.cinema.screenings.application.handlers.ReadScreeningDateHandler;
-import com.cinema.screenings.application.handlers.SeatExistsHandler;
+import com.cinema.screenings.application.handlers.ReadSeatHandler;
 import com.cinema.screenings.application.queries.ReadScreeningDate;
-import com.cinema.screenings.application.queries.SeatExists;
-import com.cinema.screenings.domain.exceptions.SeatNotFoundException;
+import com.cinema.screenings.application.queries.ReadSeat;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.domain.Ticket;
@@ -28,7 +27,7 @@ public class BookTicketHandler {
     private final TicketRepository ticketRepository;
     private final TicketBookingPolicy ticketBookingPolicy;
     private final ReadScreeningDateHandler readScreeningDateHandler;
-    private final SeatExistsHandler seatExistsHandler;
+    private final ReadSeatHandler readSeatHandler;
     private final ReadCurrentUserIdHandler readCurrentUserIdHandler;
     private final EventPublisher eventPublisher;
 
@@ -42,17 +41,14 @@ public class BookTicketHandler {
         var screeningDate = readScreeningDateHandler.handle(readScreeningDate);
         log.info("Screening date:{}", screeningDate);
         ticketBookingPolicy.checkScreeningDate(screeningDate);
-        var seatExistsQuery = new SeatExists(command.screeningId(), command.seatId());
-        var seatExists = seatExistsHandler.handle(seatExistsQuery);
-        if (!seatExists) {
-            throw new SeatNotFoundException();
-        }
+        var readSeat = new ReadSeat(command.screeningId(), command.seatId());
+        var seatDto = readSeatHandler.handle(readSeat);
         var readCurrentUserIdCommand = new ReadCurrentUserId();
         var currentUserId = readCurrentUserIdHandler.handle(readCurrentUserIdCommand);
         var ticket = new Ticket(
                 TicketStatus.ACTIVE,
                 command.screeningId(),
-                command.seatId(),
+                seatDto.id(),
                 currentUserId
         );
         var addedTicket = ticketRepository.add(ticket);

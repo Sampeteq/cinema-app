@@ -2,12 +2,12 @@ package com.cinema.screenings.application.rest;
 
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.application.commands.DeleteScreening;
-import com.cinema.screenings.application.dto.ScreeningDto;
-import com.cinema.screenings.application.dto.SeatDto;
-import com.cinema.screenings.application.handlers.CreateScreeningHandler;
-import com.cinema.screenings.application.handlers.DeleteScreeningHandler;
-import com.cinema.screenings.application.handlers.ReadScreeningsByHandler;
-import com.cinema.screenings.application.handlers.ReadSeatsByScreeningIdHandler;
+import com.cinema.screenings.application.queries.dto.ScreeningDto;
+import com.cinema.screenings.application.queries.dto.SeatDto;
+import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
+import com.cinema.screenings.application.commands.handlers.DeleteScreeningHandler;
+import com.cinema.screenings.application.queries.handlers.ReadScreeningsByHandler;
+import com.cinema.screenings.application.queries.handlers.ReadSeatsByScreeningIdHandler;
 import com.cinema.screenings.application.queries.ReadScreeningsBy;
 import com.cinema.screenings.application.queries.ReadSeatsByScreeningId;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

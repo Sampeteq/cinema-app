@@ -1,6 +1,6 @@
 package com.cinema.screenings.application.services;
 
-import com.cinema.films.application.handlers.ReadFilmHandler;
+import com.cinema.films.application.queries.handlers.ReadFilmHandler;
 import com.cinema.films.application.queries.ReadFilm;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;

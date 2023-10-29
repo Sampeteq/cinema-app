@@ -2,10 +2,10 @@ package com.cinema.tickets.application.rest;
 
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.commands.CancelTicket;
-import com.cinema.tickets.application.dto.TicketDto;
-import com.cinema.tickets.application.handlers.BookTicketHandler;
-import com.cinema.tickets.application.handlers.CancelTicketHandler;
-import com.cinema.tickets.application.handlers.ReadAllTicketsByCurrentUserHandler;
+import com.cinema.tickets.application.queries.dto.TicketDto;
+import com.cinema.tickets.application.commands.handlers.BookTicketHandler;
+import com.cinema.tickets.application.commands.handlers.CancelTicketHandler;
+import com.cinema.tickets.application.queries.handlers.ReadAllTicketsByCurrentUserHandler;
 import com.cinema.tickets.application.queries.ReadAllTicketsByCurrentUser;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;

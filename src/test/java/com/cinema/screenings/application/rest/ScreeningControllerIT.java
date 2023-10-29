@@ -1,18 +1,18 @@
 package com.cinema.screenings.application.rest;
 
 import com.cinema.SpringIT;
-import com.cinema.films.application.handlers.CreateFilmHandler;
-import com.cinema.rooms.application.handlers.CreateRoomHandler;
+import com.cinema.films.application.commands.handlers.CreateFilmHandler;
+import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
 import com.cinema.screenings.application.commands.CreateScreening;
-import com.cinema.screenings.application.dto.ScreeningDto;
+import com.cinema.screenings.application.queries.dto.ScreeningDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.users.application.commands.CreateAdmin;
 import com.cinema.users.application.commands.CreateUser;
-import com.cinema.users.application.handlers.CreateAdminHandler;
-import com.cinema.users.application.handlers.CreateUserHandler;
+import com.cinema.users.application.commands.handlers.CreateAdminHandler;
+import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

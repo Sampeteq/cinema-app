@@ -1,11 +1,11 @@
 package com.cinema.tickets.application.rest;
 
 import com.cinema.SpringIT;
-import com.cinema.films.application.handlers.CreateFilmHandler;
-import com.cinema.rooms.application.handlers.CreateRoomHandler;
-import com.cinema.screenings.application.handlers.CreateScreeningHandler;
+import com.cinema.films.application.commands.handlers.CreateFilmHandler;
+import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
+import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.tickets.application.commands.BookTicket;
-import com.cinema.tickets.application.dto.TicketDto;
+import com.cinema.tickets.application.queries.dto.TicketDto;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
@@ -14,7 +14,7 @@ import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
 import com.cinema.users.application.commands.CreateUser;
-import com.cinema.users.application.handlers.CreateUserHandler;
+import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

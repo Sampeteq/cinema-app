@@ -4,8 +4,8 @@ import com.cinema.SpringIT;
 import com.cinema.rooms.domain.RoomRepository;
 import com.cinema.users.application.commands.CreateAdmin;
 import com.cinema.users.application.commands.CreateUser;
-import com.cinema.users.application.handlers.CreateAdminHandler;
-import com.cinema.users.application.handlers.CreateUserHandler;
+import com.cinema.users.application.commands.handlers.CreateAdminHandler;
+import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

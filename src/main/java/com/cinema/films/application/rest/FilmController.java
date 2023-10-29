@@ -2,10 +2,10 @@ package com.cinema.films.application.rest;
 
 import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.films.application.commands.DeleteFilm;
-import com.cinema.films.application.dto.FilmDto;
-import com.cinema.films.application.handlers.CreateFilmHandler;
-import com.cinema.films.application.handlers.DeleteFilmHandler;
-import com.cinema.films.application.handlers.ReadFilmsHandler;
+import com.cinema.films.application.queries.dto.FilmDto;
+import com.cinema.films.application.commands.handlers.CreateFilmHandler;
+import com.cinema.films.application.commands.handlers.DeleteFilmHandler;
+import com.cinema.films.application.queries.handlers.ReadFilmsHandler;
 import com.cinema.films.application.queries.ReadFilms;
 import com.cinema.films.domain.FilmCategory;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

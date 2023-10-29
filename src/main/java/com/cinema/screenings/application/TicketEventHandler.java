@@ -1,4 +1,4 @@
-package com.cinema.screenings.application.services;
+package com.cinema.screenings.application;
 
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.Seat;
@@ -15,7 +15,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-class TicketEventHandlerService {
+class TicketEventHandler {
 
     private final ScreeningRepository screeningRepository;
 

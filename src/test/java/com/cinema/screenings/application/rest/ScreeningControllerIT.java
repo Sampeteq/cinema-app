@@ -74,6 +74,7 @@ class ScreeningControllerIT extends SpringIT {
         //given
         var filmId = 1L;
         var filmTitle = "Sample title";
+        var roomId = "1";
         addAdminUser();
         addFilm(filmTitle);
         addRoom();
@@ -94,7 +95,8 @@ class ScreeningControllerIT extends SpringIT {
                new ScreeningDto(
                        1L,
                        command.date(),
-                       filmTitle
+                       filmTitle,
+                       roomId
                )
         );
         webTestClient

@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("prod")
-class ScreeningSchedulerService {
+class ScreeningScheduler {
 
     private final ScreeningRepository screeningRepository;
     private final ReadFilmHandler readFilmHandler;

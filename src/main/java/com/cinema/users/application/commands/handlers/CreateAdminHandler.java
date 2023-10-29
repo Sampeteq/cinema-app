@@ -21,6 +21,7 @@ public class CreateAdminHandler {
       log.info("Command:{}", command);
         if (userRepository.existsByMail(command.adminMail())) {
             log.info("Admin already exists");
+            return;
         }
         var user = new User(
                 command.adminMail(),
@@ -28,5 +29,6 @@ public class CreateAdminHandler {
                 UserRole.ADMIN
         );
         userRepository.add(user);
+        log.info("Admin added");
     }
 }

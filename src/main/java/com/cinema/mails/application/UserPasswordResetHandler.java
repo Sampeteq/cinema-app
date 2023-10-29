@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Profile("prod")
 @RequiredArgsConstructor
 @Slf4j
-class UserPasswordResetHandlerService {
+class UserPasswordResetHandler {
 
     private final MailSender mailSender;
 

@@ -8,7 +8,7 @@ This is web app to manage a cinema built on modular monolith architecture.
 
 ## Tech Stack
 
-**Language:** Java 17
+**Language:** Java 21
 
 **Frameworks:** Spring Boot 3, Hibernate, Junit
 
@@ -28,53 +28,63 @@ This is web app to manage a cinema built on modular monolith architecture.
   localhot:8080/swagger-ui
 ```
 
-### 1.Storing and searching films and screenings
+### 1.Films
 
 Endpoints:
 
 Common user:
 
-/films (GET) - search all films
-
-/screenings (GET) - search all screenings
-
-/screenings/title?title= (GET) - search screenings by film title
-
-/screenings/category?category= (GET) - search screenings by film category
-
-/screenings/date?date= (GET) - search screenings by date
+/films (GET) - search all films, optional params: /{title}, /{category}"
 
 Admin:
 
 /films (POST) - add a new film
 
-/films/{title} (DELETE) - delete a film
+/films/{id} (DELETE) - delete a film
+
+### 2.Screenings
+
+Endpoints:
+
+Common user:
+
+/screenings (GET) - search all screenings, optional params: /{date}
+
+/screenings/{id}/seats (GET) - search seats by screening id
+
+Admin:
 
 /screenings (POST) - add a new screening
 
 /screenings{id} (DELETE) - delete a screening
 
-### 2.Tickets booking
+### 3.Rooms
 
 Endpoints:
 
-/seats?screeningId= (GET) - search screening seats
+Admin:
+
+/rooms (GET) - search all rooms
+
+### 4.Tickets
+
+Endpoints:
 
 /tickets (POST) - book a ticket
 
-/tickets/{ticketId}/cancelled (POST) - cancel ticket
+/tickets/{ticketId}/cancel (PATCH) - cancel ticket
 
 /tickets/my (GET) - search user tickets
 
-### 3.User account
+### 5.Users
 
 Endpoints:
 
-/users (POST) - create a new user account
+/users (POST) - create a new user
 
-/users/password/reset (POST) - reset password (a mail with token will be sent)
+/users/password/reset (PATCH) - reset password (a mail with token will be sent)
 
-/users/password/new (POST) - set new password after reset
+/users/password/new (PATCH) - set new password after reset
 
 Auth: basic auth
 

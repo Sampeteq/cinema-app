@@ -1,7 +1,7 @@
 package com.cinema.users.application.commands.handlers;
 
 import com.cinema.users.application.commands.CreateAdmin;
-import com.cinema.users.application.properties.AdminProperties;
+import com.cinema.users.infrastrcuture.properties.AdminProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;

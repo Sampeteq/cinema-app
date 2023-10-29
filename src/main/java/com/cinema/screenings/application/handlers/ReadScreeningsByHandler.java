@@ -1,7 +1,7 @@
 package com.cinema.screenings.application.handlers;
 
-import com.cinema.films.application.handlers.ReadFilmTitleHandler;
-import com.cinema.films.application.queries.ReadFilmTitle;
+import com.cinema.films.application.handlers.ReadFilmHandler;
+import com.cinema.films.application.queries.ReadFilm;
 import com.cinema.screenings.application.dto.ScreeningDto;
 import com.cinema.screenings.application.dto.ScreeningMapper;
 import com.cinema.screenings.application.queries.ReadScreeningsBy;
@@ -21,7 +21,7 @@ import static java.util.Comparator.comparing;
 public class ReadScreeningsByHandler {
 
     private final ScreeningRepository screeningRepository;
-    private final ReadFilmTitleHandler readFilmTitleHandler;
+    private final ReadFilmHandler readFilmHandler;
     private final ScreeningMapper screeningMapper;
 
     public List<ScreeningDto> handle(ReadScreeningsBy query) {
@@ -31,9 +31,9 @@ public class ReadScreeningsByHandler {
                 .stream()
                 .sorted(comparing(Screening::getDate))
                 .map(screening -> {
-                    var readFilmTitle = new ReadFilmTitle(screening.getFilmId());
-                    var filmTitle = readFilmTitleHandler.handle(readFilmTitle);
-                    return screeningMapper.mapToDto(screening, filmTitle);
+                    var readFilm = new ReadFilm(screening.getFilmId());
+                    var filmDto = readFilmHandler.handle(readFilm);
+                    return screeningMapper.mapToDto(screening, filmDto.title());
                 })
                 .toList();
     }

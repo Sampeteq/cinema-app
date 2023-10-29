@@ -1,7 +1,7 @@
 package com.cinema.screenings.application.services;
 
-import com.cinema.films.application.handlers.ReadFilmDurationInMinutesHandler;
-import com.cinema.films.application.queries.ReadFilmDurationInMinutes;
+import com.cinema.films.application.handlers.ReadFilmHandler;
+import com.cinema.films.application.queries.ReadFilm;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.events.ScreeningEndedEvent;
@@ -24,7 +24,7 @@ import java.util.List;
 class ScreeningSchedulerService {
 
     private final ScreeningRepository screeningRepository;
-    private final ReadFilmDurationInMinutesHandler readFilmDurationInMinutesHandler;
+    private final ReadFilmHandler readFilmHandler;
     private final Clock clock;
     private final EventPublisher eventPublisher;
 
@@ -68,8 +68,8 @@ class ScreeningSchedulerService {
     }
 
     private LocalDateTime calculateScreeningEndDate(LocalDateTime screeningDate, Long filmId) {
-        var query = new ReadFilmDurationInMinutes(filmId);
-        var filmDurationInMinutes = readFilmDurationInMinutesHandler.handle(query);
-        return screeningDate.plusMinutes(filmDurationInMinutes);
+        var query = new ReadFilm(filmId);
+        var filmDto = readFilmHandler.handle(query);
+        return screeningDate.plusMinutes(filmDto.durationInMinutes());
     }
 }

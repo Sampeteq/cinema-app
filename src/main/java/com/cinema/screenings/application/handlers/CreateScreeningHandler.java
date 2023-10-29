@@ -1,7 +1,7 @@
 package com.cinema.screenings.application.handlers;
 
-import com.cinema.films.application.handlers.ReadFilmDurationInMinutesHandler;
-import com.cinema.films.application.queries.ReadFilmDurationInMinutes;
+import com.cinema.films.application.handlers.ReadFilmHandler;
+import com.cinema.films.application.queries.ReadFilm;
 import com.cinema.rooms.application.handlers.FindFirstAvailableRoomHandler;
 import com.cinema.rooms.application.queries.FindFirstAvailableRoom;
 import com.cinema.screenings.application.commands.CreateScreening;
@@ -27,7 +27,7 @@ public class CreateScreeningHandler {
 
     private final ScreeningDatePolicy screeningDatePolicy;
     private final ScreeningRepository screeningRepository;
-    private final ReadFilmDurationInMinutesHandler readFilmDurationInMinutesHandler;
+    private final ReadFilmHandler readFilmHandler;
     private final FindFirstAvailableRoomHandler findFirstAvailableRoomHandler;
     private final EventPublisher eventPublisher;
 
@@ -35,10 +35,10 @@ public class CreateScreeningHandler {
     public void handle(CreateScreening command) {
         log.info("Command:{}", command);
         screeningDatePolicy.checkScreeningDate(command.date());
-        var readFilmDurationInMinutesCommand = new ReadFilmDurationInMinutes(command.filmId());
-        var filmDurationInMinutes = readFilmDurationInMinutesHandler.handle(readFilmDurationInMinutesCommand);
-        log.info("Film duration in minutes:{}", filmDurationInMinutes);
-        var endDate = command.date().plusMinutes(filmDurationInMinutes);
+        var readFilmCommand = new ReadFilm(command.filmId());
+        var filmDto = readFilmHandler.handle(readFilmCommand);
+        log.info("Film:{}", filmDto);
+        var endDate = command.date().plusMinutes(filmDto.durationInMinutes());
         log.info("Screening end date:{}", endDate);
         var findFirstAvailableRoomCommand = new FindFirstAvailableRoom(command.date(), endDate);
         var roomDto = findFirstAvailableRoomHandler.findFirstAvailableRoom(findFirstAvailableRoomCommand);

@@ -1,4 +1,4 @@
 package com.cinema.films.application.queries;
 
-public record ReadFilmTitle(Long filmId) {
+public record ReadFilm(Long id) {
 }

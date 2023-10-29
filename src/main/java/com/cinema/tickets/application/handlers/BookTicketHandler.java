@@ -1,8 +1,8 @@
 package com.cinema.tickets.application.handlers;
 
-import com.cinema.screenings.application.handlers.ReadScreeningDateHandler;
+import com.cinema.screenings.application.handlers.ReadScreeningHandler;
 import com.cinema.screenings.application.handlers.ReadSeatHandler;
-import com.cinema.screenings.application.queries.ReadScreeningDate;
+import com.cinema.screenings.application.queries.ReadScreening;
 import com.cinema.screenings.application.queries.ReadSeat;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.commands.BookTicket;
@@ -26,7 +26,7 @@ public class BookTicketHandler {
 
     private final TicketRepository ticketRepository;
     private final TicketBookingPolicy ticketBookingPolicy;
-    private final ReadScreeningDateHandler readScreeningDateHandler;
+    private final ReadScreeningHandler readScreeningHandler;
     private final ReadSeatHandler readSeatHandler;
     private final ReadCurrentUserIdHandler readCurrentUserIdHandler;
     private final EventPublisher eventPublisher;
@@ -37,10 +37,10 @@ public class BookTicketHandler {
         if (ticketRepository.exists(command.screeningId(), command.seatId())) {
             throw new TicketAlreadyExists();
         }
-        var readScreeningDate = new ReadScreeningDate(command.screeningId());
-        var screeningDate = readScreeningDateHandler.handle(readScreeningDate);
-        log.info("Screening date:{}", screeningDate);
-        ticketBookingPolicy.checkScreeningDate(screeningDate);
+        var readScreening = new ReadScreening(command.screeningId());
+        var screeningDto = readScreeningHandler.handle(readScreening);
+        log.info("Screening:{}", screeningDto);
+        ticketBookingPolicy.checkScreeningDate(screeningDto.date());
         var readSeat = new ReadSeat(command.screeningId(), command.seatId());
         var seatDto = readSeatHandler.handle(readSeat);
         var readCurrentUserIdCommand = new ReadCurrentUserId();

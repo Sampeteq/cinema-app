@@ -1,7 +1,7 @@
 package com.cinema.tickets.application.handlers;
 
-import com.cinema.screenings.application.handlers.ReadScreeningDateHandler;
-import com.cinema.screenings.application.queries.ReadScreeningDate;
+import com.cinema.screenings.application.handlers.ReadScreeningHandler;
+import com.cinema.screenings.application.queries.ReadScreening;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.commands.CancelTicket;
 import com.cinema.tickets.domain.TicketRepository;
@@ -23,7 +23,7 @@ public class CancelTicketHandler {
 
     private final TicketRepository ticketRepository;
     private final TicketCancellingPolicy ticketCancellingPolicy;
-    private final ReadScreeningDateHandler readScreeningDateHandler;
+    private final ReadScreeningHandler readScreeningHandler;
     private final ReadCurrentUserIdHandler readCurrentUserIdHandler;
     private final EventPublisher eventPublisher;
 
@@ -39,10 +39,10 @@ public class CancelTicketHandler {
         if (!ticket.belongsTo(currentUserId)) {
             throw new TicketNotBelongsToUser();
         }
-        var readScreeningDate = new ReadScreeningDate(ticket.getScreeningId());
-        var screeningDate = readScreeningDateHandler.handle(readScreeningDate);
-        log.info("Screening date:{}", screeningDate);
-        ticketCancellingPolicy.checkScreeningDate(screeningDate);
+        var readScreening = new ReadScreening(ticket.getScreeningId());
+        var screeningDto = readScreeningHandler.handle(readScreening);
+        log.info("Screening:{}", screeningDto);
+        ticketCancellingPolicy.checkScreeningDate(screeningDto.date());
         ticket.cancel();
         log.info("Ticket cancelled:{}", ticket);
         var ticketCancelledEvent = new TicketCancelledEvent(

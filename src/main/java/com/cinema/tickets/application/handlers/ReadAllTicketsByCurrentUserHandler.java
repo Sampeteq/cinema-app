@@ -1,8 +1,8 @@
 package com.cinema.tickets.application.handlers;
 
-import com.cinema.screenings.application.handlers.ReadScreeningsDetailsHandler;
+import com.cinema.screenings.application.handlers.ReadScreeningHandler;
 import com.cinema.screenings.application.handlers.ReadSeatHandler;
-import com.cinema.screenings.application.queries.ReadScreeningsDetails;
+import com.cinema.screenings.application.queries.ReadScreening;
 import com.cinema.screenings.application.queries.ReadSeat;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.application.queries.ReadAllTicketsByCurrentUser;
@@ -22,7 +22,7 @@ public class ReadAllTicketsByCurrentUserHandler {
 
     private final ReadCurrentUserIdHandler readCurrentUserIdHandler;
     private final TicketRepository ticketRepository;
-    private final ReadScreeningsDetailsHandler readScreeningsDetailsHandler;
+    private final ReadScreeningHandler readScreeningHandler;
     private final ReadSeatHandler readSeatHandler;
 
     public List<TicketDto> handle(ReadAllTicketsByCurrentUser query) {
@@ -33,16 +33,16 @@ public class ReadAllTicketsByCurrentUserHandler {
                 .readAllByUserId(currentUserId)
                 .stream()
                 .map(ticket -> {
-                    var readScreeningsDetails = new ReadScreeningsDetails(ticket.getScreeningId());
-                    var screeningDetails = readScreeningsDetailsHandler.handle(readScreeningsDetails);
+                    var readScreening = new ReadScreening(ticket.getScreeningId());
+                    var screeningDto = readScreeningHandler.handle(readScreening);
                     var readSeat = new ReadSeat(ticket.getScreeningId(), ticket.getSeatId());
                     var seatDto = readSeatHandler.handle(readSeat);
                     return new TicketDto(
                             ticket.getId(),
                             ticket.getStatus(),
-                            screeningDetails.filmTitle(),
-                            screeningDetails.date(),
-                            screeningDetails.roomId(),
+                            screeningDto.filmTitle(),
+                            screeningDto.date(),
+                            screeningDto.roomId(),
                             seatDto.rowNumber(),
                             seatDto.number()
                     );

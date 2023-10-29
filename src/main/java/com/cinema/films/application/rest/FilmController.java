@@ -38,7 +38,6 @@ class FilmController {
     private final DeleteFilmHandler deleteFilmHandler;
 
     @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> createFilm(@RequestBody @Valid CreateFilm command) {
         log.info("Command:{}", command);

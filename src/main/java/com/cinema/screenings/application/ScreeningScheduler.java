@@ -1,4 +1,4 @@
-package com.cinema.screenings.application.services;
+package com.cinema.screenings.application;
 
 import com.cinema.films.application.queries.handlers.ReadFilmHandler;
 import com.cinema.films.application.queries.ReadFilm;

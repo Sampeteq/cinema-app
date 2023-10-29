@@ -12,7 +12,7 @@ This is web app to manage a cinema built on modular monolith architecture.
 
 **Frameworks:** Spring Boot 3, Hibernate, Junit
 
-**Libraries:** Open API (Swagger)
+**Libraries:** Lombok, MapStruct, Liquibase, Testcontainers, SpringDoc (Swagger)
 
 **Databases:** PostgresSQL
 
@@ -20,6 +20,30 @@ This is web app to manage a cinema built on modular monolith architecture.
 
 **UI:** REST API
 
+Admin user is added on start up.
+
+```
+  Credentials:
+  username: admin@mail.com
+  password: 12345
+```
+
+Rooms are added on start up (rooms_config.json file)
+
+```json
+[
+  {
+    "id": "1",
+    "rowsNumber": 10,
+    "rowSeatsNumber": 15
+  },
+  {
+    "id": "2",
+    "rowsNumber": 15,
+    "rowSeatsNumber": 20
+  }
+]
+```
 
 ## Features and API
 

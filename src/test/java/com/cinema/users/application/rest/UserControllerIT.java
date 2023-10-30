@@ -45,7 +45,7 @@ class UserControllerIT extends SpringIT {
                 .exchange();
 
 
-        spec.expectStatus().isCreated();
+        spec.expectStatus().isOk();
         assertThat(userRepository.readyByMail(dto.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {

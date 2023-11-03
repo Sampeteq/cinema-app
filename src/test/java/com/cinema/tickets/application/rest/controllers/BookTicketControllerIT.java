@@ -7,7 +7,7 @@ import com.cinema.screenings.application.commands.handlers.CreateScreeningHandle
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
-import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
+import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.commands.handlers.CreateUserHandler;
@@ -169,7 +169,7 @@ class BookTicketControllerIT extends SpringIT {
                 .exchange();
 
         //then
-        var expectedMessage = new TicketAlreadyExists().getMessage();
+        var expectedMessage = new TicketAlreadyExistsException().getMessage();
         spec
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)

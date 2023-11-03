@@ -8,7 +8,7 @@ import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
-import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
+import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUserException;
 import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -152,7 +152,7 @@ class CancelTicketControllerIT extends SpringIT {
                 .exchange();
 
         //then
-        var expectedMessage = new TicketNotBelongsToUser().getMessage();
+        var expectedMessage = new TicketNotBelongsToUserException().getMessage();
         spec
                 .expectStatus()
                 .isEqualTo(HttpStatus.FORBIDDEN)

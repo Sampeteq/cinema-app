@@ -6,7 +6,7 @@ import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.commands.CancelTicket;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.events.TicketCancelledEvent;
-import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUser;
+import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUserException;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.tickets.domain.policies.TicketCancellingPolicy;
 import com.cinema.users.application.queries.handlers.ReadCurrentUserIdHandler;
@@ -37,7 +37,7 @@ public class CancelTicketHandler {
         var readCurrentUserIdQuery = new ReadCurrentUserId();
         var currentUserId = readCurrentUserIdHandler.handle(readCurrentUserIdQuery);
         if (!ticket.belongsTo(currentUserId)) {
-            throw new TicketNotBelongsToUser();
+            throw new TicketNotBelongsToUserException();
         }
         var readScreening = new ReadScreening(ticket.getScreeningId());
         var screeningDto = readScreeningHandler.handle(readScreening);

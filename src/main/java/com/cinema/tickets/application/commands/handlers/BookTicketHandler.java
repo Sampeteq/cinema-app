@@ -10,7 +10,7 @@ import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.events.TicketBookedEvent;
-import com.cinema.tickets.domain.exceptions.TicketAlreadyExists;
+import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.policies.TicketBookingPolicy;
 import com.cinema.users.application.queries.handlers.ReadCurrentUserIdHandler;
 import com.cinema.users.application.queries.ReadCurrentUserId;
@@ -35,7 +35,7 @@ public class BookTicketHandler {
     public void handle(BookTicket command) {
         log.info("Command:{}", command);
         if (ticketRepository.exists(command.screeningId(), command.seatId())) {
-            throw new TicketAlreadyExists();
+            throw new TicketAlreadyExistsException();
         }
         var readScreening = new ReadScreening(command.screeningId());
         var screeningDto = readScreeningHandler.handle(readScreening);

@@ -1,4 +1,4 @@
-package com.cinema.screenings.application.rest;
+package com.cinema.screenings.application.rest.exception_handlers;
 
 import com.cinema.screenings.domain.exceptions.SeatNotFoundException;
 import com.cinema.shared.exceptions.ExceptionMessage;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-class SeatExceptionHandler {
+public class SeatNotFoundExceptionHandler {
 
     @ExceptionHandler(SeatNotFoundException.class)
     ResponseEntity<ExceptionMessage> handle(SeatNotFoundException exception) {

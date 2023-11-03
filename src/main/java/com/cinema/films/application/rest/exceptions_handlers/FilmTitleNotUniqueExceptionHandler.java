@@ -1,4 +1,4 @@
-package com.cinema.films.application.rest.controllers.exceptions_handlers;
+package com.cinema.films.application.rest.exceptions_handlers;
 
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.shared.exceptions.ExceptionMessage;

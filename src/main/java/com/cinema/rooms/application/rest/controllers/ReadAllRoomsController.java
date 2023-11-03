@@ -1,4 +1,4 @@
-package com.cinema.rooms.application.rest.controllers.controllers;
+package com.cinema.rooms.application.rest.controllers;
 
 import com.cinema.rooms.application.queries.ReadAllRooms;
 import com.cinema.rooms.application.queries.dto.RoomDto;

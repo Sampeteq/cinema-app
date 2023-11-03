@@ -1,4 +1,4 @@
-package com.cinema.films.application.rest.controllers.controllers;
+package com.cinema.films.application.rest.controllers;
 
 import com.cinema.films.application.queries.ReadFilms;
 import com.cinema.films.application.queries.dto.FilmDto;

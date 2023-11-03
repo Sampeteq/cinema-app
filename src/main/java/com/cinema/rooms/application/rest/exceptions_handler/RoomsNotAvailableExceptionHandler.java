@@ -1,4 +1,4 @@
-package com.cinema.rooms.application.rest;
+package com.cinema.rooms.application.rest.exceptions_handler;
 
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
 import com.cinema.shared.exceptions.ExceptionMessage;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-class RoomExceptionHandler {
+class RoomsNotAvailableExceptionHandler {
 
     @ExceptionHandler(RoomsNoAvailableException.class)
     ResponseEntity<ExceptionMessage> handle(RoomsNoAvailableException exception) {

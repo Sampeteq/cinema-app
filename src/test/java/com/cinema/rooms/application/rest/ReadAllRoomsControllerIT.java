@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.cinema.rooms.RoomFixture.createRoom;
 
-class RoomControllerIT extends SpringIT {
+class ReadAllRoomsControllerIT extends SpringIT {
 
     private static final String ROOMS_ENDPOINT = "/rooms";
 

@@ -1,8 +1,8 @@
 package com.cinema.rooms.application.rest;
 
+import com.cinema.rooms.application.queries.ReadAllRooms;
 import com.cinema.rooms.application.queries.dto.RoomDto;
 import com.cinema.rooms.application.queries.handlers.ReadAllRoomsHandler;
-import com.cinema.rooms.application.queries.ReadAllRooms;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/rooms")
 @Slf4j
-public class RoomController {
+public class ReadAllRoomsController {
 
     private final ReadAllRoomsHandler readAllRoomsHandler;
 

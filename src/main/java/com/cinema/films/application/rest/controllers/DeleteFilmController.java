@@ -3,6 +3,7 @@ package com.cinema.films.application.rest.controllers;
 import com.cinema.films.application.commands.DeleteFilm;
 import com.cinema.films.application.commands.handlers.DeleteFilmHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/films")
+@Tag(name = "films")
 @RequiredArgsConstructor
 @Slf4j
 public class DeleteFilmController {

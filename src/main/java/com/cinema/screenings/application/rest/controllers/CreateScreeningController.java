@@ -3,6 +3,7 @@ package com.cinema.screenings.application.rest.controllers;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/screenings")
+@Tag(name = "screenings")
 @RequiredArgsConstructor
 @Slf4j
 class CreateScreeningController {

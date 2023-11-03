@@ -6,6 +6,7 @@ import com.cinema.screenings.application.queries.dto.ScreeningDto;
 import com.cinema.screenings.application.queries.dto.SeatDto;
 import com.cinema.screenings.application.queries.handlers.ReadScreeningsByHandler;
 import com.cinema.screenings.application.queries.handlers.ReadSeatsByScreeningIdHandler;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/screenings")
+@Tag(name = "screenings")
 @RequiredArgsConstructor
 @Slf4j
 class ReadScreeningController {

@@ -3,6 +3,7 @@ package com.cinema.films.application.rest.controllers;
 import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/films")
+@Tag(name = "films")
 @RequiredArgsConstructor
 @Slf4j
 class CreateFilmController {

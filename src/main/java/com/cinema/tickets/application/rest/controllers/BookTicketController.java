@@ -3,6 +3,7 @@ package com.cinema.tickets.application.rest.controllers;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.commands.handlers.BookTicketHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/tickets")
+@Tag(name = "tickets")
 @RequiredArgsConstructor
 @Slf4j
 class BookTicketController {

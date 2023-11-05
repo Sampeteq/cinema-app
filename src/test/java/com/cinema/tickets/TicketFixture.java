@@ -83,6 +83,14 @@ public final class TicketFixture {
         );
     }
 
+    public static CreateRoom createCreateRoomCommand(String roomId) {
+        return new CreateRoom(
+                roomId,
+                ROOM_ROWS_NUMBER,
+                ROOM_ROW_SEATS_NUMBER
+        );
+    }
+
     public static CreateScreening createCreateScreeningCommand() {
         return new CreateScreening(
                 SCREENING_DATE,

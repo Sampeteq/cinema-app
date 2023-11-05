@@ -50,6 +50,15 @@ public final class ScreeningFixture {
         );
     }
 
+    public static CreateFilm createCreateFilmCommand(String filmTitle) {
+        return new CreateFilm(
+                filmTitle,
+                FILM_CATEGORY,
+                FILM_YEAR,
+                FILM_DURATION_IN_MINUTES
+        );
+    }
+
     public static CreateRoom createCreateRoomCommand() {
         return new CreateRoom(
                 ROOM_CUSTOM_ID,

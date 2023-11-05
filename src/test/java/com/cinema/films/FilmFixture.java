@@ -29,6 +29,24 @@ public final class FilmFixture {
         );
     }
 
+    public static CreateFilm createCreateFilmCommand(String title) {
+        return new CreateFilm(
+                title,
+                CATEGORY,
+                YEAR,
+                DURATION_IN_MINUTES
+        );
+    }
+
+    public static CreateFilm createCreateFilmCommand(Integer year) {
+        return new CreateFilm(
+                TITLE,
+                CATEGORY,
+                year,
+                DURATION_IN_MINUTES
+        );
+    }
+
     public static Film createFilm() {
         return new Film(
                 TITLE,

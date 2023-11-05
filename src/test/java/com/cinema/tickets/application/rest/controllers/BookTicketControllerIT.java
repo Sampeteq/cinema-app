@@ -223,7 +223,7 @@ class BookTicketControllerIT extends SpringIT {
     }
 
     private void addScreening(String filmTitle, String roomId) {
-        createFilmHandler.handle(createCreateFilmCommand().withTitle(filmTitle));
+        createFilmHandler.handle(createCreateFilmCommand(filmTitle));
         createRoomHandler.handle(createCreateRoomCommand().withId(roomId));
         createScreeningHandler.handle(createCreateScreeningCommand(SCREENING_DATE));
     }

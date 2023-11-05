@@ -97,7 +97,7 @@ class CreateFilmControllerIT extends SpringIT {
         //given
         addAdminUser();
         var film = filmRepository.add(createFilm());
-        var command = createCreateFilmCommand().withTitle(film.getTitle());
+        var command = createCreateFilmCommand(film.getTitle());
 
         //when
         var spec = webTestClient
@@ -123,7 +123,7 @@ class CreateFilmControllerIT extends SpringIT {
     void film_year_is_previous_current_or_nex_one(Integer wrongYear) {
         //given
         addAdminUser();
-        var command = createCreateFilmCommand().withYear(wrongYear);
+        var command = createCreateFilmCommand(wrongYear);
 
         //when
         var spec = webTestClient

@@ -203,7 +203,7 @@ class CreateScreeningControllerIT extends SpringIT {
     }
 
     private void addFilm(String title) {
-        createFilmHandler.handle(createCreateFilmCommand().withTitle(title));
+        createFilmHandler.handle(createCreateFilmCommand(title));
     }
 
     private void addCommonUser() {

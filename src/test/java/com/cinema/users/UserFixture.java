@@ -23,7 +23,10 @@ public final class UserFixture {
     }
 
     public static CreateUser createCrateUserCommand(String mail) {
-        return createCrateUserCommand().withMail(mail);
+        return new CreateUser(
+                mail,
+                PASSWORD
+        );
     }
 
     public static User createUser() {

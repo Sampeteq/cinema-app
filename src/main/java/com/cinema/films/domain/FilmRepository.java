@@ -9,6 +9,6 @@ public interface FilmRepository  {
     Film add(Film film);
     void delete(Film film);
     Optional<Film> readById(Long id);
-    List<Film> readAll(ReadFilms queryDto);
+    List<Film> readAll(ReadFilms query);
     boolean existsByTitle(String title);
 }

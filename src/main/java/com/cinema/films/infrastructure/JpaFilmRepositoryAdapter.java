@@ -34,9 +34,9 @@ class JpaFilmRepositoryAdapter implements FilmRepository {
     }
 
     @Override
-    public List<Film> readAll(ReadFilms queryDto) {
+    public List<Film> readAll(ReadFilms query) {
         return jpaFilmRepository.findAll(
-                titleSpec(queryDto).and(categorySpec(queryDto))
+                titleSpec(query).and(categorySpec(query))
         );
     }
 
@@ -45,21 +45,21 @@ class JpaFilmRepositoryAdapter implements FilmRepository {
         return jpaFilmRepository.existsByTitle(title);
     }
 
-    private static Specification<Film> titleSpec(ReadFilms queryDto) {
-        return (root, query, criteriaBuilder) -> queryDto.title() == null ?
+    private static Specification<Film> titleSpec(ReadFilms query) {
+        return (root, criteriaQuery, criteriaBuilder) -> query.title() == null ?
                 criteriaBuilder.conjunction() :
                 criteriaBuilder.equal(
                         root.get("title"),
-                        queryDto.title()
+                        query.title()
                 );
     }
 
-    private static Specification<Film> categorySpec(ReadFilms queryDto) {
-        return (root, query, criteriaBuilder) -> queryDto.category() == null ?
+    private static Specification<Film> categorySpec(ReadFilms query) {
+        return (root, criteriaQuery, criteriaBuilder) -> query.category() == null ?
                 criteriaBuilder.conjunction() :
                 criteriaBuilder.equal(
                         root.get("category"),
-                        queryDto.category()
+                        query.category()
                 );
     }
 }

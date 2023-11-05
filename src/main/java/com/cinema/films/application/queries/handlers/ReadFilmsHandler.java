@@ -18,9 +18,9 @@ public class ReadFilmsHandler {
     private final FilmRepository filmRepository;
     private final FilmMapper filmMapper;
 
-    public List<FilmDto> handle(ReadFilms queryDto) {
+    public List<FilmDto> handle(ReadFilms query) {
         return filmRepository
-                .readAll(queryDto)
+                .readAll(query)
                 .stream()
                 .map(filmMapper::mapToDto)
                 .toList();

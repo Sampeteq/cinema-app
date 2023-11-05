@@ -97,14 +97,14 @@ class CreateFilmControllerIT extends SpringIT {
         //given
         addAdminUser();
         var film = filmRepository.add(createFilm());
-        var filmCreateDto = createCreateFilmCommand().withTitle(film.getTitle());
+        var command = createCreateFilmCommand().withTitle(film.getTitle());
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(FILMS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(filmCreateDto)
+                .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
@@ -123,14 +123,14 @@ class CreateFilmControllerIT extends SpringIT {
     void film_year_is_previous_current_or_nex_one(Integer wrongYear) {
         //given
         addAdminUser();
-        var dto = createCreateFilmCommand().withYear(wrongYear);
+        var command = createCreateFilmCommand().withYear(wrongYear);
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(FILMS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(dto)
+                .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 

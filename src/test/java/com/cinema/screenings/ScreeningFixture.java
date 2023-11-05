@@ -50,7 +50,7 @@ public final class ScreeningFixture {
         );
     }
 
-    public static CreateRoom createRoomCreateDto() {
+    public static CreateRoom createCreateRoomCommand() {
         return new CreateRoom(
                 ROOM_CUSTOM_ID,
                 ROOM_ROWS_NUMBER,

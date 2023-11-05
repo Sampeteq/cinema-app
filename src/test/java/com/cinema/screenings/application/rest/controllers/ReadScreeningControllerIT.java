@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createCreateFilmCommand;
-import static com.cinema.screenings.ScreeningFixture.createRoomCreateDto;
+import static com.cinema.screenings.ScreeningFixture.createCreateRoomCommand;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -117,7 +117,7 @@ class ReadScreeningControllerIT extends SpringIT {
     }
 
     private void addRoom() {
-        createRoomHandler.handle(createRoomCreateDto());
+        createRoomHandler.handle(createCreateRoomCommand());
     }
 
     private void addFilm() {

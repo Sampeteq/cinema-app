@@ -23,7 +23,7 @@ import java.util.List;
 
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createCreateFilmCommand;
-import static com.cinema.screenings.ScreeningFixture.createRoomCreateDto;
+import static com.cinema.screenings.ScreeningFixture.createCreateRoomCommand;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -199,7 +199,7 @@ class CreateScreeningControllerIT extends SpringIT {
     }
 
     private void addRoom() {
-        createRoomHandler.handle(createRoomCreateDto());
+        createRoomHandler.handle(createCreateRoomCommand());
     }
 
     private void addFilm(String title) {

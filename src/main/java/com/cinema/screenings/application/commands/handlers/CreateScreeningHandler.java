@@ -66,7 +66,8 @@ public class CreateScreeningHandler {
         return IntStream
                 .rangeClosed(1, rowsQuantity)
                 .boxed()
-                .flatMap(rowNumber -> IntStream.rangeClosed(1, seatsQuantityInOneRow)
+                .flatMap(rowNumber -> IntStream
+                        .rangeClosed(1, seatsQuantityInOneRow)
                         .mapToObj(seatNumber -> new Seat(rowNumber, seatNumber, SeatStatus.FREE))
                 )
                 .toList();

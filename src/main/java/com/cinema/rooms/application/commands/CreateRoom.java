@@ -9,6 +9,6 @@ public record CreateRoom(
         @Positive
         int rowsNumber,
         @Positive
-        int rowSeatsNumber
+        int seatsNumberInOneRow
 ) {
 }

@@ -43,7 +43,7 @@ public class CreateScreeningHandler {
         var findFirstAvailableRoomCommand = new FindFirstAvailableRoom(command.date(), endDate);
         var roomDto = findFirstAvailableRoomHandler.findFirstAvailableRoom(findFirstAvailableRoomCommand);
         log.info("Found room:{}", roomDto);
-        var seats = createSeats(roomDto.rowsNumber(), roomDto.rowSeatsNumber());
+        var seats = createSeats(roomDto.rowsNumber(), roomDto.seatsNumberInOneRow());
         log.info("Created seats number:{}", seats.size());
         var screening = new Screening(
                 command.date(),

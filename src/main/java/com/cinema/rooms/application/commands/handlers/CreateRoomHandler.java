@@ -21,7 +21,7 @@ public class CreateRoomHandler {
         }
         var screeningRoom = new Room(
                 command.id(),
-                command.rowSeatsNumber(),
+                command.seatsNumberInOneRow(),
                 command.rowsNumber()
         );
         roomRepository.add(screeningRoom);

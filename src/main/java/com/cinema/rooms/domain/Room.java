@@ -23,7 +23,7 @@ public class Room {
 
     private int rowsNumber;
 
-    private int rowSeatsNumber;
+    private int seatsNumberInOneRow;
 
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "room_id")
@@ -31,10 +31,10 @@ public class Room {
 
     protected Room() {}
 
-    public Room(String id, int rowsNumber, int rowSeatsNumber) {
+    public Room(String id, int rowsNumber, int seatsNumberInOneRow) {
         this.id = id;
         this.rowsNumber = rowsNumber;
-        this.rowSeatsNumber = rowSeatsNumber;
+        this.seatsNumberInOneRow = seatsNumberInOneRow;
         this.occupations = new ArrayList<>();
     }
 

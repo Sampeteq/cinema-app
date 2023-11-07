@@ -62,12 +62,12 @@ public class CreateScreeningHandler {
         log.info("Published event:{}", screeningCreatedEvent);
     }
 
-    private List<Seat> createSeats(int rowsQuantity, int seatsQuantityInOneRow) {
+    private List<Seat> createSeats(int rowsNumber, int seatsNumberInOneRow) {
         return IntStream
-                .rangeClosed(1, rowsQuantity)
+                .rangeClosed(1, rowsNumber)
                 .boxed()
                 .flatMap(rowNumber -> IntStream
-                        .rangeClosed(1, seatsQuantityInOneRow)
+                        .rangeClosed(1, seatsNumberInOneRow)
                         .mapToObj(seatNumber -> new Seat(rowNumber, seatNumber, SeatStatus.FREE))
                 )
                 .toList();

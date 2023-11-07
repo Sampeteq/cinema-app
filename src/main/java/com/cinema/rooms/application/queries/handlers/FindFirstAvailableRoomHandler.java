@@ -19,7 +19,7 @@ public class FindFirstAvailableRoomHandler {
     private final RoomMapper roomMapper;
 
     @Transactional(readOnly = true)
-    public RoomDto findFirstAvailableRoom(FindFirstAvailableRoom query) {
+    public RoomDto handle(FindFirstAvailableRoom query) {
         log.info("Query:{}", query);
         return roomRepository
                 .readAll()

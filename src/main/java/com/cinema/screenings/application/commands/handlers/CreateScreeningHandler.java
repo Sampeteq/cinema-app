@@ -41,7 +41,7 @@ public class CreateScreeningHandler {
         var endDate = command.date().plusMinutes(filmDto.durationInMinutes());
         log.info("Screening end date:{}", endDate);
         var findFirstAvailableRoomCommand = new FindFirstAvailableRoom(command.date(), endDate);
-        var roomDto = findFirstAvailableRoomHandler.findFirstAvailableRoom(findFirstAvailableRoomCommand);
+        var roomDto = findFirstAvailableRoomHandler.handle(findFirstAvailableRoomCommand);
         log.info("Found room:{}", roomDto);
         var seats = createSeats(roomDto.rowsNumber(), roomDto.seatsNumberInOneRow());
         log.info("Created seats number:{}", seats.size());

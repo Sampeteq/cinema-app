@@ -80,7 +80,7 @@ class CancelTicketControllerIT extends SpringIT {
 
         //then
         spec.expectStatus().isOk();
-        assertThat(ticketRepository.readById(1L))
+        assertThat(ticketRepository.getById(1L))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket ->
                         assertEquals(TicketStatus.CANCELLED, ticket.getStatus())

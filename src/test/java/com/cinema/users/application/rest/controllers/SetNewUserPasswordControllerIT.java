@@ -45,7 +45,7 @@ class SetNewUserPasswordControllerIT extends SpringIT {
         //then
         spec.expectStatus().isOk();
         assertThat(
-                userRepository.readyByMail(addedUser.getMail())
+                userRepository.getByMail(addedUser.getMail())
         ).hasValueSatisfying(
                 user -> assertTrue(
                         passwordEncoder.matches(command.newPassword(), user.getPassword())

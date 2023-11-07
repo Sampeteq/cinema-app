@@ -1,8 +1,8 @@
 package com.cinema.screenings.application.rest.controllers;
 
-import com.cinema.screenings.application.queries.ReadScreeningsBy;
+import com.cinema.screenings.application.queries.GetScreeningsBy;
 import com.cinema.screenings.application.queries.dto.ScreeningDto;
-import com.cinema.screenings.application.queries.handlers.ReadScreeningsByHandler;
+import com.cinema.screenings.application.queries.handlers.GetScreeningsByHandler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,17 +19,17 @@ import java.util.List;
 @Tag(name = "screenings")
 @RequiredArgsConstructor
 @Slf4j
-class ReadScreeningController {
+class GetScreeningController {
 
-    private final ReadScreeningsByHandler readScreeningsByHandler;
+    private final GetScreeningsByHandler getScreeningsByHandler;
 
     @GetMapping
     List<ScreeningDto> readScreeningsBy(@RequestParam(required = false) LocalDate date) {
-        var query = ReadScreeningsBy
+        var query = GetScreeningsBy
                 .builder()
                 .date(date)
                 .build();
         log.info("Query:{}", query);
-        return readScreeningsByHandler.handle(query);
+        return getScreeningsByHandler.handle(query);
     }
 }

@@ -1,7 +1,7 @@
 package com.cinema.screenings.application;
 
-import com.cinema.films.application.queries.handlers.ReadFilmHandler;
-import com.cinema.films.application.queries.ReadFilm;
+import com.cinema.films.application.queries.handlers.GetFilmHandler;
+import com.cinema.films.application.queries.GetFilm;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.events.ScreeningEndedEvent;
@@ -24,7 +24,7 @@ import java.util.List;
 class ScreeningScheduler {
 
     private final ScreeningRepository screeningRepository;
-    private final ReadFilmHandler readFilmHandler;
+    private final GetFilmHandler getFilmHandler;
     private final Clock clock;
     private final EventPublisher eventPublisher;
 
@@ -58,7 +58,7 @@ class ScreeningScheduler {
 
     private List<Screening> searchEndedScreenings() {
         return screeningRepository
-                .readWithRoom()
+                .getWithRoom()
                 .stream()
                 .filter(screening -> {
                     var endDate = calculateScreeningEndDate(screening.getDate(), screening.getFilmId());
@@ -68,8 +68,8 @@ class ScreeningScheduler {
     }
 
     private LocalDateTime calculateScreeningEndDate(LocalDateTime screeningDate, Long filmId) {
-        var query = new ReadFilm(filmId);
-        var filmDto = readFilmHandler.handle(query);
+        var query = new GetFilm(filmId);
+        var filmDto = getFilmHandler.handle(query);
         return screeningDate.plusMinutes(filmDto.durationInMinutes());
     }
 }

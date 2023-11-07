@@ -1,8 +1,8 @@
 package com.cinema.tickets.application.rest.controllers;
 
-import com.cinema.tickets.application.queries.ReadAllTicketsByCurrentUser;
+import com.cinema.tickets.application.queries.GetAllTicketsByCurrentUser;
 import com.cinema.tickets.application.queries.dto.TicketDto;
-import com.cinema.tickets.application.queries.handlers.ReadAllTicketsByCurrentUserHandler;
+import com.cinema.tickets.application.queries.handlers.GetAllTicketsByCurrentUserHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +18,14 @@ import java.util.List;
 @Tag(name = "tickets")
 @RequiredArgsConstructor
 @Slf4j
-class ReadTicketController {
+class GetTicketController {
 
-    private final ReadAllTicketsByCurrentUserHandler readAllTicketsByCurrentUserHandler;
+    private final GetAllTicketsByCurrentUserHandler getAllTicketsByCurrentUserHandler;
 
     @GetMapping("/my")
     @SecurityRequirement(name = "basic")
     List<TicketDto> readAllTicketsByCurrentUser() {
-        var query = new ReadAllTicketsByCurrentUser();
-        return readAllTicketsByCurrentUserHandler.handle(query);
+        var query = new GetAllTicketsByCurrentUser();
+        return getAllTicketsByCurrentUserHandler.handle(query);
     }
 }

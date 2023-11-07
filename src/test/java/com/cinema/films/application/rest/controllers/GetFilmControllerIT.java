@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 
-class ReadFilmControllerIT extends SpringIT {
+class GetFilmControllerIT extends SpringIT {
 
     private static final String FILMS_BASE_ENDPOINT = "/films";
 
@@ -19,7 +19,7 @@ class ReadFilmControllerIT extends SpringIT {
     private FilmRepository filmRepository;
 
     @Test
-    void films_are_read() {
+    void films_are_gotten() {
         //given
         var film = filmRepository.add(createFilm());
 
@@ -42,7 +42,7 @@ class ReadFilmControllerIT extends SpringIT {
     }
 
     @Test
-    void films_are_read_by_title() {
+    void films_are_gotten_by_title() {
         //given
         var title = "Film";
         var otherTitle = "Other Film";
@@ -66,7 +66,7 @@ class ReadFilmControllerIT extends SpringIT {
     }
 
     @Test
-    void films_are_read_by_category() {
+    void films_are_gotten_by_category() {
         //given
         var category = FilmCategory.COMEDY;
         var otherCategory = FilmCategory.DRAMA;

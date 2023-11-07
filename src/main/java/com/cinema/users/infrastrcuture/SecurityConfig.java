@@ -90,7 +90,7 @@ class SecurityConfig {
     @Bean
     UserDetailsService userDetailsService(UserRepository userRepository) {
         return username -> userRepository
-                .readyByMail(username)
+                .getByMail(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 }

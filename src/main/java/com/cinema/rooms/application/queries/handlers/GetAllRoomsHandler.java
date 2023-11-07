@@ -2,7 +2,7 @@ package com.cinema.rooms.application.queries.handlers;
 
 import com.cinema.rooms.application.queries.dto.RoomDto;
 import com.cinema.rooms.application.queries.dto.RoomMapper;
-import com.cinema.rooms.application.queries.ReadAllRooms;
+import com.cinema.rooms.application.queries.GetAllRooms;
 import com.cinema.rooms.domain.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,15 +13,15 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class ReadAllRoomsHandler {
+public class GetAllRoomsHandler {
 
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;
 
-    public List<RoomDto> handle(ReadAllRooms query) {
+    public List<RoomDto> handle(GetAllRooms query) {
         log.info("Query:{}", query);
         return roomRepository
-                .readAll()
+                .getAll()
                 .stream()
                 .map(roomMapper::toDto)
                 .toList();

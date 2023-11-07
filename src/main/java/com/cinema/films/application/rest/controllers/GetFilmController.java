@@ -1,8 +1,8 @@
 package com.cinema.films.application.rest.controllers;
 
-import com.cinema.films.application.queries.ReadFilms;
+import com.cinema.films.application.queries.GetFilms;
 import com.cinema.films.application.queries.dto.FilmDto;
-import com.cinema.films.application.queries.handlers.ReadFilmsHandler;
+import com.cinema.films.application.queries.handlers.GetFilmsHandler;
 import com.cinema.films.domain.FilmCategory;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,20 +19,20 @@ import java.util.List;
 @Tag(name = "films")
 @RequiredArgsConstructor
 @Slf4j
-class ReadFilmController {
+class GetFilmController {
 
-    private final ReadFilmsHandler readFilmsHandler;
+    private final GetFilmsHandler getFilmsHandler;
 
     @GetMapping
     List<FilmDto> readAllFilms(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) FilmCategory category
     ) {
-        var queryDto = ReadFilms
+        var queryDto = GetFilms
                 .builder()
                 .title(title)
                 .category(category)
                 .build();
-        return readFilmsHandler.handle(queryDto);
+        return getFilmsHandler.handle(queryDto);
     }
 }

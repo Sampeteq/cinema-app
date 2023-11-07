@@ -139,7 +139,7 @@ class BookTicketControllerIT extends SpringIT {
 
         //then
         spec.expectStatus().isCreated();
-        assertThat(ticketRepository.readById(1L))
+        assertThat(ticketRepository.getById(1L))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
                     assertEquals(TicketStatus.ACTIVE, ticket.getStatus());

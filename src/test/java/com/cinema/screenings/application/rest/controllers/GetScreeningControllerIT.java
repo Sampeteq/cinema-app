@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 
-class ReadScreeningControllerIT extends SpringIT {
+class GetScreeningControllerIT extends SpringIT {
 
     private static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
 
@@ -27,7 +27,7 @@ class ReadScreeningControllerIT extends SpringIT {
     private CreateFilmHandler createFilmHandler;
 
     @Test
-    void screenings_are_read() {
+    void screenings_are_gotten() {
         //given
         var filmTitle = "Sample title";
         addFilm(filmTitle);
@@ -51,7 +51,7 @@ class ReadScreeningControllerIT extends SpringIT {
     }
 
     @Test
-    void screenings_are_read_by_date() {
+    void screenings_are_gotten_by_date() {
         //given
         addFilm();
         var requiredDate = LocalDate.of(2023, 12, 13);

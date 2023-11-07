@@ -21,7 +21,7 @@ public class TicketCancelledHandler {
     public void handle(TicketCancelledEvent event) {
         log.info("Handled event:{}", event);
         var seat = screeningRepository
-                .readById(event.screeningId())
+                .getById(event.screeningId())
                 .orElseThrow(ScreeningNotFoundException::new)
                 .findSeat(event.seatId())
                 .orElseThrow(SeatNotFoundException::new);

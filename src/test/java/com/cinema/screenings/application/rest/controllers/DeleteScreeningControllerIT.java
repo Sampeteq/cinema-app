@@ -61,7 +61,7 @@ class DeleteScreeningControllerIT extends SpringIT {
 
         //then
         spec.expectStatus().isNoContent();
-        assertThat(screeningRepository.readById(screening.getId())).isEmpty();
+        assertThat(screeningRepository.getById(screening.getId())).isEmpty();
     }
 
     private Screening addScreening() {

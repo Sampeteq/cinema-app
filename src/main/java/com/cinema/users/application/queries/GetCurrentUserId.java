@@ -1,4 +1,4 @@
 package com.cinema.users.application.queries;
 
-public record ReadCurrentUserId() {
+public record GetCurrentUserId() {
 }

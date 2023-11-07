@@ -20,7 +20,7 @@ public class ScreeningEndedHandler {
     public void handle(ScreeningEndedEvent event) {
         log.info("Handled event:{}", event);
         roomRepository
-                .readById(event.roomId())
+                .getById(event.roomId())
                 .orElseThrow(RoomNotFoundException::new)
                 .removeOccupation(event.screeningDate());
         log.info("Removed room occupation");

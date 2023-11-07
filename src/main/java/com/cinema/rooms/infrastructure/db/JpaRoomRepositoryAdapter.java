@@ -21,12 +21,12 @@ class JpaRoomRepositoryAdapter implements RoomRepository {
     }
 
     @Override
-    public Optional<Room> readById(String id) {
+    public Optional<Room> getById(String id) {
         return jpaRoomRepository.findById(id);
     }
 
     @Override
-    public List<Room> readAll() {
+    public List<Room> getAll() {
         return jpaRoomRepository.findAll();
     }
 

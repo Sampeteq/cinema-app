@@ -13,7 +13,7 @@ import static com.cinema.screenings.ScreeningFixture.createScreening;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
 
-class ReadSeatsControllerIT extends SpringIT {
+class GetSeatsControllerIT extends SpringIT {
 
     private static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
 
@@ -24,7 +24,7 @@ class ReadSeatsControllerIT extends SpringIT {
     private CreateRoomHandler createRoomHandler;
 
     @Test
-    void seats_are_read_by_screening_id() {
+    void seats_are_gotten_by_screening_id() {
         //given
         addRoom();
         var screening = addScreening();

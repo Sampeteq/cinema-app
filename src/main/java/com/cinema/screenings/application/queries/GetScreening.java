@@ -1,4 +1,4 @@
 package com.cinema.screenings.application.queries;
 
-public record ReadScreening(Long id) {
+public record GetScreening(Long id) {
 }

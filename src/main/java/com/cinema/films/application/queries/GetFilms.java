@@ -4,5 +4,5 @@ import com.cinema.films.domain.FilmCategory;
 import lombok.Builder;
 
 @Builder
-public record ReadFilms(String title, FilmCategory category) {
+public record GetFilms(String title, FilmCategory category) {
 }

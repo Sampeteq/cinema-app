@@ -20,7 +20,7 @@ public class ScreeningCreatedHandler {
     public void handle(ScreeningCreatedEvent event) {
         log.info("Handled event:{}", event);
         var roomOccupation = roomRepository
-                .readById(event.roomId())
+                .getById(event.roomId())
                 .orElseThrow(RoomNotFoundException::new)
                 .addOccupation(event.start(), event.end());
         log.info("Room occupation added:{}", roomOccupation.toString());

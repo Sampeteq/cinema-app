@@ -34,7 +34,7 @@ class ResetUserPasswordControllerIT extends SpringIT {
         //then
         spec.expectStatus().isOk();
         var userPasswordResetToken = userRepository
-                .readyByMail(user.getUsername())
+                .getByMail(user.getUsername())
                 .orElseThrow()
                 .getPasswordResetToken();
         assertThat(userPasswordResetToken).isNotNull();

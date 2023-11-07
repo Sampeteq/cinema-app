@@ -21,12 +21,12 @@ class JpaUserRepositoryAdapter implements UserRepository {
     }
 
     @Override
-    public Optional<User> readyByMail(String mail) {
+    public Optional<User> getByMail(String mail) {
         return jpaUserRepository.findByMail(mail);
     }
 
     @Override
-    public Optional<User> readByPasswordResetToken(UUID passwordResetToken) {
+    public Optional<User> getByPasswordResetToken(UUID passwordResetToken) {
         return jpaUserRepository.findByPasswordResetToken(passwordResetToken);
     }
 

@@ -44,7 +44,7 @@ class CreateUserControllerIT extends SpringIT {
 
 
         spec.expectStatus().isOk();
-        assertThat(userRepository.readyByMail(dto.mail()))
+        assertThat(userRepository.getByMail(dto.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {
                     assertEquals(dto.mail(), user.getUsername());

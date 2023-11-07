@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.cinema.rooms.RoomFixture.createRoom;
 
-class ReadAllRoomsControllerIT extends SpringIT {
+class GetAllRoomsControllerIT extends SpringIT {
 
     private static final String ROOMS_ENDPOINT = "/rooms";
 
@@ -25,7 +25,7 @@ class ReadAllRoomsControllerIT extends SpringIT {
     private CreateAdminHandler createAdminHandler;
 
     @Test
-    void rooms_are_read() {
+    void rooms_are_gotten() {
         //given
         var room = roomRepository.add(createRoom());
         var adminMail = "admin@mail.com";
@@ -51,7 +51,7 @@ class ReadAllRoomsControllerIT extends SpringIT {
     }
 
     @Test
-    void rooms_are_read_only_by_authorized_user() {
+    void rooms_are_gotten_only_by_authorized_user() {
         //when
         var responseSpec = webTestClient
                 .get()
@@ -63,7 +63,7 @@ class ReadAllRoomsControllerIT extends SpringIT {
     }
 
     @Test
-    void rooms_are_read_only_by_admin() {
+    void rooms_are_gotten_only_by_admin() {
         //given
         var userMail = "user1@mail.com";
         var userPassword = "12345";

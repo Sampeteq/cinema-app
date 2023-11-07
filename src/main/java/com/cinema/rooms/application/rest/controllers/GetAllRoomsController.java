@@ -1,8 +1,8 @@
 package com.cinema.rooms.application.rest.controllers;
 
-import com.cinema.rooms.application.queries.ReadAllRooms;
+import com.cinema.rooms.application.queries.GetAllRooms;
 import com.cinema.rooms.application.queries.dto.RoomDto;
-import com.cinema.rooms.application.queries.handlers.ReadAllRoomsHandler;
+import com.cinema.rooms.application.queries.handlers.GetAllRoomsHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +18,15 @@ import java.util.List;
 @RequestMapping("/rooms")
 @Tag(name = "rooms")
 @Slf4j
-public class ReadAllRoomsController {
+public class GetAllRoomsController {
 
-    private final ReadAllRoomsHandler readAllRoomsHandler;
+    private final GetAllRoomsHandler getAllRoomsHandler;
 
     @GetMapping
     @SecurityRequirement(name = "basic")
-    public List<RoomDto> readAllRooms() {
-        var query = new ReadAllRooms();
+    public List<RoomDto> getAllRooms() {
+        var query = new GetAllRooms();
         log.info("Query:{}", query);
-        return readAllRoomsHandler.handle(query);
+        return getAllRoomsHandler.handle(query);
     }
 }

@@ -22,12 +22,12 @@ class JpaTicketRepositoryAdapter implements TicketRepository {
 
 
     @Override
-    public Optional<Ticket> readById(Long id) {
+    public Optional<Ticket> getById(Long id) {
         return jpaTicketRepository.findById(id);
     }
 
     @Override
-    public List<Ticket> readAllByUserId(Long userId) {
+    public List<Ticket> getAllByUserId(Long userId) {
         return jpaTicketRepository.findAllByUserId(userId);
     }
 

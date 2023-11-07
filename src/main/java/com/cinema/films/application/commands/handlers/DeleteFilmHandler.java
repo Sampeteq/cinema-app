@@ -17,7 +17,7 @@ public class DeleteFilmHandler {
     public void handle(DeleteFilm command) {
         log.info("Command:{}", command);
         var film = filmRepository
-                .readById(command.filmId())
+                .getById(command.filmId())
                 .orElseThrow(FilmNotFoundException::new);
         filmRepository.delete(film);
     }

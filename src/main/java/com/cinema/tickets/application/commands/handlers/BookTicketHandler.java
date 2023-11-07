@@ -1,9 +1,9 @@
 package com.cinema.tickets.application.commands.handlers;
 
-import com.cinema.screenings.application.queries.handlers.ReadScreeningHandler;
-import com.cinema.screenings.application.queries.handlers.ReadSeatHandler;
-import com.cinema.screenings.application.queries.ReadScreening;
-import com.cinema.screenings.application.queries.ReadSeat;
+import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
+import com.cinema.screenings.application.queries.handlers.GetSeatHandler;
+import com.cinema.screenings.application.queries.GetScreening;
+import com.cinema.screenings.application.queries.GetSeat;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.domain.Ticket;
@@ -12,8 +12,8 @@ import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.events.TicketBookedEvent;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.policies.TicketBookingPolicy;
-import com.cinema.users.application.queries.handlers.ReadCurrentUserIdHandler;
-import com.cinema.users.application.queries.ReadCurrentUserId;
+import com.cinema.users.application.queries.handlers.GetCurrentUserIdHandler;
+import com.cinema.users.application.queries.GetCurrentUserId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -26,9 +26,9 @@ public class BookTicketHandler {
 
     private final TicketRepository ticketRepository;
     private final TicketBookingPolicy ticketBookingPolicy;
-    private final ReadScreeningHandler readScreeningHandler;
-    private final ReadSeatHandler readSeatHandler;
-    private final ReadCurrentUserIdHandler readCurrentUserIdHandler;
+    private final GetScreeningHandler getScreeningHandler;
+    private final GetSeatHandler getSeatHandler;
+    private final GetCurrentUserIdHandler getCurrentUserIdHandler;
     private final EventPublisher eventPublisher;
 
     @Transactional
@@ -37,14 +37,14 @@ public class BookTicketHandler {
         if (ticketRepository.exists(command.screeningId(), command.seatId())) {
             throw new TicketAlreadyExistsException();
         }
-        var readScreening = new ReadScreening(command.screeningId());
-        var screeningDto = readScreeningHandler.handle(readScreening);
+        var getScreening = new GetScreening(command.screeningId());
+        var screeningDto = getScreeningHandler.handle(getScreening);
         log.info("Screening:{}", screeningDto);
         ticketBookingPolicy.checkScreeningDate(screeningDto.date());
-        var readSeat = new ReadSeat(command.screeningId(), command.seatId());
-        var seatDto = readSeatHandler.handle(readSeat);
-        var readCurrentUserIdCommand = new ReadCurrentUserId();
-        var currentUserId = readCurrentUserIdHandler.handle(readCurrentUserIdCommand);
+        var getSeat = new GetSeat(command.screeningId(), command.seatId());
+        var seatDto = getSeatHandler.handle(getSeat);
+        var getCurrentUserIdCommand = new GetCurrentUserId();
+        var currentUserId = getCurrentUserIdHandler.handle(getCurrentUserIdCommand);
         var ticket = new Ticket(
                 TicketStatus.ACTIVE,
                 command.screeningId(),

@@ -21,7 +21,7 @@ import static com.cinema.tickets.TicketFixture.createTicket;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
 
-class ReadTicketControllerIT extends SpringIT {
+class GetTicketControllerIT extends SpringIT {
 
     private static final String TICKETS_BASE_ENDPOINT = "/tickets";
     private static final String username = "user1@mail.com";
@@ -53,7 +53,7 @@ class ReadTicketControllerIT extends SpringIT {
     }
 
     @Test
-    void tickets_are_read_by_user_id() {
+    void tickets_are_gotten_by_user_id() {
         //given
         var createFilmCommand = createCreateFilmCommand();
         createFilmHandler.handle(createFilmCommand);

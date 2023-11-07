@@ -21,7 +21,7 @@ public class TicketBookedHandler {
     public void handle(TicketBookedEvent event) {
         log.info("Handled event:{}", event);
         var seat = screeningRepository
-                .readById(event.screeningId())
+                .getById(event.screeningId())
                 .orElseThrow(ScreeningNotFoundException::new)
                 .findSeat(event.seatId())
                 .orElseThrow(SeatNotFoundException::new);

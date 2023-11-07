@@ -19,7 +19,7 @@ public class ResetUserPasswordHandler {
 
     public void handle(ResetUserPassword command) {
         var user = userRepository
-                .readyByMail(command.mail())
+                .getByMail(command.mail())
                 .orElseThrow(UserNotFoundException::new);
         var passwordResetToken = UUID.randomUUID();
         user.setPasswordResetToken(passwordResetToken);

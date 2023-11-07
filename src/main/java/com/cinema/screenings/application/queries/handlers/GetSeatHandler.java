@@ -2,31 +2,29 @@ package com.cinema.screenings.application.queries.handlers;
 
 import com.cinema.screenings.application.queries.dto.SeatDto;
 import com.cinema.screenings.application.queries.dto.SeatMapper;
-import com.cinema.screenings.application.queries.ReadSeatsByScreeningId;
+import com.cinema.screenings.application.queries.GetSeat;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
+import com.cinema.screenings.domain.exceptions.SeatNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class ReadSeatsByScreeningIdHandler {
+public class GetSeatHandler {
 
     private final ScreeningRepository screeningRepository;
     private final SeatMapper seatMapper;
 
-    public List<SeatDto> handle(ReadSeatsByScreeningId query) {
+    public SeatDto handle(GetSeat query) {
         log.info("Query:{}", query);
         return screeningRepository
-                .readById(query.screeningId())
+                .getById(query.screeningId())
                 .orElseThrow(ScreeningNotFoundException::new)
-                .getSeats()
-                .stream()
+                .findSeat(query.seatId())
                 .map(seatMapper::toDto)
-                .toList();
+                .orElseThrow(SeatNotFoundException::new);
     }
 }

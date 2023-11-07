@@ -1,6 +1,6 @@
 package com.cinema.screenings.domain;
 
-import com.cinema.screenings.application.queries.ReadScreeningsBy;
+import com.cinema.screenings.application.queries.GetScreeningsBy;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ScreeningRepository {
     Screening add(Screening screening);
     void delete(Screening screening);
-    List<Screening> readAllBy(ReadScreeningsBy query);
-    List<Screening> readWithRoom();
-    Optional<Screening> readById(Long id);
+    List<Screening> getAllBy(GetScreeningsBy query);
+    List<Screening> getWithRoom();
+    Optional<Screening> getById(Long id);
 }

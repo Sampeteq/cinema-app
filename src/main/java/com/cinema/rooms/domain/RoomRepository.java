@@ -5,8 +5,8 @@ import java.util.Optional;
 
 public interface RoomRepository {
     Room add(Room room);
-    Optional<Room> readById(String id);
-    List<Room> readAll();
+    Optional<Room> getById(String id);
+    List<Room> getAll();
     Long count();
     boolean existsById(String id);
 }

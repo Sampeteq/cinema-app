@@ -17,7 +17,7 @@ public class DeleteScreeningHandler {
     public void handle(DeleteScreening command) {
         log.info("Command:{}", command);
         var screening = screeningRepository
-                .readById(command.screeningId())
+                .getById(command.screeningId())
                 .orElseThrow(ScreeningNotFoundException::new);
         screeningRepository.delete(screening);
     }

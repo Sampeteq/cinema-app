@@ -16,7 +16,7 @@ public class SetNewUserPasswordHandler {
 
     public void handle(SetNewUserPassword command) {
         var user = userRepository
-                .readByPasswordResetToken(command.passwordResetToken())
+                .getByPasswordResetToken(command.passwordResetToken())
                 .orElseThrow(UserNotFoundException::new);
         var encodedPassword = passwordEncoder.encode(command.newPassword());
         user.setNewPassword(encodedPassword);

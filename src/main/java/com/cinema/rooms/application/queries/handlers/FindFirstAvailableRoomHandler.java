@@ -22,7 +22,7 @@ public class FindFirstAvailableRoomHandler {
     public RoomDto handle(FindFirstAvailableRoom query) {
         log.info("Query:{}", query);
         return roomRepository
-                .readAll()
+                .getAll()
                 .stream()
                 .filter(room -> room.hasNoOccupationOn(query.start(), query.end()))
                 .findFirst()

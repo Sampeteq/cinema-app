@@ -1,8 +1,8 @@
 package com.cinema.screenings.application.rest.controllers;
 
-import com.cinema.screenings.application.queries.ReadSeatsByScreeningId;
+import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
 import com.cinema.screenings.application.queries.dto.SeatDto;
-import com.cinema.screenings.application.queries.handlers.ReadSeatsByScreeningIdHandler;
+import com.cinema.screenings.application.queries.handlers.GetSeatsByScreeningIdHandler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,14 +18,14 @@ import java.util.List;
 @Tag(name = "screenings")
 @RequiredArgsConstructor
 @Slf4j
-public class ReadSeatsController {
+public class GetSeatsController {
 
-    private final ReadSeatsByScreeningIdHandler readSeatsByScreeningIdHandler;
+    private final GetSeatsByScreeningIdHandler getSeatsByScreeningIdHandler;
 
     @GetMapping("/{id}/seats")
-    List<SeatDto> readSeatsByScreeningId(@PathVariable Long id) {
-        var query = new ReadSeatsByScreeningId(id);
+    List<SeatDto> getSeatsByScreeningId(@PathVariable Long id) {
+        var query = new GetSeatsByScreeningId(id);
         log.info("Query:{}", query);
-        return readSeatsByScreeningIdHandler.handle(query);
+        return getSeatsByScreeningIdHandler.handle(query);
     }
 }

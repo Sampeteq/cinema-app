@@ -2,7 +2,7 @@ package com.cinema.rooms.application.queries.handlers;
 
 import com.cinema.rooms.application.queries.dto.RoomDto;
 import com.cinema.rooms.application.queries.dto.RoomMapper;
-import com.cinema.rooms.application.queries.FindFirstAvailableRoom;
+import com.cinema.rooms.application.queries.GetFirstAvailableRoom;
 import com.cinema.rooms.domain.RoomRepository;
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class FindFirstAvailableRoomHandler {
+public class GetFirstAvailableRoomHandler {
 
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;
 
     @Transactional(readOnly = true)
-    public RoomDto handle(FindFirstAvailableRoom query) {
+    public RoomDto handle(GetFirstAvailableRoom query) {
         log.info("Query:{}", query);
         return roomRepository
                 .getAll()

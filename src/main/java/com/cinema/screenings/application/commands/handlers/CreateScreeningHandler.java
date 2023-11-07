@@ -2,8 +2,8 @@ package com.cinema.screenings.application.commands.handlers;
 
 import com.cinema.films.application.queries.handlers.GetFilmHandler;
 import com.cinema.films.application.queries.GetFilm;
-import com.cinema.rooms.application.queries.handlers.FindFirstAvailableRoomHandler;
-import com.cinema.rooms.application.queries.FindFirstAvailableRoom;
+import com.cinema.rooms.application.queries.handlers.GetFirstAvailableRoomHandler;
+import com.cinema.rooms.application.queries.GetFirstAvailableRoom;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
@@ -28,7 +28,7 @@ public class CreateScreeningHandler {
     private final ScreeningDatePolicy screeningDatePolicy;
     private final ScreeningRepository screeningRepository;
     private final GetFilmHandler getFilmHandler;
-    private final FindFirstAvailableRoomHandler findFirstAvailableRoomHandler;
+    private final GetFirstAvailableRoomHandler getFirstAvailableRoomHandler;
     private final EventPublisher eventPublisher;
 
     @Transactional
@@ -40,8 +40,8 @@ public class CreateScreeningHandler {
         log.info("Film:{}", filmDto);
         var endDate = command.date().plusMinutes(filmDto.durationInMinutes());
         log.info("Screening end date:{}", endDate);
-        var findFirstAvailableRoomCommand = new FindFirstAvailableRoom(command.date(), endDate);
-        var roomDto = findFirstAvailableRoomHandler.handle(findFirstAvailableRoomCommand);
+        var findFirstAvailableRoomCommand = new GetFirstAvailableRoom(command.date(), endDate);
+        var roomDto = getFirstAvailableRoomHandler.handle(findFirstAvailableRoomCommand);
         log.info("Found room:{}", roomDto);
         var seats = createSeats(roomDto.rowsNumber(), roomDto.seatsNumberInOneRow());
         log.info("Created seats number:{}", seats.size());

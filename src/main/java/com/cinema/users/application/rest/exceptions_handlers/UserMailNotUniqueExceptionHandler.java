@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 class UserMailNotUniqueExceptionHandler {
 
-    @ExceptionHandler(UserMailNotUniqueException.class)
+    @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(UserMailNotUniqueException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);

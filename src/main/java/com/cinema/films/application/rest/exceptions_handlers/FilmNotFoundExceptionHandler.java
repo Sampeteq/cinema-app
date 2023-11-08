@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 class FilmNotFoundExceptionHandler {
 
-    @ExceptionHandler(FilmNotFoundException.class)
+    @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(FilmNotFoundException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class FilmYearOfRangeExceptionHandler {
 
-    @ExceptionHandler(FilmYearOutOfRangeException.class)
+    @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(FilmYearOutOfRangeException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);

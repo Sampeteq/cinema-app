@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 class ScreeningNotFoundExceptionHandler {
 
-    @ExceptionHandler(ScreeningNotFoundException.class)
+    @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(ScreeningNotFoundException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);

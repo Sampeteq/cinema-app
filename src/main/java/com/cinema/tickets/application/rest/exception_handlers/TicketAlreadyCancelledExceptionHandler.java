@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 class TicketAlreadyCancelledExceptionHandler {
 
-    @ExceptionHandler(TicketAlreadyCancelledException.class)
+    @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(TicketAlreadyCancelledException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);

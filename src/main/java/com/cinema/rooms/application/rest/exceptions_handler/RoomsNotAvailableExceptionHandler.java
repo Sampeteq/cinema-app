@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 class RoomsNotAvailableExceptionHandler {
 
-    @ExceptionHandler(RoomsNoAvailableException.class)
+    @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(RoomsNoAvailableException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);

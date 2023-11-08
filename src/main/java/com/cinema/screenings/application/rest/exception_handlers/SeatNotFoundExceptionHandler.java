@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class SeatNotFoundExceptionHandler {
 
-    @ExceptionHandler(SeatNotFoundException.class)
+    @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(SeatNotFoundException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);

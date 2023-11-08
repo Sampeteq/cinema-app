@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 class TicketBookTooLateExceptionHandler {
 
-    @ExceptionHandler(TicketBookTooLateException.class)
+    @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(TicketBookTooLateException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 class TicketNotFoundExceptionHandler {
 
-    @ExceptionHandler(TicketNotFoundException.class)
+    @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(TicketNotFoundException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);

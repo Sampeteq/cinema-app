@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 class TicketAlreadyExistsExceptionHandler {
 
-    @ExceptionHandler(TicketAlreadyExistsException.class)
+    @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(TicketAlreadyExistsException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);

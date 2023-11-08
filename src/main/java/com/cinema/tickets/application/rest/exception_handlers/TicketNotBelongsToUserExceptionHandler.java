@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 class TicketNotBelongsToUserExceptionHandler {
 
-    @ExceptionHandler(TicketNotBelongsToUserException.class)
+    @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(TicketNotBelongsToUserException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.FORBIDDEN);

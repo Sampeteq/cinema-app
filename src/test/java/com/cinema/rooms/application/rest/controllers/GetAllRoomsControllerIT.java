@@ -47,7 +47,7 @@ class GetAllRoomsControllerIT extends SpringIT {
                 .expectBody()
                 .jsonPath("$[0].id").isEqualTo(room.getId())
                 .jsonPath("$[0].rowsNumber").isEqualTo(room.getRowsNumber())
-                .jsonPath("$[0].rowSeatsNumber").isEqualTo(room.getSeatsNumberInOneRow());
+                .jsonPath("$[0].seatsNumberInOneRow").isEqualTo(room.getSeatsNumberInOneRow());
     }
 
     @Test

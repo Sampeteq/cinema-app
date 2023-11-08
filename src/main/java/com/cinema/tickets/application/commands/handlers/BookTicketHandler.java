@@ -37,14 +37,11 @@ public class BookTicketHandler {
         if (ticketRepository.exists(command.screeningId(), command.seatId())) {
             throw new TicketAlreadyExistsException();
         }
-        var getScreening = new GetScreening(command.screeningId());
-        var screeningDto = getScreeningHandler.handle(getScreening);
+        var screeningDto = getScreeningHandler.handle(new GetScreening(command.screeningId()));
         log.info("Screening:{}", screeningDto);
         ticketBookingPolicy.checkScreeningDate(screeningDto.date());
-        var getSeat = new GetSeat(command.screeningId(), command.seatId());
-        var seatDto = getSeatHandler.handle(getSeat);
-        var getCurrentUserIdCommand = new GetCurrentUserId();
-        var currentUserId = getCurrentUserIdHandler.handle(getCurrentUserIdCommand);
+        var seatDto = getSeatHandler.handle(new GetSeat(command.screeningId(), command.seatId()));
+        var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
         var ticket = new Ticket(
                 TicketStatus.ACTIVE,
                 command.screeningId(),

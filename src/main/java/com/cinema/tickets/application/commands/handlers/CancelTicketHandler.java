@@ -34,13 +34,11 @@ public class CancelTicketHandler {
                 .getById(command.ticketId())
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
-        var getCurrentUserIdQuery = new GetCurrentUserId();
-        var currentUserId = getCurrentUserIdHandler.handle(getCurrentUserIdQuery);
+        var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
         if (!ticket.belongsTo(currentUserId)) {
             throw new TicketNotBelongsToUserException();
         }
-        var getScreening = new GetScreening(ticket.getScreeningId());
-        var screeningDto = getScreeningHandler.handle(getScreening);
+        var screeningDto = getScreeningHandler.handle(new GetScreening(ticket.getScreeningId()));
         log.info("Screening:{}", screeningDto);
         ticketCancellingPolicy.checkScreeningDate(screeningDto.date());
         ticket.cancel();

@@ -35,13 +35,15 @@ public class CreateScreeningHandler {
     public void handle(CreateScreening command) {
         log.info("Command:{}", command);
         screeningDatePolicy.checkScreeningDate(command.date());
-        var getFilmCommand = new GetFilm(command.filmId());
-        var filmDto = getFilmHandler.handle(getFilmCommand);
+        var filmDto = getFilmHandler.handle(
+                new GetFilm(command.filmId())
+        );
         log.info("Film:{}", filmDto);
         var endDate = command.date().plusMinutes(filmDto.durationInMinutes());
         log.info("Screening end date:{}", endDate);
-        var findFirstAvailableRoomCommand = new GetFirstAvailableRoom(command.date(), endDate);
-        var roomDto = getFirstAvailableRoomHandler.handle(findFirstAvailableRoomCommand);
+        var roomDto = getFirstAvailableRoomHandler.handle(
+                new GetFirstAvailableRoom(command.date(), endDate)
+        );
         log.info("Found room:{}", roomDto);
         var seats = createSeats(roomDto.rowsNumber(), roomDto.seatsNumberInOneRow());
         log.info("Created seats number:{}", seats.size());

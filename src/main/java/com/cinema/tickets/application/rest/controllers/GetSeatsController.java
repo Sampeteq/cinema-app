@@ -1,8 +1,8 @@
-package com.cinema.screenings.application.rest.controllers;
+package com.cinema.tickets.application.rest.controllers;
 
-import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
-import com.cinema.screenings.application.queries.dto.SeatDto;
-import com.cinema.screenings.application.queries.handlers.GetSeatsByScreeningIdHandler;
+import com.cinema.tickets.application.queries.GetSeatsByScreeningId;
+import com.cinema.tickets.application.queries.dto.SeatDto;
+import com.cinema.tickets.application.queries.handlers.GetSeatsByScreeningIdHandler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

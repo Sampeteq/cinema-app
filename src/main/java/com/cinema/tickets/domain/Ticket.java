@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.ToString;
@@ -24,18 +25,16 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
 
-    private Long screeningId;
-
-    private Long seatId;
+    @OneToOne
+    private Seat seat;
 
     private Long userId;
 
     protected Ticket() {}
 
-    public Ticket(TicketStatus status, Long screeningId, Long seatId, Long userId) {
+    public Ticket(TicketStatus status, Seat seat, Long userId) {
         this.status = status;
-        this.screeningId = screeningId;
-        this.seatId = seatId;
+        this.seat = seat;
         this.userId = userId;
     }
 
@@ -44,6 +43,7 @@ public class Ticket {
             throw new TicketAlreadyCancelledException();
         }
         this.status = TicketStatus.CANCELLED;
+        this.seat.free();
     }
 
     public boolean belongsTo(Long userId) {

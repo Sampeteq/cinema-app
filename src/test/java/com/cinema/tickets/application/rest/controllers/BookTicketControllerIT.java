@@ -5,7 +5,10 @@ import com.cinema.films.application.commands.handlers.CreateFilmHandler;
 import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.tickets.application.commands.BookTicket;
-import com.cinema.tickets.domain.TicketRepository;
+import com.cinema.tickets.domain.Seat;
+import com.cinema.tickets.domain.repositories.SeatRepository;
+import com.cinema.tickets.domain.SeatStatus;
+import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
@@ -27,6 +30,7 @@ import static com.cinema.tickets.TicketFixture.SCREENING_DATE;
 import static com.cinema.tickets.TicketFixture.createCreateFilmCommand;
 import static com.cinema.tickets.TicketFixture.createCreateRoomCommand;
 import static com.cinema.tickets.TicketFixture.createCreateScreeningCommand;
+import static com.cinema.tickets.TicketFixture.createSeat;
 import static com.cinema.tickets.TicketFixture.createTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -40,6 +44,9 @@ class BookTicketControllerIT extends SpringIT {
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private SeatRepository seatRepository;
 
     @Autowired
     private CreateUserHandler createUserHandler;
@@ -121,11 +128,11 @@ class BookTicketControllerIT extends SpringIT {
         var filmTitle = "Title 1";
         var roomId = "1";
         addScreening(filmTitle, roomId);
+        var seat = addSeat();
         var screeningId = 1L;
-        var seatId = 1L;
         var command = new BookTicket(
                 screeningId,
-                seatId
+                seat.getId()
         );
 
         //when
@@ -143,8 +150,7 @@ class BookTicketControllerIT extends SpringIT {
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
                     assertEquals(TicketStatus.ACTIVE, ticket.getStatus());
-                    assertEquals(screeningId, ticket.getScreeningId());
-                    assertEquals(seatId, ticket.getSeatId());
+                    assertEquals(SeatStatus.TAKEN, ticket.getSeat().getStatus());
                     assertEquals(1L, ticket.getUserId());
                 });
     }
@@ -153,10 +159,11 @@ class BookTicketControllerIT extends SpringIT {
     void ticket_is_unique() {
         //given
         addScreening();
-        var ticket = ticketRepository.add(createTicket());
+        var seat = addSeat();
+        var ticket = ticketRepository.add(createTicket(seat));
         var command = new BookTicket(
-                ticket.getScreeningId(),
-                ticket.getSeatId()
+                ticket.getSeat().getId(),
+                ticket.getSeat().getId()
         );
 
         //when
@@ -226,5 +233,9 @@ class BookTicketControllerIT extends SpringIT {
         createFilmHandler.handle(createCreateFilmCommand(filmTitle));
         createRoomHandler.handle(createCreateRoomCommand(roomId));
         createScreeningHandler.handle(createCreateScreeningCommand(SCREENING_DATE));
+    }
+
+    private Seat addSeat() {
+        return seatRepository.add(createSeat());
     }
 }

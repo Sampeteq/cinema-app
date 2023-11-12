@@ -5,7 +5,9 @@ import com.cinema.films.application.commands.handlers.CreateFilmHandler;
 import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.tickets.application.queries.dto.TicketDto;
-import com.cinema.tickets.domain.TicketRepository;
+import com.cinema.tickets.domain.Seat;
+import com.cinema.tickets.domain.repositories.SeatRepository;
+import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +19,7 @@ import java.util.List;
 import static com.cinema.tickets.TicketFixture.createCreateFilmCommand;
 import static com.cinema.tickets.TicketFixture.createCreateRoomCommand;
 import static com.cinema.tickets.TicketFixture.createCreateScreeningCommand;
+import static com.cinema.tickets.TicketFixture.createSeat;
 import static com.cinema.tickets.TicketFixture.createTicket;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
@@ -29,6 +32,9 @@ class GetTicketControllerIT extends SpringIT {
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private SeatRepository seatRepository;
 
     @Autowired
     private CreateUserHandler createUserHandler;
@@ -64,7 +70,8 @@ class GetTicketControllerIT extends SpringIT {
         var createScreeningCommand = createCreateScreeningCommand();
         createScreeningHandler.handle(createScreeningCommand);
 
-        var ticket = ticketRepository.add(createTicket());
+        var seat = addSeat();
+        var ticket = ticketRepository.add(createTicket(seat));
 
         var rowNumber = 1;
         var seatNumber = 1;
@@ -100,5 +107,9 @@ class GetTicketControllerIT extends SpringIT {
                 .jsonPath("$[0].roomId").isEqualTo(expected.get(0).roomId())
                 .jsonPath("$[0].rowNumber").isEqualTo(expected.get(0).rowNumber())
                 .jsonPath("$[0].seatNumber").isEqualTo(expected.get(0).seatNumber());
+    }
+
+    private Seat addSeat() {
+        return seatRepository.add(createSeat());
     }
 }

@@ -1,6 +1,6 @@
-package com.cinema.screenings.application.queries.dto;
+package com.cinema.tickets.application.queries.dto;
 
-import com.cinema.screenings.domain.Seat;
+import com.cinema.tickets.domain.Seat;
 import org.mapstruct.Mapper;
 
 @Mapper

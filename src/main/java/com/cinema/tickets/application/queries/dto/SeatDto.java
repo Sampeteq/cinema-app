@@ -1,6 +1,6 @@
-package com.cinema.screenings.application.queries.dto;
+package com.cinema.tickets.application.queries.dto;
 
-import com.cinema.screenings.domain.SeatStatus;
+import com.cinema.tickets.domain.SeatStatus;
 
 public record SeatDto(
         Long id,

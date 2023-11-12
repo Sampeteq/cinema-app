@@ -1,4 +1,4 @@
-package com.cinema.screenings.domain.exceptions;
+package com.cinema.tickets.domain.exceptions;
 
 public class SeatNotFoundException extends RuntimeException {
 

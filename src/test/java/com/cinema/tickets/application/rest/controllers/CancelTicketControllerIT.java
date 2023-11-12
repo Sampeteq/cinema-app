@@ -4,7 +4,9 @@ import com.cinema.SpringIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
 import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
-import com.cinema.tickets.domain.TicketRepository;
+import com.cinema.tickets.domain.Seat;
+import com.cinema.tickets.domain.repositories.SeatRepository;
+import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
@@ -26,6 +28,7 @@ import static com.cinema.tickets.TicketFixture.createCancelledTicket;
 import static com.cinema.tickets.TicketFixture.createCreateFilmCommand;
 import static com.cinema.tickets.TicketFixture.createCreateRoomCommand;
 import static com.cinema.tickets.TicketFixture.createCreateScreeningCommand;
+import static com.cinema.tickets.TicketFixture.createSeat;
 import static com.cinema.tickets.TicketFixture.createTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -39,6 +42,9 @@ class CancelTicketControllerIT extends SpringIT {
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private SeatRepository seatRepository;
 
     @Autowired
     private CreateUserHandler createUserHandler;
@@ -69,7 +75,8 @@ class CancelTicketControllerIT extends SpringIT {
     void ticket_is_cancelled() {
         //give
         addScreening();
-        ticketRepository.add(createTicket());
+        var seat = addSeat();
+        ticketRepository.add(createTicket(seat));
 
         //when
         var spec = webTestClient
@@ -91,7 +98,8 @@ class CancelTicketControllerIT extends SpringIT {
     void ticket_already_cancelled_cannot_be_cancelled() {
         //given
         addScreening();
-        ticketRepository.add(createCancelledTicket());
+        var seat = addSeat();
+        ticketRepository.add(createCancelledTicket(seat));
 
         //when
         var spec = webTestClient
@@ -117,7 +125,8 @@ class CancelTicketControllerIT extends SpringIT {
         var command = createCreateScreeningCommand();
         createScreeningHandler.handle(command);
 
-        ticketRepository.add(createTicket());
+        var seat = addSeat();
+        ticketRepository.add(createTicket(seat));
         Mockito
                 .when(clock.instant())
                 .thenReturn(command.date().minusHours(23).toInstant(ZoneOffset.UTC));
@@ -142,7 +151,8 @@ class CancelTicketControllerIT extends SpringIT {
     void ticket_is_cancelled_if_belongs_to_current_user() {
         //given
         var notCurrentUserId = 2L;
-        ticketRepository.add(createTicket(notCurrentUserId));
+        var seat = addSeat();
+        ticketRepository.add(createTicket(notCurrentUserId, seat));
 
         //when
         var spec = webTestClient
@@ -164,5 +174,9 @@ class CancelTicketControllerIT extends SpringIT {
         createFilmHandler.handle(createCreateFilmCommand());
         createRoomHandler.handle(createCreateRoomCommand());
         createScreeningHandler.handle(createCreateScreeningCommand(SCREENING_DATE));
+    }
+
+    private Seat addSeat() {
+        return seatRepository.add(createSeat());
     }
 }

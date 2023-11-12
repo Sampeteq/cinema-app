@@ -1,4 +1,4 @@
-package com.cinema.screenings.application.queries;
+package com.cinema.tickets.application.queries;
 
 public record GetSeatsByScreeningId(Long screeningId) {
 }

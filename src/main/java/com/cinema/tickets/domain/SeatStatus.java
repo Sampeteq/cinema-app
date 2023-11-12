@@ -1,4 +1,4 @@
-package com.cinema.screenings.domain;
+package com.cinema.tickets.domain;
 
 public enum SeatStatus {
     FREE,

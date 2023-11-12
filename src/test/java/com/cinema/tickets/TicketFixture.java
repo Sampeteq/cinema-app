@@ -4,6 +4,8 @@ import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.films.domain.FilmCategory;
 import com.cinema.rooms.application.commands.CreateRoom;
+import com.cinema.tickets.domain.Seat;
+import com.cinema.tickets.domain.SeatStatus;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketStatus;
 
@@ -25,32 +27,31 @@ public final class TicketFixture {
             .now()
             .plusDays(8)
             .truncatedTo(ChronoUnit.MINUTES);
-    public static final long SEAT_ID = 1L;
+    public static final int SEAT_ROW_NUMBER = 1;
+    public static final int SEAT_NUMBER = 1;
     public static final long USER_ID = 1L;
 
     private TicketFixture() {
     }
 
-    public static Ticket createTicket() {
+    public static Ticket createTicket(Seat seat) {
         return new Ticket(
                 TicketStatus.ACTIVE,
-                SCREENING_ID,
-                SEAT_ID,
+                seat,
                 USER_ID
         );
     }
 
-    public static Ticket createTicket(Long userId) {
+    public static Ticket createTicket(Long userId, Seat seat) {
         return new Ticket(
                 TicketStatus.ACTIVE,
-                SCREENING_ID,
-                SEAT_ID,
+                seat,
                 userId
         );
     }
 
-    public static Ticket createCancelledTicket() {
-        var ticket = createTicket();
+    public static Ticket createCancelledTicket(Seat seat) {
+        var ticket = createTicket(seat);
         ticket.cancel();
         return ticket;
     }
@@ -103,5 +104,9 @@ public final class TicketFixture {
                 date,
                 FILM_ID
         );
+    }
+
+    public static Seat createSeat() {
+        return new Seat(SEAT_ROW_NUMBER, SEAT_NUMBER, SeatStatus.FREE, SCREENING_ID);
     }
 }

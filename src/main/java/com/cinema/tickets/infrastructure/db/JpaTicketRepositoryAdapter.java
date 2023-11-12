@@ -1,7 +1,7 @@
 package com.cinema.tickets.infrastructure.db;
 
 import com.cinema.tickets.domain.Ticket;
-import com.cinema.tickets.domain.TicketRepository;
+import com.cinema.tickets.domain.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -32,20 +32,12 @@ class JpaTicketRepositoryAdapter implements TicketRepository {
     }
 
     @Override
-    public boolean exists(Long screeningId, Long seatId) {
-        return jpaTicketRepository.existsByScreeningIdAndSeatId(
-                screeningId,
-                seatId
-        );
+    public boolean exists(Long seatId) {
+        return jpaTicketRepository.existsBySeatId(seatId);
     }
 }
 
 interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
-
+    boolean existsBySeatId(Long seatId);
     List<Ticket> findAllByUserId(Long userId);
-
-    boolean existsByScreeningIdAndSeatId(
-            Long screeningId,
-            Long seatId
-    );
 }

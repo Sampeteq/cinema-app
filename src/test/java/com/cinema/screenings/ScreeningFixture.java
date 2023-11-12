@@ -4,13 +4,10 @@ import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.films.domain.FilmCategory;
 import com.cinema.rooms.application.commands.CreateRoom;
 import com.cinema.screenings.domain.Screening;
-import com.cinema.screenings.domain.Seat;
-import com.cinema.screenings.domain.SeatStatus;
 
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 public final class ScreeningFixture {
 
@@ -31,13 +28,11 @@ public final class ScreeningFixture {
     }
 
     public static Screening createScreening(LocalDateTime screeningDate) {
-        var seat = new Seat(1,2, SeatStatus.FREE);
         var roomId = "1";
         return new Screening(
                 screeningDate,
                 FILM_ID,
-                roomId,
-                List.of(seat)
+                roomId
         );
     }
 

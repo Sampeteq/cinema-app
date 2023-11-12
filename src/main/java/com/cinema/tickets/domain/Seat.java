@@ -1,4 +1,4 @@
-package com.cinema.screenings.domain;
+package com.cinema.tickets.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -27,13 +27,16 @@ public class Seat {
     @Enumerated(value = EnumType.STRING)
     private SeatStatus status;
 
+    private Long screeningId;
+
     protected Seat() {
     }
 
-    public Seat(int rowNumber, int number, SeatStatus status) {
+    public Seat(int rowNumber, int number, SeatStatus status, Long screeningId) {
         this.rowNumber = rowNumber;
         this.number = number;
         this.status = status;
+        this.screeningId = screeningId;
     }
 
     public void take() {

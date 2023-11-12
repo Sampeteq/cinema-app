@@ -36,7 +36,7 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
 
     @Override
     public List<Screening> getWithRoom() {
-        return jpaScreeningRepository.findEndedWithRoom();
+        return jpaScreeningRepository.findWithRoom();
     }
 
     @Override
@@ -60,5 +60,5 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
 interface JpaScreeningRepository extends JpaRepository<Screening, Long>, JpaSpecificationExecutor<Screening> {
 
     @Query("select s from Screening s where s.roomId is not null")
-    List<Screening> findEndedWithRoom();
+    List<Screening> findWithRoom();
 }

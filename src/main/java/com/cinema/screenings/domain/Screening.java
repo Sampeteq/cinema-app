@@ -49,13 +49,6 @@ public class Screening {
         this.seats = seats;
     }
 
-    public boolean hasSeat(Long id) {
-        return this
-                .seats
-                .stream()
-                .anyMatch(seat -> seat.hasId(id));
-    }
-
     public Optional<Seat> findSeat(Long id) {
         return this
                 .seats

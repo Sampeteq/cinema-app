@@ -149,7 +149,7 @@ class BookTicketControllerIT extends SpringIT {
         assertThat(ticketRepository.getById(1L))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
-                    assertEquals(TicketStatus.ACTIVE, ticket.getStatus());
+                    assertEquals(TicketStatus.BOOKED, ticket.getStatus());
                     assertEquals(SeatStatus.TAKEN, ticket.getSeat().getStatus());
                     assertEquals(1L, ticket.getUserId());
                 });

@@ -36,7 +36,7 @@ public final class TicketFixture {
 
     public static Ticket createTicket(Seat seat) {
         return new Ticket(
-                TicketStatus.ACTIVE,
+                TicketStatus.BOOKED,
                 seat,
                 USER_ID
         );
@@ -44,7 +44,7 @@ public final class TicketFixture {
 
     public static Ticket createTicket(Long userId, Seat seat) {
         return new Ticket(
-                TicketStatus.ACTIVE,
+                TicketStatus.BOOKED,
                 seat,
                 userId
         );

@@ -43,7 +43,7 @@ public class BookTicketHandler {
         seat.take();
         var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
         var ticket = new Ticket(
-                TicketStatus.ACTIVE,
+                TicketStatus.BOOKED,
                 seat,
                 currentUserId
         );

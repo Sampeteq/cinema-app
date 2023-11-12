@@ -22,8 +22,8 @@ class JpaTicketRepositoryAdapter implements TicketRepository {
 
 
     @Override
-    public Optional<Ticket> getById(Long id) {
-        return jpaTicketRepository.findById(id);
+    public Optional<Ticket> getByIdAndUserId(Long ticketId, Long userId) {
+        return jpaTicketRepository.findByIdAndUserId(ticketId, userId);
     }
 
     @Override
@@ -38,6 +38,7 @@ class JpaTicketRepositoryAdapter implements TicketRepository {
 }
 
 interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
+    Optional<Ticket> findByIdAndUserId(Long ticketId, Long userId);
     boolean existsBySeatId(Long seatId);
     List<Ticket> findAllByUserId(Long userId);
 }

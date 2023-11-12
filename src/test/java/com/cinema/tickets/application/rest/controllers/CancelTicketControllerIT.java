@@ -5,12 +5,11 @@ import com.cinema.films.application.commands.handlers.CreateFilmHandler;
 import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.tickets.domain.Seat;
-import com.cinema.tickets.domain.repositories.SeatRepository;
-import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
-import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUserException;
+import com.cinema.tickets.domain.repositories.SeatRepository;
+import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +75,7 @@ class CancelTicketControllerIT extends SpringIT {
         //give
         addScreening();
         var seat = addSeat();
-        ticketRepository.add(createTicket(seat));
+        var ticket = ticketRepository.add(createTicket(seat));
 
         //when
         var spec = webTestClient
@@ -87,10 +86,10 @@ class CancelTicketControllerIT extends SpringIT {
 
         //then
         spec.expectStatus().isOk();
-        assertThat(ticketRepository.getById(1L))
+        assertThat(ticketRepository.getByIdAndUserId(ticket.getId(), ticket.getUserId()))
                 .isNotEmpty()
-                .hasValueSatisfying(ticket ->
-                        assertEquals(TicketStatus.CANCELLED, ticket.getStatus())
+                .hasValueSatisfying(cancelledTicket ->
+                        assertEquals(TicketStatus.CANCELLED, cancelledTicket.getStatus())
                 );
     }
 
@@ -143,29 +142,6 @@ class CancelTicketControllerIT extends SpringIT {
         spec
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-                .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
-    }
-
-    @Test
-    void ticket_is_cancelled_if_belongs_to_current_user() {
-        //given
-        var notCurrentUserId = 2L;
-        var seat = addSeat();
-        ticketRepository.add(createTicket(notCurrentUserId, seat));
-
-        //when
-        var spec = webTestClient
-                .patch()
-                .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
-                .headers(headers -> headers.setBasicAuth(username, password))
-                .exchange();
-
-        //then
-        var expectedMessage = new TicketNotBelongsToUserException().getMessage();
-        spec
-                .expectStatus()
-                .isEqualTo(HttpStatus.FORBIDDEN)
                 .expectBody()
                 .jsonPath("$.message", equalTo(expectedMessage));
     }

@@ -45,8 +45,4 @@ public class Ticket {
         this.status = TicketStatus.CANCELLED;
         this.seat.free();
     }
-
-    public boolean belongsTo(Long userId) {
-        return this.userId.equals(userId);
-    }
 }

@@ -4,7 +4,6 @@ import com.cinema.screenings.application.queries.GetScreening;
 import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
 import com.cinema.tickets.application.commands.CancelTicket;
 import com.cinema.tickets.domain.repositories.TicketRepository;
-import com.cinema.tickets.domain.exceptions.TicketNotBelongsToUserException;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.tickets.domain.policies.TicketCancellingPolicy;
 import com.cinema.users.application.queries.GetCurrentUserId;
@@ -27,14 +26,11 @@ public class CancelTicketHandler {
     @Transactional
     public void handle(CancelTicket command) {
         log.info("Command id:{}", command);
+        var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
         var ticket = ticketRepository
-                .getById(command.ticketId())
+                .getByIdAndUserId(command.ticketId(), currentUserId)
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
-        var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
-        if (!ticket.belongsTo(currentUserId)) {
-            throw new TicketNotBelongsToUserException();
-        }
         var screeningDto = getScreeningHandler.handle(new GetScreening(ticket.getSeat().getScreeningId()));
         log.info("Screening:{}", screeningDto);
         ticketCancellingPolicy.checkScreeningDate(screeningDto.date());

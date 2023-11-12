@@ -134,6 +134,8 @@ class BookTicketControllerIT extends SpringIT {
                 screeningId,
                 seat.getId()
         );
+        var ticketId = 1L;
+        var userId = 1L;
 
         //when
         var spec = webTestClient
@@ -146,7 +148,7 @@ class BookTicketControllerIT extends SpringIT {
 
         //then
         spec.expectStatus().isCreated();
-        assertThat(ticketRepository.getById(1L))
+        assertThat(ticketRepository.getByIdAndUserId(ticketId, userId))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
                     assertEquals(TicketStatus.BOOKED, ticket.getStatus());

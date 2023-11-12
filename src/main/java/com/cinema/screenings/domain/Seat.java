@@ -36,10 +36,6 @@ public class Seat {
         this.status = status;
     }
 
-    public boolean hasId(Long id) {
-        return this.id.equals(id);
-    }
-
     public void take() {
         this.status = SeatStatus.TAKEN;
     }

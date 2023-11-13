@@ -17,7 +17,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 class GetSeatsControllerIT extends SpringIT {
 
-    private static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
+    private static final String SEATS_BASE_ENDPOINT = "/seats";
 
     @Autowired
     private ScreeningRepository screeningRepository;
@@ -38,7 +38,11 @@ class GetSeatsControllerIT extends SpringIT {
         //when
         var spec = webTestClient
                 .get()
-                .uri(SCREENINGS_BASE_ENDPOINT + "/" +  screening.getId() + "/seats")
+                .uri(uriBuilder -> uriBuilder
+                        .path(SEATS_BASE_ENDPOINT)
+                        .queryParam("screeningId", screening.getId())
+                        .build()
+                )
                 .exchange();
 
         //then

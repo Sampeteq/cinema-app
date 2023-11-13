@@ -5,6 +5,7 @@ import com.cinema.tickets.domain.Seat;
 import com.cinema.tickets.domain.SeatStatus;
 import com.cinema.tickets.domain.repositories.SeatRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class ScreeningCreatedHandler {
 
     private final SeatRepository seatRepository;
 
+    @EventListener
     public void handle(ScreeningCreatedEvent event) {
         createSeats(
                 event.room().rowsNumber(),

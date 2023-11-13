@@ -2,11 +2,11 @@
   {
     "id": "1",
     "rowsNumber": 10,
-    "rowSeatsNumber": 15
+    "seatsNumberInOneRow": 15
   },
   {
     "id": "2",
     "rowsNumber": 15,
-    "rowSeatsNumber": 20
+    "seatsNumberInOneRow": 20
   }
 ]

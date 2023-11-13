@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.IntStream;
 
-@Component("Seats - ScreeningCreatedHandler")
+@Component("ScreeningCreatedHandler - seats creation")
 @RequiredArgsConstructor
 public class ScreeningCreatedHandler {
 

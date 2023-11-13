@@ -1,4 +1,4 @@
-package com.cinema.rooms.application.rest.controllers;
+package com.cinema.rooms.ui.rest.controllers;
 
 import com.cinema.SpringIT;
 import com.cinema.rooms.domain.RoomRepository;

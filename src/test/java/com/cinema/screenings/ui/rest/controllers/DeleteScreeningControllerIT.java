@@ -1,4 +1,4 @@
-package com.cinema.screenings.application.rest.controllers;
+package com.cinema.screenings.ui.rest.controllers;
 
 import com.cinema.SpringIT;
 import com.cinema.screenings.domain.Screening;

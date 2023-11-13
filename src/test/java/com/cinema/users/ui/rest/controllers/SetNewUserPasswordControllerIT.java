@@ -1,4 +1,4 @@
-package com.cinema.users.application.rest.controllers;
+package com.cinema.users.ui.rest.controllers;
 
 import com.cinema.SpringIT;
 import com.cinema.users.application.commands.SetNewUserPassword;

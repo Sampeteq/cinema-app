@@ -1,4 +1,4 @@
-package com.cinema.films.application.rest.controllers;
+package com.cinema.films.ui.rest.controllers;
 
 import com.cinema.SpringIT;
 import com.cinema.films.domain.FilmRepository;

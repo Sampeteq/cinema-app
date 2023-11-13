@@ -1,4 +1,4 @@
-package com.cinema.tickets.application.rest.controllers;
+package com.cinema.tickets.ui.rest.controllers;
 
 import com.cinema.SpringIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;

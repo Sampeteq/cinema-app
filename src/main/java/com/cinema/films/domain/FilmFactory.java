@@ -2,7 +2,6 @@ package com.cinema.films.domain;
 
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.films.domain.exceptions.FilmYearOutOfRangeException;
-import com.cinema.films.domain.specifications.FilmYearSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

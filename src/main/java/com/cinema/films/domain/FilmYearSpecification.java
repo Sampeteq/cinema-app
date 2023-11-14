@@ -1,4 +1,4 @@
-package com.cinema.films.domain.specifications;
+package com.cinema.films.domain;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

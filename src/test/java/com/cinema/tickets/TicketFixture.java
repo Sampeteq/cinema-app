@@ -109,4 +109,8 @@ public final class TicketFixture {
     public static Seat createSeat() {
         return new Seat(SEAT_ROW_NUMBER, SEAT_NUMBER, SeatStatus.FREE, SCREENING_ID);
     }
+
+    public static Seat createSeat(SeatStatus status) {
+        return new Seat(SEAT_ROW_NUMBER, SEAT_NUMBER, status, SCREENING_ID);
+    }
 }

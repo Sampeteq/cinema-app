@@ -3,13 +3,12 @@ package com.cinema.tickets.application.commands.handlers;
 import com.cinema.screenings.application.queries.GetScreening;
 import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
 import com.cinema.tickets.application.commands.BookTicket;
-import com.cinema.tickets.domain.repositories.SeatRepository;
 import com.cinema.tickets.domain.Ticket;
-import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.SeatNotFoundException;
-import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.policies.TicketBookingPolicy;
+import com.cinema.tickets.domain.repositories.SeatRepository;
+import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.users.application.queries.GetCurrentUserId;
 import com.cinema.users.application.queries.handlers.GetCurrentUserIdHandler;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +30,6 @@ public class BookTicketHandler {
     @Transactional
     public void handle(BookTicket command) {
         log.info("Command:{}", command);
-        if (ticketRepository.exists(command.seatId())) {
-            throw new TicketAlreadyExistsException();
-        }
         var screeningDto = getScreeningHandler.handle(new GetScreening(command.screeningId()));
         log.info("Screening:{}", screeningDto);
         ticketBookingPolicy.checkScreeningDate(screeningDto.date());

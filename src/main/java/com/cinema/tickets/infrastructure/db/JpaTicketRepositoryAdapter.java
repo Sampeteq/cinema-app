@@ -30,15 +30,9 @@ class JpaTicketRepositoryAdapter implements TicketRepository {
     public List<Ticket> getAllByUserId(Long userId) {
         return jpaTicketRepository.findAllByUserId(userId);
     }
-
-    @Override
-    public boolean exists(Long seatId) {
-        return jpaTicketRepository.existsBySeatId(seatId);
-    }
 }
 
 interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
     Optional<Ticket> findByIdAndUserId(Long ticketId, Long userId);
-    boolean existsBySeatId(Long seatId);
     List<Ticket> findAllByUserId(Long userId);
 }

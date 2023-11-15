@@ -1,5 +1,6 @@
 package com.cinema.tickets.domain;
 
+import com.cinema.tickets.domain.exceptions.SeatAlreadyTakenException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -40,6 +41,9 @@ public class Seat {
     }
 
     public void take() {
+        if (this.status.equals(SeatStatus.TAKEN)) {
+            throw new SeatAlreadyTakenException();
+        }
         this.status = SeatStatus.TAKEN;
     }
 

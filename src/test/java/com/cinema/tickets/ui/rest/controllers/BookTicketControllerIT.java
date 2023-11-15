@@ -6,11 +6,11 @@ import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.domain.Seat;
+import com.cinema.tickets.domain.exceptions.SeatAlreadyTakenException;
 import com.cinema.tickets.domain.repositories.SeatRepository;
 import com.cinema.tickets.domain.SeatStatus;
 import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
-import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.commands.handlers.CreateUserHandler;
@@ -158,14 +158,14 @@ class BookTicketControllerIT extends SpringIT {
     }
 
     @Test
-    void ticket_is_unique() {
+    void ticket_is_booked_for_free_seat() {
         //given
         addScreening();
-        var seat = addSeat();
-        var ticket = ticketRepository.add(createTicket(seat));
+        var screeningId = 1L;
+        var seat = addSeat(SeatStatus.TAKEN);
         var command = new BookTicket(
-                ticket.getSeat().getId(),
-                ticket.getSeat().getId()
+                screeningId,
+                seat.getId()
         );
 
         //when
@@ -178,7 +178,7 @@ class BookTicketControllerIT extends SpringIT {
                 .exchange();
 
         //then
-        var expectedMessage = new TicketAlreadyExistsException().getMessage();
+        var expectedMessage = new SeatAlreadyTakenException().getMessage();
         spec
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -239,5 +239,9 @@ class BookTicketControllerIT extends SpringIT {
 
     private Seat addSeat() {
         return seatRepository.add(createSeat());
+    }
+
+    private Seat addSeat(SeatStatus status) {
+        return seatRepository.add(createSeat(status));
     }
 }

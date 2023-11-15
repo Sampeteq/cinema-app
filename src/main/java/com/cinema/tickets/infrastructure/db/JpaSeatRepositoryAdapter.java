@@ -2,8 +2,11 @@ package com.cinema.tickets.infrastructure.db;
 
 import com.cinema.tickets.domain.Seat;
 import com.cinema.tickets.domain.repositories.SeatRepository;
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,7 +25,7 @@ public class JpaSeatRepositoryAdapter implements SeatRepository {
 
     @Override
     public Optional<Seat> getById(Long id) {
-        return jpaSeatRepository.findById(id);
+        return jpaSeatRepository.findByIdWithPessimisticLock(id);
     }
 
     @Override
@@ -32,5 +35,10 @@ public class JpaSeatRepositoryAdapter implements SeatRepository {
 }
 
 interface JpaSeatRepository extends JpaRepository<Seat, Long> {
+
+    @Query("SELECT S FROM Seat S WHERE S.id = :id")
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Optional<Seat> findByIdWithPessimisticLock(Long id);
+
     List<Seat> findAllByScreeningId(Long screeningId);
 }

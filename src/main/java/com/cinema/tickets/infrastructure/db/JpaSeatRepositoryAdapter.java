@@ -6,7 +6,6 @@ import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,8 +23,8 @@ public class JpaSeatRepositoryAdapter implements SeatRepository {
     }
 
     @Override
-    public Optional<Seat> getById(Long id) {
-        return jpaSeatRepository.findByIdWithPessimisticLock(id);
+    public Optional<Seat> getByScreeningIdRowNumberAndNumber(Long screeningId, int rowNumber, int number) {
+        return jpaSeatRepository.findByScreeningIdAndRowNumberAndNumber(screeningId, rowNumber, number);
     }
 
     @Override
@@ -36,9 +35,8 @@ public class JpaSeatRepositoryAdapter implements SeatRepository {
 
 interface JpaSeatRepository extends JpaRepository<Seat, Long> {
 
-    @Query("SELECT S FROM Seat S WHERE S.id = :id")
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<Seat> findByIdWithPessimisticLock(Long id);
+    Optional<Seat> findByScreeningIdAndRowNumberAndNumber(Long screeningId, int rowNumber, int number);
 
     List<Seat> findAllByScreeningId(Long screeningId);
 }

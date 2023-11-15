@@ -34,7 +34,11 @@ public class BookTicketHandler {
         log.info("Screening:{}", screeningDto);
         ticketBookingPolicy.checkScreeningDate(screeningDto.date());
         var seat = seatRepository
-                .getById(command.seatId())
+                .getByScreeningIdRowNumberAndNumber(
+                        command.screeningId(),
+                        command.rowNumber(),
+                        command.seatNumber()
+                )
                 .orElseThrow(SeatNotFoundException::new);
         seat.take();
         var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());

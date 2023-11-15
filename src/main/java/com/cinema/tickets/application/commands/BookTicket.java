@@ -7,6 +7,9 @@ public record BookTicket(
         Long screeningId,
 
         @NotNull
-        Long seatId
+        Integer rowNumber,
+
+        @NotNull
+        Integer seatNumber
 ) {
 }

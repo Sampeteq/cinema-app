@@ -1,9 +1,8 @@
-package com.cinema.tickets.ui.rest.controllers;
+package com.cinema.tickets.ui.rest;
 
 import com.cinema.tickets.application.queries.GetSeatsByScreeningId;
 import com.cinema.tickets.application.queries.dto.SeatDto;
 import com.cinema.tickets.application.queries.handlers.GetSeatsByScreeningIdHandler;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +14,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/seats")
-@Tag(name = "seats")
 @RequiredArgsConstructor
 @Slf4j
-public class GetSeatsController {
+class SeatController {
 
     private final GetSeatsByScreeningIdHandler getSeatsByScreeningIdHandler;
 

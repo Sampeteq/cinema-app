@@ -46,8 +46,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TicketControllerIT extends BaseIT {
 
     private static final String TICKETS_BASE_ENDPOINT = "/tickets";
-    private static final String username = "user1@mail.com";
-    private static final String password = "12345";
+    private static final String USERNAME = "user1@mail.com";
+    private static final String PASSWORD = "12345";
 
     @Autowired
     private TicketRepository ticketRepository;
@@ -74,8 +74,8 @@ class TicketControllerIT extends BaseIT {
     void setUp() {
         createUserHandler.handle(
                 new CreateUser(
-                        username,
-                        password
+                        USERNAME,
+                        PASSWORD
                 )
         );
     }
@@ -99,7 +99,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(username, password))
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -126,7 +126,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(username, password))
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -156,7 +156,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(username, password))
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -190,7 +190,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(username, password))
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -225,7 +225,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(username, password))
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -248,7 +248,7 @@ class TicketControllerIT extends BaseIT {
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
-                .headers(headers -> headers.setBasicAuth(username, password))
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -271,7 +271,7 @@ class TicketControllerIT extends BaseIT {
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
-                .headers(headers -> headers.setBasicAuth(username, password))
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -301,7 +301,7 @@ class TicketControllerIT extends BaseIT {
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
-                .headers(headers -> headers.setBasicAuth(username, password))
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -335,7 +335,7 @@ class TicketControllerIT extends BaseIT {
         var spec = webTestClient
                 .get()
                 .uri(TICKETS_BASE_ENDPOINT + "/my")
-                .headers(headers -> headers.setBasicAuth(username, password))
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
 
         //then
@@ -392,7 +392,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new BookTicket(screeningId, rowNumber, seatNumber))
-                .headers(headers -> headers.setBasicAuth(username, password))
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
     }
 }

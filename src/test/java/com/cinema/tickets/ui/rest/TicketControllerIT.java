@@ -81,7 +81,7 @@ class TicketControllerIT extends BaseIT {
     }
 
     @Test
-    void ticket_is_made_for_existing_screening() {
+    void ticket_is_booked_for_existing_screening() {
         //given
         var nonExistingScreeningId = 0L;
         var rowNumber = 1;

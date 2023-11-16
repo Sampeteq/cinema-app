@@ -56,16 +56,16 @@ class TicketControllerIT extends BaseIT {
     private SeatRepository seatRepository;
 
     @Autowired
-    private CreateUserHandler createUserHandler;
+    private CreateFilmHandler createFilmHandler;
 
     @Autowired
-    private CreateFilmHandler createFilmHandler;
+    private CreateRoomHandler createRoomHandler;
 
     @Autowired
     private CreateScreeningHandler createScreeningHandler;
 
     @Autowired
-    private CreateRoomHandler createRoomHandler;
+    private CreateUserHandler createUserHandler;
 
     @SpyBean
     private Clock clock;

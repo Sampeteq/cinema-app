@@ -1,4 +1,4 @@
-package com.cinema.rooms.ui.rest.controllers;
+package com.cinema.rooms.ui.rest;
 
 import com.cinema.SpringIT;
 import com.cinema.rooms.domain.RoomRepository;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.cinema.rooms.RoomFixture.createRoom;
 
-class GetAllRoomsControllerIT extends SpringIT {
+class RoomControllerIT extends SpringIT {
 
     private static final String ROOMS_ENDPOINT = "/rooms";
 

@@ -148,9 +148,7 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_booked() {
         //given
-        var filmTitle = "Title 1";
-        var roomId = "1";
-        addScreening(filmTitle, roomId);
+        addScreening();
         var screeningId = 1L;
         var rowNumber = 1;
         var seatNumber = 1;
@@ -159,8 +157,6 @@ class TicketControllerIT extends BaseIT {
                 rowNumber,
                 seatNumber
         );
-        var ticketId = 1L;
-        var userId = 1L;
 
         //when
         var spec = webTestClient
@@ -173,7 +169,7 @@ class TicketControllerIT extends BaseIT {
 
         //then
         spec.expectStatus().isCreated();
-        assertThat(ticketRepository.getByIdAndUserId(ticketId, userId))
+        assertThat(ticketRepository.getByIdAndUserId(1L, 1L))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
                     assertEquals(TicketStatus.BOOKED, ticket.getStatus());
@@ -298,8 +294,8 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_cancelled_at_least_24h_before_screening() {
         //given
-        createFilmHandler.handle(createCreateFilmCommand());
-        createRoomHandler.handle(createCreateRoomCommand());
+        addFilm();
+        addRoom();
         var command = createCreateScreeningCommand();
         createScreeningHandler.handle(command);
 
@@ -340,9 +336,6 @@ class TicketControllerIT extends BaseIT {
         var seat = addSeat();
         var ticket = ticketRepository.add(createTicket(seat));
 
-        var rowNumber = 1;
-        var seatNumber = 1;
-
         //when
         var spec = webTestClient
                 .get()
@@ -351,15 +344,15 @@ class TicketControllerIT extends BaseIT {
                 .exchange();
 
         //then
-        var expected = List.of(
+        var expectedTicketDto = List.of(
                 new TicketDto(
                         1L,
                         ticket.getStatus(),
                         createFilmCommand.title(),
                         createScreeningCommand.date(),
                         createRoomCommand.id(),
-                        rowNumber,
-                        seatNumber
+                        seat.getRowNumber(),
+                        seat.getNumber()
                 )
         );
         spec
@@ -367,31 +360,33 @@ class TicketControllerIT extends BaseIT {
                 .isOk()
                 .expectBody()
                 .jsonPath("$[*]").value(everyItem(notNullValue()))
-                .jsonPath("$[0].id").isEqualTo(expected.get(0).id())
-                .jsonPath("$[0].status").isEqualTo(expected.get(0).status().name())
-                .jsonPath("$[0].filmTitle").isEqualTo(expected.get(0).filmTitle())
-                .jsonPath("$[0].screeningDate").isEqualTo(expected.get(0).screeningDate().toString())
-                .jsonPath("$[0].roomId").isEqualTo(expected.get(0).roomId())
-                .jsonPath("$[0].rowNumber").isEqualTo(expected.get(0).rowNumber())
-                .jsonPath("$[0].seatNumber").isEqualTo(expected.get(0).seatNumber());
+                .jsonPath("$[0].id").isEqualTo(expectedTicketDto.get(0).id())
+                .jsonPath("$[0].status").isEqualTo(expectedTicketDto.get(0).status().name())
+                .jsonPath("$[0].filmTitle").isEqualTo(expectedTicketDto.get(0).filmTitle())
+                .jsonPath("$[0].screeningDate").isEqualTo(expectedTicketDto.get(0).screeningDate().toString())
+                .jsonPath("$[0].roomId").isEqualTo(expectedTicketDto.get(0).roomId())
+                .jsonPath("$[0].rowNumber").isEqualTo(expectedTicketDto.get(0).rowNumber())
+                .jsonPath("$[0].seatNumber").isEqualTo(expectedTicketDto.get(0).seatNumber());
+    }
+
+    private void addFilm() {
+        createFilmHandler.handle(createCreateFilmCommand());
+    }
+
+    private void addRoom() {
+        createRoomHandler.handle(createCreateRoomCommand());
     }
 
     private void addScreening() {
-        createFilmHandler.handle(createCreateFilmCommand());
-        createRoomHandler.handle(createCreateRoomCommand());
+        addFilm();
+        addRoom();
         createScreeningHandler.handle(createCreateScreeningCommand(SCREENING_DATE));
     }
 
     private void addScreening(LocalDateTime screeningDate) {
-        createFilmHandler.handle(createCreateFilmCommand());
-        createRoomHandler.handle(createCreateRoomCommand());
+        addFilm();
+        addRoom();
         createScreeningHandler.handle(createCreateScreeningCommand(screeningDate));
-    }
-
-    private void addScreening(String filmTitle, String roomId) {
-        createFilmHandler.handle(createCreateFilmCommand(filmTitle));
-        createRoomHandler.handle(createCreateRoomCommand(roomId));
-        createScreeningHandler.handle(createCreateScreeningCommand(SCREENING_DATE));
     }
 
     private Seat addSeat() {

@@ -4,12 +4,14 @@ import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
 import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
+import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.queries.dto.TicketDto;
 import com.cinema.tickets.domain.Seat;
 import com.cinema.tickets.domain.SeatStatus;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.SeatAlreadyTakenException;
+import com.cinema.tickets.domain.exceptions.SeatNotFoundException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
@@ -103,7 +105,12 @@ class TicketControllerIT extends BaseIT {
                 .exchange();
 
         //then
-        spec.expectStatus().isNotFound();
+        var expectedMessage = new ScreeningNotFoundException().getMessage();
+        spec
+                .expectStatus()
+                .isNotFound()
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test
@@ -130,7 +137,12 @@ class TicketControllerIT extends BaseIT {
                 .exchange();
 
         //then
-        spec.expectStatus().isNotFound();
+        var expectedMessage = new SeatNotFoundException().getMessage();
+        spec
+                .expectStatus()
+                .isNotFound()
+                .expectBody()
+                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test

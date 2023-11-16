@@ -1,7 +1,8 @@
-package com.cinema.users.ui.rest.controllers;
+package com.cinema.users.ui.rest;
 
 import com.cinema.SpringIT;
 import com.cinema.users.UserFixture;
+import com.cinema.users.application.commands.SetNewUserPassword;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.UUID;
+
 import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static com.cinema.users.UserFixture.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,7 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class CreateUserControllerIT extends SpringIT {
+class UserControllerIT extends SpringIT {
 
     private static final String USERS_BASE_ENDPOINT = "/users";
 
@@ -73,5 +76,59 @@ class CreateUserControllerIT extends SpringIT {
                 .expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
                 .jsonPath("$.message", equalTo(expectedMessage));
+    }
+
+    @Test
+    void user_password_is_reset() {
+        //given
+        var user = userRepository.add(createUser());
+
+        //when
+        var spec = webTestClient
+                .patch()
+                .uri(uriBuilder -> uriBuilder
+                        .path(USERS_BASE_ENDPOINT + "/password/reset")
+                        .queryParam("mail", user.getMail())
+                        .build()
+                )
+                .attribute("mail", user.getMail())
+                .exchange();
+
+        //then
+        spec.expectStatus().isOk();
+        var userPasswordResetToken = userRepository
+                .getByMail(user.getUsername())
+                .orElseThrow()
+                .getPasswordResetToken();
+        assertThat(userPasswordResetToken).isNotNull();
+    }
+
+    @Test
+    void user_new_password_is_set() {
+        //given
+        var passwordResetToken = UUID.randomUUID();
+        var addedUser = userRepository.add(createUser(passwordResetToken));
+        var command = new SetNewUserPassword(
+                passwordResetToken,
+                addedUser.getPassword() + "new"
+        );
+
+        //when
+        var spec = webTestClient
+                .patch()
+                .uri(USERS_BASE_ENDPOINT + "/password/new")
+                .bodyValue(command)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange();
+
+        //then
+        spec.expectStatus().isOk();
+        assertThat(
+                userRepository.getByMail(addedUser.getMail())
+        ).hasValueSatisfying(
+                user -> assertTrue(
+                        passwordEncoder.matches(command.newPassword(), user.getPassword())
+                )
+        );
     }
 }

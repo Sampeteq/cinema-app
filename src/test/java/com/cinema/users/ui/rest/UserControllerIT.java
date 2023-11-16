@@ -1,6 +1,6 @@
 package com.cinema.users.ui.rest;
 
-import com.cinema.SpringIT;
+import com.cinema.BaseIT;
 import com.cinema.users.UserFixture;
 import com.cinema.users.application.commands.SetNewUserPassword;
 import com.cinema.users.domain.UserRepository;
@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class UserControllerIT extends SpringIT {
+class UserControllerIT extends BaseIT {
 
     private static final String USERS_BASE_ENDPOINT = "/users";
 

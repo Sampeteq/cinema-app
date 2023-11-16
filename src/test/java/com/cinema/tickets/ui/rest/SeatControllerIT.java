@@ -1,6 +1,6 @@
 package com.cinema.tickets.ui.rest;
 
-import com.cinema.SpringIT;
+import com.cinema.BaseIT;
 import com.cinema.tickets.domain.repositories.SeatRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import static com.cinema.tickets.SeatFixture.createSeats;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
 
-class SeatControllerIT extends SpringIT {
+class SeatControllerIT extends BaseIT {
 
     private static final String SEATS_BASE_ENDPOINT = "/seats";
 

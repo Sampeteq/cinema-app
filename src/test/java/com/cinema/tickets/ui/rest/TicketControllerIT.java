@@ -1,6 +1,6 @@
 package com.cinema.tickets.ui.rest;
 
-import com.cinema.SpringIT;
+import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
 import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
@@ -43,7 +43,7 @@ import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TicketControllerIT extends SpringIT {
+class TicketControllerIT extends BaseIT {
 
     private static final String TICKETS_BASE_ENDPOINT = "/tickets";
     private static final String username = "user1@mail.com";

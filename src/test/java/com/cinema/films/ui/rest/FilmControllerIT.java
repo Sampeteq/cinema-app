@@ -1,6 +1,6 @@
 package com.cinema.films.ui.rest;
 
-import com.cinema.SpringIT;
+import com.cinema.BaseIT;
 import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmRepository;
@@ -26,7 +26,7 @@ import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FilmControllerIT extends SpringIT {
+class FilmControllerIT extends BaseIT {
 
     private static final String FILMS_BASE_ENDPOINT = "/films";
     private static final String USERNAME = "user";

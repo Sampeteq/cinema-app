@@ -1,6 +1,6 @@
 package com.cinema.screenings.ui.rest;
 
-import com.cinema.SpringIT;
+import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
 import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
 import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 
-class ScreeningControllerIT extends SpringIT {
+class ScreeningControllerIT extends BaseIT {
 
     private static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
     private static final String USERNAME = "user";

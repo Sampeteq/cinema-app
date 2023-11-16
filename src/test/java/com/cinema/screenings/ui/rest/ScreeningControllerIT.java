@@ -1,4 +1,4 @@
-package com.cinema.screenings.ui.rest.controllers;
+package com.cinema.screenings.ui.rest;
 
 import com.cinema.SpringIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,9 +26,13 @@ import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createCreateFilmCommand;
 import static com.cinema.screenings.ScreeningFixture.createCreateRoomCommand;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 
-class CreateScreeningControllerIT extends SpringIT {
+class ScreeningControllerIT extends SpringIT {
 
     private static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
     private static final String USERNAME = "user";
@@ -193,6 +198,92 @@ class CreateScreeningControllerIT extends SpringIT {
                 .jsonPath("$.message", equalTo(expectedMessage));
     }
 
+    @Test
+    void screening_is_deleted_only_by_admin() {
+        //given
+        addCommonUser();
+        var screeningId = 1L;
+
+        //when
+        var spec = webTestClient
+                .delete()
+                .uri(SCREENINGS_BASE_ENDPOINT + "/" + screeningId)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .exchange();
+
+        //then
+        spec.expectStatus().isForbidden();
+    }
+
+    @Test
+    void screening_is_deleted() {
+        //given
+        addAdminUser();
+        var screening = addScreening();
+
+        //when
+        var spec = webTestClient
+                .delete()
+                .uri(SCREENINGS_BASE_ENDPOINT + "/" + screening.getId())
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .exchange();
+
+        //then
+        spec.expectStatus().isNoContent();
+        assertThat(screeningRepository.getById(screening.getId())).isEmpty();
+    }
+
+    @Test
+    void screenings_are_gotten() {
+        //given
+        var filmTitle = "Sample title";
+        addFilm(filmTitle);
+        var screening = addScreening();
+
+        //when
+        var spec = webTestClient
+                .get()
+                .uri(SCREENINGS_BASE_ENDPOINT)
+                .exchange();
+
+        //then
+        spec
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("$[*]").value(hasSize(1))
+                .jsonPath("$[*].*").value(everyItem(notNullValue()))
+                .jsonPath("$[0].date").isEqualTo(screening.getDate().toString())
+                .jsonPath("$[0].filmTitle").isEqualTo(filmTitle);
+    }
+
+    @Test
+    void screenings_are_gotten_by_date() {
+        //given
+        addFilm();
+        var requiredDate = LocalDate.of(2023, 12, 13);
+        var screeningWithRequiredDate = addScreening(requiredDate);
+        addScreening(requiredDate.minusDays(1));
+
+        //when
+        var spec = webTestClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(SCREENINGS_BASE_ENDPOINT)
+                        .queryParam("date", requiredDate.toString())
+                        .build()
+                )
+                .exchange();
+
+        //then
+        spec
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("$.[*].date").isEqualTo(screeningWithRequiredDate.getDate().toString());
+    }
+
+
     private Screening addScreening() {
         var screening = createScreening(SCREENING_DATE);
         return screeningRepository.add(screening);
@@ -220,5 +311,15 @@ class CreateScreeningControllerIT extends SpringIT {
                 PASSWORD
         );
         createAdminHandler.handle(command);
+    }
+
+    private void addFilm() {
+        createFilmHandler.handle(createCreateFilmCommand());
+    }
+
+    private Screening addScreening(LocalDate date) {
+        var dateTime = date.atStartOfDay().plusHours(16);
+        var screening = createScreening(dateTime);
+        return screeningRepository.add(screening);
     }
 }

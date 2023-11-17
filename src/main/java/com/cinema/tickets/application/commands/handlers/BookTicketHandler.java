@@ -1,7 +1,7 @@
 package com.cinema.tickets.application.commands.handlers;
 
-import com.cinema.screenings.application.queries.GetScreening;
-import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
+import com.cinema.screenings.application.queries.GetScreeningDate;
+import com.cinema.screenings.application.queries.handlers.GetScreeningDateHandler;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketStatus;
@@ -24,15 +24,15 @@ public class BookTicketHandler {
     private final TicketRepository ticketRepository;
     private final TicketBookingPolicy ticketBookingPolicy;
     private final SeatRepository seatRepository;
-    private final GetScreeningHandler getScreeningHandler;
+    private final GetScreeningDateHandler getScreeningDateHandler;
     private final GetCurrentUserIdHandler getCurrentUserIdHandler;
 
     @Transactional
     public void handle(BookTicket command) {
         log.info("Command:{}", command);
-        var screeningDto = getScreeningHandler.handle(new GetScreening(command.screeningId()));
-        log.info("Screening:{}", screeningDto);
-        ticketBookingPolicy.checkScreeningDate(screeningDto.date());
+        var screeningDate = getScreeningDateHandler.handle(new GetScreeningDate(command.screeningId()));
+        log.info("Screening date:{}", screeningDate);
+        ticketBookingPolicy.checkScreeningDate(screeningDate);
         var seat = seatRepository
                 .getByScreeningIdRowNumberAndNumber(
                         command.screeningId(),

@@ -1,11 +1,11 @@
 package com.cinema.tickets.application.commands.handlers;
 
-import com.cinema.screenings.application.queries.GetScreening;
-import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
+import com.cinema.screenings.application.queries.GetScreeningDate;
+import com.cinema.screenings.application.queries.handlers.GetScreeningDateHandler;
 import com.cinema.tickets.application.commands.CancelTicket;
-import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.tickets.domain.policies.TicketCancellingPolicy;
+import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.users.application.queries.GetCurrentUserId;
 import com.cinema.users.application.queries.handlers.GetCurrentUserIdHandler;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class CancelTicketHandler {
 
     private final TicketRepository ticketRepository;
     private final TicketCancellingPolicy ticketCancellingPolicy;
-    private final GetScreeningHandler getScreeningHandler;
+    private final GetScreeningDateHandler getScreeningDateHandler;
     private final GetCurrentUserIdHandler getCurrentUserIdHandler;
 
     @Transactional
@@ -31,9 +31,10 @@ public class CancelTicketHandler {
                 .getByIdAndUserId(command.ticketId(), currentUserId)
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
-        var screeningDto = getScreeningHandler.handle(new GetScreening(ticket.getSeat().getScreeningId()));
-        log.info("Screening:{}", screeningDto);
-        ticketCancellingPolicy.checkScreeningDate(screeningDto.date());
+        var screeningId = ticket.getSeat().getScreeningId();
+        var screeningDate = getScreeningDateHandler.handle(new GetScreeningDate(screeningId));
+        log.info("Screening date:{}", screeningDate);
+        ticketCancellingPolicy.checkScreeningDate(screeningDate);
         ticket.cancel();
         log.info("Ticket cancelled:{}", ticket);
     }

@@ -29,11 +29,11 @@ public class CreateScreeningHandler {
         log.info("Command:{}", command);
         screeningDatePolicy.checkScreeningDate(command.date());
         var filmDto = filmApi.getFilmById(command.filmId());
-        log.info("Film:{}", filmDto);
+        log.info("Gotten film:{}", filmDto);
         var endDate = command.date().plusMinutes(filmDto.durationInMinutes());
         log.info("Screening end date:{}", endDate);
         var roomDto = roomApi.getFirstAvailableRoom(command.date(), endDate);
-        log.info("Found room:{}", roomDto);
+        log.info("Gotten room:{}", roomDto);
         var screening = new Screening(
                 command.date(),
                 command.filmId(),

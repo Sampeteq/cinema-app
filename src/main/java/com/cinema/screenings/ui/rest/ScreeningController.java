@@ -63,7 +63,7 @@ class ScreeningController {
     private final GetScreeningsByHandler getScreeningsByHandler;
 
     @GetMapping
-    List<ScreeningDto> readScreeningsBy(@RequestParam(required = false) LocalDate date) {
+    List<ScreeningDto> getScreeningsBy(@RequestParam(required = false) LocalDate date) {
         var query = GetScreeningsBy
                 .builder()
                 .date(date)

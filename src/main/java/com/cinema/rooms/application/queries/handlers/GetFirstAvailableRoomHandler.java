@@ -20,7 +20,6 @@ public class GetFirstAvailableRoomHandler {
 
     @Transactional(readOnly = true)
     public RoomDto handle(GetFirstAvailableRoom query) {
-        log.info("Query:{}", query);
         return roomRepository
                 .getAll()
                 .stream()

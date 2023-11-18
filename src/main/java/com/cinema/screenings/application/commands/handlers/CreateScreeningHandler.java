@@ -1,7 +1,6 @@
 package com.cinema.screenings.application.commands.handlers;
 
-import com.cinema.films.application.queries.GetFilm;
-import com.cinema.films.application.queries.handlers.GetFilmHandler;
+import com.cinema.films.application.FilmApi;
 import com.cinema.rooms.application.queries.GetFirstAvailableRoom;
 import com.cinema.rooms.application.queries.handlers.GetFirstAvailableRoomHandler;
 import com.cinema.screenings.application.commands.CreateScreening;
@@ -22,7 +21,7 @@ public class CreateScreeningHandler {
 
     private final ScreeningDatePolicy screeningDatePolicy;
     private final ScreeningRepository screeningRepository;
-    private final GetFilmHandler getFilmHandler;
+    private final FilmApi filmApi;
     private final GetFirstAvailableRoomHandler getFirstAvailableRoomHandler;
     private final EventPublisher eventPublisher;
 
@@ -30,9 +29,7 @@ public class CreateScreeningHandler {
     public void handle(CreateScreening command) {
         log.info("Command:{}", command);
         screeningDatePolicy.checkScreeningDate(command.date());
-        var filmDto = getFilmHandler.handle(
-                new GetFilm(command.filmId())
-        );
+        var filmDto = filmApi.getFilmById(command.filmId());
         log.info("Film:{}", filmDto);
         var endDate = command.date().plusMinutes(filmDto.durationInMinutes());
         log.info("Screening end date:{}", endDate);

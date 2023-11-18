@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,11 +34,6 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     @Override
-    public List<Screening> getWithRoom() {
-        return jpaScreeningRepository.findWithRoom();
-    }
-
-    @Override
     public List<Screening> getAll(GetScreenings query) {
         return jpaScreeningRepository.findAll(
                 dateSpec(query)
@@ -58,7 +52,4 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
 }
 
 interface JpaScreeningRepository extends JpaRepository<Screening, Long>, JpaSpecificationExecutor<Screening> {
-
-    @Query("select s from Screening s where s.roomId is not null")
-    List<Screening> findWithRoom();
 }

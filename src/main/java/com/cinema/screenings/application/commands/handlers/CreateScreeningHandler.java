@@ -4,6 +4,7 @@ import com.cinema.films.application.FilmApi;
 import com.cinema.rooms.application.RoomApi;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.domain.Screening;
+import com.cinema.screenings.domain.ScreeningEndDateCalculator;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.events.ScreeningCreatedEvent;
 import com.cinema.screenings.domain.policies.ScreeningDatePolicy;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreateScreeningHandler {
 
     private final ScreeningDatePolicy screeningDatePolicy;
+    private final ScreeningEndDateCalculator screeningEndDateCalculator;
     private final ScreeningRepository screeningRepository;
     private final FilmApi filmApi;
     private final RoomApi roomApi;
@@ -30,7 +32,10 @@ public class CreateScreeningHandler {
         screeningDatePolicy.checkScreeningDate(command.date());
         var filmDto = filmApi.getFilmById(command.filmId());
         log.info("Gotten film:{}", filmDto);
-        var endDate = command.date().plusMinutes(filmDto.durationInMinutes());
+        var endDate = screeningEndDateCalculator.calculateEndDate(
+                command.date(),
+                filmDto.durationInMinutes()
+        );
         log.info("Screening end date:{}", endDate);
         var roomDto = roomApi.getFirstAvailableRoom(command.date(), endDate);
         log.info("Gotten room:{}", roomDto);

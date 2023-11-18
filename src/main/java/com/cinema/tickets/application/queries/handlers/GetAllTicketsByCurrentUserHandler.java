@@ -5,8 +5,7 @@ import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
 import com.cinema.tickets.application.queries.GetAllTicketsByCurrentUser;
 import com.cinema.tickets.application.queries.dto.TicketDto;
 import com.cinema.tickets.domain.repositories.TicketRepository;
-import com.cinema.users.application.queries.GetCurrentUserId;
-import com.cinema.users.application.queries.handlers.GetCurrentUserIdHandler;
+import com.cinema.users.application.UserApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -18,14 +17,13 @@ import java.util.List;
 @Slf4j
 public class GetAllTicketsByCurrentUserHandler {
 
-    private final GetCurrentUserIdHandler getCurrentUserIdHandler;
+    private final UserApi userApi;
     private final TicketRepository ticketRepository;
     private final GetScreeningHandler getScreeningHandler;
 
     public List<TicketDto> handle(GetAllTicketsByCurrentUser query) {
         log.info("Query:{}", query);
-        var getCurrentUserIdQuery = new GetCurrentUserId();
-        var currentUserId = getCurrentUserIdHandler.handle(getCurrentUserIdQuery);
+        var currentUserId = userApi.getCurrentUserId();
         return ticketRepository
                 .getAllByUserId(currentUserId)
                 .stream()

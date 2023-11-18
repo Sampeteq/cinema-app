@@ -5,8 +5,7 @@ import com.cinema.tickets.application.commands.CancelTicket;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.tickets.domain.policies.TicketCancellingPolicy;
 import com.cinema.tickets.domain.repositories.TicketRepository;
-import com.cinema.users.application.queries.GetCurrentUserId;
-import com.cinema.users.application.queries.handlers.GetCurrentUserIdHandler;
+import com.cinema.users.application.UserApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,12 +19,12 @@ public class CancelTicketHandler {
     private final TicketRepository ticketRepository;
     private final TicketCancellingPolicy ticketCancellingPolicy;
     private final ScreeningApi screeningApi;
-    private final GetCurrentUserIdHandler getCurrentUserIdHandler;
+    private final UserApi userApi;
 
     @Transactional
     public void handle(CancelTicket command) {
         log.info("Command id:{}", command);
-        var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
+        var currentUserId = userApi.getCurrentUserId();
         var ticket = ticketRepository
                 .getByIdAndUserId(command.ticketId(), currentUserId)
                 .orElseThrow(TicketNotFoundException::new);

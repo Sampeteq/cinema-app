@@ -57,7 +57,7 @@ public class FilmController {
     }
 
     @GetMapping
-    List<FilmDto> readAllFilms(
+    List<FilmDto> getFilms(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) FilmCategory category
     ) {

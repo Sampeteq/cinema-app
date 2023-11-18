@@ -1,7 +1,7 @@
 package com.cinema.screenings.application.queries.handlers;
 
 import com.cinema.films.application.FilmApi;
-import com.cinema.screenings.application.queries.GetScreeningsBy;
+import com.cinema.screenings.application.queries.GetScreenings;
 import com.cinema.screenings.application.queries.dto.ScreeningDto;
 import com.cinema.screenings.application.queries.dto.ScreeningMapper;
 import com.cinema.screenings.domain.Screening;
@@ -17,16 +17,16 @@ import static java.util.Comparator.comparing;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class GetScreeningsByHandler {
+public class GetScreeningsHandler {
 
     private final ScreeningRepository screeningRepository;
     private final FilmApi filmApi;
     private final ScreeningMapper screeningMapper;
 
-    public List<ScreeningDto> handle(GetScreeningsBy query) {
+    public List<ScreeningDto> handle(GetScreenings query) {
         log.info("Query:{}", query);
         return screeningRepository
-                .getAllBy(query)
+                .getAll(query)
                 .stream()
                 .sorted(comparing(Screening::getDate))
                 .map(screening -> {

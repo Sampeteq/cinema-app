@@ -5,5 +5,5 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder
-public record GetScreeningsBy(LocalDate date) {
+public record GetScreenings(LocalDate date) {
 }

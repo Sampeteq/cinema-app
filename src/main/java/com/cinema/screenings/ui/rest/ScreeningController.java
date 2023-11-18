@@ -4,9 +4,9 @@ import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.application.commands.DeleteScreening;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.screenings.application.commands.handlers.DeleteScreeningHandler;
-import com.cinema.screenings.application.queries.GetScreeningsBy;
+import com.cinema.screenings.application.queries.GetScreenings;
 import com.cinema.screenings.application.queries.dto.ScreeningDto;
-import com.cinema.screenings.application.queries.handlers.GetScreeningsByHandler;
+import com.cinema.screenings.application.queries.handlers.GetScreeningsHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -60,15 +60,15 @@ class ScreeningController {
         return responseEntity;
     }
 
-    private final GetScreeningsByHandler getScreeningsByHandler;
+    private final GetScreeningsHandler getScreeningsHandler;
 
     @GetMapping
-    List<ScreeningDto> getScreeningsBy(@RequestParam(required = false) LocalDate date) {
-        var query = GetScreeningsBy
+    List<ScreeningDto> getScreenings(@RequestParam(required = false) LocalDate date) {
+        var query = GetScreenings
                 .builder()
                 .date(date)
                 .build();
         log.info("Query:{}", query);
-        return getScreeningsByHandler.handle(query);
+        return getScreeningsHandler.handle(query);
     }
 }

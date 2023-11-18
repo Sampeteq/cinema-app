@@ -32,6 +32,8 @@ import java.util.List;
 class ScreeningController {
 
     private final CreateScreeningHandler createScreeningHandler;
+    private final DeleteScreeningHandler deleteScreeningHandler;
+    private final GetScreeningsHandler getScreeningsHandler;
 
     @PostMapping
     @SecurityRequirement(name = "basic")
@@ -47,8 +49,6 @@ class ScreeningController {
         return responseEntity;
     }
 
-    private final DeleteScreeningHandler deleteScreeningHandler;
-
     @DeleteMapping("/{id}")
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> deleteScreening(@PathVariable Long id) {
@@ -59,8 +59,6 @@ class ScreeningController {
         log.info("Response entity:{}", responseEntity);
         return responseEntity;
     }
-
-    private final GetScreeningsHandler getScreeningsHandler;
 
     @GetMapping
     List<ScreeningDto> getScreenings(@RequestParam(required = false) LocalDate date) {

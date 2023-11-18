@@ -18,7 +18,6 @@ public class GetFilmHandler {
     private final FilmMapper filmMapper;
 
     public FilmDto handle(GetFilm query) {
-        log.info("Query:{}", query);
         return filmRepository
                 .getById(query.id())
                 .map(filmMapper::mapToDto)

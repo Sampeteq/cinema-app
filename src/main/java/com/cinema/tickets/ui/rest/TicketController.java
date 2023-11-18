@@ -56,7 +56,7 @@ class TicketController {
 
     @GetMapping("/my")
     @SecurityRequirement(name = "basic")
-    List<TicketDto> readAllTicketsByCurrentUser() {
+    List<TicketDto> getAllTicketsByCurrentUser() {
         var query = new GetAllTicketsByCurrentUser();
         return getAllTicketsByCurrentUserHandler.handle(query);
     }

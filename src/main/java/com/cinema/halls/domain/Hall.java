@@ -1,6 +1,5 @@
 package com.cinema.halls.domain;
 
-import com.cinema.halls.domain.exceptions.HallOccupationNotFoundException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -42,16 +41,6 @@ public class Hall {
         var hallOccupation = new HallOccupation(start, end);
         this.occupations.add(hallOccupation);
         return hallOccupation;
-    }
-
-    public void removeOccupation(LocalDateTime start) {
-        var foundOccupation = this
-                .occupations
-                .stream()
-                .filter(occupation -> occupation.on(start))
-                .findFirst()
-                .orElseThrow(HallOccupationNotFoundException::new);
-        this.occupations.remove(foundOccupation);
     }
 
     public boolean hasNoOccupationOn(LocalDateTime start, LocalDateTime end) {

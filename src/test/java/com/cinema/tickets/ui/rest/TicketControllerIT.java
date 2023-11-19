@@ -6,6 +6,7 @@ import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.tickets.application.commands.BookTicket;
+import com.cinema.tickets.application.commands.dto.SeatPositionDto;
 import com.cinema.tickets.application.queries.dto.TicketDto;
 import com.cinema.tickets.domain.Seat;
 import com.cinema.tickets.domain.SeatStatus;
@@ -90,8 +91,7 @@ class TicketControllerIT extends BaseIT {
         var seatNumber = 1;
         var command = new BookTicket(
                 nonExistingScreeningId,
-                rowNumber,
-                seatNumber
+                List.of(new SeatPositionDto(rowNumber, seatNumber))
         );
 
 
@@ -122,8 +122,7 @@ class TicketControllerIT extends BaseIT {
         var nonExistingSeatNumber = 0;
         var command = new BookTicket(
                 screeningId,
-                rowNumber,
-                nonExistingSeatNumber
+                List.of(new SeatPositionDto(rowNumber, nonExistingSeatNumber))
         );
 
 
@@ -154,8 +153,7 @@ class TicketControllerIT extends BaseIT {
         var seatNumber = 1;
         var command = new BookTicket(
                 screeningId,
-                rowNumber,
-                seatNumber
+                List.of(new SeatPositionDto(rowNumber, seatNumber))
         );
 
         //when
@@ -179,6 +177,39 @@ class TicketControllerIT extends BaseIT {
     }
 
     @Test
+    void tickets_are_booked() {
+        //given
+        addScreening();
+        var screeningId = 1L;
+        var command = new BookTicket(
+                screeningId,
+                List.of(
+                        new SeatPositionDto(1, 1),
+                        new SeatPositionDto(1,2)
+                )
+        );
+
+        //when
+        var spec = webTestClient
+                .post()
+                .uri(TICKETS_BASE_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(command)
+                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .exchange();
+
+        //then
+        spec.expectStatus().isCreated();
+        assertThat(ticketRepository.getAllByUserId(1L))
+                .isNotEmpty()
+                .allSatisfy(ticket -> {
+                    assertEquals(TicketStatus.BOOKED, ticket.getStatus());
+                    assertEquals(SeatStatus.TAKEN, ticket.getSeat().getStatus());
+                    assertEquals(1L, ticket.getUserId());
+                });
+    }
+
+    @Test
     void ticket_is_booked_for_free_seat() {
         //given
         addScreening();
@@ -188,8 +219,7 @@ class TicketControllerIT extends BaseIT {
         bookTicket(screeningId, rowNumber, seatNumber);
         var command = new BookTicket(
                 screeningId,
-                rowNumber,
-                seatNumber
+                List.of(new SeatPositionDto(rowNumber, seatNumber))
         );
 
         //when
@@ -223,8 +253,7 @@ class TicketControllerIT extends BaseIT {
         var seatNumber = 1;
         var command = new BookTicket(
                 screeningId,
-                rowNumber,
-                seatNumber
+                List.of(new SeatPositionDto(rowNumber, seatNumber))
         );
 
         //when
@@ -398,7 +427,7 @@ class TicketControllerIT extends BaseIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new BookTicket(screeningId, rowNumber, seatNumber))
+                .bodyValue(new BookTicket(screeningId, List.of(new SeatPositionDto(rowNumber, seatNumber))))
                 .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
                 .exchange();
     }

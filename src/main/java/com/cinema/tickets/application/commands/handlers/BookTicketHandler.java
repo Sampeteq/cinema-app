@@ -31,21 +31,21 @@ public class BookTicketHandler {
         var screeningDate = screeningApi.getScreeningDate(command.screeningId());
         log.info("Screening date:{}", screeningDate);
         ticketBookingPolicy.checkScreeningDate(screeningDate);
-        var seat = seatRepository
-                .getByScreeningIdRowNumberAndNumber(
-                        command.screeningId(),
-                        command.rowNumber(),
-                        command.seatNumber()
-                )
-                .orElseThrow(SeatNotFoundException::new);
-        seat.take();
         var currentUserId = userApi.getCurrentUserId();
-        var ticket = new Ticket(
-                TicketStatus.BOOKED,
-                seat,
-                currentUserId
-        );
-        var addedTicket = ticketRepository.add(ticket);
-        log.info("Added ticket:{}", addedTicket);
+        command
+                .seats()
+                .forEach(seatPositionDto -> {
+                    var seat = seatRepository
+                            .getByScreeningIdRowNumberAndNumber(
+                                    command.screeningId(),
+                                    seatPositionDto.rowNumber(),
+                                    seatPositionDto.number()
+                            ).orElseThrow(SeatNotFoundException::new);
+                    seat.take();
+                    var addedTicket = ticketRepository.add(
+                            new Ticket(TicketStatus.BOOKED, seat, currentUserId)
+                    );
+                    log.info("Added ticket:{}", addedTicket);
+                });
     }
 }

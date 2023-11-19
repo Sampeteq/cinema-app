@@ -8,7 +8,6 @@ import java.util.List;
 public record BookTicket(
         @NotNull
         Long screeningId,
-
         @NotNull
         List<SeatPositionDto> seats
 ) {

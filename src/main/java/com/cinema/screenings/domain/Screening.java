@@ -34,8 +34,4 @@ public class Screening {
         this.filmId = filmId;
         this.hallId = hallId;
     }
-
-    public void removeHall() {
-        this.hallId = null;
-    }
 }

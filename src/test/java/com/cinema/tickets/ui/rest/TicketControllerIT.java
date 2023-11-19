@@ -2,9 +2,10 @@ package com.cinema.tickets.ui.rest;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
+import com.cinema.halls.application.commands.handlers.CreateHallHandler;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
+import com.cinema.tickets.TicketFixture;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.commands.dto.SeatPositionDto;
 import com.cinema.tickets.application.queries.dto.TicketDto;
@@ -36,7 +37,6 @@ import java.util.List;
 import static com.cinema.tickets.TicketFixture.SCREENING_DATE;
 import static com.cinema.tickets.TicketFixture.createCancelledTicket;
 import static com.cinema.tickets.TicketFixture.createCreateFilmCommand;
-import static com.cinema.tickets.TicketFixture.createCreateRoomCommand;
 import static com.cinema.tickets.TicketFixture.createCreateScreeningCommand;
 import static com.cinema.tickets.TicketFixture.createSeat;
 import static com.cinema.tickets.TicketFixture.createTicket;
@@ -62,7 +62,7 @@ class TicketControllerIT extends BaseIT {
     private CreateFilmHandler createFilmHandler;
 
     @Autowired
-    private CreateRoomHandler createRoomHandler;
+    private CreateHallHandler createHallHandler;
 
     @Autowired
     private CreateScreeningHandler createScreeningHandler;
@@ -324,7 +324,7 @@ class TicketControllerIT extends BaseIT {
     void ticket_is_cancelled_at_least_24h_before_screening() {
         //given
         addFilm();
-        addRoom();
+        addHall();
         var command = createCreateScreeningCommand();
         createScreeningHandler.handle(command);
 
@@ -356,8 +356,8 @@ class TicketControllerIT extends BaseIT {
         var createFilmCommand = createCreateFilmCommand();
         createFilmHandler.handle(createFilmCommand);
 
-        var createRoomCommand = createCreateRoomCommand();
-        createRoomHandler.handle(createRoomCommand);
+        var createHallCommand = TicketFixture.createCreateHallCommand();
+        createHallHandler.handle(createHallCommand);
 
         var createScreeningCommand = createCreateScreeningCommand();
         createScreeningHandler.handle(createScreeningCommand);
@@ -379,7 +379,7 @@ class TicketControllerIT extends BaseIT {
                         ticket.getStatus(),
                         createFilmCommand.title(),
                         createScreeningCommand.date(),
-                        createRoomCommand.id(),
+                        createHallCommand.id(),
                         seat.getRowNumber(),
                         seat.getNumber()
                 )
@@ -393,7 +393,7 @@ class TicketControllerIT extends BaseIT {
                 .jsonPath("$[0].status").isEqualTo(expectedTicketDto.get(0).status().name())
                 .jsonPath("$[0].filmTitle").isEqualTo(expectedTicketDto.get(0).filmTitle())
                 .jsonPath("$[0].screeningDate").isEqualTo(expectedTicketDto.get(0).screeningDate().toString())
-                .jsonPath("$[0].roomId").isEqualTo(expectedTicketDto.get(0).roomId())
+                .jsonPath("$[0].hallId").isEqualTo(expectedTicketDto.get(0).hallId())
                 .jsonPath("$[0].rowNumber").isEqualTo(expectedTicketDto.get(0).rowNumber())
                 .jsonPath("$[0].seatNumber").isEqualTo(expectedTicketDto.get(0).seatNumber());
     }
@@ -402,19 +402,19 @@ class TicketControllerIT extends BaseIT {
         createFilmHandler.handle(createCreateFilmCommand());
     }
 
-    private void addRoom() {
-        createRoomHandler.handle(createCreateRoomCommand());
+    private void addHall() {
+        createHallHandler.handle(TicketFixture.createCreateHallCommand());
     }
 
     private void addScreening() {
         addFilm();
-        addRoom();
+        addHall();
         createScreeningHandler.handle(createCreateScreeningCommand(SCREENING_DATE));
     }
 
     private void addScreening(LocalDateTime screeningDate) {
         addFilm();
-        addRoom();
+        addHall();
         createScreeningHandler.handle(createCreateScreeningCommand(screeningDate));
     }
 

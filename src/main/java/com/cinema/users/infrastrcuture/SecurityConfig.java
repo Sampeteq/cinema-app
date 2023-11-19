@@ -54,7 +54,7 @@ class SecurityConfig {
                                 ).permitAll()
                                 .requestMatchers(
                                         HttpMethod.GET,
-                                        "/rooms"
+                                        "/halls"
                                 ).hasAuthority("ADMIN")
                                 .requestMatchers(
                                         HttpMethod.POST,

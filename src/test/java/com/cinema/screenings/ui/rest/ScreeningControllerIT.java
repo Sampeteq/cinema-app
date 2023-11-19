@@ -2,8 +2,8 @@ package com.cinema.screenings.ui.rest;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.rooms.application.commands.handlers.CreateRoomHandler;
-import com.cinema.rooms.domain.exceptions.RoomsNoAvailableException;
+import com.cinema.halls.application.commands.handlers.CreateHallHandler;
+import com.cinema.halls.domain.exceptions.HallsNoAvailableException;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.application.queries.dto.ScreeningDto;
 import com.cinema.screenings.domain.Screening;
@@ -24,7 +24,7 @@ import java.util.List;
 
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createCreateFilmCommand;
-import static com.cinema.screenings.ScreeningFixture.createCreateRoomCommand;
+import static com.cinema.screenings.ScreeningFixture.createCreateHallCommand;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -45,7 +45,7 @@ class ScreeningControllerIT extends BaseIT {
     private CreateFilmHandler createFilmHandler;
 
     @Autowired
-    private CreateRoomHandler createRoomHandler;
+    private CreateHallHandler createHallHandler;
 
     @Autowired
     private CreateAdminHandler createAdminHandler;
@@ -74,10 +74,10 @@ class ScreeningControllerIT extends BaseIT {
         //given
         var filmId = 1L;
         var filmTitle = "Sample title";
-        var roomId = "1";
+        var hallId = "1";
         addAdminUser();
         addFilm(filmTitle);
-        addRoom();
+        addHall();
         var command = new CreateScreening(SCREENING_DATE, filmId);
 
         //when
@@ -96,7 +96,7 @@ class ScreeningControllerIT extends BaseIT {
                         1L,
                         command.date(),
                         filmTitle,
-                        roomId
+                        hallId
                 )
         );
         webTestClient
@@ -116,7 +116,7 @@ class ScreeningControllerIT extends BaseIT {
         var filmTitle = "Sample title";
         addAdminUser();
         addFilm(filmTitle);
-        addRoom();
+        addHall();
         var screeningDate = LocalDateTime.now().plusDays(6);
         var command = new CreateScreening(screeningDate, filmId);
 
@@ -144,7 +144,7 @@ class ScreeningControllerIT extends BaseIT {
         var filmId = 1L;
         var filmTitle = "Sample film";
         addAdminUser();
-        addRoom();
+        addHall();
         addFilm(filmTitle);
         var screeningDate = LocalDateTime.now().plusDays(23);
         var command = new CreateScreening(screeningDate, filmId);
@@ -190,7 +190,7 @@ class ScreeningControllerIT extends BaseIT {
                 .exchange();
 
         //then
-        var expectedMessage = new RoomsNoAvailableException().getMessage();
+        var expectedMessage = new HallsNoAvailableException().getMessage();
         spec
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -289,8 +289,8 @@ class ScreeningControllerIT extends BaseIT {
         return screeningRepository.add(screening);
     }
 
-    private void addRoom() {
-        createRoomHandler.handle(createCreateRoomCommand());
+    private void addHall() {
+        createHallHandler.handle(createCreateHallCommand());
     }
 
     private void addFilm(String title) {

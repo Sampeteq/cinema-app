@@ -35,7 +35,7 @@ public class GetAllTicketsByCurrentUserHandler {
                             ticket.getStatus(),
                             screeningDto.filmTitle(),
                             screeningDto.date(),
-                            screeningDto.roomId(),
+                            screeningDto.hallId(),
                             ticket.getSeat().getRowNumber(),
                             ticket.getSeat().getNumber()
                     );

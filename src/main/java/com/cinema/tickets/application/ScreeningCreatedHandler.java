@@ -17,8 +17,8 @@ public class ScreeningCreatedHandler {
     @EventListener
     public void handle(ScreeningCreatedEvent event) {
         seatFactory.createSeats(
-                event.room().rowsNumber(),
-                event.room().seatsNumberInOneRow(),
+                event.hall().rowsNumber(),
+                event.hall().seatsNumberInOneRow(),
                 event.screeningId()
         ).forEach(seatRepository::add);
     }

@@ -24,18 +24,18 @@ public class Screening {
 
     private Long filmId;
 
-    private String roomId;
+    private String hallId;
 
     protected Screening() {}
 
-    public Screening(LocalDateTime date, Long filmId, String roomId
+    public Screening(LocalDateTime date, Long filmId, String hallId
     ) {
         this.date = date;
         this.filmId = filmId;
-        this.roomId = roomId;
+        this.hallId = hallId;
     }
 
-    public void removeRoom() {
-        this.roomId = null;
+    public void removeHall() {
+        this.hallId = null;
     }
 }

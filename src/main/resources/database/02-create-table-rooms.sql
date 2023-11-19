@@ -1,7 +1,7 @@
 --liquibase formatted sql
 --changeset nofenak:2
 
-create table if not exists rooms
+create table if not exists halls
 (
     id               varchar,
     rows_number      int,

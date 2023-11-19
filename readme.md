@@ -28,7 +28,7 @@ Admin user is added on start up.
   password: 12345
 ```
 
-Rooms are added on start up (rooms_config.json file)
+Halls are added on start up (halls_config.json file)
 
 ```json
 [
@@ -82,13 +82,13 @@ Admin:
 
 /screenings{id} (DELETE) - delete a screening
 
-### 3.Rooms
+### 3.Halls
 
 Endpoints:
 
 Admin:
 
-/rooms (GET) - search all rooms
+/halls (GET) - search all halls
 
 ### 4.Tickets
 

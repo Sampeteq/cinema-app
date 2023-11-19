@@ -2,7 +2,7 @@ package com.cinema.screenings;
 
 import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.films.domain.FilmCategory;
-import com.cinema.rooms.application.commands.CreateRoom;
+import com.cinema.halls.application.commands.CreateHall;
 import com.cinema.screenings.domain.Screening;
 
 import java.time.LocalDateTime;
@@ -16,9 +16,9 @@ public final class ScreeningFixture {
     public static final FilmCategory FILM_CATEGORY = FilmCategory.COMEDY;
     public static final int FILM_YEAR = Year.now().getValue();
     public static final int FILM_DURATION_IN_MINUTES = 100;
-    public static final String ROOM_CUSTOM_ID = "1";
-    public static final int ROOM_ROWS_NUMBER = 10;
-    public static final int ROOM_ROW_SEATS_NUMBER = 15;
+    public static final String HALL_CUSTOM_ID = "1";
+    public static final int HALL_ROWS_NUMBER = 10;
+    public static final int HALL_ROW_SEATS_NUMBER = 15;
     public static final LocalDateTime SCREENING_DATE = LocalDateTime
             .now()
             .plusDays(8)
@@ -28,11 +28,11 @@ public final class ScreeningFixture {
     }
 
     public static Screening createScreening(LocalDateTime screeningDate) {
-        var roomId = "1";
+        var hallId = "1";
         return new Screening(
                 screeningDate,
                 FILM_ID,
-                roomId
+                hallId
         );
     }
 
@@ -54,11 +54,11 @@ public final class ScreeningFixture {
         );
     }
 
-    public static CreateRoom createCreateRoomCommand() {
-        return new CreateRoom(
-                ROOM_CUSTOM_ID,
-                ROOM_ROWS_NUMBER,
-                ROOM_ROW_SEATS_NUMBER
+    public static CreateHall createCreateHallCommand() {
+        return new CreateHall(
+                HALL_CUSTOM_ID,
+                HALL_ROWS_NUMBER,
+                HALL_ROW_SEATS_NUMBER
         );
     }
 }

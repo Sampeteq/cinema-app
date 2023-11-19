@@ -3,7 +3,7 @@ package com.cinema.tickets;
 import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.films.domain.FilmCategory;
-import com.cinema.rooms.application.commands.CreateRoom;
+import com.cinema.halls.application.commands.CreateHall;
 import com.cinema.tickets.domain.Seat;
 import com.cinema.tickets.domain.SeatStatus;
 import com.cinema.tickets.domain.Ticket;
@@ -15,9 +15,9 @@ import java.time.temporal.ChronoUnit;
 
 public final class TicketFixture {
 
-    public static final String ROOM_CUSTOM_ID = "1";
-    public static final int ROOM_ROWS_NUMBER = 10;
-    public static final int ROOM_ROW_SEATS_NUMBER = 15;
+    public static final String HALL_CUSTOM_ID = "1";
+    public static final int HALL_ROWS_NUMBER = 10;
+    public static final int HALL_ROW_SEATS_NUMBER = 15;
     public static final Long FILM_ID = 1L;
     public static final String FILM_TITLE = "Title 1";
     public static final FilmCategory FILM_CATEGORY = FilmCategory.COMEDY;
@@ -76,19 +76,19 @@ public final class TicketFixture {
         );
     }
 
-    public static CreateRoom createCreateRoomCommand() {
-        return new CreateRoom(
-                ROOM_CUSTOM_ID,
-                ROOM_ROWS_NUMBER,
-                ROOM_ROW_SEATS_NUMBER
+    public static CreateHall createCreateHallCommand() {
+        return new CreateHall(
+                HALL_CUSTOM_ID,
+                HALL_ROWS_NUMBER,
+                HALL_ROW_SEATS_NUMBER
         );
     }
 
-    public static CreateRoom createCreateRoomCommand(String roomId) {
-        return new CreateRoom(
-                roomId,
-                ROOM_ROWS_NUMBER,
-                ROOM_ROW_SEATS_NUMBER
+    public static CreateHall createCreateHallCommand(String hallId) {
+        return new CreateHall(
+                hallId,
+                HALL_ROWS_NUMBER,
+                HALL_ROW_SEATS_NUMBER
         );
     }
 

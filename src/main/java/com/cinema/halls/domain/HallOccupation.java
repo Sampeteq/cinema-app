@@ -32,10 +32,6 @@ public class HallOccupation {
         this.endAt = endAt;
     }
 
-    public boolean on(LocalDateTime start) {
-        return this.startAt.equals(start);
-    }
-
     public boolean hasCollision(LocalDateTime startAt, LocalDateTime endAt) {
         var startCollision = !startAt.isBefore(this.startAt) && !startAt.isAfter(this.endAt);
         var endCollision = !endAt.isBefore(this.startAt) && !endAt.isAfter(this.endAt);

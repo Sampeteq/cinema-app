@@ -35,23 +35,23 @@ class UserControllerIT extends BaseIT {
     @Test
     void user_is_created() {
         //given
-        var dto = UserFixture.createCrateUserCommand();
+        var command = UserFixture.createCrateUserCommand();
 
         //then
         var spec = webTestClient
                 .post()
                 .uri(USERS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(dto)
+                .bodyValue(command)
                 .exchange();
 
 
         spec.expectStatus().isOk();
-        assertThat(userRepository.getByMail(dto.mail()))
+        assertThat(userRepository.getByMail(command.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {
-                    assertEquals(dto.mail(), user.getUsername());
-                    assertTrue(passwordEncoder.matches(dto.password(), user.getPassword()));
+                    assertEquals(command.mail(), user.getUsername());
+                    assertTrue(passwordEncoder.matches(command.password(), user.getPassword()));
                     assertEquals(UserRole.COMMON, user.getRole());
                 });
     }

@@ -28,23 +28,23 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 )
 class SecurityConfig {
 
+    private static final String ADMIN = "ADMIN";
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(
                         configurer -> configurer
-                                .requestMatchers(
-                                        HttpMethod.GET,
-                                        "/films/**",
-                                        "/screenings/**",
-                                        "/seats/**"
-                                ).permitAll()
-                                .requestMatchers(
-                                        HttpMethod.POST,
-                                        "/users"
-                                ).permitAll()
-                                .requestMatchers(
-                                        HttpMethod.PATCH,
+                                .requestMatchers(HttpMethod.GET, "/films/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/films").hasAuthority(ADMIN)
+                                .requestMatchers(HttpMethod.DELETE, "/films/{id}").hasAuthority(ADMIN)
+                                .requestMatchers(HttpMethod.GET, "/screenings/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/screenings").hasAuthority(ADMIN)
+                                .requestMatchers(HttpMethod.DELETE, "/screenings/{id}").hasAuthority(ADMIN)
+                                .requestMatchers(HttpMethod.GET, "/seats/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/halls").hasAuthority(ADMIN)
+                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                                .requestMatchers(HttpMethod.PATCH,
                                         "/users/password/reset",
                                         "/users/password/new"
                                 ).permitAll()
@@ -52,22 +52,7 @@ class SecurityConfig {
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**"
                                 ).permitAll()
-                                .requestMatchers(
-                                        HttpMethod.GET,
-                                        "/halls"
-                                ).hasAuthority("ADMIN")
-                                .requestMatchers(
-                                        HttpMethod.POST,
-                                        "/films",
-                                        "/screenings"
-                                ).hasAuthority("ADMIN")
-                                .requestMatchers(
-                                        HttpMethod.DELETE,
-                                        "/films/{title}",
-                                        "/screenings/{id}"
-                                ).hasAuthority("ADMIN")
-                                .anyRequest()
-                                .authenticated()
+                                .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(configurer -> configurer

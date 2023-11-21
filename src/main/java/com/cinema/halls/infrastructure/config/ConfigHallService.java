@@ -28,7 +28,7 @@ class ConfigHallService {
     @Value("${halls.hallsConfigFileName}")
     private String hallsConfigFileName;
     private final ObjectMapper objectMapper;
-    private final CreateHallHandler createHallHandler;
+    private final CreateHallService createHallService;
 
     @EventListener(ContextRefreshedEvent.class)
     void createHallsFromConfigOnStartUp() {
@@ -66,7 +66,7 @@ class ConfigHallService {
             objectMapper
                     .readValue(json, new TypeReference<List<ConfigHallDto>>() {
                     })
-                    .forEach(createHallHandler::handle);
+                    .forEach(createHallService::handle);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

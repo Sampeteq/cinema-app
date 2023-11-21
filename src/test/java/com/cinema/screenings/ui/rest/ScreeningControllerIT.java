@@ -2,7 +2,7 @@ package com.cinema.screenings.ui.rest;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.halls.infrastructure.config.CreateHallHandler;
+import com.cinema.halls.infrastructure.config.CreateHallService;
 import com.cinema.halls.domain.exceptions.HallsNoAvailableException;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.application.queries.dto.ScreeningDto;
@@ -45,7 +45,7 @@ class ScreeningControllerIT extends BaseIT {
     private CreateFilmHandler createFilmHandler;
 
     @Autowired
-    private CreateHallHandler createHallHandler;
+    private CreateHallService createHallService;
 
     @Autowired
     private CreateAdminHandler createAdminHandler;
@@ -290,7 +290,7 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     private void addHall() {
-        createHallHandler.handle(createCreateHallCommand());
+        createHallService.handle(createCreateHallCommand());
     }
 
     private void addFilm(String title) {

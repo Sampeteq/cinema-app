@@ -2,7 +2,7 @@ package com.cinema.tickets.ui.rest;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.halls.infrastructure.config.CreateHallHandler;
+import com.cinema.halls.infrastructure.config.CreateHallService;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.tickets.TicketFixture;
@@ -62,7 +62,7 @@ class TicketControllerIT extends BaseIT {
     private CreateFilmHandler createFilmHandler;
 
     @Autowired
-    private CreateHallHandler createHallHandler;
+    private CreateHallService createHallService;
 
     @Autowired
     private CreateScreeningHandler createScreeningHandler;
@@ -357,7 +357,7 @@ class TicketControllerIT extends BaseIT {
         createFilmHandler.handle(createFilmCommand);
 
         var createHallCommand = TicketFixture.createCreateHallCommand();
-        createHallHandler.handle(createHallCommand);
+        createHallService.handle(createHallCommand);
 
         var createScreeningCommand = createCreateScreeningCommand();
         createScreeningHandler.handle(createScreeningCommand);
@@ -403,7 +403,7 @@ class TicketControllerIT extends BaseIT {
     }
 
     private void addHall() {
-        createHallHandler.handle(TicketFixture.createCreateHallCommand());
+        createHallService.handle(TicketFixture.createCreateHallCommand());
     }
 
     private void addScreening() {

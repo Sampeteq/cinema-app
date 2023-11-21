@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class CreateHallHandler {
+public class CreateHallService {
 
     private final HallRepository hallRepository;
 

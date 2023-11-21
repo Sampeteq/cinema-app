@@ -24,12 +24,11 @@ import java.util.List;
 class ConfigHallService {
 
     private final HallRepository hallRepository;
-    private final CreateHallHandler createHallHandler;
     private final ResourceLoader resourceLoader;
-    private final ObjectMapper objectMapper;
-
     @Value("${halls.hallsConfigFileName}")
     private String hallsConfigFileName;
+    private final ObjectMapper objectMapper;
+    private final CreateHallHandler createHallHandler;
 
     @EventListener(ContextRefreshedEvent.class)
     void createHallsFromConfigOnStartUp() {
@@ -44,15 +43,14 @@ class ConfigHallService {
     }
 
     private String readHallsConfigAsJson() {
-        try (
-                var inputStream = resourceLoader
-                .getResource("classpath:" + hallsConfigFileName)
-                .getInputStream()
-        ) {
-            var bytes = inputStream.readAllBytes();
+        try {
+            var bytes = resourceLoader
+                    .getResource("classpath:" + hallsConfigFileName)
+                    .getInputStream()
+                    .readAllBytes();
             return new String(bytes, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            log.error("IOException was thrown");
+            log.error("IOException: {}", e.getMessage());
             throw new RuntimeException(e);
         }
     }

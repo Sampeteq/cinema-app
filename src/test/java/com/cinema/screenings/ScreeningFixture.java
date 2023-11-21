@@ -2,7 +2,7 @@ package com.cinema.screenings;
 
 import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.films.domain.FilmCategory;
-import com.cinema.halls.infrastructure.config.CreateHall;
+import com.cinema.halls.infrastructure.config.ConfigHallDto;
 import com.cinema.screenings.domain.Screening;
 
 import java.time.LocalDateTime;
@@ -54,8 +54,8 @@ public final class ScreeningFixture {
         );
     }
 
-    public static CreateHall createCreateHallCommand() {
-        return new CreateHall(
+    public static ConfigHallDto createCreateHallCommand() {
+        return new ConfigHallDto(
                 HALL_CUSTOM_ID,
                 HALL_ROWS_NUMBER,
                 HALL_ROW_SEATS_NUMBER

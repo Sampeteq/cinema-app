@@ -14,7 +14,7 @@ public class CreateHallHandler {
 
     private final HallRepository hallRepository;
 
-    public void handle(CreateHall command) {
+    public void handle(ConfigHallDto command) {
         if (hallRepository.existsById(command.id())) {
             throw new HallIdAlreadyExistsException();
         }

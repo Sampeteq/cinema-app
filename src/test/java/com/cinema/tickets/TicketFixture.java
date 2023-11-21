@@ -3,7 +3,7 @@ package com.cinema.tickets;
 import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.films.domain.FilmCategory;
-import com.cinema.halls.infrastructure.config.CreateHall;
+import com.cinema.halls.infrastructure.config.ConfigHallDto;
 import com.cinema.tickets.domain.Seat;
 import com.cinema.tickets.domain.SeatStatus;
 import com.cinema.tickets.domain.Ticket;
@@ -76,16 +76,16 @@ public final class TicketFixture {
         );
     }
 
-    public static CreateHall createCreateHallCommand() {
-        return new CreateHall(
+    public static ConfigHallDto createCreateHallCommand() {
+        return new ConfigHallDto(
                 HALL_CUSTOM_ID,
                 HALL_ROWS_NUMBER,
                 HALL_ROW_SEATS_NUMBER
         );
     }
 
-    public static CreateHall createCreateHallCommand(String hallId) {
-        return new CreateHall(
+    public static ConfigHallDto createCreateHallCommand(String hallId) {
+        return new ConfigHallDto(
                 hallId,
                 HALL_ROWS_NUMBER,
                 HALL_ROW_SEATS_NUMBER

@@ -74,13 +74,11 @@ Common user:
 
 /screenings (GET) - search all screenings, optional params: /{date}
 
-/screenings/{id}/seats (GET) - search seats by screening id
-
 Admin:
 
 /screenings (POST) - add a new screening
 
-/screenings{id} (DELETE) - delete a screening
+/screenings/{id} (DELETE) - delete a screening
 
 ### 3.Halls
 
@@ -93,6 +91,8 @@ Admin:
 ### 4.Tickets
 
 Endpoints:
+
+/seats?screeningId= (GET) - search screening seats 
 
 /tickets (POST) - book a ticket
 

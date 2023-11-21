@@ -3,7 +3,7 @@ package com.cinema.tickets;
 import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.films.domain.FilmCategory;
-import com.cinema.halls.application.commands.CreateHall;
+import com.cinema.halls.infrastructure.config.CreateHall;
 import com.cinema.tickets.domain.Seat;
 import com.cinema.tickets.domain.SeatStatus;
 import com.cinema.tickets.domain.Ticket;

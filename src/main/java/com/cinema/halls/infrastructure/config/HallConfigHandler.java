@@ -1,6 +1,5 @@
-package com.cinema.halls.application.commands.handlers;
+package com.cinema.halls.infrastructure.config;
 
-import com.cinema.halls.application.commands.CreateHall;
 import com.cinema.halls.domain.HallRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

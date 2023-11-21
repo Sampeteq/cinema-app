@@ -2,7 +2,7 @@ package com.cinema.tickets.ui.rest;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.halls.application.commands.handlers.CreateHallHandler;
+import com.cinema.halls.infrastructure.config.CreateHallHandler;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.tickets.TicketFixture;

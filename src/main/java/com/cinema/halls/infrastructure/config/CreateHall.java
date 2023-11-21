@@ -1,4 +1,4 @@
-package com.cinema.halls.application.commands;
+package com.cinema.halls.infrastructure.config;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

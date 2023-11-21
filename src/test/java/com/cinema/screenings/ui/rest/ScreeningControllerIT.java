@@ -2,7 +2,7 @@ package com.cinema.screenings.ui.rest;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.halls.application.commands.handlers.CreateHallHandler;
+import com.cinema.halls.infrastructure.config.CreateHallHandler;
 import com.cinema.halls.domain.exceptions.HallsNoAvailableException;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.application.queries.dto.ScreeningDto;

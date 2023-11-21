@@ -2,7 +2,7 @@ package com.cinema.screenings;
 
 import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.films.domain.FilmCategory;
-import com.cinema.halls.application.commands.CreateHall;
+import com.cinema.halls.infrastructure.config.CreateHall;
 import com.cinema.screenings.domain.Screening;
 
 import java.time.LocalDateTime;

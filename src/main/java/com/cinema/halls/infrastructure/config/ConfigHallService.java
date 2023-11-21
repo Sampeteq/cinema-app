@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Profile("prod")
-class HallConfigHandler {
+class ConfigHallService {
 
     private final HallRepository hallRepository;
     private final CreateHallHandler createHallHandler;

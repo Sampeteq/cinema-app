@@ -8,5 +8,10 @@
     "id": "2",
     "rowsNumber": 15,
     "seatsNumberInOneRow": 20
+  },
+  {
+    "id": "3",
+    "rowsNumber": 20,
+    "seatsNumberInOneRow": 10
   }
 ]

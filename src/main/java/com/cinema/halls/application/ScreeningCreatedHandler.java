@@ -22,7 +22,7 @@ public class ScreeningCreatedHandler {
         var hallOccupation = hallRepository
                 .getById(event.hall().id())
                 .orElseThrow(HallNotFoundException::new)
-                .addOccupation(event.start(), event.end());
+                .addOccupation(event.start(), event.end(), event.screeningId());
         log.info("Hall occupation added:{}", hallOccupation.toString());
     }
 }

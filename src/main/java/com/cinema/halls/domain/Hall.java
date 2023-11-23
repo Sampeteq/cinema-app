@@ -3,7 +3,6 @@ package com.cinema.halls.domain;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -24,8 +23,7 @@ public class Hall {
 
     private int seatsNumberInOneRow;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "hall_id")
+    @OneToMany(mappedBy = "hall", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<HallOccupation> occupations;
 
     protected Hall() {}
@@ -37,8 +35,8 @@ public class Hall {
         this.occupations = new ArrayList<>();
     }
 
-    public HallOccupation addOccupation(LocalDateTime start, LocalDateTime end) {
-        var hallOccupation = new HallOccupation(start, end);
+    public HallOccupation addOccupation(LocalDateTime start, LocalDateTime end, Long screeningId) {
+        var hallOccupation = new HallOccupation(start, end, this, screeningId);
         this.occupations.add(hallOccupation);
         return hallOccupation;
     }

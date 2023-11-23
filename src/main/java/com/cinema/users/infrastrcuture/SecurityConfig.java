@@ -42,7 +42,7 @@ class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/screenings").hasAuthority(ADMIN)
                                 .requestMatchers(HttpMethod.DELETE, "/screenings/{id}").hasAuthority(ADMIN)
                                 .requestMatchers(HttpMethod.GET, "/seats/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/halls").hasAuthority(ADMIN)
+                                .requestMatchers(HttpMethod.GET, "/halls/**").hasAuthority(ADMIN)
                                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                                 .requestMatchers(HttpMethod.PATCH,
                                         "/users/password/reset",

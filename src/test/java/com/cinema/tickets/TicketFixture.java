@@ -1,27 +1,14 @@
 package com.cinema.tickets;
 
-import com.cinema.films.application.commands.CreateFilm;
-import com.cinema.screenings.application.commands.CreateScreening;
-import com.cinema.films.domain.FilmCategory;
-import com.cinema.halls.infrastructure.config.ConfigHallDto;
 import com.cinema.tickets.domain.Seat;
 import com.cinema.tickets.domain.SeatStatus;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketStatus;
 
 import java.time.LocalDateTime;
-import java.time.Year;
 import java.time.temporal.ChronoUnit;
 
 public final class TicketFixture {
-
-    public static final String HALL_CUSTOM_ID = "1";
-    public static final int HALL_ROWS_NUMBER = 10;
-    public static final int HALL_ROW_SEATS_NUMBER = 15;
-    public static final Long FILM_ID = 1L;
-    public static final String FILM_TITLE = "Title 1";
-    public static final FilmCategory FILM_CATEGORY = FilmCategory.COMEDY;
-    public static final int FILM_DURATION_IN_MINUTES = 100;
     public static final Long SCREENING_ID = 1L;
     public static final LocalDateTime SCREENING_DATE = LocalDateTime
             .now()
@@ -54,56 +41,6 @@ public final class TicketFixture {
         var ticket = createTicket(seat);
         ticket.cancel();
         return ticket;
-    }
-
-    public static CreateFilm createCreateFilmCommand() {
-        var year = Year.now().getValue();
-        return new CreateFilm(
-                FILM_TITLE,
-                FILM_CATEGORY,
-                year,
-                FILM_DURATION_IN_MINUTES
-        );
-    }
-
-    public static CreateFilm createCreateFilmCommand(String filmTitle) {
-        var year = Year.now().getValue();
-        return new CreateFilm(
-                filmTitle,
-                FILM_CATEGORY,
-                year,
-                FILM_DURATION_IN_MINUTES
-        );
-    }
-
-    public static ConfigHallDto createCreateHallCommand() {
-        return new ConfigHallDto(
-                HALL_CUSTOM_ID,
-                HALL_ROWS_NUMBER,
-                HALL_ROW_SEATS_NUMBER
-        );
-    }
-
-    public static ConfigHallDto createCreateHallCommand(String hallId) {
-        return new ConfigHallDto(
-                hallId,
-                HALL_ROWS_NUMBER,
-                HALL_ROW_SEATS_NUMBER
-        );
-    }
-
-    public static CreateScreening createCreateScreeningCommand() {
-        return new CreateScreening(
-                SCREENING_DATE,
-                FILM_ID
-        );
-    }
-
-    public static CreateScreening createCreateScreeningCommand(LocalDateTime date) {
-        return new CreateScreening(
-                date,
-                FILM_ID
-        );
     }
 
     public static Seat createSeat() {

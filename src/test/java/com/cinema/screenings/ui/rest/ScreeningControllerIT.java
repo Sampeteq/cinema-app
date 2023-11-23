@@ -22,9 +22,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.cinema.films.FilmFixture.createCreateFilmCommand;
+import static com.cinema.halls.HallFixture.createCreateHallCommand;
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
-import static com.cinema.screenings.ScreeningFixture.createCreateFilmCommand;
-import static com.cinema.screenings.ScreeningFixture.createCreateHallCommand;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;

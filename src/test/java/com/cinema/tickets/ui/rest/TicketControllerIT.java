@@ -5,7 +5,6 @@ import com.cinema.films.application.commands.handlers.CreateFilmHandler;
 import com.cinema.halls.infrastructure.config.CreateHallService;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
-import com.cinema.tickets.TicketFixture;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.commands.dto.SeatPositionDto;
 import com.cinema.tickets.application.queries.dto.TicketDto;
@@ -34,10 +33,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
+import static com.cinema.films.FilmFixture.createCreateFilmCommand;
+import static com.cinema.halls.HallFixture.createCreateHallCommand;
+import static com.cinema.screenings.ScreeningFixture.createCreateScreeningCommand;
 import static com.cinema.tickets.TicketFixture.SCREENING_DATE;
 import static com.cinema.tickets.TicketFixture.createCancelledTicket;
-import static com.cinema.tickets.TicketFixture.createCreateFilmCommand;
-import static com.cinema.tickets.TicketFixture.createCreateScreeningCommand;
 import static com.cinema.tickets.TicketFixture.createSeat;
 import static com.cinema.tickets.TicketFixture.createTicket;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -356,7 +356,7 @@ class TicketControllerIT extends BaseIT {
         var createFilmCommand = createCreateFilmCommand();
         createFilmHandler.handle(createFilmCommand);
 
-        var createHallCommand = TicketFixture.createCreateHallCommand();
+        var createHallCommand = createCreateHallCommand();
         createHallService.handle(createHallCommand);
 
         var createScreeningCommand = createCreateScreeningCommand();
@@ -403,7 +403,7 @@ class TicketControllerIT extends BaseIT {
     }
 
     private void addHall() {
-        createHallService.handle(TicketFixture.createCreateHallCommand());
+        createHallService.handle(createCreateHallCommand());
     }
 
     private void addScreening() {

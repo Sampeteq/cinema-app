@@ -2,7 +2,8 @@ package com.cinema.screenings.application.commands.handlers;
 
 import com.cinema.films.application.queries.GetFilm;
 import com.cinema.films.application.queries.handlers.GetFilmHandler;
-import com.cinema.halls.application.HallApi;
+import com.cinema.halls.application.queries.GetFirstAvailableHall;
+import com.cinema.halls.application.queries.handlers.GetFirstAvailableHallHandler;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningEndDateCalculator;
@@ -24,7 +25,7 @@ public class CreateScreeningHandler {
     private final ScreeningEndDateCalculator screeningEndDateCalculator;
     private final ScreeningRepository screeningRepository;
     private final GetFilmHandler getFilmHandler;
-    private final HallApi hallApi;
+    private final GetFirstAvailableHallHandler getFirstAvailableHallHandler;
     private final EventPublisher eventPublisher;
 
     @Transactional
@@ -38,7 +39,7 @@ public class CreateScreeningHandler {
                 filmDto.durationInMinutes()
         );
         log.info("Screening end date:{}", endDate);
-        var hallDto = hallApi.getFirstAvailableHall(command.date(), endDate);
+        var hallDto = getFirstAvailableHallHandler.handle(new GetFirstAvailableHall(command.date(), endDate));
         log.info("Gotten hall:{}", hallDto);
         var screening = new Screening(
                 command.date(),

@@ -9,7 +9,8 @@ import com.cinema.tickets.domain.exceptions.SeatNotFoundException;
 import com.cinema.tickets.domain.policies.TicketBookingPolicy;
 import com.cinema.tickets.domain.repositories.SeatRepository;
 import com.cinema.tickets.domain.repositories.TicketRepository;
-import com.cinema.users.application.UserApi;
+import com.cinema.users.application.queries.GetCurrentUserId;
+import com.cinema.users.application.queries.handlers.GetCurrentUserIdHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ public class BookTicketHandler {
     private final TicketBookingPolicy ticketBookingPolicy;
     private final SeatRepository seatRepository;
     private final GetScreeningDateHandler getScreeningDateHandler;
-    private final UserApi userApi;
+    private final GetCurrentUserIdHandler getCurrentUserIdHandler;
 
     @Transactional
     public void handle(BookTicket command) {
@@ -32,7 +33,7 @@ public class BookTicketHandler {
         var screeningDate = getScreeningDateHandler.handle(new GetScreeningDate(command.screeningId()));
         log.info("Screening date:{}", screeningDate);
         ticketBookingPolicy.checkScreeningDate(screeningDate);
-        var currentUserId = userApi.getCurrentUserId();
+        var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
         command
                 .seats()
                 .forEach(seatPositionDto -> {

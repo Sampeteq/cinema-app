@@ -379,7 +379,7 @@ class TicketControllerIT extends BaseIT {
                         ticket.getStatus(),
                         createFilmCommand.title(),
                         createScreeningCommand.date(),
-                        createHallCommand.id(),
+                        1L,
                         seat.getRowNumber(),
                         seat.getNumber()
                 )

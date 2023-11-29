@@ -11,7 +11,7 @@ public record TicketDto(
         String filmTitle,
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         LocalDateTime screeningDate,
-        String hallId,
+        Long hallId,
         Integer rowNumber,
         Integer seatNumber
 ) {

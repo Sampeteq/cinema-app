@@ -9,6 +9,6 @@ public record ScreeningDto(
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         LocalDateTime date,
         String filmTitle,
-        String hallId
+        Long hallId
 ) {
 }

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public final class ScreeningFixture {
+    public static final Long HALL_ID = 1L;
     public static final Long FILM_ID = 1L;
     public static final LocalDateTime SCREENING_DATE = LocalDateTime
             .now()
@@ -17,11 +18,10 @@ public final class ScreeningFixture {
     }
 
     public static Screening createScreening(LocalDateTime screeningDate) {
-        var hallId = "1";
         return new Screening(
                 screeningDate,
                 FILM_ID,
-                hallId
+                HALL_ID
         );
     }
 

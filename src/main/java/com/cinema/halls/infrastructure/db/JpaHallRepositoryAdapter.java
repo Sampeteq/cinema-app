@@ -21,7 +21,7 @@ class JpaHallRepositoryAdapter implements HallRepository {
     }
 
     @Override
-    public Optional<Hall> getById(String id) {
+    public Optional<Hall> getById(Long id) {
         return jpaHallRepository.findById(id);
     }
 
@@ -34,12 +34,7 @@ class JpaHallRepositoryAdapter implements HallRepository {
     public Long count() {
         return jpaHallRepository.count();
     }
-
-    @Override
-    public boolean existsById(String id) {
-        return jpaHallRepository.existsById(id);
-    }
 }
 
-interface JpaHallRepository extends JpaRepository<Hall, String> {
+interface JpaHallRepository extends JpaRepository<Hall, Long> {
 }

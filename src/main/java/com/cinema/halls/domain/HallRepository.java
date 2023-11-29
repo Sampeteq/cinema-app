@@ -5,8 +5,7 @@ import java.util.Optional;
 
 public interface HallRepository {
     Hall add(Hall hall);
-    Optional<Hall> getById(String id);
+    Optional<Hall> getById(Long id);
     List<Hall> getAll();
     Long count();
-    boolean existsById(String id);
 }

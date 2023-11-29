@@ -1,16 +1,13 @@
 [
   {
-    "id": "1",
     "rowsNumber": 10,
     "seatsNumberInOneRow": 15
   },
   {
-    "id": "2",
     "rowsNumber": 15,
     "seatsNumberInOneRow": 20
   },
   {
-    "id": "3",
     "rowsNumber": 20,
     "seatsNumberInOneRow": 10
   }

@@ -3,7 +3,7 @@
 
 create table if not exists halls
 (
-    id               varchar,
+    id               bigint generated always as identity primary key,
     rows_number      int,
     seats_number_in_one_row int
 );

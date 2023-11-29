@@ -24,11 +24,11 @@ public class Screening {
 
     private Long filmId;
 
-    private String hallId;
+    private Long hallId;
 
     protected Screening() {}
 
-    public Screening(LocalDateTime date, Long filmId, String hallId
+    public Screening(LocalDateTime date, Long filmId, Long hallId
     ) {
         this.date = date;
         this.filmId = filmId;

@@ -2,6 +2,8 @@ package com.cinema.halls.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -17,7 +19,8 @@ import java.util.List;
 public class Hall {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private int rowsNumber;
 
@@ -28,8 +31,7 @@ public class Hall {
 
     protected Hall() {}
 
-    public Hall(String id, int rowsNumber, int seatsNumberInOneRow) {
-        this.id = id;
+    public Hall(int rowsNumber, int seatsNumberInOneRow) {
         this.rowsNumber = rowsNumber;
         this.seatsNumberInOneRow = seatsNumberInOneRow;
         this.occupations = new ArrayList<>();

@@ -74,7 +74,6 @@ class ScreeningControllerIT extends BaseIT {
         //given
         var filmId = 1L;
         var filmTitle = "Sample title";
-        var hallId = "1";
         addAdminUser();
         addFilm(filmTitle);
         addHall();
@@ -96,7 +95,7 @@ class ScreeningControllerIT extends BaseIT {
                         1L,
                         command.date(),
                         filmTitle,
-                        hallId
+                        1L
                 )
         );
         webTestClient

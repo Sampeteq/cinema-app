@@ -1,4 +1,4 @@
-package com.cinema.halls.ui.rest.exceptions_handler;
+package com.cinema.halls.ui.rest;
 
 import com.cinema.halls.domain.exceptions.HallsNoAvailableException;
 import com.cinema.shared.exceptions.ExceptionMessage;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-class HallsNotAvailableExceptionHandler {
+class HallExceptionHandler {
 
     @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(HallsNoAvailableException exception) {

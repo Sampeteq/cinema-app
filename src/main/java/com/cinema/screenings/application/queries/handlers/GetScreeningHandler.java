@@ -1,6 +1,7 @@
 package com.cinema.screenings.application.queries.handlers;
 
-import com.cinema.films.application.FilmApi;
+import com.cinema.films.application.queries.GetFilm;
+import com.cinema.films.application.queries.handlers.GetFilmHandler;
 import com.cinema.screenings.application.queries.GetScreening;
 import com.cinema.screenings.application.queries.dto.ScreeningDto;
 import com.cinema.screenings.application.queries.dto.ScreeningMapper;
@@ -17,14 +18,14 @@ public class GetScreeningHandler {
 
     private final ScreeningRepository screeningRepository;
     private final ScreeningMapper screeningMapper;
-    private final FilmApi filmApi;
+    private final GetFilmHandler getFilmHandler;
 
     public ScreeningDto handle(GetScreening query) {
         log.info("Query:{}", query);
         return screeningRepository
                 .getById(query.id())
                 .map(screening -> {
-                    var filmDto = filmApi.getFilmById(screening.getFilmId());
+                    var filmDto = getFilmHandler.handle(new GetFilm(screening.getFilmId()));
                     return screeningMapper.mapToDto(screening, filmDto.title());
                 })
                 .orElseThrow(ScreeningNotFoundException::new);

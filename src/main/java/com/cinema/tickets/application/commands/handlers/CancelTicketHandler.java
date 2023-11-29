@@ -1,6 +1,7 @@
 package com.cinema.tickets.application.commands.handlers;
 
-import com.cinema.screenings.application.ScreeningApi;
+import com.cinema.screenings.application.queries.GetScreeningDate;
+import com.cinema.screenings.application.queries.handlers.GetScreeningDateHandler;
 import com.cinema.tickets.application.commands.CancelTicket;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.tickets.domain.policies.TicketCancellingPolicy;
@@ -18,7 +19,7 @@ public class CancelTicketHandler {
 
     private final TicketRepository ticketRepository;
     private final TicketCancellingPolicy ticketCancellingPolicy;
-    private final ScreeningApi screeningApi;
+    private final GetScreeningDateHandler getScreeningDateHandler;
     private final UserApi userApi;
 
     @Transactional
@@ -30,7 +31,7 @@ public class CancelTicketHandler {
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
         var screeningId = ticket.getSeat().getScreeningId();
-        var screeningDate = screeningApi.getScreeningDate(screeningId);
+        var screeningDate = getScreeningDateHandler.handle(new GetScreeningDate(screeningId));
         log.info("Screening date:{}", screeningDate);
         ticketCancellingPolicy.checkScreeningDate(screeningDate);
         ticket.cancel();

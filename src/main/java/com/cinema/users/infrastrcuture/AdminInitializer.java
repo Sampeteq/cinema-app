@@ -1,6 +1,7 @@
-package com.cinema.users.application.commands.handlers;
+package com.cinema.users.infrastrcuture;
 
 import com.cinema.users.application.commands.CreateAdmin;
+import com.cinema.users.application.commands.handlers.CreateAdminHandler;
 import com.cinema.users.infrastrcuture.properties.AdminProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Profile("prod")
 @RequiredArgsConstructor
 @Slf4j
-class CreateAdminOnStartUpHandler {
+class AdminInitializer {
 
     private final AdminProperties adminProperties;
     private final CreateAdminHandler createAdminHandler;

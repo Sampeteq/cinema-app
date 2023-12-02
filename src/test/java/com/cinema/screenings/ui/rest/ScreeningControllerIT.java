@@ -5,7 +5,6 @@ import com.cinema.films.application.commands.handlers.CreateFilmHandler;
 import com.cinema.halls.domain.exceptions.HallsNoAvailableException;
 import com.cinema.halls.infrastructure.config.CreateHallService;
 import com.cinema.screenings.application.commands.CreateScreening;
-import com.cinema.screenings.application.queries.dto.ScreeningDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
@@ -18,7 +17,6 @@ import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.cinema.films.FilmFixture.createCreateFilmCommand;
 import static com.cinema.halls.HallFixture.createCreateHallCommand;
@@ -71,10 +69,9 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_is_created() {
         //given
-        var filmId = 1L;
-        var filmTitle = "Sample title";
-        addFilm(filmTitle);
         addHall();
+        var filmId = 1L;
+        addFilm();
         var crateAdminCommand = createCrateAdminCommand();
         createAdminHandler.handle(crateAdminCommand);
         var command = new CreateScreening(SCREENING_DATE, filmId);
@@ -90,31 +87,21 @@ class ScreeningControllerIT extends BaseIT {
 
         //then
         spec.expectStatus().isCreated();
-        var expectedDto = List.of(
-                new ScreeningDto(
-                        1L,
-                        command.date(),
-                        filmTitle,
-                        1L
-                )
-        );
-        webTestClient
-                .get()
-                .uri(SCREENINGS_BASE_ENDPOINT)
-                .exchange()
-                .expectBody()
-                .jsonPath("$[0].id").isEqualTo(expectedDto.get(0).id())
-                .jsonPath("$[0].date").isEqualTo(expectedDto.get(0).date().toString())
-                .jsonPath("$[0].filmTitle").isEqualTo(expectedDto.get(0).filmTitle());
+        assertThat(screeningRepository.getById(1L))
+                .isNotEmpty()
+                .hasValueSatisfying(screening -> {
+                    assertThat(screening.getDate()).isEqualTo(command.date());
+                    assertThat(screening.getFilmId()).isEqualTo(command.filmId());
+                    assertThat(screening.getHallId()).isEqualTo(1L);
+                });
     }
 
     @Test
     void screening_and_current_date_difference_is_min_7_days() {
         //given
-        var filmId = 1L;
-        var filmTitle = "Sample title";
-        addFilm(filmTitle);
         addHall();
+        var filmId = 1L;
+        addFilm();
         var crateAdminCommand = createCrateAdminCommand();
         createAdminHandler.handle(crateAdminCommand);
         var screeningDate = LocalDateTime.now().plusDays(6);
@@ -141,10 +128,9 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_and_current_date_difference_is_max_21_days() {
         //given
-        var filmId = 1L;
-        var filmTitle = "Sample film";
         addHall();
-        addFilm(filmTitle);
+        var filmId = 1L;
+        addFilm();
         var crateAdminCommand = createCrateAdminCommand();
         createAdminHandler.handle(crateAdminCommand);
         var screeningDate = LocalDateTime.now().plusDays(23);
@@ -172,8 +158,7 @@ class ScreeningControllerIT extends BaseIT {
     void screenings_collision_cannot_exist() {
         //given
         var filmId = 1L;
-        var filmTitle = "Sample title";
-        addFilm(filmTitle);
+        addFilm();
         var screening = addScreening();
         var crateAdminCommand = createCrateAdminCommand();
         createAdminHandler.handle(crateAdminCommand);

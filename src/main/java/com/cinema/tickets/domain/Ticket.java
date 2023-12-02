@@ -43,6 +43,5 @@ public class Ticket {
             throw new TicketAlreadyCancelledException();
         }
         this.status = TicketStatus.CANCELLED;
-        this.seat.free();
     }
 }

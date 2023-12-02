@@ -9,11 +9,10 @@ import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.commands.dto.SeatPositionDto;
 import com.cinema.tickets.application.queries.dto.TicketDto;
 import com.cinema.tickets.domain.Seat;
-import com.cinema.tickets.domain.SeatStatus;
 import com.cinema.tickets.domain.TicketStatus;
-import com.cinema.tickets.domain.exceptions.SeatAlreadyTakenException;
 import com.cinema.tickets.domain.exceptions.SeatNotFoundException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
+import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.repositories.SeatRepository;
@@ -167,7 +166,6 @@ class TicketControllerIT extends BaseIT {
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
                     assertEquals(TicketStatus.BOOKED, ticket.getStatus());
-                    assertEquals(SeatStatus.TAKEN, ticket.getSeat().getStatus());
                     assertEquals(1L, ticket.getUserId());
                 });
     }
@@ -200,7 +198,6 @@ class TicketControllerIT extends BaseIT {
                 .isNotEmpty()
                 .allSatisfy(ticket -> {
                     assertEquals(TicketStatus.BOOKED, ticket.getStatus());
-                    assertEquals(SeatStatus.TAKEN, ticket.getSeat().getStatus());
                     assertEquals(1L, ticket.getUserId());
                 });
     }
@@ -228,7 +225,7 @@ class TicketControllerIT extends BaseIT {
                 .exchange();
 
         //then
-        var expectedMessage = new SeatAlreadyTakenException().getMessage();
+        var expectedMessage = new TicketAlreadyExistsException().getMessage();
         spec
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)

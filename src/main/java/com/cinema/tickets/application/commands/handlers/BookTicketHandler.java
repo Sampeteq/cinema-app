@@ -6,6 +6,7 @@ import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.SeatNotFoundException;
+import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.policies.TicketBookingPolicy;
 import com.cinema.tickets.domain.repositories.SeatRepository;
 import com.cinema.tickets.domain.repositories.TicketRepository;
@@ -43,7 +44,9 @@ public class BookTicketHandler {
                                     seatPositionDto.rowNumber(),
                                     seatPositionDto.number()
                             ).orElseThrow(SeatNotFoundException::new);
-                    seat.take();
+                    if (ticketRepository.existsBySeatId(seat.getId())) {
+                        throw new TicketAlreadyExistsException();
+                    }
                     var addedTicket = ticketRepository.add(
                             new Ticket(TicketStatus.BOOKED, seat, currentUserId)
                     );

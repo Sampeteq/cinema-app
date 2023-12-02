@@ -1,7 +1,6 @@
 package com.cinema.tickets.domain.factories;
 
 import com.cinema.tickets.domain.Seat;
-import com.cinema.tickets.domain.SeatStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,7 +15,7 @@ public class SeatFactory {
                 .boxed()
                 .flatMap(rowNumber -> IntStream
                         .rangeClosed(1, seatsNumberInOneRow)
-                        .mapToObj(seatNumber -> new Seat(rowNumber, seatNumber, SeatStatus.FREE, screeningId))
+                        .mapToObj(seatNumber -> new Seat(rowNumber, seatNumber, screeningId))
                 )
                 .toList();
     }

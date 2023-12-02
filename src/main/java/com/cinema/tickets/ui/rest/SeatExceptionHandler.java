@@ -1,7 +1,6 @@
 package com.cinema.tickets.ui.rest;
 
 import com.cinema.shared.exceptions.ExceptionMessage;
-import com.cinema.tickets.domain.exceptions.SeatAlreadyTakenException;
 import com.cinema.tickets.domain.exceptions.SeatNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +14,5 @@ class SeatExceptionHandler {
     ResponseEntity<ExceptionMessage> handle(SeatNotFoundException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    ResponseEntity<ExceptionMessage> handle(SeatAlreadyTakenException exception) {
-        return ResponseEntity
-                .unprocessableEntity()
-                .body(new ExceptionMessage(exception.getMessage()));
     }
 }

@@ -40,7 +40,7 @@ class SeatControllerIT extends BaseIT {
                 .jsonPath("$").isNotEmpty()
                 .jsonPath("$.*.rowNumber").exists()
                 .jsonPath("$.*.number").exists()
-                .jsonPath("$.*.status").exists()
+                .jsonPath("$.*.isFree").exists()
                 .jsonPath("$.*.*").value(everyItem(notNullValue()));
     }
 

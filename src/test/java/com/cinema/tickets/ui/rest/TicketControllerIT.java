@@ -69,7 +69,7 @@ class TicketControllerIT extends BaseIT {
     @Autowired
     private CreateUserHandler createUserHandler;
 
-    private final CreateUser createUserCommand = createCrateUserCommand();;
+    private final CreateUser createUserCommand = createCrateUserCommand();
 
     @SpyBean
     private Clock clock;

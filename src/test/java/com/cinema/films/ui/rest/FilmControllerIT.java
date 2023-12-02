@@ -6,8 +6,6 @@ import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.films.domain.exceptions.FilmYearOutOfRangeException;
-import com.cinema.users.application.commands.CreateAdmin;
-import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.commands.handlers.CreateAdminHandler;
 import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.Test;
@@ -20,6 +18,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import static com.cinema.films.FilmFixture.createCreateFilmCommand;
 import static com.cinema.films.FilmFixture.createFilm;
+import static com.cinema.users.UserFixture.createCrateAdminCommand;
+import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -29,8 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class FilmControllerIT extends BaseIT {
 
     private static final String FILMS_BASE_ENDPOINT = "/films";
-    private static final String USERNAME = "user";
-    private static final String PASSWORD = "12345";
 
     @Autowired
     private CreateUserHandler createUserHandler;
@@ -44,13 +42,14 @@ class FilmControllerIT extends BaseIT {
     @Test
     void film_can_be_created_only_by_admin() {
         //given
-        addCommonUser();
+        var crateUserCommand = createCrateUserCommand();
+        createUserHandler.handle(crateUserCommand);
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(FILMS_BASE_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
         //then
@@ -60,8 +59,8 @@ class FilmControllerIT extends BaseIT {
     @Test
     void film_is_created() {
         //given
-        addAdminUser();
-
+        var crateAdminCommand = createCrateAdminCommand();
+        createAdminHandler.handle(crateAdminCommand);
         var id = 1L;
         var title = "Some filmId";
         var category = FilmCategory.COMEDY;
@@ -80,7 +79,7 @@ class FilmControllerIT extends BaseIT {
                 .uri(FILMS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
         //then
@@ -98,7 +97,8 @@ class FilmControllerIT extends BaseIT {
     @Test
     void film_title_is_unique() {
         //given
-        addAdminUser();
+        var crateAdminCommand = createCrateAdminCommand();
+        createAdminHandler.handle(crateAdminCommand);
         var film = filmRepository.add(createFilm());
         var command = createCreateFilmCommand(film.getTitle());
 
@@ -108,7 +108,7 @@ class FilmControllerIT extends BaseIT {
                 .uri(FILMS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
         //then
@@ -125,7 +125,8 @@ class FilmControllerIT extends BaseIT {
     @MethodSource("com.cinema.films.FilmFixture#getWrongFilmYears")
     void film_year_is_previous_current_or_nex_one(Integer wrongYear) {
         //given
-        addAdminUser();
+        var crateAdminCommand = createCrateAdminCommand();
+        createAdminHandler.handle(crateAdminCommand);
         var command = createCreateFilmCommand(wrongYear);
 
         //when
@@ -134,7 +135,7 @@ class FilmControllerIT extends BaseIT {
                 .uri(FILMS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
         //then
@@ -149,13 +150,14 @@ class FilmControllerIT extends BaseIT {
     @Test
     void film_is_deleted_only_by_admin() {
         //given
-        addCommonUser();
+        var crateUserCommand = createCrateUserCommand();
+        createUserHandler.handle(crateUserCommand);
 
         //when
         var spec = webTestClient
                 .delete()
                 .uri(FILMS_BASE_ENDPOINT + "/Film 1")
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
         //then
@@ -166,14 +168,15 @@ class FilmControllerIT extends BaseIT {
     @WithMockUser(authorities = "ADMIN")
     void film_is_deleted() {
         //given
-        addAdminUser();
+        var crateAdminCommand = createCrateAdminCommand();
+        createAdminHandler.handle(crateAdminCommand);
         var film = filmRepository.add(createFilm());
 
         //when
         var spec = webTestClient
                 .delete()
                 .uri(FILMS_BASE_ENDPOINT + "/" + film.getId())
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
         //then
@@ -250,21 +253,5 @@ class FilmControllerIT extends BaseIT {
         spec
                 .expectBody()
                 .jsonPath("$.*.category").value(everyItem(equalTo(category.name())));
-    }
-
-    private void addCommonUser() {
-        var command = new CreateUser(
-                USERNAME,
-                PASSWORD
-        );
-        createUserHandler.handle(command);
-    }
-
-    private void addAdminUser() {
-        var command = new CreateAdmin(
-                USERNAME,
-                PASSWORD
-        );
-        createAdminHandler.handle(command);
     }
 }

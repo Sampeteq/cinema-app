@@ -2,15 +2,13 @@ package com.cinema.screenings.ui.rest;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.halls.infrastructure.config.CreateHallService;
 import com.cinema.halls.domain.exceptions.HallsNoAvailableException;
+import com.cinema.halls.infrastructure.config.CreateHallService;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.application.queries.dto.ScreeningDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
-import com.cinema.users.application.commands.CreateAdmin;
-import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.commands.handlers.CreateAdminHandler;
 import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.Test;
@@ -26,6 +24,8 @@ import static com.cinema.films.FilmFixture.createCreateFilmCommand;
 import static com.cinema.halls.HallFixture.createCreateHallCommand;
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
+import static com.cinema.users.UserFixture.createCrateAdminCommand;
+import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -35,8 +35,6 @@ import static org.hamcrest.Matchers.notNullValue;
 class ScreeningControllerIT extends BaseIT {
 
     private static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
-    private static final String USERNAME = "user";
-    private static final String PASSWORD = "12345";
 
     @Autowired
     private ScreeningRepository screeningRepository;
@@ -56,13 +54,14 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_is_created_only_by_admin() {
         //given
-        addCommonUser();
+        var crateUserCommand = createCrateUserCommand();
+        createUserHandler.handle(crateUserCommand);
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_BASE_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
         //then
@@ -74,9 +73,10 @@ class ScreeningControllerIT extends BaseIT {
         //given
         var filmId = 1L;
         var filmTitle = "Sample title";
-        addAdminUser();
         addFilm(filmTitle);
         addHall();
+        var crateAdminCommand = createCrateAdminCommand();
+        createAdminHandler.handle(crateAdminCommand);
         var command = new CreateScreening(SCREENING_DATE, filmId);
 
         //when
@@ -85,7 +85,7 @@ class ScreeningControllerIT extends BaseIT {
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
         //then
@@ -113,9 +113,10 @@ class ScreeningControllerIT extends BaseIT {
         //given
         var filmId = 1L;
         var filmTitle = "Sample title";
-        addAdminUser();
         addFilm(filmTitle);
         addHall();
+        var crateAdminCommand = createCrateAdminCommand();
+        createAdminHandler.handle(crateAdminCommand);
         var screeningDate = LocalDateTime.now().plusDays(6);
         var command = new CreateScreening(screeningDate, filmId);
 
@@ -125,7 +126,7 @@ class ScreeningControllerIT extends BaseIT {
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
         //then
@@ -142,9 +143,10 @@ class ScreeningControllerIT extends BaseIT {
         //given
         var filmId = 1L;
         var filmTitle = "Sample film";
-        addAdminUser();
         addHall();
         addFilm(filmTitle);
+        var crateAdminCommand = createCrateAdminCommand();
+        createAdminHandler.handle(crateAdminCommand);
         var screeningDate = LocalDateTime.now().plusDays(23);
         var command = new CreateScreening(screeningDate, filmId);
 
@@ -154,7 +156,7 @@ class ScreeningControllerIT extends BaseIT {
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
         //then
@@ -171,9 +173,10 @@ class ScreeningControllerIT extends BaseIT {
         //given
         var filmId = 1L;
         var filmTitle = "Sample title";
-        addAdminUser();
         addFilm(filmTitle);
         var screening = addScreening();
+        var crateAdminCommand = createCrateAdminCommand();
+        createAdminHandler.handle(crateAdminCommand);
         var command = new CreateScreening(
                 screening.getDate().plusMinutes(10),
                 filmId
@@ -185,7 +188,7 @@ class ScreeningControllerIT extends BaseIT {
                 .uri(SCREENINGS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
         //then
@@ -200,14 +203,15 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_is_deleted_only_by_admin() {
         //given
-        addCommonUser();
+        var crateUserCommand = createCrateUserCommand();
+        createUserHandler.handle(crateUserCommand);
         var screeningId = 1L;
 
         //when
         var spec = webTestClient
                 .delete()
                 .uri(SCREENINGS_BASE_ENDPOINT + "/" + screeningId)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
         //then
@@ -217,14 +221,15 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_is_deleted() {
         //given
-        addAdminUser();
+        var crateAdminCommand = createCrateAdminCommand();
+        createAdminHandler.handle(crateAdminCommand);
         var screening = addScreening();
 
         //when
         var spec = webTestClient
                 .delete()
                 .uri(SCREENINGS_BASE_ENDPOINT + "/" + screening.getId())
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
         //then
@@ -294,22 +299,6 @@ class ScreeningControllerIT extends BaseIT {
 
     private void addFilm(String title) {
         createFilmHandler.handle(createCreateFilmCommand(title));
-    }
-
-    private void addCommonUser() {
-        var command = new CreateUser(
-                USERNAME,
-                PASSWORD
-        );
-        createUserHandler.handle(command);
-    }
-
-    private void addAdminUser() {
-        var command = new CreateAdmin(
-                USERNAME,
-                PASSWORD
-        );
-        createAdminHandler.handle(command);
     }
 
     private void addFilm() {

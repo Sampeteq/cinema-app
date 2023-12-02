@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static com.cinema.halls.HallFixture.createHall;
+import static com.cinema.users.UserFixture.createCrateAdminCommand;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
@@ -35,16 +36,14 @@ class HallControllerIT extends BaseIT {
     void halls_are_gotten() {
         //given
         var hall = hallRepository.add(createHall());
-        var adminMail = "admin@mail.com";
-        var adminPassword = "12345";
-        var command = new CreateAdmin(adminMail, adminPassword);
-        createAdminHandler.handle(command);
+        var crateAdminCommand = createCrateAdminCommand();
+        createAdminHandler.handle(crateAdminCommand);
 
         //when
         var responseSpec = webTestClient
                 .get()
                 .uri(HALL_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(command.adminMail(), command.adminPassword()))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
         //then

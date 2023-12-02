@@ -40,6 +40,7 @@ import static com.cinema.tickets.TicketFixture.SCREENING_DATE;
 import static com.cinema.tickets.TicketFixture.createCancelledTicket;
 import static com.cinema.tickets.TicketFixture.createSeat;
 import static com.cinema.tickets.TicketFixture.createTicket;
+import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -49,8 +50,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class TicketControllerIT extends BaseIT {
 
     private static final String TICKETS_BASE_ENDPOINT = "/tickets";
-    private static final String USERNAME = "user1@mail.com";
-    private static final String PASSWORD = "12345";
 
     @Autowired
     private TicketRepository ticketRepository;
@@ -70,17 +69,14 @@ class TicketControllerIT extends BaseIT {
     @Autowired
     private CreateUserHandler createUserHandler;
 
+    private final CreateUser createUserCommand = createCrateUserCommand();;
+
     @SpyBean
     private Clock clock;
 
     @BeforeEach
     void setUp() {
-        createUserHandler.handle(
-                new CreateUser(
-                        USERNAME,
-                        PASSWORD
-                )
-        );
+        createUserHandler.handle(createUserCommand);
     }
 
     @Test
@@ -101,7 +97,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
         //then
@@ -132,7 +128,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
         //then
@@ -162,7 +158,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
         //then
@@ -195,7 +191,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
         //then
@@ -228,7 +224,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
         //then
@@ -262,7 +258,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
         //then
@@ -285,7 +281,7 @@ class TicketControllerIT extends BaseIT {
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
         //then
@@ -308,7 +304,7 @@ class TicketControllerIT extends BaseIT {
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
         //then
@@ -338,7 +334,7 @@ class TicketControllerIT extends BaseIT {
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
         //then
@@ -369,7 +365,7 @@ class TicketControllerIT extends BaseIT {
         var spec = webTestClient
                 .get()
                 .uri(TICKETS_BASE_ENDPOINT + "/my")
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
         //then
@@ -428,7 +424,7 @@ class TicketControllerIT extends BaseIT {
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new BookTicket(screeningId, List.of(new SeatPositionDto(rowNumber, seatNumber))))
-                .headers(headers -> headers.setBasicAuth(USERNAME, PASSWORD))
+                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
     }
 }

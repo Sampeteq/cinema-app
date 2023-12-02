@@ -38,7 +38,7 @@ class ConfigHallService {
             createHallsFromJson(json);
             log.info("Halls added");
         } else {
-            log.info("HallsR already exists");
+            log.info("Halls already exists");
         }
     }
 

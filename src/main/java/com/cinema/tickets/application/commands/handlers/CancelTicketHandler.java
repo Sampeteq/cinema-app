@@ -31,8 +31,7 @@ public class CancelTicketHandler {
                 .getByIdAndUserId(command.ticketId(), currentUserId)
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
-        var screeningId = ticket.getSeat().getScreeningId();
-        var screeningDate = getScreeningDateHandler.handle(new GetScreeningDate(screeningId));
+        var screeningDate = getScreeningDateHandler.handle(new GetScreeningDate(ticket.getScreeningId()));
         log.info("Screening date:{}", screeningDate);
         ticketCancellingPolicy.checkScreeningDate(screeningDate);
         ticket.cancel();

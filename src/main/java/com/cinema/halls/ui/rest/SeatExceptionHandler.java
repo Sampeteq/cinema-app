@@ -1,7 +1,7 @@
-package com.cinema.tickets.ui.rest;
+package com.cinema.halls.ui.rest;
 
 import com.cinema.shared.exceptions.ExceptionMessage;
-import com.cinema.tickets.domain.exceptions.SeatNotFoundException;
+import com.cinema.halls.domain.exceptions.SeatNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -8,14 +8,12 @@ import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.commands.dto.SeatPositionDto;
 import com.cinema.tickets.application.queries.dto.TicketDto;
-import com.cinema.tickets.domain.Seat;
 import com.cinema.tickets.domain.TicketStatus;
-import com.cinema.tickets.domain.exceptions.SeatNotFoundException;
+import com.cinema.halls.domain.exceptions.SeatNotFoundException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
-import com.cinema.tickets.domain.repositories.SeatRepository;
 import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.commands.handlers.CreateUserHandler;
@@ -37,7 +35,6 @@ import static com.cinema.halls.HallFixture.createCreateHallCommand;
 import static com.cinema.screenings.ScreeningFixture.createCreateScreeningCommand;
 import static com.cinema.tickets.TicketFixture.SCREENING_DATE;
 import static com.cinema.tickets.TicketFixture.createCancelledTicket;
-import static com.cinema.tickets.TicketFixture.createSeat;
 import static com.cinema.tickets.TicketFixture.createTicket;
 import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,9 +49,6 @@ class TicketControllerIT extends BaseIT {
 
     @Autowired
     private TicketRepository ticketRepository;
-
-    @Autowired
-    private SeatRepository seatRepository;
 
     @Autowired
     private CreateFilmHandler createFilmHandler;
@@ -271,8 +265,7 @@ class TicketControllerIT extends BaseIT {
     void ticket_is_cancelled() {
         //give
         addScreening();
-        var seat = addSeat();
-        var ticket = ticketRepository.add(createTicket(seat));
+        var ticket = ticketRepository.add(createTicket());
 
         //when
         var spec = webTestClient
@@ -294,8 +287,7 @@ class TicketControllerIT extends BaseIT {
     void ticket_already_cancelled_cannot_be_cancelled() {
         //given
         addScreening();
-        var seat = addSeat();
-        ticketRepository.add(createCancelledTicket(seat));
+        ticketRepository.add(createCancelledTicket());
 
         //when
         var spec = webTestClient
@@ -321,8 +313,7 @@ class TicketControllerIT extends BaseIT {
         var command = createCreateScreeningCommand();
         createScreeningHandler.handle(command);
 
-        var seat = addSeat();
-        ticketRepository.add(createTicket(seat));
+        ticketRepository.add(createTicket());
         Mockito
                 .when(clock.instant())
                 .thenReturn(command.date().minusHours(23).toInstant(ZoneOffset.UTC));
@@ -355,8 +346,7 @@ class TicketControllerIT extends BaseIT {
         var createScreeningCommand = createCreateScreeningCommand();
         createScreeningHandler.handle(createScreeningCommand);
 
-        var seat = addSeat();
-        var ticket = ticketRepository.add(createTicket(seat));
+        var ticket = ticketRepository.add(createTicket());
 
         //when
         var spec = webTestClient
@@ -373,8 +363,8 @@ class TicketControllerIT extends BaseIT {
                         createFilmCommand.title(),
                         createScreeningCommand.date(),
                         1L,
-                        seat.getRowNumber(),
-                        seat.getNumber()
+                        1,
+                        1
                 )
         );
         spec
@@ -409,10 +399,6 @@ class TicketControllerIT extends BaseIT {
         addFilm();
         addHall();
         createScreeningHandler.handle(createCreateScreeningCommand(screeningDate));
-    }
-
-    private Seat addSeat() {
-        return seatRepository.add(createSeat());
     }
 
     private void bookTicket(long screeningId, int rowNumber, int seatNumber) {

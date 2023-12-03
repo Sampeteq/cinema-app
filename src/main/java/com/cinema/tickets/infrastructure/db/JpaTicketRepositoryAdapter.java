@@ -4,7 +4,6 @@ import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,7 +33,7 @@ class JpaTicketRepositoryAdapter implements TicketRepository {
 
     @Override
     public List<Ticket> getAllByScreeningId(Long screeningId) {
-        return jpaTicketRepository.findBySeat_ScreeningId(screeningId);
+        return jpaTicketRepository.findAllByScreeningId(screeningId);
     }
 
     @Override
@@ -46,7 +45,6 @@ class JpaTicketRepositoryAdapter implements TicketRepository {
 interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
     Optional<Ticket> findByIdAndUserId(Long ticketId, Long userId);
     List<Ticket> findAllByUserId(Long userId);
-    @Query("select t from Ticket t left join fetch t.seat s where s.screeningId = :screeningId")
-    List<Ticket> findBySeat_ScreeningId(Long screeningId);
+    List<Ticket> findAllByScreeningId(Long screeningId);
     boolean existsBySeatId(Long seatId);
 }

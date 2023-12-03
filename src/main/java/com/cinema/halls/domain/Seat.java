@@ -1,4 +1,4 @@
-package com.cinema.tickets.domain;
+package com.cinema.halls.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,14 +22,14 @@ public class Seat {
 
     private int number;
 
-    private Long screeningId;
+    private Long hallId;
 
     protected Seat() {
     }
 
-    public Seat(int rowNumber, int number, Long screeningId) {
+    public Seat(int rowNumber, int number, Long hallId) {
         this.rowNumber = rowNumber;
         this.number = number;
-        this.screeningId = screeningId;
+        this.hallId = hallId;
     }
 }

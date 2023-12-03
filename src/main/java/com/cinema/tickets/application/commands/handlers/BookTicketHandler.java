@@ -1,15 +1,15 @@
 package com.cinema.tickets.application.commands.handlers;
 
-import com.cinema.screenings.application.queries.GetScreeningDate;
-import com.cinema.screenings.application.queries.handlers.GetScreeningDateHandler;
+import com.cinema.halls.application.queries.GetSeatIdByHallIdAndPosition;
+import com.cinema.halls.application.queries.handlers.GetSeatIdByHallIdAndPositionHandler;
+import com.cinema.screenings.application.queries.GetScreening;
+import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.domain.Ticket;
+import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
-import com.cinema.tickets.domain.exceptions.SeatNotFoundException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.policies.TicketBookingPolicy;
-import com.cinema.tickets.domain.repositories.SeatRepository;
-import com.cinema.tickets.domain.repositories.TicketRepository;
 import com.cinema.users.application.queries.GetCurrentUserId;
 import com.cinema.users.application.queries.handlers.GetCurrentUserIdHandler;
 import lombok.RequiredArgsConstructor;
@@ -24,31 +24,32 @@ public class BookTicketHandler {
 
     private final TicketRepository ticketRepository;
     private final TicketBookingPolicy ticketBookingPolicy;
-    private final SeatRepository seatRepository;
-    private final GetScreeningDateHandler getScreeningDateHandler;
+    private final GetScreeningHandler getScreeningHandler;
+    private final GetSeatIdByHallIdAndPositionHandler getSeatIdByHallIdAndPositionHandler;
     private final GetCurrentUserIdHandler getCurrentUserIdHandler;
 
     @Transactional
     public void handle(BookTicket command) {
         log.info("Command:{}", command);
-        var screeningDate = getScreeningDateHandler.handle(new GetScreeningDate(command.screeningId()));
-        log.info("Screening date:{}", screeningDate);
-        ticketBookingPolicy.checkScreeningDate(screeningDate);
+        var screeningDto = getScreeningHandler.handle(new GetScreening(command.screeningId()));
+        log.info("Screening:{}", screeningDto);
+        ticketBookingPolicy.checkScreeningDate(screeningDto.date());
         var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
         command
                 .seats()
                 .forEach(seatPositionDto -> {
-                    var seat = seatRepository
-                            .getByScreeningIdRowNumberAndNumber(
-                                    command.screeningId(),
+                    var seatId = getSeatIdByHallIdAndPositionHandler.handle(
+                            new GetSeatIdByHallIdAndPosition(
+                                    screeningDto.hallId(),
                                     seatPositionDto.rowNumber(),
                                     seatPositionDto.number()
-                            ).orElseThrow(SeatNotFoundException::new);
-                    if (ticketRepository.existsBySeatId(seat.getId())) {
+                            )
+                    );
+                    if (ticketRepository.existsBySeatId(seatId)) {
                         throw new TicketAlreadyExistsException();
                     }
                     var addedTicket = ticketRepository.add(
-                            new Ticket(TicketStatus.BOOKED, seat, currentUserId)
+                            new Ticket(TicketStatus.BOOKED, command.screeningId(), seatId, currentUserId)
                     );
                     log.info("Added ticket:{}", addedTicket);
                 });

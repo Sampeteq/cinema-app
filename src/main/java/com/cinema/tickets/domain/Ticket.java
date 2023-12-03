@@ -7,7 +7,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.ToString;
@@ -25,16 +24,18 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
 
-    @OneToOne
-    private Seat seat;
+    private Long screeningId;
+
+    private Long seatId;
 
     private Long userId;
 
     protected Ticket() {}
 
-    public Ticket(TicketStatus status, Seat seat, Long userId) {
+    public Ticket(TicketStatus status, Long screeningId, Long seatId, Long userId) {
         this.status = status;
-        this.seat = seat;
+        this.screeningId = screeningId;
+        this.seatId = seatId;
         this.userId = userId;
     }
 

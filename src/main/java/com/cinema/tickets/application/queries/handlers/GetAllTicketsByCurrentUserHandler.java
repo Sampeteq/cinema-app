@@ -1,5 +1,7 @@
 package com.cinema.tickets.application.queries.handlers;
 
+import com.cinema.halls.application.queries.GetSeatBySeatId;
+import com.cinema.halls.application.queries.handlers.GetSeatByIdHandler;
 import com.cinema.screenings.application.queries.GetScreening;
 import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
 import com.cinema.tickets.application.queries.GetAllTicketsByCurrentUser;
@@ -21,6 +23,7 @@ public class GetAllTicketsByCurrentUserHandler {
     private final GetCurrentUserIdHandler getCurrentUserIdHandler;
     private final TicketRepository ticketRepository;
     private final GetScreeningHandler getScreeningHandler;
+    private final GetSeatByIdHandler getSeatByIdHandler;
 
     public List<TicketDto> handle(GetAllTicketsByCurrentUser query) {
         log.info("Query:{}", query);
@@ -29,16 +32,17 @@ public class GetAllTicketsByCurrentUserHandler {
                 .getAllByUserId(currentUserId)
                 .stream()
                 .map(ticket -> {
-                    var getScreening = new GetScreening(ticket.getSeat().getScreeningId());
+                    var getScreening = new GetScreening(ticket.getScreeningId());
                     var screeningDto = getScreeningHandler.handle(getScreening);
+                    var seatDto = getSeatByIdHandler.handle(new GetSeatBySeatId(ticket.getSeatId()));
                     return new TicketDto(
                             ticket.getId(),
                             ticket.getStatus(),
                             screeningDto.filmTitle(),
                             screeningDto.date(),
                             screeningDto.hallId(),
-                            ticket.getSeat().getRowNumber(),
-                            ticket.getSeat().getNumber()
+                            seatDto.rowNumber(),
+                            seatDto.number()
                     );
                 })
                 .toList();

@@ -1,4 +1,4 @@
-package com.cinema.users.infrastrcuture.properties;
+package com.cinema.users.infrastrcuture;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

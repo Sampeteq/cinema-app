@@ -1,4 +1,4 @@
-package com.cinema.films.ui.rest;
+package com.cinema.films.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.CreateFilm;

@@ -1,4 +1,4 @@
-package com.cinema.halls.ui.rest;
+package com.cinema.halls.ui;
 
 import com.cinema.shared.exceptions.ExceptionMessage;
 import com.cinema.halls.domain.exceptions.SeatNotFoundException;

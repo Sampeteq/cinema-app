@@ -1,4 +1,4 @@
-package com.cinema.screenings.ui.rest;
+package com.cinema.screenings.ui;
 
 import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
 import com.cinema.halls.application.queries.dto.SeatWithStatusDto;

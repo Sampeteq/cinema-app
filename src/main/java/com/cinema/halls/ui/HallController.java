@@ -1,4 +1,4 @@
-package com.cinema.halls.ui.rest;
+package com.cinema.halls.ui;
 
 import com.cinema.halls.application.queries.GetAllHalls;
 import com.cinema.halls.application.queries.GetAllHallOccupations;

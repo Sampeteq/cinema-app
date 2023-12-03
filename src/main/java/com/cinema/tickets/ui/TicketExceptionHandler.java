@@ -1,4 +1,4 @@
-package com.cinema.tickets.ui.rest;
+package com.cinema.tickets.ui;
 
 import com.cinema.shared.exceptions.ExceptionMessage;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;

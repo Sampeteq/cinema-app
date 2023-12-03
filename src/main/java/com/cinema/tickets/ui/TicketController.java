@@ -1,4 +1,4 @@
-package com.cinema.tickets.ui.rest;
+package com.cinema.tickets.ui;
 
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.commands.CancelTicket;

@@ -1,4 +1,4 @@
-package com.cinema.films.ui.rest;
+package com.cinema.films.ui;
 
 import com.cinema.films.domain.exceptions.FilmNotFoundException;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;

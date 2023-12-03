@@ -1,4 +1,4 @@
-package com.cinema.tickets.ui.rest;
+package com.cinema.tickets.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;

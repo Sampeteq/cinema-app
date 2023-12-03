@@ -1,4 +1,4 @@
-package com.cinema.screenings.ui.rest;
+package com.cinema.screenings.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;

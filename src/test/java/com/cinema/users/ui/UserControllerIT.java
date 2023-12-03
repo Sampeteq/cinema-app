@@ -1,4 +1,4 @@
-package com.cinema.users.ui.rest;
+package com.cinema.users.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.users.UserFixture;

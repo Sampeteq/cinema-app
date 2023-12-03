@@ -1,4 +1,4 @@
-package com.cinema.halls.ui.rest;
+package com.cinema.halls.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.halls.domain.HallOccupation;

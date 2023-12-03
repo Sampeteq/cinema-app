@@ -1,4 +1,4 @@
-package com.cinema.screenings.infrastructure.db;
+package com.cinema.screenings.infrastructure;
 
 import com.cinema.screenings.application.queries.GetScreenings;
 import com.cinema.screenings.domain.Screening;

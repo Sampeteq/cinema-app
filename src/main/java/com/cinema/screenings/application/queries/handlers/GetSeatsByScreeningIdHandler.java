@@ -2,9 +2,9 @@ package com.cinema.screenings.application.queries.handlers;
 
 import com.cinema.halls.application.queries.dto.SeatWithStatusDto;
 import com.cinema.halls.domain.SeatRepository;
-import com.cinema.screenings.application.queries.GetScreeningHallId;
-import com.cinema.screenings.application.queries.handlers.GetScreeningHallIdHandler;
 import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
+import com.cinema.screenings.domain.ScreeningRepository;
+import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.tickets.application.queries.GetTicketsSeatIdsByScreeningId;
 import com.cinema.tickets.application.queries.handlers.GetTicketsSeatIdsByScreeningHandler;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +18,16 @@ import java.util.List;
 @Slf4j
 public class GetSeatsByScreeningIdHandler {
 
-    private final GetScreeningHallIdHandler getScreeningHallIdHandler;
+    private final ScreeningRepository screeningRepository;
     private final GetTicketsSeatIdsByScreeningHandler getTicketsSeatIdsByScreeningHandler;
     private final SeatRepository seatRepository;
 
     public List<SeatWithStatusDto> handle(GetSeatsByScreeningId query) {
         log.info("Query:{}", query);
-        var hallId = getScreeningHallIdHandler.handle(
-                new GetScreeningHallId(query.screeningId())
-        );
+        var hallId = screeningRepository
+                .getById(query.screeningId())
+                .orElseThrow(ScreeningNotFoundException::new)
+                .getHallId();
         var ticketsSeatsId = getTicketsSeatIdsByScreeningHandler.handle(
                 new GetTicketsSeatIdsByScreeningId(query.screeningId())
         );

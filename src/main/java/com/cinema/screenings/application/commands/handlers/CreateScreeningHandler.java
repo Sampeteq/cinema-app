@@ -9,7 +9,7 @@ import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningEndDateCalculator;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.events.ScreeningCreatedEvent;
-import com.cinema.screenings.domain.policies.ScreeningDatePolicy;
+import com.cinema.screenings.domain.ScreeningDatePolicy;
 import com.cinema.shared.events.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.cinema.screenings.domain.policies;
+package com.cinema.screenings.domain;
 
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import lombok.RequiredArgsConstructor;

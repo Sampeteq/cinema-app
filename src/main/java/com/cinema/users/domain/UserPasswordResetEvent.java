@@ -1,4 +1,4 @@
-package com.cinema.users.domain.events;
+package com.cinema.users.domain;
 
 import java.util.UUID;
 

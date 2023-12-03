@@ -3,7 +3,7 @@ package com.cinema.users.application.commands.handlers;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.users.application.commands.ResetUserPassword;
 import com.cinema.users.domain.UserRepository;
-import com.cinema.users.domain.events.UserPasswordResetEvent;
+import com.cinema.users.domain.UserPasswordResetEvent;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

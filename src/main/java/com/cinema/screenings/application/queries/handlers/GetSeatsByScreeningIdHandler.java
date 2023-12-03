@@ -38,8 +38,6 @@ public class GetSeatsByScreeningIdHandler {
                                 !ticketsSeatsId.contains(rs.getLong("id"))
                         ),
                         hallId
-                )
-                .stream()
-                .toList();
+                );
     }
 }

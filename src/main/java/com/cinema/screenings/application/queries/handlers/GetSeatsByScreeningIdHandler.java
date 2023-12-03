@@ -1,10 +1,10 @@
-package com.cinema.halls.application.queries.handlers;
+package com.cinema.screenings.application.queries.handlers;
 
 import com.cinema.halls.application.queries.dto.SeatWithStatusDto;
 import com.cinema.halls.domain.SeatRepository;
 import com.cinema.screenings.application.queries.GetScreeningHallId;
 import com.cinema.screenings.application.queries.handlers.GetScreeningHallIdHandler;
-import com.cinema.halls.application.queries.GetSeatsByScreeningId;
+import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
 import com.cinema.tickets.application.queries.GetTicketsSeatIdsByScreeningId;
 import com.cinema.tickets.application.queries.handlers.GetTicketsSeatIdsByScreeningHandler;
 import lombok.RequiredArgsConstructor;

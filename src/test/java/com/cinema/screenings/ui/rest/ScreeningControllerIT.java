@@ -272,6 +272,36 @@ class ScreeningControllerIT extends BaseIT {
                 .jsonPath("$.[*].date").isEqualTo(screeningWithRequiredDate.getDate().toString());
     }
 
+    @Test
+    void seats_are_gotten_by_screening_id() {
+        //given
+        addHall();
+        addHall();
+        var screening = addScreening();
+        var screeningId = 1L;
+
+        //when
+        var spec = webTestClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(SCREENINGS_BASE_ENDPOINT + "/" + screening.getId() + "/seats")
+                        .queryParam("screeningId", screeningId)
+                        .build()
+                )
+                .exchange();
+
+        //then
+        spec
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("$").isNotEmpty()
+                .jsonPath("$.*.rowNumber").exists()
+                .jsonPath("$.*.number").exists()
+                .jsonPath("$.*.isFree").exists()
+                .jsonPath("$.*.*").value(everyItem(notNullValue()));
+    }
+
 
     private Screening addScreening() {
         var screening = createScreening(SCREENING_DATE);

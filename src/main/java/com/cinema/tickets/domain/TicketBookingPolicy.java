@@ -1,6 +1,6 @@
-package com.cinema.tickets.domain.policies;
+package com.cinema.tickets.domain;
 
-import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
+import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-public class TicketCancellingPolicy {
+public class TicketBookingPolicy {
 
     private final Clock clock;
 
     public void checkScreeningDate(LocalDateTime screeningDate) {
-        if (timeToScreeningInHours(clock, screeningDate) < 24) {
-            throw new TicketCancelTooLateException();
+        if (timeToScreeningInHours(clock, screeningDate) < 1) {
+            throw new TicketBookTooLateException();
         }
     }
 

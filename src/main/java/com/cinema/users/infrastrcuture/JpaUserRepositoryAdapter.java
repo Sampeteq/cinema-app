@@ -1,4 +1,4 @@
-package com.cinema.users.infrastrcuture.db;
+package com.cinema.users.infrastrcuture;
 
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;

@@ -4,7 +4,7 @@ import com.cinema.users.application.commands.CreateAdmin;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
-import com.cinema.users.domain.factories.UserFactory;
+import com.cinema.users.domain.UserFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

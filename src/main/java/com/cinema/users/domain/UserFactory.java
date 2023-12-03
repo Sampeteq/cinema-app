@@ -1,4 +1,4 @@
-package com.cinema.users.domain.factories;
+package com.cinema.users.domain;
 
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;

@@ -8,10 +8,10 @@ public class SeatFixture {
 
     private SeatFixture() {}
 
-    public static List<Seat> createSeats(Long hallId) {
+    public static List<Seat> createSeats() {
         return List.of(
-                new Seat(1, 1, hallId),
-                new Seat(1, 2, hallId)
+                new Seat(1, 1),
+                new Seat(1, 2)
         );
     }
 }

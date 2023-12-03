@@ -22,14 +22,11 @@ public class Seat {
 
     private int number;
 
-    private Long hallId;
-
     protected Seat() {
     }
 
-    public Seat(int rowNumber, int number, Long hallId) {
+    public Seat(int rowNumber, int number) {
         this.rowNumber = rowNumber;
         this.number = number;
-        this.hallId = hallId;
     }
 }

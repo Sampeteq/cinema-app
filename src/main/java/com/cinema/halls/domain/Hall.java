@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -26,14 +27,19 @@ public class Hall {
 
     private int seatsNumberInOneRow;
 
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "hall_id")
+    private List<Seat> seats;
+
     @OneToMany(mappedBy = "hall", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<HallOccupation> occupations;
 
     protected Hall() {}
 
-    public Hall(int rowsNumber, int seatsNumberInOneRow) {
+    public Hall(int rowsNumber, int seatsNumberInOneRow, List<Seat> seats) {
         this.rowsNumber = rowsNumber;
         this.seatsNumberInOneRow = seatsNumberInOneRow;
+        this.seats = seats;
         this.occupations = new ArrayList<>();
     }
 

@@ -8,7 +8,7 @@ import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningEndDateCalculator;
 import com.cinema.screenings.domain.ScreeningRepository;
-import com.cinema.screenings.domain.events.ScreeningCreatedEvent;
+import com.cinema.screenings.domain.ScreeningCreatedEvent;
 import com.cinema.screenings.domain.ScreeningDatePolicy;
 import com.cinema.shared.events.EventPublisher;
 import lombok.RequiredArgsConstructor;

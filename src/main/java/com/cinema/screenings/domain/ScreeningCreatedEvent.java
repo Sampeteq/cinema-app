@@ -1,4 +1,4 @@
-package com.cinema.screenings.domain.events;
+package com.cinema.screenings.domain;
 
 import com.cinema.halls.application.queries.dto.HallDto;
 

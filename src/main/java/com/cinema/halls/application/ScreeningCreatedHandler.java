@@ -2,7 +2,7 @@ package com.cinema.halls.application;
 
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.halls.domain.exceptions.HallNotFoundException;
-import com.cinema.screenings.domain.events.ScreeningCreatedEvent;
+import com.cinema.screenings.domain.ScreeningCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

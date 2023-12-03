@@ -5,7 +5,7 @@ import com.cinema.screenings.application.queries.handlers.GetScreeningDateHandle
 import com.cinema.tickets.application.commands.CancelTicket;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.tickets.domain.policies.TicketCancellingPolicy;
-import com.cinema.tickets.domain.repositories.TicketRepository;
+import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.users.application.queries.GetCurrentUserId;
 import com.cinema.users.application.queries.handlers.GetCurrentUserIdHandler;
 import lombok.RequiredArgsConstructor;

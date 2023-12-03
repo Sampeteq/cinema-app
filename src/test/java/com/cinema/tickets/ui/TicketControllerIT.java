@@ -14,7 +14,7 @@ import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
-import com.cinema.tickets.domain.repositories.TicketRepository;
+import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.BeforeEach;

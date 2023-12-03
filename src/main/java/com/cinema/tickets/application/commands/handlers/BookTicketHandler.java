@@ -6,7 +6,7 @@ import com.cinema.screenings.application.queries.GetScreening;
 import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.domain.Ticket;
-import com.cinema.tickets.domain.repositories.TicketRepository;
+import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.policies.TicketBookingPolicy;

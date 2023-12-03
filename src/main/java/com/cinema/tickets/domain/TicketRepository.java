@@ -1,4 +1,4 @@
-package com.cinema.tickets.domain.repositories;
+package com.cinema.tickets.domain;
 
 import com.cinema.tickets.domain.Ticket;
 

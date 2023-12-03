@@ -6,7 +6,7 @@ import com.cinema.screenings.application.queries.GetScreening;
 import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
 import com.cinema.tickets.application.queries.GetAllTicketsByCurrentUser;
 import com.cinema.tickets.application.queries.dto.TicketDto;
-import com.cinema.tickets.domain.repositories.TicketRepository;
+import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.users.application.queries.GetCurrentUserId;
 import com.cinema.users.application.queries.handlers.GetCurrentUserIdHandler;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.cinema.screenings.application.queries.handlers;
 
-import com.cinema.halls.application.queries.dto.SeatWithStatusDto;
+import com.cinema.screenings.application.queries.dto.SeatWithStatusDto;
 import com.cinema.halls.domain.SeatRepository;
 import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
 import com.cinema.screenings.domain.ScreeningRepository;

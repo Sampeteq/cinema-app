@@ -1,7 +1,7 @@
 package com.cinema.screenings.ui;
 
 import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
-import com.cinema.halls.application.queries.dto.SeatWithStatusDto;
+import com.cinema.screenings.application.queries.dto.SeatWithStatusDto;
 import com.cinema.screenings.application.queries.handlers.GetSeatsByScreeningIdHandler;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.application.commands.DeleteScreening;

@@ -1,4 +1,4 @@
-package com.cinema.halls.application.queries.dto;
+package com.cinema.screenings.application.queries.dto;
 
 public record SeatWithStatusDto(
         int rowNumber,

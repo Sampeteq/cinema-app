@@ -1,4 +1,4 @@
-package com.cinema.tickets.infrastructure.db;
+package com.cinema.tickets.infrastructure;
 
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;

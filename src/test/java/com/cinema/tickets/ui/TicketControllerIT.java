@@ -2,19 +2,18 @@ package com.cinema.tickets.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
+import com.cinema.halls.domain.exceptions.SeatNotFoundException;
 import com.cinema.halls.infrastructure.config.CreateHallService;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.tickets.application.commands.BookTicket;
-import com.cinema.tickets.application.commands.dto.SeatPositionDto;
 import com.cinema.tickets.application.queries.dto.TicketDto;
+import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
-import com.cinema.halls.domain.exceptions.SeatNotFoundException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
-import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,11 +75,10 @@ class TicketControllerIT extends BaseIT {
     void ticket_is_booked_for_existing_screening() {
         //given
         var nonExistingScreeningId = 0L;
-        var rowNumber = 1;
-        var seatNumber = 1;
+        var seatId = 1L;
         var command = new BookTicket(
                 nonExistingScreeningId,
-                List.of(new SeatPositionDto(rowNumber, seatNumber))
+                List.of(seatId)
         );
 
 
@@ -107,13 +105,11 @@ class TicketControllerIT extends BaseIT {
         //given
         addScreening();
         var screeningId = 1L;
-        var rowNumber = 1;
-        var nonExistingSeatNumber = 0;
+        var nonExistingSeatId = 0L;
         var command = new BookTicket(
                 screeningId,
-                List.of(new SeatPositionDto(rowNumber, nonExistingSeatNumber))
+                List.of(nonExistingSeatId)
         );
-
 
         //when
         var spec = webTestClient
@@ -138,11 +134,10 @@ class TicketControllerIT extends BaseIT {
         //given
         addScreening();
         var screeningId = 1L;
-        var rowNumber = 1;
-        var seatNumber = 1;
+        var seatId = 1L;
         var command = new BookTicket(
                 screeningId,
-                List.of(new SeatPositionDto(rowNumber, seatNumber))
+                List.of(seatId)
         );
 
         //when
@@ -171,10 +166,7 @@ class TicketControllerIT extends BaseIT {
         var screeningId = 1L;
         var command = new BookTicket(
                 screeningId,
-                List.of(
-                        new SeatPositionDto(1, 1),
-                        new SeatPositionDto(1,2)
-                )
+                List.of(1L,2L)
         );
 
         //when
@@ -201,12 +193,11 @@ class TicketControllerIT extends BaseIT {
         //given
         addScreening();
         var screeningId = 1L;
-        var rowNumber = 1;
-        var seatNumber = 1;
-        bookTicket(screeningId, rowNumber, seatNumber);
+        var seatId = 1L;
+        bookTicket(screeningId, seatId);
         var command = new BookTicket(
                 screeningId,
-                List.of(new SeatPositionDto(rowNumber, seatNumber))
+                List.of(seatId)
         );
 
         //when
@@ -236,11 +227,10 @@ class TicketControllerIT extends BaseIT {
                 .when(clock.instant())
                 .thenReturn(screeningDate.minusMinutes(59).toInstant(ZoneOffset.UTC));
         var screeningId = 1L;
-        var rowNumber = 1;
-        var seatNumber = 1;
+        var seatId = 1L;
         var command = new BookTicket(
                 screeningId,
-                List.of(new SeatPositionDto(rowNumber, seatNumber))
+                List.of(seatId)
         );
 
         //when
@@ -401,12 +391,12 @@ class TicketControllerIT extends BaseIT {
         createScreeningHandler.handle(createCreateScreeningCommand(screeningDate));
     }
 
-    private void bookTicket(long screeningId, int rowNumber, int seatNumber) {
+    private void bookTicket(long screeningId, long seatId) {
         webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new BookTicket(screeningId, List.of(new SeatPositionDto(rowNumber, seatNumber))))
+                .bodyValue(new BookTicket(screeningId, List.of(seatId)))
                 .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
     }

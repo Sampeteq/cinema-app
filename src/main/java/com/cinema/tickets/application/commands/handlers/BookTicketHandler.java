@@ -1,15 +1,15 @@
 package com.cinema.tickets.application.commands.handlers;
 
-import com.cinema.halls.application.queries.GetSeatIdByHallIdAndPosition;
-import com.cinema.halls.application.queries.handlers.GetSeatIdByHallIdAndPositionHandler;
+import com.cinema.halls.application.queries.GetSeatBySeatId;
+import com.cinema.halls.application.queries.handlers.GetSeatByIdHandler;
 import com.cinema.screenings.application.queries.GetScreening;
 import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.domain.Ticket;
+import com.cinema.tickets.domain.TicketBookingPolicy;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
-import com.cinema.tickets.domain.TicketBookingPolicy;
 import com.cinema.users.application.queries.GetCurrentUserId;
 import com.cinema.users.application.queries.handlers.GetCurrentUserIdHandler;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class BookTicketHandler {
     private final TicketRepository ticketRepository;
     private final TicketBookingPolicy ticketBookingPolicy;
     private final GetScreeningHandler getScreeningHandler;
-    private final GetSeatIdByHallIdAndPositionHandler getSeatIdByHallIdAndPositionHandler;
+    private final GetSeatByIdHandler getSeatByIdHandler;
     private final GetCurrentUserIdHandler getCurrentUserIdHandler;
 
     @Transactional
@@ -36,20 +36,15 @@ public class BookTicketHandler {
         ticketBookingPolicy.checkScreeningDate(screeningDto.date());
         var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
         command
-                .seats()
-                .forEach(seatPositionDto -> {
-                    var seatId = getSeatIdByHallIdAndPositionHandler.handle(
-                            new GetSeatIdByHallIdAndPosition(
-                                    screeningDto.hallId(),
-                                    seatPositionDto.rowNumber(),
-                                    seatPositionDto.number()
-                            )
-                    );
-                    if (ticketRepository.existsBySeatId(seatId)) {
+                .seatsIds()
+                .forEach(seatId -> {
+                    var seatDto = getSeatByIdHandler.handle(new GetSeatBySeatId(seatId));
+                    log.error("Found seat: {}", seatDto);
+                    if (ticketRepository.existsBySeatId(seatDto.seatId())) {
                         throw new TicketAlreadyExistsException();
                     }
                     var addedTicket = ticketRepository.add(
-                            new Ticket(TicketStatus.BOOKED, command.screeningId(), seatId, currentUserId)
+                            new Ticket(TicketStatus.BOOKED, command.screeningId(), seatDto.seatId(), currentUserId)
                     );
                     log.info("Added ticket:{}", addedTicket);
                 });

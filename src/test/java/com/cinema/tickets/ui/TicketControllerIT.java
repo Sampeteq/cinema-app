@@ -362,13 +362,13 @@ class TicketControllerIT extends BaseIT {
                 .isOk()
                 .expectBody()
                 .jsonPath("$[*]").value(everyItem(notNullValue()))
-                .jsonPath("$[0].id").isEqualTo(expectedTicketDto.get(0).id())
-                .jsonPath("$[0].status").isEqualTo(expectedTicketDto.get(0).status().name())
-                .jsonPath("$[0].filmTitle").isEqualTo(expectedTicketDto.get(0).filmTitle())
-                .jsonPath("$[0].screeningDate").isEqualTo(expectedTicketDto.get(0).screeningDate().toString())
-                .jsonPath("$[0].hallId").isEqualTo(expectedTicketDto.get(0).hallId())
-                .jsonPath("$[0].rowNumber").isEqualTo(expectedTicketDto.get(0).rowNumber())
-                .jsonPath("$[0].seatNumber").isEqualTo(expectedTicketDto.get(0).seatNumber());
+                .jsonPath("$[0].id").isEqualTo(expectedTicketDto.getFirst().id())
+                .jsonPath("$[0].status").isEqualTo(expectedTicketDto.getFirst().status().name())
+                .jsonPath("$[0].filmTitle").isEqualTo(expectedTicketDto.getFirst().filmTitle())
+                .jsonPath("$[0].screeningDate").isEqualTo(expectedTicketDto.getFirst().screeningDate().toString())
+                .jsonPath("$[0].hallId").isEqualTo(expectedTicketDto.getFirst().hallId())
+                .jsonPath("$[0].rowNumber").isEqualTo(expectedTicketDto.getFirst().rowNumber())
+                .jsonPath("$[0].seatNumber").isEqualTo(expectedTicketDto.getFirst().seatNumber());
     }
 
     private void addFilm() {

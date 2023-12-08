@@ -1,8 +1,5 @@
 package com.cinema.users.domain;
 
-import com.cinema.users.domain.User;
-import com.cinema.users.domain.UserRepository;
-import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

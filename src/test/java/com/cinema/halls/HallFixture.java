@@ -8,11 +8,7 @@ public class HallFixture {
     public static final int HALL_ROW_SEATS_NUMBER = 15;
 
     public static Hall createHall() {
-        return new Hall(
-                HALL_ROWS_NUMBER,
-                HALL_ROW_SEATS_NUMBER,
-                SeatFixture.createSeats()
-        );
+        return new Hall(SeatFixture.createSeats());
     }
 
     public static ConfigHallDto createCreateHallCommand() {

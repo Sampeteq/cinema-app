@@ -20,11 +20,7 @@ public class CreateHallService {
                 command.rowsNumber(),
                 command.seatsNumberInOneRow()
                 );
-        var hall = new Hall(
-                command.seatsNumberInOneRow(),
-                command.rowsNumber(),
-                seats
-        );
+        var hall = new Hall(seats);
         hallRepository.add(hall);
     }
 }

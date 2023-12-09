@@ -23,10 +23,6 @@ public class Hall {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int rowsNumber;
-
-    private int seatsNumberInOneRow;
-
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "hall_id")
     private List<Seat> seats;
@@ -36,9 +32,7 @@ public class Hall {
 
     protected Hall() {}
 
-    public Hall(int rowsNumber, int seatsNumberInOneRow, List<Seat> seats) {
-        this.rowsNumber = rowsNumber;
-        this.seatsNumberInOneRow = seatsNumberInOneRow;
+    public Hall(List<Seat> seats) {
         this.seats = seats;
         this.occupations = new ArrayList<>();
     }

@@ -2,7 +2,7 @@ package com.cinema.halls.infrastructure.config;
 
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
-import com.cinema.halls.domain.SeatFactory;
+import com.cinema.halls.domain.Seat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CreateHallService {
 
-    private final SeatFactory seatFactory;
     private final HallRepository hallRepository;
 
     public void handle(ConfigHallDto command) {
-        var seats = seatFactory.createSeats(
-                command.rowsNumber(),
-                command.seatsNumberInOneRow()
-                );
+        var seats = command
+                .seats()
+                .stream()
+                .map(configSeatDto -> new Seat(configSeatDto.rowNumber(), configSeatDto.rowNumber()))
+                .toList();
         var hall = new Hall(seats);
         hallRepository.add(hall);
     }

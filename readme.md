@@ -33,14 +33,112 @@ Halls are added on start up (halls_config.json file)
 ```json
 [
   {
-    "id": "1",
-    "rowsNumber": 10,
-    "rowSeatsNumber": 15
+    "seats" : [
+      {"rowNumber": 1, "number": 1},
+      {"rowNumber": 1, "number": 2},
+      {"rowNumber": 1, "number": 3},
+      {"rowNumber": 1, "number": 4},
+      {"rowNumber": 1, "number": 5},
+      {"rowNumber": 1, "number": 6},
+      {"rowNumber": 1, "number": 7},
+      {"rowNumber": 1, "number": 8},
+      {"rowNumber": 1, "number": 9},
+      {"rowNumber": 1, "number": 10},
+
+      {"rowNumber": 2, "number": 1},
+      {"rowNumber": 2, "number": 2},
+      {"rowNumber": 2, "number": 3},
+      {"rowNumber": 2, "number": 4},
+      {"rowNumber": 2, "number": 5},
+      {"rowNumber": 2, "number": 6},
+      {"rowNumber": 2, "number": 7},
+      {"rowNumber": 2, "number": 8},
+      {"rowNumber": 2, "number": 9},
+      {"rowNumber": 2, "number": 10},
+
+      {"rowNumber": 3, "number": 1},
+      {"rowNumber": 3, "number": 2},
+      {"rowNumber": 3, "number": 3},
+      {"rowNumber": 3, "number": 4},
+      {"rowNumber": 3, "number": 5},
+      {"rowNumber": 3, "number": 6},
+      {"rowNumber": 3, "number": 7},
+      {"rowNumber": 3, "number": 8},
+      {"rowNumber": 3, "number": 9},
+      {"rowNumber": 3, "number": 10}
+    ]
   },
   {
-    "id": "2",
-    "rowsNumber": 15,
-    "rowSeatsNumber": 20
+    "seats" : [
+      {"rowNumber": 1, "number": 1},
+      {"rowNumber": 1, "number": 2},
+      {"rowNumber": 1, "number": 3},
+      {"rowNumber": 1, "number": 4},
+      {"rowNumber": 1, "number": 5},
+      {"rowNumber": 1, "number": 6},
+      {"rowNumber": 1, "number": 7},
+      {"rowNumber": 1, "number": 8},
+      {"rowNumber": 1, "number": 9},
+      {"rowNumber": 1, "number": 10},
+
+      {"rowNumber": 2, "number": 1},
+      {"rowNumber": 2, "number": 2},
+      {"rowNumber": 2, "number": 3},
+      {"rowNumber": 2, "number": 4},
+      {"rowNumber": 2, "number": 5},
+      {"rowNumber": 2, "number": 6},
+      {"rowNumber": 2, "number": 7},
+      {"rowNumber": 2, "number": 8},
+      {"rowNumber": 2, "number": 9},
+      {"rowNumber": 2, "number": 10},
+
+      {"rowNumber": 3, "number": 1},
+      {"rowNumber": 3, "number": 2},
+      {"rowNumber": 3, "number": 3},
+      {"rowNumber": 3, "number": 4},
+      {"rowNumber": 3, "number": 5},
+      {"rowNumber": 3, "number": 6},
+      {"rowNumber": 3, "number": 7},
+      {"rowNumber": 3, "number": 8},
+      {"rowNumber": 3, "number": 9},
+      {"rowNumber": 3, "number": 10}
+    ]
+  },
+  {
+    "seats" : [
+      {"rowNumber": 1, "number": 1},
+      {"rowNumber": 1, "number": 2},
+      {"rowNumber": 1, "number": 3},
+      {"rowNumber": 1, "number": 4},
+      {"rowNumber": 1, "number": 5},
+      {"rowNumber": 1, "number": 6},
+      {"rowNumber": 1, "number": 7},
+      {"rowNumber": 1, "number": 8},
+      {"rowNumber": 1, "number": 9},
+      {"rowNumber": 1, "number": 10},
+
+      {"rowNumber": 2, "number": 1},
+      {"rowNumber": 2, "number": 2},
+      {"rowNumber": 2, "number": 3},
+      {"rowNumber": 2, "number": 4},
+      {"rowNumber": 2, "number": 5},
+      {"rowNumber": 2, "number": 6},
+      {"rowNumber": 2, "number": 7},
+      {"rowNumber": 2, "number": 8},
+      {"rowNumber": 2, "number": 9},
+      {"rowNumber": 2, "number": 10},
+
+      {"rowNumber": 3, "number": 1},
+      {"rowNumber": 3, "number": 2},
+      {"rowNumber": 3, "number": 3},
+      {"rowNumber": 3, "number": 4},
+      {"rowNumber": 3, "number": 5},
+      {"rowNumber": 3, "number": 6},
+      {"rowNumber": 3, "number": 7},
+      {"rowNumber": 3, "number": 8},
+      {"rowNumber": 3, "number": 9},
+      {"rowNumber": 3, "number": 10}
+    ]
   }
 ]
 ```

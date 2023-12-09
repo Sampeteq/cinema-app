@@ -1,7 +1,6 @@
 package com.cinema.halls.infrastructure.config;
 
-public record ConfigHallDto(
-        int rowsNumber,
-        int seatsNumberInOneRow
-) {
+import java.util.List;
+
+public record ConfigHallDto(List<ConfigSeatDto> seats) {
 }

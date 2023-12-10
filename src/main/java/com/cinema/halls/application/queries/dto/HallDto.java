@@ -1,4 +1,6 @@
 package com.cinema.halls.application.queries.dto;
 
-public record HallDto(Long id) {
+import java.util.List;
+
+public record HallDto(Long id, List<SeatDto> seats) {
 }

@@ -51,7 +51,8 @@ class HallControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk()
                 .expectBody()
-                .jsonPath("$[0].id").isEqualTo(hall.getId());
+                .jsonPath("$[0].id").isEqualTo(hall.getId())
+                .jsonPath("$[0].seats").value(hasSize(hall.getSeats().size()));
     }
 
     @Test

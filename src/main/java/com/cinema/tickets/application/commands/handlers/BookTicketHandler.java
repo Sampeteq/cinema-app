@@ -40,11 +40,11 @@ public class BookTicketHandler {
                 .forEach(seatId -> {
                     var seatDto = getSeatByIdHandler.handle(new GetSeatBySeatId(seatId));
                     log.error("Found seat: {}", seatDto);
-                    if (ticketRepository.existsBySeatId(seatDto.seatId())) {
+                    if (ticketRepository.existsBySeatId(seatDto.id())) {
                         throw new TicketAlreadyExistsException();
                     }
                     var addedTicket = ticketRepository.add(
-                            new Ticket(TicketStatus.BOOKED, command.screeningId(), seatDto.seatId(), currentUserId)
+                            new Ticket(TicketStatus.BOOKED, command.screeningId(), seatDto.id(), currentUserId)
                     );
                     log.info("Added ticket:{}", addedTicket);
                 });

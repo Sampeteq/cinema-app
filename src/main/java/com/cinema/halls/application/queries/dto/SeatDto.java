@@ -1,4 +1,4 @@
 package com.cinema.halls.application.queries.dto;
 
-public record SeatDto(Long seatId, int rowNumber, int number) {
+public record SeatDto(long id, int rowNumber, int number) {
 }

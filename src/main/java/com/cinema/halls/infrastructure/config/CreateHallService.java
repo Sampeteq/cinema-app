@@ -18,7 +18,7 @@ public class CreateHallService {
         var seats = command
                 .seats()
                 .stream()
-                .map(configSeatDto -> new Seat(configSeatDto.rowNumber(), configSeatDto.rowNumber()))
+                .map(configSeatDto -> new Seat(configSeatDto.rowNumber(), configSeatDto.number()))
                 .toList();
         var hall = new Hall(seats);
         hallRepository.add(hall);

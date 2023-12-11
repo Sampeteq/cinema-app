@@ -154,8 +154,10 @@ class TicketControllerIT extends BaseIT {
         assertThat(ticketRepository.getByIdAndUserId(1L, 1L))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
-                    assertEquals(TicketStatus.BOOKED, ticket.getStatus());
                     assertEquals(1L, ticket.getUserId());
+                    assertEquals(TicketStatus.BOOKED, ticket.getStatus());
+                    assertEquals(command.screeningId(), ticket.getScreeningId());
+                    assertEquals(command.seatsIds().getFirst(), ticket.getSeatId());
                 });
     }
 

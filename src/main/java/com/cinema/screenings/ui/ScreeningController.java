@@ -1,7 +1,7 @@
 package com.cinema.screenings.ui;
 
 import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
-import com.cinema.screenings.application.queries.dto.SeatWithStatusDto;
+import com.cinema.screenings.application.queries.dto.ScreeningSeatDto;
 import com.cinema.screenings.application.queries.handlers.GetSeatsByScreeningIdHandler;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.application.commands.DeleteScreening;
@@ -75,7 +75,7 @@ class ScreeningController {
     }
 
     @GetMapping("/{id}/seats")
-    List<SeatWithStatusDto> getSeatsByScreeningId(@PathVariable Long id) {
+    List<ScreeningSeatDto> getSeatsByScreeningId(@PathVariable Long id) {
         var query = new GetSeatsByScreeningId(id);
         log.info("Query:{}", query);
         return getSeatsByScreeningIdHandler.handle(query);

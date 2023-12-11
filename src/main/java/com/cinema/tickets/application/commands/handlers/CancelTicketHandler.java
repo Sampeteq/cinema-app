@@ -2,7 +2,9 @@ package com.cinema.tickets.application.commands.handlers;
 
 import com.cinema.screenings.application.queries.GetScreeningDate;
 import com.cinema.screenings.application.queries.handlers.GetScreeningDateHandler;
+import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.commands.CancelTicket;
+import com.cinema.tickets.domain.TicketCancelled;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.tickets.domain.TicketCancellingPolicy;
 import com.cinema.tickets.domain.TicketRepository;
@@ -22,6 +24,7 @@ public class CancelTicketHandler {
     private final TicketCancellingPolicy ticketCancellingPolicy;
     private final GetScreeningDateHandler getScreeningDateHandler;
     private final GetCurrentUserIdHandler getCurrentUserIdHandler;
+    private final EventPublisher eventPublisher;
 
     @Transactional
     public void handle(CancelTicket command) {
@@ -36,5 +39,8 @@ public class CancelTicketHandler {
         ticketCancellingPolicy.checkScreeningDate(screeningDate);
         ticket.cancel();
         log.info("Ticket cancelled:{}", ticket);
+        var event = new TicketCancelled(ticket.getSeatId());
+        eventPublisher.publish(event);
+        log.info("Published event:{}", event);
     }
 }

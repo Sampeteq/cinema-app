@@ -22,6 +22,7 @@ import static com.cinema.films.FilmFixture.createCreateFilmCommand;
 import static com.cinema.halls.HallFixture.createCreateHallCommand;
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
+import static com.cinema.screenings.ScreeningFixture.createScreeningWithSeats;
 import static com.cinema.users.UserFixture.createCrateAdminCommand;
 import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -276,16 +277,14 @@ class ScreeningControllerIT extends BaseIT {
     void seats_are_gotten_by_screening_id() {
         //given
         addHall();
-        addHall();
-        var screening = addScreening();
-        var screeningId = 1L;
+        var screening = addScreeningWithSeats();
 
         //when
         var spec = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
                         .path(SCREENINGS_BASE_ENDPOINT + "/" + screening.getId() + "/seats")
-                        .queryParam("screeningId", screeningId)
+                        .queryParam("screeningId", screening.getId())
                         .build()
                 )
                 .exchange();
@@ -305,6 +304,11 @@ class ScreeningControllerIT extends BaseIT {
 
     private Screening addScreening() {
         var screening = createScreening(SCREENING_DATE);
+        return screeningRepository.add(screening);
+    }
+
+    private Screening addScreeningWithSeats() {
+        var screening = createScreeningWithSeats(SCREENING_DATE);
         return screeningRepository.add(screening);
     }
 

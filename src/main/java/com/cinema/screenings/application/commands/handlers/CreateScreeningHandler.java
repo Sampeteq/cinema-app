@@ -10,6 +10,7 @@ import com.cinema.screenings.domain.ScreeningEndDateCalculator;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.ScreeningCreatedEvent;
 import com.cinema.screenings.domain.ScreeningDatePolicy;
+import com.cinema.screenings.domain.ScreeningSeat;
 import com.cinema.shared.events.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,10 +42,16 @@ public class CreateScreeningHandler {
         log.info("Screening end date:{}", endDate);
         var hallDto = getFirstAvailableHallHandler.handle(new GetFirstAvailableHall(command.date(), endDate));
         log.info("Gotten hall:{}", hallDto);
+        var screeningSeats = hallDto
+                .seats()
+                .stream()
+                .map(seatDto -> new ScreeningSeat(seatDto.id(), seatDto.rowNumber(), seatDto.number(), true))
+                .toList();
         var screening = new Screening(
                 command.date(),
                 command.filmId(),
-                hallDto.id()
+                hallDto.id(),
+                screeningSeats
         );
         var addedScreening = screeningRepository.add(screening);
         log.info("Screening added:{}", addedScreening);

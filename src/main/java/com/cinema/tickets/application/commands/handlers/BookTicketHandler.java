@@ -4,8 +4,10 @@ import com.cinema.halls.application.queries.GetSeatBySeatId;
 import com.cinema.halls.application.queries.handlers.GetSeatByIdHandler;
 import com.cinema.screenings.application.queries.GetScreening;
 import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
+import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.domain.Ticket;
+import com.cinema.tickets.domain.TicketBooked;
 import com.cinema.tickets.domain.TicketBookingPolicy;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
@@ -27,6 +29,7 @@ public class BookTicketHandler {
     private final GetScreeningHandler getScreeningHandler;
     private final GetSeatByIdHandler getSeatByIdHandler;
     private final GetCurrentUserIdHandler getCurrentUserIdHandler;
+    private final EventPublisher eventPublisher;
 
     @Transactional
     public void handle(BookTicket command) {
@@ -47,6 +50,9 @@ public class BookTicketHandler {
                             new Ticket(TicketStatus.BOOKED, command.screeningId(), seatDto.id(), currentUserId)
                     );
                     log.info("Added ticket:{}", addedTicket);
+                    var event = new TicketBooked(addedTicket.getSeatId());
+                    eventPublisher.publish(event);
+                    log.info("Published event:{}", event);
                 });
     }
 }

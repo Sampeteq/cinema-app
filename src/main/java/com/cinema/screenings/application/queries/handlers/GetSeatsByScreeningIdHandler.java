@@ -1,9 +1,7 @@
 package com.cinema.screenings.application.queries.handlers;
 
 import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
-import com.cinema.screenings.application.queries.dto.SeatWithStatusDto;
-import com.cinema.tickets.application.queries.GetTicketsSeatIdsByScreeningId;
-import com.cinema.tickets.application.queries.handlers.GetTicketsSeatIdsByScreeningHandler;
+import com.cinema.screenings.application.queries.dto.ScreeningSeatDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,27 +15,15 @@ import java.util.List;
 public class GetSeatsByScreeningIdHandler {
 
     private final JdbcTemplate jdbcTemplate;
-    private final GetTicketsSeatIdsByScreeningHandler getTicketsSeatIdsByScreeningHandler;
 
-    public List<SeatWithStatusDto> handle(GetSeatsByScreeningId query) {
+    public List<ScreeningSeatDto> handle(GetSeatsByScreeningId query) {
         log.info("Query:{}", query);
-        var hallId = jdbcTemplate.queryForObject(
-                "select s.hall_id from screenings s where s.id = ?",
-                Long.class,
-                query.screeningId()
-        );
-        var ticketsSeatsId = getTicketsSeatIdsByScreeningHandler.handle(
-                new GetTicketsSeatIdsByScreeningId(query.screeningId())
-        );
-        return jdbcTemplate
-                .query(
-                        "select s.id, s.row_number, s.number from seats s where s.hall_id = ?",
-                        (rs, rowNum) -> new SeatWithStatusDto(
-                                rs.getInt("row_number"),
-                                rs.getInt("number"),
-                                !ticketsSeatsId.contains(rs.getLong("id"))
-                        ),
-                        hallId
-                );
+        return jdbcTemplate.query(
+                "select s.id, s.row_number, s.number, s.is_free from screenings_seats s order by s.row_number, s.number",
+                (resultSet, rowNumber) -> new ScreeningSeatDto(
+                        resultSet.getInt("row_number"),
+                        resultSet.getInt("number"),
+                        resultSet.getBoolean("is_free")
+                ));
     }
 }

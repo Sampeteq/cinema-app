@@ -40,16 +40,24 @@ public class BookTicketHandler {
         var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
         command
                 .seatsIds()
-                .forEach(seatId -> {
+                .stream()
+                .map(seatId -> {
                     var seatDto = getSeatByIdHandler.handle(new GetSeatBySeatId(seatId));
                     log.error("Found seat: {}", seatDto);
                     if (ticketRepository.existsBySeatId(seatDto.id())) {
                         throw new TicketAlreadyExistsException();
                     }
-                    var addedTicket = ticketRepository.add(
-                            new Ticket(TicketStatus.BOOKED, command.screeningId(), seatDto.id(), currentUserId)
-                    );
+                    return new Ticket(TicketStatus.BOOKED, command.screeningId(), seatDto.id(), currentUserId);
+                })
+                .toList()
+                .stream()
+                .map(ticket -> {
+                    var addedTicket = ticketRepository.add(ticket);
                     log.info("Added ticket:{}", addedTicket);
+                    return addedTicket;
+                })
+                .toList()
+                .forEach(addedTicket -> {
                     var event = new TicketBooked(addedTicket.getSeatId());
                     eventPublisher.publish(event);
                     log.info("Published event:{}", event);

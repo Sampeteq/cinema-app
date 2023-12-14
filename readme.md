@@ -166,6 +166,8 @@ Endpoints:
 
 /public/screenings (GET) - search all screenings, optional params: /{date}
 
+/public/screenings/{id}/seats - search all screening seats
+
 /admin/screenings (POST) - add a new screening
 
 /admin/screenings/{id} (DELETE) - delete a screening
@@ -176,11 +178,11 @@ Endpoints:
 
 /admin/halls (GET) - search all halls
 
+/admin/halls/occupations (GET)- search all halls occupations
+
 ### 4.Tickets
 
 Endpoints:
-
-/seats?screeningId= (GET) - search screening seats 
 
 /tickets (POST) - book a ticket
 

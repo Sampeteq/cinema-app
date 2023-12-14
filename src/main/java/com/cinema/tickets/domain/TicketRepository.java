@@ -9,6 +9,5 @@ public interface TicketRepository {
     Ticket add(Ticket ticket);
     Optional<Ticket> getByIdAndUserId(Long ticketId, Long userId);
     List<Ticket> getAllByUserId(Long userId);
-    List<Ticket> getAllByScreeningId(Long screeningId);
     boolean existsBySeatId(Long seatId);
 }

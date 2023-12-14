@@ -4,7 +4,7 @@ import com.cinema.films.application.queries.GetFilm;
 import com.cinema.films.application.queries.handlers.GetFilmHandler;
 import com.cinema.screenings.application.queries.GetScreening;
 import com.cinema.screenings.application.queries.dto.ScreeningDto;
-import com.cinema.screenings.application.queries.dto.ScreeningMapper;
+import com.cinema.screenings.infrastructure.ScreeningMapper;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import lombok.RequiredArgsConstructor;

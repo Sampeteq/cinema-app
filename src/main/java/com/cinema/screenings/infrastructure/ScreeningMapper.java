@@ -1,5 +1,6 @@
-package com.cinema.screenings.application.queries.dto;
+package com.cinema.screenings.infrastructure;
 
+import com.cinema.screenings.application.queries.dto.ScreeningDto;
 import com.cinema.screenings.domain.Screening;
 import org.mapstruct.Mapper;
 

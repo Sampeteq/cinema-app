@@ -1,7 +1,7 @@
 package com.cinema.halls.application.queries.handlers;
 
 import com.cinema.halls.application.queries.dto.HallDto;
-import com.cinema.halls.application.queries.dto.HallMapper;
+import com.cinema.halls.infrastructure.HallMapper;
 import com.cinema.halls.application.queries.GetFirstAvailableHall;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.halls.domain.exceptions.HallsNoAvailableException;

@@ -1,5 +1,6 @@
-package com.cinema.films.application.queries.dto;
+package com.cinema.films.infrastructure;
 
+import com.cinema.films.application.queries.dto.FilmDto;
 import com.cinema.films.domain.Film;
 import org.mapstruct.Mapper;
 

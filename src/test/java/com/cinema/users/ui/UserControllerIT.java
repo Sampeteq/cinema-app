@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserControllerIT extends BaseIT {
 
-    private static final String USERS_BASE_ENDPOINT = "/users";
+    private static final String USERS_BASE_ENDPOINT = "/public/users";
 
     @Autowired
     private UserRepository userRepository;

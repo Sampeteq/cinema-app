@@ -28,7 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FilmControllerIT extends BaseIT {
 
-    private static final String FILMS_BASE_ENDPOINT = "/films";
+    private static final String FILM_PUBLIC_ENDPOINT = "/public/films";
+    private static final String FILM_ADMIN_ENDPOINT = "/admin/films";
 
     @Autowired
     private CreateUserHandler createUserHandler;
@@ -48,7 +49,7 @@ class FilmControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(FILMS_BASE_ENDPOINT)
+                .uri(FILM_ADMIN_ENDPOINT)
                 .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
@@ -76,7 +77,7 @@ class FilmControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(FILMS_BASE_ENDPOINT)
+                .uri(FILM_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
@@ -105,7 +106,7 @@ class FilmControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(FILMS_BASE_ENDPOINT)
+                .uri(FILM_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
@@ -132,7 +133,7 @@ class FilmControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(FILMS_BASE_ENDPOINT)
+                .uri(FILM_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
@@ -156,7 +157,7 @@ class FilmControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .delete()
-                .uri(FILMS_BASE_ENDPOINT + "/Film 1")
+                .uri(FILM_ADMIN_ENDPOINT + "/1")
                 .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
@@ -175,7 +176,7 @@ class FilmControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .delete()
-                .uri(FILMS_BASE_ENDPOINT + "/" + film.getId())
+                .uri(FILM_ADMIN_ENDPOINT + "/" + film.getId())
                 .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
@@ -192,7 +193,7 @@ class FilmControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .get()
-                .uri(FILMS_BASE_ENDPOINT)
+                .uri(FILM_PUBLIC_ENDPOINT)
                 .exchange();
 
         //then
@@ -219,7 +220,7 @@ class FilmControllerIT extends BaseIT {
         var spec = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(FILMS_BASE_ENDPOINT)
+                        .path(FILM_PUBLIC_ENDPOINT)
                         .queryParam("title", title)
                         .build()
                 )
@@ -243,7 +244,7 @@ class FilmControllerIT extends BaseIT {
         var spec = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(FILMS_BASE_ENDPOINT)
+                        .path(FILM_PUBLIC_ENDPOINT)
                         .queryParam("category", category)
                         .build()
                 )

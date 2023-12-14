@@ -1,15 +1,15 @@
 package com.cinema.screenings.ui;
 
-import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
-import com.cinema.screenings.application.queries.dto.ScreeningSeatDto;
-import com.cinema.screenings.application.queries.handlers.GetSeatsByScreeningIdHandler;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.application.commands.DeleteScreening;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.screenings.application.commands.handlers.DeleteScreeningHandler;
 import com.cinema.screenings.application.queries.GetScreenings;
+import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
 import com.cinema.screenings.application.queries.dto.ScreeningDto;
+import com.cinema.screenings.application.queries.dto.ScreeningSeatDto;
 import com.cinema.screenings.application.queries.handlers.GetScreeningsHandler;
+import com.cinema.screenings.application.queries.handlers.GetSeatsByScreeningIdHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +28,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/screenings")
 @RequiredArgsConstructor
 @Slf4j
 class ScreeningController {
@@ -39,7 +37,7 @@ class ScreeningController {
     private final GetScreeningsHandler getScreeningsHandler;
     private final GetSeatsByScreeningIdHandler getSeatsByScreeningIdHandler;
 
-    @PostMapping
+    @PostMapping("admin/screenings")
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> createScreening(
             @RequestBody
@@ -53,7 +51,7 @@ class ScreeningController {
         return responseEntity;
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/screenings/{id}")
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> deleteScreening(@PathVariable Long id) {
         var command = new DeleteScreening(id);
@@ -64,7 +62,7 @@ class ScreeningController {
         return responseEntity;
     }
 
-    @GetMapping
+    @GetMapping("/public/screenings")
     List<ScreeningDto> getScreenings(@RequestParam(required = false) LocalDate date) {
         var query = GetScreenings
                 .builder()
@@ -74,7 +72,7 @@ class ScreeningController {
         return getScreeningsHandler.handle(query);
     }
 
-    @GetMapping("/{id}/seats")
+    @GetMapping("/public/screenings/{id}/seats")
     List<ScreeningSeatDto> getSeatsByScreeningId(@PathVariable Long id) {
         var query = new GetSeatsByScreeningId(id);
         log.info("Query:{}", query);

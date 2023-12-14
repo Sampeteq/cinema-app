@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +25,6 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/films")
 @RequiredArgsConstructor
 @Slf4j
 public class FilmController {
@@ -35,7 +33,7 @@ public class FilmController {
     private final DeleteFilmHandler deleteFilmHandler;
     private final GetFilmsHandler getFilmsHandler;
 
-    @PostMapping
+    @PostMapping("/admin/films")
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> createFilm(@RequestBody @Valid CreateFilm command) {
         log.info("Command:{}", command);
@@ -45,7 +43,7 @@ public class FilmController {
         return responseEntity;
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/films/{id}")
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> deleteFilm(@PathVariable Long id) {
         var command = new DeleteFilm(id);
@@ -56,7 +54,7 @@ public class FilmController {
         return responseEntity;
     }
 
-    @GetMapping
+    @GetMapping("/public/films")
     List<FilmDto> getFilms(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) FilmCategory category

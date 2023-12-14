@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 class HallControllerIT extends BaseIT {
 
-    private static final String HALL_ENDPOINT = "/halls";
+    private static final String HALL_ADMIN_ENDPOINT = "/admin/halls";
 
     @Autowired
     private HallRepository hallRepository;
@@ -42,7 +42,7 @@ class HallControllerIT extends BaseIT {
         //when
         var responseSpec = webTestClient
                 .get()
-                .uri(HALL_ENDPOINT)
+                .uri(HALL_ADMIN_ENDPOINT)
                 .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
@@ -60,7 +60,7 @@ class HallControllerIT extends BaseIT {
         //when
         var responseSpec = webTestClient
                 .get()
-                .uri(HALL_ENDPOINT)
+                .uri(HALL_ADMIN_ENDPOINT)
                 .exchange();
 
         //then
@@ -78,7 +78,7 @@ class HallControllerIT extends BaseIT {
         //when
         var responseSpec = webTestClient
                 .get()
-                .uri(HALL_ENDPOINT)
+                .uri(HALL_ADMIN_ENDPOINT)
                 .headers(headers -> headers.setBasicAuth(command.mail(), command.password()))
                 .exchange();
 
@@ -101,7 +101,7 @@ class HallControllerIT extends BaseIT {
         var responseSpec = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(HALL_ENDPOINT)
+                        .path(HALL_ADMIN_ENDPOINT)
                         .pathSegment("occupations")
                         .build()
                 )

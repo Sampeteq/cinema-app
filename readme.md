@@ -154,37 +154,27 @@ Halls are added on start up (halls_config.json file)
 
 Endpoints:
 
-Common user:
+/public/films (GET) - search all films, optional params: /{title}, /{category}"
 
-/films (GET) - search all films, optional params: /{title}, /{category}"
+/admin/films (POST) - add a new film
 
-Admin:
-
-/films (POST) - add a new film
-
-/films/{id} (DELETE) - delete a film
+/admin/films/{id} (DELETE) - delete a film
 
 ### 2.Screenings
 
 Endpoints:
 
-Common user:
+/public/screenings (GET) - search all screenings, optional params: /{date}
 
-/screenings (GET) - search all screenings, optional params: /{date}
+/admin/screenings (POST) - add a new screening
 
-Admin:
-
-/screenings (POST) - add a new screening
-
-/screenings/{id} (DELETE) - delete a screening
+/admin/screenings/{id} (DELETE) - delete a screening
 
 ### 3.Halls
 
 Endpoints:
 
-Admin:
-
-/halls (GET) - search all halls
+/admin/halls (GET) - search all halls
 
 ### 4.Tickets
 
@@ -202,11 +192,11 @@ Endpoints:
 
 Endpoints:
 
-/users (POST) - create a new user
+/public/users (POST) - create a new user
 
-/users/password/reset (PATCH) - reset password (a mail with token will be sent)
+/public/users/password/reset (PATCH) - reset password (a mail with token will be sent)
 
-/users/password/new (PATCH) - set new password after reset
+/public/users/password/new (PATCH) - set new password after reset
 
 Auth: basic auth
 

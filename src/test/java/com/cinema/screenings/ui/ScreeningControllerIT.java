@@ -33,7 +33,8 @@ import static org.hamcrest.Matchers.notNullValue;
 
 class ScreeningControllerIT extends BaseIT {
 
-    private static final String SCREENINGS_BASE_ENDPOINT = "/screenings";
+    private static final String SCREENINGS_ADMIN_ENDPOINT = "/admin/screenings";
+    private static final String SCREENINGS_PUBLIC_ENDPOINT = "/public/screenings";
 
     @Autowired
     private ScreeningRepository screeningRepository;
@@ -59,7 +60,7 @@ class ScreeningControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(SCREENINGS_BASE_ENDPOINT)
+                .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
@@ -80,7 +81,7 @@ class ScreeningControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(SCREENINGS_BASE_ENDPOINT)
+                .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
@@ -111,7 +112,7 @@ class ScreeningControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(SCREENINGS_BASE_ENDPOINT)
+                .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
@@ -140,7 +141,7 @@ class ScreeningControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(SCREENINGS_BASE_ENDPOINT)
+                .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
@@ -171,7 +172,7 @@ class ScreeningControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(SCREENINGS_BASE_ENDPOINT)
+                .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
                 .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
@@ -196,7 +197,7 @@ class ScreeningControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .delete()
-                .uri(SCREENINGS_BASE_ENDPOINT + "/" + screeningId)
+                .uri(SCREENINGS_ADMIN_ENDPOINT + "/" + screeningId)
                 .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
@@ -214,7 +215,7 @@ class ScreeningControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .delete()
-                .uri(SCREENINGS_BASE_ENDPOINT + "/" + screening.getId())
+                .uri(SCREENINGS_ADMIN_ENDPOINT + "/" + screening.getId())
                 .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
                 .exchange();
 
@@ -233,7 +234,7 @@ class ScreeningControllerIT extends BaseIT {
         //when
         var spec = webTestClient
                 .get()
-                .uri(SCREENINGS_BASE_ENDPOINT)
+                .uri(SCREENINGS_PUBLIC_ENDPOINT)
                 .exchange();
 
         //then
@@ -259,7 +260,7 @@ class ScreeningControllerIT extends BaseIT {
         var spec = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(SCREENINGS_BASE_ENDPOINT)
+                        .path(SCREENINGS_PUBLIC_ENDPOINT)
                         .queryParam("date", requiredDate.toString())
                         .build()
                 )
@@ -283,7 +284,7 @@ class ScreeningControllerIT extends BaseIT {
         var spec = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(SCREENINGS_BASE_ENDPOINT + "/" + screening.getId() + "/seats")
+                        .path(SCREENINGS_PUBLIC_ENDPOINT + "/" + screening.getId() + "/seats")
                         .queryParam("screeningId", screening.getId())
                         .build()
                 )

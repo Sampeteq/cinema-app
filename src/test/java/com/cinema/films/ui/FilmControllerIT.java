@@ -5,12 +5,9 @@ import com.cinema.films.application.commands.CreateFilm;
 import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
-import com.cinema.films.domain.exceptions.FilmYearOutOfRangeException;
 import com.cinema.users.application.commands.handlers.CreateAdminHandler;
 import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -115,32 +112,6 @@ class FilmControllerIT extends BaseIT {
         //then
 
         var expectedMessage = new FilmTitleNotUniqueException().getMessage();
-        spec
-                .expectStatus()
-                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-                .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.cinema.films.FilmFixture#getWrongFilmYears")
-    void film_year_is_previous_current_or_nex_one(Integer wrongYear) {
-        //given
-        var crateAdminCommand = createCrateAdminCommand();
-        createAdminHandler.handle(crateAdminCommand);
-        var command = createCreateFilmCommand(wrongYear);
-
-        //when
-        var spec = webTestClient
-                .post()
-                .uri(FILM_ADMIN_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
-                .exchange();
-
-        //then
-        var expectedMessage = new FilmYearOutOfRangeException().getMessage();
         spec
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)

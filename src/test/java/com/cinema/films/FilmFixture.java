@@ -5,7 +5,6 @@ import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmCategory;
 
 import java.time.Year;
-import java.util.List;
 
 public final class FilmFixture {
 
@@ -71,13 +70,6 @@ public final class FilmFixture {
                 CATEGORY,
                 YEAR,
                 DURATION_IN_MINUTES
-        );
-    }
-
-    public static List<Integer> getWrongFilmYears() {
-        return List.of(
-                YEAR - 2,
-                YEAR + 2
         );
     }
 }

@@ -1,6 +1,8 @@
 package com.cinema.screenings.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -11,6 +13,7 @@ import lombok.Getter;
 public class ScreeningSeat {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private int rowNumber;
@@ -22,8 +25,7 @@ public class ScreeningSeat {
     protected ScreeningSeat() {
     }
 
-    public ScreeningSeat(Long id, int rowNumber, int number, boolean isFree) {
-        this.id = id;
+    public ScreeningSeat(int rowNumber, int number, boolean isFree) {
         this.rowNumber = rowNumber;
         this.number = number;
         this.isFree = isFree;

@@ -45,7 +45,7 @@ public class CreateScreeningHandler {
         var screeningSeats = hallDto
                 .seats()
                 .stream()
-                .map(seatDto -> new ScreeningSeat(seatDto.id(), seatDto.rowNumber(), seatDto.number(), true))
+                .map(seatDto -> new ScreeningSeat(seatDto.rowNumber(), seatDto.number(), true))
                 .toList();
         var screening = new Screening(
                 command.date(),

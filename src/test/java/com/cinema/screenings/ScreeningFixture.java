@@ -17,8 +17,8 @@ public final class ScreeningFixture {
             .truncatedTo(ChronoUnit.MINUTES);
 
     public static final List<ScreeningSeat> seats = List.of(
-            new ScreeningSeat(1L, 1, 1, true),
-            new ScreeningSeat(2L, 1, 2, true)
+            new ScreeningSeat(1, 1, true),
+            new ScreeningSeat(1, 2, true)
     );
 
     private ScreeningFixture() {

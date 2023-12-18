@@ -51,8 +51,8 @@ class HallControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk()
                 .expectBody()
-                .jsonPath("$[0].id").isEqualTo(hall.getId())
-                .jsonPath("$[0].seats").value(hasSize(hall.getSeats().size()));
+                .jsonPath("$.halls[0].id").isEqualTo(hall.getId())
+                .jsonPath("$.halls[0].seats").value(hasSize(hall.getSeats().size()));
     }
 
     @Test
@@ -114,10 +114,10 @@ class HallControllerIT extends BaseIT {
                 .expectBody()
                 .jsonPath("$[*]").value(hasSize(1))
                 .jsonPath("$[*].*").value(everyItem(notNullValue()))
-                .jsonPath("$[0].startAt").isEqualTo(hallOccupation.getStartAt().toString())
-                .jsonPath("$[0].endAt").isEqualTo(hallOccupation.getEndAt().toString())
-                .jsonPath("$[0].hallId").isEqualTo(hallId)
-                .jsonPath("$[0].screeningId").isEqualTo(screeningId);
+                .jsonPath("$.hallsOccupations[0].startAt").isEqualTo(hallOccupation.getStartAt().toString())
+                .jsonPath("$.hallsOccupations[0].endAt").isEqualTo(hallOccupation.getEndAt().toString())
+                .jsonPath("$.hallsOccupations[0].hallId").isEqualTo(hallId)
+                .jsonPath("$.hallsOccupations[0].screeningId").isEqualTo(screeningId);
     }
 
     private HallOccupation addHallOccupation(Long screeningId) {

@@ -2,8 +2,6 @@ package com.cinema.halls.ui;
 
 import com.cinema.halls.application.queries.GetAllHallOccupations;
 import com.cinema.halls.application.queries.GetAllHalls;
-import com.cinema.halls.application.queries.dto.HallDto;
-import com.cinema.halls.application.queries.dto.HallOccupationDto;
 import com.cinema.halls.application.queries.handlers.GetAllHallOccupationsHandler;
 import com.cinema.halls.application.queries.handlers.GetAllHallsHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -11,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,17 +20,19 @@ public class HallController {
 
     @GetMapping("/admin/halls")
     @SecurityRequirement(name = "basic")
-    public List<HallDto> getAllHalls() {
+    public HallsResponse getAllHalls() {
         var query = new GetAllHalls();
         log.info("Query:{}", query);
-        return getAllHallsHandler.handle(query);
+        var halls =  getAllHallsHandler.handle(query);
+        return new HallsResponse(halls);
     }
 
     @GetMapping("/admin/halls/occupations")
     @SecurityRequirement(name = "basic")
-    List<HallOccupationDto> getAllOccupations() {
+    HallOccupationResponse getAllOccupations() {
         var query = new GetAllHallOccupations();
         log.error("Query:{}", query);
-        return getAllHallOccupationsHandler.handle(query);
+        var hallsOccupations = getAllHallOccupationsHandler.handle(query);
+        return new HallOccupationResponse(hallsOccupations);
     }
 }

@@ -5,7 +5,6 @@ import com.cinema.films.application.commands.DeleteFilm;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
 import com.cinema.films.application.commands.handlers.DeleteFilmHandler;
 import com.cinema.films.application.queries.GetFilms;
-import com.cinema.films.application.queries.dto.FilmDto;
 import com.cinema.films.application.queries.handlers.GetFilmsHandler;
 import com.cinema.films.domain.FilmCategory;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,7 +53,7 @@ public class FilmController {
     }
 
     @GetMapping("/public/films")
-    List<FilmDto> getFilms(
+    FilmsResponse getFilms(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) FilmCategory category
     ) {
@@ -64,6 +62,7 @@ public class FilmController {
                 .title(title)
                 .category(category)
                 .build();
-        return getFilmsHandler.handle(queryDto);
+        var films = getFilmsHandler.handle(queryDto);
+        return new FilmsResponse(films);
     }
 }

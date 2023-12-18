@@ -173,10 +173,10 @@ class FilmControllerIT extends BaseIT {
                 .isOk()
                 .expectBody()
                 .jsonPath("$[*]").value(hasSize(1))
-                .jsonPath("$[0].title").isEqualTo(film.getTitle())
-                .jsonPath("$[0].category").isEqualTo(film.getCategory().name())
-                .jsonPath("$[0].year").isEqualTo(film.getYear())
-                .jsonPath("$[0].durationInMinutes").isEqualTo(film.getDurationInMinutes());
+                .jsonPath("$.films[0].title").isEqualTo(film.getTitle())
+                .jsonPath("$.films[0].category").isEqualTo(film.getCategory().name())
+                .jsonPath("$.films[0].year").isEqualTo(film.getYear())
+                .jsonPath("$.films[0].durationInMinutes").isEqualTo(film.getDurationInMinutes());
     }
 
     @Test

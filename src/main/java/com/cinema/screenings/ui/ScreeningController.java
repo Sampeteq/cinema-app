@@ -6,7 +6,6 @@ import com.cinema.screenings.application.commands.handlers.CreateScreeningHandle
 import com.cinema.screenings.application.commands.handlers.DeleteScreeningHandler;
 import com.cinema.screenings.application.queries.GetScreenings;
 import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
-import com.cinema.screenings.application.queries.dto.ScreeningDto;
 import com.cinema.screenings.application.queries.dto.ScreeningSeatDto;
 import com.cinema.screenings.application.queries.handlers.GetScreeningsHandler;
 import com.cinema.screenings.application.queries.handlers.GetSeatsByScreeningIdHandler;
@@ -63,13 +62,14 @@ class ScreeningController {
     }
 
     @GetMapping("/public/screenings")
-    List<ScreeningDto> getScreenings(@RequestParam(required = false) LocalDate date) {
+    ScreeningsResponse getScreenings(@RequestParam(required = false) LocalDate date) {
         var query = GetScreenings
                 .builder()
                 .date(date)
                 .build();
         log.info("Query:{}", query);
-        return getScreeningsHandler.handle(query);
+        var screenings = getScreeningsHandler.handle(query);
+        return new ScreeningsResponse(screenings);
     }
 
     @GetMapping("/public/screenings/{id}/seats")

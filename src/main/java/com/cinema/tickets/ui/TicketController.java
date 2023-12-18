@@ -5,7 +5,6 @@ import com.cinema.tickets.application.commands.CancelTicket;
 import com.cinema.tickets.application.commands.handlers.BookTicketHandler;
 import com.cinema.tickets.application.commands.handlers.CancelTicketHandler;
 import com.cinema.tickets.application.queries.GetAllTicketsByCurrentUser;
-import com.cinema.tickets.application.queries.dto.TicketDto;
 import com.cinema.tickets.application.queries.handlers.GetAllTicketsByCurrentUserHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/tickets")
@@ -56,8 +54,9 @@ class TicketController {
 
     @GetMapping("/my")
     @SecurityRequirement(name = "basic")
-    List<TicketDto> getAllTicketsByCurrentUser() {
+    TicketsResponse getAllTicketsByCurrentUser() {
         var query = new GetAllTicketsByCurrentUser();
-        return getAllTicketsByCurrentUserHandler.handle(query);
+        var tickets = getAllTicketsByCurrentUserHandler.handle(query);
+        return new TicketsResponse(tickets);
     }
 }

@@ -1,8 +1,8 @@
-package com.cinema.halls.application.queries.handlers;
+package com.cinema.screenings.application.queries.handlers;
 
-import com.cinema.halls.application.queries.GetSeatBySeatId;
-import com.cinema.halls.application.queries.dto.SeatDto;
-import com.cinema.halls.domain.exceptions.SeatNotFoundException;
+import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
+import com.cinema.screenings.application.queries.GetSeatById;
+import com.cinema.screenings.application.queries.dto.ScreeningSeatDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,20 +16,21 @@ public class GetSeatByIdHandler {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public SeatDto handle(GetSeatBySeatId query) {
+    public ScreeningSeatDto handle(GetSeatById query) {
         log.info("Query:{}", query);
         try {
             return jdbcTemplate.queryForObject(
-                    "select s.id, s.row_number, s.number from seats s where s.id = ?",
-                    (resultSet, rowNum) -> new SeatDto(
+                    "select s.id, s.row_number, s.number, s.is_free from screenings_seats s where s.id = ?",
+                    (resultSet, rowNum) -> new ScreeningSeatDto(
                             resultSet.getLong("id"),
                             resultSet.getInt("row_number"),
-                            resultSet.getInt("number")
+                            resultSet.getInt("number"),
+                            resultSet.getBoolean("is_free")
                     ),
                     query.seatId()
             );
         } catch (EmptyResultDataAccessException exception) {
-            throw new SeatNotFoundException();
+            throw new ScreeningSeatNotFoundException();
         }
     }
 }

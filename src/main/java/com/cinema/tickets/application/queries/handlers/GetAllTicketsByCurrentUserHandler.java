@@ -1,7 +1,7 @@
 package com.cinema.tickets.application.queries.handlers;
 
-import com.cinema.halls.application.queries.GetSeatBySeatId;
-import com.cinema.halls.application.queries.handlers.GetSeatByIdHandler;
+import com.cinema.screenings.application.queries.GetSeatById;
+import com.cinema.screenings.application.queries.handlers.GetSeatByIdHandler;
 import com.cinema.screenings.application.queries.GetScreening;
 import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
 import com.cinema.tickets.application.queries.GetAllTicketsByCurrentUser;
@@ -34,7 +34,7 @@ public class GetAllTicketsByCurrentUserHandler {
                 .map(ticket -> {
                     var getScreening = new GetScreening(ticket.getScreeningId());
                     var screeningDto = getScreeningHandler.handle(getScreening);
-                    var seatDto = getSeatByIdHandler.handle(new GetSeatBySeatId(ticket.getSeatId()));
+                    var seatDto = getSeatByIdHandler.handle(new GetSeatById(ticket.getSeatId()));
                     return new TicketDto(
                             ticket.getId(),
                             ticket.getStatus(),

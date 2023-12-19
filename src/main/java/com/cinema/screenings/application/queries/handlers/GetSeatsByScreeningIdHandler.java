@@ -21,6 +21,7 @@ public class GetSeatsByScreeningIdHandler {
         return jdbcTemplate.query(
                 "select s.id, s.row_number, s.number, s.is_free from screenings_seats s order by s.row_number, s.number",
                 (resultSet, rowNumber) -> new ScreeningSeatDto(
+                        resultSet.getLong("id"),
                         resultSet.getInt("row_number"),
                         resultSet.getInt("number"),
                         resultSet.getBoolean("is_free")

@@ -1,5 +1,6 @@
 package com.cinema.screenings.ui;
 
+import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.shared.exceptions.ExceptionMessage;
@@ -19,6 +20,12 @@ class ScreeningExceptionHandler {
 
     @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(ScreeningNotFoundException exception) {
+        var exceptionMessage = new ExceptionMessage(exception.getMessage());
+        return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    ResponseEntity<ExceptionMessage> handle(ScreeningSeatNotFoundException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
     }

@@ -2,7 +2,7 @@ package com.cinema.tickets.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.halls.domain.exceptions.SeatNotFoundException;
+import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.halls.infrastructure.config.CreateHallService;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
@@ -121,7 +121,7 @@ class TicketControllerIT extends BaseIT {
                 .exchange();
 
         //then
-        var expectedMessage = new SeatNotFoundException().getMessage();
+        var expectedMessage = new ScreeningSeatNotFoundException().getMessage();
         spec
                 .expectStatus()
                 .isNotFound()

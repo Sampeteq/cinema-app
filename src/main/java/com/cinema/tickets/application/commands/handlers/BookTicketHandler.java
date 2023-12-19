@@ -1,7 +1,7 @@
 package com.cinema.tickets.application.commands.handlers;
 
-import com.cinema.halls.application.queries.GetSeatBySeatId;
-import com.cinema.halls.application.queries.handlers.GetSeatByIdHandler;
+import com.cinema.screenings.application.queries.GetSeatById;
+import com.cinema.screenings.application.queries.handlers.GetSeatByIdHandler;
 import com.cinema.screenings.application.queries.GetScreening;
 import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
 import com.cinema.shared.events.EventPublisher;
@@ -42,7 +42,7 @@ public class BookTicketHandler {
                 .seatsIds()
                 .stream()
                 .map(seatId -> {
-                    var seatDto = getSeatByIdHandler.handle(new GetSeatBySeatId(seatId));
+                    var seatDto = getSeatByIdHandler.handle(new GetSeatById(seatId));
                     log.error("Found seat: {}", seatDto);
                     if (ticketRepository.existsBySeatId(seatDto.id())) {
                         throw new TicketAlreadyExistsException();

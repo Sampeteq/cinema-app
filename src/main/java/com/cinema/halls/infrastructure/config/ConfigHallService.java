@@ -1,7 +1,6 @@
 package com.cinema.halls.infrastructure.config;
 
 import com.cinema.halls.domain.HallRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,7 @@ class ConfigHallService {
     private final CreateHallService createHallService;
 
     @EventListener(ContextRefreshedEvent.class)
-    void createHallsFromConfigOnStartUp() {
+    void createHallsFromConfigOnStartUp() throws IOException {
         if (hallRepository.count() == 0) {
             var json = readHallsConfigAsJson();
             logIfFileIsEmpty(json);
@@ -42,17 +41,12 @@ class ConfigHallService {
         }
     }
 
-    private String readHallsConfigAsJson() {
-        try {
+    private String readHallsConfigAsJson() throws IOException {
             var bytes = resourceLoader
-                    .getResource("classpath:" + hallsConfigFileName)
+                    .getResource("classpath:" + hallsConfigFileName + "e")
                     .getInputStream()
                     .readAllBytes();
             return new String(bytes, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            log.error("IOException: {}", e.getMessage());
-            throw new RuntimeException(e);
-        }
     }
 
     private void logIfFileIsEmpty(String json) {
@@ -61,13 +55,9 @@ class ConfigHallService {
         }
     }
 
-    private void createHallsFromJson(String json) {
-        try {
+    private void createHallsFromJson(String json) throws IOException {
             objectMapper
                     .readValue(json, new TypeReference<List<ConfigHallDto>>() {})
                     .forEach(createHallService::handle);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

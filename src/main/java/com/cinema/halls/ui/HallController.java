@@ -31,7 +31,7 @@ public class HallController {
     @SecurityRequirement(name = "basic")
     HallOccupationResponse getAllOccupations() {
         var query = new GetAllHallOccupations();
-        log.error("Query:{}", query);
+        log.info("Query:{}", query);
         var hallsOccupations = getAllHallOccupationsHandler.handle(query);
         return new HallOccupationResponse(hallsOccupations);
     }

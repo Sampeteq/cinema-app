@@ -43,7 +43,7 @@ public class BookTicketHandler {
                 .stream()
                 .map(seatId -> {
                     var seatDto = getSeatByIdHandler.handle(new GetSeatById(seatId));
-                    log.error("Found seat: {}", seatDto);
+                    log.info("Found seat: {}", seatDto);
                     if (ticketRepository.existsBySeatId(seatDto.id())) {
                         throw new TicketAlreadyExistsException();
                     }

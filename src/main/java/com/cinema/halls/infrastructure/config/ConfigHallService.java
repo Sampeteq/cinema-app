@@ -64,8 +64,7 @@ class ConfigHallService {
     private void createHallsFromJson(String json) {
         try {
             objectMapper
-                    .readValue(json, new TypeReference<List<ConfigHallDto>>() {
-                    })
+                    .readValue(json, new TypeReference<List<ConfigHallDto>>() {})
                     .forEach(createHallService::handle);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

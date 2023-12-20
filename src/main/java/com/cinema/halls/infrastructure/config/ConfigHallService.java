@@ -32,32 +32,13 @@ class ConfigHallService {
     @EventListener(ContextRefreshedEvent.class)
     void createHallsFromConfigOnStartUp() throws IOException {
         if (hallRepository.count() == 0) {
-            var json = readHallsConfigAsJson();
-            logIfFileIsEmpty(json);
-            createHallsFromJson(json);
-            log.info("Halls added");
-        } else {
-            log.info("Halls already exists");
-        }
-    }
-
-    private String readHallsConfigAsJson() throws IOException {
-            var bytes = resourceLoader
-                    .getResource("classpath:" + hallsConfigFileName + "e")
-                    .getInputStream()
-                    .readAllBytes();
-            return new String(bytes, StandardCharsets.UTF_8);
-    }
-
-    private void logIfFileIsEmpty(String json) {
-        if (json.isEmpty()) {
-            log.error("Empty halls config file");
-        }
-    }
-
-    private void createHallsFromJson(String json) throws IOException {
+            var json = resourceLoader
+                    .getResource("classpath:" + hallsConfigFileName)
+                    .getContentAsString(StandardCharsets.UTF_8);
             objectMapper
                     .readValue(json, new TypeReference<List<ConfigHallDto>>() {})
                     .forEach(createHallService::handle);
+            log.info("Halls added");
+        }
     }
 }

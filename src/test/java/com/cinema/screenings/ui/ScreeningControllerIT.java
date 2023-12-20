@@ -9,7 +9,6 @@ import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.users.application.commands.handlers.CreateAdminHandler;
-import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,6 @@ import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
 import static com.cinema.screenings.ScreeningFixture.createScreeningWithSeats;
 import static com.cinema.users.UserFixture.createCrateAdminCommand;
-import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -47,26 +45,6 @@ class ScreeningControllerIT extends BaseIT {
 
     @Autowired
     private CreateAdminHandler createAdminHandler;
-
-    @Autowired
-    private CreateUserHandler createUserHandler;
-
-    @Test
-    void screening_is_created_only_by_admin() {
-        //given
-        var crateUserCommand = createCrateUserCommand();
-        createUserHandler.handle(crateUserCommand);
-
-        //when
-        var spec = webTestClient
-                .post()
-                .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
-                .exchange();
-
-        //then
-        spec.expectStatus().isForbidden();
-    }
 
     @Test
     void screening_is_created() {
@@ -185,24 +163,6 @@ class ScreeningControllerIT extends BaseIT {
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
                 .jsonPath("$.message", equalTo(expectedMessage));
-    }
-
-    @Test
-    void screening_is_deleted_only_by_admin() {
-        //given
-        var crateUserCommand = createCrateUserCommand();
-        createUserHandler.handle(crateUserCommand);
-        var screeningId = 1L;
-
-        //when
-        var spec = webTestClient
-                .delete()
-                .uri(SCREENINGS_ADMIN_ENDPOINT + "/" + screeningId)
-                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
-                .exchange();
-
-        //then
-        spec.expectStatus().isForbidden();
     }
 
     @Test

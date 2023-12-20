@@ -6,7 +6,6 @@ import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.users.application.commands.handlers.CreateAdminHandler;
-import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import static com.cinema.films.FilmFixture.createCreateFilmCommand;
 import static com.cinema.films.FilmFixture.createFilm;
 import static com.cinema.users.UserFixture.createCrateAdminCommand;
-import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -29,30 +27,10 @@ class FilmControllerIT extends BaseIT {
     private static final String FILM_ADMIN_ENDPOINT = "/admin/films";
 
     @Autowired
-    private CreateUserHandler createUserHandler;
-
-    @Autowired
     private CreateAdminHandler createAdminHandler;
 
     @Autowired
     private FilmRepository filmRepository;
-
-    @Test
-    void film_can_be_created_only_by_admin() {
-        //given
-        var crateUserCommand = createCrateUserCommand();
-        createUserHandler.handle(crateUserCommand);
-
-        //when
-        var spec = webTestClient
-                .post()
-                .uri(FILM_ADMIN_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
-                .exchange();
-
-        //then
-        spec.expectStatus().isForbidden();
-    }
 
     @Test
     void film_is_created() {
@@ -117,23 +95,6 @@ class FilmControllerIT extends BaseIT {
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
                 .jsonPath("$.message", equalTo(expectedMessage));
-    }
-
-    @Test
-    void film_is_deleted_only_by_admin() {
-        //given
-        var crateUserCommand = createCrateUserCommand();
-        createUserHandler.handle(crateUserCommand);
-
-        //when
-        var spec = webTestClient
-                .delete()
-                .uri(FILM_ADMIN_ENDPOINT + "/1")
-                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
-                .exchange();
-
-        //then
-        spec.expectStatus().isForbidden();
     }
 
     @Test

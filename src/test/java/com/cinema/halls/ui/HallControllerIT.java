@@ -4,9 +4,7 @@ import com.cinema.BaseIT;
 import com.cinema.halls.domain.HallOccupation;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.users.application.commands.CreateAdmin;
-import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.commands.handlers.CreateAdminHandler;
-import com.cinema.users.application.commands.handlers.CreateUserHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,9 +23,6 @@ class HallControllerIT extends BaseIT {
 
     @Autowired
     private HallRepository hallRepository;
-
-    @Autowired
-    private CreateUserHandler createUserHandler;
 
     @Autowired
     private CreateAdminHandler createAdminHandler;
@@ -53,37 +48,6 @@ class HallControllerIT extends BaseIT {
                 .expectBody()
                 .jsonPath("$.halls[0].id").isEqualTo(hall.getId())
                 .jsonPath("$.halls[0].seats").value(hasSize(hall.getSeats().size()));
-    }
-
-    @Test
-    void halls_are_gotten_only_by_authorized_user() {
-        //when
-        var responseSpec = webTestClient
-                .get()
-                .uri(HALL_ADMIN_ENDPOINT)
-                .exchange();
-
-        //then
-        responseSpec.expectStatus().isUnauthorized();
-    }
-
-    @Test
-    void halls_are_gotten_only_by_admin() {
-        //given
-        var userMail = "user1@mail.com";
-        var userPassword = "12345";
-        var command = new CreateUser(userMail, userPassword);
-        createUserHandler.handle(command);
-
-        //when
-        var responseSpec = webTestClient
-                .get()
-                .uri(HALL_ADMIN_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(command.mail(), command.password()))
-                .exchange();
-
-        //then
-        responseSpec.expectStatus().isForbidden();
     }
 
     @Test

@@ -9,10 +9,10 @@ import lombok.Getter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "seats")
+@Table(name = "halls_seats")
 @Getter
 @ToString
-public class Seat {
+public class HallSeat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +22,10 @@ public class Seat {
 
     private int number;
 
-    protected Seat() {
+    protected HallSeat() {
     }
 
-    public Seat(int rowNumber, int number) {
+    public HallSeat(int rowNumber, int number) {
         this.rowNumber = rowNumber;
         this.number = number;
     }

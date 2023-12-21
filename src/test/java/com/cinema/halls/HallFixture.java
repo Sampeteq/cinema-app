@@ -9,7 +9,7 @@ import java.util.List;
 public class HallFixture {
 
     public static Hall createHall() {
-        return new Hall(SeatFixture.createSeats());
+        return new Hall(HallSeatFixture.createSeats());
     }
 
     public static ConfigHallDto createCreateHallCommand() {

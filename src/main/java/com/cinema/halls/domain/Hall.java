@@ -25,14 +25,14 @@ public class Hall {
 
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "hall_id")
-    private List<Seat> seats;
+    private List<HallSeat> seats;
 
     @OneToMany(mappedBy = "hall", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<HallOccupation> occupations;
 
     protected Hall() {}
 
-    public Hall(List<Seat> seats) {
+    public Hall(List<HallSeat> seats) {
         this.seats = seats;
         this.occupations = new ArrayList<>();
     }

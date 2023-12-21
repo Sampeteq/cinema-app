@@ -1,10 +1,9 @@
 package com.cinema.users.application.commands.handlers;
 
-import com.cinema.users.application.commands.CreateAdmin;
+import com.cinema.users.application.commands.CreateUser;
+import com.cinema.users.domain.UserFactory;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
-import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
-import com.cinema.users.domain.UserFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,14 +16,11 @@ public class CreateAdminHandler {
     private final UserFactory userFactory;
     private final UserRepository userRepository;
 
-    public void handle(CreateAdmin command) {
-        log.info("Command:{}", command);
-        try {
-            var admin = userFactory.createUser(command.adminMail(), command.adminPassword(), UserRole.ADMIN);
+    public void handle(CreateUser command) {
+        if (!userRepository.existsByMail(command.mail())) {
+            var admin = userFactory.createUser(command.mail(), command.password(), UserRole.ADMIN);
             userRepository.add(admin);
             log.info("Admin added");
-        } catch (UserMailNotUniqueException exception) {
-            log.info("Admin already exists");
         }
     }
 }

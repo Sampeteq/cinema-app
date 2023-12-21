@@ -1,6 +1,6 @@
 package com.cinema.users.infrastrcuture;
 
-import com.cinema.users.application.commands.CreateAdmin;
+import com.cinema.users.application.commands.CreateUser;
 import com.cinema.users.application.commands.handlers.CreateAdminHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ class AdminInitializer {
 
     @EventListener(ContextRefreshedEvent.class)
     void createAdminOnStartUp() {
-        var command = new CreateAdmin(adminProperties.getMail(), adminProperties.getPassword());
+        var command = new CreateUser(adminProperties.getMail(), adminProperties.getPassword());
         createAdminHandler.handle(command);
     }
 }

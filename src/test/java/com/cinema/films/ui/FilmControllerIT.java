@@ -14,7 +14,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import static com.cinema.films.FilmFixture.createCreateFilmCommand;
 import static com.cinema.films.FilmFixture.createFilm;
-import static com.cinema.users.UserFixture.createCrateAdminCommand;
+import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -35,8 +35,8 @@ class FilmControllerIT extends BaseIT {
     @Test
     void film_is_created() {
         //given
-        var crateAdminCommand = createCrateAdminCommand();
-        createAdminHandler.handle(crateAdminCommand);
+        var crateUserCommand = createCrateUserCommand();
+        createAdminHandler.handle(crateUserCommand);
         var id = 1L;
         var title = "Some filmId";
         var category = FilmCategory.COMEDY;
@@ -55,7 +55,7 @@ class FilmControllerIT extends BaseIT {
                 .uri(FILM_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
+                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
         //then
@@ -73,8 +73,8 @@ class FilmControllerIT extends BaseIT {
     @Test
     void film_title_is_unique() {
         //given
-        var crateAdminCommand = createCrateAdminCommand();
-        createAdminHandler.handle(crateAdminCommand);
+        var crateUserCommand = createCrateUserCommand();
+        createAdminHandler.handle(crateUserCommand);
         var film = filmRepository.add(createFilm());
         var command = createCreateFilmCommand(film.getTitle());
 
@@ -84,7 +84,7 @@ class FilmControllerIT extends BaseIT {
                 .uri(FILM_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
+                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
         //then
@@ -101,15 +101,15 @@ class FilmControllerIT extends BaseIT {
     @WithMockUser(authorities = "ADMIN")
     void film_is_deleted() {
         //given
-        var crateAdminCommand = createCrateAdminCommand();
-        createAdminHandler.handle(crateAdminCommand);
+        var crateUserCommand = createCrateUserCommand();
+        createAdminHandler.handle(crateUserCommand);
         var film = filmRepository.add(createFilm());
 
         //when
         var spec = webTestClient
                 .delete()
                 .uri(FILM_ADMIN_ENDPOINT + "/" + film.getId())
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
+                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
         //then

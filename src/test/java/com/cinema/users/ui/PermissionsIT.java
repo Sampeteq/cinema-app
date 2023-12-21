@@ -18,7 +18,7 @@ class PermissionsIT extends BaseIT {
     @Test
     void user_with_admin_role_has_access_to_endpoints_with_admin_prefix() {
         //given
-        var command = UserFixture.createCrateAdminCommand();
+        var command = UserFixture.createCrateUserCommand();
         createAdminHandler.handle(command);
         var sampleAdminEndpoint = "/admin/halls";
 
@@ -26,7 +26,7 @@ class PermissionsIT extends BaseIT {
         var responseSpec = webTestClient
                 .options()
                 .uri(sampleAdminEndpoint)
-                .headers(httpHeaders -> httpHeaders.setBasicAuth(command.adminMail(), command.adminPassword()))
+                .headers(httpHeaders -> httpHeaders.setBasicAuth(command.mail(), command.password()))
                 .exchange();
 
         //then

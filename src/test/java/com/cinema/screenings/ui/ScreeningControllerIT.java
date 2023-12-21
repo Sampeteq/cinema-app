@@ -22,7 +22,7 @@ import static com.cinema.halls.HallFixture.createCreateHallCommand;
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
 import static com.cinema.screenings.ScreeningFixture.createScreeningWithSeats;
-import static com.cinema.users.UserFixture.createCrateAdminCommand;
+import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -52,7 +52,7 @@ class ScreeningControllerIT extends BaseIT {
         addHall();
         var filmId = 1L;
         addFilm();
-        var crateAdminCommand = createCrateAdminCommand();
+        var crateAdminCommand = createCrateUserCommand();
         createAdminHandler.handle(crateAdminCommand);
         var command = new CreateScreening(SCREENING_DATE, filmId);
 
@@ -62,7 +62,7 @@ class ScreeningControllerIT extends BaseIT {
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.mail(), crateAdminCommand.password()))
                 .exchange();
 
         //then
@@ -82,7 +82,7 @@ class ScreeningControllerIT extends BaseIT {
         addHall();
         var filmId = 1L;
         addFilm();
-        var crateAdminCommand = createCrateAdminCommand();
+        var crateAdminCommand = createCrateUserCommand();
         createAdminHandler.handle(crateAdminCommand);
         var screeningDate = LocalDateTime.now().plusDays(6);
         var command = new CreateScreening(screeningDate, filmId);
@@ -93,7 +93,7 @@ class ScreeningControllerIT extends BaseIT {
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.mail(), crateAdminCommand.password()))
                 .exchange();
 
         //then
@@ -111,7 +111,7 @@ class ScreeningControllerIT extends BaseIT {
         addHall();
         var filmId = 1L;
         addFilm();
-        var crateAdminCommand = createCrateAdminCommand();
+        var crateAdminCommand = createCrateUserCommand();
         createAdminHandler.handle(crateAdminCommand);
         var screeningDate = LocalDateTime.now().plusDays(23);
         var command = new CreateScreening(screeningDate, filmId);
@@ -122,7 +122,7 @@ class ScreeningControllerIT extends BaseIT {
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.mail(), crateAdminCommand.password()))
                 .exchange();
 
         //then
@@ -140,8 +140,8 @@ class ScreeningControllerIT extends BaseIT {
         var filmId = 1L;
         addFilm();
         var screening = addScreening();
-        var crateAdminCommand = createCrateAdminCommand();
-        createAdminHandler.handle(crateAdminCommand);
+        var crateUserCommand = createCrateUserCommand();
+        createAdminHandler.handle(crateUserCommand);
         var command = new CreateScreening(
                 screening.getDate().plusMinutes(10),
                 filmId
@@ -153,7 +153,7 @@ class ScreeningControllerIT extends BaseIT {
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
+                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
         //then
@@ -168,7 +168,7 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_is_deleted() {
         //given
-        var crateAdminCommand = createCrateAdminCommand();
+        var crateAdminCommand = createCrateUserCommand();
         createAdminHandler.handle(crateAdminCommand);
         var screening = addScreening();
 
@@ -176,7 +176,7 @@ class ScreeningControllerIT extends BaseIT {
         var spec = webTestClient
                 .delete()
                 .uri(SCREENINGS_ADMIN_ENDPOINT + "/" + screening.getId())
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
+                .headers(headers -> headers.setBasicAuth(crateAdminCommand.mail(), crateAdminCommand.password()))
                 .exchange();
 
         //then

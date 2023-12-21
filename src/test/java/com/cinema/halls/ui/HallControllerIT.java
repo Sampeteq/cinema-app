@@ -3,7 +3,7 @@ package com.cinema.halls.ui;
 import com.cinema.BaseIT;
 import com.cinema.halls.domain.HallOccupation;
 import com.cinema.halls.domain.HallRepository;
-import com.cinema.users.application.commands.CreateAdmin;
+import com.cinema.users.UserFixture;
 import com.cinema.users.application.commands.handlers.CreateAdminHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static com.cinema.halls.HallFixture.createHall;
-import static com.cinema.users.UserFixture.createCrateAdminCommand;
+import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
@@ -31,14 +31,14 @@ class HallControllerIT extends BaseIT {
     void halls_are_gotten() {
         //given
         var hall = hallRepository.add(createHall());
-        var crateAdminCommand = createCrateAdminCommand();
-        createAdminHandler.handle(crateAdminCommand);
+        var crateUserCommand = createCrateUserCommand();
+        createAdminHandler.handle(crateUserCommand);
 
         //when
         var responseSpec = webTestClient
                 .get()
                 .uri(HALL_ADMIN_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.adminMail(), crateAdminCommand.adminPassword()))
+                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
         //then
@@ -56,10 +56,8 @@ class HallControllerIT extends BaseIT {
         var screeningId = 1L;
         var hallId = 1L;
         var hallOccupation = addHallOccupation(screeningId);
-        var adminMail = "admin@mail.com";
-        var adminPassword = "12345";
-        var command = new CreateAdmin(adminMail, adminPassword);
-        createAdminHandler.handle(command);
+        var crateUserCommand = UserFixture.createCrateUserCommand();
+        createAdminHandler.handle(crateUserCommand);
 
         //when
         var responseSpec = webTestClient
@@ -69,7 +67,7 @@ class HallControllerIT extends BaseIT {
                         .pathSegment("occupations")
                         .build()
                 )
-                .headers(headers -> headers.setBasicAuth(command.adminMail(), command.adminPassword()))
+                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
                 .exchange();
 
         //then

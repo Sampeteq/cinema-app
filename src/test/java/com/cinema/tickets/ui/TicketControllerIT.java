@@ -25,7 +25,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
@@ -103,6 +102,8 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_booked_for_existing_seat() {
         //given
+        addFilm();
+        addHall();
         addScreening();
         var screeningId = 1L;
         var nonExistingSeatId = 0L;
@@ -132,6 +133,8 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_booked() {
         //given
+        addFilm();
+        addHall();
         addScreening();
         var screeningId = 1L;
         var seatId = 1L;
@@ -164,6 +167,8 @@ class TicketControllerIT extends BaseIT {
     @Test
     void tickets_are_booked() {
         //given
+        addFilm();
+        addHall();
         addScreening();
         var screeningId = 1L;
         var command = new BookTicket(
@@ -193,6 +198,8 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_booked_for_free_seat() {
         //given
+        addFilm();
+        addHall();
         addScreening();
         var screeningId = 1L;
         var seatId = 1L;
@@ -223,11 +230,12 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_booked_at_least_1h_before_screening() {
         //given
-        var screeningDate = SCREENING_DATE;
-        addScreening(screeningDate);
+        addFilm();
+        addHall();
+        addScreening();
         Mockito
                 .when(clock.instant())
-                .thenReturn(screeningDate.minusMinutes(59).toInstant(ZoneOffset.UTC));
+                .thenReturn(SCREENING_DATE.minusMinutes(59).toInstant(ZoneOffset.UTC));
         var screeningId = 1L;
         var seatId = 1L;
         var command = new BookTicket(
@@ -256,6 +264,8 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_cancelled() {
         //give
+        addFilm();
+        addHall();
         addScreening();
         var ticket = ticketRepository.add(createTicket());
 
@@ -278,6 +288,8 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_already_cancelled_cannot_be_cancelled() {
         //given
+        addFilm();
+        addHall();
         addScreening();
         ticketRepository.add(createCancelledTicket());
 
@@ -382,15 +394,7 @@ class TicketControllerIT extends BaseIT {
     }
 
     private void addScreening() {
-        addFilm();
-        addHall();
         createScreeningHandler.handle(createCreateScreeningCommand(SCREENING_DATE));
-    }
-
-    private void addScreening(LocalDateTime screeningDate) {
-        addFilm();
-        addHall();
-        createScreeningHandler.handle(createCreateScreeningCommand(screeningDate));
     }
 
     private void bookTicket(long screeningId, long seatId) {

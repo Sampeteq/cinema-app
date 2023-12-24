@@ -1,8 +1,8 @@
 package com.cinema.screenings.application.queries.handlers;
 
-import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.screenings.application.queries.GetSeatById;
 import com.cinema.screenings.application.queries.dto.ScreeningSeatDto;
+import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;

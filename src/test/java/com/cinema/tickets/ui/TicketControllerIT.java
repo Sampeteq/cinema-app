@@ -2,10 +2,10 @@ package com.cinema.tickets.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.halls.infrastructure.config.CreateHallService;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
+import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.queries.dto.TicketDto;
 import com.cinema.tickets.domain.TicketRepository;

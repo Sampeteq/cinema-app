@@ -1,9 +1,9 @@
 package com.cinema.tickets.application.queries.handlers;
 
-import com.cinema.screenings.application.queries.GetSeatById;
-import com.cinema.screenings.application.queries.handlers.GetSeatByIdHandler;
 import com.cinema.screenings.application.queries.GetScreening;
+import com.cinema.screenings.application.queries.GetSeatById;
 import com.cinema.screenings.application.queries.handlers.GetScreeningHandler;
+import com.cinema.screenings.application.queries.handlers.GetSeatByIdHandler;
 import com.cinema.tickets.application.queries.GetAllTicketsByCurrentUser;
 import com.cinema.tickets.application.queries.dto.TicketDto;
 import com.cinema.tickets.domain.TicketRepository;

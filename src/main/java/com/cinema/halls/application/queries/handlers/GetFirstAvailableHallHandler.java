@@ -1,10 +1,10 @@
 package com.cinema.halls.application.queries.handlers;
 
-import com.cinema.halls.application.queries.dto.HallDto;
-import com.cinema.halls.infrastructure.HallMapper;
 import com.cinema.halls.application.queries.GetFirstAvailableHall;
+import com.cinema.halls.application.queries.dto.HallDto;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.halls.domain.exceptions.HallsNoAvailableException;
+import com.cinema.halls.infrastructure.HallMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

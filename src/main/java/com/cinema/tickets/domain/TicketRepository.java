@@ -1,7 +1,5 @@
 package com.cinema.tickets.domain;
 
-import com.cinema.tickets.domain.Ticket;
-
 import java.util.List;
 import java.util.Optional;
 

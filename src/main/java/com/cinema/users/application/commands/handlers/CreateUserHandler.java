@@ -1,9 +1,9 @@
 package com.cinema.users.application.commands.handlers;
 
 import com.cinema.users.application.commands.CreateUser;
+import com.cinema.users.domain.UserFactory;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
-import com.cinema.users.domain.UserFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

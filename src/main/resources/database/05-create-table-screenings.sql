@@ -5,6 +5,6 @@ create table if not exists screenings
 (
     id      bigint generated always as identity primary key,
     date    timestamp,
-    film_id varchar,
+    film_id bigint,
     hall_id bigint
 );

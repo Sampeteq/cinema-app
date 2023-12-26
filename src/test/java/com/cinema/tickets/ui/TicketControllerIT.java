@@ -3,6 +3,7 @@ package com.cinema.tickets.ui;
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
 import com.cinema.halls.infrastructure.config.CreateHallService;
+import com.cinema.screenings.ScreeningFixture;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
@@ -31,7 +32,6 @@ import java.util.List;
 import static com.cinema.films.FilmFixture.createCreateFilmCommand;
 import static com.cinema.halls.HallFixture.createCreateHallCommand;
 import static com.cinema.screenings.ScreeningFixture.createCreateScreeningCommand;
-import static com.cinema.tickets.TicketFixture.SCREENING_DATE;
 import static com.cinema.tickets.TicketFixture.createCancelledTicket;
 import static com.cinema.tickets.TicketFixture.createTicket;
 import static com.cinema.users.UserFixture.createCrateUserCommand;
@@ -235,7 +235,7 @@ class TicketControllerIT extends BaseIT {
         addScreening();
         Mockito
                 .when(clock.instant())
-                .thenReturn(SCREENING_DATE.minusMinutes(59).toInstant(ZoneOffset.UTC));
+                .thenReturn(ScreeningFixture.SCREENING_DATE.minusMinutes(59).toInstant(ZoneOffset.UTC));
         var screeningId = 1L;
         var seatId = 1L;
         var command = new BookTicket(
@@ -394,7 +394,7 @@ class TicketControllerIT extends BaseIT {
     }
 
     private void addScreening() {
-        createScreeningHandler.handle(createCreateScreeningCommand(SCREENING_DATE));
+        createScreeningHandler.handle(createCreateScreeningCommand(ScreeningFixture.SCREENING_DATE));
     }
 
     private void bookTicket(long screeningId, long seatId) {

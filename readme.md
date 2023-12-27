@@ -178,8 +178,6 @@ Endpoints:
 
 /admin/halls (GET) - search all halls
 
-/admin/halls/occupations (GET)- search all halls occupations
-
 ### 4.Tickets
 
 Endpoints:

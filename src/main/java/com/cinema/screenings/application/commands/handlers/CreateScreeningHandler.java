@@ -6,12 +6,10 @@ import com.cinema.halls.application.queries.GetFirstAvailableHall;
 import com.cinema.halls.application.queries.handlers.GetFirstAvailableHallHandler;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.domain.Screening;
-import com.cinema.screenings.domain.ScreeningCreatedEvent;
 import com.cinema.screenings.domain.ScreeningDatePolicy;
 import com.cinema.screenings.domain.ScreeningEndDateCalculator;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.ScreeningSeat;
-import com.cinema.shared.events.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -27,7 +25,6 @@ public class CreateScreeningHandler {
     private final ScreeningRepository screeningRepository;
     private final GetFilmHandler getFilmHandler;
     private final GetFirstAvailableHallHandler getFirstAvailableHallHandler;
-    private final EventPublisher eventPublisher;
 
     @Transactional
     public void handle(CreateScreening command) {
@@ -49,19 +46,12 @@ public class CreateScreeningHandler {
                 .toList();
         var screening = new Screening(
                 command.date(),
+                endDate,
                 command.filmId(),
                 hallDto.id(),
                 screeningSeats
         );
         var addedScreening = screeningRepository.add(screening);
         log.info("Screening added:{}", addedScreening);
-        var screeningCreatedEvent = new ScreeningCreatedEvent(
-                screening.getId(),
-                screening.getDate(),
-                endDate,
-                hallDto
-        );
-        eventPublisher.publish(screeningCreatedEvent);
-        log.info("Published event:{}", screeningCreatedEvent);
     }
 }

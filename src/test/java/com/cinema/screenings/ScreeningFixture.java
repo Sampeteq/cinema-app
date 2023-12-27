@@ -15,6 +15,7 @@ public final class ScreeningFixture {
             .now()
             .plusDays(8)
             .truncatedTo(ChronoUnit.MINUTES);
+    public static final LocalDateTime SCREENING_END_DATE = SCREENING_DATE.plusMinutes(100);
 
     public static final List<ScreeningSeat> seats = List.of(
             new ScreeningSeat(1, 1, true),
@@ -27,6 +28,7 @@ public final class ScreeningFixture {
     public static Screening createScreening(LocalDateTime screeningDate) {
         return new Screening(
                 screeningDate,
+                SCREENING_END_DATE,
                 FILM_ID,
                 HALL_ID,
                 List.of()
@@ -36,6 +38,7 @@ public final class ScreeningFixture {
     public static Screening createScreeningWithSeats(LocalDateTime screeningDate) {
         return new Screening(
                 screeningDate,
+                SCREENING_END_DATE,
                 FILM_ID,
                 HALL_ID,
                 seats

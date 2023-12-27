@@ -10,8 +10,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,26 +25,9 @@ public class Hall {
     @JoinColumn(name = "hall_id")
     private List<HallSeat> seats;
 
-    @OneToMany(mappedBy = "hall", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<HallOccupation> occupations;
-
     protected Hall() {}
 
     public Hall(List<HallSeat> seats) {
         this.seats = seats;
-        this.occupations = new ArrayList<>();
-    }
-
-    public HallOccupation addOccupation(LocalDateTime start, LocalDateTime end, Long screeningId) {
-        var hallOccupation = new HallOccupation(start, end, this, screeningId);
-        this.occupations.add(hallOccupation);
-        return hallOccupation;
-    }
-
-    public boolean hasNoOccupationOn(LocalDateTime start, LocalDateTime end) {
-        return this
-                .occupations
-                .stream()
-                .noneMatch(occupation -> occupation.hasCollision(start, end));
     }
 }

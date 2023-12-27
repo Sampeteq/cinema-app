@@ -26,6 +26,8 @@ public class Screening {
 
     private LocalDateTime date;
 
+    private LocalDateTime endDate;
+
     private Long filmId;
 
     private Long hallId;
@@ -36,8 +38,15 @@ public class Screening {
 
     protected Screening() {}
 
-    public Screening(LocalDateTime date, Long filmId, Long hallId, List<ScreeningSeat> seats) {
+    public Screening(
+            LocalDateTime date,
+            LocalDateTime endDate,
+            Long filmId,
+            Long hallId,
+            List<ScreeningSeat> seats
+    ) {
         this.date = date;
+        this.endDate = endDate;
         this.filmId = filmId;
         this.hallId = hallId;
         this.seats = seats;

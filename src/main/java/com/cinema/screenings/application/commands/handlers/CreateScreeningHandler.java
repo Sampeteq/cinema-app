@@ -2,9 +2,11 @@ package com.cinema.screenings.application.commands.handlers;
 
 import com.cinema.films.application.queries.GetFilm;
 import com.cinema.films.application.queries.handlers.GetFilmHandler;
-import com.cinema.halls.application.queries.GetFirstAvailableHall;
-import com.cinema.halls.application.queries.handlers.GetFirstAvailableHallHandler;
+import com.cinema.halls.application.queries.GetHall;
+import com.cinema.halls.application.queries.handlers.GetHallHandler;
+import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import com.cinema.screenings.application.commands.CreateScreening;
+import com.cinema.screenings.application.queries.GetScreenings;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningDatePolicy;
 import com.cinema.screenings.domain.ScreeningEndDateCalculator;
@@ -24,7 +26,7 @@ public class CreateScreeningHandler {
     private final ScreeningEndDateCalculator screeningEndDateCalculator;
     private final ScreeningRepository screeningRepository;
     private final GetFilmHandler getFilmHandler;
-    private final GetFirstAvailableHallHandler getFirstAvailableHallHandler;
+    private final GetHallHandler getHallHandler;
 
     @Transactional
     public void handle(CreateScreening command) {
@@ -37,7 +39,12 @@ public class CreateScreeningHandler {
                 filmDto.durationInMinutes()
         );
         log.info("Screening end date:{}", endDate);
-        var hallDto = getFirstAvailableHallHandler.handle(new GetFirstAvailableHall(command.date(), endDate));
+        var collisions = screeningRepository.getScreeningCollisions(command.date(), endDate, command.hallId());
+        if (!collisions.isEmpty()) {
+            log.error("Screening collisions:{}", collisions);
+            throw new ScreeningsCollisionsException();
+        }
+        var hallDto = getHallHandler.handle(new GetHall(command.hallId()));
         log.info("Gotten hall:{}", hallDto);
         var screeningSeats = hallDto
                 .seats()
@@ -53,5 +60,6 @@ public class CreateScreeningHandler {
         );
         var addedScreening = screeningRepository.add(screening);
         log.info("Screening added:{}", addedScreening);
+        log.info("All screenings:{}", screeningRepository.getAll(GetScreenings.builder().build()));
     }
 }

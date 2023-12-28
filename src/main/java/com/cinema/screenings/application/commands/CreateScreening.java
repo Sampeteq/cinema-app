@@ -10,6 +10,8 @@ public record CreateScreening(
         @NotNull
         LocalDateTime date,
         @NotNull
-        Long filmId
+        Long filmId,
+        @NotNull
+        Long hallId
 ) {
 }

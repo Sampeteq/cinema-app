@@ -2,7 +2,7 @@ package com.cinema.screenings.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.halls.domain.exceptions.HallsNoAvailableException;
+import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import com.cinema.halls.infrastructure.config.CreateHallService;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.domain.Screening;
@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 
 import static com.cinema.films.FilmFixture.createCreateFilmCommand;
 import static com.cinema.halls.HallFixture.createCreateHallCommand;
+import static com.cinema.screenings.ScreeningFixture.HALL_ID;
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
 import static com.cinema.screenings.ScreeningFixture.createScreeningWithSeats;
@@ -54,7 +55,7 @@ class ScreeningControllerIT extends BaseIT {
         addFilm();
         var crateAdminCommand = createCrateUserCommand();
         createAdminHandler.handle(crateAdminCommand);
-        var command = new CreateScreening(SCREENING_DATE, filmId);
+        var command = new CreateScreening(SCREENING_DATE, filmId, HALL_ID);
 
         //when
         var spec = webTestClient
@@ -85,7 +86,7 @@ class ScreeningControllerIT extends BaseIT {
         var crateAdminCommand = createCrateUserCommand();
         createAdminHandler.handle(crateAdminCommand);
         var screeningDate = LocalDateTime.now().plusDays(6);
-        var command = new CreateScreening(screeningDate, filmId);
+        var command = new CreateScreening(screeningDate, filmId, HALL_ID);
 
         //when
         var spec = webTestClient
@@ -114,7 +115,7 @@ class ScreeningControllerIT extends BaseIT {
         var crateAdminCommand = createCrateUserCommand();
         createAdminHandler.handle(crateAdminCommand);
         var screeningDate = LocalDateTime.now().plusDays(23);
-        var command = new CreateScreening(screeningDate, filmId);
+        var command = new CreateScreening(screeningDate, filmId, HALL_ID);
 
         //when
         var spec = webTestClient
@@ -139,12 +140,14 @@ class ScreeningControllerIT extends BaseIT {
         //given
         var filmId = 1L;
         addFilm();
+        addHall();
         var screening = addScreening();
         var crateUserCommand = createCrateUserCommand();
         createAdminHandler.handle(crateUserCommand);
         var command = new CreateScreening(
                 screening.getDate().plusMinutes(10),
-                filmId
+                filmId,
+                HALL_ID
         );
 
         //when
@@ -157,7 +160,7 @@ class ScreeningControllerIT extends BaseIT {
                 .exchange();
 
         //then
-        var expectedMessage = new HallsNoAvailableException().getMessage();
+        var expectedMessage = new ScreeningsCollisionsException().getMessage();
         spec
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)

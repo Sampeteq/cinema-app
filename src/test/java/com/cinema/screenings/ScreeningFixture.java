@@ -48,14 +48,16 @@ public final class ScreeningFixture {
     public static CreateScreening createCreateScreeningCommand() {
         return new CreateScreening(
                 SCREENING_DATE,
-                FILM_ID
+                FILM_ID,
+                HALL_ID
         );
     }
 
     public static CreateScreening createCreateScreeningCommand(LocalDateTime date) {
         return new CreateScreening(
                 date,
-                FILM_ID
+                FILM_ID,
+                HALL_ID
         );
     }
 }

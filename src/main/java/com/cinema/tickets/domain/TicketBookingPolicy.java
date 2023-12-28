@@ -12,19 +12,9 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class TicketBookingPolicy {
 
-    private final Clock clock;
-
-    public void checkScreeningDate(LocalDateTime screeningDate) {
-        if (timeToScreeningInHours(clock, screeningDate) < 1) {
+    public void checkScreeningDate(long timeToScreeningInHours) {
+        if (timeToScreeningInHours < 1) {
             throw new TicketBookTooLateException();
         }
-    }
-
-    private long timeToScreeningInHours(Clock clock, LocalDateTime screeningDate) {
-        var currentDate = LocalDateTime.now(clock);
-        return Duration
-                .between(currentDate, screeningDate)
-                .abs()
-                .toHours();
     }
 }

@@ -1,7 +1,7 @@
 package com.cinema.tickets.application.commands.handlers;
 
-import com.cinema.screenings.application.queries.GetScreeningDate;
-import com.cinema.screenings.application.queries.handlers.GetScreeningDateHandler;
+import com.cinema.screenings.application.queries.GetTimeToScreeningInHours;
+import com.cinema.screenings.application.queries.handlers.GetTimeToScreeningInHoursHandler;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.commands.CancelTicket;
 import com.cinema.tickets.domain.TicketCancelled;
@@ -22,7 +22,7 @@ public class CancelTicketHandler {
 
     private final TicketRepository ticketRepository;
     private final TicketCancellingPolicy ticketCancellingPolicy;
-    private final GetScreeningDateHandler getScreeningDateHandler;
+    private final GetTimeToScreeningInHoursHandler getTimeToScreeningInHoursHandler;
     private final GetCurrentUserIdHandler getCurrentUserIdHandler;
     private final EventPublisher eventPublisher;
 
@@ -34,9 +34,9 @@ public class CancelTicketHandler {
                 .getByIdAndUserId(command.ticketId(), currentUserId)
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
-        var screeningDate = getScreeningDateHandler.handle(new GetScreeningDate(ticket.getScreeningId()));
-        log.info("Screening date:{}", screeningDate);
-        ticketCancellingPolicy.checkScreeningDate(screeningDate);
+        var timeToScreeningInHours = getTimeToScreeningInHoursHandler.handle(new GetTimeToScreeningInHours(ticket.getScreeningId()));
+        log.info("Time to screening in hours:{}", timeToScreeningInHours);
+        ticketCancellingPolicy.checkScreeningDate(timeToScreeningInHours);
         ticket.cancel();
         log.info("Ticket cancelled:{}", ticket);
         var event = new TicketCancelled(ticket.getSeatId());

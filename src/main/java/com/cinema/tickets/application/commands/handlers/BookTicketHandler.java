@@ -1,8 +1,8 @@
 package com.cinema.tickets.application.commands.handlers;
 
-import com.cinema.screenings.application.queries.GetScreeningDate;
+import com.cinema.screenings.application.queries.GetTimeToScreeningInHours;
 import com.cinema.screenings.application.queries.GetSeatById;
-import com.cinema.screenings.application.queries.handlers.GetScreeningDateHandler;
+import com.cinema.screenings.application.queries.handlers.GetTimeToScreeningInHoursHandler;
 import com.cinema.screenings.application.queries.handlers.GetSeatByIdHandler;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.commands.BookTicket;
@@ -26,7 +26,7 @@ public class BookTicketHandler {
 
     private final TicketRepository ticketRepository;
     private final TicketBookingPolicy ticketBookingPolicy;
-    private final GetScreeningDateHandler getScreeningDateHandler;
+    private final GetTimeToScreeningInHoursHandler getTimeToScreeningInHoursHandler;
     private final GetSeatByIdHandler getSeatByIdHandler;
     private final GetCurrentUserIdHandler getCurrentUserIdHandler;
     private final EventPublisher eventPublisher;
@@ -34,9 +34,9 @@ public class BookTicketHandler {
     @Transactional
     public void handle(BookTicket command) {
         log.info("Command:{}", command);
-        var screeningDate = getScreeningDateHandler.handle(new GetScreeningDate(command.screeningId()));
-        log.info("Screening date:{}", screeningDate);
-        ticketBookingPolicy.checkScreeningDate(screeningDate);
+        var timeToScreening = getTimeToScreeningInHoursHandler.handle(new GetTimeToScreeningInHours(command.screeningId()));
+        log.info("Time to screening in hours:{}", timeToScreening);
+        ticketBookingPolicy.checkScreeningDate(timeToScreening);
         var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
         command
                 .seatsIds()

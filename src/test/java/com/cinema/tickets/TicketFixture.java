@@ -20,15 +20,6 @@ public final class TicketFixture {
         );
     }
 
-    public static Ticket createTicket(Long userId) {
-        return new Ticket(
-                TicketStatus.BOOKED,
-                SCREENING_ID,
-                SEAT_ID,
-                userId
-        );
-    }
-
     public static Ticket createCancelledTicket() {
         return new Ticket(
                 TicketStatus.CANCELLED,

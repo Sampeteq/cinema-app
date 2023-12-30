@@ -7,8 +7,10 @@ import com.cinema.screenings.ScreeningFixture;
 import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
+import com.cinema.tickets.TicketFixture;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.queries.dto.TicketDto;
+import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
@@ -33,7 +35,6 @@ import static com.cinema.films.FilmFixture.createCreateFilmCommand;
 import static com.cinema.halls.HallFixture.createCreateHallCommand;
 import static com.cinema.screenings.ScreeningFixture.createCreateScreeningCommand;
 import static com.cinema.tickets.TicketFixture.createCancelledTicket;
-import static com.cinema.tickets.TicketFixture.createTicket;
 import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -201,12 +202,10 @@ class TicketControllerIT extends BaseIT {
         addFilm();
         addHall();
         addScreening();
-        var screeningId = 1L;
-        var seatId = 1L;
-        bookTicket(screeningId, seatId);
+        var ticket = addTicket();
         var command = new BookTicket(
-                screeningId,
-                List.of(seatId)
+                ticket.getScreeningId(),
+                List.of(ticket.getSeatId())
         );
 
         //when
@@ -267,7 +266,7 @@ class TicketControllerIT extends BaseIT {
         addFilm();
         addHall();
         addScreening();
-        var ticket = ticketRepository.add(createTicket());
+        var ticket = ticketRepository.add(TicketFixture.createTicket());
 
         //when
         var spec = webTestClient
@@ -317,7 +316,7 @@ class TicketControllerIT extends BaseIT {
         var command = createCreateScreeningCommand();
         createScreeningHandler.handle(command);
 
-        ticketRepository.add(createTicket());
+        ticketRepository.add(TicketFixture.createTicket());
         Mockito
                 .when(clock.instant())
                 .thenReturn(command.date().minusHours(23).toInstant(ZoneOffset.UTC));
@@ -350,7 +349,7 @@ class TicketControllerIT extends BaseIT {
         var createScreeningCommand = createCreateScreeningCommand();
         createScreeningHandler.handle(createScreeningCommand);
 
-        var ticket = ticketRepository.add(createTicket());
+        var ticket = ticketRepository.add(TicketFixture.createTicket());
 
         //when
         var spec = webTestClient
@@ -397,13 +396,7 @@ class TicketControllerIT extends BaseIT {
         createScreeningHandler.handle(createCreateScreeningCommand(ScreeningFixture.SCREENING_DATE));
     }
 
-    private void bookTicket(long screeningId, long seatId) {
-        webTestClient
-                .post()
-                .uri(TICKETS_BASE_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new BookTicket(screeningId, List.of(seatId)))
-                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
-                .exchange();
+    private Ticket addTicket() {
+        return ticketRepository.add(TicketFixture.createTicket());
     }
 }

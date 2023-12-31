@@ -1,9 +1,9 @@
 package com.cinema.tickets.application.commands.handlers;
 
 import com.cinema.screenings.application.queries.GetTimeToScreeningInHours;
-import com.cinema.screenings.application.queries.GetSeatById;
+import com.cinema.screenings.application.queries.GetSeatByIdAndScreeningId;
 import com.cinema.screenings.application.queries.handlers.GetTimeToScreeningInHoursHandler;
-import com.cinema.screenings.application.queries.handlers.GetSeatByIdHandler;
+import com.cinema.screenings.application.queries.handlers.GetSeatByIdAndScreeningIdHandler;
 import com.cinema.shared.events.EventPublisher;
 import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.domain.Ticket;
@@ -27,7 +27,7 @@ public class BookTicketHandler {
     private final TicketRepository ticketRepository;
     private final TicketBookingPolicy ticketBookingPolicy;
     private final GetTimeToScreeningInHoursHandler getTimeToScreeningInHoursHandler;
-    private final GetSeatByIdHandler getSeatByIdHandler;
+    private final GetSeatByIdAndScreeningIdHandler getSeatByIdAndScreeningIdHandler;
     private final GetCurrentUserIdHandler getCurrentUserIdHandler;
     private final EventPublisher eventPublisher;
 
@@ -42,7 +42,9 @@ public class BookTicketHandler {
                 .seatsIds()
                 .stream()
                 .map(seatId -> {
-                    var seatDto = getSeatByIdHandler.handle(new GetSeatById(seatId));
+                    var seatDto = getSeatByIdAndScreeningIdHandler.handle(
+                            new GetSeatByIdAndScreeningId(seatId, command.screeningId())
+                    );
                     log.info("Found seat: {}", seatDto);
                     if (ticketRepository.existsBySeatId(seatDto.id())) {
                         throw new TicketAlreadyExistsException();

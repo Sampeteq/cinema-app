@@ -22,12 +22,23 @@ public class ScreeningSeat {
 
     private boolean isFree;
 
+    private Long screeningId;
+
     protected ScreeningSeat() {
     }
 
-    public ScreeningSeat(int rowNumber, int number, boolean isFree) {
+    public ScreeningSeat(int rowNumber, int number, boolean isFree, Long screeningId) {
         this.rowNumber = rowNumber;
         this.number = number;
         this.isFree = isFree;
+        this.screeningId = screeningId;
+    }
+
+    public void markAsNotFree() {
+        this.isFree = false;
+    }
+
+    public void markAsFree() {
+        this.isFree = true;
     }
 }

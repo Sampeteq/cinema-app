@@ -2,6 +2,8 @@ package com.cinema.screenings.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
+import com.cinema.screenings.ScreeningSeatFixture;
+import com.cinema.screenings.domain.ScreeningSeatRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import com.cinema.halls.infrastructure.config.CreateHallService;
 import com.cinema.screenings.application.commands.CreateScreening;
@@ -22,7 +24,6 @@ import static com.cinema.halls.HallFixture.createCreateHallCommand;
 import static com.cinema.screenings.ScreeningFixture.HALL_ID;
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
-import static com.cinema.screenings.ScreeningFixture.createScreeningWithSeats;
 import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -37,6 +38,9 @@ class ScreeningControllerIT extends BaseIT {
 
     @Autowired
     private ScreeningRepository screeningRepository;
+
+    @Autowired
+    private ScreeningSeatRepository screeningSeatRepository;
 
     @Autowired
     private CreateFilmHandler createFilmHandler;
@@ -240,15 +244,15 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void seats_are_gotten_by_screening_id() {
         //given
-        addHall();
-        var screening = addScreeningWithSeats();
+        var screeningId = 1L;
+        addSeats(screeningId);
 
         //when
         var spec = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(SCREENINGS_PUBLIC_ENDPOINT + "/" + screening.getId() + "/seats")
-                        .queryParam("screeningId", screening.getId())
+                        .path(SCREENINGS_PUBLIC_ENDPOINT + "/" + screeningId + "/seats")
+                        .queryParam("screeningId", screeningId)
                         .build()
                 )
                 .exchange();
@@ -265,14 +269,15 @@ class ScreeningControllerIT extends BaseIT {
                 .jsonPath("$.*.*").value(everyItem(notNullValue()));
     }
 
+    private void addSeats(Long screeningId) {
+        ScreeningSeatFixture
+                .createSeats(screeningId)
+                .forEach(screeningSeatRepository::add);
+    }
+
 
     private Screening addScreening() {
         return screeningRepository.add(createScreening());
-    }
-
-    private Screening addScreeningWithSeats() {
-        var screening = createScreeningWithSeats();
-        return screeningRepository.add(screening);
     }
 
     private void addHall() {

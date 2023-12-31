@@ -2,11 +2,9 @@ package com.cinema.screenings;
 
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.domain.Screening;
-import com.cinema.screenings.domain.ScreeningSeat;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 public final class ScreeningFixture {
     public static final Long HALL_ID = 1L;
@@ -17,11 +15,6 @@ public final class ScreeningFixture {
             .truncatedTo(ChronoUnit.MINUTES);
     public static final LocalDateTime SCREENING_END_DATE = SCREENING_DATE.plusMinutes(100);
 
-    public static final List<ScreeningSeat> seats = List.of(
-            new ScreeningSeat(1, 1, true),
-            new ScreeningSeat(1, 2, true)
-    );
-
     private ScreeningFixture() {
     }
 
@@ -30,8 +23,7 @@ public final class ScreeningFixture {
                 SCREENING_DATE,
                 SCREENING_END_DATE,
                 FILM_ID,
-                HALL_ID,
-                List.of()
+                HALL_ID
         );
     }
 
@@ -40,18 +32,7 @@ public final class ScreeningFixture {
                 screeningDate,
                 SCREENING_END_DATE,
                 FILM_ID,
-                HALL_ID,
-                List.of()
-        );
-    }
-
-    public static Screening createScreeningWithSeats() {
-        return new Screening(
-                SCREENING_DATE,
-                SCREENING_END_DATE,
-                FILM_ID,
-                HALL_ID,
-                seats
+                HALL_ID
         );
     }
 

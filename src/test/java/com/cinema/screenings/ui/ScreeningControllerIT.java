@@ -267,12 +267,11 @@ class ScreeningControllerIT extends BaseIT {
 
 
     private Screening addScreening() {
-        var screening = createScreening(SCREENING_DATE);
-        return screeningRepository.add(screening);
+        return screeningRepository.add(createScreening());
     }
 
     private Screening addScreeningWithSeats() {
-        var screening = createScreeningWithSeats(SCREENING_DATE);
+        var screening = createScreeningWithSeats();
         return screeningRepository.add(screening);
     }
 

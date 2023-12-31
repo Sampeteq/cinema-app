@@ -25,6 +25,16 @@ public final class ScreeningFixture {
     private ScreeningFixture() {
     }
 
+    public static Screening createScreening() {
+        return new Screening(
+                SCREENING_DATE,
+                SCREENING_END_DATE,
+                FILM_ID,
+                HALL_ID,
+                List.of()
+        );
+    }
+
     public static Screening createScreening(LocalDateTime screeningDate) {
         return new Screening(
                 screeningDate,
@@ -35,9 +45,9 @@ public final class ScreeningFixture {
         );
     }
 
-    public static Screening createScreeningWithSeats(LocalDateTime screeningDate) {
+    public static Screening createScreeningWithSeats() {
         return new Screening(
-                screeningDate,
+                SCREENING_DATE,
                 SCREENING_END_DATE,
                 FILM_ID,
                 HALL_ID,

@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface ScreeningRepository {
     Screening add(Screening screening);
     void delete(Screening screening);
-    List<Screening> getAll(GetScreenings query);
     Optional<Screening> getById(Long id);
+    List<Screening> getAll(GetScreenings query);
     List<Screening> getScreeningCollisions(LocalDateTime startAt, LocalDateTime endAt, Long hallId);
 }

@@ -266,12 +266,12 @@ class TicketControllerIT extends BaseIT {
         addFilm();
         addHall();
         addScreening();
-        var ticket = ticketRepository.add(TicketFixture.createTicket());
+        var ticket = addTicket();
 
         //when
         var spec = webTestClient
                 .patch()
-                .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .uri(TICKETS_BASE_ENDPOINT + "/" + ticket.getId() + "/cancel")
                 .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
@@ -290,12 +290,12 @@ class TicketControllerIT extends BaseIT {
         addFilm();
         addHall();
         addScreening();
-        ticketRepository.add(createCancelledTicket());
+        var ticket = addCancelledTicket();
 
         //when
         var spec = webTestClient
                 .patch()
-                .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .uri(TICKETS_BASE_ENDPOINT + "/" + ticket.getId() + "/cancel")
                 .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
@@ -313,18 +313,17 @@ class TicketControllerIT extends BaseIT {
         //given
         addFilm();
         addHall();
-        var command = createCreateScreeningCommand();
-        createScreeningHandler.handle(command);
-
-        ticketRepository.add(TicketFixture.createTicket());
+        var createScreeningCommand = ScreeningFixture.createCreateScreeningCommand();
+        createScreeningHandler.handle(createScreeningCommand);
         Mockito
                 .when(clock.instant())
-                .thenReturn(command.date().minusHours(23).toInstant(ZoneOffset.UTC));
+                .thenReturn(createScreeningCommand.date().minusHours(23).toInstant(ZoneOffset.UTC));
+        var ticket = addTicket();
 
         //when
         var spec = webTestClient
                 .patch()
-                .uri(TICKETS_BASE_ENDPOINT + "/" + 1L + "/cancel")
+                .uri(TICKETS_BASE_ENDPOINT + "/" + ticket.getId() + "/cancel")
                 .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
                 .exchange();
 
@@ -398,5 +397,9 @@ class TicketControllerIT extends BaseIT {
 
     private Ticket addTicket() {
         return ticketRepository.add(TicketFixture.createTicket());
+    }
+
+    private Ticket addCancelledTicket() {
+        return ticketRepository.add(createCancelledTicket());
     }
 }

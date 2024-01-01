@@ -91,6 +91,10 @@ Endpoints:
 
 Endpoints:
 
+/admin/halls (POST) - add a hall
+
+/admin/halls/{id} (DELETE) - delete a hall
+
 /admin/halls (GET) - search all halls
 
 ### 4.Tickets

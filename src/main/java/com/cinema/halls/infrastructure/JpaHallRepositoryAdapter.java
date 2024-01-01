@@ -1,4 +1,4 @@
-package com.cinema.halls.infrastructure.db;
+package com.cinema.halls.infrastructure;
 
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;

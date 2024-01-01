@@ -5,13 +5,10 @@ import com.cinema.films.application.queries.handlers.GetFilmHandler;
 import com.cinema.halls.application.queries.GetHall;
 import com.cinema.halls.application.queries.handlers.GetHallHandler;
 import com.cinema.screenings.application.commands.CreateScreening;
-import com.cinema.screenings.domain.Screening;
-import com.cinema.screenings.domain.ScreeningDatePolicy;
-import com.cinema.screenings.domain.ScreeningEndDateCalculator;
+import com.cinema.screenings.domain.ScreeningFactory;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.ScreeningSeat;
 import com.cinema.screenings.domain.ScreeningSeatRepository;
-import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -22,8 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class CreateScreeningHandler {
 
-    private final ScreeningDatePolicy screeningDatePolicy;
-    private final ScreeningEndDateCalculator screeningEndDateCalculator;
+    private final ScreeningFactory screeningFactory;
     private final ScreeningRepository screeningRepository;
     private final ScreeningSeatRepository screeningSeatRepository;
     private final GetFilmHandler getFilmHandler;
@@ -32,26 +28,15 @@ public class CreateScreeningHandler {
     @Transactional
     public void handle(CreateScreening command) {
         log.info("Command:{}", command);
-        screeningDatePolicy.checkScreeningDate(command.date());
         var filmDto = getFilmHandler.handle(new GetFilm(command.filmId()));
         log.info("Gotten film:{}", filmDto);
-        var endDate = screeningEndDateCalculator.calculateEndDate(
-                command.date(),
-                filmDto.durationInMinutes()
-        );
-        log.info("Screening end date:{}", endDate);
-        var collisions = screeningRepository.getScreeningCollisions(command.date(), endDate, command.hallId());
-        if (!collisions.isEmpty()) {
-            log.error("Screening collisions:{}", collisions);
-            throw new ScreeningsCollisionsException();
-        }
         var hallDto = getHallHandler.handle(new GetHall(command.hallId()));
         log.info("Gotten hall:{}", hallDto);
-        var screening = new Screening(
+        var screening = screeningFactory.createScreening(
                 command.date(),
-                endDate,
+                filmDto.durationInMinutes(),
                 command.filmId(),
-                hallDto.id()
+                command.hallId()
         );
         var addedScreening = screeningRepository.add(screening);
         log.info("Screening added:{}", addedScreening);

@@ -12,8 +12,8 @@ import com.cinema.tickets.domain.TicketBookingPolicy;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
-import com.cinema.users.application.queries.GetCurrentUserId;
-import com.cinema.users.application.queries.handlers.GetCurrentUserIdHandler;
+import com.cinema.users.application.queries.GetLoggedUserId;
+import com.cinema.users.application.queries.handlers.GetLoggedUserIdHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class BookTicketHandler {
     private final TicketBookingPolicy ticketBookingPolicy;
     private final GetTimeToScreeningInHoursHandler getTimeToScreeningInHoursHandler;
     private final GetSeatByIdAndScreeningIdHandler getSeatByIdAndScreeningIdHandler;
-    private final GetCurrentUserIdHandler getCurrentUserIdHandler;
+    private final GetLoggedUserIdHandler getLoggedUserIdHandler;
     private final EventPublisher eventPublisher;
 
     @Transactional
@@ -37,7 +37,7 @@ public class BookTicketHandler {
         var timeToScreening = getTimeToScreeningInHoursHandler.handle(new GetTimeToScreeningInHours(command.screeningId()));
         log.info("Time to screening in hours:{}", timeToScreening);
         ticketBookingPolicy.checkScreeningDate(timeToScreening);
-        var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
+        var loggedUserId = getLoggedUserIdHandler.handle(new GetLoggedUserId());
         command
                 .seatsIds()
                 .stream()
@@ -49,7 +49,7 @@ public class BookTicketHandler {
                     if (ticketRepository.existsBySeatId(seatDto.id())) {
                         throw new TicketAlreadyExistsException();
                     }
-                    return new Ticket(TicketStatus.BOOKED, command.screeningId(), seatDto.id(), currentUserId);
+                    return new Ticket(TicketStatus.BOOKED, command.screeningId(), seatDto.id(), loggedUserId);
                 })
                 .toList()
                 .stream()

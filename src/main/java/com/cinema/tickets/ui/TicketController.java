@@ -4,8 +4,8 @@ import com.cinema.tickets.application.commands.BookTicket;
 import com.cinema.tickets.application.commands.CancelTicket;
 import com.cinema.tickets.application.commands.handlers.BookTicketHandler;
 import com.cinema.tickets.application.commands.handlers.CancelTicketHandler;
-import com.cinema.tickets.application.queries.GetAllTicketsByCurrentUser;
-import com.cinema.tickets.application.queries.handlers.GetAllTicketsByCurrentUserHandler;
+import com.cinema.tickets.application.queries.GetAllTicketsByLoggedUser;
+import com.cinema.tickets.application.queries.handlers.GetAllTicketsByLoggedUserHandler;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ class TicketController {
 
     private final BookTicketHandler bookTicketHandler;
     private final CancelTicketHandler cancelTicketHandler;
-    private final GetAllTicketsByCurrentUserHandler getAllTicketsByCurrentUserHandler;
+    private final GetAllTicketsByLoggedUserHandler getAllTicketsByLoggedUserHandler;
 
     @PostMapping
     @SecurityRequirement(name = "basic")
@@ -54,9 +54,9 @@ class TicketController {
 
     @GetMapping("/my")
     @SecurityRequirement(name = "basic")
-    TicketsResponse getAllTicketsByCurrentUser() {
-        var query = new GetAllTicketsByCurrentUser();
-        var tickets = getAllTicketsByCurrentUserHandler.handle(query);
+    TicketsResponse getAllTicketsByLoggedUser() {
+        var query = new GetAllTicketsByLoggedUser();
+        var tickets = getAllTicketsByLoggedUserHandler.handle(query);
         return new TicketsResponse(tickets);
     }
 }

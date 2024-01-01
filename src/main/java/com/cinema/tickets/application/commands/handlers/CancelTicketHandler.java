@@ -8,8 +8,8 @@ import com.cinema.tickets.domain.TicketCancelled;
 import com.cinema.tickets.domain.TicketCancellingPolicy;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
-import com.cinema.users.application.queries.GetCurrentUserId;
-import com.cinema.users.application.queries.handlers.GetCurrentUserIdHandler;
+import com.cinema.users.application.queries.GetLoggedUserId;
+import com.cinema.users.application.queries.handlers.GetLoggedUserIdHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,15 +23,15 @@ public class CancelTicketHandler {
     private final TicketRepository ticketRepository;
     private final TicketCancellingPolicy ticketCancellingPolicy;
     private final GetTimeToScreeningInHoursHandler getTimeToScreeningInHoursHandler;
-    private final GetCurrentUserIdHandler getCurrentUserIdHandler;
+    private final GetLoggedUserIdHandler getLoggedUserIdHandler;
     private final EventPublisher eventPublisher;
 
     @Transactional
     public void handle(CancelTicket command) {
         log.info("Command id:{}", command);
-        var currentUserId = getCurrentUserIdHandler.handle(new GetCurrentUserId());
+        var loggedUserId = getLoggedUserIdHandler.handle(new GetLoggedUserId());
         var ticket = ticketRepository
-                .getByIdAndUserId(command.ticketId(), currentUserId)
+                .getByIdAndUserId(command.ticketId(), loggedUserId)
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
         var timeToScreeningInHours = getTimeToScreeningInHoursHandler.handle(new GetTimeToScreeningInHours(ticket.getScreeningId()));

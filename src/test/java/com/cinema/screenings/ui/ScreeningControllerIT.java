@@ -2,10 +2,10 @@ package com.cinema.screenings.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.films.application.commands.handlers.CreateFilmHandler;
+import com.cinema.halls.application.commands.handlers.CreateHallHandler;
 import com.cinema.screenings.ScreeningSeatFixture;
 import com.cinema.screenings.domain.ScreeningSeatRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
-import com.cinema.halls.infrastructure.config.CreateHallService;
 import com.cinema.screenings.application.commands.CreateScreening;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
@@ -46,7 +46,7 @@ class ScreeningControllerIT extends BaseIT {
     private CreateFilmHandler createFilmHandler;
 
     @Autowired
-    private CreateHallService createHallService;
+    private CreateHallHandler createHallHandler;
 
     @Autowired
     private CreateAdminHandler createAdminHandler;
@@ -281,7 +281,7 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     private void addHall() {
-        createHallService.handle(createCreateHallCommand());
+        createHallHandler.handle(createCreateHallCommand());
     }
 
     private void addFilm(String title) {

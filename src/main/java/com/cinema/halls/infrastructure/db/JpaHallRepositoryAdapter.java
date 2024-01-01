@@ -21,6 +21,11 @@ class JpaHallRepositoryAdapter implements HallRepository {
     }
 
     @Override
+    public void delete(Hall hall) {
+        jpaHallRepository.delete(hall);
+    }
+
+    @Override
     public Optional<Hall> getById(Long id) {
         return jpaHallRepository.findById(id);
     }
@@ -28,11 +33,6 @@ class JpaHallRepositoryAdapter implements HallRepository {
     @Override
     public List<Hall> getAll() {
         return jpaHallRepository.findAll();
-    }
-
-    @Override
-    public Long count() {
-        return jpaHallRepository.count();
     }
 }
 

@@ -1,13 +1,18 @@
 package com.cinema.halls.ui;
 
 import com.cinema.BaseIT;
+import com.cinema.halls.HallFixture;
+import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
+import com.cinema.users.UserFixture;
 import com.cinema.users.application.commands.handlers.CreateAdminHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 
 import static com.cinema.halls.HallFixture.createHall;
 import static com.cinema.users.UserFixture.createCrateUserCommand;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
 class HallControllerIT extends BaseIT {
@@ -19,6 +24,49 @@ class HallControllerIT extends BaseIT {
 
     @Autowired
     private CreateAdminHandler createAdminHandler;
+
+    @Test
+    void hall_is_created() {
+        //given
+        var createHallCommand = HallFixture.createCreateHallCommand();
+        var crateUserCommand = UserFixture.createCrateUserCommand();
+        createAdminHandler.handle(crateUserCommand);
+
+        //when
+        var responseSpec = webTestClient
+                .post()
+                .uri(HALL_ADMIN_ENDPOINT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(createHallCommand)
+                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
+                .exchange();
+
+        //then
+        responseSpec.expectStatus().isOk();
+        assertThat(hallRepository.getById(1L))
+                .isNotEmpty()
+                .hasValueSatisfying(hall -> assertThat(hall.getSeats()).isNotEmpty())
+                .hasValueSatisfying(hall -> assertThat(hall.getSeats()).hasSize(createHallCommand.seats().size()));
+    }
+
+    @Test
+    void hall_is_deleted() {
+        //given
+        var hall = addHall();
+        var crateUserCommand = UserFixture.createCrateUserCommand();
+        createAdminHandler.handle(crateUserCommand);
+
+        //when
+        var responseSpec = webTestClient
+                .delete()
+                .uri(HALL_ADMIN_ENDPOINT + "/" + hall.getId())
+                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
+                .exchange();
+
+        //then
+        responseSpec.expectStatus().isNoContent();
+        assertThat(hallRepository.getById(hall.getId())).isEmpty();
+    }
 
     @Test
     void halls_are_gotten() {
@@ -41,5 +89,9 @@ class HallControllerIT extends BaseIT {
                 .expectBody()
                 .jsonPath("$.halls[0].id").isEqualTo(hall.getId())
                 .jsonPath("$.halls[0].seats").value(hasSize(hall.getSeats().size()));
+    }
+
+    private Hall addHall() {
+        return hallRepository.add(HallFixture.createHall());
     }
 }

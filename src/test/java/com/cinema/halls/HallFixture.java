@@ -1,8 +1,8 @@
 package com.cinema.halls;
 
+import com.cinema.halls.application.commands.CreateHall;
+import com.cinema.halls.application.commands.CreateSeatDto;
 import com.cinema.halls.domain.Hall;
-import com.cinema.halls.infrastructure.config.ConfigHallDto;
-import com.cinema.halls.infrastructure.config.ConfigSeatDto;
 
 import java.util.List;
 
@@ -12,9 +12,12 @@ public class HallFixture {
         return new Hall(HallSeatFixture.createSeats());
     }
 
-    public static ConfigHallDto createCreateHallCommand() {
-       return new ConfigHallDto(
-               List.of(new ConfigSeatDto(1, 1), new ConfigSeatDto(1, 2))
+    public static CreateHall createCreateHallCommand() {
+       return new CreateHall(
+               List.of(
+                       new CreateSeatDto(1, 1),
+                       new CreateSeatDto(1, 2)
+               )
        );
     }
 }

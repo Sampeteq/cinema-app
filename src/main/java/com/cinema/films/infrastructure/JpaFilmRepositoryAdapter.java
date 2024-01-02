@@ -1,6 +1,6 @@
 package com.cinema.films.infrastructure;
 
-import com.cinema.films.application.queries.GetFilms;
+import com.cinema.films.application.dto.GetFilmsDto;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +34,9 @@ class JpaFilmRepositoryAdapter implements FilmRepository {
     }
 
     @Override
-    public List<Film> getAll(GetFilms query) {
+    public List<Film> getAll(GetFilmsDto dto) {
         return jpaFilmRepository.findAll(
-                titleSpec(query).and(categorySpec(query))
+                titleSpec(dto).and(categorySpec(dto))
         );
     }
 
@@ -45,21 +45,21 @@ class JpaFilmRepositoryAdapter implements FilmRepository {
         return jpaFilmRepository.existsByTitle(title);
     }
 
-    private static Specification<Film> titleSpec(GetFilms query) {
-        return (root, criteriaQuery, criteriaBuilder) -> query.title() == null ?
+    private static Specification<Film> titleSpec(GetFilmsDto dto) {
+        return (root, criteriaQuery, criteriaBuilder) -> dto.title() == null ?
                 criteriaBuilder.conjunction() :
                 criteriaBuilder.equal(
                         root.get("title"),
-                        query.title()
+                        dto.title()
                 );
     }
 
-    private static Specification<Film> categorySpec(GetFilms query) {
-        return (root, criteriaQuery, criteriaBuilder) -> query.category() == null ?
+    private static Specification<Film> categorySpec(GetFilmsDto dto) {
+        return (root, criteriaQuery, criteriaBuilder) -> dto.category() == null ?
                 criteriaBuilder.conjunction() :
                 criteriaBuilder.equal(
                         root.get("category"),
-                        query.category()
+                        dto.category()
                 );
     }
 }

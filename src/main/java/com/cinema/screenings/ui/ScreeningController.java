@@ -1,14 +1,10 @@
 package com.cinema.screenings.ui;
 
-import com.cinema.screenings.application.commands.CreateScreening;
-import com.cinema.screenings.application.commands.DeleteScreening;
-import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
-import com.cinema.screenings.application.commands.handlers.DeleteScreeningHandler;
-import com.cinema.screenings.application.queries.GetScreenings;
-import com.cinema.screenings.application.queries.GetSeatsByScreeningId;
-import com.cinema.screenings.application.queries.dto.ScreeningSeatDto;
-import com.cinema.screenings.application.queries.handlers.GetScreeningsHandler;
-import com.cinema.screenings.application.queries.handlers.GetSeatsByScreeningIdHandler;
+import com.cinema.screenings.application.ScreeningSeatService;
+import com.cinema.screenings.application.ScreeningService;
+import com.cinema.screenings.application.dto.CreateScreeningDto;
+import com.cinema.screenings.application.dto.GetScreeningsDto;
+import com.cinema.screenings.application.dto.ScreeningSeatDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,20 +27,18 @@ import java.util.List;
 @Slf4j
 class ScreeningController {
 
-    private final CreateScreeningHandler createScreeningHandler;
-    private final DeleteScreeningHandler deleteScreeningHandler;
-    private final GetScreeningsHandler getScreeningsHandler;
-    private final GetSeatsByScreeningIdHandler getSeatsByScreeningIdHandler;
+    private final ScreeningService screeningService;
+    private final ScreeningSeatService screeningSeatService;
 
     @PostMapping("admin/screenings")
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> createScreening(
             @RequestBody
             @Valid
-            CreateScreening command
+            CreateScreeningDto dto
     ) {
-        log.info("Command:{}", command);
-        createScreeningHandler.handle(command);
+        log.info("Dto:{}", dto);
+        screeningService.createScreening(dto);
         var responseEntity = ResponseEntity.created(URI.create("/screenings")).build();
         log.info("Response entity:{}", responseEntity);
         return responseEntity;
@@ -53,9 +47,8 @@ class ScreeningController {
     @DeleteMapping("/admin/screenings/{id}")
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> deleteScreening(@PathVariable Long id) {
-        var command = new DeleteScreening(id);
-        log.info("Command:{}", command);
-        deleteScreeningHandler.handle(command);
+        log.info("Screening id:{}", id);
+        screeningService.deleteScreening(id);
         var responseEntity = ResponseEntity.noContent().build();
         log.info("Response entity:{}", responseEntity);
         return responseEntity;
@@ -63,19 +56,18 @@ class ScreeningController {
 
     @GetMapping("/public/screenings")
     ScreeningsResponse getScreenings(@RequestParam(required = false) LocalDate date) {
-        var query = GetScreenings
+        var getScreeningsDto = GetScreeningsDto
                 .builder()
                 .date(date)
                 .build();
-        log.info("Query:{}", query);
-        var screenings = getScreeningsHandler.handle(query);
+        log.info("Dto:{}", getScreeningsDto);
+        var screenings = screeningService.getScreenings(getScreeningsDto);
         return new ScreeningsResponse(screenings);
     }
 
     @GetMapping("/public/screenings/{id}/seats")
     List<ScreeningSeatDto> getSeatsByScreeningId(@PathVariable Long id) {
-        var query = new GetSeatsByScreeningId(id);
-        log.info("Query:{}", query);
-        return getSeatsByScreeningIdHandler.handle(query);
+        log.info("Screening id:{}", id);
+        return screeningSeatService.getSeatsByScreeningId(id);
     }
 }

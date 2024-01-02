@@ -1,11 +1,8 @@
 package com.cinema.users.ui;
 
-import com.cinema.users.application.commands.CreateUser;
-import com.cinema.users.application.commands.ResetUserPassword;
-import com.cinema.users.application.commands.SetNewUserPassword;
-import com.cinema.users.application.commands.handlers.CreateUserHandler;
-import com.cinema.users.application.commands.handlers.ResetUserPasswordHandler;
-import com.cinema.users.application.commands.handlers.SetNewUserPasswordHandler;
+import com.cinema.users.application.UserService;
+import com.cinema.users.application.dto.CreateUserDto;
+import com.cinema.users.application.dto.SetNewUserPasswordDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,24 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 class UserController {
 
-    private final CreateUserHandler createUserHandler;
-    private final ResetUserPasswordHandler resetUserPasswordHandler;
-    private final SetNewUserPasswordHandler setNewUserPasswordHandler;
+    private final UserService userService;
 
     @PostMapping("/public/users")
-    ResponseEntity<Object> createUser(@RequestBody @Valid CreateUser command) {
-        createUserHandler.handle(command);
+    ResponseEntity<Object> createUser(@RequestBody @Valid CreateUserDto dto) {
+        userService.createUser(dto);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/public/users/password/reset")
     void resetUserPassword(@RequestParam String mail) {
-        var resetUserPassword = new ResetUserPassword(mail);
-        resetUserPasswordHandler.handle(resetUserPassword);
+        userService.resetUserPassword(mail);
     }
 
     @PatchMapping("/public/users/password/new")
-    void setNewUserPassword(@RequestBody @Valid SetNewUserPassword command) {
-        setNewUserPasswordHandler.handle(command);
+    void setNewUserPassword(@RequestBody @Valid SetNewUserPasswordDto dto) {
+        userService.setNewUserPassword(dto);
     }
 }

@@ -1,15 +1,16 @@
 package com.cinema.tickets.ui;
 
 import com.cinema.BaseIT;
-import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.halls.application.commands.handlers.CreateHallHandler;
+import com.cinema.films.FilmFixture;
+import com.cinema.films.application.FilmService;
+import com.cinema.halls.application.HallService;
 import com.cinema.screenings.ScreeningFixture;
-import com.cinema.screenings.application.commands.handlers.CreateScreeningHandler;
+import com.cinema.screenings.application.ScreeningService;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.tickets.TicketFixture;
-import com.cinema.tickets.application.commands.BookTicket;
-import com.cinema.tickets.application.queries.dto.TicketDto;
+import com.cinema.tickets.application.dto.BookTicketDto;
+import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
@@ -17,8 +18,9 @@ import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
-import com.cinema.users.application.commands.CreateUser;
-import com.cinema.users.application.commands.handlers.CreateUserHandler;
+import com.cinema.users.UserFixture;
+import com.cinema.users.application.UserService;
+import com.cinema.users.application.dto.CreateUserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,11 +33,9 @@ import java.time.Clock;
 import java.time.ZoneOffset;
 import java.util.List;
 
-import static com.cinema.films.FilmFixture.createCreateFilmCommand;
-import static com.cinema.halls.HallFixture.createCreateHallCommand;
-import static com.cinema.screenings.ScreeningFixture.createCreateScreeningCommand;
+import static com.cinema.halls.HallFixture.createCreateHallDto;
+import static com.cinema.screenings.ScreeningFixture.createCreateScreeningDto;
 import static com.cinema.tickets.TicketFixture.createCancelledTicket;
-import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -50,25 +50,25 @@ class TicketControllerIT extends BaseIT {
     private TicketRepository ticketRepository;
 
     @Autowired
-    private CreateFilmHandler createFilmHandler;
+    private FilmService filmService;
 
     @Autowired
-    private CreateHallHandler createHallHandler;
+    private HallService hallService;
 
     @Autowired
-    private CreateScreeningHandler createScreeningHandler;
+    private ScreeningService screeningService;
 
     @Autowired
-    private CreateUserHandler createUserHandler;
+    private UserService userService;
 
-    private final CreateUser createUserCommand = createCrateUserCommand();
+    private final CreateUserDto createUserDto = UserFixture.createCrateUserDto();
 
     @SpyBean
     private Clock clock;
 
     @BeforeEach
     void setUp() {
-        createUserHandler.handle(createUserCommand);
+        userService.createAdmin(createUserDto);
     }
 
     @Test
@@ -76,7 +76,7 @@ class TicketControllerIT extends BaseIT {
         //given
         var nonExistingScreeningId = 0L;
         var seatId = 1L;
-        var command = new BookTicket(
+        var bookTicketDto = new BookTicketDto(
                 nonExistingScreeningId,
                 List.of(seatId)
         );
@@ -87,8 +87,8 @@ class TicketControllerIT extends BaseIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
+                .bodyValue(bookTicketDto)
+                .headers(headers -> headers.setBasicAuth(createUserDto.mail(), createUserDto.password()))
                 .exchange();
 
         //then
@@ -108,7 +108,7 @@ class TicketControllerIT extends BaseIT {
         addScreening();
         var screeningId = 1L;
         var nonExistingSeatId = 0L;
-        var command = new BookTicket(
+        var bookTicketDto = new BookTicketDto(
                 screeningId,
                 List.of(nonExistingSeatId)
         );
@@ -118,8 +118,8 @@ class TicketControllerIT extends BaseIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
+                .bodyValue(bookTicketDto)
+                .headers(headers -> headers.setBasicAuth(createUserDto.mail(), createUserDto.password()))
                 .exchange();
 
         //then
@@ -139,7 +139,7 @@ class TicketControllerIT extends BaseIT {
         addScreening();
         var screeningId = 1L;
         var seatId = 1L;
-        var command = new BookTicket(
+        var bookTicketDto = new BookTicketDto(
                 screeningId,
                 List.of(seatId)
         );
@@ -149,8 +149,8 @@ class TicketControllerIT extends BaseIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
+                .bodyValue(bookTicketDto)
+                .headers(headers -> headers.setBasicAuth(createUserDto.mail(), createUserDto.password()))
                 .exchange();
 
         //then
@@ -160,8 +160,8 @@ class TicketControllerIT extends BaseIT {
                 .hasValueSatisfying(ticket -> {
                     assertEquals(1L, ticket.getUserId());
                     assertEquals(TicketStatus.BOOKED, ticket.getStatus());
-                    assertEquals(command.screeningId(), ticket.getScreeningId());
-                    assertEquals(command.seatsIds().getFirst(), ticket.getSeatId());
+                    assertEquals(bookTicketDto.screeningId(), ticket.getScreeningId());
+                    assertEquals(bookTicketDto.seatsIds().getFirst(), ticket.getSeatId());
                 });
     }
 
@@ -172,7 +172,7 @@ class TicketControllerIT extends BaseIT {
         addHall();
         addScreening();
         var screeningId = 1L;
-        var command = new BookTicket(
+        var bookTicketDto = new BookTicketDto(
                 screeningId,
                 List.of(1L,2L)
         );
@@ -182,8 +182,8 @@ class TicketControllerIT extends BaseIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
+                .bodyValue(bookTicketDto)
+                .headers(headers -> headers.setBasicAuth(createUserDto.mail(), createUserDto.password()))
                 .exchange();
 
         //then
@@ -203,7 +203,7 @@ class TicketControllerIT extends BaseIT {
         addHall();
         addScreening();
         var ticket = addTicket();
-        var command = new BookTicket(
+        var bookTicketDto = new BookTicketDto(
                 ticket.getScreeningId(),
                 List.of(ticket.getSeatId())
         );
@@ -213,8 +213,8 @@ class TicketControllerIT extends BaseIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
+                .bodyValue(bookTicketDto)
+                .headers(headers -> headers.setBasicAuth(createUserDto.mail(), createUserDto.password()))
                 .exchange();
 
         //then
@@ -237,7 +237,7 @@ class TicketControllerIT extends BaseIT {
                 .thenReturn(ScreeningFixture.SCREENING_DATE.minusMinutes(59).toInstant(ZoneOffset.UTC));
         var screeningId = 1L;
         var seatId = 1L;
-        var command = new BookTicket(
+        var bookTicketDto = new BookTicketDto(
                 screeningId,
                 List.of(seatId)
         );
@@ -247,8 +247,8 @@ class TicketControllerIT extends BaseIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
+                .bodyValue(bookTicketDto)
+                .headers(headers -> headers.setBasicAuth(createUserDto.mail(), createUserDto.password()))
                 .exchange();
 
         //then
@@ -272,7 +272,7 @@ class TicketControllerIT extends BaseIT {
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + ticket.getId() + "/cancel")
-                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
+                .headers(headers -> headers.setBasicAuth(createUserDto.mail(), createUserDto.password()))
                 .exchange();
 
         //then
@@ -296,7 +296,7 @@ class TicketControllerIT extends BaseIT {
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + ticket.getId() + "/cancel")
-                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
+                .headers(headers -> headers.setBasicAuth(createUserDto.mail(), createUserDto.password()))
                 .exchange();
 
         //then
@@ -313,18 +313,18 @@ class TicketControllerIT extends BaseIT {
         //given
         addFilm();
         addHall();
-        var createScreeningCommand = ScreeningFixture.createCreateScreeningCommand();
-        createScreeningHandler.handle(createScreeningCommand);
+        var createScreeningDto = ScreeningFixture.createCreateScreeningDto();
+        screeningService.createScreening(createScreeningDto);
         Mockito
                 .when(clock.instant())
-                .thenReturn(createScreeningCommand.date().minusHours(23).toInstant(ZoneOffset.UTC));
+                .thenReturn(createScreeningDto.date().minusHours(23).toInstant(ZoneOffset.UTC));
         var ticket = addTicket();
 
         //when
         var spec = webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + ticket.getId() + "/cancel")
-                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
+                .headers(headers -> headers.setBasicAuth(createUserDto.mail(), createUserDto.password()))
                 .exchange();
 
         //then
@@ -339,14 +339,14 @@ class TicketControllerIT extends BaseIT {
     @Test
     void tickets_are_gotten_by_user_id() {
         //given
-        var createFilmCommand = createCreateFilmCommand();
-        createFilmHandler.handle(createFilmCommand);
+        var createFilmDto = FilmFixture.createCreateFilmDto();
+        filmService.createFilm(createFilmDto);
 
-        var createHallCommand = createCreateHallCommand();
-        createHallHandler.handle(createHallCommand);
+        var createHallDto = createCreateHallDto();
+        hallService.createHall(createHallDto);
 
-        var createScreeningCommand = createCreateScreeningCommand();
-        createScreeningHandler.handle(createScreeningCommand);
+        var createScreeningDto = ScreeningFixture.createCreateScreeningDto();
+        screeningService.createScreening(createScreeningDto);
 
         var ticket = ticketRepository.add(TicketFixture.createTicket());
 
@@ -354,7 +354,7 @@ class TicketControllerIT extends BaseIT {
         var spec = webTestClient
                 .get()
                 .uri(TICKETS_BASE_ENDPOINT + "/my")
-                .headers(headers -> headers.setBasicAuth(createUserCommand.mail(), createUserCommand.password()))
+                .headers(headers -> headers.setBasicAuth(createUserDto.mail(), createUserDto.password()))
                 .exchange();
 
         //then
@@ -362,8 +362,8 @@ class TicketControllerIT extends BaseIT {
                 new TicketDto(
                         1L,
                         ticket.getStatus(),
-                        createFilmCommand.title(),
-                        createScreeningCommand.date(),
+                        createFilmDto.title(),
+                        createScreeningDto.date(),
                         1L,
                         1,
                         1
@@ -384,15 +384,15 @@ class TicketControllerIT extends BaseIT {
     }
 
     private void addFilm() {
-        createFilmHandler.handle(createCreateFilmCommand());
+        filmService.createFilm(FilmFixture.createCreateFilmDto());
     }
 
     private void addHall() {
-        createHallHandler.handle(createCreateHallCommand());
+        hallService.createHall(createCreateHallDto());
     }
 
     private void addScreening() {
-        createScreeningHandler.handle(createCreateScreeningCommand(ScreeningFixture.SCREENING_DATE));
+        screeningService.createScreening(createCreateScreeningDto(ScreeningFixture.SCREENING_DATE));
     }
 
     private Ticket addTicket() {

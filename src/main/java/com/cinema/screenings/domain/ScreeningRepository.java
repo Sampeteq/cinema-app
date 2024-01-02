@@ -1,6 +1,6 @@
 package com.cinema.screenings.domain;
 
-import com.cinema.screenings.application.queries.GetScreenings;
+import com.cinema.screenings.application.dto.GetScreeningsDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,6 +10,6 @@ public interface ScreeningRepository {
     Screening add(Screening screening);
     void delete(Screening screening);
     Optional<Screening> getById(Long id);
-    List<Screening> getAll(GetScreenings query);
+    List<Screening> getAll(GetScreeningsDto dto);
     List<Screening> getScreeningCollisions(LocalDateTime startAt, LocalDateTime endAt, Long hallId);
 }

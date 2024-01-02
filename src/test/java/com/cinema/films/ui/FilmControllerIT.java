@@ -1,20 +1,20 @@
 package com.cinema.films.ui;
 
 import com.cinema.BaseIT;
-import com.cinema.films.application.commands.CreateFilm;
+import com.cinema.films.FilmFixture;
+import com.cinema.films.application.dto.CreateFilmDto;
 import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
-import com.cinema.users.application.commands.handlers.CreateAdminHandler;
+import com.cinema.users.UserFixture;
+import com.cinema.users.application.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import static com.cinema.films.FilmFixture.createCreateFilmCommand;
 import static com.cinema.films.FilmFixture.createFilm;
-import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -27,7 +27,7 @@ class FilmControllerIT extends BaseIT {
     private static final String FILM_ADMIN_ENDPOINT = "/admin/films";
 
     @Autowired
-    private CreateAdminHandler createAdminHandler;
+    private UserService userService;
 
     @Autowired
     private FilmRepository filmRepository;
@@ -35,14 +35,14 @@ class FilmControllerIT extends BaseIT {
     @Test
     void film_is_created() {
         //given
-        var crateUserCommand = createCrateUserCommand();
-        createAdminHandler.handle(crateUserCommand);
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createAdmin(crateUserDto);
         var id = 1L;
         var title = "Some filmId";
         var category = FilmCategory.COMEDY;
         var year = 2023;
         var durationInMinutes = 100;
-        var command = new CreateFilm(
+        var createFilmDto = new CreateFilmDto(
                 title,
                 category,
                 year,
@@ -54,8 +54,8 @@ class FilmControllerIT extends BaseIT {
                 .post()
                 .uri(FILM_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
+                .bodyValue(createFilmDto)
+                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then
@@ -63,28 +63,28 @@ class FilmControllerIT extends BaseIT {
         assertThat(filmRepository.getById(id))
                 .isNotEmpty()
                 .hasValueSatisfying(film -> {
-                    assertEquals(command.title(), film.getTitle());
-                    assertEquals(command.category(), film.getCategory());
-                    assertEquals(command.year(), film.getYear());
-                    assertEquals(command.durationInMinutes(), film.getDurationInMinutes());
+                    assertEquals(createFilmDto.title(), film.getTitle());
+                    assertEquals(createFilmDto.category(), film.getCategory());
+                    assertEquals(createFilmDto.year(), film.getYear());
+                    assertEquals(createFilmDto.durationInMinutes(), film.getDurationInMinutes());
                 });
     }
 
     @Test
     void film_title_is_unique() {
         //given
-        var crateUserCommand = createCrateUserCommand();
-        createAdminHandler.handle(crateUserCommand);
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createAdmin(crateUserDto);
         var film = filmRepository.add(createFilm());
-        var command = createCreateFilmCommand(film.getTitle());
+        var createFilmDto = FilmFixture.createCreateFilmDto(film.getTitle());
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(FILM_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
+                .bodyValue(createFilmDto)
+                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then
@@ -101,15 +101,15 @@ class FilmControllerIT extends BaseIT {
     @WithMockUser(authorities = "ADMIN")
     void film_is_deleted() {
         //given
-        var crateUserCommand = createCrateUserCommand();
-        createAdminHandler.handle(crateUserCommand);
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createAdmin(crateUserDto);
         var film = filmRepository.add(createFilm());
 
         //when
         var spec = webTestClient
                 .delete()
                 .uri(FILM_ADMIN_ENDPOINT + "/" + film.getId())
-                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
+                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then

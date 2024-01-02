@@ -1,6 +1,6 @@
 package com.cinema.screenings.infrastructure;
 
-import com.cinema.screenings.application.queries.GetScreenings;
+import com.cinema.screenings.application.dto.GetScreeningsDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,19 +42,19 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     @Override
-    public List<Screening> getAll(GetScreenings query) {
+    public List<Screening> getAll(GetScreeningsDto dto) {
         return jpaScreeningRepository.findAll(
-                dateSpec(query)
+                dateSpec(dto)
         );
     }
 
-    private static Specification<Screening> dateSpec(GetScreenings query) {
-        return (root, jpaQuery, criteriaBuilder) -> query.date() == null ?
+    private static Specification<Screening> dateSpec(GetScreeningsDto dto) {
+        return (root, jpaQuery, criteriaBuilder) -> dto.date() == null ?
                         criteriaBuilder.conjunction() :
                         criteriaBuilder.between(
                                 root.get("date"),
-                                query.date(),
-                                query.date().plusDays(1)
+                                dto.date(),
+                                dto.date().plusDays(1)
                         );
     }
 }

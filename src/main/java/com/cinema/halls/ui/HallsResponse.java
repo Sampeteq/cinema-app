@@ -1,6 +1,6 @@
 package com.cinema.halls.ui;
 
-import com.cinema.halls.application.queries.dto.HallDto;
+import com.cinema.halls.application.dto.HallDto;
 
 import java.util.List;
 

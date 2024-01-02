@@ -1,6 +1,6 @@
 package com.cinema.screenings.ui;
 
-import com.cinema.screenings.application.queries.dto.ScreeningDto;
+import com.cinema.screenings.application.dto.ScreeningDto;
 
 import java.util.List;
 

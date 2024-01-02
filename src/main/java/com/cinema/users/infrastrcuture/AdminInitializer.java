@@ -1,7 +1,7 @@
 package com.cinema.users.infrastrcuture;
 
-import com.cinema.users.application.commands.CreateUser;
-import com.cinema.users.application.commands.handlers.CreateAdminHandler;
+import com.cinema.users.application.UserService;
+import com.cinema.users.application.dto.CreateUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Profile;
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component;
 class AdminInitializer {
 
     private final AdminProperties adminProperties;
-    private final CreateAdminHandler createAdminHandler;
+    private final UserService userService;
 
     @EventListener(ContextRefreshedEvent.class)
     void createAdminOnStartUp() {
-        var command = new CreateUser(adminProperties.mail(), adminProperties.password());
-        createAdminHandler.handle(command);
+        var createUserDto = new CreateUserDto(adminProperties.mail(), adminProperties.password());
+        userService.createAdmin(createUserDto);
     }
 }
 @ConfigurationProperties(prefix = "admin")

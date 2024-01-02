@@ -1,6 +1,6 @@
 package com.cinema.users;
 
-import com.cinema.users.application.commands.CreateUser;
+import com.cinema.users.application.dto.CreateUserDto;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRole;
 
@@ -15,15 +15,15 @@ public final class UserFixture {
     private UserFixture() {
     }
 
-    public static CreateUser createCrateUserCommand() {
-        return new CreateUser(
+    public static CreateUserDto createCrateUserDto() {
+        return new CreateUserDto(
                 MAIL,
                 PASSWORD
         );
     }
 
-    public static CreateUser createCrateUserCommand(String mail) {
-        return new CreateUser(
+    public static CreateUserDto createCrateUserDto(String mail) {
+        return new CreateUserDto(
                 mail,
                 PASSWORD
         );

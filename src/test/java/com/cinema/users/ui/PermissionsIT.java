@@ -2,31 +2,27 @@ package com.cinema.users.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.users.UserFixture;
-import com.cinema.users.application.commands.handlers.CreateAdminHandler;
-import com.cinema.users.application.commands.handlers.CreateUserHandler;
+import com.cinema.users.application.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 class PermissionsIT extends BaseIT {
 
     @Autowired
-    private CreateAdminHandler createAdminHandler;
-
-    @Autowired
-    private CreateUserHandler createUserHandler;
+    private UserService userService;
 
     @Test
     void user_with_admin_role_has_access_to_endpoints_with_admin_prefix() {
         //given
-        var command = UserFixture.createCrateUserCommand();
-        createAdminHandler.handle(command);
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createAdmin(crateUserDto);
         var sampleAdminEndpoint = "/admin/halls";
 
         //when
         var responseSpec = webTestClient
                 .options()
                 .uri(sampleAdminEndpoint)
-                .headers(httpHeaders -> httpHeaders.setBasicAuth(command.mail(), command.password()))
+                .headers(httpHeaders -> httpHeaders.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then
@@ -36,15 +32,15 @@ class PermissionsIT extends BaseIT {
     @Test
     void user_with_common_role_has_no_access_to_endpoints_with_admin_prefix() {
         //given
-        var command = UserFixture.createCrateUserCommand();
-        createUserHandler.handle(command);
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createUser(crateUserDto);
         var sampleAdminEndpoint = "/admin/halls";
 
         //when
         var responseSpec = webTestClient
                 .options()
                 .uri(sampleAdminEndpoint)
-                .headers(httpHeaders -> httpHeaders.setBasicAuth(command.mail(), command.password()))
+                .headers(httpHeaders -> httpHeaders.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then

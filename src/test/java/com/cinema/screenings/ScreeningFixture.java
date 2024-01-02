@@ -1,6 +1,6 @@
 package com.cinema.screenings;
 
-import com.cinema.screenings.application.commands.CreateScreening;
+import com.cinema.screenings.application.dto.CreateScreeningDto;
 import com.cinema.screenings.domain.Screening;
 
 import java.time.LocalDateTime;
@@ -36,16 +36,16 @@ public final class ScreeningFixture {
         );
     }
 
-    public static CreateScreening createCreateScreeningCommand() {
-        return new CreateScreening(
+    public static CreateScreeningDto createCreateScreeningDto() {
+        return new CreateScreeningDto(
                 SCREENING_DATE,
                 FILM_ID,
                 HALL_ID
         );
     }
 
-    public static CreateScreening createCreateScreeningCommand(LocalDateTime date) {
-        return new CreateScreening(
+    public static CreateScreeningDto createCreateScreeningDto(LocalDateTime date) {
+        return new CreateScreeningDto(
                 date,
                 FILM_ID,
                 HALL_ID

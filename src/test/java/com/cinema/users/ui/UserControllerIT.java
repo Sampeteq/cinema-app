@@ -2,7 +2,7 @@ package com.cinema.users.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.users.UserFixture;
-import com.cinema.users.application.commands.SetNewUserPassword;
+import com.cinema.users.application.dto.SetNewUserPasswordDto;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
-import static com.cinema.users.UserFixture.createCrateUserCommand;
+import static com.cinema.users.UserFixture.createCrateUserDto;
 import static com.cinema.users.UserFixture.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -35,23 +35,23 @@ class UserControllerIT extends BaseIT {
     @Test
     void user_is_created() {
         //given
-        var command = UserFixture.createCrateUserCommand();
+        var crateUserDto = UserFixture.createCrateUserDto();
 
         //then
         var spec = webTestClient
                 .post()
                 .uri(USERS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
+                .bodyValue(crateUserDto)
                 .exchange();
 
 
         spec.expectStatus().isOk();
-        assertThat(userRepository.getByMail(command.mail()))
+        assertThat(userRepository.getByMail(crateUserDto.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {
-                    assertEquals(command.mail(), user.getUsername());
-                    assertTrue(passwordEncoder.matches(command.password(), user.getPassword()));
+                    assertEquals(crateUserDto.mail(), user.getUsername());
+                    assertTrue(passwordEncoder.matches(crateUserDto.password(), user.getPassword()));
                     assertEquals(UserRole.COMMON, user.getRole());
                 });
     }
@@ -60,7 +60,7 @@ class UserControllerIT extends BaseIT {
     void user_name_cannot_be_duplicated() {
         //given
         var user = userRepository.add(createUser("user1@mail.com"));
-        var dto = createCrateUserCommand(user.getUsername());
+        var dto = createCrateUserDto(user.getUsername());
 
         //when
         var spec = webTestClient
@@ -108,7 +108,7 @@ class UserControllerIT extends BaseIT {
         //given
         var passwordResetToken = UUID.randomUUID();
         var addedUser = userRepository.add(createUser(passwordResetToken));
-        var command = new SetNewUserPassword(
+        var setNewUserPasswordDto = new SetNewUserPasswordDto(
                 passwordResetToken,
                 addedUser.getPassword() + "new"
         );
@@ -117,7 +117,7 @@ class UserControllerIT extends BaseIT {
         var spec = webTestClient
                 .patch()
                 .uri(USERS_BASE_ENDPOINT + "/password/new")
-                .bodyValue(command)
+                .bodyValue(setNewUserPasswordDto)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange();
 
@@ -127,7 +127,7 @@ class UserControllerIT extends BaseIT {
                 userRepository.getByMail(addedUser.getMail())
         ).hasValueSatisfying(
                 user -> assertTrue(
-                        passwordEncoder.matches(command.newPassword(), user.getPassword())
+                        passwordEncoder.matches(setNewUserPasswordDto.newPassword(), user.getPassword())
                 )
         );
     }

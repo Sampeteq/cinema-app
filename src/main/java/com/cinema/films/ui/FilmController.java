@@ -1,11 +1,8 @@
 package com.cinema.films.ui;
 
-import com.cinema.films.application.commands.CreateFilm;
-import com.cinema.films.application.commands.DeleteFilm;
-import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.films.application.commands.handlers.DeleteFilmHandler;
-import com.cinema.films.application.queries.GetFilms;
-import com.cinema.films.application.queries.handlers.GetFilmsHandler;
+import com.cinema.films.application.FilmService;
+import com.cinema.films.application.dto.CreateFilmDto;
+import com.cinema.films.application.dto.GetFilmsDto;
 import com.cinema.films.domain.FilmCategory;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -27,15 +24,13 @@ import java.net.URI;
 @Slf4j
 public class FilmController {
 
-    private final CreateFilmHandler createFilmHandler;
-    private final DeleteFilmHandler deleteFilmHandler;
-    private final GetFilmsHandler getFilmsHandler;
+    private final FilmService filmService;
 
     @PostMapping("/admin/films")
     @SecurityRequirement(name = "basic")
-    ResponseEntity<Object> createFilm(@RequestBody @Valid CreateFilm command) {
-        log.info("Command:{}", command);
-        createFilmHandler.handle(command);
+    ResponseEntity<Object> createFilm(@RequestBody @Valid CreateFilmDto dto) {
+        log.info("Dto:{}", dto);
+        filmService.createFilm(dto);
         var responseEntity = ResponseEntity.created(URI.create("/films")).build();
         log.info("Response entity{}", responseEntity);
         return responseEntity;
@@ -44,9 +39,8 @@ public class FilmController {
     @DeleteMapping("/admin/films/{id}")
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> deleteFilm(@PathVariable Long id) {
-        var command = new DeleteFilm(id);
-        log.info("Command:{}", command);
-        deleteFilmHandler.handle(command);
+        log.info("Film id:{}", id);
+        filmService.deleteFilm(id);
         var responseEntity = ResponseEntity.noContent().build();
         log.info("Response entity:{}", responseEntity);
         return responseEntity;
@@ -57,12 +51,12 @@ public class FilmController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) FilmCategory category
     ) {
-        var queryDto = GetFilms
+        var getFilmsDto = GetFilmsDto
                 .builder()
                 .title(title)
                 .category(category)
                 .build();
-        var films = getFilmsHandler.handle(queryDto);
+        var films = filmService.getFilms(getFilmsDto);
         return new FilmsResponse(films);
     }
 }

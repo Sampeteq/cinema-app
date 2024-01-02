@@ -1,11 +1,7 @@
 package com.cinema.halls.ui;
 
-import com.cinema.halls.application.commands.CreateHall;
-import com.cinema.halls.application.commands.DeleteHall;
-import com.cinema.halls.application.commands.handlers.CreateHallHandler;
-import com.cinema.halls.application.commands.handlers.DeleteHallHandler;
-import com.cinema.halls.application.queries.GetAllHalls;
-import com.cinema.halls.application.queries.handlers.GetAllHallsHandler;
+import com.cinema.halls.application.HallService;
+import com.cinema.halls.application.dto.CreateHallDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,15 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class HallController {
 
-    private final CreateHallHandler createHallHandler;
-    private final DeleteHallHandler deleteHallHandler;
-    private final GetAllHallsHandler getAllHallsHandler;
+    private final HallService hallService;
 
     @PostMapping("/admin/halls")
     @SecurityRequirement(name = "basic")
-    public ResponseEntity<Object> createHall(@RequestBody CreateHall command) {
-        log.info("Command:{}", command);
-        createHallHandler.handle(command);
+    public ResponseEntity<Object> createHall(@RequestBody CreateHallDto dto) {
+        log.info("Dto:{}", dto);
+        hallService.createHall(dto);
         var responseEntity = new ResponseEntity<>(HttpStatus.OK);
         log.info("Response:{}", responseEntity);
         return responseEntity;
@@ -40,9 +34,8 @@ public class HallController {
     @DeleteMapping("/admin/halls/{id}")
     @SecurityRequirement(name = "basic")
     public ResponseEntity<Object> deleteHall(@PathVariable Long id) {
-        var command = new DeleteHall(id);
-        log.info("Command:{}", command);
-        deleteHallHandler.handle(command);
+        log.info("Hall id:{}", id);
+        hallService.deleteHall(id);
         var responseEntity = new ResponseEntity<>(HttpStatus.NO_CONTENT);
         log.info("Response:{}", responseEntity);
         return responseEntity;
@@ -51,9 +44,7 @@ public class HallController {
     @GetMapping("/admin/halls")
     @SecurityRequirement(name = "basic")
     public HallsResponse getAllHalls() {
-        var query = new GetAllHalls();
-        log.info("Query:{}", query);
-        var halls =  getAllHallsHandler.handle(query);
+        var halls =  hallService.getAllHalls();
         return new HallsResponse(halls);
     }
 }

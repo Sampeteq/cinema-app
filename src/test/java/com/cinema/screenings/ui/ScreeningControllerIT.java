@@ -1,16 +1,18 @@
 package com.cinema.screenings.ui;
 
 import com.cinema.BaseIT;
-import com.cinema.films.application.commands.handlers.CreateFilmHandler;
-import com.cinema.halls.application.commands.handlers.CreateHallHandler;
+import com.cinema.films.FilmFixture;
+import com.cinema.films.application.FilmService;
+import com.cinema.halls.application.HallService;
 import com.cinema.screenings.ScreeningSeatFixture;
-import com.cinema.screenings.domain.ScreeningSeatRepository;
-import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
-import com.cinema.screenings.application.commands.CreateScreening;
+import com.cinema.screenings.application.dto.CreateScreeningDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
+import com.cinema.screenings.domain.ScreeningSeatRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
-import com.cinema.users.application.commands.handlers.CreateAdminHandler;
+import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
+import com.cinema.users.UserFixture;
+import com.cinema.users.application.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,12 +21,10 @@ import org.springframework.http.MediaType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static com.cinema.films.FilmFixture.createCreateFilmCommand;
-import static com.cinema.halls.HallFixture.createCreateHallCommand;
+import static com.cinema.halls.HallFixture.createCreateHallDto;
 import static com.cinema.screenings.ScreeningFixture.HALL_ID;
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
-import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -43,13 +43,13 @@ class ScreeningControllerIT extends BaseIT {
     private ScreeningSeatRepository screeningSeatRepository;
 
     @Autowired
-    private CreateFilmHandler createFilmHandler;
+    private FilmService filmService;
 
     @Autowired
-    private CreateHallHandler createHallHandler;
+    private HallService hallService;
 
     @Autowired
-    private CreateAdminHandler createAdminHandler;
+    private UserService userService;
 
     @Test
     void screening_is_created() {
@@ -57,17 +57,17 @@ class ScreeningControllerIT extends BaseIT {
         addHall();
         var filmId = 1L;
         addFilm();
-        var crateAdminCommand = createCrateUserCommand();
-        createAdminHandler.handle(crateAdminCommand);
-        var command = new CreateScreening(SCREENING_DATE, filmId, HALL_ID);
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createAdmin(crateUserDto);
+        var createScreeningDto = new CreateScreeningDto(SCREENING_DATE, filmId, HALL_ID);
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.mail(), crateAdminCommand.password()))
+                .bodyValue(createScreeningDto)
+                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then
@@ -75,8 +75,8 @@ class ScreeningControllerIT extends BaseIT {
         assertThat(screeningRepository.getById(1L))
                 .isNotEmpty()
                 .hasValueSatisfying(screening -> {
-                    assertThat(screening.getDate()).isEqualTo(command.date());
-                    assertThat(screening.getFilmId()).isEqualTo(command.filmId());
+                    assertThat(screening.getDate()).isEqualTo(createScreeningDto.date());
+                    assertThat(screening.getFilmId()).isEqualTo(createScreeningDto.filmId());
                     assertThat(screening.getHallId()).isEqualTo(1L);
                 });
     }
@@ -87,18 +87,18 @@ class ScreeningControllerIT extends BaseIT {
         addHall();
         var filmId = 1L;
         addFilm();
-        var crateAdminCommand = createCrateUserCommand();
-        createAdminHandler.handle(crateAdminCommand);
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createAdmin(crateUserDto);
         var screeningDate = LocalDateTime.now().plusDays(6);
-        var command = new CreateScreening(screeningDate, filmId, HALL_ID);
+        var createScreeningDto = new CreateScreeningDto(screeningDate, filmId, HALL_ID);
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.mail(), crateAdminCommand.password()))
+                .bodyValue(createScreeningDto)
+                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then
@@ -116,18 +116,18 @@ class ScreeningControllerIT extends BaseIT {
         addHall();
         var filmId = 1L;
         addFilm();
-        var crateAdminCommand = createCrateUserCommand();
-        createAdminHandler.handle(crateAdminCommand);
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createAdmin(crateUserDto);
         var screeningDate = LocalDateTime.now().plusDays(23);
-        var command = new CreateScreening(screeningDate, filmId, HALL_ID);
+        var createScreeningDto = new CreateScreeningDto(screeningDate, filmId, HALL_ID);
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.mail(), crateAdminCommand.password()))
+                .bodyValue(createScreeningDto)
+                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then
@@ -146,9 +146,9 @@ class ScreeningControllerIT extends BaseIT {
         addFilm();
         addHall();
         var screening = addScreening();
-        var crateUserCommand = createCrateUserCommand();
-        createAdminHandler.handle(crateUserCommand);
-        var command = new CreateScreening(
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createAdmin(crateUserDto);
+        var createScreeningDto = new CreateScreeningDto(
                 screening.getDate().plusMinutes(10),
                 filmId,
                 HALL_ID
@@ -159,8 +159,8 @@ class ScreeningControllerIT extends BaseIT {
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(command)
-                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
+                .bodyValue(createScreeningDto)
+                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then
@@ -175,15 +175,15 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_is_deleted() {
         //given
-        var crateAdminCommand = createCrateUserCommand();
-        createAdminHandler.handle(crateAdminCommand);
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createAdmin(crateUserDto);
         var screening = addScreening();
 
         //when
         var spec = webTestClient
                 .delete()
                 .uri(SCREENINGS_ADMIN_ENDPOINT + "/" + screening.getId())
-                .headers(headers -> headers.setBasicAuth(crateAdminCommand.mail(), crateAdminCommand.password()))
+                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then
@@ -281,15 +281,15 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     private void addHall() {
-        createHallHandler.handle(createCreateHallCommand());
+        hallService.createHall(createCreateHallDto());
     }
 
     private void addFilm(String title) {
-        createFilmHandler.handle(createCreateFilmCommand(title));
+        filmService.createFilm(FilmFixture.createCreateFilmDto(title));
     }
 
     private void addFilm() {
-        createFilmHandler.handle(createCreateFilmCommand());
+        filmService.createFilm(FilmFixture.createCreateFilmDto());
     }
 
     private Screening addScreening(LocalDate date) {

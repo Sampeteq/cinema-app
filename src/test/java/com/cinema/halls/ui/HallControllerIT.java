@@ -5,13 +5,12 @@ import com.cinema.halls.HallFixture;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.users.UserFixture;
-import com.cinema.users.application.commands.handlers.CreateAdminHandler;
+import com.cinema.users.application.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 import static com.cinema.halls.HallFixture.createHall;
-import static com.cinema.users.UserFixture.createCrateUserCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
@@ -23,22 +22,22 @@ class HallControllerIT extends BaseIT {
     private HallRepository hallRepository;
 
     @Autowired
-    private CreateAdminHandler createAdminHandler;
+    private UserService userService;
 
     @Test
     void hall_is_created() {
         //given
-        var createHallCommand = HallFixture.createCreateHallCommand();
-        var crateUserCommand = UserFixture.createCrateUserCommand();
-        createAdminHandler.handle(crateUserCommand);
+        var createHallDto = HallFixture.createCreateHallDto();
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createAdmin(crateUserDto);
 
         //when
         var responseSpec = webTestClient
                 .post()
                 .uri(HALL_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(createHallCommand)
-                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
+                .bodyValue(createHallDto)
+                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then
@@ -46,21 +45,21 @@ class HallControllerIT extends BaseIT {
         assertThat(hallRepository.getById(1L))
                 .isNotEmpty()
                 .hasValueSatisfying(hall -> assertThat(hall.getSeats()).isNotEmpty())
-                .hasValueSatisfying(hall -> assertThat(hall.getSeats()).hasSize(createHallCommand.seats().size()));
+                .hasValueSatisfying(hall -> assertThat(hall.getSeats()).hasSize(createHallDto.seats().size()));
     }
 
     @Test
     void hall_is_deleted() {
         //given
         var hall = addHall();
-        var crateUserCommand = UserFixture.createCrateUserCommand();
-        createAdminHandler.handle(crateUserCommand);
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createAdmin(crateUserDto);
 
         //when
         var responseSpec = webTestClient
                 .delete()
                 .uri(HALL_ADMIN_ENDPOINT + "/" + hall.getId())
-                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
+                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then
@@ -72,14 +71,14 @@ class HallControllerIT extends BaseIT {
     void halls_are_gotten() {
         //given
         var hall = hallRepository.add(createHall());
-        var crateUserCommand = createCrateUserCommand();
-        createAdminHandler.handle(crateUserCommand);
+        var crateUserDto = UserFixture.createCrateUserDto();
+        userService.createAdmin(crateUserDto);
 
         //when
         var responseSpec = webTestClient
                 .get()
                 .uri(HALL_ADMIN_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(crateUserCommand.mail(), crateUserCommand.password()))
+                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
                 .exchange();
 
         //then

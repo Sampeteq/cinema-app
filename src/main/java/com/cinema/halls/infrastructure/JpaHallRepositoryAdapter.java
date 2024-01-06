@@ -4,6 +4,8 @@ import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,14 +29,18 @@ class JpaHallRepositoryAdapter implements HallRepository {
 
     @Override
     public Optional<Hall> getById(Long id) {
-        return jpaHallRepository.findById(id);
+        return jpaHallRepository.findByIdWithSeats(id);
     }
 
     @Override
     public List<Hall> getAll() {
-        return jpaHallRepository.findAll();
+        return jpaHallRepository.findAllWithSeats();
     }
 }
 
 interface JpaHallRepository extends JpaRepository<Hall, Long> {
+    @Query("from Hall hall left join fetch hall.seats where hall.id = :id")
+    Optional<Hall> findByIdWithSeats(@Param("id") Long id);
+    @Query("from Hall hall left join fetch hall.seats")
+    List<Hall> findAllWithSeats();
 }

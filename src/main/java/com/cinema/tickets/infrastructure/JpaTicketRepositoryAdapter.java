@@ -1,9 +1,12 @@
 package com.cinema.tickets.infrastructure;
 
+import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,18 +30,30 @@ class JpaTicketRepositoryAdapter implements TicketRepository {
     }
 
     @Override
-    public List<Ticket> getAllByUserId(Long userId) {
+    public List<TicketDto> getAllByUserId(Long userId) {
         return jpaTicketRepository.findAllByUserId(userId);
-    }
-
-    @Override
-    public boolean existsBySeatId(Long seatId) {
-        return jpaTicketRepository.existsBySeatId(seatId);
     }
 }
 
 interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
+
+    @Query("""
+            from Ticket ticket
+            left join fetch ticket.screening screening
+            left join fetch ticket.seat seat
+            """)
     Optional<Ticket> findByIdAndUserId(Long ticketId, Long userId);
-    List<Ticket> findAllByUserId(Long userId);
-    boolean existsBySeatId(Long seatId);
+
+    @Query("""
+            select new com.cinema.tickets.application.dto.TicketDto(
+            t.id,
+            t.status,
+            t.screening.film.title,
+            t.screening.date,
+            t.screening.hall.id,
+            t.seat.number,
+            t.seat.rowNumber)
+            from Ticket t
+            """)
+    List<TicketDto> findAllByUserId(@Param("userId") Long userId);
 }

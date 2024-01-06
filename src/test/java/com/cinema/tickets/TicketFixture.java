@@ -1,31 +1,31 @@
 package com.cinema.tickets;
 
+import com.cinema.screenings.domain.Screening;
+import com.cinema.screenings.domain.ScreeningSeat;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketStatus;
+import com.cinema.users.domain.User;
 
 public final class TicketFixture {
-    public static final Long SCREENING_ID = 1L;
-    public static final Long SEAT_ID = 1L;
-    public static final long USER_ID = 1L;
 
     private TicketFixture() {
     }
 
-    public static Ticket createTicket() {
+    public static Ticket createTicket(Screening screening, ScreeningSeat seat, User user) {
         return new Ticket(
                 TicketStatus.BOOKED,
-                SCREENING_ID,
-                SEAT_ID,
-                USER_ID
+                screening,
+                seat,
+                user
         );
     }
 
-    public static Ticket createCancelledTicket() {
+    public static Ticket createCancelledTicket(Screening screening, ScreeningSeat seat, User user) {
         return new Ticket(
                 TicketStatus.CANCELLED,
-                SCREENING_ID,
-                SEAT_ID,
-                USER_ID
+                screening,
+                seat,
+                user
         );
     }
 }

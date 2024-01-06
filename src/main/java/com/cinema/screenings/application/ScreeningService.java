@@ -1,7 +1,9 @@
 package com.cinema.screenings.application;
 
-import com.cinema.films.application.FilmService;
-import com.cinema.halls.application.HallService;
+import com.cinema.films.domain.FilmRepository;
+import com.cinema.films.domain.exceptions.FilmNotFoundException;
+import com.cinema.halls.domain.HallRepository;
+import com.cinema.halls.domain.exceptions.HallNotFoundException;
 import com.cinema.screenings.application.dto.CreateScreeningDto;
 import com.cinema.screenings.application.dto.GetScreeningsDto;
 import com.cinema.screenings.application.dto.ScreeningDto;
@@ -17,9 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Clock;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.Comparator.comparing;
@@ -33,30 +32,36 @@ public class ScreeningService {
     private final ScreeningRepository screeningRepository;
     private final ScreeningMapper screeningMapper;
     private final ScreeningSeatRepository screeningSeatRepository;
-    private final FilmService filmService;
-    private final HallService hallService;
-    private final Clock clock;
+    private final FilmRepository filmRepository;
+    private final HallRepository hallRepository;
 
     @Transactional
     public void createScreening(CreateScreeningDto dto) {
         log.info("Dto:{}", dto);
-        var filmDto = filmService.getFilmById(dto.filmId());
-        log.info("Gotten film:{}", filmDto);
-        var hallDto = hallService.getHallById(dto.hallId());
-        log.info("Gotten hall:{}", hallDto);
+        var film = filmRepository
+                .getById(dto.filmId())
+                .orElseThrow(FilmNotFoundException::new);
+        log.info("Gotten film:{}", film);
+        var hall = hallRepository
+                .getById(dto.hallId())
+                .orElseThrow(HallNotFoundException::new);
+        log.info("Gotten hall:{}", hall);
         var screening = screeningFactory.createScreening(
                 dto.date(),
-                filmDto.durationInMinutes(),
-                dto.filmId(),
-                dto.hallId()
+                film,
+                hall
         );
         var addedScreening = screeningRepository.add(screening);
         log.info("Screening added:{}", addedScreening);
-        var screeningSeats = hallDto
-                .seats()
+        var screeningSeats = hall
+                .getSeats()
                 .stream()
-                .map(seatDto -> new ScreeningSeat(seatDto.rowNumber(), seatDto.number(), true, screening.getId()))
-                .toList();
+                .map(seatDto -> new ScreeningSeat(
+                        seatDto.getRowNumber(),
+                        seatDto.getNumber(),
+                        true,
+                        addedScreening)
+                ).toList();
         screeningSeats.forEach(screeningSeatRepository::add);
         log.info("Added seats");
     }
@@ -69,44 +74,13 @@ public class ScreeningService {
         screeningRepository.delete(screening);
     }
 
-    public long getTimeToScreeningInHours(Long id) {
-        log.info("Screening id:{}", id);
-        var screeningDate = screeningRepository
-                .getById(id)
-                .orElseThrow(ScreeningNotFoundException::new)
-                .getDate();
-        return timeToScreeningInHours(clock, screeningDate);
-    }
-
-    public ScreeningDto getScreeningById(Long id) {
-        log.info("Screening id:{}", id);
-        return screeningRepository
-                .getById(id)
-                .map(screening -> {
-                    var filmDto = filmService.getFilmById(screening.getFilmId());
-                    return screeningMapper.mapToDto(screening, filmDto.title());
-                })
-                .orElseThrow(ScreeningNotFoundException::new);
-    }
-
     public List<ScreeningDto> getScreenings(GetScreeningsDto dto) {
         log.info("Dto:{}", dto);
         return screeningRepository
                 .getAll(dto)
                 .stream()
                 .sorted(comparing(Screening::getDate))
-                .map(screening -> {
-                    var filmDto = filmService.getFilmById(screening.getFilmId());
-                    return screeningMapper.mapToDto(screening, filmDto.title());
-                })
+                .map(screeningMapper::mapToDto)
                 .toList();
-    }
-
-    private long timeToScreeningInHours(Clock clock, LocalDateTime screeningDate) {
-        var currentDate = LocalDateTime.now(clock);
-        return Duration
-                .between(currentDate, screeningDate)
-                .abs()
-                .toHours();
     }
 }

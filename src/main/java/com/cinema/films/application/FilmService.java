@@ -42,13 +42,6 @@ public class FilmService {
         filmRepository.delete(film);
     }
 
-    public FilmDto getFilmById(Long id) {
-        return filmRepository
-                .getById(id)
-                .map(filmMapper::mapToDto)
-                .orElseThrow(FilmNotFoundException::new);
-    }
-
     public List<FilmDto> getFilms(GetFilmsDto dto) {
         return filmRepository
                 .getAll(dto)

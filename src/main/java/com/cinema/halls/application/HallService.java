@@ -42,14 +42,6 @@ public class HallService {
         log.info("Hall deleted");
     }
 
-    public HallDto getHallById(Long id) {
-        log.info("Hall id:{}", id);
-        return hallRepository
-                .getById(id)
-                .map(hallMapper::toDto)
-                .orElseThrow(HallNotFoundException::new);
-    }
-
     public List<HallDto> getAllHalls() {
         return hallRepository
                 .getAll()

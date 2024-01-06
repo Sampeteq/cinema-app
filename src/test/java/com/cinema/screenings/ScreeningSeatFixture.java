@@ -1,5 +1,6 @@
 package com.cinema.screenings;
 
+import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningSeat;
 
 import java.util.List;
@@ -13,10 +14,18 @@ public final class ScreeningSeatFixture {
     private ScreeningSeatFixture() {
     }
 
-    public static List<ScreeningSeat> createSeats(Long screeningId) {
+    public static ScreeningSeat createSeat(Screening screening) {
+        return new ScreeningSeat(ROW_NUMBER, NUMBER, IS_FREE, screening);
+    }
+
+    public static ScreeningSeat createNotFreeSeat(Screening screening) {
+        return new ScreeningSeat(ROW_NUMBER, NUMBER, false, screening);
+    }
+
+    public static List<ScreeningSeat> createSeats(Screening screening) {
         return List.of(
-                new ScreeningSeat(ROW_NUMBER, NUMBER, IS_FREE, screeningId),
-                new ScreeningSeat(ROW_NUMBER + 1, NUMBER + 1, IS_FREE, screeningId)
+                new ScreeningSeat(ROW_NUMBER, NUMBER, IS_FREE, screening),
+                new ScreeningSeat(ROW_NUMBER + 1, NUMBER + 1, IS_FREE, screening)
         );
     }
 }

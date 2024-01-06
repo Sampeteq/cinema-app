@@ -2,8 +2,11 @@ package com.cinema.screenings.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.films.FilmFixture;
-import com.cinema.films.application.FilmService;
-import com.cinema.halls.application.HallService;
+import com.cinema.films.domain.Film;
+import com.cinema.films.domain.FilmRepository;
+import com.cinema.halls.HallFixture;
+import com.cinema.halls.domain.Hall;
+import com.cinema.halls.domain.HallRepository;
 import com.cinema.screenings.ScreeningSeatFixture;
 import com.cinema.screenings.application.dto.CreateScreeningDto;
 import com.cinema.screenings.domain.Screening;
@@ -12,7 +15,9 @@ import com.cinema.screenings.domain.ScreeningSeatRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import com.cinema.users.UserFixture;
-import com.cinema.users.application.UserService;
+import com.cinema.users.domain.User;
+import com.cinema.users.domain.UserRepository;
+import com.cinema.users.domain.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +26,6 @@ import org.springframework.http.MediaType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static com.cinema.halls.HallFixture.createCreateHallDto;
-import static com.cinema.screenings.ScreeningFixture.HALL_ID;
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,23 +46,21 @@ class ScreeningControllerIT extends BaseIT {
     private ScreeningSeatRepository screeningSeatRepository;
 
     @Autowired
-    private FilmService filmService;
+    private FilmRepository filmRepository;
 
     @Autowired
-    private HallService hallService;
+    private HallRepository hallRepository;
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Test
     void screening_is_created() {
         //given
-        addHall();
-        var filmId = 1L;
-        addFilm();
-        var crateUserDto = UserFixture.createCrateUserDto();
-        userService.createAdmin(crateUserDto);
-        var createScreeningDto = new CreateScreeningDto(SCREENING_DATE, filmId, HALL_ID);
+        var hall = addHallWithSeats();
+        var film = addFilm();
+        var user = addUser();
+        var createScreeningDto = new CreateScreeningDto(SCREENING_DATE, film.getId(), hall.getId());
 
         //when
         var spec = webTestClient
@@ -67,7 +68,7 @@ class ScreeningControllerIT extends BaseIT {
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(createScreeningDto)
-                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
+                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
         //then
@@ -76,21 +77,19 @@ class ScreeningControllerIT extends BaseIT {
                 .isNotEmpty()
                 .hasValueSatisfying(screening -> {
                     assertThat(screening.getDate()).isEqualTo(createScreeningDto.date());
-                    assertThat(screening.getFilmId()).isEqualTo(createScreeningDto.filmId());
-                    assertThat(screening.getHallId()).isEqualTo(1L);
+                    assertThat(screening.getFilm().getId()).isEqualTo(createScreeningDto.filmId());
+                    assertThat(screening.getHall().getId()).isEqualTo(1L);
                 });
     }
 
     @Test
     void screening_and_current_date_difference_is_min_7_days() {
         //given
-        addHall();
-        var filmId = 1L;
-        addFilm();
-        var crateUserDto = UserFixture.createCrateUserDto();
-        userService.createAdmin(crateUserDto);
+        var hall = addHallWithSeats();
+        var film = addFilm();
+        var user = addUser();
         var screeningDate = LocalDateTime.now().plusDays(6);
-        var createScreeningDto = new CreateScreeningDto(screeningDate, filmId, HALL_ID);
+        var createScreeningDto = new CreateScreeningDto(screeningDate, film.getId(), hall.getId());
 
         //when
         var spec = webTestClient
@@ -98,7 +97,7 @@ class ScreeningControllerIT extends BaseIT {
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(createScreeningDto)
-                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
+                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
         //then
@@ -113,13 +112,11 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_and_current_date_difference_is_max_21_days() {
         //given
-        addHall();
-        var filmId = 1L;
-        addFilm();
-        var crateUserDto = UserFixture.createCrateUserDto();
-        userService.createAdmin(crateUserDto);
+        var hall = addHallWithSeats();
+        var film = addFilm();
+        var user = addUser();
         var screeningDate = LocalDateTime.now().plusDays(23);
-        var createScreeningDto = new CreateScreeningDto(screeningDate, filmId, HALL_ID);
+        var createScreeningDto = new CreateScreeningDto(screeningDate, film.getId(), hall.getId());
 
         //when
         var spec = webTestClient
@@ -127,7 +124,7 @@ class ScreeningControllerIT extends BaseIT {
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(createScreeningDto)
-                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
+                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
         //then
@@ -142,16 +139,14 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screenings_collision_cannot_exist() {
         //given
-        var filmId = 1L;
-        addFilm();
-        addHall();
-        var screening = addScreening();
-        var crateUserDto = UserFixture.createCrateUserDto();
-        userService.createAdmin(crateUserDto);
+        var hall = addHallWithSeats();
+        var film = addFilm();
+        var screening = addScreening(film, hall);
+        var user = addUser();
         var createScreeningDto = new CreateScreeningDto(
                 screening.getDate().plusMinutes(10),
-                filmId,
-                HALL_ID
+                film.getId(),
+                hall.getId()
         );
 
         //when
@@ -160,7 +155,7 @@ class ScreeningControllerIT extends BaseIT {
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(createScreeningDto)
-                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
+                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
         //then
@@ -175,15 +170,16 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_is_deleted() {
         //given
-        var crateUserDto = UserFixture.createCrateUserDto();
-        userService.createAdmin(crateUserDto);
-        var screening = addScreening();
+        var hall = addHallWithSeats();
+        var film = addFilm();
+        var screening = addScreening(film, hall);
+        var user = addUser();
 
         //when
         var spec = webTestClient
                 .delete()
                 .uri(SCREENINGS_ADMIN_ENDPOINT + "/" + screening.getId())
-                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
+                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
         //then
@@ -194,9 +190,9 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screenings_are_gotten() {
         //given
-        var filmTitle = "Sample title";
-        addFilm(filmTitle);
-        var screening = addScreening();
+        var hall = addHallWithSeats();
+        var film = addFilm();
+        var screening = addScreening(film, hall);
 
         //when
         var spec = webTestClient
@@ -212,16 +208,17 @@ class ScreeningControllerIT extends BaseIT {
                 .jsonPath("$[*]").value(hasSize(1))
                 .jsonPath("$[*].*").value(everyItem(notNullValue()))
                 .jsonPath("$.screenings[0].date").isEqualTo(screening.getDate().toString())
-                .jsonPath("$.screenings[0].filmTitle").isEqualTo(filmTitle);
+                .jsonPath("$.screenings[0].filmTitle").isEqualTo(film.getTitle());
     }
 
     @Test
     void screenings_are_gotten_by_date() {
         //given
-        addFilm();
+        var hall = addHallWithSeats();
+        var film = addFilm();
         var requiredDate = LocalDate.of(2023, 12, 13);
-        var screeningWithRequiredDate = addScreening(requiredDate);
-        addScreening(requiredDate.minusDays(1));
+        var screeningWithRequiredDate = addScreening(requiredDate, film, hall);
+        addScreening(requiredDate.minusDays(1), film, hall);
 
         //when
         var spec = webTestClient
@@ -244,15 +241,17 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void seats_are_gotten_by_screening_id() {
         //given
-        var screeningId = 1L;
-        addSeats(screeningId);
+        var hall = addHallWithSeats();
+        var film = addFilm();
+        var screening = addScreening(film, hall);
+        addSeats(screening);
 
         //when
         var spec = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(SCREENINGS_PUBLIC_ENDPOINT + "/" + screeningId + "/seats")
-                        .queryParam("screeningId", screeningId)
+                        .path(SCREENINGS_PUBLIC_ENDPOINT + "/" + screening.getId() + "/seats")
+                        .queryParam("screeningId", screening.getId())
                         .build()
                 )
                 .exchange();
@@ -269,32 +268,31 @@ class ScreeningControllerIT extends BaseIT {
                 .jsonPath("$.*.*").value(everyItem(notNullValue()));
     }
 
-    private void addSeats(Long screeningId) {
+    private Screening addScreening(Film film, Hall hall) {
+        return screeningRepository.add(createScreening(film, hall));
+    }
+
+    private Screening addScreening(LocalDate date, Film film, Hall hall) {
+        var dateTime = date.atStartOfDay().plusHours(16);
+        var screening = createScreening(dateTime, film, hall);
+        return screeningRepository.add(screening);
+    }
+
+    private void addSeats(Screening screening) {
         ScreeningSeatFixture
-                .createSeats(screeningId)
+                .createSeats(screening)
                 .forEach(screeningSeatRepository::add);
     }
 
-
-    private Screening addScreening() {
-        return screeningRepository.add(createScreening());
+    private Hall addHallWithSeats() {
+        return hallRepository.add(HallFixture.createHallWithSeats());
     }
 
-    private void addHall() {
-        hallService.createHall(createCreateHallDto());
+    private Film addFilm() {
+        return filmRepository.add(FilmFixture.createFilm());
     }
 
-    private void addFilm(String title) {
-        filmService.createFilm(FilmFixture.createCreateFilmDto(title));
-    }
-
-    private void addFilm() {
-        filmService.createFilm(FilmFixture.createCreateFilmDto());
-    }
-
-    private Screening addScreening(LocalDate date) {
-        var dateTime = date.atStartOfDay().plusHours(16);
-        var screening = createScreening(dateTime);
-        return screeningRepository.add(screening);
+    private User addUser() {
+        return userRepository.add(UserFixture.createUser(UserRole.ADMIN));
     }
 }

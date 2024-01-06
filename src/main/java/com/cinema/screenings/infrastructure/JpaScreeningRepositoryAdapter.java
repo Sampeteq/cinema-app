@@ -49,23 +49,27 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     private static Specification<Screening> dateSpec(GetScreeningsDto dto) {
-        return (root, jpaQuery, criteriaBuilder) -> dto.date() == null ?
-                        criteriaBuilder.conjunction() :
-                        criteriaBuilder.between(
-                                root.get("date"),
-                                dto.date(),
-                                dto.date().plusDays(1)
-                        );
+        return (root, jpaQuery, criteriaBuilder) -> {
+            root.fetch("film");
+            return dto.date() == null ?
+                    criteriaBuilder.conjunction() :
+                    criteriaBuilder.between(
+                            root.get("date"),
+                            dto.date(),
+                            dto.date().plusDays(1)
+                    );
+        };
     }
 }
 
 interface JpaScreeningRepository extends JpaRepository<Screening, Long>, JpaSpecificationExecutor<Screening> {
+
     @Query(""" 
             from Screening s where
             ((:endAt >= s.date and :endAt <= s.endDate) or
             (:startAt >= s.date and :startAt <= s.endDate) or
             (:startAt <= s.endDate and :endAt >= s.endDate))
-            and s.hallId = :hallId
+            and s.hall.id = :hallId
             """)
     List<Screening> findScreeningCollisions(
             @Param("startAt") LocalDateTime startAt,

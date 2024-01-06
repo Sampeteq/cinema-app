@@ -3,6 +3,7 @@ package com.cinema.users;
 import com.cinema.users.application.dto.CreateUserDto;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRole;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
@@ -31,6 +32,14 @@ public final class UserFixture {
 
     public static User createUser() {
         return new User(MAIL, PASSWORD, UserRole.COMMON);
+    }
+
+    public static User createUser(UserRole role) {
+        return new User(MAIL, PASSWORD, role);
+    }
+
+    public static User createUser(PasswordEncoder passwordEncoder) {
+        return new User(MAIL, passwordEncoder.encode(PASSWORD), UserRole.COMMON);
     }
 
     public static User createUser(String mail) {

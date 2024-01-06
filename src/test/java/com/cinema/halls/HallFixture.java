@@ -9,6 +9,10 @@ import java.util.List;
 public class HallFixture {
 
     public static Hall createHall() {
+        return new Hall(List.of());
+    }
+
+    public static Hall createHallWithSeats() {
         return new Hall(HallSeatFixture.createSeats());
     }
 

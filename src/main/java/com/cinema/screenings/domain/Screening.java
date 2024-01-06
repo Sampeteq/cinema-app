@@ -1,12 +1,18 @@
 package com.cinema.screenings.domain;
 
+import com.cinema.films.domain.Film;
+import com.cinema.halls.domain.Hall;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
+import java.time.Clock;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,16 +28,26 @@ public class Screening {
 
     private LocalDateTime endDate;
 
-    private Long filmId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Film film;
 
-    private Long hallId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Hall hall;
 
     protected Screening() {}
 
-    public Screening(LocalDateTime date, LocalDateTime endDate, Long filmId, Long hallId) {
+    public Screening(LocalDateTime date, LocalDateTime endDate, Film film, Hall hall) {
         this.date = date;
         this.endDate = endDate;
-        this.filmId = filmId;
-        this.hallId = hallId;
+        this.film = film;
+        this.hall = hall;
+    }
+
+    public long timeToScreeningInHours(Clock clock) {
+        var currentDate = LocalDateTime.now(clock);
+        return Duration
+                .between(currentDate, this.date)
+                .abs()
+                .toHours();
     }
 }

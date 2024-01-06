@@ -61,14 +61,13 @@ public class UserService {
         userRepository.add(user);
     }
 
-    public Long getLoggedUserId() {
+    public User getLoggedUser() {
         var mail = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getName();
         return userRepository
                 .getByMail(mail)
-                .map(User::getId)
                 .orElseThrow(() -> new UsernameNotFoundException(mail));
     }
 }

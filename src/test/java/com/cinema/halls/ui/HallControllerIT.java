@@ -5,7 +5,9 @@ import com.cinema.halls.HallFixture;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.users.UserFixture;
-import com.cinema.users.application.UserService;
+import com.cinema.users.domain.User;
+import com.cinema.users.domain.UserRepository;
+import com.cinema.users.domain.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,14 +24,13 @@ class HallControllerIT extends BaseIT {
     private HallRepository hallRepository;
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Test
     void hall_is_created() {
         //given
         var createHallDto = HallFixture.createCreateHallDto();
-        var crateUserDto = UserFixture.createCrateUserDto();
-        userService.createAdmin(crateUserDto);
+        var user = addUser();
 
         //when
         var responseSpec = webTestClient
@@ -37,7 +38,7 @@ class HallControllerIT extends BaseIT {
                 .uri(HALL_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(createHallDto)
-                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
+                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
         //then
@@ -52,14 +53,13 @@ class HallControllerIT extends BaseIT {
     void hall_is_deleted() {
         //given
         var hall = addHall();
-        var crateUserDto = UserFixture.createCrateUserDto();
-        userService.createAdmin(crateUserDto);
+        var user = addUser();
 
         //when
         var responseSpec = webTestClient
                 .delete()
                 .uri(HALL_ADMIN_ENDPOINT + "/" + hall.getId())
-                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
+                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
         //then
@@ -71,14 +71,13 @@ class HallControllerIT extends BaseIT {
     void halls_are_gotten() {
         //given
         var hall = hallRepository.add(createHall());
-        var crateUserDto = UserFixture.createCrateUserDto();
-        userService.createAdmin(crateUserDto);
+        var user = addUser();
 
         //when
         var responseSpec = webTestClient
                 .get()
                 .uri(HALL_ADMIN_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
+                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
         //then
@@ -92,5 +91,9 @@ class HallControllerIT extends BaseIT {
 
     private Hall addHall() {
         return hallRepository.add(HallFixture.createHall());
+    }
+
+    private User addUser() {
+        return userRepository.add(UserFixture.createUser(UserRole.ADMIN));
     }
 }

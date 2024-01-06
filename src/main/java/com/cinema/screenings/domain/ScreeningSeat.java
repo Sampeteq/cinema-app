@@ -1,9 +1,12 @@
 package com.cinema.screenings.domain;
 
+import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
@@ -22,19 +25,23 @@ public class ScreeningSeat {
 
     private boolean isFree;
 
-    private Long screeningId;
+    @ManyToOne
+    private Screening screening;
 
     protected ScreeningSeat() {
     }
 
-    public ScreeningSeat(int rowNumber, int number, boolean isFree, Long screeningId) {
+    public ScreeningSeat(int rowNumber, int number, boolean isFree, Screening screening) {
         this.rowNumber = rowNumber;
         this.number = number;
         this.isFree = isFree;
-        this.screeningId = screeningId;
+        this.screening = screening;
     }
 
     public void markAsNotFree() {
+        if (!this.isFree) {
+            throw new TicketAlreadyExistsException();
+        }
         this.isFree = false;
     }
 

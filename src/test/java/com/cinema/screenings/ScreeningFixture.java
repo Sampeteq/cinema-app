@@ -1,5 +1,7 @@
 package com.cinema.screenings;
 
+import com.cinema.films.domain.Film;
+import com.cinema.halls.domain.Hall;
 import com.cinema.screenings.application.dto.CreateScreeningDto;
 import com.cinema.screenings.domain.Screening;
 
@@ -18,21 +20,21 @@ public final class ScreeningFixture {
     private ScreeningFixture() {
     }
 
-    public static Screening createScreening() {
+    public static Screening createScreening(Film film, Hall hall) {
         return new Screening(
                 SCREENING_DATE,
                 SCREENING_END_DATE,
-                FILM_ID,
-                HALL_ID
+                film,
+                hall
         );
     }
 
-    public static Screening createScreening(LocalDateTime screeningDate) {
+    public static Screening createScreening(LocalDateTime screeningDate, Film film, Hall hall) {
         return new Screening(
                 screeningDate,
                 SCREENING_END_DATE,
-                FILM_ID,
-                HALL_ID
+                film,
+                hall
         );
     }
 

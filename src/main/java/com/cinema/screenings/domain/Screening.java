@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "screenings")
 @Getter
+@ToString(exclude = {"film", "hall"})
 public class Screening {
 
     @Id

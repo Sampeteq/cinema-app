@@ -14,12 +14,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.Clock;
 
 @Entity
 @Table(name = "tickets")
 @Getter
+@ToString(exclude = {"seat", "user"})
 public class Ticket {
 
     @Id

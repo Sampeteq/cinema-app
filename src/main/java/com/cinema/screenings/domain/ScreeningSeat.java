@@ -11,10 +11,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "screenings_seats")
 @Getter
+@ToString(exclude = {"hallSeat", "screening"})
 public class ScreeningSeat {
 
     @Id

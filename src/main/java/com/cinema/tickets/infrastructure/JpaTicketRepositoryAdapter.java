@@ -41,8 +41,9 @@ interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
             from Ticket ticket
             left join fetch ticket.seat seat
             left join fetch seat.screening screening
+            where ticket.id = :ticketId and ticket.user.id = :userId
             """)
-    Optional<Ticket> findByIdAndUserId(Long ticketId, Long userId);
+    Optional<Ticket> findByIdAndUserId(@Param("ticketId") Long ticketId, @Param("userId") Long userId);
 
     @Query("""
             select new com.cinema.tickets.application.dto.TicketDto(

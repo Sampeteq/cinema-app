@@ -57,7 +57,7 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_is_created() {
         //given
-        var hall = addHallWithSeats();
+        var hall = addHall();
         var film = addFilm();
         var user = addUser();
         var createScreeningDto = new CreateScreeningDto(SCREENING_DATE, film.getId(), hall.getId());
@@ -85,7 +85,7 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_and_current_date_difference_is_min_7_days() {
         //given
-        var hall = addHallWithSeats();
+        var hall = addHall();
         var film = addFilm();
         var user = addUser();
         var screeningDate = LocalDateTime.now().plusDays(6);
@@ -112,7 +112,7 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_and_current_date_difference_is_max_21_days() {
         //given
-        var hall = addHallWithSeats();
+        var hall = addHall();
         var film = addFilm();
         var user = addUser();
         var screeningDate = LocalDateTime.now().plusDays(23);
@@ -139,7 +139,7 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screenings_collision_cannot_exist() {
         //given
-        var hall = addHallWithSeats();
+        var hall = addHall();
         var film = addFilm();
         var screening = addScreening(film, hall);
         var user = addUser();
@@ -170,7 +170,7 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_is_deleted() {
         //given
-        var hall = addHallWithSeats();
+        var hall = addHall();
         var film = addFilm();
         var screening = addScreening(film, hall);
         var user = addUser();
@@ -190,7 +190,7 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screenings_are_gotten() {
         //given
-        var hall = addHallWithSeats();
+        var hall = addHall();
         var film = addFilm();
         var screening = addScreening(film, hall);
 
@@ -214,7 +214,7 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screenings_are_gotten_by_date() {
         //given
-        var hall = addHallWithSeats();
+        var hall = addHall();
         var film = addFilm();
         var requiredDate = LocalDate.of(2023, 12, 13);
         var screeningWithRequiredDate = addScreening(requiredDate, film, hall);
@@ -241,7 +241,7 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void seats_are_gotten_by_screening_id() {
         //given
-        var hall = addHallWithSeats();
+        var hall = addHall();
         var film = addFilm();
         var screening = addScreening(film, hall);
         addSeats(screening);
@@ -284,8 +284,8 @@ class ScreeningControllerIT extends BaseIT {
                 .forEach(screeningSeatRepository::add);
     }
 
-    private Hall addHallWithSeats() {
-        return hallRepository.add(HallFixture.createHallWithSeats());
+    private Hall addHall() {
+        return hallRepository.add(HallFixture.createHall());
     }
 
     private Film addFilm() {

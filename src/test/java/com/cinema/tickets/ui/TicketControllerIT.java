@@ -197,9 +197,7 @@ class TicketControllerIT extends BaseIT {
         spec.expectStatus().isCreated();
         assertThat(ticketRepository.getAllByUserId(user.getId()))
                 .isNotEmpty()
-                .allSatisfy(ticket -> {
-                    assertEquals(TicketStatus.BOOKED, ticket.status());
-                });
+                .allSatisfy(ticket -> assertEquals(TicketStatus.BOOKED, ticket.status()));
     }
 
     @Test

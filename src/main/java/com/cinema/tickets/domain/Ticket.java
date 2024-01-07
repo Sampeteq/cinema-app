@@ -1,6 +1,5 @@
 package com.cinema.tickets.domain;
 
-import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningSeat;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.users.domain.User;
@@ -15,7 +14,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.time.Clock;
 
@@ -31,9 +29,6 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
 
-    @ManyToOne
-    private Screening screening;
-
     @OneToOne
     private ScreeningSeat seat;
 
@@ -42,9 +37,8 @@ public class Ticket {
 
     protected Ticket() {}
 
-    public Ticket(TicketStatus status, Screening screening, ScreeningSeat seat, User user) {
+    public Ticket(TicketStatus status, ScreeningSeat seat, User user) {
         this.status = status;
-        this.screening = screening;
         this.seat = seat;
         this.user = user;
     }
@@ -53,7 +47,7 @@ public class Ticket {
         if (status.equals(TicketStatus.CANCELLED)) {
             throw new TicketAlreadyCancelledException();
         }
-        var timeToScreeningInHours = this.screening.timeToScreeningInHours(clock);
+        var timeToScreeningInHours = this.seat.getScreening().timeToScreeningInHours(clock);
         ticketCancellingPolicy.checkScreeningDate(timeToScreeningInHours);
         this.status = TicketStatus.CANCELLED;
         this.seat.markAsFree();

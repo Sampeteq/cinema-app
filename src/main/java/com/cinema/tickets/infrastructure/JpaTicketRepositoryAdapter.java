@@ -39,8 +39,8 @@ interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
 
     @Query("""
             from Ticket ticket
-            left join fetch ticket.screening screening
             left join fetch ticket.seat seat
+            left join fetch seat.screening screening
             """)
     Optional<Ticket> findByIdAndUserId(Long ticketId, Long userId);
 
@@ -48,9 +48,9 @@ interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
             select new com.cinema.tickets.application.dto.TicketDto(
             t.id,
             t.status,
-            t.screening.film.title,
-            t.screening.date,
-            t.screening.hall.id,
+            t.seat.screening.film.title,
+            t.seat.screening.date,
+            t.seat.screening.hall.id,
             t.seat.hallSeat.number,
             t.seat.hallSeat.rowNumber)
             from Ticket t

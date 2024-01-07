@@ -166,7 +166,7 @@ class TicketControllerIT extends BaseIT {
                 .hasValueSatisfying(ticket -> {
                     assertEquals(1L, ticket.getUser().getId());
                     assertEquals(TicketStatus.BOOKED, ticket.getStatus());
-                    assertEquals(bookTicketDto.screeningId(), ticket.getScreening().getId());
+                    assertEquals(bookTicketDto.screeningId(), ticket.getSeat().getScreening().getId());
                     assertEquals(bookTicketDto.seatsIds().getFirst(), ticket.getSeat().getId());
                 });
     }
@@ -272,7 +272,7 @@ class TicketControllerIT extends BaseIT {
         var film = addFilm();
         var screening = addScreening(hall, film);
         var seat = addSeat(screening, hall.getSeats().getFirst());
-        var ticket = addTicket(screening, seat, user);
+        var ticket = addTicket(seat, user);
 
         //when
         var spec = webTestClient
@@ -297,7 +297,7 @@ class TicketControllerIT extends BaseIT {
         var film = addFilm();
         var screening = addScreening(hall, film);
         var seat = addSeat(screening, hall.getSeats().getFirst());
-        var ticket = addCancelledTicket(screening, seat, user);
+        var ticket = addCancelledTicket(seat, user);
 
         //when
         var spec = webTestClient
@@ -322,7 +322,7 @@ class TicketControllerIT extends BaseIT {
         var film = addFilm();
         var screening = addScreening(hall, film);
         var seat = addSeat(screening, hall.getSeats().getFirst());
-        var ticket = addTicket(screening, seat, user);
+        var ticket = addTicket(seat, user);
         Mockito
                 .when(clock.instant())
                 .thenReturn(screening.getDate().minusHours(23).toInstant(ZoneOffset.UTC));
@@ -350,7 +350,7 @@ class TicketControllerIT extends BaseIT {
         var film = addFilm();
         var screening = addScreening(hall, film);
         var seat = addSeat(screening, hall.getSeats().getFirst());
-        var ticket = addTicket(screening, seat, user);
+        var ticket = addTicket(seat, user);
 
         //when
         var spec = webTestClient
@@ -385,12 +385,12 @@ class TicketControllerIT extends BaseIT {
                 .jsonPath("$.tickets[0].seatNumber").isEqualTo(expectedTicketDto.getFirst().seatNumber());
     }
 
-    private Ticket addTicket(Screening screening, ScreeningSeat seat, User user) {
-        return ticketRepository.add(TicketFixture.createTicket(screening, seat, user));
+    private Ticket addTicket(ScreeningSeat seat, User user) {
+        return ticketRepository.add(TicketFixture.createTicket(seat, user));
     }
 
-    private Ticket addCancelledTicket(Screening screening, ScreeningSeat seat, User user) {
-        return ticketRepository.add(createCancelledTicket(screening, seat, user));
+    private Ticket addCancelledTicket(ScreeningSeat seat, User user) {
+        return ticketRepository.add(createCancelledTicket(seat, user));
     }
 
     private Screening addScreening(Hall hall, Film film) {

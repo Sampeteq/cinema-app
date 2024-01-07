@@ -52,7 +52,7 @@ public class TicketService {
                             .orElseThrow(ScreeningSeatNotFoundException::new);
                     log.info("Found seat: {}", seat);
                     seat.markAsNotFree();
-                    return new Ticket(TicketStatus.BOOKED, screening, seat, loggedUserId);
+                    return new Ticket(TicketStatus.BOOKED, seat, loggedUserId);
                 })
                 .toList()
                 .forEach(ticket -> {

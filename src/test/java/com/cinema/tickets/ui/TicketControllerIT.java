@@ -7,6 +7,7 @@ import com.cinema.films.domain.FilmRepository;
 import com.cinema.halls.HallFixture;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
+import com.cinema.halls.domain.HallSeat;
 import com.cinema.screenings.ScreeningFixture;
 import com.cinema.screenings.ScreeningSeatFixture;
 import com.cinema.screenings.domain.Screening;
@@ -143,7 +144,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var film = addFilm();
         var screening = addScreening(hall, film);
-        var seat = addSeat(screening);
+        var seat = addSeat(screening, hall.getSeats().getFirst());
         var bookTicketDto = new BookTicketDto(
                 screening.getId(),
                 List.of(seat.getId())
@@ -176,8 +177,8 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var film = addFilm();
         var screening = addScreening(hall, film);
-        var seat1 = addSeat(screening);
-        var seat2 = addSeat(screening);
+        var seat1 = addSeat(screening, hall.getSeats().get(0));
+        var seat2 = addSeat(screening, hall.getSeats().get(1));
         var bookTicketDto = new BookTicketDto(
                 screening.getId(),
                 List.of(seat1.getId(), seat2.getId())
@@ -207,7 +208,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var film = addFilm();
         var screening = addScreening(hall, film);
-        var seat = addNotFreeSeat(screening);
+        var seat = addNotFreeSeat(screening, hall.getSeats().getFirst());
         var bookTicketDto = new BookTicketDto(
                 screening.getId(),
                 List.of(seat.getId())
@@ -237,7 +238,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var film = addFilm();
         var screening = addScreening(hall, film);
-        var seat = addSeat(screening);
+        var seat = addSeat(screening, hall.getSeats().getFirst());
         Mockito
                 .when(clock.instant())
                 .thenReturn(screening.getDate().minusMinutes(59).toInstant(ZoneOffset.UTC));
@@ -270,7 +271,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var film = addFilm();
         var screening = addScreening(hall, film);
-        var seat = addSeat(screening);
+        var seat = addSeat(screening, hall.getSeats().getFirst());
         var ticket = addTicket(screening, seat, user);
 
         //when
@@ -295,7 +296,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var film = addFilm();
         var screening = addScreening(hall, film);
-        var seat = addSeat(screening);
+        var seat = addSeat(screening, hall.getSeats().getFirst());
         var ticket = addCancelledTicket(screening, seat, user);
 
         //when
@@ -320,7 +321,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var film = addFilm();
         var screening = addScreening(hall, film);
-        var seat = addSeat(screening);
+        var seat = addSeat(screening, hall.getSeats().getFirst());
         var ticket = addTicket(screening, seat, user);
         Mockito
                 .when(clock.instant())
@@ -348,7 +349,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var film = addFilm();
         var screening = addScreening(hall, film);
-        var seat = addSeat(screening);
+        var seat = addSeat(screening, hall.getSeats().getFirst());
         var ticket = addTicket(screening, seat, user);
 
         //when
@@ -396,12 +397,12 @@ class TicketControllerIT extends BaseIT {
         return screeningRepository.add(ScreeningFixture.createScreening(film, hall));
     }
 
-    private ScreeningSeat addSeat(Screening screening) {
-        return screeningSeatRepository.add(ScreeningSeatFixture.createSeat(screening));
+    private ScreeningSeat addSeat(Screening screening, HallSeat hallSeat) {
+        return screeningSeatRepository.add(ScreeningSeatFixture.createSeat(screening, hallSeat));
     }
 
-    private ScreeningSeat addNotFreeSeat(Screening screening) {
-        return screeningSeatRepository.add(ScreeningSeatFixture.createNotFreeSeat(screening));
+    private ScreeningSeat addNotFreeSeat(Screening screening, HallSeat hallSeat) {
+        return screeningSeatRepository.add(ScreeningSeatFixture.createNotFreeSeat(screening, hallSeat));
     }
 
     private Hall addHall() {

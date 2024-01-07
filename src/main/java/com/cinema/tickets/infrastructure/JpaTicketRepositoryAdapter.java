@@ -51,8 +51,8 @@ interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
             t.screening.film.title,
             t.screening.date,
             t.screening.hall.id,
-            t.seat.number,
-            t.seat.rowNumber)
+            t.seat.hallSeat.number,
+            t.seat.hallSeat.rowNumber)
             from Ticket t
             """)
     List<TicketDto> findAllByUserId(@Param("userId") Long userId);

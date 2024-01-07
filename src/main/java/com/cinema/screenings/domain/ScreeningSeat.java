@@ -1,12 +1,13 @@
 package com.cinema.screenings.domain;
 
+import com.cinema.halls.domain.HallSeat;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
@@ -19,11 +20,10 @@ public class ScreeningSeat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int rowNumber;
-
-    private int number;
-
     private boolean isFree;
+
+    @OneToOne
+    private HallSeat hallSeat;
 
     @ManyToOne
     private Screening screening;
@@ -31,10 +31,9 @@ public class ScreeningSeat {
     protected ScreeningSeat() {
     }
 
-    public ScreeningSeat(int rowNumber, int number, boolean isFree, Screening screening) {
-        this.rowNumber = rowNumber;
-        this.number = number;
+    public ScreeningSeat(boolean isFree, HallSeat hallSeat, Screening screening) {
         this.isFree = isFree;
+        this.hallSeat = hallSeat;
         this.screening = screening;
     }
 

@@ -56,10 +56,9 @@ public class ScreeningService {
         var screeningSeats = hall
                 .getSeats()
                 .stream()
-                .map(seatDto -> new ScreeningSeat(
-                        seatDto.getRowNumber(),
-                        seatDto.getNumber(),
+                .map(hallSeat -> new ScreeningSeat(
                         true,
+                        hallSeat,
                         addedScreening)
                 ).toList();
         screeningSeats.forEach(screeningSeatRepository::add);

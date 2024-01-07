@@ -7,6 +7,7 @@ import com.cinema.films.domain.FilmRepository;
 import com.cinema.halls.HallFixture;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
+import com.cinema.halls.domain.HallSeat;
 import com.cinema.screenings.ScreeningSeatFixture;
 import com.cinema.screenings.application.dto.CreateScreeningDto;
 import com.cinema.screenings.domain.Screening;
@@ -25,6 +26,7 @@ import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
@@ -244,7 +246,7 @@ class ScreeningControllerIT extends BaseIT {
         var hall = addHall();
         var film = addFilm();
         var screening = addScreening(film, hall);
-        addSeats(screening);
+        addSeats(screening, hall.getSeats());
 
         //when
         var spec = webTestClient
@@ -278,9 +280,9 @@ class ScreeningControllerIT extends BaseIT {
         return screeningRepository.add(screening);
     }
 
-    private void addSeats(Screening screening) {
+    private void addSeats(Screening screening, List<HallSeat> seats) {
         ScreeningSeatFixture
-                .createSeats(screening)
+                .createSeats(screening, seats)
                 .forEach(screeningSeatRepository::add);
     }
 

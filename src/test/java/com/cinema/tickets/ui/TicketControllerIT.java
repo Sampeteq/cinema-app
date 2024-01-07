@@ -18,7 +18,6 @@ import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.tickets.TicketFixture;
 import com.cinema.tickets.application.dto.BookTicketDto;
-import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
@@ -358,29 +357,18 @@ class TicketControllerIT extends BaseIT {
                 .exchange();
 
         //then
-        var expectedTicketDto = List.of(
-                new TicketDto(
-                        ticket.getId(),
-                        ticket.getStatus(),
-                        film.getTitle(),
-                        screening.getDate(),
-                        hall.getId(),
-                        1,
-                        1
-                )
-        );
         spec
                 .expectStatus()
                 .isOk()
                 .expectBody()
                 .jsonPath("$[*]").value(everyItem(notNullValue()))
-                .jsonPath("$.tickets[0].id").isEqualTo(expectedTicketDto.getFirst().id())
-                .jsonPath("$.tickets[0].status").isEqualTo(expectedTicketDto.getFirst().status().name())
-                .jsonPath("$.tickets[0].filmTitle").isEqualTo(expectedTicketDto.getFirst().filmTitle())
-                .jsonPath("$.tickets[0].screeningDate").isEqualTo(expectedTicketDto.getFirst().screeningDate().toString())
-                .jsonPath("$.tickets[0].hallId").isEqualTo(expectedTicketDto.getFirst().hallId())
-                .jsonPath("$.tickets[0].rowNumber").isEqualTo(expectedTicketDto.getFirst().rowNumber())
-                .jsonPath("$.tickets[0].seatNumber").isEqualTo(expectedTicketDto.getFirst().seatNumber());
+                .jsonPath("$.tickets[0].id").isEqualTo(ticket.getId())
+                .jsonPath("$.tickets[0].status").isEqualTo(ticket.getStatus().name())
+                .jsonPath("$.tickets[0].filmTitle").isEqualTo(film.getTitle())
+                .jsonPath("$.tickets[0].screeningDate").isEqualTo(screening.getDate().toString())
+                .jsonPath("$.tickets[0].hallId").isEqualTo(hall.getId())
+                .jsonPath("$.tickets[0].rowNumber").isEqualTo(seat.getHallSeat().getRowNumber())
+                .jsonPath("$.tickets[0].seatNumber").isEqualTo(seat.getHallSeat().getNumber());
     }
 
     private Ticket addTicket(ScreeningSeat seat, User user) {

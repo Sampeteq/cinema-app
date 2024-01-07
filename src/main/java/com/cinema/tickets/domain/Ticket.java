@@ -29,7 +29,7 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private ScreeningSeat seat;
 
     @ManyToOne(fetch = FetchType.LAZY)

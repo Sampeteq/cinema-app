@@ -3,6 +3,7 @@ package com.cinema.screenings.domain;
 import com.cinema.halls.domain.HallSeat;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,10 +23,10 @@ public class ScreeningSeat {
 
     private boolean isFree;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private HallSeat hallSeat;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Screening screening;
 
     protected ScreeningSeat() {

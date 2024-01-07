@@ -30,14 +30,12 @@ import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import java.time.Clock;
-import java.time.ZoneOffset;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.cinema.tickets.TicketFixture.createCancelledTicket;
@@ -68,7 +66,7 @@ class TicketControllerIT extends BaseIT {
     @Autowired
     private UserRepository userRepository;
 
-    @SpyBean
+    @Autowired
     private Clock clock;
 
     private User user;
@@ -234,11 +232,8 @@ class TicketControllerIT extends BaseIT {
         //given
         var hall = addHall();
         var film = addFilm();
-        var screening = addScreening(hall, film);
+        var screening = addScreening(LocalDateTime.now(clock).minusMinutes(59), hall, film);
         var seat = addSeat(screening, hall.getSeats().getFirst());
-        Mockito
-                .when(clock.instant())
-                .thenReturn(screening.getDate().minusMinutes(59).toInstant(ZoneOffset.UTC));
         var bookTicketDto = new BookTicketDto(
                 screening.getId(),
                 List.of(seat.getId())
@@ -317,12 +312,9 @@ class TicketControllerIT extends BaseIT {
         //given
         var hall = addHall();
         var film = addFilm();
-        var screening = addScreening(hall, film);
+        var screening = addScreening(LocalDateTime.now(clock).minusHours(23), hall, film);
         var seat = addSeat(screening, hall.getSeats().getFirst());
         var ticket = addTicket(seat, user);
-        Mockito
-                .when(clock.instant())
-                .thenReturn(screening.getDate().minusHours(23).toInstant(ZoneOffset.UTC));
 
         //when
         var spec = webTestClient
@@ -381,6 +373,10 @@ class TicketControllerIT extends BaseIT {
 
     private Screening addScreening(Hall hall, Film film) {
         return screeningRepository.add(ScreeningFixture.createScreening(film, hall));
+    }
+
+    private Screening addScreening(LocalDateTime date, Hall hall, Film film) {
+        return screeningRepository.add(ScreeningFixture.createScreening(date, film, hall));
     }
 
     private ScreeningSeat addSeat(Screening screening, HallSeat hallSeat) {

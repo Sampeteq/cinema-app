@@ -21,7 +21,7 @@ import java.time.Clock;
 @Entity
 @Table(name = "tickets")
 @Getter
-@ToString(exclude = {"seat", "user"})
+@ToString(exclude = {"user"})
 public class Ticket {
 
     @Id
@@ -31,7 +31,7 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private ScreeningSeat seat;
 
     @ManyToOne(fetch = FetchType.LAZY)

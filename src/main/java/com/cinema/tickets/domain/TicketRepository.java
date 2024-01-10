@@ -9,4 +9,5 @@ public interface TicketRepository {
     Ticket add(Ticket ticket);
     Optional<Ticket> getByIdAndUserId(Long ticketId, Long userId);
     List<TicketDto> getAllByUserId(Long userId);
+    List<Ticket> getAll();
 }

@@ -2,8 +2,10 @@ package com.cinema.screenings.infrastructure;
 
 import com.cinema.screenings.domain.ScreeningSeat;
 import com.cinema.screenings.domain.ScreeningSeatRepository;
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,6 +39,8 @@ class JpaScreeningSeatRepositoryAdapter implements ScreeningSeatRepository {
 }
 
 interface JpaScreeningSeatRepository extends JpaRepository<ScreeningSeat, Long> {
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<ScreeningSeat> findByIdAndScreeningId(Long id, Long screeningId);
+
     List<ScreeningSeat> findAllByScreeningId(Long screeningId);
 }

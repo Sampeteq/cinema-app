@@ -33,6 +33,11 @@ class JpaTicketRepositoryAdapter implements TicketRepository {
     public List<TicketDto> getAllByUserId(Long userId) {
         return jpaTicketRepository.findAllByUserId(userId);
     }
+
+    @Override
+    public List<Ticket> getAll() {
+        return jpaTicketRepository.findAll();
+    }
 }
 
 interface JpaTicketRepository extends JpaRepository<Ticket, Long> {

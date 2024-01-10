@@ -1,25 +1,8 @@
 package com.cinema.tickets.ui;
 
-import com.cinema.BaseIT;
-import com.cinema.films.FilmFixture;
-import com.cinema.films.domain.Film;
-import com.cinema.films.domain.FilmRepository;
-import com.cinema.halls.HallFixture;
-import com.cinema.halls.domain.Hall;
-import com.cinema.halls.domain.HallRepository;
-import com.cinema.halls.domain.HallSeat;
-import com.cinema.screenings.ScreeningFixture;
-import com.cinema.screenings.ScreeningSeatFixture;
-import com.cinema.screenings.domain.Screening;
-import com.cinema.screenings.domain.ScreeningRepository;
-import com.cinema.screenings.domain.ScreeningSeat;
-import com.cinema.screenings.domain.ScreeningSeatRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
-import com.cinema.tickets.TicketFixture;
 import com.cinema.tickets.application.dto.BookTicketDto;
-import com.cinema.tickets.domain.Ticket;
-import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
@@ -27,47 +10,21 @@ import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.users.UserFixture;
 import com.cinema.users.domain.User;
-import com.cinema.users.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.cinema.tickets.TicketFixture.createCancelledTicket;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TicketControllerIT extends BaseIT {
-    private static final String TICKETS_BASE_ENDPOINT = "/tickets";
-
-    @Autowired
-    private TicketRepository ticketRepository;
-
-    @Autowired
-    private ScreeningRepository screeningRepository;
-
-    @Autowired
-    private ScreeningSeatRepository screeningSeatRepository;
-
-    @Autowired
-    private HallRepository hallRepository;
-
-    @Autowired
-    private FilmRepository filmRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private Clock clock;
+class TicketControllerIT extends TicketBaseIT {
 
     private User user;
 
@@ -361,37 +318,5 @@ class TicketControllerIT extends BaseIT {
                 .jsonPath("$.tickets[0].hallId").isEqualTo(hall.getId())
                 .jsonPath("$.tickets[0].rowNumber").isEqualTo(seat.getHallSeat().getRowNumber())
                 .jsonPath("$.tickets[0].seatNumber").isEqualTo(seat.getHallSeat().getNumber());
-    }
-
-    private Ticket addTicket(ScreeningSeat seat, User user) {
-        return ticketRepository.add(TicketFixture.createTicket(seat, user));
-    }
-
-    private Ticket addCancelledTicket(ScreeningSeat seat, User user) {
-        return ticketRepository.add(createCancelledTicket(seat, user));
-    }
-
-    private Screening addScreening(Hall hall, Film film) {
-        return screeningRepository.add(ScreeningFixture.createScreening(film, hall));
-    }
-
-    private Screening addScreening(LocalDateTime date, Hall hall, Film film) {
-        return screeningRepository.add(ScreeningFixture.createScreening(date, film, hall));
-    }
-
-    private ScreeningSeat addSeat(Screening screening, HallSeat hallSeat) {
-        return screeningSeatRepository.add(ScreeningSeatFixture.createSeat(screening, hallSeat));
-    }
-
-    private ScreeningSeat addNotFreeSeat(Screening screening, HallSeat hallSeat) {
-        return screeningSeatRepository.add(ScreeningSeatFixture.createNotFreeSeat(screening, hallSeat));
-    }
-
-    private Hall addHall() {
-        return hallRepository.add(HallFixture.createHall());
-    }
-
-    private Film addFilm() {
-        return filmRepository.add(FilmFixture.createFilm());
     }
 }

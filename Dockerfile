@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17
+FROM eclipse-temurin:21
 EXPOSE 8080
 WORKDIR /app
 COPY target/cinema-app-0.0.1-SNAPSHOT.jar .

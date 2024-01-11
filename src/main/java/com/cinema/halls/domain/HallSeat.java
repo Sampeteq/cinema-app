@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "halls_seats")
 @Getter
 @ToString
 public class HallSeat {

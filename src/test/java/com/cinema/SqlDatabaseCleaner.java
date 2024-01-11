@@ -18,7 +18,7 @@ public class SqlDatabaseCleaner {
                         "FROM information_schema.tables " +
                         "WHERE table_schema='public'", String.class
         ).forEach(tableName -> jdbcTemplate.execute(
-                "TRUNCATE TABLE " + tableName + " RESTART IDENTITY CASCADE"
+                String.format("TRUNCATE TABLE \"%s\" RESTART IDENTITY CASCADE", tableName)
         ));
     }
 }

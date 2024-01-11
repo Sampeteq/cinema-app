@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(schema = "public")
 @Getter
 public class User implements UserDetails {
 

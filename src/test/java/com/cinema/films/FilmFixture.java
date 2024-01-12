@@ -19,29 +19,11 @@ public final class FilmFixture {
     private FilmFixture() {
     }
 
-    public static CreateFilmDto createCreateFilmDto() {
-        return new CreateFilmDto(
-                TITLE,
-                CATEGORY,
-                YEAR,
-                DURATION_IN_MINUTES
-        );
-    }
-
     public static CreateFilmDto createCreateFilmDto(String title) {
         return new CreateFilmDto(
                 title,
                 CATEGORY,
                 YEAR,
-                DURATION_IN_MINUTES
-        );
-    }
-
-    public static CreateFilmDto createCreateFilmDto(Integer year) {
-        return new CreateFilmDto(
-                TITLE,
-                CATEGORY,
-                year,
                 DURATION_IN_MINUTES
         );
     }

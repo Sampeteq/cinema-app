@@ -1,6 +1,5 @@
 package com.cinema.screenings.ui;
 
-import com.cinema.screenings.application.ScreeningSeatService;
 import com.cinema.screenings.application.ScreeningService;
 import com.cinema.screenings.application.dto.CreateScreeningDto;
 import com.cinema.screenings.application.dto.GetScreeningsDto;
@@ -28,7 +27,6 @@ import java.util.List;
 class ScreeningController {
 
     private final ScreeningService screeningService;
-    private final ScreeningSeatService screeningSeatService;
 
     @PostMapping("admin/screenings")
     @SecurityRequirement(name = "basic")
@@ -68,6 +66,6 @@ class ScreeningController {
     @GetMapping("/public/screenings/{id}/seats")
     List<ScreeningSeatDto> getSeatsByScreeningId(@PathVariable Long id) {
         log.info("Screening id:{}", id);
-        return screeningSeatService.getSeatsByScreeningId(id);
+        return screeningService.getSeatsByScreeningId(id);
     }
 }

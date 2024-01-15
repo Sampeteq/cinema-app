@@ -7,6 +7,7 @@ import com.cinema.halls.domain.exceptions.HallNotFoundException;
 import com.cinema.screenings.application.dto.CreateScreeningDto;
 import com.cinema.screenings.application.dto.GetScreeningsDto;
 import com.cinema.screenings.application.dto.ScreeningDto;
+import com.cinema.screenings.application.dto.ScreeningSeatDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningFactory;
 import com.cinema.screenings.domain.ScreeningRepository;
@@ -66,7 +67,18 @@ public class ScreeningService {
                 .getAll(dto)
                 .stream()
                 .sorted(comparing(Screening::getDate))
-                .map(screeningMapper::mapToDto)
+                .map(screeningMapper::mapScreeningToDto)
+                .toList();
+    }
+
+    public List<ScreeningSeatDto> getSeatsByScreeningId(Long screeningId) {
+        log.info("Screening id:{}", screeningId);
+        return screeningRepository
+                .getById(screeningId)
+                .orElseThrow(ScreeningNotFoundException::new)
+                .getSeats()
+                .stream()
+                .map(screeningMapper::mapScreeningSeatToDto)
                 .toList();
     }
 }

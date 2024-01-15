@@ -7,13 +7,10 @@ import com.cinema.films.domain.FilmRepository;
 import com.cinema.halls.HallFixture;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
-import com.cinema.halls.domain.HallSeat;
 import com.cinema.screenings.ScreeningFixture;
-import com.cinema.screenings.ScreeningSeatFixture;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.ScreeningSeat;
-import com.cinema.screenings.domain.ScreeningSeatRepository;
 import com.cinema.tickets.TicketFixture;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
@@ -27,6 +24,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.cinema.screenings.ScreeningFixture.createScreeningWithNotFreeSeat;
+import static com.cinema.screenings.ScreeningFixture.createScreeningWithSeats;
 import static com.cinema.tickets.TicketFixture.createCancelledTicket;
 
 abstract class TicketBaseIT extends BaseIT {
@@ -37,9 +36,6 @@ abstract class TicketBaseIT extends BaseIT {
 
     @Autowired
     protected ScreeningRepository screeningRepository;
-
-    @Autowired
-    protected ScreeningSeatRepository screeningSeatRepository;
 
     @Autowired
     protected HallRepository hallRepository;
@@ -69,12 +65,16 @@ abstract class TicketBaseIT extends BaseIT {
         return screeningRepository.add(ScreeningFixture.createScreening(date, film, hall));
     }
 
-    protected ScreeningSeat addSeat(Screening screening, HallSeat hallSeat) {
-        return screeningSeatRepository.add(ScreeningSeatFixture.createSeat(screening, hallSeat));
+    protected Screening addScreeningWithSeats(Hall hall, Film film) {
+        return screeningRepository.add(createScreeningWithSeats(hall, film));
     }
 
-    protected ScreeningSeat addNotFreeSeat(Screening screening, HallSeat hallSeat) {
-        return screeningSeatRepository.add(ScreeningSeatFixture.createNotFreeSeat(screening, hallSeat));
+    protected Screening addScreeningWithSeats(LocalDateTime date, Hall hall, Film film) {
+        return screeningRepository.add(createScreeningWithSeats(date, film, hall));
+    }
+
+    protected Screening addScreeningWithNotFreeSeat(Hall hall, Film film) {
+        return screeningRepository.add(createScreeningWithNotFreeSeat(hall, film));
     }
 
     protected Hall addHall() {

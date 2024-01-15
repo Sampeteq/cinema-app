@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -28,6 +29,9 @@ public class ScreeningSeat {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Screening screening;
+
+    @Version
+    private int version;
 
     protected ScreeningSeat() {
     }

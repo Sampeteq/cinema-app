@@ -97,11 +97,10 @@ class TicketControllerIT extends TicketBaseIT {
         //given
         var hall = addHall();
         var film = addFilm();
-        var screening = addScreening(hall, film);
-        var seat = addSeat(screening, hall.getSeats().getFirst());
+        var screening = addScreeningWithSeats(hall, film);
         var bookTicketDto = new BookTicketDto(
                 screening.getId(),
-                List.of(seat.getId())
+                List.of(screening.getSeats().getFirst().getId())
         );
 
         //when
@@ -130,9 +129,9 @@ class TicketControllerIT extends TicketBaseIT {
         //given
         var hall = addHall();
         var film = addFilm();
-        var screening = addScreening(hall, film);
-        var seat1 = addSeat(screening, hall.getSeats().get(0));
-        var seat2 = addSeat(screening, hall.getSeats().get(1));
+        var screening = addScreeningWithSeats(hall, film);
+        var seat1 = screening.getSeats().get(0);
+        var seat2 = screening.getSeats().get(1);
         var bookTicketDto = new BookTicketDto(
                 screening.getId(),
                 List.of(seat1.getId(), seat2.getId())
@@ -159,8 +158,8 @@ class TicketControllerIT extends TicketBaseIT {
         //given
         var hall = addHall();
         var film = addFilm();
-        var screening = addScreening(hall, film);
-        var seat = addNotFreeSeat(screening, hall.getSeats().getFirst());
+        var screening = addScreeningWithNotFreeSeat(hall, film);
+        var seat = screening.getSeats().getFirst();
         var bookTicketDto = new BookTicketDto(
                 screening.getId(),
                 List.of(seat.getId())
@@ -189,8 +188,8 @@ class TicketControllerIT extends TicketBaseIT {
         //given
         var hall = addHall();
         var film = addFilm();
-        var screening = addScreening(LocalDateTime.now(clock).minusMinutes(59), hall, film);
-        var seat = addSeat(screening, hall.getSeats().getFirst());
+        var screening = addScreeningWithSeats(LocalDateTime.now(clock).minusMinutes(59), hall, film);
+        var seat = screening.getSeats().getFirst();
         var bookTicketDto = new BookTicketDto(
                 screening.getId(),
                 List.of(seat.getId())
@@ -219,8 +218,8 @@ class TicketControllerIT extends TicketBaseIT {
         //give
         var hall = addHall();
         var film = addFilm();
-        var screening = addScreening(hall, film);
-        var seat = addSeat(screening, hall.getSeats().getFirst());
+        var screening = addScreeningWithSeats(hall, film);
+        var seat = screening.getSeats().getFirst();
         var ticket = addTicket(seat, user);
 
         //when
@@ -244,8 +243,8 @@ class TicketControllerIT extends TicketBaseIT {
         //given
         var hall = addHall();
         var film = addFilm();
-        var screening = addScreening(hall, film);
-        var seat = addSeat(screening, hall.getSeats().getFirst());
+        var screening = addScreeningWithSeats(hall, film);
+        var seat = screening.getSeats().getFirst();
         var ticket = addCancelledTicket(seat, user);
 
         //when
@@ -269,8 +268,8 @@ class TicketControllerIT extends TicketBaseIT {
         //given
         var hall = addHall();
         var film = addFilm();
-        var screening = addScreening(LocalDateTime.now(clock).minusHours(23), hall, film);
-        var seat = addSeat(screening, hall.getSeats().getFirst());
+        var screening = addScreeningWithSeats(LocalDateTime.now(clock).minusHours(23), hall, film);
+        var seat = screening.getSeats().getFirst();
         var ticket = addTicket(seat, user);
 
         //when
@@ -294,8 +293,8 @@ class TicketControllerIT extends TicketBaseIT {
         //given
         var hall = addHall();
         var film = addFilm();
-        var screening = addScreening(hall, film);
-        var seat = addSeat(screening, hall.getSeats().getFirst());
+        var screening = addScreeningWithSeats(hall, film);
+        var seat = screening.getSeats().getFirst();
         var ticket = addTicket(seat, user);
 
         //when

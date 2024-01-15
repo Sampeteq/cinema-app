@@ -1,9 +1,7 @@
 package com.cinema.tickets.application;
 
 import com.cinema.screenings.domain.ScreeningRepository;
-import com.cinema.screenings.domain.ScreeningSeatRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
-import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.tickets.application.dto.BookTicketDto;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.domain.Ticket;
@@ -30,7 +28,6 @@ public class TicketService {
     private final TicketBookingPolicy ticketBookingPolicy;
     private final TicketCancellingPolicy ticketCancellingPolicy;
     private final ScreeningRepository screeningRepository;
-    private final ScreeningSeatRepository screeningSeatRepository;
     private final UserService userService;
     private final Clock clock;
 
@@ -47,12 +44,10 @@ public class TicketService {
                 .seatsIds()
                 .stream()
                 .map(seatId -> {
-                    var seat = screeningSeatRepository
-                            .getByIdAndScreeningId(seatId, dto.screeningId())
-                            .orElseThrow(ScreeningSeatNotFoundException::new);
-                    log.info("Found seat: {}", seat);
-                    seat.markAsNotFree();
-                    return new Ticket(TicketStatus.BOOKED, seat, loggedUserId);
+                    var foundSeat = screening.findSeat(seatId);
+                    log.info("Found seat: {}", foundSeat);
+                    foundSeat.markAsNotFree();
+                    return new Ticket(TicketStatus.BOOKED, foundSeat, loggedUserId);
                 })
                 .toList()
                 .forEach(ticket -> {

@@ -7,12 +7,9 @@ import com.cinema.films.domain.FilmRepository;
 import com.cinema.halls.HallFixture;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
-import com.cinema.halls.domain.HallSeat;
-import com.cinema.screenings.ScreeningSeatFixture;
 import com.cinema.screenings.application.dto.CreateScreeningDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
-import com.cinema.screenings.domain.ScreeningSeatRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import com.cinema.users.UserFixture;
@@ -26,10 +23,10 @@ import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
+import static com.cinema.screenings.ScreeningFixture.createScreeningWithSeats;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -43,9 +40,6 @@ class ScreeningControllerIT extends BaseIT {
 
     @Autowired
     private ScreeningRepository screeningRepository;
-
-    @Autowired
-    private ScreeningSeatRepository screeningSeatRepository;
 
     @Autowired
     private FilmRepository filmRepository;
@@ -245,8 +239,7 @@ class ScreeningControllerIT extends BaseIT {
         //given
         var hall = addHall();
         var film = addFilm();
-        var screening = addScreening(film, hall);
-        addSeats(screening, hall.getSeats());
+        var screening = addScreeningWithSeats(hall, film);
 
         //when
         var spec = webTestClient
@@ -280,10 +273,8 @@ class ScreeningControllerIT extends BaseIT {
         return screeningRepository.add(screening);
     }
 
-    private void addSeats(Screening screening, List<HallSeat> seats) {
-        ScreeningSeatFixture
-                .createSeats(screening, seats)
-                .forEach(screeningSeatRepository::add);
+    private Screening addScreeningWithSeats(Hall hall, Film film) {
+        return screeningRepository.add(createScreeningWithSeats(hall, film));
     }
 
     private Hall addHall() {

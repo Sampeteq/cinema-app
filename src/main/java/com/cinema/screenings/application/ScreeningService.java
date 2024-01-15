@@ -10,8 +10,6 @@ import com.cinema.screenings.application.dto.ScreeningDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningFactory;
 import com.cinema.screenings.domain.ScreeningRepository;
-import com.cinema.screenings.domain.ScreeningSeat;
-import com.cinema.screenings.domain.ScreeningSeatRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.infrastructure.ScreeningMapper;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +29,6 @@ public class ScreeningService {
     private final ScreeningFactory screeningFactory;
     private final ScreeningRepository screeningRepository;
     private final ScreeningMapper screeningMapper;
-    private final ScreeningSeatRepository screeningSeatRepository;
     private final FilmRepository filmRepository;
     private final HallRepository hallRepository;
 
@@ -53,16 +50,6 @@ public class ScreeningService {
         );
         var addedScreening = screeningRepository.add(screening);
         log.info("Screening added:{}", addedScreening);
-        var screeningSeats = hall
-                .getSeats()
-                .stream()
-                .map(hallSeat -> new ScreeningSeat(
-                        true,
-                        hallSeat,
-                        addedScreening)
-                ).toList();
-        screeningSeats.forEach(screeningSeatRepository::add);
-        log.info("Added seats");
     }
 
     public void deleteScreening(Long id) {

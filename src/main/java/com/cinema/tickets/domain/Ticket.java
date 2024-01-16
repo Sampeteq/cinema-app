@@ -26,8 +26,13 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public enum Status {
+        BOOKED,
+        CANCELLED
+    }
+
     @Enumerated(EnumType.STRING)
-    private TicketStatus status;
+    private Ticket.Status status;
 
     @OneToOne
     private ScreeningSeat seat;
@@ -37,19 +42,19 @@ public class Ticket {
 
     protected Ticket() {}
 
-    public Ticket(TicketStatus status, ScreeningSeat seat, User user) {
+    public Ticket(Status status, ScreeningSeat seat, User user) {
         this.status = status;
         this.seat = seat;
         this.user = user;
     }
 
     public void cancel(TicketCancellingPolicy ticketCancellingPolicy, Clock clock) {
-        if (status.equals(TicketStatus.CANCELLED)) {
+        if (status.equals(Ticket.Status.CANCELLED)) {
             throw new TicketAlreadyCancelledException();
         }
         var timeToScreeningInHours = this.seat.getScreening().timeToScreeningInHours(clock);
         ticketCancellingPolicy.checkScreeningDate(timeToScreeningInHours);
-        this.status = TicketStatus.CANCELLED;
+        this.status = Ticket.Status.CANCELLED;
         this.seat.markAsFree();
     }
 }

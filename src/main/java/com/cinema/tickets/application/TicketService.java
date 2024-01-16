@@ -8,7 +8,6 @@ import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketBookingPolicy;
 import com.cinema.tickets.domain.TicketCancellingPolicy;
 import com.cinema.tickets.domain.TicketRepository;
-import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.users.application.UserService;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +46,7 @@ public class TicketService {
                     var foundSeat = screening.findSeat(seatId);
                     log.info("Found seat: {}", foundSeat);
                     foundSeat.markAsNotFree();
-                    return new Ticket(TicketStatus.BOOKED, foundSeat, loggedUserId);
+                    return new Ticket(Ticket.Status.BOOKED, foundSeat, loggedUserId);
                 })
                 .toList()
                 .forEach(ticket -> {

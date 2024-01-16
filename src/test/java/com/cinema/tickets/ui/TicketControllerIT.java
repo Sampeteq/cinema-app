@@ -3,7 +3,7 @@ package com.cinema.tickets.ui;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.tickets.application.dto.BookTicketDto;
-import com.cinema.tickets.domain.TicketStatus;
+import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
@@ -118,7 +118,7 @@ class TicketControllerIT extends TicketBaseIT {
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
                     assertEquals(1L, ticket.getUser().getId());
-                    assertEquals(TicketStatus.BOOKED, ticket.getStatus());
+                    assertEquals(Ticket.Status.BOOKED, ticket.getStatus());
                     assertEquals(bookTicketDto.screeningId(), ticket.getSeat().getScreening().getId());
                     assertEquals(bookTicketDto.seatsIds().getFirst(), ticket.getSeat().getId());
                 });
@@ -150,7 +150,7 @@ class TicketControllerIT extends TicketBaseIT {
         spec.expectStatus().isCreated();
         assertThat(ticketRepository.getAllByUserId(user.getId()))
                 .isNotEmpty()
-                .allSatisfy(ticket -> assertEquals(TicketStatus.BOOKED, ticket.status()));
+                .allSatisfy(ticket -> assertEquals(Ticket.Status.BOOKED, ticket.status()));
     }
 
     @Test
@@ -234,7 +234,7 @@ class TicketControllerIT extends TicketBaseIT {
         assertThat(ticketRepository.getByIdAndUserId(ticket.getId(), ticket.getUser().getId()))
                 .isNotEmpty()
                 .hasValueSatisfying(cancelledTicket ->
-                        assertEquals(TicketStatus.CANCELLED, cancelledTicket.getStatus())
+                        assertEquals(Ticket.Status.CANCELLED, cancelledTicket.getStatus())
                 );
     }
 

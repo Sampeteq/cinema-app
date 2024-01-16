@@ -2,7 +2,6 @@ package com.cinema.tickets;
 
 import com.cinema.screenings.domain.ScreeningSeat;
 import com.cinema.tickets.domain.Ticket;
-import com.cinema.tickets.domain.TicketStatus;
 import com.cinema.users.domain.User;
 
 public final class TicketFixture {
@@ -12,7 +11,7 @@ public final class TicketFixture {
 
     public static Ticket createTicket(ScreeningSeat seat, User user) {
         return new Ticket(
-                TicketStatus.BOOKED,
+                Ticket.Status.BOOKED,
                 seat,
                 user
         );
@@ -20,7 +19,7 @@ public final class TicketFixture {
 
     public static Ticket createCancelledTicket(ScreeningSeat seat, User user) {
         return new Ticket(
-                TicketStatus.CANCELLED,
+                Ticket.Status.CANCELLED,
                 seat,
                 user
         );

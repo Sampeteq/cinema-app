@@ -30,6 +30,6 @@ public class ScreeningFactory {
                 .map(hallSeat -> new ScreeningSeat(true, hallSeat, screening))
                 .toList();
         screening.assignSeats(screeningSeats);
-        return new Screening(date, endDate, film, hall);
+        return screening;
     }
 }

@@ -13,12 +13,11 @@ import java.time.LocalDateTime;
 public class ScreeningFactory {
 
     private final ScreeningDatePolicy screeningDatePolicy;
-    private final ScreeningEndDateCalculator screeningEndDateCalculator;
     private final ScreeningRepository screeningRepository;
 
     public Screening createScreening(LocalDateTime date, Film film, Hall hall) {
         screeningDatePolicy.checkScreeningDate(date);
-        var endDate = screeningEndDateCalculator.calculateEndDate(date, film.getDurationInMinutes());
+        var endDate = date.plusMinutes(film.getDurationInMinutes());
         var collisions = screeningRepository.getScreeningCollisions(date, endDate, hall.getId());
         if (!collisions.isEmpty()) {
             throw new ScreeningsCollisionsException();

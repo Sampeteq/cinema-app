@@ -9,6 +9,7 @@ import com.cinema.tickets.domain.TicketBookingPolicy;
 import com.cinema.tickets.domain.TicketCancellingPolicy;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
+import com.cinema.tickets.infrastructure.TicketMapper;
 import com.cinema.users.application.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final TicketBookingPolicy ticketBookingPolicy;
     private final TicketCancellingPolicy ticketCancellingPolicy;
+    private final TicketMapper ticketMapper;
     private final ScreeningRepository screeningRepository;
     private final UserService userService;
     private final Clock clock;
@@ -69,6 +71,10 @@ public class TicketService {
 
     public List<TicketDto> getAllTicketsByLoggedUser() {
         var loggedUser = userService.getLoggedUser();
-        return ticketRepository.getAllByUserId(loggedUser.getId());
+        return ticketRepository
+                .getAllByUserId(loggedUser.getId())
+                .stream()
+                .map(ticketMapper::mapToDto)
+                .toList();
     }
 }

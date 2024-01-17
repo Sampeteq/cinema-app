@@ -1,6 +1,5 @@
 package com.cinema.tickets.infrastructure;
 
-import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ class JpaTicketRepositoryAdapter implements TicketRepository {
     }
 
     @Override
-    public List<TicketDto> getAllByUserId(Long userId) {
+    public List<Ticket> getAllByUserId(Long userId) {
         return jpaTicketRepository.findAllByUserId(userId);
     }
 
@@ -51,15 +50,12 @@ interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
     Optional<Ticket> findByIdAndUserId(@Param("ticketId") Long ticketId, @Param("userId") Long userId);
 
     @Query("""
-            select new com.cinema.tickets.application.dto.TicketDto(
-            t.id,
-            t.status,
-            t.seat.screening.film.title,
-            t.seat.screening.date,
-            t.seat.screening.hall.id,
-            t.seat.hallSeat.number,
-            t.seat.hallSeat.rowNumber)
-            from Ticket t
+            from Ticket ticket
+            left join fetch ticket.seat seat
+            left join fetch seat.hallSeat hallSeat
+            left join fetch seat.screening screening
+            left join fetch screening.film film
+            where ticket.user.id = :userId
             """)
-    List<TicketDto> findAllByUserId(@Param("userId") Long userId);
+    List<Ticket> findAllByUserId(@Param("userId") Long userId);
 }

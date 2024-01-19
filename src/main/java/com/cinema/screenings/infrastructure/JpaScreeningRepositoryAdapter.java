@@ -37,6 +37,11 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     @Override
+    public Optional<Screening> getByIdWithSeats(Long id) {
+        return jpaScreeningRepository.findByIdWithSeats(id);
+    }
+
+    @Override
     public List<Screening> getScreeningCollisions(LocalDateTime startAt, LocalDateTime endAt, Long hallId) {
         return jpaScreeningRepository.findScreeningCollisions(startAt, endAt, hallId);
     }
@@ -63,6 +68,12 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
 }
 
 interface JpaScreeningRepository extends JpaRepository<Screening, Long>, JpaSpecificationExecutor<Screening> {
+    @Query("""
+                from Screening screening
+                left join fetch screening.seats screening_seat
+                left join fetch screening_seat.hallSeat
+            """)
+    Optional<Screening> findByIdWithSeats(@Param("id") Long id);
 
     @Query(""" 
             from Screening s where

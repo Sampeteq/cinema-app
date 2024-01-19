@@ -74,7 +74,7 @@ public class ScreeningService {
     public List<ScreeningSeatDto> getSeatsByScreeningId(Long screeningId) {
         log.info("Screening id:{}", screeningId);
         return screeningRepository
-                .getById(screeningId)
+                .getByIdWithSeats(screeningId)
                 .orElseThrow(ScreeningNotFoundException::new)
                 .getSeats()
                 .stream()

@@ -40,7 +40,7 @@ public class TicketService {
                 .orElseThrow(ScreeningNotFoundException::new);
         log.info("Found screening:{}", screening);
         ticketBookingPolicy.checkScreeningDate(screening.timeToScreeningInHours(clock));
-        var loggedUserId = userService.getLoggedUser();
+        var loggedUser = userService.getLoggedUser();
         dto
                 .seatsIds()
                 .stream()
@@ -48,7 +48,7 @@ public class TicketService {
                     var foundSeat = screening.findSeat(seatId);
                     log.info("Found seat: {}", foundSeat);
                     foundSeat.markAsNotFree();
-                    return new Ticket(Ticket.Status.BOOKED, foundSeat, loggedUserId);
+                    return new Ticket(Ticket.Status.BOOKED, foundSeat, loggedUser);
                 })
                 .toList()
                 .forEach(ticket -> {

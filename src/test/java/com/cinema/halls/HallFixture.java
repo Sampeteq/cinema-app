@@ -3,7 +3,7 @@ package com.cinema.halls;
 import com.cinema.halls.application.dto.CreateHallDto;
 import com.cinema.halls.application.dto.CreateSeatDto;
 import com.cinema.halls.domain.Hall;
-import com.cinema.halls.domain.HallSeat;
+import com.cinema.halls.domain.Seat;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ public class HallFixture {
     public static Hall createHall() {
         return new Hall(
                 List.of(
-                        new HallSeat(1, 1),
-                        new HallSeat(1, 2)
+                        new Seat(1, 1),
+                        new Seat(1, 2)
                 )
         );
     }

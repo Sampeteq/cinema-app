@@ -7,6 +7,7 @@ import com.cinema.films.domain.FilmRepository;
 import com.cinema.halls.HallFixture;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
+import com.cinema.screenings.ScreeningFixture;
 import com.cinema.screenings.application.dto.CreateScreeningDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
@@ -26,7 +27,7 @@ import java.time.LocalDateTime;
 
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
-import static com.cinema.screenings.ScreeningFixture.createScreeningWithSeats;
+import static com.cinema.screenings.ScreeningFixture.createScreeningWithTickets;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -274,7 +275,7 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     private Screening addScreeningWithSeats(Hall hall, Film film) {
-        return screeningRepository.add(createScreeningWithSeats(hall, film));
+        return screeningRepository.add(ScreeningFixture.createScreeningWithTickets(hall, film));
     }
 
     private Hall addHall() {

@@ -2,7 +2,8 @@ package com.cinema.screenings.domain;
 
 import com.cinema.films.domain.Film;
 import com.cinema.halls.domain.Hall;
-import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
+import com.cinema.tickets.domain.Ticket;
+import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@ToString(exclude = {"film", "hall", "seats"})
+@ToString(exclude = {"film", "hall", "tickets"})
 public class Screening {
 
     @Id
@@ -39,7 +40,7 @@ public class Screening {
     private Hall hall;
 
     @OneToMany(mappedBy = "screening", cascade = {CascadeType.PERSIST})
-    private List<ScreeningSeat> seats;
+    private List<Ticket> tickets;
 
     protected Screening() {}
 
@@ -58,16 +59,15 @@ public class Screening {
                 .toHours();
     }
 
-    public void assignSeats(List<ScreeningSeat> seats) {
-        this.seats = seats;
+    public void assignTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
-    public ScreeningSeat findSeat(Long seatId) {
-        return this
-                .seats
+    public Ticket findTicketBySeatId(Long seatId) {
+        return tickets
                 .stream()
-                .filter(seat -> seat.getId().equals(seatId))
+                .filter(ticket -> ticket.getSeat().getId().equals(seatId))
                 .findFirst()
-                .orElseThrow(ScreeningSeatNotFoundException::new);
+                .orElseThrow(TicketNotFoundException::new);
     }
 }

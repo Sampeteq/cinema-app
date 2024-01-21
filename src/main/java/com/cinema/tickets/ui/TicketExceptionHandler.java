@@ -2,7 +2,7 @@ package com.cinema.tickets.ui;
 
 import com.cinema.shared.exceptions.ExceptionMessage;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
-import com.cinema.tickets.domain.exceptions.TicketAlreadyExistsException;
+import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
@@ -21,7 +21,7 @@ class TicketExceptionHandler {
     }
 
     @ExceptionHandler
-    ResponseEntity<ExceptionMessage> handle(TicketAlreadyExistsException exception) {
+    ResponseEntity<ExceptionMessage> handle(TicketAlreadyBookedException exception) {
         var exceptionMessage = new ExceptionMessage(exception.getMessage());
         return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);
     }

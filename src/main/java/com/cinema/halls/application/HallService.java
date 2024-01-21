@@ -4,7 +4,7 @@ import com.cinema.halls.application.dto.CreateHallDto;
 import com.cinema.halls.application.dto.HallDto;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
-import com.cinema.halls.domain.HallSeat;
+import com.cinema.halls.domain.Seat;
 import com.cinema.halls.domain.exceptions.HallNotFoundException;
 import com.cinema.halls.infrastructure.HallMapper;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class HallService {
         log.info("Dto:{}", dto);
         var seats = dto.seats()
                 .stream()
-                .map(createSeatDto -> new HallSeat(createSeatDto.rowNumber(), createSeatDto.number()))
+                .map(createSeatDto -> new Seat(createSeatDto.rowNumber(), createSeatDto.number()))
                 .toList();
         var hall = new Hall(seats);
         hallRepository.add(hall);

@@ -4,7 +4,6 @@ import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.tickets.application.dto.BookTicketDto;
 import com.cinema.tickets.application.dto.TicketDto;
-import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketBookingPolicy;
 import com.cinema.tickets.domain.TicketCancellingPolicy;
 import com.cinema.tickets.domain.TicketRepository;
@@ -45,10 +44,10 @@ public class TicketService {
                 .seatsIds()
                 .stream()
                 .map(seatId -> {
-                    var foundSeat = screening.findSeat(seatId);
-                    log.info("Found seat: {}", foundSeat);
-                    foundSeat.markAsNotFree();
-                    return new Ticket(Ticket.Status.BOOKED, foundSeat, loggedUser);
+                    var ticket = screening.findTicketBySeatId(seatId);
+                    log.info("Found ticket: {}", ticket);
+                    ticket.book(loggedUser);
+                    return ticket;
                 })
                 .toList()
                 .forEach(ticket -> {

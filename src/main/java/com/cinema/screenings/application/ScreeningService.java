@@ -13,11 +13,13 @@ import com.cinema.screenings.domain.ScreeningFactory;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.infrastructure.ScreeningMapper;
+import com.cinema.tickets.domain.Ticket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.Comparator.comparing;
@@ -70,15 +72,20 @@ public class ScreeningService {
                 .map(screeningMapper::mapScreeningToDto)
                 .toList();
     }
-
     public List<ScreeningSeatDto> getSeatsByScreeningId(Long screeningId) {
         log.info("Screening id:{}", screeningId);
         return screeningRepository
-                .getByIdWithSeats(screeningId)
+                .getByIdWithTickets(screeningId)
                 .orElseThrow(ScreeningNotFoundException::new)
-                .getSeats()
+                .getTickets()
                 .stream()
-                .map(screeningMapper::mapScreeningSeatToDto)
+                .map(ticket -> new ScreeningSeatDto(
+                        ticket.getSeat().getId(),
+                        ticket.getSeat().getRowNumber(),
+                        ticket.getSeat().getNumber(),
+                        ticket.getStatus() == null || ticket.getStatus().equals(Ticket.Status.CANCELLED)
+                ))
+                .sorted(Comparator.comparing(ScreeningSeatDto::id))
                 .toList();
     }
 }

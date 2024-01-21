@@ -10,7 +10,7 @@ public interface ScreeningRepository {
     Screening add(Screening screening);
     void delete(Screening screening);
     Optional<Screening> getById(Long id);
-    Optional<Screening> getByIdWithSeats(Long id);
+    Optional<Screening> getByIdWithTickets(Long id);
     List<Screening> getAll(GetScreeningsDto dto);
     List<Screening> getScreeningCollisions(LocalDateTime startAt, LocalDateTime endAt, Long hallId);
 }

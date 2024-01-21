@@ -1,7 +1,9 @@
 package com.cinema.tickets.domain;
 
-import com.cinema.screenings.domain.ScreeningSeat;
+import com.cinema.halls.domain.Seat;
+import com.cinema.screenings.domain.Screening;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
+import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.users.domain.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -34,17 +37,37 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private Ticket.Status status;
 
+    @Version
+    private int version;
+
+    @ManyToOne
+    private Screening screening;
+
     @OneToOne
-    private ScreeningSeat seat;
+    private Seat seat;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     protected Ticket() {}
 
-    public Ticket(Status status, ScreeningSeat seat, User user) {
-        this.status = status;
+    public Ticket(Screening screening, Seat seat) {
+        this.screening = screening;
         this.seat = seat;
+    }
+
+    public Ticket(Ticket.Status status, Screening screening, Seat seat, User user) {
+        this.status = status;
+        this.screening = screening;
+        this.seat = seat;
+        this.user = user;
+    }
+
+    public void book(User user) {
+        if (status != null && status.equals(Ticket.Status.BOOKED)) {
+            throw new TicketAlreadyBookedException();
+        }
+        this.status = Ticket.Status.BOOKED;
         this.user = user;
     }
 
@@ -52,9 +75,8 @@ public class Ticket {
         if (status.equals(Ticket.Status.CANCELLED)) {
             throw new TicketAlreadyCancelledException();
         }
-        var timeToScreeningInHours = this.seat.getScreening().timeToScreeningInHours(clock);
+        var timeToScreeningInHours = screening.timeToScreeningInHours(clock);
         ticketCancellingPolicy.checkScreeningDate(timeToScreeningInHours);
         this.status = Ticket.Status.CANCELLED;
-        this.seat.markAsFree();
     }
 }

@@ -3,7 +3,8 @@ package com.cinema.screenings;
 import com.cinema.films.domain.Film;
 import com.cinema.halls.domain.Hall;
 import com.cinema.screenings.domain.Screening;
-import com.cinema.screenings.domain.ScreeningSeat;
+import com.cinema.tickets.domain.Ticket;
+import com.cinema.users.domain.User;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -37,7 +38,7 @@ public final class ScreeningFixture {
         );
     }
 
-    public static Screening createScreeningWithSeats(Hall hall, Film film) {
+    public static Screening createScreeningWithTicket(Hall hall, Film film) {
         var screening = new Screening(
                 SCREENING_DATE,
                 SCREENING_END_DATE,
@@ -45,14 +46,28 @@ public final class ScreeningFixture {
                 hall
         );
         var seats = List.of(
-                new ScreeningSeat(true, hall.getSeats().get(0), screening),
-                new ScreeningSeat(true, hall.getSeats().get(1), screening)
+                new Ticket(screening, hall.getSeats().getFirst())
         );
-        screening.assignSeats(seats);
+        screening.assignTickets(seats);
         return screening;
     }
 
-    public static Screening createScreeningWithSeats(LocalDateTime date, Film film, Hall hall) {
+    public static Screening createScreeningWithTickets(Hall hall, Film film) {
+        var screening = new Screening(
+                SCREENING_DATE,
+                SCREENING_END_DATE,
+                film,
+                hall
+        );
+        var seats = List.of(
+                new Ticket(screening, hall.getSeats().get(0)),
+                new Ticket(screening, hall.getSeats().get(1))
+        );
+        screening.assignTickets(seats);
+        return screening;
+    }
+
+    public static Screening createScreeningWithTickets(LocalDateTime date, Film film, Hall hall) {
         var screening = new Screening(
                 date,
                 SCREENING_END_DATE,
@@ -60,14 +75,14 @@ public final class ScreeningFixture {
                 hall
         );
         var seats = List.of(
-                new ScreeningSeat(true, hall.getSeats().get(0), screening),
-                new ScreeningSeat(true, hall.getSeats().get(1), screening)
+                new Ticket(screening, hall.getSeats().get(0)),
+                new Ticket(screening, hall.getSeats().get(1))
         );
-        screening.assignSeats(seats);
+        screening.assignTickets(seats);
         return screening;
     }
 
-    public static Screening createScreeningWithNotFreeSeat(Hall hall, Film film) {
+    public static Screening createScreeningWithBookedTicket(Hall hall, Film film, User user) {
         var screening = new Screening(
                 SCREENING_DATE,
                 SCREENING_END_DATE,
@@ -75,9 +90,9 @@ public final class ScreeningFixture {
                 hall
         );
         var seats = List.of(
-                new ScreeningSeat(false, hall.getSeats().getFirst(), screening)
+                new Ticket(Ticket.Status.BOOKED, screening, hall.getSeats().getFirst(), user)
         );
-        screening.assignSeats(seats);
+        screening.assignTickets(seats);
         return screening;
     }
 }

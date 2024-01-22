@@ -26,7 +26,6 @@ import java.util.stream.Stream;
 
 import static com.cinema.screenings.ScreeningFixture.createScreeningWithBookedTicket;
 import static com.cinema.screenings.ScreeningFixture.createScreeningWithTickets;
-import static com.cinema.tickets.TicketFixture.createCancelledTicket;
 
 abstract class TicketBaseIT extends BaseIT {
     protected static final String TICKETS_BASE_ENDPOINT = "/tickets";
@@ -51,10 +50,6 @@ abstract class TicketBaseIT extends BaseIT {
 
     protected Ticket addTicket(Screening screening, Seat seat, User user) {
         return ticketRepository.add(TicketFixture.createTicket(screening, seat, user));
-    }
-
-    protected Ticket addCancelledTicket(Screening screening, Seat seat, User user) {
-        return ticketRepository.add(createCancelledTicket(screening, seat, user));
     }
 
     protected Screening addScreening(Hall hall, Film film) {

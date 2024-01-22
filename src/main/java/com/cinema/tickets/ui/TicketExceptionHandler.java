@@ -1,7 +1,6 @@
 package com.cinema.tickets.ui;
 
 import com.cinema.shared.exceptions.ExceptionMessage;
-import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
@@ -13,12 +12,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 class TicketExceptionHandler {
-
-    @ExceptionHandler
-    ResponseEntity<ExceptionMessage> handle(TicketAlreadyCancelledException exception) {
-        var exceptionMessage = new ExceptionMessage(exception.getMessage());
-        return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);
-    }
 
     @ExceptionHandler
     ResponseEntity<ExceptionMessage> handle(TicketAlreadyBookedException exception) {

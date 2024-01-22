@@ -13,13 +13,4 @@ public final class TicketFixture {
     public static Ticket createTicket(Screening screening, Seat seat, User user) {
         return new Ticket(Ticket.Status.BOOKED, screening, seat, user);
     }
-
-    public static Ticket createCancelledTicket(Screening screening, Seat seat, User user) {
-        return new Ticket(
-                Ticket.Status.CANCELLED,
-                screening,
-                seat,
-                user
-        );
-    }
 }

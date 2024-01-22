@@ -13,7 +13,6 @@ import com.cinema.screenings.domain.ScreeningFactory;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.infrastructure.ScreeningMapper;
-import com.cinema.tickets.domain.Ticket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -83,7 +82,7 @@ public class ScreeningService {
                         ticket.getSeat().getId(),
                         ticket.getSeat().getRowNumber(),
                         ticket.getSeat().getNumber(),
-                        ticket.getStatus() == null || ticket.getStatus().equals(Ticket.Status.CANCELLED)
+                        ticket.isFree()
                 ))
                 .sorted(Comparator.comparing(ScreeningSeatDto::id))
                 .toList();

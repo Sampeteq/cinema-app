@@ -2,7 +2,6 @@ package com.cinema.tickets.domain;
 
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.Screening;
-import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.users.domain.User;
 import jakarta.persistence.Entity;
@@ -30,8 +29,8 @@ public class Ticket {
     private Long id;
 
     public enum Status {
-        BOOKED,
-        CANCELLED
+        FREE,
+        BOOKED
     }
 
     @Enumerated(EnumType.STRING)
@@ -52,6 +51,7 @@ public class Ticket {
     protected Ticket() {}
 
     public Ticket(Screening screening, Seat seat) {
+        this.status = Ticket.Status.FREE;
         this.screening = screening;
         this.seat = seat;
     }
@@ -64,7 +64,7 @@ public class Ticket {
     }
 
     public void book(User user) {
-        if (status != null && status.equals(Ticket.Status.BOOKED)) {
+        if (status.equals(Ticket.Status.BOOKED)) {
             throw new TicketAlreadyBookedException();
         }
         this.status = Ticket.Status.BOOKED;
@@ -72,11 +72,12 @@ public class Ticket {
     }
 
     public void cancel(TicketCancellingPolicy ticketCancellingPolicy, Clock clock) {
-        if (status.equals(Ticket.Status.CANCELLED)) {
-            throw new TicketAlreadyCancelledException();
-        }
         var timeToScreeningInHours = screening.timeToScreeningInHours(clock);
         ticketCancellingPolicy.checkScreeningDate(timeToScreeningInHours);
-        this.status = Ticket.Status.CANCELLED;
+        this.status = Ticket.Status.FREE;
+    }
+
+    public boolean isFree() {
+        return this.status.equals(Ticket.Status.FREE);
     }
 }

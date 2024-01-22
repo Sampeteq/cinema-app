@@ -4,7 +4,6 @@ import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.tickets.application.dto.BookTicketDto;
 import com.cinema.tickets.domain.Ticket;
-import com.cinema.tickets.domain.exceptions.TicketAlreadyCancelledException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
@@ -234,33 +233,8 @@ class TicketControllerIT extends TicketBaseIT {
         assertThat(ticketRepository.getByIdAndUserId(ticket.getId(), ticket.getUser().getId()))
                 .isNotEmpty()
                 .hasValueSatisfying(cancelledTicket ->
-                        assertEquals(Ticket.Status.CANCELLED, cancelledTicket.getStatus())
+                        assertEquals(Ticket.Status.FREE, cancelledTicket.getStatus())
                 );
-    }
-
-    @Test
-    void ticket_already_cancelled_cannot_be_cancelled() {
-        //given
-        var hall = addHall();
-        var film = addFilm();
-        var screening = addScreeningWithTickets(hall, film);
-        var seat = screening.getHall().getSeats().getFirst();
-        var ticket = addCancelledTicket(screening, seat, user);
-
-        //when
-        var spec = webTestClient
-                .patch()
-                .uri(TICKETS_BASE_ENDPOINT + "/" + ticket.getId() + "/cancel")
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        var expectedMessage = new TicketAlreadyCancelledException().getMessage();
-        spec
-                .expectStatus()
-                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-                .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
     }
 
     @Test

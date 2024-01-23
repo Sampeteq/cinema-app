@@ -75,6 +75,7 @@ public class Ticket {
         var timeToScreeningInHours = screening.timeToScreeningInHours(clock);
         ticketCancellingPolicy.checkScreeningDate(timeToScreeningInHours);
         this.status = Ticket.Status.FREE;
+        this.user = null;
     }
 
     public boolean isFree() {

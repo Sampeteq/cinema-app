@@ -22,6 +22,10 @@ class JpaTicketRepositoryAdapter implements TicketRepository {
         return jpaTicketRepository.save(ticket);
     }
 
+    @Override
+    public Optional<Ticket> getById(Long ticketId) {
+        return jpaTicketRepository.findById(ticketId);
+    }
 
     @Override
     public Optional<Ticket> getByIdAndUserId(Long ticketId, Long userId) {

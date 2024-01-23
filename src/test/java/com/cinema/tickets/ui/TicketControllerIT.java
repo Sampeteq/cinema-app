@@ -22,6 +22,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class TicketControllerIT extends TicketBaseIT {
 
@@ -230,10 +231,12 @@ class TicketControllerIT extends TicketBaseIT {
 
         //then
         spec.expectStatus().isOk();
-        assertThat(ticketRepository.getByIdAndUserId(ticket.getId(), ticket.getUser().getId()))
+        assertThat(ticketRepository.getById(ticket.getId()))
                 .isNotEmpty()
-                .hasValueSatisfying(cancelledTicket ->
-                        assertEquals(Ticket.Status.FREE, cancelledTicket.getStatus())
+                .hasValueSatisfying(cancelledTicket -> {
+                            assertEquals(Ticket.Status.FREE, cancelledTicket.getStatus());
+                            assertNull(cancelledTicket.getUser());
+                        }
                 );
     }
 

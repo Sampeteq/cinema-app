@@ -5,7 +5,11 @@ import java.util.Optional;
 
 public interface TicketRepository {
     Ticket add(Ticket ticket);
+    Optional<Ticket> getById(Long ticketId);
+
     Optional<Ticket> getByIdAndUserId(Long ticketId, Long userId);
+
     List<Ticket> getAllByUserId(Long userId);
+
     List<Ticket> getAll();
 }

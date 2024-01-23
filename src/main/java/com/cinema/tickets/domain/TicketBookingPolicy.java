@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TicketBookingPolicy {
 
-    public void checkHoursLeftBeforeScreeningStart(long hoursLeftBeforeScreeningStart) {
+    public void validateIfBookingIsPossible(long hoursLeftBeforeScreeningStart) {
         if (hoursLeftBeforeScreeningStart < 1) {
             throw new TicketBookTooLateException();
         }

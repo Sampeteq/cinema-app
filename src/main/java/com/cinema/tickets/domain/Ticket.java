@@ -64,7 +64,7 @@ public class Ticket {
     }
 
     public void book(TicketBookingPolicy ticketBookingPolicy, Clock clock, User user) {
-        ticketBookingPolicy.checkHoursLeftBeforeScreeningStart(screening.hoursLeftBeforeStart(clock));
+        ticketBookingPolicy.validateIfBookingIsPossible(screening.hoursLeftBeforeStart(clock));
         if (status.equals(Ticket.Status.BOOKED)) {
             throw new TicketAlreadyBookedException();
         }
@@ -73,7 +73,7 @@ public class Ticket {
     }
 
     public void cancel(TicketCancellingPolicy ticketCancellingPolicy, Clock clock) {
-        ticketCancellingPolicy.checkHoursLeftBeforeScreeningStart(screening.hoursLeftBeforeStart(clock));
+        ticketCancellingPolicy.validateIfCancellingIsPossible(screening.hoursLeftBeforeStart(clock));
         this.status = Ticket.Status.FREE;
         this.user = null;
     }

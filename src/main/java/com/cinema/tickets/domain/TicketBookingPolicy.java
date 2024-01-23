@@ -4,16 +4,12 @@ import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.Clock;
-import java.time.Duration;
-import java.time.LocalDateTime;
-
 @Component
 @RequiredArgsConstructor
 public class TicketBookingPolicy {
 
-    public void checkScreeningDate(long timeToScreeningInHours) {
-        if (timeToScreeningInHours < 1) {
+    public void checkHoursLeftBeforeScreeningStart(long hoursLeftBeforeScreeningStart) {
+        if (hoursLeftBeforeScreeningStart < 1) {
             throw new TicketBookTooLateException();
         }
     }

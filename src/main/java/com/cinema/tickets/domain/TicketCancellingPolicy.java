@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TicketCancellingPolicy {
 
-    public void checkScreeningDate(long timeToScreeningInHours) {
-        if (timeToScreeningInHours < 24) {
+    public void checkHoursLeftBeforeScreeningStart(long hoursLeftBeforeScreeningStart) {
+        if (hoursLeftBeforeScreeningStart < 24) {
             throw new TicketCancelTooLateException();
         }
     }

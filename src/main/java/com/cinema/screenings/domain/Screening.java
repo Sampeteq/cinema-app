@@ -51,7 +51,7 @@ public class Screening {
         this.hall = hall;
     }
 
-    public long timeToScreeningInHours(Clock clock) {
+    public long hoursLeftBeforeStart(Clock clock) {
         var currentDate = LocalDateTime.now(clock);
         return Duration
                 .between(currentDate, this.date)

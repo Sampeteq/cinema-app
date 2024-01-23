@@ -12,7 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.ToString;
@@ -42,7 +41,7 @@ public class Ticket {
     @ManyToOne
     private Screening screening;
 
-    @OneToOne
+    @ManyToOne
     private Seat seat;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -63,7 +63,9 @@ public class Ticket {
         this.user = user;
     }
 
-    public void book(User user) {
+    public void book(TicketBookingPolicy ticketBookingPolicy, Clock clock, User user) {
+        var timeToScreeningInHours = screening.timeToScreeningInHours(clock);
+        ticketBookingPolicy.checkScreeningDate(timeToScreeningInHours);
         if (status.equals(Ticket.Status.BOOKED)) {
             throw new TicketAlreadyBookedException();
         }

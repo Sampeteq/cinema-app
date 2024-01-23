@@ -38,7 +38,6 @@ public class TicketService {
                 .getById(dto.screeningId())
                 .orElseThrow(ScreeningNotFoundException::new);
         log.info("Found screening:{}", screening);
-        ticketBookingPolicy.checkScreeningDate(screening.timeToScreeningInHours(clock));
         var loggedUser = userService.getLoggedUser();
         dto
                 .seatsIds()
@@ -46,7 +45,7 @@ public class TicketService {
                 .map(seatId -> {
                     var ticket = screening.findTicketBySeatId(seatId);
                     log.info("Found ticket: {}", ticket);
-                    ticket.book(loggedUser);
+                    ticket.book(ticketBookingPolicy, clock, loggedUser);
                     return ticket;
                 })
                 .toList()

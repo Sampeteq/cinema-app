@@ -27,7 +27,6 @@ import java.time.LocalDateTime;
 
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
-import static com.cinema.screenings.ScreeningFixture.createScreeningWithTickets;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;

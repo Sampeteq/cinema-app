@@ -1,8 +1,8 @@
 package com.cinema.halls.ui;
 
-import com.cinema.halls.application.dto.HallDto;
+import com.cinema.halls.domain.Hall;
 
 import java.util.List;
 
-public record HallsResponse(List<HallDto> halls) {
+public record HallsResponse(List<Hall> halls) {
 }

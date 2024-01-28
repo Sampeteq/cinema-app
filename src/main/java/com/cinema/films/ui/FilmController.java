@@ -7,7 +7,6 @@ import com.cinema.films.domain.FilmCategory;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,6 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 public class FilmController {
 
     private final FilmService filmService;
@@ -29,21 +27,15 @@ public class FilmController {
     @PostMapping("/admin/films")
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> createFilm(@RequestBody @Valid CreateFilmDto dto) {
-        log.info("Dto:{}", dto);
         filmService.createFilm(dto);
-        var responseEntity = ResponseEntity.created(URI.create("/films")).build();
-        log.info("Response entity{}", responseEntity);
-        return responseEntity;
+        return ResponseEntity.created(URI.create("/films")).build();
     }
 
     @DeleteMapping("/admin/films/{id}")
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> deleteFilm(@PathVariable Long id) {
-        log.info("Film id:{}", id);
         filmService.deleteFilm(id);
-        var responseEntity = ResponseEntity.noContent().build();
-        log.info("Response entity:{}", responseEntity);
-        return responseEntity;
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/public/films")

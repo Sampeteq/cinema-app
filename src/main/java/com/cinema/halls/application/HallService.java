@@ -18,15 +18,16 @@ public class HallService {
 
     private final HallRepository hallRepository;
 
-    public void createHall(CreateHallDto dto) {
+    public Hall createHall(CreateHallDto dto) {
         log.info("Dto:{}", dto);
         var seats = dto.seats()
                 .stream()
                 .map(createSeatDto -> new Seat(createSeatDto.rowNumber(), createSeatDto.number()))
                 .toList();
         var hall = new Hall(seats);
-        hallRepository.add(hall);
-        log.info("Hall added");
+        var addedHall = hallRepository.add(hall);
+        log.info("Hall added:{}", addedHall);
+        return addedHall;
     }
 
     public void deleteHall(Long id) {

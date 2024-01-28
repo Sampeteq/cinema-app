@@ -2,6 +2,7 @@ package com.cinema.halls.ui;
 
 import com.cinema.halls.application.HallService;
 import com.cinema.halls.application.dto.CreateHallDto;
+import com.cinema.halls.domain.Hall;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+
 @RestController
 @RequiredArgsConstructor
 public class HallController {
@@ -21,9 +24,11 @@ public class HallController {
 
     @PostMapping("/admin/halls")
     @SecurityRequirement(name = "basic")
-    public ResponseEntity<Object> createHall(@RequestBody CreateHallDto dto) {
-        hallService.createHall(dto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Hall> createHall(@RequestBody CreateHallDto dto) {
+        var hall = hallService.createHall(dto);
+        return ResponseEntity
+                .created(URI.create("/admin/halls"))
+                .body(hall);
     }
 
     @DeleteMapping("/admin/halls/{id}")

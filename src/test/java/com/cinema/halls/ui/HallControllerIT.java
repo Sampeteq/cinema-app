@@ -8,6 +8,7 @@ import com.cinema.users.UserFixture;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -42,11 +43,11 @@ class HallControllerIT extends BaseIT {
                 .exchange();
 
         //then
-        responseSpec.expectStatus().isOk();
-        assertThat(hallRepository.getById(1L))
-                .isNotEmpty()
-                .hasValueSatisfying(hall -> assertThat(hall.getSeats()).isNotEmpty())
-                .hasValueSatisfying(hall -> assertThat(hall.getSeats()).hasSize(createHallDto.seats().size()));
+        responseSpec
+                .expectStatus().isCreated()
+                .expectBody()
+                .jsonPath("$.id").isEqualTo(1)
+                .jsonPath("$.seats").value(Matchers.hasSize(createHallDto.seats().size()));
     }
 
     @Test

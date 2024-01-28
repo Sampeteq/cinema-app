@@ -38,7 +38,7 @@ class FilmControllerIT extends BaseIT {
         //given
         var user = addUser();
         var id = 1L;
-        var title = "Some filmId";
+        var title = "Some title";
         var category = FilmCategory.COMEDY;
         var year = 2023;
         var durationInMinutes = 100;

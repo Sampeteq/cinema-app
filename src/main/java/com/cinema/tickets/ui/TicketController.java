@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-
 @RestController
 @RequestMapping("/tickets")
 @RequiredArgsConstructor
@@ -30,7 +28,7 @@ class TicketController {
     ResponseEntity<Object> bookTicket(@RequestBody @Valid BookTicketDto dto) {
         log.info("Dto:{}", dto);
         ticketService.bookTicket(dto);
-        var responseEntity = ResponseEntity.created(URI.create("/my/tickets")).build();
+        var responseEntity = ResponseEntity.ok().build();
         log.info("Response entity:{}", responseEntity);
         return responseEntity;
     }

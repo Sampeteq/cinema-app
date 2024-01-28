@@ -21,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FilmControllerIT extends BaseIT {
 
@@ -49,7 +48,6 @@ class FilmControllerIT extends BaseIT {
                 year,
                 durationInMinutes
         );
-
         //when
         var spec = webTestClient
                 .post()
@@ -58,17 +56,16 @@ class FilmControllerIT extends BaseIT {
                 .bodyValue(createFilmDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
-
         //then
-        spec.expectStatus().isCreated();
-        assertThat(filmRepository.getById(id))
-                .isNotEmpty()
-                .hasValueSatisfying(film -> {
-                    assertEquals(createFilmDto.title(), film.getTitle());
-                    assertEquals(createFilmDto.category(), film.getCategory());
-                    assertEquals(createFilmDto.year(), film.getYear());
-                    assertEquals(createFilmDto.durationInMinutes(), film.getDurationInMinutes());
-                });
+        spec
+                .expectStatus().isCreated()
+                .expectHeader().location("/films")
+                .expectBody()
+                .jsonPath("$.id").isEqualTo(id)
+                .jsonPath("$.title").isEqualTo(createFilmDto.title())
+                .jsonPath("$.category").isEqualTo(createFilmDto.category().name())
+                .jsonPath("$.year").isEqualTo(createFilmDto.year())
+                .jsonPath("$.durationInMinutes").isEqualTo(createFilmDto.durationInMinutes());
     }
 
     @Test

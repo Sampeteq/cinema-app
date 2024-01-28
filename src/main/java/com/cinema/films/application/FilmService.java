@@ -20,7 +20,7 @@ public class FilmService {
     private final FilmFactory filmFactory;
     private final FilmRepository filmRepository;
 
-    public void createFilm(CreateFilmDto dto) {
+    public Film createFilm(CreateFilmDto dto) {
         log.info("Dto:{}", dto);
         var film = filmFactory.createFilm(
                 dto.title(),
@@ -30,6 +30,7 @@ public class FilmService {
         );
         var addedFilm = filmRepository.add(film);
         log.info("Added film:{}", addedFilm);
+        return addedFilm;
     }
 
     public void deleteFilm(Long id) {

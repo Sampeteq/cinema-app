@@ -2,16 +2,20 @@ package com.cinema.halls.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.halls.HallFixture;
+import com.cinema.halls.application.dto.CreateHallDto;
+import com.cinema.halls.application.dto.CreateSeatDto;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.users.UserFixture;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
-import org.hamcrest.Matchers;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+
+import java.util.List;
 
 import static com.cinema.halls.HallFixture.createHall;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,9 +32,15 @@ class HallControllerIT extends BaseIT {
     private UserRepository userRepository;
 
     @Test
+    @SneakyThrows
     void hall_is_created() {
         //given
-        var createHallDto = HallFixture.createCreateHallDto();
+        var createHallDto = new CreateHallDto(
+                List.of(
+                        new CreateSeatDto(1, 1),
+                        new CreateSeatDto(1, 2)
+                )
+        );
         var user = addUser();
 
         //when
@@ -47,7 +57,10 @@ class HallControllerIT extends BaseIT {
                 .expectStatus().isCreated()
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(1)
-                .jsonPath("$.seats").value(Matchers.hasSize(createHallDto.seats().size()));
+                .jsonPath("$.seats[0].number").isEqualTo(createHallDto.seats().get(0).number())
+                .jsonPath("$.seats[0].rowNumber").isEqualTo(createHallDto.seats().get(0).rowNumber())
+                .jsonPath("$.seats[1].number").isEqualTo(createHallDto.seats().get(1).number())
+                .jsonPath("$.seats[1].rowNumber").isEqualTo(createHallDto.seats().get(1).rowNumber());
     }
 
     @Test

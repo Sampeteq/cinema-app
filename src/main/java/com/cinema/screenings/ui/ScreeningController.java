@@ -7,7 +7,6 @@ import com.cinema.screenings.application.dto.ScreeningSeatDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +22,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 class ScreeningController {
 
     private final ScreeningService screeningService;
@@ -35,21 +33,15 @@ class ScreeningController {
             @Valid
             CreateScreeningDto dto
     ) {
-        log.info("Dto:{}", dto);
         screeningService.createScreening(dto);
-        var responseEntity = ResponseEntity.created(URI.create("/screenings")).build();
-        log.info("Response entity:{}", responseEntity);
-        return responseEntity;
+        return ResponseEntity.created(URI.create("/screenings")).build();
     }
 
     @DeleteMapping("/admin/screenings/{id}")
     @SecurityRequirement(name = "basic")
     ResponseEntity<Object> deleteScreening(@PathVariable Long id) {
-        log.info("Screening id:{}", id);
         screeningService.deleteScreening(id);
-        var responseEntity = ResponseEntity.noContent().build();
-        log.info("Response entity:{}", responseEntity);
-        return responseEntity;
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/public/screenings")
@@ -58,14 +50,12 @@ class ScreeningController {
                 .builder()
                 .date(date)
                 .build();
-        log.info("Dto:{}", getScreeningsDto);
         var screenings = screeningService.getScreenings(getScreeningsDto);
         return new ScreeningsResponse(screenings);
     }
 
     @GetMapping("/public/screenings/{id}/seats")
     List<ScreeningSeatDto> getSeatsByScreeningId(@PathVariable Long id) {
-        log.info("Screening id:{}", id);
         return screeningService.getSeatsByScreeningId(id);
     }
 }

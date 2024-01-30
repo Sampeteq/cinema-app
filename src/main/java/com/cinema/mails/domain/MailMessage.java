@@ -6,7 +6,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 
 @Getter
-public class Mail {
+public class MailMessage {
 
     private final String receiver;
 
@@ -16,7 +16,7 @@ public class Mail {
 
     private LocalDateTime sentAt;
 
-    public Mail(String receiver, String subject, String text) {
+    public MailMessage(String receiver, String subject, String text) {
         this.receiver = receiver;
         this.subject = subject;
         this.text = text;

@@ -1,6 +1,6 @@
 package com.cinema.mails.application;
 
-import com.cinema.mails.domain.Mail;
+import com.cinema.mails.domain.MailMessage;
 import com.cinema.mails.domain.MailService;
 import com.cinema.users.domain.UserPasswordResetEvent;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ class UserPasswordResetHandler {
     void handle(UserPasswordResetEvent event) {
         var subject = "Password reset";
         var message = "Your password reset token: " + event.token();
-        var passwordResetMail = new Mail(
+        var passwordResetMail = new MailMessage(
                 event.mail(),
                 subject,
                 message

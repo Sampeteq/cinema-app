@@ -1,6 +1,6 @@
 package com.cinema.mails.infrastructure;
 
-import com.cinema.mails.domain.Mail;
+import com.cinema.mails.domain.MailMessage;
 import com.cinema.mails.domain.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -19,12 +19,12 @@ class SpringMailSender implements MailService {
     private final Clock clock;
 
     @Override
-    public void sendMail(Mail mail) {
+    public void sendMail(MailMessage mailMessage) {
         var message = new SimpleMailMessage();
-        message.setTo(mail.getReceiver());
-        message.setSubject(mail.getSubject());
-        message.setText(mail.getText());
+        message.setTo(mailMessage.getReceiver());
+        message.setSubject(mailMessage.getSubject());
+        message.setText(mailMessage.getText());
         javaMailSender.send(message);
-        mail.sentAt(clock);
+        mailMessage.sentAt(clock);
     }
 }

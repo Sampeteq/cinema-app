@@ -1,5 +1,5 @@
 package com.cinema.mails.domain;
 
-public interface MailSender {
+public interface MailService {
     void sendMail(Mail mail);
 }

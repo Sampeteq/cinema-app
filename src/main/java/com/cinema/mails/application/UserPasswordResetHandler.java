@@ -1,7 +1,7 @@
 package com.cinema.mails.application;
 
 import com.cinema.mails.domain.Mail;
-import com.cinema.mails.domain.MailSender;
+import com.cinema.mails.domain.MailService;
 import com.cinema.users.domain.UserPasswordResetEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 class UserPasswordResetHandler {
 
-    private final MailSender mailSender;
+    private final MailService mailService;
 
     @EventListener
     void handle(UserPasswordResetEvent event) {
@@ -26,7 +26,7 @@ class UserPasswordResetHandler {
                 subject,
                 message
         );
-        mailSender.sendMail(passwordResetMail);
+        mailService.sendMail(passwordResetMail);
         log.info("Mail sent");
     }
 }

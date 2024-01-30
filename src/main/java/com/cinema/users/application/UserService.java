@@ -1,11 +1,11 @@
 package com.cinema.users.application;
 
-import com.cinema.shared.events.EventPublisher;
+import com.cinema.mails.domain.MailMessage;
+import com.cinema.mails.domain.MailService;
 import com.cinema.users.application.dto.CreateUserDto;
 import com.cinema.users.application.dto.SetNewUserPasswordDto;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserFactory;
-import com.cinema.users.domain.UserPasswordResetEvent;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
@@ -26,7 +26,7 @@ public class UserService {
     private final UserFactory userFactory;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EventPublisher eventPublisher;
+    private final MailService mailService;
 
     public void createUser(CreateUserDto dto) {
         var user = userFactory.createUser(dto.mail(), dto.password(), UserRole.COMMON);
@@ -48,8 +48,8 @@ public class UserService {
         var passwordResetToken = UUID.randomUUID();
         user.setPasswordResetToken(passwordResetToken);
         userRepository.add(user);
-        var userPasswordResetEvent = new UserPasswordResetEvent(mail, passwordResetToken);
-        eventPublisher.publish(userPasswordResetEvent);
+        var mailMessage = new MailMessage(mail, "Password reset", "Your password reset token: " + passwordResetToken);
+        mailService.sendMail(mailMessage);
     }
 
     public void setNewUserPassword(SetNewUserPasswordDto dto) {

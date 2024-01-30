@@ -14,15 +14,12 @@ public class Mail {
 
     private final String text;
 
-    private final MailType type;
-
     private LocalDateTime sentAt;
 
-    public Mail(String receiver, String subject, String text, MailType type) {
+    public Mail(String receiver, String subject, String text) {
         this.receiver = receiver;
         this.subject = subject;
         this.text = text;
-        this.type = type;
     }
 
     public void sentAt(Clock clock) {

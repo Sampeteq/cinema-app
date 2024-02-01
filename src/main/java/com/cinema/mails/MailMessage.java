@@ -1,4 +1,4 @@
-package com.cinema.mails.domain;
+package com.cinema.mails;
 
 import lombok.Getter;
 

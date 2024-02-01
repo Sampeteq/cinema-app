@@ -1,7 +1,7 @@
 package com.cinema.users.application;
 
-import com.cinema.mails.domain.MailMessage;
-import com.cinema.mails.domain.MailService;
+import com.cinema.mails.MailMessage;
+import com.cinema.mails.MailService;
 import com.cinema.users.application.dto.CreateUserDto;
 import com.cinema.users.application.dto.SetNewUserPasswordDto;
 import com.cinema.users.domain.User;

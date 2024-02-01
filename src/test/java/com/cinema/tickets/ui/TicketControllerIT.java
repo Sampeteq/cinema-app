@@ -113,7 +113,7 @@ class TicketControllerIT extends TicketBaseIT {
                 .exchange();
 
         //then
-        spec.expectStatus().isCreated();
+        spec.expectStatus().isOk();
         assertThat(ticketRepository.getByIdAndUserId(1L, 1L))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
@@ -147,7 +147,7 @@ class TicketControllerIT extends TicketBaseIT {
                 .exchange();
 
         //then
-        spec.expectStatus().isCreated();
+        spec.expectStatus().isOk();
         assertThat(ticketRepository.getAllByUserId(user.getId()))
                 .isNotEmpty()
                 .allSatisfy(ticket -> assertEquals(Ticket.Status.BOOKED, ticket.getStatus()));

@@ -1,23 +1,22 @@
 package com.cinema.screenings.infrastructure;
 
-import com.cinema.screenings.application.dto.GetScreeningsDto;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
+class JpaScreeningRepositoryAdapter implements ScreeningRepository {
 
     private final JpaScreeningRepository jpaScreeningRepository;
 
@@ -47,23 +46,16 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     @Override
-    public List<Screening> getAll(GetScreeningsDto dto) {
-        return jpaScreeningRepository.findAll(
-                dateSpec(dto)
-        );
+    public List<Screening> getAll() {
+        return jpaScreeningRepository.findAll();
     }
 
-    private static Specification<Screening> dateSpec(GetScreeningsDto dto) {
-        return (root, jpaQuery, criteriaBuilder) -> {
-            root.fetch("film");
-            return dto.date() == null ?
-                    criteriaBuilder.conjunction() :
-                    criteriaBuilder.between(
-                            root.get("date"),
-                            dto.date(),
-                            dto.date().plusDays(1)
-                    );
-        };
+    @Override
+    public List<Screening> getScreeningsByDate(LocalDate date) {
+        return jpaScreeningRepository.findByDateBetween(
+                date.atStartOfDay(),
+                date.atStartOfDay().plusHours(23).plusMinutes(59)
+        );
     }
 }
 
@@ -86,4 +78,6 @@ interface JpaScreeningRepository extends JpaRepository<Screening, Long>, JpaSpec
             @Param("startAt") LocalDateTime startAt,
             @Param("endAt") LocalDateTime endAt,
             @Param("hallId") Long hallId);
+
+    List<Screening> findByDateBetween(LocalDateTime start, LocalDateTime end);
 }

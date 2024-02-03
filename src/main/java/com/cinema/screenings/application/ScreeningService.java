@@ -5,10 +5,8 @@ import com.cinema.films.domain.exceptions.FilmNotFoundException;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.halls.domain.exceptions.HallNotFoundException;
 import com.cinema.screenings.application.dto.CreateScreeningDto;
-import com.cinema.screenings.application.dto.GetScreeningsDto;
 import com.cinema.screenings.application.dto.ScreeningDto;
 import com.cinema.screenings.application.dto.ScreeningSeatDto;
-import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningFactory;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
@@ -18,10 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-
-import static java.util.Comparator.comparing;
 
 @Service
 @RequiredArgsConstructor
@@ -62,15 +59,21 @@ public class ScreeningService {
         screeningRepository.delete(screening);
     }
 
-    public List<ScreeningDto> getScreenings(GetScreeningsDto dto) {
-        log.info("Dto:{}", dto);
+    public List<ScreeningDto> getAllScreenings() {
         return screeningRepository
-                .getAll(dto)
+                .getAll()
                 .stream()
-                .sorted(comparing(Screening::getDate))
                 .map(screeningMapper::mapScreeningToDto)
                 .toList();
     }
+
+    public List<ScreeningDto> getScreeningsByDate(LocalDate date) {
+        return screeningRepository
+                .getScreeningsByDate(date)
+                .stream().map(screeningMapper::mapScreeningToDto)
+                .toList();
+    }
+
     public List<ScreeningSeatDto> getSeatsByScreeningId(Long screeningId) {
         log.info("Screening id:{}", screeningId);
         return screeningRepository

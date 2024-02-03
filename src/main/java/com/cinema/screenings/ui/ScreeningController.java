@@ -2,7 +2,6 @@ package com.cinema.screenings.ui;
 
 import com.cinema.screenings.application.ScreeningService;
 import com.cinema.screenings.application.dto.CreateScreeningDto;
-import com.cinema.screenings.application.dto.GetScreeningsDto;
 import com.cinema.screenings.application.dto.ScreeningSeatDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -46,11 +45,7 @@ class ScreeningController {
 
     @GetMapping("/public/screenings")
     ScreeningsResponse getScreenings(@RequestParam(required = false) LocalDate date) {
-        var getScreeningsDto = GetScreeningsDto
-                .builder()
-                .date(date)
-                .build();
-        var screenings = screeningService.getScreenings(getScreeningsDto);
+        var screenings = date == null ? screeningService.getAllScreenings() : screeningService.getScreeningsByDate(date);
         return new ScreeningsResponse(screenings);
     }
 

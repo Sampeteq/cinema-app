@@ -2,7 +2,6 @@ package com.cinema.films.ui;
 
 import com.cinema.films.application.FilmService;
 import com.cinema.films.application.dto.CreateFilmDto;
-import com.cinema.films.application.dto.GetFilmsDto;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmCategory;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,17 +41,14 @@ public class FilmController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/public/films/{title}")
+    Film getFilmByTitle(@PathVariable String title) {
+        return filmService.getFilmByTitle(title);
+    }
+
     @GetMapping("/public/films")
-    FilmsResponse getFilms(
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) FilmCategory category
-    ) {
-        var getFilmsDto = GetFilmsDto
-                .builder()
-                .title(title)
-                .category(category)
-                .build();
-        var films = filmService.getFilms(getFilmsDto);
+    FilmsResponse getAllFilms(@RequestParam(required = false) FilmCategory category) {
+        List<Film> films = category == null ? filmService.getAllFilms() : filmService.getFilmsByCategory(category);
         return new FilmsResponse(films);
     }
 }

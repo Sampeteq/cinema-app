@@ -1,10 +1,9 @@
 package com.cinema.films.infrastructure;
 
-import com.cinema.films.application.dto.GetFilmsDto;
 import com.cinema.films.domain.Film;
+import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -34,36 +33,22 @@ class JpaFilmRepositoryAdapter implements FilmRepository {
     }
 
     @Override
-    public List<Film> getAll(GetFilmsDto dto) {
-        return jpaFilmRepository.findAll(
-                titleSpec(dto).and(categorySpec(dto))
-        );
+    public Optional<Film> getByTitle(String title) {
+        return jpaFilmRepository.findByTitle(title);
     }
 
     @Override
-    public boolean existsByTitle(String title) {
-        return jpaFilmRepository.existsByTitle(title);
+    public List<Film> getAll() {
+        return jpaFilmRepository.findAll();
     }
 
-    private static Specification<Film> titleSpec(GetFilmsDto dto) {
-        return (root, criteriaQuery, criteriaBuilder) -> dto.title() == null ?
-                criteriaBuilder.conjunction() :
-                criteriaBuilder.equal(
-                        root.get("title"),
-                        dto.title()
-                );
-    }
-
-    private static Specification<Film> categorySpec(GetFilmsDto dto) {
-        return (root, criteriaQuery, criteriaBuilder) -> dto.category() == null ?
-                criteriaBuilder.conjunction() :
-                criteriaBuilder.equal(
-                        root.get("category"),
-                        dto.category()
-                );
+    @Override
+    public List<Film> getByCategory(FilmCategory category) {
+        return jpaFilmRepository.findByCategory(category);
     }
 }
 
 interface JpaFilmRepository extends JpaRepository<Film, Long>, JpaSpecificationExecutor<Film> {
-    boolean existsByTitle(String title);
+    Optional<Film> findByTitle(String title);
+    List<Film> findByCategory(FilmCategory category);
 }

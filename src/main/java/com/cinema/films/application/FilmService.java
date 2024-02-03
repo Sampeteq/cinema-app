@@ -1,8 +1,8 @@
 package com.cinema.films.application;
 
 import com.cinema.films.application.dto.CreateFilmDto;
-import com.cinema.films.application.dto.GetFilmsDto;
 import com.cinema.films.domain.Film;
+import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmFactory;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmNotFoundException;
@@ -41,7 +41,17 @@ public class FilmService {
         filmRepository.delete(film);
     }
 
-    public List<Film> getFilms(GetFilmsDto dto) {
-        return filmRepository.getAll(dto);
+    public Film getFilmByTitle(String title) {
+        return filmRepository
+                .getByTitle(title)
+                .orElseThrow(FilmNotFoundException::new);
+    }
+
+    public List<Film> getAllFilms() {
+        return filmRepository.getAll();
+    }
+
+    public List<Film> getFilmsByCategory(FilmCategory category) {
+        return filmRepository.getByCategory(category);
     }
 }

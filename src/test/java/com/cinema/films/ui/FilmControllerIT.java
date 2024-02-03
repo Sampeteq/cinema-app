@@ -110,7 +110,7 @@ class FilmControllerIT extends BaseIT {
 
         //then
         spec.expectStatus().isNoContent();
-        assertThat(filmRepository.existsByTitle(film.getTitle())).isFalse();
+        assertThat(filmRepository.getByTitle(film.getTitle())).isEmpty();
     }
 
     @Test
@@ -148,8 +148,7 @@ class FilmControllerIT extends BaseIT {
         var spec = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(FILM_PUBLIC_ENDPOINT)
-                        .queryParam("title", title)
+                        .path(FILM_PUBLIC_ENDPOINT + "/" + title)
                         .build()
                 )
                 .exchange();

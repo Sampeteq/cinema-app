@@ -11,7 +11,7 @@ public class FilmFactory {
     private final FilmRepository filmRepository;
 
     public Film createFilm(String title, FilmCategory category, int year, int durationInMinutes) {
-        if (filmRepository.existsByTitle(title)) {
+        if (filmRepository.getByTitle(title).isPresent()) {
             throw new FilmTitleNotUniqueException();
         }
         return new Film(

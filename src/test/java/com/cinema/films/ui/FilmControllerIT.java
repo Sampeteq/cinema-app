@@ -3,7 +3,7 @@ package com.cinema.films.ui;
 import com.cinema.BaseIT;
 import com.cinema.films.FilmFixture;
 import com.cinema.films.application.dto.AddFilmDto;
-import com.cinema.films.domain.FilmCategory;
+import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.users.UserFixture;
@@ -38,7 +38,7 @@ class FilmControllerIT extends BaseIT {
         var user = addUser();
         var id = 1L;
         var title = "Some title";
-        var category = FilmCategory.COMEDY;
+        var category = Film.Category.COMEDY;
         var year = 2023;
         var durationInMinutes = 100;
         var addFilmDto = new AddFilmDto(
@@ -161,8 +161,8 @@ class FilmControllerIT extends BaseIT {
     @Test
     void films_are_gotten_by_category() {
         //given
-        var category = FilmCategory.COMEDY;
-        var otherCategory = FilmCategory.DRAMA;
+        var category = Film.Category.COMEDY;
+        var otherCategory = Film.Category.DRAMA;
         filmRepository.save(createFilm(category));
         filmRepository.save(createFilm(otherCategory));
 

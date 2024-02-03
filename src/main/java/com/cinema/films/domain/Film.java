@@ -18,8 +18,17 @@ public class Film {
 
     private String title;
 
+    public enum Category {
+        COMEDY,
+        DRAMA,
+        ACTION,
+        THRILLER,
+        HORROR,
+        FANTASY
+    }
+
     @Enumerated(EnumType.STRING)
-    private FilmCategory category;
+    private Film.Category category;
 
     private int year;
 
@@ -27,7 +36,7 @@ public class Film {
 
     protected Film() {}
 
-    public Film(String title, FilmCategory category, int year, int durationInMinutes) {
+    public Film(String title, Film.Category category, int year, int durationInMinutes) {
         this.title = title;
         this.category = category;
         this.year = year;

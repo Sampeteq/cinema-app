@@ -3,7 +3,6 @@ package com.cinema.films.ui;
 import com.cinema.films.application.FilmService;
 import com.cinema.films.application.dto.AddFilmDto;
 import com.cinema.films.domain.Film;
-import com.cinema.films.domain.FilmCategory;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +46,7 @@ public class FilmController {
     }
 
     @GetMapping("/public/films")
-    FilmsResponse getAllFilms(@RequestParam(required = false) FilmCategory category) {
+    FilmsResponse getAllFilms(@RequestParam(required = false) Film.Category category) {
         List<Film> films = category == null ? filmService.getAllFilms() : filmService.getFilmsByCategory(category);
         return new FilmsResponse(films);
     }

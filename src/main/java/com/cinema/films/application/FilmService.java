@@ -2,7 +2,6 @@ package com.cinema.films.application;
 
 import com.cinema.films.application.dto.AddFilmDto;
 import com.cinema.films.domain.Film;
-import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmNotFoundException;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
@@ -53,7 +52,7 @@ public class FilmService {
         return filmRepository.findAll();
     }
 
-    public List<Film> getFilmsByCategory(FilmCategory category) {
+    public List<Film> getFilmsByCategory(Film.Category category) {
         return filmRepository.findByCategory(category);
     }
 }

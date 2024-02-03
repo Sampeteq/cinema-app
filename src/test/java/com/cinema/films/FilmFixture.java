@@ -2,7 +2,6 @@ package com.cinema.films;
 
 import com.cinema.films.application.dto.AddFilmDto;
 import com.cinema.films.domain.Film;
-import com.cinema.films.domain.FilmCategory;
 
 import java.time.Year;
 
@@ -10,7 +9,7 @@ public final class FilmFixture {
 
     private static final String TITLE = "TITLE 1";
 
-    private static final FilmCategory CATEGORY = FilmCategory.COMEDY;
+    private static final Film.Category CATEGORY = Film.Category.COMEDY;
 
     private static final int YEAR = Year.now().getValue();
 
@@ -37,7 +36,7 @@ public final class FilmFixture {
         );
     }
 
-    public static Film createFilm(FilmCategory category) {
+    public static Film createFilm(Film.Category category) {
         return new Film(
                 TITLE,
                 category,

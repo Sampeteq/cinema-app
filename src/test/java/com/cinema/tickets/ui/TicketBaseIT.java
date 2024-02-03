@@ -49,41 +49,41 @@ abstract class TicketBaseIT extends BaseIT {
     protected Clock clock;
 
     protected Ticket addTicket(Screening screening, Seat seat, User user) {
-        return ticketRepository.add(TicketFixture.createTicket(screening, seat, user));
+        return ticketRepository.save(TicketFixture.createTicket(screening, seat, user));
     }
 
     protected Screening addScreening(Hall hall, Film film) {
-        return screeningRepository.add(ScreeningFixture.createScreening(film, hall));
+        return screeningRepository.save(ScreeningFixture.createScreening(film, hall));
     }
 
     protected Screening addScreeningWithTicket(Hall hall, Film film) {
-        return screeningRepository.add(ScreeningFixture.createScreeningWithTicket(hall, film));
+        return screeningRepository.save(ScreeningFixture.createScreeningWithTicket(hall, film));
     }
 
     protected Screening addScreeningWithTickets(Hall hall, Film film) {
-        return screeningRepository.add(ScreeningFixture.createScreeningWithTickets(hall, film));
+        return screeningRepository.save(ScreeningFixture.createScreeningWithTickets(hall, film));
     }
 
     protected Screening addScreeningWithTickets(LocalDateTime date, Hall hall, Film film) {
-        return screeningRepository.add(createScreeningWithTickets(date, film, hall));
+        return screeningRepository.save(createScreeningWithTickets(date, film, hall));
     }
 
     protected Screening addScreeningWithBookedFreeSeat(Hall hall, Film film, User user) {
-        return screeningRepository.add(createScreeningWithBookedTicket(hall, film, user));
+        return screeningRepository.save(createScreeningWithBookedTicket(hall, film, user));
     }
 
     protected Hall addHall() {
-        return hallRepository.add(HallFixture.createHall());
+        return hallRepository.save(HallFixture.createHall());
     }
 
     protected Film addFilm() {
-        return filmRepository.add(FilmFixture.createFilm());
+        return filmRepository.save(FilmFixture.createFilm());
     }
 
     protected List<User> addUsers() {
         return Stream
                 .of("user1@mail.com", "user2@mail.com", "user3@mail.com")
-                .map(mail -> userRepository.add(UserFixture.createUser(mail, UserFixture.PASSWORD)))
+                .map(mail -> userRepository.save(UserFixture.createUser(mail, UserFixture.PASSWORD)))
                 .toList();
     }
 }

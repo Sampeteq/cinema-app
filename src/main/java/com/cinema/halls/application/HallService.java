@@ -25,7 +25,7 @@ public class HallService {
                 .map(createSeatDto -> new Seat(createSeatDto.rowNumber(), createSeatDto.number()))
                 .toList();
         var hall = new Hall(seats);
-        var addedHall = hallRepository.add(hall);
+        var addedHall = hallRepository.save(hall);
         log.info("Hall added:{}", addedHall);
         return addedHall;
     }
@@ -33,7 +33,7 @@ public class HallService {
     public void deleteHall(Long id) {
         log.info("Hall id:{}", id);
         var hall = hallRepository
-                .getById(id)
+                .findById(id)
                 .orElseThrow(HallNotFoundException::new);
         log.info("Found hall:{}", hall);
         hallRepository.delete(hall);
@@ -41,6 +41,6 @@ public class HallService {
     }
 
     public List<Hall> getAllHalls() {
-        return hallRepository.getAll();
+        return hallRepository.findAll();
     }
 }

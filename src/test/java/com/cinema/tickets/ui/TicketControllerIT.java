@@ -30,7 +30,7 @@ class TicketControllerIT extends TicketBaseIT {
 
     @BeforeEach
     void setUpUser() {
-        user = userRepository.add(UserFixture.createUser());
+        user = userRepository.save(UserFixture.createUser());
     }
 
     @Test
@@ -114,7 +114,7 @@ class TicketControllerIT extends TicketBaseIT {
 
         //then
         spec.expectStatus().isOk();
-        assertThat(ticketRepository.getByIdAndUserId(1L, 1L))
+        assertThat(ticketRepository.findByIdAndUserId(1L, 1L))
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
                     assertEquals(1L, ticket.getUser().getId());
@@ -148,7 +148,7 @@ class TicketControllerIT extends TicketBaseIT {
 
         //then
         spec.expectStatus().isOk();
-        assertThat(ticketRepository.getAllByUserId(user.getId()))
+        assertThat(ticketRepository.findAllByUserId(user.getId()))
                 .isNotEmpty()
                 .allSatisfy(ticket -> assertEquals(Ticket.Status.BOOKED, ticket.getStatus()));
     }
@@ -231,7 +231,7 @@ class TicketControllerIT extends TicketBaseIT {
 
         //then
         spec.expectStatus().isOk();
-        assertThat(ticketRepository.getById(ticket.getId()))
+        assertThat(ticketRepository.findById(ticket.getId()))
                 .isNotEmpty()
                 .hasValueSatisfying(cancelledTicket -> {
                             assertEquals(Ticket.Status.FREE, cancelledTicket.getStatus());

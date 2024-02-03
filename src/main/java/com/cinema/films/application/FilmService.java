@@ -28,7 +28,7 @@ public class FilmService {
                 dto.year(),
                 dto.durationInMinutes()
         );
-        var addedFilm = filmRepository.add(film);
+        var addedFilm = filmRepository.save(film);
         log.info("Added film:{}", addedFilm);
         return addedFilm;
     }
@@ -36,22 +36,22 @@ public class FilmService {
     public void deleteFilm(Long id) {
         log.info("Film id:{}", id);
         var film = filmRepository
-                .getById(id)
+                .findById(id)
                 .orElseThrow(FilmNotFoundException::new);
         filmRepository.delete(film);
     }
 
     public Film getFilmByTitle(String title) {
         return filmRepository
-                .getByTitle(title)
+                .findByTitle(title)
                 .orElseThrow(FilmNotFoundException::new);
     }
 
     public List<Film> getAllFilms() {
-        return filmRepository.getAll();
+        return filmRepository.findAll();
     }
 
     public List<Film> getFilmsByCategory(FilmCategory category) {
-        return filmRepository.getByCategory(category);
+        return filmRepository.findByCategory(category);
     }
 }

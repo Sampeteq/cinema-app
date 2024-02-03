@@ -69,7 +69,7 @@ class ScreeningControllerIT extends BaseIT {
 
         //then
         spec.expectStatus().isCreated();
-        assertThat(screeningRepository.getById(1L))
+        assertThat(screeningRepository.findById(1L))
                 .isNotEmpty()
                 .hasValueSatisfying(screening -> {
                     assertThat(screening.getDate()).isEqualTo(createScreeningDto.date());
@@ -180,7 +180,7 @@ class ScreeningControllerIT extends BaseIT {
 
         //then
         spec.expectStatus().isNoContent();
-        assertThat(screeningRepository.getById(screening.getId())).isEmpty();
+        assertThat(screeningRepository.findById(screening.getId())).isEmpty();
     }
 
     @Test
@@ -264,28 +264,28 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     private Screening addScreening(Film film, Hall hall) {
-        return screeningRepository.add(createScreening(film, hall));
+        return screeningRepository.save(createScreening(film, hall));
     }
 
     private Screening addScreening(LocalDate date, Film film, Hall hall) {
         var dateTime = date.atStartOfDay().plusHours(16);
         var screening = createScreening(dateTime, film, hall);
-        return screeningRepository.add(screening);
+        return screeningRepository.save(screening);
     }
 
     private Screening addScreeningWithSeats(Hall hall, Film film) {
-        return screeningRepository.add(ScreeningFixture.createScreeningWithTickets(hall, film));
+        return screeningRepository.save(ScreeningFixture.createScreeningWithTickets(hall, film));
     }
 
     private Hall addHall() {
-        return hallRepository.add(HallFixture.createHall());
+        return hallRepository.save(HallFixture.createHall());
     }
 
     private Film addFilm() {
-        return filmRepository.add(FilmFixture.createFilm());
+        return filmRepository.save(FilmFixture.createFilm());
     }
 
     private User addUser() {
-        return userRepository.add(UserFixture.createUser(UserRole.ADMIN));
+        return userRepository.save(UserFixture.createUser(UserRole.ADMIN));
     }
 }

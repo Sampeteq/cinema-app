@@ -78,13 +78,13 @@ class HallControllerIT extends BaseIT {
 
         //then
         responseSpec.expectStatus().isNoContent();
-        assertThat(hallRepository.getById(hall.getId())).isEmpty();
+        assertThat(hallRepository.findById(hall.getId())).isEmpty();
     }
 
     @Test
     void halls_are_gotten() {
         //given
-        var hall = hallRepository.add(createHall());
+        var hall = hallRepository.save(createHall());
         var user = addUser();
 
         //when
@@ -104,10 +104,10 @@ class HallControllerIT extends BaseIT {
     }
 
     private Hall addHall() {
-        return hallRepository.add(HallFixture.createHall());
+        return hallRepository.save(HallFixture.createHall());
     }
 
     private User addUser() {
-        return userRepository.add(UserFixture.createUser(UserRole.ADMIN));
+        return userRepository.save(UserFixture.createUser(UserRole.ADMIN));
     }
 }

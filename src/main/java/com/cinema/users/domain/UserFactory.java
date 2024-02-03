@@ -13,7 +13,7 @@ public class UserFactory {
     private final PasswordEncoder passwordEncoder;
 
     public User createUser(String mail, String password, UserRole role) {
-        if (userRepository.existsByMail(mail)) {
+        if (userRepository.findByMail(mail).isPresent()) {
             throw new UserMailNotUniqueException();
         }
         return new User(

@@ -30,35 +30,35 @@ public class UserService {
 
     public void createUser(CreateUserDto dto) {
         var user = userFactory.createUser(dto.mail(), dto.password(), UserRole.COMMON);
-        userRepository.add(user);
+        userRepository.save(user);
     }
 
     public void createAdmin(CreateUserDto dto) {
-        if (!userRepository.existsByMail(dto.mail())) {
+        if (userRepository.findByMail(dto.mail()).isEmpty()) {
             var admin = userFactory.createUser(dto.mail(), dto.password(), UserRole.ADMIN);
-            userRepository.add(admin);
+            userRepository.save(admin);
             log.info("Admin added");
         }
     }
 
     public void resetUserPassword(String mail) {
         var user = userRepository
-                .getByMail(mail)
+                .findByMail(mail)
                 .orElseThrow(UserNotFoundException::new);
         var passwordResetToken = UUID.randomUUID();
         user.setPasswordResetToken(passwordResetToken);
-        userRepository.add(user);
+        userRepository.save(user);
         var mailMessage = new MailMessage(mail, "Password reset", "Your password reset token: " + passwordResetToken);
         mailService.sendMail(mailMessage);
     }
 
     public void setNewUserPassword(SetNewUserPasswordDto dto) {
         var user = userRepository
-                .getByPasswordResetToken(dto.passwordResetToken())
+                .findByPasswordResetToken(dto.passwordResetToken())
                 .orElseThrow(UserNotFoundException::new);
         var encodedPassword = passwordEncoder.encode(dto.newPassword());
         user.setNewPassword(encodedPassword);
-        userRepository.add(user);
+        userRepository.save(user);
     }
 
     public User getLoggedUser() {
@@ -67,7 +67,7 @@ public class UserService {
                 .getAuthentication()
                 .getName();
         return userRepository
-                .getByMail(mail)
+                .findByMail(mail)
                 .orElseThrow(() -> new UsernameNotFoundException(mail));
     }
 }

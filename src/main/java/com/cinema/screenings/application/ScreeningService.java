@@ -35,11 +35,11 @@ public class ScreeningService {
     public void createScreening(CreateScreeningDto dto) {
         log.info("Dto:{}", dto);
         var film = filmRepository
-                .getById(dto.filmId())
+                .findById(dto.filmId())
                 .orElseThrow(FilmNotFoundException::new);
         log.info("Gotten film:{}", film);
         var hall = hallRepository
-                .getById(dto.hallId())
+                .findById(dto.hallId())
                 .orElseThrow(HallNotFoundException::new);
         log.info("Gotten hall:{}", hall);
         var screening = screeningFactory.createScreening(
@@ -47,21 +47,21 @@ public class ScreeningService {
                 film,
                 hall
         );
-        var addedScreening = screeningRepository.add(screening);
+        var addedScreening = screeningRepository.save(screening);
         log.info("Screening added:{}", addedScreening);
     }
 
     public void deleteScreening(Long id) {
         log.info("Screening id:{}", id);
         var screening = screeningRepository
-                .getById(id)
+                .findById(id)
                 .orElseThrow(ScreeningNotFoundException::new);
         screeningRepository.delete(screening);
     }
 
     public List<ScreeningDto> getAllScreenings() {
         return screeningRepository
-                .getAll()
+                .findAll()
                 .stream()
                 .map(screeningMapper::mapScreeningToDto)
                 .toList();
@@ -69,7 +69,7 @@ public class ScreeningService {
 
     public List<ScreeningDto> getScreeningsByDate(LocalDate date) {
         return screeningRepository
-                .getScreeningsByDate(date)
+                .findScreeningsByDateBetween(date.atStartOfDay(), date.atStartOfDay().plusHours(23).plusMinutes(59))
                 .stream().map(screeningMapper::mapScreeningToDto)
                 .toList();
     }
@@ -77,7 +77,7 @@ public class ScreeningService {
     public List<ScreeningSeatDto> getSeatsByScreeningId(Long screeningId) {
         log.info("Screening id:{}", screeningId);
         return screeningRepository
-                .getByIdWithTickets(screeningId)
+                .findByIdWithTickets(screeningId)
                 .orElseThrow(ScreeningNotFoundException::new)
                 .getTickets()
                 .stream()

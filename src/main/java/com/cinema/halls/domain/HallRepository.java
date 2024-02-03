@@ -1,11 +1,6 @@
 package com.cinema.halls.domain;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface HallRepository {
-    Hall add(Hall hall);
-    void delete(Hall hall);
-    Optional<Hall> getById(Long id);
-    List<Hall> getAll();
+public interface HallRepository extends JpaRepository<Hall, Long> {
 }

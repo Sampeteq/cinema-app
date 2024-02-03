@@ -19,7 +19,7 @@ public class ScreeningFactory {
     public Screening createScreening(LocalDateTime date, Film film, Hall hall) {
         screeningDatePolicy.checkScreeningDate(date);
         var endDate = date.plusMinutes(film.getDurationInMinutes());
-        var collisions = screeningRepository.getScreeningCollisions(date, endDate, hall.getId());
+        var collisions = screeningRepository.findScreeningCollisions(date, endDate, hall.getId());
         if (!collisions.isEmpty()) {
             throw new ScreeningsCollisionsException();
         }

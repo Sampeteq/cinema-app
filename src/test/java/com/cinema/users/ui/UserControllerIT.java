@@ -47,7 +47,7 @@ class UserControllerIT extends BaseIT {
 
 
         spec.expectStatus().isOk();
-        assertThat(userRepository.getByMail(crateUserDto.mail()))
+        assertThat(userRepository.findByMail(crateUserDto.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {
                     assertEquals(crateUserDto.mail(), user.getUsername());
@@ -59,7 +59,7 @@ class UserControllerIT extends BaseIT {
     @Test
     void user_name_cannot_be_duplicated() {
         //given
-        var user = userRepository.add(createUser("user1@mail.com"));
+        var user = userRepository.save(createUser("user1@mail.com"));
         var dto = createCrateUserDto(user.getUsername());
 
         //when
@@ -81,7 +81,7 @@ class UserControllerIT extends BaseIT {
     @Test
     void user_password_is_reset() {
         //given
-        var user = userRepository.add(createUser());
+        var user = userRepository.save(createUser());
 
         //when
         var spec = webTestClient
@@ -97,7 +97,7 @@ class UserControllerIT extends BaseIT {
         //then
         spec.expectStatus().isOk();
         var userPasswordResetToken = userRepository
-                .getByMail(user.getUsername())
+                .findByMail(user.getUsername())
                 .orElseThrow()
                 .getPasswordResetToken();
         assertThat(userPasswordResetToken).isNotNull();
@@ -107,7 +107,7 @@ class UserControllerIT extends BaseIT {
     void user_new_password_is_set() {
         //given
         var passwordResetToken = UUID.randomUUID();
-        var addedUser = userRepository.add(createUser(passwordResetToken));
+        var addedUser = userRepository.save(createUser(passwordResetToken));
         var setNewUserPasswordDto = new SetNewUserPasswordDto(
                 passwordResetToken,
                 addedUser.getPassword() + "new"
@@ -124,7 +124,7 @@ class UserControllerIT extends BaseIT {
         //then
         spec.expectStatus().isOk();
         assertThat(
-                userRepository.getByMail(addedUser.getMail())
+                userRepository.findByMail(addedUser.getMail())
         ).hasValueSatisfying(
                 user -> assertTrue(
                         passwordEncoder.matches(setNewUserPasswordDto.newPassword(), user.getPassword())

@@ -72,7 +72,7 @@ class FilmControllerIT extends BaseIT {
     void film_title_is_unique() {
         //given
         var user = addUser();
-        var film = filmRepository.add(createFilm());
+        var film = filmRepository.save(createFilm());
         var createFilmDto = FilmFixture.createCreateFilmDto(film.getTitle());
 
         //when
@@ -99,7 +99,7 @@ class FilmControllerIT extends BaseIT {
     void film_is_deleted() {
         //given
         var user = addUser();
-        var film = filmRepository.add(createFilm());
+        var film = filmRepository.save(createFilm());
 
         //when
         var spec = webTestClient
@@ -110,13 +110,13 @@ class FilmControllerIT extends BaseIT {
 
         //then
         spec.expectStatus().isNoContent();
-        assertThat(filmRepository.getByTitle(film.getTitle())).isEmpty();
+        assertThat(filmRepository.findByTitle(film.getTitle())).isEmpty();
     }
 
     @Test
     void films_are_gotten() {
         //given
-        var film = filmRepository.add(createFilm());
+        var film = filmRepository.save(createFilm());
 
         //when
         var spec = webTestClient
@@ -141,8 +141,8 @@ class FilmControllerIT extends BaseIT {
         //given
         var title = "Film";
         var otherTitle = "Other Film";
-        filmRepository.add(createFilm(title));
-        filmRepository.add(createFilm(otherTitle));
+        filmRepository.save(createFilm(title));
+        filmRepository.save(createFilm(otherTitle));
 
         //when
         var spec = webTestClient
@@ -164,8 +164,8 @@ class FilmControllerIT extends BaseIT {
         //given
         var category = FilmCategory.COMEDY;
         var otherCategory = FilmCategory.DRAMA;
-        filmRepository.add(createFilm(category));
-        filmRepository.add(createFilm(otherCategory));
+        filmRepository.save(createFilm(category));
+        filmRepository.save(createFilm(otherCategory));
 
         //when
         var spec = webTestClient
@@ -184,6 +184,6 @@ class FilmControllerIT extends BaseIT {
     }
 
     private User addUser() {
-        return userRepository.add(UserFixture.createUser(UserRole.ADMIN));
+        return userRepository.save(UserFixture.createUser(UserRole.ADMIN));
     }
 }

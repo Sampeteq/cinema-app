@@ -35,7 +35,7 @@ public class TicketService {
     public void bookTicket(BookTicketDto dto) {
         log.info("Dto:{}", dto);
         var screening = screeningRepository
-                .getById(dto.screeningId())
+                .findById(dto.screeningId())
                 .orElseThrow(ScreeningNotFoundException::new);
         log.info("Found screening:{}", screening);
         var loggedUser = userService.getLoggedUser();
@@ -50,7 +50,7 @@ public class TicketService {
                 })
                 .toList()
                 .forEach(ticket -> {
-                    var addedTicket = ticketRepository.add(ticket);
+                    var addedTicket = ticketRepository.save(ticket);
                     log.info("Added ticket:{}", addedTicket);
                 });
     }
@@ -60,7 +60,7 @@ public class TicketService {
         log.info("Ticket id:{}", ticketId);
         var loggedUser = userService.getLoggedUser();
         var ticket = ticketRepository
-                .getByIdAndUserId(ticketId, loggedUser.getId())
+                .findByIdAndUserId(ticketId, loggedUser.getId())
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
         ticket.cancel(ticketCancellingPolicy, clock);
@@ -70,7 +70,7 @@ public class TicketService {
     public List<TicketDto> getAllTicketsByLoggedUser() {
         var loggedUser = userService.getLoggedUser();
         return ticketRepository
-                .getAllByUserId(loggedUser.getId())
+                .findAllByUserId(loggedUser.getId())
                 .stream()
                 .map(ticketMapper::mapToDto)
                 .toList();

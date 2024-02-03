@@ -30,7 +30,7 @@ class TicketConcurrencyTest extends TicketBaseIT {
         }
 
         //then
-        Assertions.assertThat(ticketRepository.getAll()).hasSize(1);
+        Assertions.assertThat(ticketRepository.findAll()).hasSize(1);
     }
 
     private void bookTicket(String userMail, BookTicketDto bookTicketDto) {

@@ -15,7 +15,6 @@ public class MailService {
     private final JavaMailSender javaMailSender;
     private final Clock clock;
 
-    @Async
     public void sendMail(MailMessage mailMessage) {
         var message = new SimpleMailMessage();
         message.setTo(mailMessage.getReceiver());

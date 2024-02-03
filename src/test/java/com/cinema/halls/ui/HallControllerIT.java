@@ -9,7 +9,6 @@ import com.cinema.halls.domain.HallRepository;
 import com.cinema.users.UserFixture;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
-import com.cinema.users.domain.UserRole;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +107,6 @@ class HallControllerIT extends BaseIT {
     }
 
     private User addUser() {
-        return userRepository.save(UserFixture.createUser(UserRole.ADMIN));
+        return userRepository.save(UserFixture.createUser(User.Role.ADMIN));
     }
 }

@@ -3,8 +3,8 @@ package com.cinema.users.ui;
 import com.cinema.BaseIT;
 import com.cinema.users.UserFixture;
 import com.cinema.users.application.dto.SetNewUserPasswordDto;
+import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
-import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ class UserControllerIT extends BaseIT {
                 .hasValueSatisfying(user -> {
                     assertEquals(crateUserDto.mail(), user.getUsername());
                     assertTrue(passwordEncoder.matches(crateUserDto.password(), user.getPassword()));
-                    assertEquals(UserRole.COMMON, user.getRole());
+                    assertEquals(User.Role.COMMON, user.getRole());
                 });
     }
 

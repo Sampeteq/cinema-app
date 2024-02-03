@@ -29,15 +29,20 @@ public class User implements UserDetails {
 
     private String password;
 
+    public enum Role {
+        COMMON,
+        ADMIN
+    }
+
     @Enumerated(value = EnumType.STRING)
-    private UserRole role;
+    private User.Role role;
 
     private UUID passwordResetToken;
 
     protected User() {
     }
 
-    public User(String mail, String password, UserRole role) {
+    public User(String mail, String password, Role role) {
         this.mail = mail;
         this.password = password;
         this.role = role;

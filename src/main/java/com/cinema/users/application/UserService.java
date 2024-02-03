@@ -7,7 +7,6 @@ import com.cinema.users.application.dto.SetNewUserPasswordDto;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserFactory;
 import com.cinema.users.domain.UserRepository;
-import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,13 +28,13 @@ public class UserService {
     private final MailService mailService;
 
     public void createUser(CreateUserDto dto) {
-        var user = userFactory.createUser(dto.mail(), dto.password(), UserRole.COMMON);
+        var user = userFactory.createUser(dto.mail(), dto.password(), User.Role.COMMON);
         userRepository.save(user);
     }
 
     public void createAdmin(CreateUserDto dto) {
         if (userRepository.findByMail(dto.mail()).isEmpty()) {
-            var admin = userFactory.createUser(dto.mail(), dto.password(), UserRole.ADMIN);
+            var admin = userFactory.createUser(dto.mail(), dto.password(), User.Role.ADMIN);
             userRepository.save(admin);
             log.info("Admin added");
         }

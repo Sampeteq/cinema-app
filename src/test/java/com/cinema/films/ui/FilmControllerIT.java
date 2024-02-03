@@ -9,7 +9,6 @@ import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
 import com.cinema.users.UserFixture;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
-import com.cinema.users.domain.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -184,6 +183,6 @@ class FilmControllerIT extends BaseIT {
     }
 
     private User addUser() {
-        return userRepository.save(UserFixture.createUser(UserRole.ADMIN));
+        return userRepository.save(UserFixture.createUser(User.Role.ADMIN));
     }
 }

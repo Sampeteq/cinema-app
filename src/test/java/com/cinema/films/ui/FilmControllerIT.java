@@ -2,7 +2,7 @@ package com.cinema.films.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.films.FilmFixture;
-import com.cinema.films.application.dto.CreateFilmDto;
+import com.cinema.films.application.dto.AddFilmDto;
 import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
@@ -41,7 +41,7 @@ class FilmControllerIT extends BaseIT {
         var category = FilmCategory.COMEDY;
         var year = 2023;
         var durationInMinutes = 100;
-        var createFilmDto = new CreateFilmDto(
+        var addFilmDto = new AddFilmDto(
                 title,
                 category,
                 year,
@@ -52,7 +52,7 @@ class FilmControllerIT extends BaseIT {
                 .post()
                 .uri(FILM_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(createFilmDto)
+                .bodyValue(addFilmDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
         //then
@@ -61,10 +61,10 @@ class FilmControllerIT extends BaseIT {
                 .expectHeader().location("/films")
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(id)
-                .jsonPath("$.title").isEqualTo(createFilmDto.title())
-                .jsonPath("$.category").isEqualTo(createFilmDto.category().name())
-                .jsonPath("$.year").isEqualTo(createFilmDto.year())
-                .jsonPath("$.durationInMinutes").isEqualTo(createFilmDto.durationInMinutes());
+                .jsonPath("$.title").isEqualTo(addFilmDto.title())
+                .jsonPath("$.category").isEqualTo(addFilmDto.category().name())
+                .jsonPath("$.year").isEqualTo(addFilmDto.year())
+                .jsonPath("$.durationInMinutes").isEqualTo(addFilmDto.durationInMinutes());
     }
 
     @Test
@@ -72,14 +72,14 @@ class FilmControllerIT extends BaseIT {
         //given
         var user = addUser();
         var film = filmRepository.save(createFilm());
-        var createFilmDto = FilmFixture.createCreateFilmDto(film.getTitle());
+        var addFilmDto = FilmFixture.createAddFilmDto(film.getTitle());
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(FILM_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(createFilmDto)
+                .bodyValue(addFilmDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 

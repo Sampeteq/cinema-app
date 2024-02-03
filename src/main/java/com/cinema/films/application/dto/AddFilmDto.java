@@ -3,7 +3,7 @@ package com.cinema.films.application.dto;
 import com.cinema.films.domain.FilmCategory;
 import jakarta.validation.constraints.NotNull;
 
-public record CreateFilmDto(
+public record AddFilmDto(
         @NotNull
         String title,
         @NotNull

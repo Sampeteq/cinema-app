@@ -1,6 +1,6 @@
 package com.cinema.films.application;
 
-import com.cinema.films.application.dto.CreateFilmDto;
+import com.cinema.films.application.dto.AddFilmDto;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmFactory;
@@ -20,7 +20,7 @@ public class FilmService {
     private final FilmFactory filmFactory;
     private final FilmRepository filmRepository;
 
-    public Film createFilm(CreateFilmDto dto) {
+    public Film addFilm(AddFilmDto dto) {
         log.info("Dto:{}", dto);
         var film = filmFactory.createFilm(
                 dto.title(),

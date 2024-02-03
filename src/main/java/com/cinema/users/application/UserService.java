@@ -5,8 +5,8 @@ import com.cinema.mails.MailService;
 import com.cinema.users.application.dto.CreateUserDto;
 import com.cinema.users.application.dto.SetNewUserPasswordDto;
 import com.cinema.users.domain.User;
-import com.cinema.users.domain.UserFactory;
 import com.cinema.users.domain.UserRepository;
+import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,19 +23,21 @@ import java.util.UUID;
 @Slf4j
 public class UserService {
 
-    private final UserFactory userFactory;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
 
     public void createUser(CreateUserDto dto) {
-        var user = userFactory.createUser(dto.mail(), dto.password(), User.Role.COMMON);
+        if (userRepository.findByMail(dto.mail()).isPresent()) {
+            throw new UserMailNotUniqueException();
+        }
+        var user = new User(dto.mail(), passwordEncoder.encode(dto.password()), User.Role.COMMON);
         userRepository.save(user);
     }
 
     public void createAdmin(CreateUserDto dto) {
         if (userRepository.findByMail(dto.mail()).isEmpty()) {
-            var admin = userFactory.createUser(dto.mail(), dto.password(), User.Role.ADMIN);
+            var admin = new User(dto.mail(), passwordEncoder.encode(dto.password()), User.Role.ADMIN);
             userRepository.save(admin);
             log.info("Admin added");
         }

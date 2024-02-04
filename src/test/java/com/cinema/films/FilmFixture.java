@@ -1,6 +1,5 @@
 package com.cinema.films;
 
-import com.cinema.films.application.dto.AddFilmDto;
 import com.cinema.films.domain.Film;
 
 import java.time.Year;
@@ -16,15 +15,6 @@ public final class FilmFixture {
     private static final int DURATION_IN_MINUTES = 100;
 
     private FilmFixture() {
-    }
-
-    public static AddFilmDto createAddFilmDto(String title) {
-        return new AddFilmDto(
-                title,
-                CATEGORY,
-                YEAR,
-                DURATION_IN_MINUTES
-        );
     }
 
     public static Film createFilm() {

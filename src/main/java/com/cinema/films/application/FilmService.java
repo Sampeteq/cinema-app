@@ -1,6 +1,5 @@
 package com.cinema.films.application;
 
-import com.cinema.films.application.dto.AddFilmDto;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmNotFoundException;
@@ -18,17 +17,11 @@ public class FilmService {
 
     private final FilmRepository filmRepository;
 
-    public Film addFilm(AddFilmDto dto) {
-        log.info("Dto:{}", dto);
-        if (filmRepository.findByTitle(dto.title()).isPresent()) {
+    public Film addFilm(Film film) {
+        log.info("Dto:{}", film);
+        if (filmRepository.findByTitle(film.getTitle()).isPresent()) {
             throw new FilmTitleNotUniqueException();
         }
-        var film = new Film(
-                dto.title(),
-                dto.category(),
-                dto.year(),
-                dto.durationInMinutes()
-        );
         var addedFilm = filmRepository.save(film);
         log.info("Added film:{}", addedFilm);
         return addedFilm;

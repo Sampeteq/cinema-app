@@ -1,7 +1,6 @@
 package com.cinema.films.ui;
 
 import com.cinema.films.application.FilmService;
-import com.cinema.films.application.dto.AddFilmDto;
 import com.cinema.films.domain.Film;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -26,11 +25,11 @@ public class FilmController {
 
     @PostMapping("/admin/films")
     @SecurityRequirement(name = "basic")
-    ResponseEntity<Film> addFilm(@RequestBody @Valid AddFilmDto dto) {
-        var film = filmService.addFilm(dto);
+    ResponseEntity<Film> addFilm(@RequestBody @Valid Film film) {
+        var addedFilm = filmService.addFilm(film);
         return ResponseEntity
                 .created(URI.create("/films"))
-                .body(film);
+                .body(addedFilm);
     }
 
     @DeleteMapping("/admin/films/{id}")

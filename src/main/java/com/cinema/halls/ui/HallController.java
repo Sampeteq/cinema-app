@@ -1,7 +1,6 @@
 package com.cinema.halls.ui;
 
 import com.cinema.halls.application.HallService;
-import com.cinema.halls.application.dto.CreateHallDto;
 import com.cinema.halls.domain.Hall;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +23,11 @@ public class HallController {
 
     @PostMapping("/admin/halls")
     @SecurityRequirement(name = "basic")
-    public ResponseEntity<Hall> createHall(@RequestBody CreateHallDto dto) {
-        var hall = hallService.createHall(dto);
+    public ResponseEntity<Hall> createHall(@RequestBody Hall hall) {
+        var addedHall = hallService.createHall(hall);
         return ResponseEntity
                 .created(URI.create("/admin/halls"))
-                .body(hall);
+                .body(addedHall);
     }
 
     @DeleteMapping("/admin/halls/{id}")

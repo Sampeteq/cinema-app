@@ -2,10 +2,9 @@ package com.cinema.halls.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.halls.HallFixture;
-import com.cinema.halls.application.dto.CreateHallDto;
-import com.cinema.halls.application.dto.CreateSeatDto;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
+import com.cinema.halls.domain.Seat;
 import com.cinema.users.UserFixture;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
@@ -34,10 +33,10 @@ class HallControllerIT extends BaseIT {
     @SneakyThrows
     void hall_is_created() {
         //given
-        var createHallDto = new CreateHallDto(
+        var createHallDto = new Hall(
                 List.of(
-                        new CreateSeatDto(1, 1),
-                        new CreateSeatDto(1, 2)
+                        new Seat(1, 1),
+                        new Seat(1, 2)
                 )
         );
         var user = addUser();
@@ -56,10 +55,10 @@ class HallControllerIT extends BaseIT {
                 .expectStatus().isCreated()
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(1)
-                .jsonPath("$.seats[0].number").isEqualTo(createHallDto.seats().get(0).number())
-                .jsonPath("$.seats[0].rowNumber").isEqualTo(createHallDto.seats().get(0).rowNumber())
-                .jsonPath("$.seats[1].number").isEqualTo(createHallDto.seats().get(1).number())
-                .jsonPath("$.seats[1].rowNumber").isEqualTo(createHallDto.seats().get(1).rowNumber());
+                .jsonPath("$.seats[0].number").isEqualTo(createHallDto.getSeats().get(0).getNumber())
+                .jsonPath("$.seats[0].rowNumber").isEqualTo(createHallDto.getSeats().get(0).getRowNumber())
+                .jsonPath("$.seats[1].number").isEqualTo(createHallDto.getSeats().get(1).getNumber())
+                .jsonPath("$.seats[1].rowNumber").isEqualTo(createHallDto.getSeats().get(1).getRowNumber());
     }
 
     @Test

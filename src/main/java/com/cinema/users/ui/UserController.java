@@ -24,7 +24,7 @@ class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/public/users/password/reset")
+    @PostMapping("/public/users/password/reset")
     void resetUserPassword(@RequestParam String mail) {
         userService.resetUserPassword(mail);
     }

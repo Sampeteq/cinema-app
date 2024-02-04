@@ -85,7 +85,7 @@ class UserControllerIT extends BaseIT {
 
         //when
         var spec = webTestClient
-                .patch()
+                .post()
                 .uri(uriBuilder -> uriBuilder
                         .path(USERS_BASE_ENDPOINT + "/password/reset")
                         .queryParam("mail", user.getMail())

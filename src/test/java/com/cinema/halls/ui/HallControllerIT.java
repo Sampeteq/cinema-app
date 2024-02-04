@@ -33,7 +33,7 @@ class HallControllerIT extends BaseIT {
     @SneakyThrows
     void hall_is_created() {
         //given
-        var createHallDto = new Hall(
+        var hall = new Hall(
                 List.of(
                         new Seat(1, 1),
                         new Seat(1, 2)
@@ -46,7 +46,7 @@ class HallControllerIT extends BaseIT {
                 .post()
                 .uri(HALL_ADMIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(createHallDto)
+                .bodyValue(hall)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
@@ -55,10 +55,10 @@ class HallControllerIT extends BaseIT {
                 .expectStatus().isCreated()
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(1)
-                .jsonPath("$.seats[0].number").isEqualTo(createHallDto.getSeats().get(0).getNumber())
-                .jsonPath("$.seats[0].rowNumber").isEqualTo(createHallDto.getSeats().get(0).getRowNumber())
-                .jsonPath("$.seats[1].number").isEqualTo(createHallDto.getSeats().get(1).getNumber())
-                .jsonPath("$.seats[1].rowNumber").isEqualTo(createHallDto.getSeats().get(1).getRowNumber());
+                .jsonPath("$.seats[0].number").isEqualTo(hall.getSeats().get(0).getNumber())
+                .jsonPath("$.seats[0].rowNumber").isEqualTo(hall.getSeats().get(0).getRowNumber())
+                .jsonPath("$.seats[1].number").isEqualTo(hall.getSeats().get(1).getNumber())
+                .jsonPath("$.seats[1].rowNumber").isEqualTo(hall.getSeats().get(1).getRowNumber());
     }
 
     @Test

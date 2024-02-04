@@ -39,7 +39,7 @@ class TicketController {
         var tickets = ticketService
                 .getAllTicketsByLoggedUser()
                 .stream()
-                .map(ticketMapper::mapToDto)
+                .map(ticketMapper::mapToView)
                 .toList();
         return new TicketsResponse(tickets);
     }

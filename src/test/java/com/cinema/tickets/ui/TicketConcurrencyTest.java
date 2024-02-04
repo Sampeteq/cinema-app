@@ -18,7 +18,7 @@ class TicketConcurrencyTest extends TicketBaseIT {
         var screening = addScreeningWithTicket(hall, film);
         var seat = screening.getTickets().getFirst().getSeat();
         var users = addUsers();
-        var bookTicketDto = new BookTicketDto(screening.getId(), List.of(seat.getId()));
+        var bookTicketDto = new TicketBookRequest(screening.getId(), List.of(seat.getId()));
 
         //when
         try (var executorService = Executors.newFixedThreadPool(3)) {
@@ -32,13 +32,13 @@ class TicketConcurrencyTest extends TicketBaseIT {
         Assertions.assertThat(ticketRepository.findAll()).hasSize(1);
     }
 
-    private void bookTicket(String userMail, BookTicketDto bookTicketDto) {
+    private void bookTicket(String userMail, TicketBookRequest ticketBookRequest) {
         webTestClient
                 .post()
                 .uri("/tickets")
                 .headers(headers -> headers.setBasicAuth(userMail, UserFixture.PASSWORD))
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(bookTicketDto)
+                .bodyValue(ticketBookRequest)
                 .exchange();
     }
 }

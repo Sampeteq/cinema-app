@@ -23,7 +23,7 @@ class TicketController {
 
     @PostMapping
     @SecurityRequirement(name = "basic")
-    void bookTicket(@RequestBody @Valid BookTicketDto dto) {
+    void bookTicket(@RequestBody @Valid TicketBookRequest dto) {
         ticketService.bookTicket(dto.screeningId(), dto.seatsIds());
     }
 

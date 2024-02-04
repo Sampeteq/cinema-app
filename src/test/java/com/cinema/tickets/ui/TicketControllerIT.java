@@ -37,7 +37,7 @@ class TicketControllerIT extends TicketBaseIT {
         //given
         var nonExistingScreeningId = 0L;
         var seatId = 1L;
-        var bookTicketDto = new BookTicketDto(
+        var bookTicketDto = new TicketBookRequest(
                 nonExistingScreeningId,
                 List.of(seatId)
         );
@@ -68,7 +68,7 @@ class TicketControllerIT extends TicketBaseIT {
         var film = addFilm();
         var screening = addScreening(hall, film);
         var nonExistingSeatId = 0L;
-        var bookTicketDto = new BookTicketDto(
+        var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
                 List.of(nonExistingSeatId)
         );
@@ -97,7 +97,7 @@ class TicketControllerIT extends TicketBaseIT {
         var hall = addHall();
         var film = addFilm();
         var screening = addScreeningWithTickets(hall, film);
-        var bookTicketDto = new BookTicketDto(
+        var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
                 List.of(screening.getTickets().getFirst().getSeat().getId())
         );
@@ -131,7 +131,7 @@ class TicketControllerIT extends TicketBaseIT {
         var screening = addScreeningWithTickets(hall, film);
         var seat1 = screening.getHall().getSeats().get(0);
         var seat2 = screening.getHall().getSeats().get(1);
-        var bookTicketDto = new BookTicketDto(
+        var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
                 List.of(seat1.getId(), seat2.getId())
         );
@@ -159,7 +159,7 @@ class TicketControllerIT extends TicketBaseIT {
         var film = addFilm();
         var screening = addScreeningWithBookedFreeSeat(hall, film, user);
         var seat = screening.getHall().getSeats().getFirst();
-        var bookTicketDto = new BookTicketDto(
+        var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
                 List.of(seat.getId())
         );
@@ -189,7 +189,7 @@ class TicketControllerIT extends TicketBaseIT {
         var film = addFilm();
         var screening = addScreeningWithTickets(LocalDateTime.now(clock).minusMinutes(59), hall, film);
         var seat = screening.getHall().getSeats().getFirst();
-        var bookTicketDto = new BookTicketDto(
+        var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
                 List.of(seat.getId())
         );

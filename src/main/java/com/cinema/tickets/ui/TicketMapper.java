@@ -1,4 +1,4 @@
-package com.cinema.tickets.infrastructure;
+package com.cinema.tickets.ui;
 
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.ui.TicketView;

@@ -1,7 +1,6 @@
 package com.cinema.tickets.ui;
 
 import com.cinema.tickets.application.TicketService;
-import com.cinema.tickets.infrastructure.TicketMapper;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

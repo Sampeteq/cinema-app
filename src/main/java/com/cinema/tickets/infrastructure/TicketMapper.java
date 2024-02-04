@@ -1,16 +1,21 @@
 package com.cinema.tickets.infrastructure;
 
-import com.cinema.tickets.ui.TicketView;
 import com.cinema.tickets.domain.Ticket;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import com.cinema.tickets.ui.TicketView;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface TicketMapper {
-    @Mapping(source = "screening.film.title", target = "filmTitle")
-    @Mapping(source = "screening.date", target = "screeningDate")
-    @Mapping(source = "screening.hall.id", target = "hallId")
-    @Mapping(source = "seat.rowNumber", target = "rowNumber")
-    @Mapping(source = "seat.number", target = "seatNumber")
-    TicketView mapToView(Ticket ticket);
+@Component
+public class TicketMapper {
+
+    public TicketView mapToView(Ticket ticket) {
+        return new TicketView(
+                ticket.getId(),
+                ticket.getStatus(),
+                ticket.getScreening().getFilm().getTitle(),
+                ticket.getScreening().getDate(),
+                ticket.getScreening().getHall().getId(),
+                ticket.getSeat().getRowNumber(),
+                ticket.getSeat().getNumber()
+        );
+    }
 }

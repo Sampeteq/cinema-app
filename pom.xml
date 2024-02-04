@@ -23,7 +23,6 @@
     <properties>
         <java.version>21</java.version>
         <lombok.version>1.18.30</lombok.version>
-        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <org.liquibase.version>4.24.0</org.liquibase.version>
         <org.springdoc.version>2.2.0</org.springdoc.version>
         <testcontainers.version>1.19.2</testcontainers.version>
@@ -108,12 +107,6 @@
             <version>${org.liquibase.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${org.mapstruct.version}</version>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -137,17 +130,7 @@
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>${org.mapstruct.version}</version>
-                        </path>
                     </annotationProcessorPaths>
-                    <compilerArgs>
-                        <compilerArg>
-                            -Amapstruct.defaultComponentModel=spring
-                        </compilerArg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
 

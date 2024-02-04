@@ -2,12 +2,18 @@ package com.cinema.screenings.infrastructure;
 
 import com.cinema.screenings.application.dto.ScreeningDto;
 import com.cinema.screenings.domain.Screening;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface ScreeningMapper {
-    @Mapping(source = "screening.film.title", target = "filmTitle")
-    @Mapping(source = "screening.hall.id", target = "hallId")
-    ScreeningDto mapScreeningToDto(Screening screening);
+@Component
+public class ScreeningMapper {
+
+    public ScreeningDto mapScreeningToDto(Screening screening) {
+        return new ScreeningDto(
+                screening.getId(),
+                screening.getDate(),
+                screening.getEndDate(),
+                screening.getFilm().getTitle(),
+                screening.getHall().getId()
+        );
+    }
 }

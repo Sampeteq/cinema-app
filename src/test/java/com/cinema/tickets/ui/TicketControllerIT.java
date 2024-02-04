@@ -2,7 +2,6 @@ package com.cinema.tickets.ui;
 
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
-import com.cinema.tickets.application.dto.BookTicketDto;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;

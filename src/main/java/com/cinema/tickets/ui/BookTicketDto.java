@@ -1,4 +1,4 @@
-package com.cinema.tickets.application.dto;
+package com.cinema.tickets.ui;
 
 import jakarta.validation.constraints.NotNull;
 

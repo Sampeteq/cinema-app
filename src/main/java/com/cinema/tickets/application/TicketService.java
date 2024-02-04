@@ -2,7 +2,6 @@ package com.cinema.tickets.application;
 
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
-import com.cinema.tickets.application.dto.BookTicketDto;
 import com.cinema.tickets.application.dto.TicketDto;
 import com.cinema.tickets.domain.TicketBookingPolicy;
 import com.cinema.tickets.domain.TicketCancellingPolicy;
@@ -32,15 +31,15 @@ public class TicketService {
     private final Clock clock;
 
     @Transactional
-    public void bookTicket(BookTicketDto dto) {
-        log.info("Dto:{}", dto);
+    public void bookTicket(Long screeningId, List<Long> seatsIds) {
+        log.info("Screening id:{}", screeningId);
+        log.info("Seats:{}", seatsIds);
         var screening = screeningRepository
-                .findById(dto.screeningId())
+                .findById(screeningId)
                 .orElseThrow(ScreeningNotFoundException::new);
         log.info("Found screening:{}", screening);
         var loggedUser = userService.getLoggedUser();
-        dto
-                .seatsIds()
+        seatsIds
                 .stream()
                 .map(seatId -> {
                     var ticket = screening.findTicketBySeatId(seatId);

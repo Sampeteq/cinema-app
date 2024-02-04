@@ -1,7 +1,6 @@
 package com.cinema.tickets.ui;
 
 import com.cinema.tickets.application.TicketService;
-import com.cinema.tickets.application.dto.BookTicketDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ class TicketController {
     @PostMapping
     @SecurityRequirement(name = "basic")
     void bookTicket(@RequestBody @Valid BookTicketDto dto) {
-        ticketService.bookTicket(dto);
+        ticketService.bookTicket(dto.screeningId(), dto.seatsIds());
     }
 
     @PatchMapping("/{ticketId}/cancel")

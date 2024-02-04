@@ -1,6 +1,5 @@
 package com.cinema.tickets.ui;
 
-import com.cinema.tickets.application.dto.BookTicketDto;
 import com.cinema.users.UserFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

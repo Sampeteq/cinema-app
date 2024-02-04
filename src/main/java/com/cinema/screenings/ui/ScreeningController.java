@@ -1,7 +1,6 @@
 package com.cinema.screenings.ui;
 
 import com.cinema.screenings.application.ScreeningService;
-import com.cinema.screenings.application.dto.CreateScreeningDto;
 import com.cinema.screenings.application.dto.ScreeningSeatDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -27,12 +26,8 @@ class ScreeningController {
 
     @PostMapping("admin/screenings")
     @SecurityRequirement(name = "basic")
-    ResponseEntity<Object> createScreening(
-            @RequestBody
-            @Valid
-            CreateScreeningDto dto
-    ) {
-        screeningService.createScreening(dto);
+    ResponseEntity<Object> createScreening(@RequestBody @Valid CreateScreeningDto dto) {
+        screeningService.createScreening(dto.date(), dto.filmId(), dto.hallId());
         return ResponseEntity.created(URI.create("/screenings")).build();
     }
 

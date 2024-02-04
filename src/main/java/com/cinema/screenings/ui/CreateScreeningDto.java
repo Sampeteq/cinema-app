@@ -1,4 +1,4 @@
-package com.cinema.screenings.application.dto;
+package com.cinema.screenings.ui;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;

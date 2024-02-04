@@ -4,7 +4,6 @@ import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmNotFoundException;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.halls.domain.exceptions.HallNotFoundException;
-import com.cinema.screenings.application.dto.CreateScreeningDto;
 import com.cinema.screenings.application.dto.ScreeningDto;
 import com.cinema.screenings.application.dto.ScreeningSeatDto;
 import com.cinema.screenings.domain.ScreeningFactory;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -32,18 +32,20 @@ public class ScreeningService {
     private final HallRepository hallRepository;
 
     @Transactional
-    public void createScreening(CreateScreeningDto dto) {
-        log.info("Dto:{}", dto);
+    public void createScreening(LocalDateTime date, Long filmId, Long hallId) {
+        log.info("Date:{}", date);
+        log.info("Film id:{}", filmId);
+        log.info("Hall id:{}", hallId);
         var film = filmRepository
-                .findById(dto.filmId())
+                .findById(filmId)
                 .orElseThrow(FilmNotFoundException::new);
         log.info("Gotten film:{}", film);
         var hall = hallRepository
-                .findById(dto.hallId())
+                .findById(hallId)
                 .orElseThrow(HallNotFoundException::new);
         log.info("Gotten hall:{}", hall);
         var screening = screeningFactory.createScreening(
-                dto.date(),
+                date,
                 film,
                 hall
         );

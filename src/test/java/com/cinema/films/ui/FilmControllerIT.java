@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import static com.cinema.films.FilmFixture.createFilm;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -93,7 +92,6 @@ class FilmControllerIT extends BaseIT {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
     void film_is_deleted() {
         //given
         var user = addUser();

@@ -1,6 +1,6 @@
 package com.cinema.tickets.infrastructure;
 
-import com.cinema.tickets.application.dto.TicketDto;
+import com.cinema.tickets.ui.TicketDto;
 import com.cinema.tickets.domain.Ticket;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

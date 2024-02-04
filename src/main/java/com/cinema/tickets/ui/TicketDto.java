@@ -1,4 +1,4 @@
-package com.cinema.tickets.application.dto;
+package com.cinema.tickets.ui;
 
 import com.cinema.tickets.domain.Ticket;
 import com.fasterxml.jackson.annotation.JsonFormat;

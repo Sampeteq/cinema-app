@@ -1,6 +1,7 @@
 package com.cinema.tickets.ui;
 
 import com.cinema.tickets.application.TicketService;
+import com.cinema.tickets.infrastructure.TicketMapper;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 class TicketController {
 
     private final TicketService ticketService;
+    private final TicketMapper ticketMapper;
 
     @PostMapping
     @SecurityRequirement(name = "basic")
@@ -34,7 +36,11 @@ class TicketController {
     @GetMapping("/my")
     @SecurityRequirement(name = "basic")
     TicketsResponse getAllTicketsByLoggedUser() {
-        var tickets = ticketService.getAllTicketsByLoggedUser();
+        var tickets = ticketService
+                .getAllTicketsByLoggedUser()
+                .stream()
+                .map(ticketMapper::mapToDto)
+                .toList();
         return new TicketsResponse(tickets);
     }
 }

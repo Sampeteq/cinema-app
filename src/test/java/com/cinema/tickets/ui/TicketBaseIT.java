@@ -7,7 +7,6 @@ import com.cinema.films.domain.FilmRepository;
 import com.cinema.halls.HallFixture;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
-import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.ScreeningFixture;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
@@ -48,28 +47,28 @@ abstract class TicketBaseIT extends BaseIT {
     @Autowired
     protected Clock clock;
 
-    protected Ticket addTicket(Screening screening, Seat seat, User user) {
-        return ticketRepository.save(TicketFixture.createTicket(screening, seat, user));
+    protected Ticket addTicket(Screening screening, User user) {
+        return ticketRepository.save(TicketFixture.createTicket(screening, user));
     }
 
-    protected Screening addScreening(Hall hall, Film film) {
+    protected Screening addScreening(Film film, Hall hall) {
         return screeningRepository.save(ScreeningFixture.createScreening(film, hall));
     }
 
-    protected Screening addScreeningWithTicket(Hall hall, Film film) {
-        return screeningRepository.save(ScreeningFixture.createScreeningWithTicket(hall, film));
+    protected Screening addScreeningWithTicket(Film film, Hall hall) {
+        return screeningRepository.save(ScreeningFixture.createScreeningWithTicket(film, hall));
     }
 
-    protected Screening addScreeningWithTickets(Hall hall, Film film) {
-        return screeningRepository.save(ScreeningFixture.createScreeningWithTickets(hall, film));
+    protected Screening addScreeningWithTickets(Film film, Hall hall) {
+        return screeningRepository.save(ScreeningFixture.createScreeningWithTickets(film, hall));
     }
 
-    protected Screening addScreeningWithTickets(LocalDateTime date, Hall hall, Film film) {
+    protected Screening addScreeningWithTickets(LocalDateTime date, Film film, Hall hall) {
         return screeningRepository.save(createScreeningWithTickets(date, film, hall));
     }
 
-    protected Screening addScreeningWithBookedFreeSeat(Hall hall, Film film, User user) {
-        return screeningRepository.save(createScreeningWithBookedTicket(hall, film, user));
+    protected Screening addScreeningWithBookedTicket(Film film, Hall hall, User user) {
+        return screeningRepository.save(createScreeningWithBookedTicket(film, hall, user));
     }
 
     protected Hall addHall() {

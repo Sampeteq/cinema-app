@@ -51,8 +51,8 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_is_created() {
         //given
-        var hall = addHall();
         var film = addFilm();
+        var hall = addHall();
         var user = addUser();
         var createScreeningDto = new CreateScreeningDto(SCREENING_DATE, film.getId(), hall.getId());
 
@@ -79,8 +79,8 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_and_current_date_difference_is_min_7_days() {
         //given
-        var hall = addHall();
         var film = addFilm();
+        var hall = addHall();
         var user = addUser();
         var screeningDate = LocalDateTime.now().plusDays(6);
         var createScreeningDto = new CreateScreeningDto(screeningDate, film.getId(), hall.getId());
@@ -106,8 +106,8 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_and_current_date_difference_is_max_21_days() {
         //given
-        var hall = addHall();
         var film = addFilm();
+        var hall = addHall();
         var user = addUser();
         var screeningDate = LocalDateTime.now().plusDays(23);
         var createScreeningDto = new CreateScreeningDto(screeningDate, film.getId(), hall.getId());
@@ -133,8 +133,8 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screenings_collision_cannot_exist() {
         //given
-        var hall = addHall();
         var film = addFilm();
+        var hall = addHall();
         var screening = addScreening(film, hall);
         var user = addUser();
         var createScreeningDto = new CreateScreeningDto(
@@ -164,8 +164,8 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_is_deleted() {
         //given
-        var hall = addHall();
         var film = addFilm();
+        var hall = addHall();
         var screening = addScreening(film, hall);
         var user = addUser();
 
@@ -184,8 +184,8 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screenings_are_gotten() {
         //given
-        var hall = addHall();
         var film = addFilm();
+        var hall = addHall();
         var screening = addScreening(film, hall);
 
         //when
@@ -208,8 +208,8 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screenings_are_gotten_by_date() {
         //given
-        var hall = addHall();
         var film = addFilm();
+        var hall = addHall();
         var requiredDate = LocalDate.of(2023, 12, 13);
         var screeningWithRequiredDate = addScreening(requiredDate, film, hall);
         addScreening(requiredDate.minusDays(1), film, hall);
@@ -235,9 +235,9 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void seats_are_gotten_by_screening_id() {
         //given
-        var hall = addHall();
         var film = addFilm();
-        var screening = addScreeningWithSeats(hall, film);
+        var hall = addHall();
+        var screening = addScreeningWithSeats(film, hall);
 
         //when
         var spec = webTestClient
@@ -261,6 +261,14 @@ class ScreeningControllerIT extends BaseIT {
                 .jsonPath("$.*.*").value(everyItem(notNullValue()));
     }
 
+    private Film addFilm() {
+        return filmRepository.save(FilmFixture.createFilm());
+    }
+
+    private Hall addHall() {
+        return hallRepository.save(HallFixture.createHall());
+    }
+
     private Screening addScreening(Film film, Hall hall) {
         return screeningRepository.save(createScreening(film, hall));
     }
@@ -271,16 +279,8 @@ class ScreeningControllerIT extends BaseIT {
         return screeningRepository.save(screening);
     }
 
-    private Screening addScreeningWithSeats(Hall hall, Film film) {
-        return screeningRepository.save(ScreeningFixture.createScreeningWithTickets(hall, film));
-    }
-
-    private Hall addHall() {
-        return hallRepository.save(HallFixture.createHall());
-    }
-
-    private Film addFilm() {
-        return filmRepository.save(FilmFixture.createFilm());
+    private Screening addScreeningWithSeats(Film film, Hall hall) {
+        return screeningRepository.save(ScreeningFixture.createScreeningWithTickets(film, hall));
     }
 
     private User addUser() {

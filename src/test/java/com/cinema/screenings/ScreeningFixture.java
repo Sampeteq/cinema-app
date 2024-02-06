@@ -38,7 +38,7 @@ public final class ScreeningFixture {
         );
     }
 
-    public static Screening createScreeningWithTicket(Hall hall, Film film) {
+    public static Screening createScreeningWithTicket(Film film, Hall hall) {
         var screening = new Screening(
                 SCREENING_DATE,
                 SCREENING_END_DATE,
@@ -52,7 +52,7 @@ public final class ScreeningFixture {
         return screening;
     }
 
-    public static Screening createScreeningWithTickets(Hall hall, Film film) {
+    public static Screening createScreeningWithTickets(Film film, Hall hall) {
         var screening = new Screening(
                 SCREENING_DATE,
                 SCREENING_END_DATE,
@@ -82,7 +82,7 @@ public final class ScreeningFixture {
         return screening;
     }
 
-    public static Screening createScreeningWithBookedTicket(Hall hall, Film film, User user) {
+    public static Screening createScreeningWithBookedTicket(Film film, Hall hall, User user) {
         var screening = new Screening(
                 SCREENING_DATE,
                 SCREENING_END_DATE,

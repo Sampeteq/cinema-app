@@ -15,7 +15,7 @@ class TicketConcurrencyTest extends TicketBaseIT {
         //given
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreeningWithTicket(hall, film);
+        var screening = addScreeningWithTicket(film, hall);
         var seat = screening.getTickets().getFirst().getSeat();
         var users = addUsers();
         var bookTicketDto = new TicketBookRequest(screening.getId(), List.of(seat.getId()));

@@ -35,7 +35,7 @@ class TicketConcurrencyTest extends TicketBaseIT {
     private void bookTicket(String userMail, TicketBookRequest ticketBookRequest) {
         webTestClient
                 .post()
-                .uri("/tickets")
+                .uri("/tickets/book")
                 .headers(headers -> headers.setBasicAuth(userMail, UserFixture.PASSWORD))
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(ticketBookRequest)

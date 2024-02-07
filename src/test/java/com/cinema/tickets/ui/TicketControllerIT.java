@@ -45,7 +45,7 @@ class TicketControllerIT extends TicketBaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(TICKETS_BASE_ENDPOINT)
+                .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
@@ -75,7 +75,7 @@ class TicketControllerIT extends TicketBaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(TICKETS_BASE_ENDPOINT)
+                .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
@@ -104,7 +104,7 @@ class TicketControllerIT extends TicketBaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(TICKETS_BASE_ENDPOINT)
+                .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
@@ -138,7 +138,7 @@ class TicketControllerIT extends TicketBaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(TICKETS_BASE_ENDPOINT)
+                .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
@@ -166,7 +166,7 @@ class TicketControllerIT extends TicketBaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(TICKETS_BASE_ENDPOINT)
+                .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
@@ -196,7 +196,7 @@ class TicketControllerIT extends TicketBaseIT {
         //when
         var spec = webTestClient
                 .post()
-                .uri(TICKETS_BASE_ENDPOINT)
+                .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))

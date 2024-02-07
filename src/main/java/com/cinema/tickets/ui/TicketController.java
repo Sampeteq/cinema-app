@@ -22,8 +22,8 @@ class TicketController {
 
     @PostMapping("/book")
     @SecurityRequirement(name = "basic")
-    void bookTicket(@RequestBody @Valid TicketBookRequest dto) {
-        ticketService.bookTicket(dto.screeningId(), dto.seatsIds());
+    void bookTicket(@RequestBody @Valid TicketBookRequest request) {
+        ticketService.bookTicket(request.screeningId(), request.seatsIds());
     }
 
     @PatchMapping("/{ticketId}/cancel")

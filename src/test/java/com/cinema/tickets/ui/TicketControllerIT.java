@@ -2,7 +2,6 @@ package com.cinema.tickets.ui;
 
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
-import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
@@ -117,7 +116,7 @@ class TicketControllerIT extends TicketBaseIT {
                 .isNotEmpty()
                 .hasValueSatisfying(ticket -> {
                     assertEquals(1L, ticket.getUser().getId());
-                    assertEquals(Ticket.Status.BOOKED, ticket.getStatus());
+                    assertEquals(user, ticket.getUser());
                     assertEquals(bookTicketDto.screeningId(), ticket.getScreening().getId());
                     assertEquals(bookTicketDto.seatsIds().getFirst(), ticket.getSeat().getId());
                 });
@@ -149,7 +148,7 @@ class TicketControllerIT extends TicketBaseIT {
         spec.expectStatus().isOk();
         assertThat(ticketRepository.findAllByUserId(user.getId()))
                 .isNotEmpty()
-                .allSatisfy(ticket -> assertEquals(Ticket.Status.BOOKED, ticket.getStatus()));
+                .allSatisfy(ticket -> assertEquals(user, ticket.getUser()));
     }
 
     @Test
@@ -231,11 +230,7 @@ class TicketControllerIT extends TicketBaseIT {
         spec.expectStatus().isOk();
         assertThat(ticketRepository.findById(ticket.getId()))
                 .isNotEmpty()
-                .hasValueSatisfying(cancelledTicket -> {
-                            assertEquals(Ticket.Status.FREE, cancelledTicket.getStatus());
-                            assertNull(cancelledTicket.getUser());
-                        }
-                );
+                .hasValueSatisfying(cancelledTicket -> assertNull(cancelledTicket.getUser()));
     }
 
     @Test
@@ -284,7 +279,6 @@ class TicketControllerIT extends TicketBaseIT {
                 .expectBody()
                 .jsonPath("$[*]").value(everyItem(notNullValue()))
                 .jsonPath("$.tickets[0].id").isEqualTo(ticket.getId())
-                .jsonPath("$.tickets[0].status").isEqualTo(ticket.getStatus().name())
                 .jsonPath("$.tickets[0].filmTitle").isEqualTo(film.getTitle())
                 .jsonPath("$.tickets[0].screeningDate").isEqualTo(screening.getDate().toString())
                 .jsonPath("$.tickets[0].hallId").isEqualTo(hall.getId())

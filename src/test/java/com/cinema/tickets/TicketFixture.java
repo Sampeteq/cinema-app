@@ -10,6 +10,6 @@ public final class TicketFixture {
     }
 
     public static Ticket createTicket(Screening screening, User user) {
-        return new Ticket(Ticket.Status.BOOKED, screening, screening.getHall().getSeats().getFirst(), user);
+        return new Ticket(screening, screening.getHall().getSeats().getFirst(), user);
     }
 }

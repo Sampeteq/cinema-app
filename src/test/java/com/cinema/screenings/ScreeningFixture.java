@@ -90,7 +90,7 @@ public final class ScreeningFixture {
                 hall
         );
         var seats = List.of(
-                new Ticket(Ticket.Status.BOOKED, screening, hall.getSeats().getFirst(), user)
+                new Ticket(screening, hall.getSeats().getFirst(), user)
         );
         screening.assignTickets(seats);
         return screening;

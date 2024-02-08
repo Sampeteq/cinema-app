@@ -29,7 +29,7 @@ public class TicketService {
     private final Clock clock;
 
     @Transactional
-    public void bookTicket(Long screeningId, List<Long> seatsIds) {
+    public void bookTickets(Long screeningId, List<Long> seatsIds) {
         log.info("Screening id:{}", screeningId);
         log.info("Seats ids:{}", seatsIds);
         var screening = screeningRepository
@@ -37,19 +37,14 @@ public class TicketService {
                 .orElseThrow(ScreeningNotFoundException::new);
         log.info("Found screening:{}", screening);
         var loggedUser = userService.getLoggedUser();
-        seatsIds
-                .stream()
-                .map(seatId -> {
+        seatsIds.forEach(
+                seatId -> {
                     var ticket = screening.findTicketBySeatId(seatId);
                     log.info("Found ticket: {}", ticket);
                     ticket.book(ticketBookingPolicy, clock, loggedUser);
-                    return ticket;
-                })
-                .toList()
-                .forEach(ticket -> {
-                    var addedTicket = ticketRepository.save(ticket);
-                    log.info("Booked ticket:{}", addedTicket);
-                });
+                    log.info("Booked ticket:{}", ticket);
+                }
+        );
     }
 
     @Transactional

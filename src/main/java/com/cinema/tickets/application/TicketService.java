@@ -31,7 +31,7 @@ public class TicketService {
     @Transactional
     public void bookTicket(Long screeningId, List<Long> seatsIds) {
         log.info("Screening id:{}", screeningId);
-        log.info("Seats:{}", seatsIds);
+        log.info("Seats ids:{}", seatsIds);
         var screening = screeningRepository
                 .findById(screeningId)
                 .orElseThrow(ScreeningNotFoundException::new);
@@ -48,7 +48,7 @@ public class TicketService {
                 .toList()
                 .forEach(ticket -> {
                     var addedTicket = ticketRepository.save(ticket);
-                    log.info("Added ticket:{}", addedTicket);
+                    log.info("Booked ticket:{}", addedTicket);
                 });
     }
 

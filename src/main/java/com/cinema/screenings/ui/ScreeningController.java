@@ -1,20 +1,16 @@
 package com.cinema.screenings.ui;
 
 import com.cinema.screenings.application.ScreeningService;
+import com.cinema.screenings.infrastructure.ScreeningMapper;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -22,6 +18,7 @@ import java.util.List;
 class ScreeningController {
 
     private final ScreeningService screeningService;
+    private final ScreeningMapper screeningMapper;
 
     @PostMapping("admin/screenings")
     @SecurityRequirement(name = "basic")
@@ -39,12 +36,29 @@ class ScreeningController {
 
     @GetMapping("/public/screenings")
     ScreeningsResponse getScreenings(@RequestParam(required = false) LocalDate date) {
-        var screenings = date == null ? screeningService.getAllScreenings() : screeningService.getScreeningsByDate(date);
-        return new ScreeningsResponse(screenings);
+        var screenings = date == null ?
+                screeningService.getAllScreenings() :
+                screeningService.getScreeningsByDate(date);
+        var screeningViews = screenings
+                .stream()
+                .map(screeningMapper::mapScreeningToDto)
+                .toList();
+        return new ScreeningsResponse(screeningViews);
     }
 
     @GetMapping("/public/screenings/{id}/seats")
     List<ScreeningSeatView> getSeatsByScreeningId(@PathVariable Long id) {
-        return screeningService.getSeatsByScreeningId(id);
+        return screeningService
+                .getScreeningById(id)
+                .getTickets()
+                .stream()
+                .map(ticket -> new ScreeningSeatView(
+                        ticket.getSeat().getId(),
+                        ticket.getSeat().getRowNumber(),
+                        ticket.getSeat().getNumber(),
+                        ticket.isFree()
+                ))
+                .sorted(Comparator.comparing(ScreeningSeatView::id))
+                .toList();
     }
 }

@@ -1,4 +1,4 @@
-package com.cinema.screenings.application.dto;
+package com.cinema.screenings.ui;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

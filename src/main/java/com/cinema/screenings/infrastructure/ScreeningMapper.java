@@ -1,6 +1,6 @@
 package com.cinema.screenings.infrastructure;
 
-import com.cinema.screenings.application.dto.ScreeningView;
+import com.cinema.screenings.ui.ScreeningView;
 import com.cinema.screenings.domain.Screening;
 import org.springframework.stereotype.Component;
 

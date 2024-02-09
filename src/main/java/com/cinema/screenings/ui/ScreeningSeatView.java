@@ -1,4 +1,4 @@
-package com.cinema.screenings.application.dto;
+package com.cinema.screenings.ui;
 
 public record ScreeningSeatView(
         long id,

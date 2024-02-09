@@ -3,7 +3,7 @@ package com.cinema.screenings.ui;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
-import com.cinema.shared.exceptions.ExceptionMessage;
+import com.cinema.shared.ExceptionMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

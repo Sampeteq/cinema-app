@@ -1,4 +1,4 @@
-package com.cinema.shared.time;
+package com.cinema.shared;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

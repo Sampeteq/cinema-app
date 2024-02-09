@@ -1,6 +1,6 @@
 package com.cinema.users.ui;
 
-import com.cinema.shared.exceptions.ExceptionMessage;
+import com.cinema.shared.ExceptionMessage;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;

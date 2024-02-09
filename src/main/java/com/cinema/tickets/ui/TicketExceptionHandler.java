@@ -1,6 +1,6 @@
 package com.cinema.tickets.ui;
 
-import com.cinema.shared.exceptions.ExceptionMessage;
+import com.cinema.shared.ExceptionMessage;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;

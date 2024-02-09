@@ -1,4 +1,4 @@
-package com.cinema.shared.exceptions;
+package com.cinema.shared;
 
 public record ExceptionMessage(String message) {
 }

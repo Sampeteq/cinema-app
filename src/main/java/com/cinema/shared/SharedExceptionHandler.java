@@ -1,4 +1,4 @@
-package com.cinema.shared.exceptions;
+package com.cinema.shared;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

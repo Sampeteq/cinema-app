@@ -54,7 +54,7 @@ class ScreeningControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
-        var createScreeningDto = new CreateScreeningDto(SCREENING_DATE, film.getId(), hall.getId());
+        var createScreeningDto = new ScreeningCreateRequest(SCREENING_DATE, film.getId(), hall.getId());
 
         //when
         var spec = webTestClient
@@ -83,7 +83,7 @@ class ScreeningControllerIT extends BaseIT {
         var hall = addHall();
         var user = addUser();
         var screeningDate = LocalDateTime.now().plusDays(6);
-        var createScreeningDto = new CreateScreeningDto(screeningDate, film.getId(), hall.getId());
+        var createScreeningDto = new ScreeningCreateRequest(screeningDate, film.getId(), hall.getId());
 
         //when
         var spec = webTestClient
@@ -110,7 +110,7 @@ class ScreeningControllerIT extends BaseIT {
         var hall = addHall();
         var user = addUser();
         var screeningDate = LocalDateTime.now().plusDays(23);
-        var createScreeningDto = new CreateScreeningDto(screeningDate, film.getId(), hall.getId());
+        var createScreeningDto = new ScreeningCreateRequest(screeningDate, film.getId(), hall.getId());
 
         //when
         var spec = webTestClient
@@ -137,7 +137,7 @@ class ScreeningControllerIT extends BaseIT {
         var hall = addHall();
         var screening = addScreening(film, hall);
         var user = addUser();
-        var createScreeningDto = new CreateScreeningDto(
+        var createScreeningDto = new ScreeningCreateRequest(
                 screening.getDate().plusMinutes(10),
                 film.getId(),
                 hall.getId()

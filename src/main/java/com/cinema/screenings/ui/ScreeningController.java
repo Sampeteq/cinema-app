@@ -25,7 +25,7 @@ class ScreeningController {
 
     @PostMapping("admin/screenings")
     @SecurityRequirement(name = "basic")
-    ResponseEntity<Object> createScreening(@RequestBody @Valid CreateScreeningDto dto) {
+    ResponseEntity<Object> createScreening(@RequestBody @Valid ScreeningCreateRequest dto) {
         screeningService.createScreening(dto.date(), dto.filmId(), dto.hallId());
         return ResponseEntity.created(URI.create("/screenings")).build();
     }

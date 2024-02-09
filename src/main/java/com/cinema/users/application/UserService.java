@@ -2,8 +2,6 @@ package com.cinema.users.application;
 
 import com.cinema.mails.MailMessage;
 import com.cinema.mails.MailService;
-import com.cinema.users.application.dto.CreateUserDto;
-import com.cinema.users.application.dto.SetNewUserPasswordDto;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
@@ -27,17 +25,17 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
 
-    public void createUser(CreateUserDto dto) {
-        if (userRepository.findByMail(dto.mail()).isPresent()) {
+    public void createUser(String mail, String password) {
+        if (userRepository.findByMail(mail).isPresent()) {
             throw new UserMailNotUniqueException();
         }
-        var user = new User(dto.mail(), passwordEncoder.encode(dto.password()), User.Role.COMMON);
+        var user = new User(mail, passwordEncoder.encode(password), User.Role.COMMON);
         userRepository.save(user);
     }
 
-    public void createAdmin(CreateUserDto dto) {
-        if (userRepository.findByMail(dto.mail()).isEmpty()) {
-            var admin = new User(dto.mail(), passwordEncoder.encode(dto.password()), User.Role.ADMIN);
+    public void createAdmin(String mail, String password) {
+        if (userRepository.findByMail(mail).isEmpty()) {
+            var admin = new User(mail, passwordEncoder.encode(password), User.Role.ADMIN);
             userRepository.save(admin);
             log.info("Admin added");
         }
@@ -55,11 +53,11 @@ public class UserService {
     }
 
     @Transactional
-    public void setNewUserPassword(SetNewUserPasswordDto dto) {
+    public void setNewUserPassword(String newUserPassword, UUID token) {
         var user = userRepository
-                .findByPasswordResetToken(dto.passwordResetToken())
+                .findByPasswordResetToken(token)
                 .orElseThrow(UserNotFoundException::new);
-        var encodedPassword = passwordEncoder.encode(dto.newPassword());
+        var encodedPassword = passwordEncoder.encode(newUserPassword);
         user.setNewPassword(encodedPassword);
     }
 

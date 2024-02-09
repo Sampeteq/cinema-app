@@ -1,7 +1,6 @@
 package com.cinema.users.infrastrcuture;
 
 import com.cinema.users.application.UserService;
-import com.cinema.users.application.dto.CreateUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Profile;
@@ -19,8 +18,7 @@ class AdminInitializer {
 
     @EventListener(ContextRefreshedEvent.class)
     void createAdminOnStartUp() {
-        var createUserDto = new CreateUserDto(adminProperties.mail(), adminProperties.password());
-        userService.createAdmin(createUserDto);
+        userService.createAdmin(adminProperties.mail(), adminProperties.password());
     }
 }
 @ConfigurationProperties(prefix = "admin")

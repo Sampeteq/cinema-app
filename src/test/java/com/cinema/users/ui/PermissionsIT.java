@@ -15,7 +15,7 @@ class PermissionsIT extends BaseIT {
     void user_with_admin_role_has_access_to_endpoints_with_admin_prefix() {
         //given
         var crateUserDto = UserFixture.createCrateUserDto();
-        userService.createAdmin(crateUserDto);
+        userService.createAdmin(crateUserDto.mail(), crateUserDto.password());
         var sampleAdminEndpoint = "/admin/halls";
 
         //when
@@ -33,7 +33,7 @@ class PermissionsIT extends BaseIT {
     void user_with_common_role_has_no_access_to_endpoints_with_admin_prefix() {
         //given
         var crateUserDto = UserFixture.createCrateUserDto();
-        userService.createUser(crateUserDto);
+        userService.createUser(crateUserDto.mail(), crateUserDto.password());
         var sampleAdminEndpoint = "/admin/halls";
 
         //when

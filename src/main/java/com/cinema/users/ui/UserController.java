@@ -20,7 +20,8 @@ class UserController {
 
     @PostMapping("/public/users")
     ResponseEntity<Object> createUser(@RequestBody @Valid CreateUserDto dto) {
-        userService.createUser(dto);
+        System.out.println(dto.mail());
+        userService.createUser(dto.mail(), dto.password());
         return ResponseEntity.ok().build();
     }
 
@@ -31,6 +32,6 @@ class UserController {
 
     @PatchMapping("/public/users/password/new")
     void setNewUserPassword(@RequestBody @Valid SetNewUserPasswordDto dto) {
-        userService.setNewUserPassword(dto);
+        userService.setNewUserPassword(dto.newPassword(), dto.passwordResetToken());
     }
 }

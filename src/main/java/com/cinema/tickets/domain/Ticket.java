@@ -50,7 +50,7 @@ public class Ticket {
     }
 
     public void book(TicketBookingPolicy ticketBookingPolicy, Clock clock, User user) {
-        ticketBookingPolicy.validateIfBookingIsPossible(screening.hoursLeftBeforeStart(clock));
+        ticketBookingPolicy.checkIfBookingIsPossible(screening.hoursLeftBeforeStart(clock));
         if (this.user != null) {
             throw new TicketAlreadyBookedException();
         }
@@ -58,7 +58,7 @@ public class Ticket {
     }
 
     public void cancel(TicketCancellingPolicy ticketCancellingPolicy, Clock clock) {
-        ticketCancellingPolicy.validateIfCancellingIsPossible(screening.hoursLeftBeforeStart(clock));
+        ticketCancellingPolicy.checkIfCancellingIsPossible(screening.hoursLeftBeforeStart(clock));
         this.user = null;
     }
 

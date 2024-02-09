@@ -1,6 +1,6 @@
 package com.cinema.users;
 
-import com.cinema.users.application.dto.CreateUserDto;
+import com.cinema.users.ui.UserCreateRequest;
 import com.cinema.users.domain.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -15,15 +15,15 @@ public final class UserFixture {
     private UserFixture() {
     }
 
-    public static CreateUserDto createCrateUserDto() {
-        return new CreateUserDto(
+    public static UserCreateRequest createUserCreateRequest() {
+        return new UserCreateRequest(
                 MAIL,
                 PASSWORD
         );
     }
 
-    public static CreateUserDto createCrateUserDto(String mail) {
-        return new CreateUserDto(
+    public static UserCreateRequest createUserCreateRequest(String mail) {
+        return new UserCreateRequest(
                 mail,
                 PASSWORD
         );

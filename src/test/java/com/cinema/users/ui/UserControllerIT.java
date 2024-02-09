@@ -2,7 +2,6 @@ package com.cinema.users.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.users.UserFixture;
-import com.cinema.users.application.dto.SetNewUserPasswordDto;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
@@ -14,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
-import static com.cinema.users.UserFixture.createCrateUserDto;
+import static com.cinema.users.UserFixture.createUserCreateRequest;
 import static com.cinema.users.UserFixture.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -35,23 +34,23 @@ class UserControllerIT extends BaseIT {
     @Test
     void user_is_created() {
         //given
-        var crateUserDto = UserFixture.createCrateUserDto();
+        var userCreateRequest = UserFixture.createUserCreateRequest();
 
         //then
         var spec = webTestClient
                 .post()
                 .uri(USERS_BASE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(crateUserDto)
+                .bodyValue(userCreateRequest)
                 .exchange();
 
 
         spec.expectStatus().isOk();
-        assertThat(userRepository.findByMail(crateUserDto.mail()))
+        assertThat(userRepository.findByMail(userCreateRequest.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {
-                    assertEquals(crateUserDto.mail(), user.getUsername());
-                    assertTrue(passwordEncoder.matches(crateUserDto.password(), user.getPassword()));
+                    assertEquals(userCreateRequest.mail(), user.getUsername());
+                    assertTrue(passwordEncoder.matches(userCreateRequest.password(), user.getPassword()));
                     assertEquals(User.Role.COMMON, user.getRole());
                 });
     }
@@ -61,13 +60,13 @@ class UserControllerIT extends BaseIT {
         //given
         var user = userRepository.save(createUser("user1@mail.com"));
         System.out.println(user.getMail());
-        var dto = createCrateUserDto(user.getUsername());
+        var userCreateRequest = createUserCreateRequest(user.getUsername());
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(USERS_BASE_ENDPOINT)
-                .bodyValue(dto)
+                .bodyValue(userCreateRequest)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange();
 
@@ -109,7 +108,7 @@ class UserControllerIT extends BaseIT {
         //given
         var passwordResetToken = UUID.randomUUID();
         var addedUser = userRepository.save(createUser(passwordResetToken));
-        var setNewUserPasswordDto = new SetNewUserPasswordDto(
+        var userNewPasswordRequest = new UserNewPasswordRequest(
                 passwordResetToken,
                 addedUser.getPassword() + "new"
         );
@@ -118,7 +117,7 @@ class UserControllerIT extends BaseIT {
         var spec = webTestClient
                 .patch()
                 .uri(USERS_BASE_ENDPOINT + "/password/new")
-                .bodyValue(setNewUserPasswordDto)
+                .bodyValue(userNewPasswordRequest)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange();
 
@@ -128,7 +127,7 @@ class UserControllerIT extends BaseIT {
                 userRepository.findByMail(addedUser.getMail())
         ).hasValueSatisfying(
                 user -> assertTrue(
-                        passwordEncoder.matches(setNewUserPasswordDto.newPassword(), user.getPassword())
+                        passwordEncoder.matches(userNewPasswordRequest.newPassword(), user.getPassword())
                 )
         );
     }

@@ -1,8 +1,6 @@
 package com.cinema.users.ui;
 
 import com.cinema.users.application.UserService;
-import com.cinema.users.application.dto.CreateUserDto;
-import com.cinema.users.application.dto.SetNewUserPasswordDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +17,9 @@ class UserController {
     private final UserService userService;
 
     @PostMapping("/public/users")
-    ResponseEntity<Object> createUser(@RequestBody @Valid CreateUserDto dto) {
-        System.out.println(dto.mail());
-        userService.createUser(dto.mail(), dto.password());
+    ResponseEntity<Object> createUser(@RequestBody @Valid UserCreateRequest request) {
+        System.out.println(request.mail());
+        userService.createUser(request.mail(), request.password());
         return ResponseEntity.ok().build();
     }
 
@@ -31,7 +29,7 @@ class UserController {
     }
 
     @PatchMapping("/public/users/password/new")
-    void setNewUserPassword(@RequestBody @Valid SetNewUserPasswordDto dto) {
-        userService.setNewUserPassword(dto.newPassword(), dto.passwordResetToken());
+    void setNewUserPassword(@RequestBody @Valid UserNewPasswordRequest request) {
+        userService.setNewUserPassword(request.newPassword(), request.passwordResetToken());
     }
 }

@@ -14,15 +14,15 @@ class PermissionsIT extends BaseIT {
     @Test
     void user_with_admin_role_has_access_to_endpoints_with_admin_prefix() {
         //given
-        var crateUserDto = UserFixture.createCrateUserDto();
-        userService.createAdmin(crateUserDto.mail(), crateUserDto.password());
+        var userCreateRequest = UserFixture.createUserCreateRequest();
+        userService.createAdmin(userCreateRequest.mail(), userCreateRequest.password());
         var sampleAdminEndpoint = "/admin/halls";
 
         //when
         var responseSpec = webTestClient
                 .options()
                 .uri(sampleAdminEndpoint)
-                .headers(httpHeaders -> httpHeaders.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
+                .headers(httpHeaders -> httpHeaders.setBasicAuth(userCreateRequest.mail(), userCreateRequest.password()))
                 .exchange();
 
         //then
@@ -32,15 +32,15 @@ class PermissionsIT extends BaseIT {
     @Test
     void user_with_common_role_has_no_access_to_endpoints_with_admin_prefix() {
         //given
-        var crateUserDto = UserFixture.createCrateUserDto();
-        userService.createUser(crateUserDto.mail(), crateUserDto.password());
+        var userCreateRequest = UserFixture.createUserCreateRequest();
+        userService.createUser(userCreateRequest.mail(), userCreateRequest.password());
         var sampleAdminEndpoint = "/admin/halls";
 
         //when
         var responseSpec = webTestClient
                 .options()
                 .uri(sampleAdminEndpoint)
-                .headers(httpHeaders -> httpHeaders.setBasicAuth(crateUserDto.mail(), crateUserDto.password()))
+                .headers(httpHeaders -> httpHeaders.setBasicAuth(userCreateRequest.mail(), userCreateRequest.password()))
                 .exchange();
 
         //then

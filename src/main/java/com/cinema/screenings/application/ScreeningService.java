@@ -4,7 +4,7 @@ import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmNotFoundException;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.halls.domain.exceptions.HallNotFoundException;
-import com.cinema.screenings.application.dto.ScreeningDto;
+import com.cinema.screenings.application.dto.ScreeningView;
 import com.cinema.screenings.application.dto.ScreeningSeatDto;
 import com.cinema.screenings.domain.ScreeningFactory;
 import com.cinema.screenings.domain.ScreeningRepository;
@@ -61,7 +61,7 @@ public class ScreeningService {
         screeningRepository.delete(screening);
     }
 
-    public List<ScreeningDto> getAllScreenings() {
+    public List<ScreeningView> getAllScreenings() {
         return screeningRepository
                 .findAll()
                 .stream()
@@ -69,7 +69,7 @@ public class ScreeningService {
                 .toList();
     }
 
-    public List<ScreeningDto> getScreeningsByDate(LocalDate date) {
+    public List<ScreeningView> getScreeningsByDate(LocalDate date) {
         return screeningRepository
                 .findScreeningsByDateBetween(date.atStartOfDay(), date.atStartOfDay().plusHours(23).plusMinutes(59))
                 .stream().map(screeningMapper::mapScreeningToDto)

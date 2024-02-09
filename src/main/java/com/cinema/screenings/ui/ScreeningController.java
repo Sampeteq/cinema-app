@@ -1,7 +1,7 @@
 package com.cinema.screenings.ui;
 
 import com.cinema.screenings.application.ScreeningService;
-import com.cinema.screenings.application.dto.ScreeningSeatDto;
+import com.cinema.screenings.application.dto.ScreeningSeatView;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +45,7 @@ class ScreeningController {
     }
 
     @GetMapping("/public/screenings/{id}/seats")
-    List<ScreeningSeatDto> getSeatsByScreeningId(@PathVariable Long id) {
+    List<ScreeningSeatView> getSeatsByScreeningId(@PathVariable Long id) {
         return screeningService.getSeatsByScreeningId(id);
     }
 }

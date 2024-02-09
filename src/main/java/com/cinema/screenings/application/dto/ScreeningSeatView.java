@@ -1,6 +1,6 @@
 package com.cinema.screenings.application.dto;
 
-public record ScreeningSeatDto(
+public record ScreeningSeatView(
         long id,
         int rowNumber,
         int number,

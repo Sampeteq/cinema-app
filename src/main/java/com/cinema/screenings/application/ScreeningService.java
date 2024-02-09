@@ -5,7 +5,7 @@ import com.cinema.films.domain.exceptions.FilmNotFoundException;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.halls.domain.exceptions.HallNotFoundException;
 import com.cinema.screenings.application.dto.ScreeningView;
-import com.cinema.screenings.application.dto.ScreeningSeatDto;
+import com.cinema.screenings.application.dto.ScreeningSeatView;
 import com.cinema.screenings.domain.ScreeningFactory;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
@@ -76,20 +76,20 @@ public class ScreeningService {
                 .toList();
     }
 
-    public List<ScreeningSeatDto> getSeatsByScreeningId(Long screeningId) {
+    public List<ScreeningSeatView> getSeatsByScreeningId(Long screeningId) {
         log.info("Screening id:{}", screeningId);
         return screeningRepository
                 .findByIdWithTickets(screeningId)
                 .orElseThrow(ScreeningNotFoundException::new)
                 .getTickets()
                 .stream()
-                .map(ticket -> new ScreeningSeatDto(
+                .map(ticket -> new ScreeningSeatView(
                         ticket.getSeat().getId(),
                         ticket.getSeat().getRowNumber(),
                         ticket.getSeat().getNumber(),
                         ticket.isFree()
                 ))
-                .sorted(Comparator.comparing(ScreeningSeatDto::id))
+                .sorted(Comparator.comparing(ScreeningSeatView::id))
                 .toList();
     }
 }

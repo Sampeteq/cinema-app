@@ -22,7 +22,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@ToString(exclude = {"film", "hall", "tickets"})
+@ToString(exclude = {"film", "tickets"})
 public class Screening {
 
     @Id
@@ -31,12 +31,10 @@ public class Screening {
 
     private LocalDateTime date;
 
-    private LocalDateTime endDate;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Film film;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Hall hall;
 
     @OneToMany(mappedBy = "screening", cascade = {CascadeType.PERSIST})
@@ -44,11 +42,17 @@ public class Screening {
 
     protected Screening() {}
 
-    public Screening(LocalDateTime date, LocalDateTime endDate, Film film, Hall hall) {
+    public Screening(LocalDateTime date, Film film, Hall hall) {
         this.date = date;
-        this.endDate = endDate;
         this.film = film;
         this.hall = hall;
+    }
+
+    public boolean collide(LocalDateTime otherScreeningDate, LocalDateTime otherScreeningEndDate) {
+        var endDate = this.date.plusMinutes(film.getDurationInMinutes());
+        return
+                (!otherScreeningDate.isAfter(this.date) && !otherScreeningEndDate.isBefore(this.date)) ||
+                        (otherScreeningDate.isAfter(this.date) && !otherScreeningDate.isAfter(endDate));
     }
 
     public long hoursLeftBeforeStart(Clock clock) {

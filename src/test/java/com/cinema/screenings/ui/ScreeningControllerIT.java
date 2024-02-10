@@ -138,7 +138,7 @@ class ScreeningControllerIT extends BaseIT {
         var screening = addScreening(film, hall);
         var user = addUser();
         var createScreeningDto = new ScreeningCreateRequest(
-                screening.getDate().plusMinutes(10),
+                screening.getDate(),
                 film.getId(),
                 hall.getId()
         );

@@ -15,7 +15,6 @@ public final class ScreeningFixture {
             .now()
             .plusDays(8)
             .truncatedTo(ChronoUnit.MINUTES);
-    public static final LocalDateTime SCREENING_END_DATE = SCREENING_DATE.plusMinutes(100);
 
     private ScreeningFixture() {
     }
@@ -23,7 +22,6 @@ public final class ScreeningFixture {
     public static Screening createScreening(Film film, Hall hall) {
         return new Screening(
                 SCREENING_DATE,
-                SCREENING_END_DATE,
                 film,
                 hall
         );
@@ -32,7 +30,6 @@ public final class ScreeningFixture {
     public static Screening createScreening(LocalDateTime screeningDate, Film film, Hall hall) {
         return new Screening(
                 screeningDate,
-                SCREENING_END_DATE,
                 film,
                 hall
         );
@@ -41,7 +38,6 @@ public final class ScreeningFixture {
     public static Screening createScreeningWithTicket(Film film, Hall hall) {
         var screening = new Screening(
                 SCREENING_DATE,
-                SCREENING_END_DATE,
                 film,
                 hall
         );
@@ -55,7 +51,6 @@ public final class ScreeningFixture {
     public static Screening createScreeningWithTickets(Film film, Hall hall) {
         var screening = new Screening(
                 SCREENING_DATE,
-                SCREENING_END_DATE,
                 film,
                 hall
         );
@@ -70,7 +65,6 @@ public final class ScreeningFixture {
     public static Screening createScreeningWithTickets(LocalDateTime date, Film film, Hall hall) {
         var screening = new Screening(
                 date,
-                SCREENING_END_DATE,
                 film,
                 hall
         );
@@ -85,7 +79,6 @@ public final class ScreeningFixture {
     public static Screening createScreeningWithBookedTicket(Film film, Hall hall, User user) {
         var screening = new Screening(
                 SCREENING_DATE,
-                SCREENING_END_DATE,
                 film,
                 hall
         );

@@ -11,7 +11,6 @@ public class ScreeningMapper {
         return new ScreeningView(
                 screening.getId(),
                 screening.getDate(),
-                screening.getEndDate(),
                 screening.getFilm().getTitle(),
                 screening.getHall().getId()
         );

@@ -19,11 +19,16 @@ public class ScreeningFactory {
     public Screening createScreening(LocalDateTime date, Film film, Hall hall) {
         screeningDatePolicy.checkScreeningDate(date);
         var endDate = date.plusMinutes(film.getDurationInMinutes());
-        var collisions = screeningRepository.findScreeningCollisions(date, endDate, hall.getId());
-        if (!collisions.isEmpty()) {
+        var start = date.toLocalDate().atStartOfDay();
+        var end = start.plusHours(24).minusMinutes(1);
+        var isCollision = screeningRepository
+                .findByHallIdAndDateBetween(hall.getId(), start, end)
+                .stream()
+                .anyMatch(screening -> screening.collide(date, endDate));
+        if (isCollision) {
             throw new ScreeningsCollisionsException();
         }
-        var screening = new Screening(date, endDate, film, hall);
+        var screening = new Screening(date, film, hall);
         var screeningSeats = hall
                 .getSeats()
                 .stream()

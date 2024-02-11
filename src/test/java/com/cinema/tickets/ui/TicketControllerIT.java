@@ -278,11 +278,11 @@ class TicketControllerIT extends TicketBaseIT {
                 .isOk()
                 .expectBody()
                 .jsonPath("$[*]").value(everyItem(notNullValue()))
-                .jsonPath("$.tickets[0].id").isEqualTo(ticket.getId())
-                .jsonPath("$.tickets[0].filmTitle").isEqualTo(film.getTitle())
-                .jsonPath("$.tickets[0].screeningDate").isEqualTo(screening.getDate().toString())
-                .jsonPath("$.tickets[0].hallId").isEqualTo(hall.getId())
-                .jsonPath("$.tickets[0].rowNumber").isEqualTo(ticket.getSeat().getRowNumber())
-                .jsonPath("$.tickets[0].seatNumber").isEqualTo(ticket.getSeat().getNumber());
+                .jsonPath("$[0].id").isEqualTo(ticket.getId())
+                .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle())
+                .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().toString())
+                .jsonPath("$[0].hallId").isEqualTo(hall.getId())
+                .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().getRowNumber())
+                .jsonPath("$[0].seatNumber").isEqualTo(ticket.getSeat().getNumber());
     }
 }

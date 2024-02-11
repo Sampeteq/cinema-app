@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/tickets")
 @RequiredArgsConstructor
@@ -34,12 +36,11 @@ class TicketController {
 
     @GetMapping("/my")
     @SecurityRequirement(name = "basic")
-    TicketsResponse getAllTicketsByLoggedUser() {
-        var tickets = ticketService
+    List<TicketView> getAllTicketsByLoggedUser() {
+        return ticketService
                 .getAllTicketsByLoggedUser()
                 .stream()
                 .map(ticketMapper::mapToView)
                 .toList();
-        return new TicketsResponse(tickets);
     }
 }

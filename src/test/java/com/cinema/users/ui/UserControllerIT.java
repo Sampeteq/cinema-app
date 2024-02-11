@@ -59,7 +59,6 @@ class UserControllerIT extends BaseIT {
     void user_name_cannot_be_duplicated() {
         //given
         var user = userRepository.save(createUser("user1@mail.com"));
-        System.out.println(user.getMail());
         var userCreateRequest = createUserCreateRequest(user.getUsername());
 
         //when

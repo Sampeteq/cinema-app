@@ -18,7 +18,6 @@ class UserController {
 
     @PostMapping("/public/users")
     ResponseEntity<Object> createUser(@RequestBody @Valid UserCreateRequest request) {
-        System.out.println(request.mail());
         userService.createUser(request.mail(), request.password());
         return ResponseEntity.ok().build();
     }

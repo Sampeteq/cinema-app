@@ -9,12 +9,12 @@ public class TicketMapper {
     public TicketView mapToView(Ticket ticket) {
         return new TicketView(
                 ticket.getId(),
-                ticket.isFree(),
                 ticket.getScreening().getFilm().getTitle(),
                 ticket.getScreening().getDate(),
                 ticket.getScreening().getHall().getId(),
                 ticket.getSeat().getRowNumber(),
-                ticket.getSeat().getNumber()
+                ticket.getSeat().getNumber(),
+                ticket.getUser().getId()
         );
     }
 }

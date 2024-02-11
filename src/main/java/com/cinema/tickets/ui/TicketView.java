@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 
 public record TicketView(
         Long id,
-        boolean isFree,
         String filmTitle,
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
         LocalDateTime screeningDate,
         Long hallId,
         Integer rowNumber,
-        Integer seatNumber
+        Integer seatNumber,
+        Long userId
 ) {
 }

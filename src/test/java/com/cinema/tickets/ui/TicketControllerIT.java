@@ -10,7 +10,6 @@ import com.cinema.users.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,7 +45,6 @@ class TicketControllerIT extends TicketBaseIT {
         var spec = webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
@@ -76,7 +74,6 @@ class TicketControllerIT extends TicketBaseIT {
         var spec = webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
@@ -105,7 +102,6 @@ class TicketControllerIT extends TicketBaseIT {
         var spec = webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
@@ -139,7 +135,6 @@ class TicketControllerIT extends TicketBaseIT {
         var spec = webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
@@ -167,7 +162,6 @@ class TicketControllerIT extends TicketBaseIT {
         var spec = webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
@@ -197,7 +191,6 @@ class TicketControllerIT extends TicketBaseIT {
         var spec = webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();

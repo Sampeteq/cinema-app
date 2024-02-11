@@ -3,7 +3,6 @@ package com.cinema.tickets.ui;
 import com.cinema.users.UserFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -37,7 +36,6 @@ class TicketConcurrencyTest extends TicketBaseIT {
                 .post()
                 .uri("/tickets/book")
                 .headers(headers -> headers.setBasicAuth(userMail, UserFixture.PASSWORD))
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(ticketBookRequest)
                 .exchange();
     }

@@ -8,7 +8,6 @@ import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
@@ -40,7 +39,6 @@ class UserControllerIT extends BaseIT {
         var spec = webTestClient
                 .post()
                 .uri(USERS_BASE_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(userCreateRequest)
                 .exchange();
 
@@ -66,7 +64,6 @@ class UserControllerIT extends BaseIT {
                 .post()
                 .uri(USERS_BASE_ENDPOINT)
                 .bodyValue(userCreateRequest)
-                .accept(MediaType.APPLICATION_JSON)
                 .exchange();
 
         //then
@@ -117,7 +114,6 @@ class UserControllerIT extends BaseIT {
                 .patch()
                 .uri(USERS_BASE_ENDPOINT + "/password/new")
                 .bodyValue(userNewPasswordRequest)
-                .accept(MediaType.APPLICATION_JSON)
                 .exchange();
 
         //then

@@ -18,7 +18,6 @@ import com.cinema.users.domain.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -60,7 +59,6 @@ class ScreeningControllerIT extends BaseIT {
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(createScreeningDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
@@ -89,7 +87,6 @@ class ScreeningControllerIT extends BaseIT {
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(createScreeningDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
@@ -116,7 +113,6 @@ class ScreeningControllerIT extends BaseIT {
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(createScreeningDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
@@ -147,7 +143,6 @@ class ScreeningControllerIT extends BaseIT {
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(createScreeningDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();

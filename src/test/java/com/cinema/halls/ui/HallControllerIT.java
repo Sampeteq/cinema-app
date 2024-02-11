@@ -11,7 +11,6 @@ import com.cinema.users.domain.UserRepository;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 
 import java.util.List;
 
@@ -45,7 +44,6 @@ class HallControllerIT extends BaseIT {
         var responseSpec = webTestClient
                 .post()
                 .uri(HALL_ADMIN_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(hall)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();

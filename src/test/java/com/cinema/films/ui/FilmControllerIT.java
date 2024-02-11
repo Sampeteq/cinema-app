@@ -22,6 +22,7 @@ import static org.hamcrest.Matchers.hasSize;
 class FilmControllerIT extends BaseIT {
 
     private static final String FILM_PUBLIC_ENDPOINT = "/public/films";
+
     private static final String FILM_ADMIN_ENDPOINT = "/admin/films";
 
     @Autowired
@@ -33,7 +34,6 @@ class FilmControllerIT extends BaseIT {
     @Test
     void film_is_created() {
         //given
-        var user = addUser();
         var id = 1L;
         var title = "Some title";
         var category = Film.Category.COMEDY;
@@ -45,6 +45,7 @@ class FilmControllerIT extends BaseIT {
                 year,
                 durationInMinutes
         );
+        var user = addUser();
         //when
         var spec = webTestClient
                 .post()
@@ -68,9 +69,9 @@ class FilmControllerIT extends BaseIT {
     @Test
     void film_title_is_unique() {
         //given
-        var user = addUser();
         var film = filmRepository.save(createFilm());
         var filmWithSameTitle = FilmFixture.createFilm(film.getTitle());
+        var user = addUser();
 
         //when
         var spec = webTestClient
@@ -94,8 +95,8 @@ class FilmControllerIT extends BaseIT {
     @Test
     void film_is_deleted() {
         //given
-        var user = addUser();
         var film = filmRepository.save(createFilm());
+        var user = addUser();
 
         //when
         var spec = webTestClient

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,8 +40,7 @@ public class HallController {
 
     @GetMapping("/admin/halls")
     @SecurityRequirement(name = "basic")
-    public HallsResponse getAllHalls() {
-        var halls =  hallService.getAllHalls();
-        return new HallsResponse(halls);
+    public List<Hall> getAllHalls() {
+        return hallService.getAllHalls();
     }
 }

@@ -45,8 +45,7 @@ public class FilmController {
     }
 
     @GetMapping("/public/films")
-    FilmsResponse getAllFilms(@RequestParam(required = false) Film.Category category) {
-        List<Film> films = category == null ? filmService.getAllFilms() : filmService.getFilmsByCategory(category);
-        return new FilmsResponse(films);
+    List<Film> getAllFilms(@RequestParam(required = false) Film.Category category) {
+        return category == null ? filmService.getAllFilms() : filmService.getFilmsByCategory(category);
     }
 }

@@ -35,15 +35,14 @@ class ScreeningController {
     }
 
     @GetMapping("/public/screenings")
-    ScreeningsResponse getScreenings(@RequestParam(required = false) LocalDate date) {
+    List<ScreeningView> getScreenings(@RequestParam(required = false) LocalDate date) {
         var screenings = date == null ?
                 screeningService.getAllScreenings() :
                 screeningService.getScreeningsByDate(date);
-        var screeningViews = screenings
+        return screenings
                 .stream()
                 .map(screeningMapper::mapScreeningToDto)
                 .toList();
-        return new ScreeningsResponse(screeningViews);
     }
 
     @GetMapping("/public/screenings/{id}/seats")

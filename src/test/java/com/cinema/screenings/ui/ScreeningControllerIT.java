@@ -201,8 +201,8 @@ class ScreeningControllerIT extends BaseIT {
                 .expectBody()
                 .jsonPath("$[*]").value(hasSize(1))
                 .jsonPath("$[*].*").value(everyItem(notNullValue()))
-                .jsonPath("$.screenings[0].date").isEqualTo(screening.getDate().toString())
-                .jsonPath("$.screenings[0].filmTitle").isEqualTo(film.getTitle());
+                .jsonPath("$[0].date").isEqualTo(screening.getDate().toString())
+                .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle());
     }
 
     @Test
@@ -229,7 +229,7 @@ class ScreeningControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk()
                 .expectBody()
-                .jsonPath("$.screenings[*].date").isEqualTo(screeningWithRequiredDate.getDate().toString());
+                .jsonPath("$[*].date").isEqualTo(screeningWithRequiredDate.getDate().toString());
     }
 
     @Test

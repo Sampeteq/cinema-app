@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -42,22 +41,6 @@ class ScreeningController {
         return screenings
                 .stream()
                 .map(screeningMapper::mapScreeningToDto)
-                .toList();
-    }
-
-    @GetMapping("/public/screenings/{id}/seats")
-    List<ScreeningSeatView> getSeatsByScreeningId(@PathVariable Long id) {
-        return screeningService
-                .getScreeningById(id)
-                .getTickets()
-                .stream()
-                .map(ticket -> new ScreeningSeatView(
-                        ticket.getSeat().getId(),
-                        ticket.getSeat().getRowNumber(),
-                        ticket.getSeat().getNumber(),
-                        ticket.isFree()
-                ))
-                .sorted(Comparator.comparing(ScreeningSeatView::id))
                 .toList();
     }
 }

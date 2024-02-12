@@ -7,7 +7,6 @@ import com.cinema.films.domain.FilmRepository;
 import com.cinema.halls.HallFixture;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
-import com.cinema.screenings.ScreeningFixture;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
@@ -25,10 +24,7 @@ import java.time.LocalDateTime;
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.everyItem;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 class ScreeningControllerIT extends BaseIT {
 
@@ -227,35 +223,6 @@ class ScreeningControllerIT extends BaseIT {
                 .jsonPath("$[*].date").isEqualTo(screeningWithRequiredDate.getDate().toString());
     }
 
-    @Test
-    void seats_are_gotten_by_screening_id() {
-        //given
-        var film = addFilm();
-        var hall = addHall();
-        var screening = addScreeningWithSeats(film, hall);
-
-        //when
-        var spec = webTestClient
-                .get()
-                .uri(uriBuilder -> uriBuilder
-                        .path(SCREENINGS_PUBLIC_ENDPOINT + "/" + screening.getId() + "/seats")
-                        .queryParam("screeningId", screening.getId())
-                        .build()
-                )
-                .exchange();
-
-        //then
-        spec
-                .expectStatus()
-                .isOk()
-                .expectBody()
-                .jsonPath("$").isNotEmpty()
-                .jsonPath("$.*.rowNumber").exists()
-                .jsonPath("$.*.number").exists()
-                .jsonPath("$.*.isFree").exists()
-                .jsonPath("$.*.*").value(everyItem(notNullValue()));
-    }
-
     private Film addFilm() {
         return filmRepository.save(FilmFixture.createFilm());
     }
@@ -272,10 +239,6 @@ class ScreeningControllerIT extends BaseIT {
         var dateTime = date.atStartOfDay().plusHours(16);
         var screening = createScreening(dateTime, film, hall);
         return screeningRepository.save(screening);
-    }
-
-    private Screening addScreeningWithSeats(Film film, Hall hall) {
-        return screeningRepository.save(ScreeningFixture.createScreeningWithTickets(film, hall));
     }
 
     private User addUser() {

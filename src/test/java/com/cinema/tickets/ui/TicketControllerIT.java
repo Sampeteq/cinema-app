@@ -7,6 +7,7 @@ import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.users.UserFixture;
 import com.cinema.users.domain.User;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -255,7 +256,7 @@ class TicketControllerIT extends TicketBaseIT {
         //given
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreeningWithTickets(film, hall);
+        var screening = addScreening(film, hall);
         var ticket = addTicket(screening, user);
 
         //when
@@ -278,5 +279,34 @@ class TicketControllerIT extends TicketBaseIT {
                 .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().getRowNumber())
                 .jsonPath("$[0].seatNumber").isEqualTo(ticket.getSeat().getNumber())
                 .jsonPath("$[0].userId").isEqualTo(user.getId());
+    }
+
+    @Test
+    void tickets_are_gotten_by_screening_id() {
+        //given
+        var film = addFilm();
+        var hall = addHall();
+        var screening = addScreening(film, hall);
+        var ticket = addTicket(screening);
+
+        //when
+        var spec = webTestClient
+                .get()
+                .uri("/public"+ TICKETS_BASE_ENDPOINT + "?screeningId=" + screening.getId())
+                .exchange();
+
+        //then
+        spec
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("$[*]").value(everyItem(notNullValue()))
+                .jsonPath("$[0].id").isEqualTo(ticket.getId())
+                .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle())
+                .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().toString())
+                .jsonPath("$[0].hallId").isEqualTo(hall.getId())
+                .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().getRowNumber())
+                .jsonPath("$[0].seatNumber").isEqualTo(ticket.getSeat().getNumber())
+                .jsonPath("$[0].userId").value(Matchers.nullValue());
     }
 }

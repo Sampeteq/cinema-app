@@ -24,4 +24,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             where ticket.user.id = :userId
             """)
     List<Ticket> findAllByUserId(Long userId);
+
+    List<Ticket> findAllByScreeningId(Long screeningId);
 }

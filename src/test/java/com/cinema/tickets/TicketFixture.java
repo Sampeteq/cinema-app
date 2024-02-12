@@ -9,6 +9,10 @@ public final class TicketFixture {
     private TicketFixture() {
     }
 
+    public static Ticket createTicket(Screening screening) {
+        return new Ticket(screening, screening.getHall().getSeats().getFirst());
+    }
+
     public static Ticket createTicket(Screening screening, User user) {
         return new Ticket(screening, screening.getHall().getSeats().getFirst(), user);
     }

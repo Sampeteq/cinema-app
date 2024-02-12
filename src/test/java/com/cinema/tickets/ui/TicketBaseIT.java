@@ -47,6 +47,10 @@ abstract class TicketBaseIT extends BaseIT {
     @Autowired
     protected Clock clock;
 
+    protected Ticket addTicket(Screening screening) {
+        return ticketRepository.save(TicketFixture.createTicket(screening));
+    }
+
     protected Ticket addTicket(Screening screening, User user) {
         return ticketRepository.save(TicketFixture.createTicket(screening, user));
     }

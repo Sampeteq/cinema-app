@@ -63,4 +63,8 @@ public class TicketService {
         var loggedUser = userService.getLoggedUser();
         return ticketRepository.findAllByUserId(loggedUser.getId());
     }
+
+    public List<Ticket> getAllTicketsByScreeningId(Long screeningId) {
+        return ticketRepository.findAllByScreeningId(screeningId);
+    }
 }

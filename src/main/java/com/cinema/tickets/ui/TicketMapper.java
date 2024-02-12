@@ -14,7 +14,7 @@ public class TicketMapper {
                 ticket.getScreening().getHall().getId(),
                 ticket.getSeat().getRowNumber(),
                 ticket.getSeat().getNumber(),
-                ticket.getUser().getId()
+                ticket.getUser() == null ? null : ticket.getId()
         );
     }
 }

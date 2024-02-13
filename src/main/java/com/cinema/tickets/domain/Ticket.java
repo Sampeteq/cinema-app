@@ -61,8 +61,4 @@ public class Ticket {
         ticketCancellingPolicy.checkIfCancellingIsPossible(screening.hoursLeftBeforeStart(clock));
         this.user = null;
     }
-
-    public boolean isFree() {
-        return this.user == null;
-    }
 }

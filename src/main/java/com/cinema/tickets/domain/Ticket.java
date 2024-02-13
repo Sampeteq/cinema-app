@@ -17,7 +17,7 @@ import java.time.Clock;
 
 @Entity
 @Getter
-@ToString(exclude = {"user"})
+@ToString
 public class Ticket {
 
     @Id

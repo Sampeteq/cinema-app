@@ -1,7 +1,6 @@
 package com.cinema.tickets.application;
 
-import com.cinema.screenings.domain.ScreeningRepository;
-import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
+import com.cinema.screenings.application.ScreeningService;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketBookingPolicy;
 import com.cinema.tickets.domain.TicketCancellingPolicy;
@@ -24,7 +23,7 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final TicketBookingPolicy ticketBookingPolicy;
     private final TicketCancellingPolicy ticketCancellingPolicy;
-    private final ScreeningRepository screeningRepository;
+    private final ScreeningService screeningService;
     private final UserService userService;
     private final Clock clock;
 
@@ -32,9 +31,7 @@ public class TicketService {
     public void bookTickets(Long screeningId, List<Long> seatsIds) {
         log.info("Screening id:{}", screeningId);
         log.info("Seats ids:{}", seatsIds);
-        var screening = screeningRepository
-                .findById(screeningId)
-                .orElseThrow(ScreeningNotFoundException::new);
+        var screening = screeningService.getScreeningById(screeningId);
         log.info("Found screening:{}", screening);
         var loggedUser = userService.getLoggedUser();
         seatsIds.forEach(

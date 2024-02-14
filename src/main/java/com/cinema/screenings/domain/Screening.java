@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Getter
-@ToString(exclude = {"film", "tickets"})
+@ToString(exclude = {"film", "hall", "tickets"})
 public class Screening {
 
     @Id
@@ -26,7 +26,7 @@ public class Screening {
     @ManyToOne(fetch = FetchType.LAZY)
     private Film film;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Hall hall;
 
     @OneToMany(mappedBy = "screening", cascade = {CascadeType.PERSIST})

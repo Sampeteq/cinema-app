@@ -29,12 +29,12 @@ public class ScreeningFactory {
             throw new ScreeningsCollisionsException();
         }
         var screening = new Screening(date, film, hall);
-        var screeningSeats = hall
+        var tickets = hall
                 .getSeats()
                 .stream()
                 .map(seat -> new Ticket(screening, seat))
                 .toList();
-        screening.assignTickets(screeningSeats);
+        screening.assignTickets(tickets);
         return screening;
     }
 }

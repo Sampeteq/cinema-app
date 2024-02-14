@@ -39,7 +39,9 @@ public class TicketService {
         var loggedUser = userService.getLoggedUser();
         seatsIds.forEach(
                 seatId -> {
-                    var ticket = screening.findTicketBySeatId(seatId);
+                    var ticket = ticketRepository
+                            .findBySeatId(seatId)
+                            .orElseThrow(TicketNotFoundException::new);
                     log.info("Found ticket: {}", ticket);
                     ticket.book(ticketBookingPolicy, clock, loggedUser);
                     log.info("Booked ticket:{}", ticket);

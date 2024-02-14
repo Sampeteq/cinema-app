@@ -9,6 +9,14 @@ import java.util.Optional;
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     @Query("""
+                from Ticket ticket
+                left join fetch ticket.screening screening
+                left join fetch ticket.seat seat
+                where seat.id = :seatId
+            """)
+    Optional<Ticket> findBySeatId(Long seatId);
+
+    @Query("""
             from Ticket ticket
             left join fetch ticket.screening screening
             left join fetch ticket.seat seat

@@ -7,7 +7,6 @@ import com.cinema.films.domain.FilmRepository;
 import com.cinema.halls.HallFixture;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
-import com.cinema.screenings.ScreeningFixture;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.tickets.TicketFixture;
@@ -23,8 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.cinema.screenings.ScreeningFixture.createScreeningWithBookedTicket;
-import static com.cinema.screenings.ScreeningFixture.createScreeningWithTickets;
+import static com.cinema.screenings.ScreeningFixture.createScreening;
 
 abstract class TicketBaseIT extends BaseIT {
     protected static final String TICKETS_BASE_ENDPOINT = "/tickets";
@@ -55,24 +53,21 @@ abstract class TicketBaseIT extends BaseIT {
         return ticketRepository.save(TicketFixture.createTicket(screening, user));
     }
 
+    protected List<Ticket> addTickets(Screening screening) {
+        return ticketRepository.saveAll(
+                List.of(
+                        new Ticket(screening, screening.getHall().getSeats().get(0)),
+                        new Ticket(screening, screening.getHall().getSeats().get(1))
+                )
+        );
+    }
+
     protected Screening addScreening(Film film, Hall hall) {
-        return screeningRepository.save(ScreeningFixture.createScreening(film, hall));
+        return screeningRepository.save(createScreening(film, hall));
     }
 
-    protected Screening addScreeningWithTicket(Film film, Hall hall) {
-        return screeningRepository.save(ScreeningFixture.createScreeningWithTicket(film, hall));
-    }
-
-    protected Screening addScreeningWithTickets(Film film, Hall hall) {
-        return screeningRepository.save(ScreeningFixture.createScreeningWithTickets(film, hall));
-    }
-
-    protected Screening addScreeningWithTickets(LocalDateTime date, Film film, Hall hall) {
-        return screeningRepository.save(createScreeningWithTickets(date, film, hall));
-    }
-
-    protected Screening addScreeningWithBookedTicket(Film film, Hall hall, User user) {
-        return screeningRepository.save(createScreeningWithBookedTicket(film, hall, user));
+    protected Screening addScreening(LocalDateTime date, Film film, Hall hall) {
+        return screeningRepository.save(createScreening(date, film, hall));
     }
 
     protected Hall addHall() {
@@ -81,6 +76,14 @@ abstract class TicketBaseIT extends BaseIT {
 
     protected Film addFilm() {
         return filmRepository.save(FilmFixture.createFilm());
+    }
+
+    protected User addUser() {
+        return userRepository.save(UserFixture.createUser());
+    }
+
+    protected User addAdmin() {
+        return userRepository.save(UserFixture.createUser(User.Role.ADMIN));
     }
 
     protected List<User> addUsers() {

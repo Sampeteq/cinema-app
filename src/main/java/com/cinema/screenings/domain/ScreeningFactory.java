@@ -3,7 +3,6 @@ package com.cinema.screenings.domain;
 import com.cinema.films.domain.Film;
 import com.cinema.halls.domain.Hall;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
-import com.cinema.tickets.domain.Ticket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -28,13 +27,6 @@ public class ScreeningFactory {
         if (isCollision) {
             throw new ScreeningsCollisionsException();
         }
-        var screening = new Screening(date, film, hall);
-        var tickets = hall
-                .getSeats()
-                .stream()
-                .map(seat -> new Ticket(screening, seat))
-                .toList();
-        screening.assignTickets(tickets);
-        return screening;
+        return new Screening(date, film, hall);
     }
 }

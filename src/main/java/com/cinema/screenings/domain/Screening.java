@@ -2,7 +2,6 @@ package com.cinema.screenings.domain;
 
 import com.cinema.films.domain.Film;
 import com.cinema.halls.domain.Hall;
-import com.cinema.tickets.domain.Ticket;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
@@ -10,11 +9,10 @@ import lombok.ToString;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
-@ToString(exclude = {"film", "hall", "tickets"})
+@ToString(exclude = {"film", "hall"})
 public class Screening {
 
     @Id
@@ -28,9 +26,6 @@ public class Screening {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Hall hall;
-
-    @OneToMany(mappedBy = "screening", cascade = {CascadeType.PERSIST})
-    private List<Ticket> tickets;
 
     protected Screening() {}
 
@@ -53,9 +48,5 @@ public class Screening {
                 .between(currentDate, this.date)
                 .abs()
                 .toHours();
-    }
-
-    public void assignTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
     }
 }

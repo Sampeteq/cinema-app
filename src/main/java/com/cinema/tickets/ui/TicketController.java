@@ -15,6 +15,12 @@ class TicketController {
     private final TicketService ticketService;
     private final TicketMapper ticketMapper;
 
+    @PostMapping("/admin/tickets")
+    @SecurityRequirement(name = "basic")
+    void addTickets(@RequestParam Long screeningId) {
+        ticketService.addTickets(screeningId);
+    }
+
     @PostMapping("/tickets/book")
     @SecurityRequirement(name = "basic")
     void bookTickets(@RequestBody @Valid TicketBookRequest request) {

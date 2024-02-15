@@ -28,6 +28,19 @@ public class TicketService {
     private final Clock clock;
 
     @Transactional
+    public void addTickets(Long screeningId) {
+        log.info("Screening id:{}", screeningId);
+        var screening = screeningService.getScreeningById(screeningId);
+        var tickets = screening
+                .getHall()
+                .getSeats()
+                .stream()
+                .map(seat -> new Ticket(screening, seat))
+                .toList();
+        ticketRepository.saveAll(tickets);
+    }
+
+    @Transactional
     public void bookTickets(Long screeningId, List<Long> seatsIds) {
         log.info("Screening id:{}", screeningId);
         log.info("Seats ids:{}", seatsIds);

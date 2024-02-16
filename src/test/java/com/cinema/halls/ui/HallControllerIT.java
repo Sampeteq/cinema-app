@@ -53,10 +53,10 @@ class HallControllerIT extends BaseIT {
                 .expectStatus().isCreated()
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(1)
-                .jsonPath("$.seats[0].number").isEqualTo(hall.getSeats().get(0).getNumber())
-                .jsonPath("$.seats[0].rowNumber").isEqualTo(hall.getSeats().get(0).getRowNumber())
-                .jsonPath("$.seats[1].number").isEqualTo(hall.getSeats().get(1).getNumber())
-                .jsonPath("$.seats[1].rowNumber").isEqualTo(hall.getSeats().get(1).getRowNumber());
+                .jsonPath("$.seats[0].number").isEqualTo(hall.getSeats().get(0).number())
+                .jsonPath("$.seats[0].rowNumber").isEqualTo(hall.getSeats().get(0).rowNumber())
+                .jsonPath("$.seats[1].number").isEqualTo(hall.getSeats().get(1).number())
+                .jsonPath("$.seats[1].rowNumber").isEqualTo(hall.getSeats().get(1).rowNumber());
     }
 
     @Test

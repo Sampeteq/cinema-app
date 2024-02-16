@@ -1,5 +1,6 @@
 package com.cinema.tickets.domain;
 
+import com.cinema.halls.domain.Seat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,9 +13,9 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
                 from Ticket ticket
                 left join fetch ticket.screening screening
                 left join fetch ticket.seat seat
-                where seat.id = :seatId
+                where seat = :seat
             """)
-    Optional<Ticket> findBySeatId(Long seatId);
+    Optional<Ticket> findBySeat(Seat seat);
 
     @Query("""
             from Ticket ticket

@@ -1,5 +1,6 @@
 package com.cinema.tickets.application;
 
+import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.application.ScreeningService;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketBookingPolicy;
@@ -41,16 +42,16 @@ public class TicketService {
     }
 
     @Transactional
-    public void bookTickets(Long screeningId, List<Long> seatsIds) {
+    public void bookTickets(Long screeningId, List<Seat> seats) {
         log.info("Screening id:{}", screeningId);
-        log.info("Seats ids:{}", seatsIds);
+        log.info("Seats ids:{}", seats);
         var screening = screeningService.getScreeningById(screeningId);
         log.info("Found screening:{}", screening);
         var loggedUser = userService.getLoggedUser();
-        seatsIds.forEach(
-                seatId -> {
+        seats.forEach(
+                seat -> {
                     var ticket = ticketRepository
-                            .findBySeatId(seatId)
+                            .findBySeat(seat)
                             .orElseThrow(TicketNotFoundException::new);
                     log.info("Found ticket: {}", ticket);
                     ticket.book(ticketBookingPolicy, clock, loggedUser);

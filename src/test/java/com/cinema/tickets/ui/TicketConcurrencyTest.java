@@ -18,7 +18,7 @@ class TicketConcurrencyTest extends TicketBaseIT {
         var ticket = addTicket(screening);
         var seat = ticket.getSeat();
         var users = addUsers();
-        var bookTicketDto = new TicketBookRequest(screening.getId(), List.of(seat.getId()));
+        var bookTicketDto = new TicketBookRequest(screening.getId(), List.of(seat));
 
         //when
         try (var executorService = Executors.newFixedThreadPool(3)) {

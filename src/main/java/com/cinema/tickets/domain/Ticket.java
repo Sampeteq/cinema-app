@@ -4,12 +4,7 @@ import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.users.domain.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -30,7 +25,7 @@ public class Ticket {
     @ManyToOne
     private Screening screening;
 
-    @ManyToOne
+    @Embedded
     private Seat seat;
 
     @ManyToOne

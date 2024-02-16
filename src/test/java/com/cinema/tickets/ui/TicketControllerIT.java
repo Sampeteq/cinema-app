@@ -1,5 +1,6 @@
 package com.cinema.tickets.ui;
 
+import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
@@ -53,10 +54,9 @@ class TicketControllerIT extends TicketBaseIT {
     void ticket_is_booked_for_existing_screening() {
         //given
         var nonExistingScreeningId = 0L;
-        var seatId = 1L;
         var bookTicketDto = new TicketBookRequest(
                 nonExistingScreeningId,
-                List.of(seatId)
+                List.of(new Seat(1, 1))
         );
         var user = addUser();
 
@@ -83,7 +83,7 @@ class TicketControllerIT extends TicketBaseIT {
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film, hall);
-        var nonExistingSeatId = 0L;
+        var nonExistingSeatId = new Seat(0,0);
         var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
                 List.of(nonExistingSeatId)
@@ -116,7 +116,7 @@ class TicketControllerIT extends TicketBaseIT {
         var ticket = addTicket(screening);
         var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
-                List.of(ticket.getSeat().getId())
+                List.of(ticket.getSeat())
         );
         var user = addUser();
 
@@ -136,7 +136,7 @@ class TicketControllerIT extends TicketBaseIT {
                     assertEquals(1L, bookedTicket.getUser().getId());
                     assertEquals(user, bookedTicket.getUser());
                     assertEquals(bookTicketDto.screeningId(), bookedTicket.getScreening().getId());
-                    assertEquals(bookTicketDto.seatsIds().getFirst(), bookedTicket.getSeat().getId());
+                    assertEquals(bookTicketDto.seats().getFirst(), bookedTicket.getSeat());
                 });
     }
 
@@ -151,7 +151,7 @@ class TicketControllerIT extends TicketBaseIT {
         var seat2 = tickets.get(1).getSeat();
         var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
-                List.of(seat1.getId(), seat2.getId())
+                List.of(seat1, seat2)
         );
         var user = addUser();
 
@@ -180,7 +180,7 @@ class TicketControllerIT extends TicketBaseIT {
         var ticket = addTicket(screening, user);
         var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
-                List.of(ticket.getSeat().getId())
+                List.of(ticket.getSeat())
         );
 
         //when
@@ -210,7 +210,7 @@ class TicketControllerIT extends TicketBaseIT {
         var ticket = addTicket(screening, user);
         var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
-                List.of(ticket.getSeat().getId())
+                List.of(ticket.getSeat())
         );
 
         //when

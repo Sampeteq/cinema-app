@@ -12,7 +12,7 @@ This is web app to manage a cinema built on modular monolith architecture.
 
 **Frameworks:** Spring Boot 3, Hibernate, Junit
 
-**Libraries:** Lombok, MapStruct, Liquibase, Testcontainers, SpringDoc (Swagger)
+**Libraries:** Lombok, Liquibase, Testcontainers, SpringDoc (Swagger)
 
 **Databases:** PostgresSQL
 
@@ -69,7 +69,7 @@ Example request body for creating hall (might be helpful) :
 
 Endpoints:
 
-/public/films (GET) - search all films, optional params: /{title}, /{category}"
+/public/films (GET) - get all films, optional params: /{title}, /{category}"
 
 /admin/films (POST) - add a new film
 
@@ -79,9 +79,7 @@ Endpoints:
 
 Endpoints:
 
-/public/screenings (GET) - search all screenings, optional params: /{date}
-
-/public/screenings/{id}/seats - search all screening seats
+/public/screenings (GET) - get all screenings, optional params: /{date}
 
 /admin/screenings (POST) - add a new screening
 
@@ -91,21 +89,23 @@ Endpoints:
 
 Endpoints:
 
+/admin/halls (GET) - get all halls
+
 /admin/halls (POST) - add a hall
 
 /admin/halls/{id} (DELETE) - delete a hall
-
-/admin/halls (GET) - search all halls
 
 ### 4.Tickets
 
 Endpoints:
 
-/tickets (POST) - book a ticket
+/tickets?screeningId= (GET) - get all tickets by screening id
+
+/tickets/book (PATCH) - book a ticket
 
 /tickets/{ticketId}/cancel (PATCH) - cancel ticket
 
-/tickets/my (GET) - search user tickets
+/tickets/my (GET) - get user tickets
 
 ### 5.Users
 

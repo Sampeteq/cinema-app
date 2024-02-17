@@ -40,7 +40,7 @@ public class HallController {
 
     @GetMapping("/admin/halls")
     @SecurityRequirement(name = "basic")
-    public List<Hall> getAllHalls() {
-        return hallService.getAllHalls();
+    public List<Hall> getAllHallsWithSeats() {
+        return hallService.getAllHallsWithSeats();
     }
 }

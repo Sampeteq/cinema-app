@@ -78,7 +78,7 @@ class HallControllerIT extends BaseIT {
     }
 
     @Test
-    void halls_are_gotten() {
+    void halls_with_seats_are_gotten() {
         //given
         var hall = hallRepository.save(createHall());
         var user = addUser();

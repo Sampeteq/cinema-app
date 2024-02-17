@@ -33,7 +33,7 @@ public class HallService {
         log.info("Hall deleted");
     }
 
-    public List<Hall> getAllHalls() {
-        return hallRepository.findAll();
+    public List<Hall> getAllHallsWithSeats() {
+        return hallRepository.findAllWithSeats();
     }
 }

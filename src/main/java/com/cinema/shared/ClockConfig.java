@@ -9,7 +9,7 @@ import java.time.Clock;
 class ClockConfig {
 
     @Bean
-    Clock prodClock() {
+    Clock clock() {
         return Clock.systemUTC();
     }
 }

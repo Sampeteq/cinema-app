@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
-public record TicketView(
+record TicketView(
         Long id,
         String filmTitle,
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")

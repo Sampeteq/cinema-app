@@ -4,9 +4,9 @@ import com.cinema.tickets.domain.Ticket;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TicketMapper {
+class TicketMapper {
 
-    public TicketView mapToView(Ticket ticket) {
+    TicketView mapToView(Ticket ticket) {
         return new TicketView(
                 ticket.getId(),
                 ticket.getScreening().getFilm().getTitle(),

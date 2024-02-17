@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-public class ScreeningDatePolicy {
+class ScreeningDatePolicy {
 
     private final Clock clock;
 
-    public void checkScreeningDate(LocalDateTime screeningDate) {
+    void checkScreeningDate(LocalDateTime screeningDate) {
         var daysDifference = Duration
                 .between(LocalDateTime.now(clock), screeningDate)
                 .abs()

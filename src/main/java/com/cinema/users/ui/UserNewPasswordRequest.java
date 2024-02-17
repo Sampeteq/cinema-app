@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.UUID;
 
-public record UserNewPasswordRequest(
+record UserNewPasswordRequest(
         @NotNull
         UUID passwordResetToken,
 

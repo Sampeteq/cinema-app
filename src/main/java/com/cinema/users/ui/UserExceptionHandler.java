@@ -1,6 +1,5 @@
 package com.cinema.users.ui;
 
-import com.cinema.shared.ExceptionMessage;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -12,14 +11,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 class UserExceptionHandler {
 
     @ExceptionHandler
-    ResponseEntity<ExceptionMessage> handle(UserMailNotUniqueException exception) {
-        var exceptionMessage = new ExceptionMessage(exception.getMessage());
-        return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);
+    ResponseEntity<String> handle(UserMailNotUniqueException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler
-    ResponseEntity<ExceptionMessage> handle(UserNotFoundException exception) {
-        var exceptionMessage = new ExceptionMessage(exception.getMessage());
-        return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
+    ResponseEntity<String> handle(UserNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

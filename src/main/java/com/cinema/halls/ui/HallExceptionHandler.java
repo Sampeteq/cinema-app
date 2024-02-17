@@ -2,7 +2,6 @@ package com.cinema.halls.ui;
 
 import com.cinema.halls.domain.exceptions.HallNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
-import com.cinema.shared.ExceptionMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +13,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 class HallExceptionHandler {
 
     @ExceptionHandler
-    ResponseEntity<ExceptionMessage> handle(ScreeningsCollisionsException exception) {
-        var exceptionMessage = new ExceptionMessage(exception.getMessage());
-        return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);
+    ResponseEntity<String> handle(ScreeningsCollisionsException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler
-    ResponseEntity<ExceptionMessage> handle(HallNotFoundException exception) {
+    ResponseEntity<String> handle(HallNotFoundException exception) {
         log.error("Exception:{}", exception.getMessage());
-        var exceptionMessage = new ExceptionMessage(exception.getMessage());
-        return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

@@ -1,6 +1,5 @@
 package com.cinema.tickets.ui;
 
-import com.cinema.shared.ExceptionMessage;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
@@ -14,26 +13,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 class TicketExceptionHandler {
 
     @ExceptionHandler
-    ResponseEntity<ExceptionMessage> handle(TicketAlreadyBookedException exception) {
-        var exceptionMessage = new ExceptionMessage(exception.getMessage());
-        return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);
+    ResponseEntity<String> handle(TicketAlreadyBookedException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler
-    ResponseEntity<ExceptionMessage> handle(TicketBookTooLateException exception) {
-        var exceptionMessage = new ExceptionMessage(exception.getMessage());
-        return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);
+    ResponseEntity<String> handle(TicketBookTooLateException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler
-    ResponseEntity<ExceptionMessage> handle(TicketCancelTooLateException exception) {
-        var exceptionMessage = new ExceptionMessage(exception.getMessage());
-        return new ResponseEntity<>(exceptionMessage, HttpStatus.UNPROCESSABLE_ENTITY);
+    ResponseEntity<String> handle(TicketCancelTooLateException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler
-    ResponseEntity<ExceptionMessage> handle(TicketNotFoundException exception) {
-        var exceptionMessage = new ExceptionMessage(exception.getMessage());
-        return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
+    ResponseEntity<String> handle(TicketNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

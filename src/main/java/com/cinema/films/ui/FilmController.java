@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class FilmController {
+class FilmController {
 
     private final FilmService filmService;
 

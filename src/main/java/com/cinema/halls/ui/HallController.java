@@ -18,13 +18,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class HallController {
+class HallController {
 
     private final HallService hallService;
 
     @PostMapping("/admin/halls")
     @SecurityRequirement(name = "basic")
-    public ResponseEntity<Hall> createHall(@RequestBody Hall hall) {
+    ResponseEntity<Hall> createHall(@RequestBody Hall hall) {
         var addedHall = hallService.createHall(hall);
         return ResponseEntity
                 .created(URI.create("/admin/halls"))
@@ -33,14 +33,14 @@ public class HallController {
 
     @DeleteMapping("/admin/halls/{id}")
     @SecurityRequirement(name = "basic")
-    public ResponseEntity<Object> deleteHall(@PathVariable Long id) {
+    ResponseEntity<Object> deleteHall(@PathVariable Long id) {
         hallService.deleteHall(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/admin/halls")
     @SecurityRequirement(name = "basic")
-    public List<Hall> getAllHallsWithSeats() {
+    List<Hall> getAllHallsWithSeats() {
         return hallService.getAllHallsWithSeats();
     }
 }

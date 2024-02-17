@@ -1,7 +1,6 @@
 package com.cinema.screenings.ui;
 
 import com.cinema.screenings.application.ScreeningService;
-import com.cinema.screenings.infrastructure.ScreeningMapper;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

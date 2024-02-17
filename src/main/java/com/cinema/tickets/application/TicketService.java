@@ -47,7 +47,7 @@ public class TicketService {
         log.info("Seats ids:{}", seats);
         var screening = screeningService.getScreeningById(screeningId);
         log.info("Found screening:{}", screening);
-        var loggedUser = userService.getLoggedUser();
+        var loggedUser = userService.getLoggedUserId();
         seats.forEach(
                 seat -> {
                     var ticket = ticketRepository
@@ -63,9 +63,9 @@ public class TicketService {
     @Transactional
     public void cancelTicket(Long ticketId) {
         log.info("Ticket id:{}", ticketId);
-        var loggedUser = userService.getLoggedUser();
+        var loggedUserId = userService.getLoggedUserId();
         var ticket = ticketRepository
-                .findByIdAndUserId(ticketId, loggedUser.getId())
+                .findByIdAndUserId(ticketId, loggedUserId)
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
         ticket.cancel(ticketCancellingPolicy, clock);
@@ -73,8 +73,8 @@ public class TicketService {
     }
 
     public List<Ticket> getAllTicketsByLoggedUser() {
-        var loggedUser = userService.getLoggedUser();
-        return ticketRepository.findAllByUserId(loggedUser.getId());
+        var loggedUser = userService.getLoggedUserId();
+        return ticketRepository.findAllByUserId(loggedUser);
     }
 
     public List<Ticket> getAllTicketsByScreeningId(Long screeningId) {

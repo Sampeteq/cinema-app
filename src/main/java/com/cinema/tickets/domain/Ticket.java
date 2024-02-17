@@ -3,7 +3,6 @@ package com.cinema.tickets.domain;
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
-import com.cinema.users.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
@@ -28,8 +27,7 @@ public class Ticket {
     @Embedded
     private Seat seat;
 
-    @ManyToOne
-    private User user;
+    private Long userId;
 
     protected Ticket() {}
 
@@ -38,22 +36,22 @@ public class Ticket {
         this.seat = seat;
     }
 
-    public Ticket(Screening screening, Seat seat, User user) {
+    public Ticket(Screening screening, Seat seat, Long userId) {
         this.screening = screening;
         this.seat = seat;
-        this.user = user;
+        this.userId = userId;
     }
 
-    public void book(TicketBookingPolicy ticketBookingPolicy, Clock clock, User user) {
+    public void book(TicketBookingPolicy ticketBookingPolicy, Clock clock, Long userId) {
         ticketBookingPolicy.checkIfBookingIsPossible(screening.hoursLeftBeforeStart(clock));
-        if (this.user != null) {
+        if (this.userId != null) {
             throw new TicketAlreadyBookedException();
         }
-        this.user = user;
+        this.userId = userId;
     }
 
     public void cancel(TicketCancellingPolicy ticketCancellingPolicy, Clock clock) {
         ticketCancellingPolicy.checkIfCancellingIsPossible(screening.hoursLeftBeforeStart(clock));
-        this.user = null;
+        this.userId = null;
     }
 }

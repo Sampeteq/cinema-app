@@ -49,8 +49,8 @@ abstract class TicketBaseIT extends BaseIT {
         return ticketRepository.save(TicketFixture.createTicket(screening));
     }
 
-    protected Ticket addTicket(Screening screening, User user) {
-        return ticketRepository.save(TicketFixture.createTicket(screening, user));
+    protected Ticket addTicket(Screening screening, Long userId) {
+        return ticketRepository.save(TicketFixture.createTicket(screening, userId));
     }
 
     protected List<Ticket> addTickets(Screening screening) {

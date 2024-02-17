@@ -3,7 +3,6 @@ package com.cinema.users.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -45,18 +44,5 @@ public class User {
 
     public void setPasswordResetToken(UUID passwordResetToken) {
         this.passwordResetToken = passwordResetToken;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(mail, user.mail) && Objects.equals(password, user.password) && role == user.role && Objects.equals(passwordResetToken, user.passwordResetToken);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, mail, password, role, passwordResetToken);
     }
 }

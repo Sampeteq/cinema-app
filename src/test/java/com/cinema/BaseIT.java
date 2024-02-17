@@ -25,7 +25,7 @@ public abstract class BaseIT {
 
     @BeforeEach
     protected void mockMailService() {
-        doNothing().when(mailService).sendMail(any());
+        doNothing().when(mailService).sendMail(any(), any(), any());
     }
 
     @AfterEach

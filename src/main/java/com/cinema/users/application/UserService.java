@@ -1,6 +1,5 @@
 package com.cinema.users.application;
 
-import com.cinema.mails.MailMessage;
 import com.cinema.mails.MailService;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
@@ -48,8 +47,9 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
         var passwordResetToken = UUID.randomUUID();
         user.setPasswordResetToken(passwordResetToken);
-        var mailMessage = new MailMessage(mail, "Password reset", "Your password reset token: " + passwordResetToken);
-        mailService.sendMail(mailMessage);
+        var subject = "Password reset";
+        var text = "Your password reset token";
+        mailService.sendMail(mail, subject, text);
     }
 
     @Transactional

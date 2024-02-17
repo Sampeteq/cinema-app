@@ -5,21 +5,17 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
-
 @Service
 @RequiredArgsConstructor
 public class MailService {
 
     private final JavaMailSender javaMailSender;
-    private final Clock clock;
 
-    public void sendMail(MailMessage mailMessage) {
+    public void sendMail(String receiver, String subject, String text) {
         var message = new SimpleMailMessage();
-        message.setTo(mailMessage.getReceiver());
-        message.setSubject(mailMessage.getSubject());
-        message.setText(mailMessage.getText());
+        message.setTo(receiver);
+        message.setSubject(subject);
+        message.setText(text);
         javaMailSender.send(message);
-        mailMessage.sentAt(clock);
     }
 }

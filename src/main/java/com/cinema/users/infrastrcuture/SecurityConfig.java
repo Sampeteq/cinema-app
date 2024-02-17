@@ -12,6 +12,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -69,6 +70,13 @@ class SecurityConfig {
     UserDetailsService userDetailsService(UserRepository userRepository) {
         return username -> userRepository
                 .findByMail(username)
+                .map(user -> User
+                        .builder()
+                        .username(user.getMail())
+                        .password(user.getPassword())
+                        .authorities(user.getRole().name())
+                        .build()
+                )
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 }

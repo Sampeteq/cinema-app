@@ -47,7 +47,7 @@ class UserControllerIT extends BaseIT {
         assertThat(userRepository.findByMail(userCreateRequest.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {
-                    assertEquals(userCreateRequest.mail(), user.getUsername());
+                    assertEquals(userCreateRequest.mail(), user.getMail());
                     assertTrue(passwordEncoder.matches(userCreateRequest.password(), user.getPassword()));
                     assertEquals(User.Role.COMMON, user.getRole());
                 });
@@ -57,7 +57,7 @@ class UserControllerIT extends BaseIT {
     void user_name_cannot_be_duplicated() {
         //given
         var user = userRepository.save(createUser("user1@mail.com"));
-        var userCreateRequest = createUserCreateRequest(user.getUsername());
+        var userCreateRequest = createUserCreateRequest(user.getMail());
 
         //when
         var spec = webTestClient
@@ -93,7 +93,7 @@ class UserControllerIT extends BaseIT {
         //then
         spec.expectStatus().isOk();
         var userPasswordResetToken = userRepository
-                .findByMail(user.getUsername())
+                .findByMail(user.getMail())
                 .orElseThrow()
                 .getPasswordResetToken();
         assertThat(userPasswordResetToken).isNotNull();

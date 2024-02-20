@@ -7,7 +7,6 @@ import com.cinema.tickets.domain.TicketBookingPolicy;
 import com.cinema.tickets.domain.TicketCancellingPolicy;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
-import com.cinema.users.application.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,6 @@ public class TicketService {
     private final TicketBookingPolicy ticketBookingPolicy;
     private final TicketCancellingPolicy ticketCancellingPolicy;
     private final ScreeningService screeningService;
-    private final UserService userService;
     private final Clock clock;
 
     @Transactional
@@ -42,39 +40,36 @@ public class TicketService {
     }
 
     @Transactional
-    public void bookTickets(Long screeningId, List<Seat> seats) {
+    public void bookTickets(Long screeningId, List<Seat> seats, Long userId) {
         log.info("Screening id:{}", screeningId);
         log.info("Seats ids:{}", seats);
         var screening = screeningService.getScreeningById(screeningId);
         log.info("Found screening:{}", screening);
-        var loggedUser = userService.getLoggedUserId();
         seats.forEach(
                 seat -> {
                     var ticket = ticketRepository
                             .findBySeat(seat)
                             .orElseThrow(TicketNotFoundException::new);
                     log.info("Found ticket: {}", ticket);
-                    ticket.book(ticketBookingPolicy, clock, loggedUser);
+                    ticket.book(ticketBookingPolicy, clock, userId);
                     log.info("Booked ticket:{}", ticket);
                 }
         );
     }
 
     @Transactional
-    public void cancelTicket(Long ticketId) {
+    public void cancelTicket(Long ticketId, Long userId) {
         log.info("Ticket id:{}", ticketId);
-        var loggedUserId = userService.getLoggedUserId();
         var ticket = ticketRepository
-                .findByIdAndUserId(ticketId, loggedUserId)
+                .findByIdAndUserId(ticketId, userId)
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
         ticket.cancel(ticketCancellingPolicy, clock);
         log.info("Ticket cancelled:{}", ticket);
     }
 
-    public List<Ticket> getAllTicketsByLoggedUser() {
-        var loggedUser = userService.getLoggedUserId();
-        return ticketRepository.findAllByUserId(loggedUser);
+    public List<Ticket> getAllTicketsByUserId(Long userId) {
+        return ticketRepository.findAllByUserId(userId);
     }
 
     public List<Ticket> getAllTicketsByScreeningId(Long screeningId) {

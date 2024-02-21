@@ -53,7 +53,6 @@ class FilmControllerIT extends BaseIT {
         //then
         spec
                 .expectStatus().isCreated()
-                .expectHeader().location("/films")
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(id)
                 .jsonPath("$.title").isEqualTo(film.getTitle())

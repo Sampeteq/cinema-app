@@ -28,7 +28,7 @@ public class ScreeningService {
     private final HallRepository hallRepository;
 
     @Transactional
-    public void createScreening(LocalDateTime date, Long filmId, Long hallId) {
+    public Screening createScreening(LocalDateTime date, Long filmId, Long hallId) {
         log.info("Date:{}", date);
         log.info("Film id:{}", filmId);
         log.info("Hall id:{}", hallId);
@@ -47,6 +47,7 @@ public class ScreeningService {
         );
         var addedScreening = screeningRepository.save(screening);
         log.info("Screening added:{}", addedScreening);
+        return addedScreening;
     }
 
     public void deleteScreening(Long id) {

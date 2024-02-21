@@ -1,13 +1,13 @@
 package com.cinema.screenings.ui;
 
 import com.cinema.screenings.application.ScreeningService;
+import com.cinema.screenings.domain.Screening;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,17 +19,17 @@ class ScreeningController {
     private final ScreeningMapper screeningMapper;
 
     @PostMapping("admin/screenings")
+    @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "basic")
-    ResponseEntity<Object> createScreening(@RequestBody @Valid ScreeningCreateRequest dto) {
-        screeningService.createScreening(dto.date(), dto.filmId(), dto.hallId());
-        return ResponseEntity.created(URI.create("/screenings")).build();
+    Screening createScreening(@RequestBody @Valid ScreeningCreateRequest dto) {
+        return screeningService.createScreening(dto.date(), dto.filmId(), dto.hallId());
     }
 
     @DeleteMapping("/admin/screenings/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
-    ResponseEntity<Object> deleteScreening(@PathVariable Long id) {
+    void deleteScreening(@PathVariable Long id) {
         screeningService.deleteScreening(id);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/public/screenings")

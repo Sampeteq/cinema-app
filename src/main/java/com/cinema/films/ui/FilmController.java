@@ -5,16 +5,9 @@ import com.cinema.films.domain.Film;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,19 +17,17 @@ class FilmController {
     private final FilmService filmService;
 
     @PostMapping("/admin/films")
+    @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "basic")
-    ResponseEntity<Film> addFilm(@RequestBody @Valid Film film) {
-        var addedFilm = filmService.addFilm(film);
-        return ResponseEntity
-                .created(URI.create("/films"))
-                .body(addedFilm);
+    Film addFilm(@RequestBody @Valid Film film) {
+        return filmService.addFilm(film);
     }
 
     @DeleteMapping("/admin/films/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
-    ResponseEntity<Object> deleteFilm(@PathVariable Long id) {
+    void deleteFilm(@PathVariable Long id) {
         filmService.deleteFilm(id);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/public/films/{title}")

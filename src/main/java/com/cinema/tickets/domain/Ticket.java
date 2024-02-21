@@ -7,8 +7,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.time.Clock;
-
 @Entity
 @Getter
 @ToString
@@ -42,16 +40,14 @@ public class Ticket {
         this.userId = userId;
     }
 
-    public void book(TicketBookingPolicy ticketBookingPolicy, Clock clock, Long userId) {
-        ticketBookingPolicy.checkIfBookingIsPossible(screening.hoursLeftBeforeStart(clock));
+    public void assignUserId(Long userId) {
         if (this.userId != null) {
             throw new TicketAlreadyBookedException();
         }
         this.userId = userId;
     }
 
-    public void cancel(TicketCancellingPolicy ticketCancellingPolicy, Clock clock) {
-        ticketCancellingPolicy.checkIfCancellingIsPossible(screening.hoursLeftBeforeStart(clock));
+    public void removeUserId() {
         this.userId = null;
     }
 }

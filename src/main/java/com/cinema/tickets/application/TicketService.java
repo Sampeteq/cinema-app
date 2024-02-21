@@ -45,13 +45,14 @@ public class TicketService {
         log.info("Seats ids:{}", seats);
         var screening = screeningService.getScreeningById(screeningId);
         log.info("Found screening:{}", screening);
+        ticketBookingPolicy.checkIfBookingIsPossible(screening.hoursLeftBeforeStart(clock));
         seats.forEach(
                 seat -> {
                     var ticket = ticketRepository
                             .findBySeat(seat)
                             .orElseThrow(TicketNotFoundException::new);
                     log.info("Found ticket: {}", ticket);
-                    ticket.book(ticketBookingPolicy, clock, userId);
+                    ticket.assignUserId(userId);
                     log.info("Booked ticket:{}", ticket);
                 }
         );
@@ -64,7 +65,9 @@ public class TicketService {
                 .findByIdAndUserId(ticketId, userId)
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
-        ticket.cancel(ticketCancellingPolicy, clock);
+        var screening = screeningService.getScreeningById(ticket.getScreening().getId());
+        ticketCancellingPolicy.checkIfCancellingIsPossible(screening.hoursLeftBeforeStart(clock));
+        ticket.removeUserId();
         log.info("Ticket cancelled:{}", ticket);
     }
 

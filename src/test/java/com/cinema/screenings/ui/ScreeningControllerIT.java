@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static com.cinema.ClockFixtures.CLOCK;
 import static com.cinema.screenings.ScreeningFixture.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixture.createScreening;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -76,7 +77,7 @@ class ScreeningControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
-        var screeningDate = LocalDateTime.now().plusDays(6);
+        var screeningDate = LocalDateTime.now(CLOCK).plusDays(6);
         var createScreeningDto = new ScreeningCreateRequest(screeningDate, film.getId(), hall.getId());
 
         //when
@@ -102,7 +103,7 @@ class ScreeningControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
-        var screeningDate = LocalDateTime.now().plusDays(23);
+        var screeningDate = LocalDateTime.now(CLOCK).plusDays(23);
         var createScreeningDto = new ScreeningCreateRequest(screeningDate, film.getId(), hall.getId());
 
         //when

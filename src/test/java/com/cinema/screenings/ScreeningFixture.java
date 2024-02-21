@@ -5,13 +5,14 @@ import com.cinema.halls.domain.Hall;
 import com.cinema.screenings.domain.Screening;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+
+import static com.cinema.ClockFixtures.CLOCK;
 
 public final class ScreeningFixture {
+
     public static final LocalDateTime SCREENING_DATE = LocalDateTime
-            .now()
-            .plusDays(8)
-            .truncatedTo(ChronoUnit.MINUTES);
+            .now(CLOCK)
+            .plusDays(7);
 
     private ScreeningFixture() {
     }

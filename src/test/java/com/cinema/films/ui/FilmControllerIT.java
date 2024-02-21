@@ -64,7 +64,7 @@ class FilmControllerIT extends BaseIT {
     @Test
     void film_title_is_unique() {
         //given
-        var film = filmRepository.save(createFilm());
+        var film = addFilm();
         var filmWithSameTitle = FilmFixture.createFilm(film.getTitle());
         var user = addUser();
 
@@ -89,7 +89,7 @@ class FilmControllerIT extends BaseIT {
     @Test
     void film_is_deleted() {
         //given
-        var film = filmRepository.save(createFilm());
+        var film = addFilm();
         var user = addUser();
 
         //when
@@ -107,7 +107,7 @@ class FilmControllerIT extends BaseIT {
     @Test
     void films_are_gotten() {
         //given
-        var film = filmRepository.save(createFilm());
+        var film = addFilm();
 
         //when
         var spec = webTestClient
@@ -132,8 +132,8 @@ class FilmControllerIT extends BaseIT {
         //given
         var title = "Film";
         var otherTitle = "Other Film";
-        filmRepository.save(createFilm(title));
-        filmRepository.save(createFilm(otherTitle));
+        addFilm(title);
+        addFilm(otherTitle);
 
         //when
         var spec = webTestClient
@@ -155,8 +155,8 @@ class FilmControllerIT extends BaseIT {
         //given
         var category = Film.Category.COMEDY;
         var otherCategory = Film.Category.DRAMA;
-        filmRepository.save(createFilm(category));
-        filmRepository.save(createFilm(otherCategory));
+        addFilm(category);
+        addFilm(otherCategory);
 
         //when
         var spec = webTestClient
@@ -172,6 +172,18 @@ class FilmControllerIT extends BaseIT {
         spec
                 .expectBody()
                 .jsonPath("$.*.category").value(everyItem(equalTo(category.name())));
+    }
+
+    private Film addFilm() {
+        return filmRepository.save(createFilm());
+    }
+
+    private void addFilm(String title) {
+        filmRepository.save(createFilm(title));
+    }
+
+    private void addFilm(Film.Category category) {
+        filmRepository.save(createFilm(category));
     }
 
     private User addUser() {

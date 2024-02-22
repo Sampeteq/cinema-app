@@ -1,8 +1,7 @@
 package com.cinema.tickets;
 
-import com.cinema.halls.domain.Seat;
-import com.cinema.screenings.domain.Screening;
-import com.cinema.tickets.domain.Ticket;
+import com.cinema.halls.Seat;
+import com.cinema.screenings.Screening;
 
 public final class TicketFixtures {
 

@@ -1,0 +1,72 @@
+package com.cinema.users;
+
+import com.cinema.mails.MailService;
+import com.cinema.users.exceptions.UserMailNotUniqueException;
+import com.cinema.users.exceptions.UserNotFoundException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
+
+    public void createUser(String mail, String password) {
+        if (userRepository.findByMail(mail).isPresent()) {
+            throw new UserMailNotUniqueException();
+        }
+        var user = new User(mail, passwordEncoder.encode(password), User.Role.COMMON);
+        userRepository.save(user);
+    }
+
+    public void createAdmin(String mail, String password) {
+        if (userRepository.findByMail(mail).isEmpty()) {
+            var admin = new User(mail, passwordEncoder.encode(password), User.Role.ADMIN);
+            userRepository.save(admin);
+            log.info("Admin added");
+        }
+    }
+
+    @Transactional
+    public void resetUserPassword(String mail) {
+        var user = userRepository
+                .findByMail(mail)
+                .orElseThrow(UserNotFoundException::new);
+        var passwordResetToken = UUID.randomUUID();
+        user.setPasswordResetToken(passwordResetToken);
+        var subject = "Password reset";
+        var text = "Your password reset token";
+        mailService.sendMail(mail, subject, text);
+    }
+
+    @Transactional
+    public void setNewUserPassword(String newUserPassword, UUID token) {
+        var user = userRepository
+                .findByPasswordResetToken(token)
+                .orElseThrow(UserNotFoundException::new);
+        var encodedPassword = passwordEncoder.encode(newUserPassword);
+        user.setNewPassword(encodedPassword);
+    }
+
+    public Long getLoggedUserId() {
+        var mail = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+        return userRepository
+                .findByMail(mail)
+                .orElseThrow(() -> new UsernameNotFoundException(mail))
+                .getId();
+    }
+}

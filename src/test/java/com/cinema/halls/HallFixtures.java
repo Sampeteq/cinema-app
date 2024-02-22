@@ -1,8 +1,5 @@
 package com.cinema.halls;
 
-import com.cinema.halls.domain.Hall;
-import com.cinema.halls.domain.Seat;
-
 import java.util.List;
 
 public class HallFixtures {

@@ -13,8 +13,7 @@ class TicketConcurrencyTest extends TicketBaseIT {
     void ticket_is_booked_only_by_one_user() {
         //given
         var film = addFilm();
-        var hall = addHall();
-        var screening = addScreening(film, hall);
+        var screening = addScreening(film);
         var ticket = addTicket(screening);
         var seat = ticket.getSeat();
         var users = addUsers();

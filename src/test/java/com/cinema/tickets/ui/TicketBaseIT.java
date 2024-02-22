@@ -7,6 +7,7 @@ import com.cinema.films.domain.FilmRepository;
 import com.cinema.halls.HallFixtures;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
+import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.tickets.TicketFixtures;
@@ -56,18 +57,22 @@ abstract class TicketBaseIT extends BaseIT {
     protected List<Ticket> addTickets(Screening screening) {
         return ticketRepository.saveAll(
                 List.of(
-                        new Ticket(screening, screening.getHall().getSeats().get(0)),
-                        new Ticket(screening, screening.getHall().getSeats().get(1))
+                        new Ticket(screening, new Seat(1, 1)),
+                        new Ticket(screening, new Seat(1, 2))
                 )
         );
     }
 
-    protected Screening addScreening(Film film, Hall hall) {
-        return screeningRepository.save(createScreening(film, hall));
+    protected Screening addScreening(Film film) {
+        return screeningRepository.save(createScreening(film));
     }
 
-    protected Screening addScreening(LocalDateTime date, Film film, Hall hall) {
-        return screeningRepository.save(createScreening(date, film, hall));
+    protected Screening addScreening(Film film, Long hallId) {
+        return screeningRepository.save(createScreening(film, hallId));
+    }
+
+    protected Screening addScreening(LocalDateTime date, Film film) {
+        return screeningRepository.save(createScreening(date, film));
     }
 
     protected Hall addHall() {

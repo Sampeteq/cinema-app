@@ -36,4 +36,10 @@ public class HallService {
     public List<Hall> getAllHallsWithSeats() {
         return hallRepository.findAllWithSeats();
     }
+
+    public Hall getHallWithSeatsById(Long hallId) {
+        return hallRepository
+                .findByIdWithSeats(hallId)
+                .orElseThrow(HallNotFoundException::new);
+    }
 }

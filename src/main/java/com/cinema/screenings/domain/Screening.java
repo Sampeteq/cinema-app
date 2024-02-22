@@ -1,7 +1,6 @@
 package com.cinema.screenings.domain;
 
 import com.cinema.films.domain.Film;
-import com.cinema.halls.domain.Hall;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@ToString(exclude = {"film", "hall"})
+@ToString(exclude = {"film"})
 public class Screening {
 
     @Id
@@ -24,15 +23,14 @@ public class Screening {
     @ManyToOne(fetch = FetchType.LAZY)
     private Film film;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Hall hall;
+    private Long hallId;
 
     protected Screening() {}
 
-    public Screening(LocalDateTime date, Film film, Hall hall) {
+    public Screening(LocalDateTime date, Film film, Long hallId) {
         this.date = date;
         this.film = film;
-        this.hall = hall;
+        this.hallId = hallId;
     }
 
     public boolean collide(LocalDateTime otherScreeningDate, LocalDateTime otherScreeningEndDate) {

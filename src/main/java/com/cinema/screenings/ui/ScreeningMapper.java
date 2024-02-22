@@ -11,7 +11,7 @@ class ScreeningMapper {
                 screening.getId(),
                 screening.getDate(),
                 screening.getFilm().getTitle(),
-                screening.getHall().getId()
+                screening.getHallId()
         );
     }
 }

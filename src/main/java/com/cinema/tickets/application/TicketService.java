@@ -1,5 +1,6 @@
 package com.cinema.tickets.application;
 
+import com.cinema.halls.application.HallService;
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.application.ScreeningService;
 import com.cinema.tickets.domain.Ticket;
@@ -24,14 +25,15 @@ public class TicketService {
     private final TicketBookingPolicy ticketBookingPolicy;
     private final TicketCancellingPolicy ticketCancellingPolicy;
     private final ScreeningService screeningService;
+    private final HallService hallService;
     private final Clock clock;
 
     @Transactional
     public void addTickets(Long screeningId) {
         log.info("Screening id:{}", screeningId);
         var screening = screeningService.getScreeningById(screeningId);
-        var tickets = screening
-                .getHall()
+        var tickets = hallService
+                .getHallWithSeatsById(screening.getHallId())
                 .getSeats()
                 .stream()
                 .map(seat -> new Ticket(screening, seat))

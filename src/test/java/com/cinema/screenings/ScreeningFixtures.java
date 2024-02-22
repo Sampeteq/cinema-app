@@ -1,7 +1,6 @@
 package com.cinema.screenings;
 
 import com.cinema.films.domain.Film;
-import com.cinema.halls.domain.Hall;
 import com.cinema.screenings.domain.Screening;
 
 import java.time.LocalDateTime;
@@ -12,19 +11,37 @@ public class ScreeningFixtures {
 
     public static final LocalDateTime SCREENING_DATE = CURRENT_DATE.plusDays(7);
 
-    public static Screening createScreening(Film film, Hall hall) {
+    public static final long HALL_ID = 1L;
+
+    public static Screening createScreening(Film film) {
         return new Screening(
                 SCREENING_DATE,
                 film,
-                hall
+                HALL_ID
         );
     }
 
-    public static Screening createScreening(LocalDateTime screeningDate, Film film, Hall hall) {
+    public static Screening createScreening(Film film, Long hallId) {
+        return new Screening(
+                SCREENING_DATE,
+                film,
+                hallId
+        );
+    }
+
+    public static Screening createScreening(LocalDateTime screeningDate, Film film) {
         return new Screening(
                 screeningDate,
                 film,
-                hall
+                HALL_ID
+        );
+    }
+
+    public static Screening createScreening(LocalDateTime screeningDate, Film film, Long hallId) {
+        return new Screening(
+                screeningDate,
+                film,
+                hallId
         );
     }
 }

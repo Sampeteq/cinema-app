@@ -11,7 +11,7 @@ class TicketMapper {
                 ticket.getId(),
                 ticket.getScreening().getFilm().getTitle(),
                 ticket.getScreening().getDate(),
-                ticket.getScreening().getHall().getId(),
+                ticket.getScreening().getHallId(),
                 ticket.getSeat().rowNumber(),
                 ticket.getSeat().number(),
                 ticket.getUserId() == null ? null : ticket.getUserId()

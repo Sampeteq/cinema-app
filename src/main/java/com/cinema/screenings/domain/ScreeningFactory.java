@@ -1,7 +1,6 @@
 package com.cinema.screenings.domain;
 
 import com.cinema.films.domain.Film;
-import com.cinema.halls.domain.Hall;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,18 +14,18 @@ public class ScreeningFactory {
     private final ScreeningDatePolicy screeningDatePolicy;
     private final ScreeningRepository screeningRepository;
 
-    public Screening createScreening(LocalDateTime date, Film film, Hall hall) {
+    public Screening createScreening(LocalDateTime date, Film film, Long hallId) {
         screeningDatePolicy.checkScreeningDate(date);
         var endDate = date.plusMinutes(film.getDurationInMinutes());
         var start = date.toLocalDate().atStartOfDay();
         var end = start.plusHours(24).minusMinutes(1);
         var isCollision = screeningRepository
-                .findByHallIdAndDateBetween(hall.getId(), start, end)
+                .findByHallIdAndDateBetween(hallId, start, end)
                 .stream()
                 .anyMatch(screening -> screening.collide(date, endDate));
         if (isCollision) {
             throw new ScreeningsCollisionsException();
         }
-        return new Screening(date, film, hall);
+        return new Screening(date, film, hallId);
     }
 }

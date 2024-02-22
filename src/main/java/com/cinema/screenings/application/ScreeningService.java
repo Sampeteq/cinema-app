@@ -43,7 +43,7 @@ public class ScreeningService {
         var screening = screeningFactory.createScreening(
                 date,
                 film,
-                hall
+                hall.getId()
         );
         var addedScreening = screeningRepository.save(screening);
         log.info("Screening added:{}", addedScreening);

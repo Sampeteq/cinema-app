@@ -11,14 +11,14 @@ import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-public class ScreeningFactory {
+class ScreeningFactory {
 
     private final ScreeningDatePolicy screeningDatePolicy;
     private final ScreeningRepository screeningRepository;
     private final FilmService filmService;
     private final HallService hallService;
 
-    public void validateScreening(Screening screening) {
+    void validateScreening(Screening screening) {
         screeningDatePolicy.checkScreeningDate(screening.getDate());
         if (!hallService.hallExistsById(screening.getHallId())) {
             throw new HallNotFoundException();

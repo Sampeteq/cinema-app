@@ -9,9 +9,11 @@ public class ClockFixtures {
 
     public static final ZoneOffset ZONE_OFFSET = ZoneOffset.UTC;
 
-    public static final Instant CURRENT_DATE = LocalDateTime
+    public static final Instant INSTANT = LocalDateTime
             .of(2024, 1, 1, 0,0)
             .toInstant(ZONE_OFFSET);
 
-    public static final Clock CLOCK = Clock.fixed(CURRENT_DATE, ZONE_OFFSET);
+    public static final Clock CLOCK = Clock.fixed(INSTANT, ZONE_OFFSET);
+
+    public static final LocalDateTime CURRENT_DATE = LocalDateTime.now(CLOCK);
 }

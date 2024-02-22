@@ -6,16 +6,15 @@ import com.cinema.screenings.domain.Screening;
 
 import java.time.LocalDateTime;
 
-import static com.cinema.ClockFixtures.CLOCK;
+import static com.cinema.ClockFixtures.CURRENT_DATE;
 
-public final class ScreeningFixture {
+public class ScreeningFixtures {
 
-    public static final LocalDateTime SCREENING_DATE = LocalDateTime
-            .now(CLOCK)
-            .plusDays(7);
+    public static final LocalDateTime SCREENING_DATE = CURRENT_DATE.plusDays(7);
 
-    private ScreeningFixture() {
-    }
+    public static final LocalDateTime TOO_EARLY_SCREENING_DATE = CURRENT_DATE.plusDays(6);
+
+    public static final LocalDateTime TOO_LATE_SCREENING_DATE = CURRENT_DATE.plusDays(22);
 
     public static Screening createScreening(Film film, Hall hall) {
         return new Screening(

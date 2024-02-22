@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.cinema.screenings.ScreeningFixture.createScreening;
+import static com.cinema.screenings.ScreeningFixtures.createScreening;
 
 abstract class TicketBaseIT extends BaseIT {
     protected static final String TICKETS_BASE_ENDPOINT = "/tickets";

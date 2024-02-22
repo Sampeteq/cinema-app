@@ -10,7 +10,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.Clock;
 
-import static com.cinema.ClockFixtures.CURRENT_DATE;
+import static com.cinema.ClockFixtures.INSTANT;
 import static com.cinema.ClockFixtures.ZONE_OFFSET;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -34,7 +34,7 @@ public abstract class BaseIT {
     @BeforeEach
     protected void setUpMocks() {
         doNothing().when(mailService).sendMail(any(), any(), any());
-        when(clock.instant()).thenReturn(CURRENT_DATE);
+        when(clock.instant()).thenReturn(INSTANT);
         when(clock.getZone()).thenReturn(ZONE_OFFSET);
     }
 

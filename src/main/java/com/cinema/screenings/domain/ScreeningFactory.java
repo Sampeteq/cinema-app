@@ -1,6 +1,9 @@
 package com.cinema.screenings.domain;
 
-import com.cinema.films.domain.Film;
+import com.cinema.films.domain.FilmRepository;
+import com.cinema.films.domain.exceptions.FilmNotFoundException;
+import com.cinema.halls.domain.HallRepository;
+import com.cinema.halls.domain.exceptions.HallNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,17 +16,29 @@ public class ScreeningFactory {
 
     private final ScreeningDatePolicy screeningDatePolicy;
     private final ScreeningRepository screeningRepository;
+    private final FilmRepository filmRepository;
+    private final HallRepository hallRepository;
 
-    public Screening createScreening(LocalDateTime screeningDate, Film film, Long hallId) {
-        screeningDatePolicy.checkScreeningDate(screeningDate);
-        var start = screeningDate.toLocalDate().atStartOfDay();
+    public void validateScreening(Screening screening) {
+        screeningDatePolicy.checkScreeningDate(screening.getDate());
+        if (!hallRepository.existsById(screening.getHallId())) {
+            throw new HallNotFoundException();
+        }
+        var start = screening.getDate().toLocalDate().atStartOfDay();
         var end = start.plusHours(24).minusMinutes(1);
-        var screenings = screeningRepository.findByHallIdAndDateBetween(hallId, start, end);
-        var screeningEndDate = calculateEndDate(screeningDate, film.getDurationInMinutes());
+        var screenings = screeningRepository.findByHallIdAndDateBetween(
+                screening.getHallId(),
+                start,
+                end
+        );
+        var film = filmRepository
+                .findByTitle(screening.getFilmTitle())
+                .orElseThrow(FilmNotFoundException::new);
+        var screeningEndDate = calculateEndDate(screening.getDate(), film.getDurationInMinutes());
         var isCollision = screenings
                 .stream()
                 .anyMatch(otherScreening -> collide(
-                                screeningDate,
+                                screening.getDate(),
                                 screeningEndDate,
                                 otherScreening.getDate(),
                                 calculateEndDate(otherScreening.getDate(), film.getDurationInMinutes())
@@ -32,7 +47,6 @@ public class ScreeningFactory {
         if (isCollision) {
             throw new ScreeningsCollisionsException();
         }
-        return new Screening(screeningDate, film, hallId);
     }
 
     private static LocalDateTime calculateEndDate(LocalDateTime date, int filmDurationInMinutes) {

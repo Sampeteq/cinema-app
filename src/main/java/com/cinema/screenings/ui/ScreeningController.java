@@ -16,13 +16,12 @@ import java.util.List;
 class ScreeningController {
 
     private final ScreeningService screeningService;
-    private final ScreeningMapper screeningMapper;
 
     @PostMapping("admin/screenings")
     @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "basic")
-    Screening createScreening(@RequestBody @Valid ScreeningCreateRequest dto) {
-        return screeningService.createScreening(dto.date(), dto.filmId(), dto.hallId());
+    Screening createScreening(@RequestBody @Valid Screening screening) {
+        return screeningService.addScreening(screening);
     }
 
     @DeleteMapping("/admin/screenings/{id}")
@@ -33,13 +32,9 @@ class ScreeningController {
     }
 
     @GetMapping("/public/screenings")
-    List<ScreeningView> getScreenings(@RequestParam(required = false) LocalDate date) {
-        var screenings = date == null ?
+    List<Screening> getScreenings(@RequestParam(required = false) LocalDate date) {
+        return date == null ?
                 screeningService.getAllScreenings() :
                 screeningService.getScreeningsByDate(date);
-        return screenings
-                .stream()
-                .map(screeningMapper::mapScreeningToDto)
-                .toList();
     }
 }

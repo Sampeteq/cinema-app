@@ -1,9 +1,6 @@
 package com.cinema.tickets.ui;
 
 import com.cinema.BaseIT;
-import com.cinema.films.FilmFixtures;
-import com.cinema.films.domain.Film;
-import com.cinema.films.domain.FilmRepository;
 import com.cinema.halls.HallFixtures;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
@@ -26,6 +23,7 @@ import java.util.stream.Stream;
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
 
 abstract class TicketBaseIT extends BaseIT {
+
     protected static final String TICKETS_BASE_ENDPOINT = "/tickets";
 
     @Autowired
@@ -36,9 +34,6 @@ abstract class TicketBaseIT extends BaseIT {
 
     @Autowired
     protected HallRepository hallRepository;
-
-    @Autowired
-    protected FilmRepository filmRepository;
 
     @Autowired
     protected UserRepository userRepository;
@@ -63,24 +58,20 @@ abstract class TicketBaseIT extends BaseIT {
         );
     }
 
-    protected Screening addScreening(Film film) {
-        return screeningRepository.save(createScreening(film));
+    protected Screening addScreening() {
+        return screeningRepository.save(createScreening());
     }
 
-    protected Screening addScreening(Film film, Long hallId) {
-        return screeningRepository.save(createScreening(film, hallId));
+    protected Screening addScreening(LocalDateTime date) {
+        return screeningRepository.save(createScreening(date));
     }
 
-    protected Screening addScreening(LocalDateTime date, Film film) {
-        return screeningRepository.save(createScreening(date, film));
+    protected Screening addScreening(Long hallId) {
+        return screeningRepository.save(createScreening(hallId));
     }
 
     protected Hall addHall() {
         return hallRepository.save(HallFixtures.createHall());
-    }
-
-    protected Film addFilm() {
-        return filmRepository.save(FilmFixtures.createFilm());
     }
 
     protected User addUser() {

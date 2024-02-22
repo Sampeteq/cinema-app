@@ -1,7 +1,10 @@
 package com.cinema.screenings.domain;
 
-import com.cinema.films.domain.Film;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -11,25 +14,25 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@ToString(exclude = {"film"})
+@ToString
 public class Screening {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Film film;
+    private String filmTitle;
 
     private Long hallId;
 
     protected Screening() {}
 
-    public Screening(LocalDateTime date, Film film, Long hallId) {
+    public Screening(LocalDateTime date, String filmTitle, Long hallId) {
         this.date = date;
-        this.film = film;
+        this.filmTitle = filmTitle;
         this.hallId = hallId;
     }
 

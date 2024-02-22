@@ -9,7 +9,7 @@ class TicketMapper {
     TicketView mapToView(Ticket ticket) {
         return new TicketView(
                 ticket.getId(),
-                ticket.getScreening().getFilm().getTitle(),
+                ticket.getScreening().getFilmTitle(),
                 ticket.getScreening().getDate(),
                 ticket.getScreening().getHallId(),
                 ticket.getSeat().rowNumber(),

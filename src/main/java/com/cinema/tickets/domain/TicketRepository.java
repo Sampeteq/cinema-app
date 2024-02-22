@@ -29,7 +29,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             from Ticket ticket
             left join fetch ticket.screening screening
             left join fetch ticket.seat seat
-            left join fetch screening.film film
             where ticket.userId = :userId
             """)
     List<Ticket> findAllByUserId(Long userId);

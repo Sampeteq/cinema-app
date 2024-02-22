@@ -21,7 +21,8 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDate;
 
 import static com.cinema.ClockFixtures.CURRENT_DATE;
-import static com.cinema.screenings.ScreeningFixtures.*;
+import static com.cinema.screenings.ScreeningFixtures.SCREENING_DATE;
+import static com.cinema.screenings.ScreeningFixtures.createScreening;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -48,13 +49,13 @@ class ScreeningControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
-        var createScreeningDto = new ScreeningCreateRequest(SCREENING_DATE, film.getId(), hall.getId());
+        var screening = new Screening(SCREENING_DATE, film.getTitle(), hall.getId());
 
         //when
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .bodyValue(createScreeningDto)
+                .bodyValue(screening)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
@@ -62,10 +63,10 @@ class ScreeningControllerIT extends BaseIT {
         spec.expectStatus().isCreated();
         assertThat(screeningRepository.findById(1L))
                 .isNotEmpty()
-                .hasValueSatisfying(screening -> {
-                    assertThat(screening.getDate()).isEqualTo(createScreeningDto.date());
-                    assertThat(screening.getFilm().getId()).isEqualTo(createScreeningDto.filmId());
-                    assertThat(screening.getHallId()).isEqualTo(1L);
+                .hasValueSatisfying(foundScreening -> {
+                    assertThat(foundScreening.getDate()).isEqualTo(screening.getDate());
+                    assertThat(foundScreening.getFilmTitle()).isEqualTo(screening.getFilmTitle());
+                    assertThat(foundScreening.getHallId()).isEqualTo(1L);
                 });
     }
 
@@ -75,9 +76,9 @@ class ScreeningControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
-        var createScreeningDto = new ScreeningCreateRequest(
+        var screening = new Screening(
                 CURRENT_DATE.plusDays(6),
-                film.getId(),
+                film.getTitle(),
                 hall.getId()
         );
 
@@ -85,7 +86,7 @@ class ScreeningControllerIT extends BaseIT {
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .bodyValue(createScreeningDto)
+                .bodyValue(screening)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
@@ -104,9 +105,9 @@ class ScreeningControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
-        var createScreeningDto = new ScreeningCreateRequest(
+        var screening = new Screening(
                 CURRENT_DATE.plusDays(22),
-                film.getId(),
+                film.getTitle(),
                 hall.getId()
         );
 
@@ -114,7 +115,7 @@ class ScreeningControllerIT extends BaseIT {
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .bodyValue(createScreeningDto)
+                .bodyValue(screening)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
@@ -132,11 +133,11 @@ class ScreeningControllerIT extends BaseIT {
         //given
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film, hall.getId());
+        var screening = addScreening(film.getTitle(), hall.getId());
         var user = addUser();
-        var createScreeningDto = new ScreeningCreateRequest(
+        var otherScreening = new Screening(
                 screening.getDate(),
-                film.getId(),
+                film.getTitle(),
                 hall.getId()
         );
 
@@ -144,7 +145,7 @@ class ScreeningControllerIT extends BaseIT {
         var spec = webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .bodyValue(createScreeningDto)
+                .bodyValue(otherScreening)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange();
 
@@ -160,8 +161,7 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screening_is_deleted() {
         //given
-        var film = addFilm();
-        var screening = addScreening(film);
+        var screening = addScreening();
         var user = addUser();
 
         //when
@@ -179,8 +179,7 @@ class ScreeningControllerIT extends BaseIT {
     @Test
     void screenings_are_gotten() {
         //given
-        var film = addFilm();
-        var screening = addScreening(film);
+        var screening = addScreening();
 
         //when
         var spec = webTestClient
@@ -196,16 +195,15 @@ class ScreeningControllerIT extends BaseIT {
                 .jsonPath("$[*]").value(hasSize(1))
                 .jsonPath("$[*].*").value(everyItem(notNullValue()))
                 .jsonPath("$[0].date").isEqualTo(screening.getDate().toString())
-                .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle());
+                .jsonPath("$[0].filmTitle").isEqualTo(screening.getFilmTitle());
     }
 
     @Test
     void screenings_are_gotten_by_date() {
         //given
-        var film = addFilm();
         var requiredDate = LocalDate.of(2023, 12, 13);
-        var screeningWithRequiredDate = addScreening(requiredDate, film);
-        addScreening(requiredDate.minusDays(1), film);
+        var screeningWithRequiredDate = addScreening(requiredDate);
+        addScreening(requiredDate.minusDays(1));
 
         //when
         var spec = webTestClient
@@ -233,17 +231,17 @@ class ScreeningControllerIT extends BaseIT {
         return hallRepository.save(HallFixtures.createHall());
     }
 
-    private Screening addScreening(Film film) {
-        return screeningRepository.save(createScreening(film));
+    private Screening addScreening() {
+        return screeningRepository.save(createScreening());
     }
 
-    private Screening addScreening(Film film, Long hallId) {
-        return screeningRepository.save(createScreening(film, hallId));
+    private Screening addScreening(String filmTitle, Long hallId) {
+        return screeningRepository.save(createScreening(filmTitle, hallId));
     }
 
-    private Screening addScreening(LocalDate date, Film film) {
+    private Screening addScreening(LocalDate date) {
         var dateTime = date.atStartOfDay().plusHours(16);
-        var screening = createScreening(dateTime, film);
+        var screening = createScreening(dateTime);
         return screeningRepository.save(screening);
     }
 

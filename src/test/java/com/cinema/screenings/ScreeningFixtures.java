@@ -12,10 +12,6 @@ public class ScreeningFixtures {
 
     public static final LocalDateTime SCREENING_DATE = CURRENT_DATE.plusDays(7);
 
-    public static final LocalDateTime TOO_EARLY_SCREENING_DATE = CURRENT_DATE.plusDays(6);
-
-    public static final LocalDateTime TOO_LATE_SCREENING_DATE = CURRENT_DATE.plusDays(22);
-
     public static Screening createScreening(Film film, Hall hall) {
         return new Screening(
                 SCREENING_DATE,

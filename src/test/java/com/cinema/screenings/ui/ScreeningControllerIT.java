@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 
+import static com.cinema.ClockFixtures.CURRENT_DATE;
 import static com.cinema.screenings.ScreeningFixtures.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -75,7 +76,7 @@ class ScreeningControllerIT extends BaseIT {
         var hall = addHall();
         var user = addUser();
         var createScreeningDto = new ScreeningCreateRequest(
-                TOO_EARLY_SCREENING_DATE,
+                CURRENT_DATE.plusDays(6),
                 film.getId(),
                 hall.getId()
         );
@@ -104,7 +105,7 @@ class ScreeningControllerIT extends BaseIT {
         var hall = addHall();
         var user = addUser();
         var createScreeningDto = new ScreeningCreateRequest(
-                TOO_LATE_SCREENING_DATE,
+                CURRENT_DATE.plusDays(22),
                 film.getId(),
                 hall.getId()
         );

@@ -1,15 +1,9 @@
 package com.cinema.tickets;
 
 import com.cinema.BaseIT;
-import com.cinema.halls.HallFixtures;
-import com.cinema.halls.Hall;
-import com.cinema.halls.HallRepository;
-import com.cinema.halls.Seat;
+import com.cinema.halls.*;
 import com.cinema.screenings.Screening;
 import com.cinema.screenings.ScreeningRepository;
-import com.cinema.tickets.TicketFixtures;
-import com.cinema.tickets.Ticket;
-import com.cinema.tickets.TicketRepository;
 import com.cinema.users.UserFixtures;
 import com.cinema.users.User;
 import com.cinema.users.UserRepository;
@@ -33,7 +27,7 @@ abstract class TicketBaseIT extends BaseIT {
     protected ScreeningRepository screeningRepository;
 
     @Autowired
-    protected HallRepository hallRepository;
+    protected HallService hallService;
 
     @Autowired
     protected UserRepository userRepository;
@@ -71,7 +65,7 @@ abstract class TicketBaseIT extends BaseIT {
     }
 
     protected Hall addHall() {
-        return hallRepository.save(HallFixtures.createHall());
+        return hallService.createHall(HallFixtures.createHall());
     }
 
     protected User addUser() {

@@ -6,7 +6,7 @@ import com.cinema.films.Film;
 import com.cinema.films.FilmService;
 import com.cinema.halls.HallFixtures;
 import com.cinema.halls.Hall;
-import com.cinema.halls.HallRepository;
+import com.cinema.halls.HallService;
 import com.cinema.screenings.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.exceptions.ScreeningsCollisionsException;
 import com.cinema.users.UserFixtures;
@@ -36,7 +36,7 @@ class ScreeningControllerIT extends BaseIT {
     private FilmService filmService;
 
     @Autowired
-    private HallRepository hallRepository;
+    private HallService hallService;
 
     @Autowired
     private UserRepository userRepository;
@@ -226,7 +226,7 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     private Hall addHall() {
-        return hallRepository.save(HallFixtures.createHall());
+        return hallService.createHall(HallFixtures.createHall());
     }
 
     private Screening addScreening() {

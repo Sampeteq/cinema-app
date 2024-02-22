@@ -40,4 +40,8 @@ public class HallService {
                 .findByIdWithSeats(hallId)
                 .orElseThrow(HallNotFoundException::new);
     }
+
+    public boolean hallExistsById(Long hallId) {
+        return hallRepository.existsById(hallId);
+    }
 }

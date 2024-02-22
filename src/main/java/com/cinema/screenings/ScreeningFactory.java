@@ -1,7 +1,7 @@
 package com.cinema.screenings;
 
 import com.cinema.films.FilmService;
-import com.cinema.halls.HallRepository;
+import com.cinema.halls.HallService;
 import com.cinema.halls.exceptions.HallNotFoundException;
 import com.cinema.screenings.exceptions.ScreeningsCollisionsException;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +16,11 @@ public class ScreeningFactory {
     private final ScreeningDatePolicy screeningDatePolicy;
     private final ScreeningRepository screeningRepository;
     private final FilmService filmService;
-    private final HallRepository hallRepository;
+    private final HallService hallService;
 
     public void validateScreening(Screening screening) {
         screeningDatePolicy.checkScreeningDate(screening.getDate());
-        if (!hallRepository.existsById(screening.getHallId())) {
+        if (!hallService.hallExistsById(screening.getHallId())) {
             throw new HallNotFoundException();
         }
         var start = screening.getDate().toLocalDate().atStartOfDay();

@@ -28,6 +28,14 @@ public class ScreeningFixtures {
         );
     }
 
+    public static Screening createScreening(Long hallId) {
+        return new Screening(
+                SCREENING_DATE,
+                FILM_TITLE,
+                hallId
+        );
+    }
+
     public static Screening createScreening(String filmTitle, Long hallId) {
         return new Screening(
                 SCREENING_DATE,
@@ -36,14 +44,6 @@ public class ScreeningFixtures {
         );
     }
 
-
-    public static Screening createScreening(Long hallId) {
-        return new Screening(
-                SCREENING_DATE,
-                FILM_TITLE,
-                hallId
-        );
-    }
 
     public static Screening createScreening(LocalDateTime screeningDate) {
         return new Screening(

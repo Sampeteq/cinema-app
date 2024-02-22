@@ -3,12 +3,10 @@ package com.cinema.screenings;
 import com.cinema.BaseIT;
 import com.cinema.films.FilmFixtures;
 import com.cinema.films.Film;
-import com.cinema.films.FilmRepository;
+import com.cinema.films.FilmService;
 import com.cinema.halls.HallFixtures;
 import com.cinema.halls.Hall;
 import com.cinema.halls.HallRepository;
-import com.cinema.screenings.Screening;
-import com.cinema.screenings.ScreeningRepository;
 import com.cinema.screenings.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.exceptions.ScreeningsCollisionsException;
 import com.cinema.users.UserFixtures;
@@ -35,7 +33,7 @@ class ScreeningControllerIT extends BaseIT {
     private ScreeningRepository screeningRepository;
 
     @Autowired
-    private FilmRepository filmRepository;
+    private FilmService filmService;
 
     @Autowired
     private HallRepository hallRepository;
@@ -224,7 +222,7 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     private Film addFilm() {
-        return filmRepository.save(FilmFixtures.createFilm());
+        return filmService.addFilm(FilmFixtures.createFilm());
     }
 
     private Hall addHall() {

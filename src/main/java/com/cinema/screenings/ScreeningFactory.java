@@ -1,7 +1,6 @@
 package com.cinema.screenings;
 
-import com.cinema.films.FilmRepository;
-import com.cinema.films.exceptions.FilmNotFoundException;
+import com.cinema.films.FilmService;
 import com.cinema.halls.HallRepository;
 import com.cinema.halls.exceptions.HallNotFoundException;
 import com.cinema.screenings.exceptions.ScreeningsCollisionsException;
@@ -16,7 +15,7 @@ public class ScreeningFactory {
 
     private final ScreeningDatePolicy screeningDatePolicy;
     private final ScreeningRepository screeningRepository;
-    private final FilmRepository filmRepository;
+    private final FilmService filmService;
     private final HallRepository hallRepository;
 
     public void validateScreening(Screening screening) {
@@ -31,9 +30,7 @@ public class ScreeningFactory {
                 start,
                 end
         );
-        var film = filmRepository
-                .findByTitle(screening.getFilmTitle())
-                .orElseThrow(FilmNotFoundException::new);
+        var film = filmService.getFilmByTitle(screening.getFilmTitle());
         var screeningEndDate = calculateEndDate(screening.getDate(), film.getDurationInMinutes());
         var isCollision = screenings
                 .stream()

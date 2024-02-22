@@ -14,18 +14,39 @@ public class ScreeningFactory {
     private final ScreeningDatePolicy screeningDatePolicy;
     private final ScreeningRepository screeningRepository;
 
-    public Screening createScreening(LocalDateTime date, Film film, Long hallId) {
-        screeningDatePolicy.checkScreeningDate(date);
-        var endDate = date.plusMinutes(film.getDurationInMinutes());
-        var start = date.toLocalDate().atStartOfDay();
+    public Screening createScreening(LocalDateTime screeningDate, Film film, Long hallId) {
+        screeningDatePolicy.checkScreeningDate(screeningDate);
+        var start = screeningDate.toLocalDate().atStartOfDay();
         var end = start.plusHours(24).minusMinutes(1);
-        var isCollision = screeningRepository
-                .findByHallIdAndDateBetween(hallId, start, end)
+        var screenings = screeningRepository.findByHallIdAndDateBetween(hallId, start, end);
+        var screeningEndDate = calculateEndDate(screeningDate, film.getDurationInMinutes());
+        var isCollision = screenings
                 .stream()
-                .anyMatch(screening -> screening.collide(date, endDate));
+                .anyMatch(otherScreening -> collide(
+                                screeningDate,
+                                screeningEndDate,
+                                otherScreening.getDate(),
+                                calculateEndDate(otherScreening.getDate(), film.getDurationInMinutes())
+                        )
+                );
         if (isCollision) {
             throw new ScreeningsCollisionsException();
         }
-        return new Screening(date, film, hallId);
+        return new Screening(screeningDate, film, hallId);
+    }
+
+    private static LocalDateTime calculateEndDate(LocalDateTime date, int filmDurationInMinutes) {
+        return date.plusMinutes(filmDurationInMinutes);
+    }
+
+    private static boolean collide(
+            LocalDateTime date,
+            LocalDateTime endDate,
+            LocalDateTime otherDate,
+            LocalDateTime otherEndDate
+    ) {
+        return
+                (!otherDate.isAfter(date) && !otherEndDate.isBefore(date)) ||
+                (otherDate.isAfter(date) && !otherDate.isAfter(endDate));
     }
 }

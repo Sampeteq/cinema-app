@@ -33,13 +33,6 @@ public class Screening {
         this.hallId = hallId;
     }
 
-    public boolean collide(LocalDateTime otherScreeningDate, LocalDateTime otherScreeningEndDate) {
-        var endDate = this.date.plusMinutes(film.getDurationInMinutes());
-        return
-                (!otherScreeningDate.isAfter(this.date) && !otherScreeningEndDate.isBefore(this.date)) ||
-                        (otherScreeningDate.isAfter(this.date) && !otherScreeningDate.isAfter(endDate));
-    }
-
     public long hoursLeftBeforeStart(Clock clock) {
         var currentDate = LocalDateTime.now(clock);
         return Duration

@@ -1,7 +1,7 @@
 package com.cinema.users.ui;
 
 import com.cinema.BaseIT;
-import com.cinema.users.UserFixture;
+import com.cinema.users.UserFixtures;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
@@ -12,8 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
-import static com.cinema.users.UserFixture.createUser;
-import static com.cinema.users.UserFixture.createUserCreateRequest;
+import static com.cinema.users.UserFixtures.createUser;
+import static com.cinema.users.UserFixtures.createUserCreateRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +32,7 @@ class UserControllerIT extends BaseIT {
     @Test
     void user_is_created() {
         //given
-        var userCreateRequest = UserFixture.createUserCreateRequest();
+        var userCreateRequest = UserFixtures.createUserCreateRequest();
 
         //then
         var spec = webTestClient

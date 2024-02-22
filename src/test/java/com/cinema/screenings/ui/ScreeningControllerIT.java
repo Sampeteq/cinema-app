@@ -1,17 +1,17 @@
 package com.cinema.screenings.ui;
 
 import com.cinema.BaseIT;
-import com.cinema.films.FilmFixture;
+import com.cinema.films.FilmFixtures;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmRepository;
-import com.cinema.halls.HallFixture;
+import com.cinema.halls.HallFixtures;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
-import com.cinema.users.UserFixture;
+import com.cinema.users.UserFixtures;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -228,11 +228,11 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     private Film addFilm() {
-        return filmRepository.save(FilmFixture.createFilm());
+        return filmRepository.save(FilmFixtures.createFilm());
     }
 
     private Hall addHall() {
-        return hallRepository.save(HallFixture.createHall());
+        return hallRepository.save(HallFixtures.createHall());
     }
 
     private Screening addScreening(Film film, Hall hall) {
@@ -246,6 +246,6 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     private User addUser() {
-        return userRepository.save(UserFixture.createUser(User.Role.ADMIN));
+        return userRepository.save(UserFixtures.createUser(User.Role.ADMIN));
     }
 }

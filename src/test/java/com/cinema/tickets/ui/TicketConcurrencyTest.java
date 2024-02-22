@@ -1,6 +1,6 @@
 package com.cinema.tickets.ui;
 
-import com.cinema.users.UserFixture;
+import com.cinema.users.UserFixtures;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +36,7 @@ class TicketConcurrencyTest extends TicketBaseIT {
         webTestClient
                 .post()
                 .uri("/tickets/book")
-                .headers(headers -> headers.setBasicAuth(userMail, UserFixture.PASSWORD))
+                .headers(headers -> headers.setBasicAuth(userMail, UserFixtures.PASSWORD))
                 .bodyValue(ticketBookRequest)
                 .exchange();
     }

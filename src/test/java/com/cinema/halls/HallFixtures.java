@@ -5,7 +5,7 @@ import com.cinema.halls.domain.Seat;
 
 import java.util.List;
 
-public class HallFixture {
+public class HallFixtures {
 
     public static Hall createHall() {
         return new Hall(

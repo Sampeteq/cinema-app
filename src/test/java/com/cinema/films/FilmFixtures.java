@@ -4,7 +4,7 @@ import com.cinema.films.domain.Film;
 
 import java.time.Year;
 
-public final class FilmFixture {
+public final class FilmFixtures {
 
     private static final String TITLE = "TITLE 1";
 
@@ -14,7 +14,7 @@ public final class FilmFixture {
 
     private static final int DURATION_IN_MINUTES = 100;
 
-    private FilmFixture() {
+    private FilmFixtures() {
     }
 
     public static Film createFilm() {

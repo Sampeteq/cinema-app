@@ -1,18 +1,18 @@
 package com.cinema.tickets.ui;
 
 import com.cinema.BaseIT;
-import com.cinema.films.FilmFixture;
+import com.cinema.films.FilmFixtures;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmRepository;
-import com.cinema.halls.HallFixture;
+import com.cinema.halls.HallFixtures;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
-import com.cinema.tickets.TicketFixture;
+import com.cinema.tickets.TicketFixtures;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
-import com.cinema.users.UserFixture;
+import com.cinema.users.UserFixtures;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +46,11 @@ abstract class TicketBaseIT extends BaseIT {
     protected Clock clock;
 
     protected Ticket addTicket(Screening screening) {
-        return ticketRepository.save(TicketFixture.createTicket(screening));
+        return ticketRepository.save(TicketFixtures.createTicket(screening));
     }
 
     protected Ticket addTicket(Screening screening, Long userId) {
-        return ticketRepository.save(TicketFixture.createTicket(screening, userId));
+        return ticketRepository.save(TicketFixtures.createTicket(screening, userId));
     }
 
     protected List<Ticket> addTickets(Screening screening) {
@@ -71,25 +71,25 @@ abstract class TicketBaseIT extends BaseIT {
     }
 
     protected Hall addHall() {
-        return hallRepository.save(HallFixture.createHall());
+        return hallRepository.save(HallFixtures.createHall());
     }
 
     protected Film addFilm() {
-        return filmRepository.save(FilmFixture.createFilm());
+        return filmRepository.save(FilmFixtures.createFilm());
     }
 
     protected User addUser() {
-        return userRepository.save(UserFixture.createUser());
+        return userRepository.save(UserFixtures.createUser());
     }
 
     protected User addAdmin() {
-        return userRepository.save(UserFixture.createUser(User.Role.ADMIN));
+        return userRepository.save(UserFixtures.createUser(User.Role.ADMIN));
     }
 
     protected List<User> addUsers() {
         return Stream
                 .of("user1@mail.com", "user2@mail.com", "user3@mail.com")
-                .map(mail -> userRepository.save(UserFixture.createUser(mail, UserFixture.PASSWORD)))
+                .map(mail -> userRepository.save(UserFixtures.createUser(mail, UserFixtures.PASSWORD)))
                 .toList();
     }
 }

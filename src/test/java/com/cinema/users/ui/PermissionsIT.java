@@ -1,7 +1,7 @@
 package com.cinema.users.ui;
 
 import com.cinema.BaseIT;
-import com.cinema.users.UserFixture;
+import com.cinema.users.UserFixtures;
 import com.cinema.users.application.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ class PermissionsIT extends BaseIT {
     @Test
     void user_with_admin_role_has_access_to_endpoints_with_admin_prefix() {
         //given
-        var userCreateRequest = UserFixture.createUserCreateRequest();
+        var userCreateRequest = UserFixtures.createUserCreateRequest();
         userService.createAdmin(userCreateRequest.mail(), userCreateRequest.password());
         var sampleAdminEndpoint = "/admin/halls";
 
@@ -32,7 +32,7 @@ class PermissionsIT extends BaseIT {
     @Test
     void user_with_common_role_has_no_access_to_endpoints_with_admin_prefix() {
         //given
-        var userCreateRequest = UserFixture.createUserCreateRequest();
+        var userCreateRequest = UserFixtures.createUserCreateRequest();
         userService.createUser(userCreateRequest.mail(), userCreateRequest.password());
         var sampleAdminEndpoint = "/admin/halls";
 

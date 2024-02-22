@@ -6,13 +6,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
-public final class UserFixture {
+public final class UserFixtures {
 
     private static final String MAIL = "user1@mail.com";
 
     public static final String PASSWORD = "password1";
 
-    private UserFixture() {
+    private UserFixtures() {
     }
 
     public static UserCreateRequest createUserCreateRequest() {

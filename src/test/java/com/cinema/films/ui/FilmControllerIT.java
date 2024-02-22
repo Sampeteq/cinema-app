@@ -1,18 +1,18 @@
 package com.cinema.films.ui;
 
 import com.cinema.BaseIT;
-import com.cinema.films.FilmFixture;
+import com.cinema.films.FilmFixtures;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmTitleNotUniqueException;
-import com.cinema.users.UserFixture;
+import com.cinema.users.UserFixtures;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-import static com.cinema.films.FilmFixture.createFilm;
+import static com.cinema.films.FilmFixtures.createFilm;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -65,7 +65,7 @@ class FilmControllerIT extends BaseIT {
     void film_title_is_unique() {
         //given
         var film = addFilm();
-        var filmWithSameTitle = FilmFixture.createFilm(film.getTitle());
+        var filmWithSameTitle = FilmFixtures.createFilm(film.getTitle());
         var user = addUser();
 
         //when
@@ -187,6 +187,6 @@ class FilmControllerIT extends BaseIT {
     }
 
     private User addUser() {
-        return userRepository.save(UserFixture.createUser(User.Role.ADMIN));
+        return userRepository.save(UserFixtures.createUser(User.Role.ADMIN));
     }
 }

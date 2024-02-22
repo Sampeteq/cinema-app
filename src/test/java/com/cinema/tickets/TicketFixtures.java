@@ -3,9 +3,9 @@ package com.cinema.tickets;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.tickets.domain.Ticket;
 
-public final class TicketFixture {
+public final class TicketFixtures {
 
-    private TicketFixture() {
+    private TicketFixtures() {
     }
 
     public static Ticket createTicket(Screening screening) {

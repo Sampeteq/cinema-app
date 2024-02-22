@@ -1,11 +1,11 @@
 package com.cinema.halls.ui;
 
 import com.cinema.BaseIT;
-import com.cinema.halls.HallFixture;
+import com.cinema.halls.HallFixtures;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.halls.domain.Seat;
-import com.cinema.users.UserFixture;
+import com.cinema.users.UserFixtures;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import lombok.SneakyThrows;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.cinema.halls.HallFixture.createHall;
+import static com.cinema.halls.HallFixtures.createHall;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
@@ -100,10 +100,10 @@ class HallControllerIT extends BaseIT {
     }
 
     private Hall addHall() {
-        return hallRepository.save(HallFixture.createHall());
+        return hallRepository.save(HallFixtures.createHall());
     }
 
     private User addUser() {
-        return userRepository.save(UserFixture.createUser(User.Role.ADMIN));
+        return userRepository.save(UserFixtures.createUser(User.Role.ADMIN));
     }
 }

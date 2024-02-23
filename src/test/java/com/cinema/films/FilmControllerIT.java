@@ -14,7 +14,9 @@ import org.springframework.http.HttpStatus;
 
 import static com.cinema.films.FilmFixtures.createFilm;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasSize;
 
 class FilmControllerIT extends BaseIT {
 

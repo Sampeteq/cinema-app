@@ -21,7 +21,9 @@ import java.time.LocalDate;
 import static com.cinema.ClockFixtures.CURRENT_DATE;
 import static com.cinema.screenings.ScreeningFixtures.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.notNullValue;
 
 class ScreeningControllerIT extends BaseIT {
 

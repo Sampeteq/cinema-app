@@ -1,18 +1,30 @@
 package com.cinema.tickets;
 
+import com.cinema.BaseIT;
+import com.cinema.halls.Hall;
+import com.cinema.halls.HallFixtures;
+import com.cinema.halls.HallService;
 import com.cinema.halls.Seat;
+import com.cinema.screenings.Screening;
+import com.cinema.screenings.ScreeningRepository;
 import com.cinema.screenings.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.tickets.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.exceptions.TicketCancelTooLateException;
+import com.cinema.users.User;
+import com.cinema.users.UserFixtures;
+import com.cinema.users.UserRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.cinema.screenings.ScreeningFixtures.createScreening;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -21,7 +33,24 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class TicketControllerIT extends TicketBaseIT {
+class TicketControllerIT extends BaseIT {
+
+    protected static final String TICKETS_BASE_ENDPOINT = "/tickets";
+
+    @Autowired
+    protected TicketRepository ticketRepository;
+
+    @Autowired
+    protected ScreeningRepository screeningRepository;
+
+    @Autowired
+    protected HallService hallService;
+
+    @Autowired
+    protected UserRepository userRepository;
+
+    @Autowired
+    protected Clock clock;
 
     @Test
     void tickets_are_added() {
@@ -320,5 +349,46 @@ class TicketControllerIT extends TicketBaseIT {
                 .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().rowNumber())
                 .jsonPath("$[0].seatNumber").isEqualTo(ticket.getSeat().number())
                 .jsonPath("$[0].userId").value(Matchers.nullValue());
+    }
+
+    protected Ticket addTicket(Screening screening) {
+        return ticketRepository.save(TicketFixtures.createTicket(screening));
+    }
+
+    protected Ticket addTicket(Screening screening, Long userId) {
+        return ticketRepository.save(TicketFixtures.createTicket(screening, userId));
+    }
+
+    protected List<Ticket> addTickets(Screening screening) {
+        return ticketRepository.saveAll(
+                List.of(
+                        new Ticket(screening, new Seat(1, 1)),
+                        new Ticket(screening, new Seat(1, 2))
+                )
+        );
+    }
+
+    protected Screening addScreening() {
+        return screeningRepository.save(createScreening());
+    }
+
+    protected Screening addScreening(LocalDateTime date) {
+        return screeningRepository.save(createScreening(date));
+    }
+
+    protected Screening addScreening(Long hallId) {
+        return screeningRepository.save(createScreening(hallId));
+    }
+
+    protected Hall addHall() {
+        return hallService.createHall(HallFixtures.createHall());
+    }
+
+    protected User addUser() {
+        return userRepository.save(UserFixtures.createUser());
+    }
+
+    protected User addAdmin() {
+        return userRepository.save(UserFixtures.createUser(User.Role.ADMIN));
     }
 }

@@ -1,12 +1,14 @@
 package com.cinema.tickets;
 
 import com.cinema.BaseIT;
+import com.cinema.films.Film;
+import com.cinema.films.FilmService;
 import com.cinema.halls.Hall;
 import com.cinema.halls.HallFixtures;
 import com.cinema.halls.HallService;
 import com.cinema.halls.Seat;
 import com.cinema.screenings.Screening;
-import com.cinema.screenings.ScreeningRepository;
+import com.cinema.screenings.ScreeningService;
 import com.cinema.screenings.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.tickets.exceptions.TicketAlreadyBookedException;
@@ -17,13 +19,16 @@ import com.cinema.users.UserFixtures;
 import com.cinema.users.UserRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
+import static com.cinema.films.FilmFixtures.createFilm;
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -41,7 +46,10 @@ class TicketControllerIT extends BaseIT {
     protected TicketRepository ticketRepository;
 
     @Autowired
-    protected ScreeningRepository screeningRepository;
+    protected ScreeningService screeningService;
+
+    @Autowired
+    private FilmService filmService;
 
     @Autowired
     protected HallService hallService;
@@ -55,8 +63,9 @@ class TicketControllerIT extends BaseIT {
     @Test
     void tickets_are_added() {
         //given
+        var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(hall.getId());
+        var screening = addScreening(film.getTitle(), hall.getId());
         var admin = addAdmin();
 
         //when
@@ -111,7 +120,9 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_booked_for_existing_seat() {
         //given
-        var screening = addScreening();
+        var film = addFilm();
+        var hall = addHall();
+        var screening = addScreening(film.getTitle(), hall.getId());
         var nonExistingSeatId = new Seat(0,0);
         var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
@@ -139,7 +150,9 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_booked() {
         //given
-        var screening = addScreening();
+        var film = addFilm();
+        var hall = addHall();
+        var screening = addScreening(film.getTitle(), hall.getId());
         var ticket = addTicket(screening);
         var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
@@ -170,7 +183,9 @@ class TicketControllerIT extends BaseIT {
     @Test
     void tickets_are_booked() {
         //given
-        var screening = addScreening();
+        var film = addFilm();
+        var hall = addHall();
+        var screening = addScreening(film.getTitle(), hall.getId());
         var tickets = addTickets(screening);
         var seat1 = tickets.get(0).getSeat();
         var seat2 = tickets.get(1).getSeat();
@@ -198,7 +213,9 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_booked_for_free_seat() {
         //given
-        var screening = addScreening();
+        var film = addFilm();
+        var hall = addHall();
+        var screening = addScreening(film.getTitle(), hall.getId());
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
         var bookTicketDto = new TicketBookRequest(
@@ -226,7 +243,10 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_booked_at_least_1h_before_screening() {
         //given
-        var screening = addScreening(LocalDateTime.now(clock).minusMinutes(59));
+        var film = addFilm();
+        var hall = addHall();
+        var screening = addScreening(film.getTitle(), hall.getId());
+        setCurrentDate(screening.getDate().plusMinutes(59));
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
         var bookTicketDto = new TicketBookRequest(
@@ -254,7 +274,9 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_cancelled() {
         //give
-        var screening = addScreening();
+        var film = addFilm();
+        var hall = addHall();
+        var screening = addScreening(film.getTitle(), hall.getId());
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
 
@@ -275,7 +297,10 @@ class TicketControllerIT extends BaseIT {
     @Test
     void ticket_is_cancelled_at_least_24h_before_screening() {
         //given
-        var screening = addScreening(LocalDateTime.now(clock).minusHours(23));
+        var film = addFilm();
+        var hall = addHall();
+        var screening = addScreening(film.getTitle(), hall.getId());
+        setCurrentDate(screening.getDate().plusHours(23));
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
 
@@ -298,7 +323,9 @@ class TicketControllerIT extends BaseIT {
     @Test
     void tickets_are_gotten_by_user_id() {
         //given
-        var screening = addScreening();
+        var film = addFilm();
+        var hall = addHall();
+        var screening = addScreening(film.getTitle(), hall.getId());
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
 
@@ -327,7 +354,9 @@ class TicketControllerIT extends BaseIT {
     @Test
     void tickets_are_gotten_by_screening_id() {
         //given
-        var screening = addScreening();
+        var film = addFilm();
+        var hall = addHall();
+        var screening = addScreening(film.getTitle(), hall.getId());
         var ticket = addTicket(screening);
 
         //when
@@ -368,16 +397,12 @@ class TicketControllerIT extends BaseIT {
         );
     }
 
-    protected Screening addScreening() {
-        return screeningRepository.save(createScreening());
+    protected Screening addScreening(String filmTitle, Long hallId) {
+        return screeningService.addScreening(createScreening(filmTitle, hallId));
     }
 
-    protected Screening addScreening(LocalDateTime date) {
-        return screeningRepository.save(createScreening(date));
-    }
-
-    protected Screening addScreening(Long hallId) {
-        return screeningRepository.save(createScreening(hallId));
+    private Film addFilm() {
+        return filmService.addFilm(createFilm());
     }
 
     protected Hall addHall() {
@@ -390,5 +415,9 @@ class TicketControllerIT extends BaseIT {
 
     protected User addAdmin() {
         return userRepository.save(UserFixtures.createUser(User.Role.ADMIN));
+    }
+
+    private void setCurrentDate(LocalDateTime date) {
+        Mockito.when(clock.instant()).thenReturn(date.toInstant(ZoneOffset.UTC));
     }
 }

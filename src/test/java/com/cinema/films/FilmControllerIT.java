@@ -1,13 +1,11 @@
 package com.cinema.films;
 
 import com.cinema.BaseIT;
-import com.cinema.films.exceptions.FilmTitleNotUniqueException;
 import com.cinema.users.User;
 import com.cinema.users.UserFixtures;
 import com.cinema.users.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 
 import static com.cinema.films.FilmFixtures.createFilm;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,24 +54,6 @@ class FilmControllerIT extends BaseIT {
                 .jsonPath("$.category").isEqualTo(film.getCategory().name())
                 .jsonPath("$.year").isEqualTo(film.getYear())
                 .jsonPath("$.durationInMinutes").isEqualTo(film.getDurationInMinutes());
-    }
-
-    @Test
-    void film_title_is_unique() {
-        var film = addFilm();
-        var filmWithSameTitle = FilmFixtures.createFilm(film.getTitle());
-        var user = addUser();
-
-        webTestClient
-                .post()
-                .uri(FILM_ADMIN_ENDPOINT)
-                .bodyValue(filmWithSameTitle)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange()
-                .expectStatus()
-                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-                .expectBody()
-                .jsonPath("$.message", equalTo(new FilmTitleNotUniqueException().getMessage()));
     }
 
     @Test

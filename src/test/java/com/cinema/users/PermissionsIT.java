@@ -1,8 +1,6 @@
 package com.cinema.users;
 
 import com.cinema.BaseIT;
-import com.cinema.users.UserFixtures;
-import com.cinema.users.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -3,7 +3,13 @@ package com.cinema.tickets;
 import com.cinema.halls.Seat;
 import com.cinema.screenings.Screening;
 import com.cinema.tickets.exceptions.TicketAlreadyBookedException;
-import jakarta.persistence.*;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.ToString;
 

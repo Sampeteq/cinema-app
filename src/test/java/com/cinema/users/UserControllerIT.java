@@ -1,10 +1,6 @@
 package com.cinema.users;
 
 import com.cinema.BaseIT;
-import com.cinema.users.UserFixtures;
-import com.cinema.users.User;
-import com.cinema.users.UserNewPasswordRequest;
-import com.cinema.users.UserRepository;
 import com.cinema.users.exceptions.UserMailNotUniqueException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

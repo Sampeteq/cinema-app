@@ -62,21 +62,19 @@ class TicketControllerIT extends BaseIT {
 
     @Test
     void tickets_are_added() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
         var admin = addAdmin();
 
-        //when
-        var responseSpec = webTestClient
+        webTestClient
                 .post()
                 .uri("/admin" + TICKETS_BASE_ENDPOINT + "?screeningId=" + screening.getId())
                 .headers(headers -> headers.setBasicAuth(admin.getMail(), admin.getPassword()))
-                .exchange();
+                .exchange()
+                .expectStatus()
+                .isOk();
 
-        //then
-        responseSpec.expectStatus().isOk();
         webTestClient
                 .get()
                 .uri("/public" + TICKETS_BASE_ENDPOINT + "?screeningId=" + screening.getId())
@@ -92,7 +90,6 @@ class TicketControllerIT extends BaseIT {
 
     @Test
     void ticket_is_booked_for_existing_screening() {
-        //given
         var nonExistingScreeningId = 0L;
         var bookTicketDto = new TicketBookRequest(
                 nonExistingScreeningId,
@@ -100,26 +97,20 @@ class TicketControllerIT extends BaseIT {
         );
         var user = addUser();
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        var expectedMessage = new ScreeningNotFoundException().getMessage();
-        spec
+                .exchange()
                 .expectStatus()
                 .isNotFound()
                 .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
+                .jsonPath("$.message", equalTo(new ScreeningNotFoundException().getMessage()));
     }
 
     @Test
     void ticket_is_booked_for_existing_seat() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
@@ -130,26 +121,20 @@ class TicketControllerIT extends BaseIT {
         );
         var user = addUser();
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        var expectedMessage = new ScreeningSeatNotFoundException().getMessage();
-        spec
+                .exchange()
                 .expectStatus()
                 .isNotFound()
                 .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
+                .jsonPath("$.message", equalTo(new ScreeningSeatNotFoundException().getMessage()));
     }
 
     @Test
     void ticket_is_booked() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
@@ -160,16 +145,15 @@ class TicketControllerIT extends BaseIT {
         );
         var user = addUser();
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
+                .exchange()
+                .expectStatus()
+                .isOk();
 
-        //then
-        spec.expectStatus().isOk();
         assertThat(ticketRepository.findByIdAndUserId(1L, 1L))
                 .isNotEmpty()
                 .hasValueSatisfying(bookedTicket -> {
@@ -182,7 +166,6 @@ class TicketControllerIT extends BaseIT {
 
     @Test
     void tickets_are_booked() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
@@ -195,16 +178,15 @@ class TicketControllerIT extends BaseIT {
         );
         var user = addUser();
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
+                .exchange()
+                .expectStatus()
+                .isOk();
 
-        //then
-        spec.expectStatus().isOk();
         assertThat(ticketRepository.findAllByUserId(user.getId()))
                 .isNotEmpty()
                 .allSatisfy(ticket -> assertEquals(user.getId(), ticket.getUserId()));
@@ -212,7 +194,6 @@ class TicketControllerIT extends BaseIT {
 
     @Test
     void ticket_is_booked_for_free_seat() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
@@ -223,26 +204,20 @@ class TicketControllerIT extends BaseIT {
                 List.of(ticket.getSeat())
         );
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        var expectedMessage = new TicketAlreadyBookedException().getMessage();
-        spec
+                .exchange()
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
+                .jsonPath("$.message", equalTo(new TicketAlreadyBookedException().getMessage()));
     }
 
     @Test
     void ticket_is_booked_at_least_1h_before_screening() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
@@ -254,41 +229,33 @@ class TicketControllerIT extends BaseIT {
                 List.of(ticket.getSeat())
         );
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .bodyValue(bookTicketDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        var expectedMessage = new TicketBookTooLateException().getMessage();
-        spec
+                .exchange()
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
+                .jsonPath("$.message", equalTo(new TicketBookTooLateException().getMessage()));
     }
 
     @Test
     void ticket_is_cancelled() {
-        //give
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + ticket.getId() + "/cancel")
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
+                .exchange()
+                .expectStatus().isOk();
 
-        //then
-        spec.expectStatus().isOk();
         assertThat(ticketRepository.findById(ticket.getId()))
                 .isNotEmpty()
                 .hasValueSatisfying(cancelledTicket -> assertNull(cancelledTicket.getUserId()));
@@ -296,7 +263,6 @@ class TicketControllerIT extends BaseIT {
 
     @Test
     void ticket_is_cancelled_at_least_24h_before_screening() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
@@ -304,40 +270,30 @@ class TicketControllerIT extends BaseIT {
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + ticket.getId() + "/cancel")
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        var expectedMessage = new TicketCancelTooLateException().getMessage();
-        spec
+                .exchange()
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
+                .jsonPath("$.message", equalTo(new TicketCancelTooLateException().getMessage()));
     }
 
     @Test
     void tickets_are_gotten_by_user_id() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .get()
                 .uri(TICKETS_BASE_ENDPOINT + "/my")
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        spec
+                .exchange()
                 .expectStatus()
                 .isOk()
                 .expectBody()
@@ -353,20 +309,15 @@ class TicketControllerIT extends BaseIT {
 
     @Test
     void tickets_are_gotten_by_screening_id() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
         var ticket = addTicket(screening);
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .get()
                 .uri("/public"+ TICKETS_BASE_ENDPOINT + "?screeningId=" + screening.getId())
-                .exchange();
-
-        //then
-        spec
+                .exchange()
                 .expectStatus()
                 .isOk()
                 .expectBody()

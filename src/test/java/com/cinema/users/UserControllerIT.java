@@ -32,18 +32,16 @@ class UserControllerIT extends BaseIT {
 
     @Test
     void user_is_created() {
-        //given
         var userCreateRequest = UserFixtures.createUserCreateRequest();
 
-        //then
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(USERS_BASE_ENDPOINT)
                 .bodyValue(userCreateRequest)
-                .exchange();
+                .exchange()
+                .expectStatus()
+                .isOk();
 
-
-        spec.expectStatus().isOk();
         assertThat(userRepository.findByMail(userCreateRequest.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {
@@ -55,32 +53,24 @@ class UserControllerIT extends BaseIT {
 
     @Test
     void user_name_cannot_be_duplicated() {
-        //given
         var user = userRepository.save(createUser("user1@mail.com"));
         var userCreateRequest = createUserCreateRequest(user.getMail());
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(USERS_BASE_ENDPOINT)
                 .bodyValue(userCreateRequest)
-                .exchange();
-
-        //then
-        var expectedMessage = new UserMailNotUniqueException().getMessage();
-        spec
+                .exchange()
                 .expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
+                .jsonPath("$.message", equalTo(new UserMailNotUniqueException().getMessage()));
     }
 
     @Test
     void user_password_is_reset() {
-        //given
         var user = userRepository.save(createUser());
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(uriBuilder -> uriBuilder
                         .path(USERS_BASE_ENDPOINT + "/password/reset")
@@ -88,10 +78,10 @@ class UserControllerIT extends BaseIT {
                         .build()
                 )
                 .attribute("mail", user.getMail())
-                .exchange();
+                .exchange()
+                .expectStatus()
+                .isOk();
 
-        //then
-        spec.expectStatus().isOk();
         var userPasswordResetToken = userRepository
                 .findByMail(user.getMail())
                 .orElseThrow()
@@ -101,7 +91,6 @@ class UserControllerIT extends BaseIT {
 
     @Test
     void user_new_password_is_set() {
-        //given
         var passwordResetToken = UUID.randomUUID();
         var addedUser = userRepository.save(createUser(passwordResetToken));
         var userNewPasswordRequest = new UserNewPasswordRequest(
@@ -109,15 +98,14 @@ class UserControllerIT extends BaseIT {
                 addedUser.getPassword() + "new"
         );
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .patch()
                 .uri(USERS_BASE_ENDPOINT + "/password/new")
                 .bodyValue(userNewPasswordRequest)
-                .exchange();
+                .exchange()
+                .expectStatus()
+                .isOk();
 
-        //then
-        spec.expectStatus().isOk();
         assertThat(
                 userRepository.findByMail(addedUser.getMail())
         ).hasValueSatisfying(

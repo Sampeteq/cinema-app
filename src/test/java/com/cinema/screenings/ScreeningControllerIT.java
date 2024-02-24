@@ -44,22 +44,18 @@ class ScreeningControllerIT extends BaseIT {
 
     @Test
     void screening_is_created() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
         var screening = new Screening(SCREENING_DATE, film.getTitle(), hall.getId());
 
         //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .bodyValue(screening)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        spec
+                .exchange()
                 .expectStatus()
                 .isCreated()
                 .expectBody()
@@ -71,7 +67,6 @@ class ScreeningControllerIT extends BaseIT {
 
     @Test
     void screening_and_current_date_difference_is_min_7_days() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
@@ -81,26 +76,20 @@ class ScreeningControllerIT extends BaseIT {
                 hall.getId()
         );
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .bodyValue(screening)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        var expectedMessage = new ScreeningDateOutOfRangeException().getMessage();
-        spec
+                .exchange()
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
+                .jsonPath("$.message", equalTo(new ScreeningDateOutOfRangeException().getMessage()));
     }
 
     @Test
     void screening_and_current_date_difference_is_max_21_days() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
@@ -110,26 +99,20 @@ class ScreeningControllerIT extends BaseIT {
                 hall.getId()
         );
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .bodyValue(screening)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        var expectedMessage = new ScreeningDateOutOfRangeException().getMessage();
-        spec
+                .exchange()
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
+                .jsonPath("$.message", equalTo(new ScreeningDateOutOfRangeException().getMessage()));
     }
 
     @Test
     void screenings_collision_cannot_exist() {
-        //given
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
@@ -140,38 +123,30 @@ class ScreeningControllerIT extends BaseIT {
                 hall.getId()
         );
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .bodyValue(otherScreening)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        var expectedMessage = new ScreeningsCollisionsException().getMessage();
-        spec
+                .exchange()
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
+                .jsonPath("$.message", equalTo(new ScreeningsCollisionsException().getMessage()));
     }
 
     @Test
     void screening_is_deleted() {
-        //given
         var screening = addScreening();
         var user = addUser();
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .delete()
                 .uri(SCREENINGS_ADMIN_ENDPOINT + "/" + screening.getId())
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
+                .exchange()
+                .expectStatus().isNoContent();
 
-        //then
-        spec.expectStatus().isNoContent();
         webTestClient
                 .get()
                 .uri(SCREENINGS_PUBLIC_ENDPOINT)
@@ -183,17 +158,12 @@ class ScreeningControllerIT extends BaseIT {
 
     @Test
     void screenings_are_gotten() {
-        //given
         var screening = addScreening();
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .get()
                 .uri(SCREENINGS_PUBLIC_ENDPOINT)
-                .exchange();
-
-        //then
-        spec
+                .exchange()
                 .expectStatus()
                 .isOk()
                 .expectBody()
@@ -206,19 +176,14 @@ class ScreeningControllerIT extends BaseIT {
 
     @Test
     void screenings_are_gotten_by_date() {
-        //given
         var requiredDate = LocalDate.of(2023, 12, 13);
         var screeningWithRequiredDate = addScreening(requiredDate);
         addScreening(requiredDate.minusDays(1));
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .get()
                 .uri(SCREENINGS_PUBLIC_ENDPOINT + "?date=" + requiredDate)
-                .exchange();
-
-        //then
-        spec
+                .exchange()
                 .expectStatus()
                 .isOk()
                 .expectBody()

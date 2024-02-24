@@ -1,12 +1,9 @@
 package com.cinema.films;
 
 import com.cinema.BaseIT;
-import com.cinema.films.FilmFixtures;
-import com.cinema.films.Film;
-import com.cinema.films.FilmRepository;
 import com.cinema.films.exceptions.FilmTitleNotUniqueException;
-import com.cinema.users.UserFixtures;
 import com.cinema.users.User;
+import com.cinema.users.UserFixtures;
 import com.cinema.users.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +29,6 @@ class FilmControllerIT extends BaseIT {
 
     @Test
     void film_is_created() {
-        //given
         var id = 1L;
         var title = "Some title";
         var category = Film.Category.COMEDY;
@@ -45,16 +41,15 @@ class FilmControllerIT extends BaseIT {
                 durationInMinutes
         );
         var user = addUser();
-        //when
-        var spec = webTestClient
+
+        webTestClient
                 .post()
                 .uri(FILM_ADMIN_ENDPOINT)
                 .bodyValue(film)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-        //then
-        spec
-                .expectStatus().isCreated()
+                .exchange()
+                .expectStatus()
+                .isCreated()
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(id)
                 .jsonPath("$.title").isEqualTo(film.getTitle())
@@ -65,60 +60,46 @@ class FilmControllerIT extends BaseIT {
 
     @Test
     void film_title_is_unique() {
-        //given
         var film = addFilm();
         var filmWithSameTitle = FilmFixtures.createFilm(film.getTitle());
         var user = addUser();
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .post()
                 .uri(FILM_ADMIN_ENDPOINT)
                 .bodyValue(filmWithSameTitle)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-
-        var expectedMessage = new FilmTitleNotUniqueException().getMessage();
-        spec
+                .exchange()
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
-                .jsonPath("$.message", equalTo(expectedMessage));
+                .jsonPath("$.message", equalTo(new FilmTitleNotUniqueException().getMessage()));
     }
 
     @Test
     void film_is_deleted() {
-        //given
         var film = addFilm();
         var user = addUser();
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .delete()
                 .uri(FILM_ADMIN_ENDPOINT + "/" + film.getId())
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
+                .exchange()
+                .expectStatus()
+                .isNoContent();
 
-        //then
-        spec.expectStatus().isNoContent();
         assertThat(filmRepository.findByTitle(film.getTitle())).isEmpty();
     }
 
     @Test
     void films_are_gotten() {
-        //given
         var film = addFilm();
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .get()
                 .uri(FILM_PUBLIC_ENDPOINT)
-                .exchange();
-
-        //then
-        spec
+                .exchange()
                 .expectStatus()
                 .isOk()
                 .expectBody()
@@ -131,47 +112,37 @@ class FilmControllerIT extends BaseIT {
 
     @Test
     void films_are_gotten_by_title() {
-        //given
         var title = "Film";
         var otherTitle = "Other Film";
         addFilm(title);
         addFilm(otherTitle);
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
                         .path(FILM_PUBLIC_ENDPOINT + "/" + title)
                         .build()
                 )
-                .exchange();
-
-        //then
-        spec
+                .exchange()
                 .expectBody()
                 .jsonPath("$.*.title").value(everyItem(equalTo(title)));
     }
 
     @Test
     void films_are_gotten_by_category() {
-        //given
         var category = Film.Category.COMEDY;
         var otherCategory = Film.Category.DRAMA;
         addFilm(category);
         addFilm(otherCategory);
 
-        //when
-        var spec = webTestClient
+        webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
                         .path(FILM_PUBLIC_ENDPOINT)
                         .queryParam("category", category)
                         .build()
                 )
-                .exchange();
-
-        //then
-        spec
+                .exchange()
                 .expectBody()
                 .jsonPath("$.*.category").value(everyItem(equalTo(category.name())));
     }

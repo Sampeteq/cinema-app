@@ -1,12 +1,8 @@
 package com.cinema.halls;
 
 import com.cinema.BaseIT;
-import com.cinema.halls.HallFixtures;
-import com.cinema.halls.Hall;
-import com.cinema.halls.HallRepository;
-import com.cinema.halls.Seat;
-import com.cinema.users.UserFixtures;
 import com.cinema.users.User;
+import com.cinema.users.UserFixtures;
 import com.cinema.users.UserRepository;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -31,7 +27,6 @@ class HallControllerIT extends BaseIT {
     @Test
     @SneakyThrows
     void hall_is_created() {
-        //given
         var hall = new Hall(
                 List.of(
                         new Seat(1, 1),
@@ -40,17 +35,14 @@ class HallControllerIT extends BaseIT {
         );
         var user = addUser();
 
-        //when
-        var responseSpec = webTestClient
+        webTestClient
                 .post()
                 .uri(HALL_ADMIN_ENDPOINT)
                 .bodyValue(hall)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        responseSpec
-                .expectStatus().isCreated()
+                .exchange()
+                .expectStatus()
+                .isCreated()
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(1)
                 .jsonPath("$.seats[0].number").isEqualTo(hall.getSeats().get(0).number())
@@ -61,37 +53,28 @@ class HallControllerIT extends BaseIT {
 
     @Test
     void hall_is_deleted() {
-        //given
         var hall = addHall();
         var user = addUser();
 
-        //when
-        var responseSpec = webTestClient
+        webTestClient
                 .delete()
                 .uri(HALL_ADMIN_ENDPOINT + "/" + hall.getId())
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        responseSpec.expectStatus().isNoContent();
+                .exchange()
+                .expectStatus().isNoContent();
         assertThat(hallRepository.findById(hall.getId())).isEmpty();
     }
 
     @Test
     void halls_with_seats_are_gotten() {
-        //given
         var hall = hallRepository.save(createHall());
         var user = addUser();
 
-        //when
-        var responseSpec = webTestClient
+        webTestClient
                 .get()
                 .uri(HALL_ADMIN_ENDPOINT)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange();
-
-        //then
-        responseSpec
+                .exchange()
                 .expectStatus()
                 .isOk()
                 .expectBody()

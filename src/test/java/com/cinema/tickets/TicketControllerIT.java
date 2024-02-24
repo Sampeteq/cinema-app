@@ -40,25 +40,25 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class TicketControllerIT extends BaseIT {
 
-    protected static final String TICKETS_BASE_ENDPOINT = "/tickets";
+    private static final String TICKETS_BASE_ENDPOINT = "/tickets";
 
     @Autowired
-    protected TicketRepository ticketRepository;
+    private TicketRepository ticketRepository;
 
     @Autowired
-    protected ScreeningService screeningService;
+    private ScreeningService screeningService;
 
     @Autowired
     private FilmService filmService;
 
     @Autowired
-    protected HallService hallService;
+    private HallService hallService;
 
     @Autowired
-    protected UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    protected Clock clock;
+    private Clock clock;
 
     @Test
     void tickets_are_added() {
@@ -90,12 +90,12 @@ class TicketControllerIT extends BaseIT {
 
     @Test
     void ticket_is_booked_for_existing_screening() {
+        var user = addUser();
         var nonExistingScreeningId = 0L;
         var bookTicketDto = new TicketBookRequest(
                 nonExistingScreeningId,
                 List.of(new Seat(1, 1))
         );
-        var user = addUser();
 
         webTestClient
                 .post()
@@ -114,12 +114,12 @@ class TicketControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
+        var user = addUser();
         var nonExistingSeatId = new Seat(0,0);
         var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
                 List.of(nonExistingSeatId)
         );
-        var user = addUser();
 
         webTestClient
                 .post()
@@ -139,16 +139,16 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
         var ticket = addTicket(screening);
-        var bookTicketDto = new TicketBookRequest(
+        var user = addUser();
+        var ticketBookRequest = new TicketBookRequest(
                 screening.getId(),
                 List.of(ticket.getSeat())
         );
-        var user = addUser();
 
         webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(bookTicketDto)
+                .bodyValue(ticketBookRequest)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
@@ -159,8 +159,8 @@ class TicketControllerIT extends BaseIT {
                 .hasValueSatisfying(bookedTicket -> {
                     assertEquals(1L, bookedTicket.getUserId());
                     assertEquals(user.getId(), bookedTicket.getUserId());
-                    assertEquals(bookTicketDto.screeningId(), bookedTicket.getScreening().getId());
-                    assertEquals(bookTicketDto.seats().getFirst(), bookedTicket.getSeat());
+                    assertEquals(ticketBookRequest.screeningId(), bookedTicket.getScreening().getId());
+                    assertEquals(ticketBookRequest.seats().getFirst(), bookedTicket.getSeat());
                 });
     }
 
@@ -170,13 +170,13 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
         var tickets = addTickets(screening);
+        var user = addUser();
         var seat1 = tickets.get(0).getSeat();
         var seat2 = tickets.get(1).getSeat();
         var bookTicketDto = new TicketBookRequest(
                 screening.getId(),
                 List.of(seat1, seat2)
         );
-        var user = addUser();
 
         webTestClient
                 .post()
@@ -199,7 +199,7 @@ class TicketControllerIT extends BaseIT {
         var screening = addScreening(film.getTitle(), hall.getId());
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
-        var bookTicketDto = new TicketBookRequest(
+        var bookTicketRequest = new TicketBookRequest(
                 screening.getId(),
                 List.of(ticket.getSeat())
         );
@@ -207,7 +207,7 @@ class TicketControllerIT extends BaseIT {
         webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(bookTicketDto)
+                .bodyValue(bookTicketRequest)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
@@ -221,10 +221,10 @@ class TicketControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getTitle(), hall.getId());
-        setCurrentDate(screening.getDate().plusMinutes(59));
         var user = addUser();
-        var ticket = addTicket(screening, user.getId());
-        var bookTicketDto = new TicketBookRequest(
+        var ticket = addTicket(screening);
+        setCurrentDate(screening.getDate().plusMinutes(59));
+        var bookTicketRequest = new TicketBookRequest(
                 screening.getId(),
                 List.of(ticket.getSeat())
         );
@@ -232,7 +232,7 @@ class TicketControllerIT extends BaseIT {
         webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(bookTicketDto)
+                .bodyValue(bookTicketRequest)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
@@ -331,15 +331,15 @@ class TicketControllerIT extends BaseIT {
                 .jsonPath("$[0].userId").value(Matchers.nullValue());
     }
 
-    protected Ticket addTicket(Screening screening) {
+    private Ticket addTicket(Screening screening) {
         return ticketRepository.save(TicketFixtures.createTicket(screening));
     }
 
-    protected Ticket addTicket(Screening screening, Long userId) {
+    private Ticket addTicket(Screening screening, Long userId) {
         return ticketRepository.save(TicketFixtures.createTicket(screening, userId));
     }
 
-    protected List<Ticket> addTickets(Screening screening) {
+    private List<Ticket> addTickets(Screening screening) {
         return ticketRepository.saveAll(
                 List.of(
                         new Ticket(screening, new Seat(1, 1)),
@@ -348,7 +348,7 @@ class TicketControllerIT extends BaseIT {
         );
     }
 
-    protected Screening addScreening(String filmTitle, Long hallId) {
+    private Screening addScreening(String filmTitle, Long hallId) {
         return screeningService.addScreening(createScreening(filmTitle, hallId));
     }
 
@@ -356,15 +356,15 @@ class TicketControllerIT extends BaseIT {
         return filmService.addFilm(createFilm());
     }
 
-    protected Hall addHall() {
+    private Hall addHall() {
         return hallService.createHall(HallFixtures.createHall());
     }
 
-    protected User addUser() {
+    private User addUser() {
         return userRepository.save(UserFixtures.createUser());
     }
 
-    protected User addAdmin() {
+    private User addAdmin() {
         return userRepository.save(UserFixtures.createUser(User.Role.ADMIN));
     }
 

@@ -4,6 +4,9 @@ import com.cinema.BaseIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.cinema.users.UserFixtures.MAIL;
+import static com.cinema.users.UserFixtures.PASSWORD;
+
 class PermissionsIT extends BaseIT {
 
     @Autowired
@@ -11,14 +14,12 @@ class PermissionsIT extends BaseIT {
 
     @Test
     void user_with_admin_role_has_access_to_endpoints_with_admin_prefix() {
-        var userCreateRequest = UserFixtures.createUserCreateRequest();
-        userService.createAdmin(userCreateRequest.mail(), userCreateRequest.password());
-        var sampleAdminEndpoint = "/admin/halls";
+        userService.createAdmin(MAIL, PASSWORD);
 
         webTestClient
                 .options()
-                .uri(sampleAdminEndpoint)
-                .headers(httpHeaders -> httpHeaders.setBasicAuth(userCreateRequest.mail(), userCreateRequest.password()))
+                .uri("/admin/halls")
+                .headers(httpHeaders -> httpHeaders.setBasicAuth(MAIL, PASSWORD))
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -26,14 +27,12 @@ class PermissionsIT extends BaseIT {
 
     @Test
     void user_with_common_role_has_no_access_to_endpoints_with_admin_prefix() {
-        var userCreateRequest = UserFixtures.createUserCreateRequest();
-        userService.createUser(userCreateRequest.mail(), userCreateRequest.password());
-        var sampleAdminEndpoint = "/admin/halls";
+        userService.createUser(MAIL, PASSWORD);
 
         webTestClient
                 .options()
-                .uri(sampleAdminEndpoint)
-                .headers(httpHeaders -> httpHeaders.setBasicAuth(userCreateRequest.mail(), userCreateRequest.password()))
+                .uri("/admin/halls")
+                .headers(httpHeaders -> httpHeaders.setBasicAuth(MAIL, PASSWORD))
                 .exchange()
                 .expectStatus()
                 .isForbidden();
@@ -41,12 +40,11 @@ class PermissionsIT extends BaseIT {
 
     @Test
     void user_dont_have_to_be_authenticated_to_have_access_to_endpoint_with_public_prefix() {
-        var samplePublicEndpoint = "/public/films";
-
         webTestClient
                 .options()
-                .uri(samplePublicEndpoint)
+                .uri("/public/films")
                 .exchange()
-                .expectStatus().isOk();
+                .expectStatus()
+                .isOk();
     }
 }

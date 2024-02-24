@@ -16,7 +16,7 @@ public class FilmService {
     private final FilmRepository filmRepository;
 
     public Film addFilm(Film film) {
-        log.info("Dto:{}", film);
+        log.info("Film:{}", film);
         if (filmRepository.findByTitle(film.getTitle()).isPresent()) {
             throw new FilmTitleNotUniqueException();
         }

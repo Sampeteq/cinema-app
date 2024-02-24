@@ -24,15 +24,15 @@ public class Screening {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime date;
 
-    private String filmTitle;
+    private Long filmId;
 
     private Long hallId;
 
     protected Screening() {}
 
-    public Screening(LocalDateTime date, String filmTitle, Long hallId) {
+    public Screening(LocalDateTime date, Long filmId, Long hallId) {
         this.date = date;
-        this.filmTitle = filmTitle;
+        this.filmId = filmId;
         this.hallId = hallId;
     }
 

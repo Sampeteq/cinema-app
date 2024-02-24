@@ -30,7 +30,7 @@ class ScreeningFactory {
                 start,
                 end
         );
-        var film = filmService.getFilmByTitle(screening.getFilmTitle());
+        var film = filmService.getFilmById(screening.getFilmId());
         var screeningEndDate = calculateEndDate(screening.getDate(), film.getDurationInMinutes());
         var isCollision = screenings
                 .stream()

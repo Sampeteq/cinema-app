@@ -47,7 +47,7 @@ class ScreeningControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
-        var screening = new Screening(SCREENING_DATE, film.getTitle(), hall.getId());
+        var screening = new Screening(SCREENING_DATE, film.getId(), hall.getId());
 
         //when
         webTestClient
@@ -61,7 +61,7 @@ class ScreeningControllerIT extends BaseIT {
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(1L)
                 .jsonPath("$.date").isEqualTo(screening.getDate().toString())
-                .jsonPath("$.filmTitle").isEqualTo(screening.getFilmTitle())
+                .jsonPath("$.filmId").isEqualTo(film.getId())
                 .jsonPath("$.hallId").isEqualTo(screening.getHallId());
     }
 
@@ -72,7 +72,7 @@ class ScreeningControllerIT extends BaseIT {
         var user = addUser();
         var screening = new Screening(
                 CURRENT_DATE.plusDays(6),
-                film.getTitle(),
+                film.getId(),
                 hall.getId()
         );
 
@@ -95,7 +95,7 @@ class ScreeningControllerIT extends BaseIT {
         var user = addUser();
         var screening = new Screening(
                 CURRENT_DATE.plusDays(22),
-                film.getTitle(),
+                film.getId(),
                 hall.getId()
         );
 
@@ -115,11 +115,11 @@ class ScreeningControllerIT extends BaseIT {
     void screenings_collision_cannot_exist() {
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film.getTitle(), hall.getId());
+        var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
         var otherScreening = new Screening(
                 screening.getDate(),
-                film.getTitle(),
+                film.getId(),
                 hall.getId()
         );
 
@@ -170,7 +170,7 @@ class ScreeningControllerIT extends BaseIT {
                 .jsonPath("$[*].*").value(everyItem(notNullValue()))
                 .jsonPath("$[0].id").isEqualTo(screening.getId())
                 .jsonPath("$[0].date").isEqualTo(screening.getDate().toString())
-                .jsonPath("$[0].filmTitle").isEqualTo(screening.getFilmTitle())
+                .jsonPath("$[0].filmId").isEqualTo(screening.getFilmId())
                 .jsonPath("$[0].hallId").isEqualTo(screening.getHallId());
     }
 
@@ -202,8 +202,8 @@ class ScreeningControllerIT extends BaseIT {
         return screeningRepository.save(createScreening());
     }
 
-    private Screening addScreening(String filmTitle, Long hallId) {
-        return screeningRepository.save(createScreening(filmTitle, hallId));
+    private Screening addScreening(Long filmId, Long hallId) {
+        return screeningRepository.save(createScreening(filmId, hallId));
     }
 
     private Screening addScreening(LocalDate date) {

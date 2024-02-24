@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 @Component
 class TicketMapper {
 
-    TicketView mapToView(Ticket ticket) {
+    TicketView mapToView(Ticket ticket, String filmTitle) {
         return new TicketView(
                 ticket.getId(),
-                ticket.getScreening().getFilmTitle(),
+                filmTitle,
                 ticket.getScreening().getDate(),
                 ticket.getScreening().getHallId(),
                 ticket.getSeat().rowNumber(),

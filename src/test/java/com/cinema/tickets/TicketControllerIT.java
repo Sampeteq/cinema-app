@@ -64,7 +64,7 @@ class TicketControllerIT extends BaseIT {
     void tickets_are_added() {
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film.getTitle(), hall.getId());
+        var screening = addScreening(film.getId(), hall.getId());
         var admin = addAdmin();
 
         webTestClient
@@ -81,7 +81,7 @@ class TicketControllerIT extends BaseIT {
                 .exchange()
                 .expectBody()
                 .jsonPath("$").value(hasSize(hall.getSeats().size()))
-                .jsonPath("$.*.filmTitle").value(everyItem(equalTo(screening.getFilmTitle())))
+                .jsonPath("$.*.filmTitle").value(everyItem(equalTo(film.getTitle())))
                 .jsonPath("$.*.screeningDate").value(everyItem(equalTo(screening.getDate().toString())))
                 .jsonPath("$.*.hallId").value(everyItem(equalTo(hall.getId().intValue())))
                 .jsonPath("$.*.rowNumber").exists()
@@ -113,7 +113,7 @@ class TicketControllerIT extends BaseIT {
     void ticket_is_booked_for_existing_seat() {
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film.getTitle(), hall.getId());
+        var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
         var nonExistingSeatId = new Seat(0,0);
         var bookTicketDto = new TicketBookRequest(
@@ -137,7 +137,7 @@ class TicketControllerIT extends BaseIT {
     void ticket_is_booked() {
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film.getTitle(), hall.getId());
+        var screening = addScreening(film.getId(), hall.getId());
         var ticket = addTicket(screening);
         var user = addUser();
         var ticketBookRequest = new TicketBookRequest(
@@ -168,7 +168,7 @@ class TicketControllerIT extends BaseIT {
     void tickets_are_booked() {
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film.getTitle(), hall.getId());
+        var screening = addScreening(film.getId(), hall.getId());
         var tickets = addTickets(screening);
         var user = addUser();
         var seat1 = tickets.get(0).getSeat();
@@ -196,7 +196,7 @@ class TicketControllerIT extends BaseIT {
     void ticket_is_booked_for_free_seat() {
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film.getTitle(), hall.getId());
+        var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
         var bookTicketRequest = new TicketBookRequest(
@@ -220,7 +220,7 @@ class TicketControllerIT extends BaseIT {
     void ticket_is_booked_at_least_1h_before_screening() {
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film.getTitle(), hall.getId());
+        var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
         var ticket = addTicket(screening);
         setCurrentDate(screening.getDate().plusMinutes(59));
@@ -245,7 +245,7 @@ class TicketControllerIT extends BaseIT {
     void ticket_is_cancelled() {
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film.getTitle(), hall.getId());
+        var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
 
@@ -265,7 +265,7 @@ class TicketControllerIT extends BaseIT {
     void ticket_is_cancelled_at_least_24h_before_screening() {
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film.getTitle(), hall.getId());
+        var screening = addScreening(film.getId(), hall.getId());
         setCurrentDate(screening.getDate().plusHours(23));
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
@@ -285,7 +285,7 @@ class TicketControllerIT extends BaseIT {
     void tickets_are_gotten_by_user_id() {
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film.getTitle(), hall.getId());
+        var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
         var ticket = addTicket(screening, user.getId());
 
@@ -299,7 +299,7 @@ class TicketControllerIT extends BaseIT {
                 .expectBody()
                 .jsonPath("$[*]").value(everyItem(notNullValue()))
                 .jsonPath("$[0].id").isEqualTo(ticket.getId())
-                .jsonPath("$[0].filmTitle").isEqualTo(ticket.getScreening().getFilmTitle())
+                .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle())
                 .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().toString())
                 .jsonPath("$[0].hallId").isEqualTo(screening.getHallId())
                 .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().rowNumber())
@@ -311,7 +311,7 @@ class TicketControllerIT extends BaseIT {
     void tickets_are_gotten_by_screening_id() {
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film.getTitle(), hall.getId());
+        var screening = addScreening(film.getId(), hall.getId());
         var ticket = addTicket(screening);
 
         webTestClient
@@ -323,7 +323,7 @@ class TicketControllerIT extends BaseIT {
                 .expectBody()
                 .jsonPath("$[*]").value(everyItem(notNullValue()))
                 .jsonPath("$[0].id").isEqualTo(ticket.getId())
-                .jsonPath("$[0].filmTitle").isEqualTo(ticket.getScreening().getFilmTitle())
+                .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle())
                 .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().toString())
                 .jsonPath("$[0].hallId").isEqualTo(screening.getHallId())
                 .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().rowNumber())
@@ -348,8 +348,8 @@ class TicketControllerIT extends BaseIT {
         );
     }
 
-    private Screening addScreening(String filmTitle, Long hallId) {
-        return screeningService.addScreening(createScreening(filmTitle, hallId));
+    private Screening addScreening(Long filmId, Long hallId) {
+        return screeningService.addScreening(createScreening(filmId, hallId));
     }
 
     private Film addFilm() {

@@ -1,5 +1,6 @@
 package com.cinema.tickets;
 
+import com.cinema.films.FilmService;
 import com.cinema.users.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ class TicketController {
 
     private final TicketService ticketService;
     private final TicketMapper ticketMapper;
+    private final FilmService filmService;
     private final UserService userService;
 
     @PostMapping("/admin/tickets")
@@ -49,7 +51,10 @@ class TicketController {
         return ticketService
                 .getAllTicketsByUserId(userId)
                 .stream()
-                .map(ticketMapper::mapToView)
+                .map(ticket -> {
+                    var film = filmService.getFilmById(ticket.getScreening().getFilmId());
+                    return ticketMapper.mapToView(ticket, film.getTitle());
+                })
                 .toList();
     }
 
@@ -58,7 +63,10 @@ class TicketController {
         return ticketService
                 .getAllTicketsByScreeningId(screeningId)
                 .stream()
-                .map(ticketMapper::mapToView)
+                .map(ticket -> {
+                    var film = filmService.getFilmById(ticket.getScreening().getFilmId());
+                    return ticketMapper.mapToView(ticket, film.getTitle());
+                })
                 .toList();
     }
 }

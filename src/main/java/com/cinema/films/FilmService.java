@@ -33,6 +33,12 @@ public class FilmService {
         filmRepository.delete(film);
     }
 
+    public Film getFilmById(Long filmId) {
+        return filmRepository
+                .findById(filmId)
+                .orElseThrow(FilmNotFoundException::new);
+    }
+
     public Film getFilmByTitle(String title) {
         return filmRepository
                 .findByTitle(title)

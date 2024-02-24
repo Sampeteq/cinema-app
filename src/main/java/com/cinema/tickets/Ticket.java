@@ -1,14 +1,12 @@
 package com.cinema.tickets;
 
 import com.cinema.halls.Seat;
-import com.cinema.screenings.Screening;
 import com.cinema.tickets.exceptions.TicketAlreadyBookedException;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.ToString;
@@ -25,8 +23,7 @@ class Ticket {
     @Version
     private int version;
 
-    @ManyToOne
-    private Screening screening;
+    private Long screeningId;
 
     @Embedded
     private Seat seat;
@@ -35,13 +32,13 @@ class Ticket {
 
     protected Ticket() {}
 
-    Ticket(Screening screening, Seat seat) {
-        this.screening = screening;
+    Ticket(Long screeningId, Seat seat) {
+        this.screeningId = screeningId;
         this.seat = seat;
     }
 
-    Ticket(Screening screening, Seat seat, Long userId) {
-        this.screening = screening;
+    Ticket(Long screeningId, Seat seat, Long userId) {
+        this.screeningId = screeningId;
         this.seat = seat;
         this.userId = userId;
     }

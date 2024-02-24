@@ -11,7 +11,6 @@ interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     @Query("""
                 from Ticket ticket
-                left join fetch ticket.screening screening
                 left join fetch ticket.seat seat
                 where seat = :seat
             """)
@@ -19,7 +18,6 @@ interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     @Query("""
             from Ticket ticket
-            left join fetch ticket.screening screening
             left join fetch ticket.seat seat
             where ticket.id = :ticketId and ticket.userId = :userId
             """)
@@ -27,7 +25,6 @@ interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     @Query("""
             from Ticket ticket
-            left join fetch ticket.screening screening
             left join fetch ticket.seat seat
             where ticket.userId = :userId
             """)

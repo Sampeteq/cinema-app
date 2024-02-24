@@ -32,7 +32,7 @@ public class TicketService {
                 .getHallWithSeatsById(screening.getHallId())
                 .getSeats()
                 .stream()
-                .map(seat -> new Ticket(screening, seat))
+                .map(seat -> new Ticket(screening.getId(), seat))
                 .toList();
         ticketRepository.saveAll(tickets);
     }
@@ -63,7 +63,7 @@ public class TicketService {
                 .findByIdAndUserId(ticketId, userId)
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
-        var screening = screeningService.getScreeningById(ticket.getScreening().getId());
+        var screening = screeningService.getScreeningById(ticket.getScreeningId());
         ticketCancellingPolicy.checkIfCancellingIsPossible(screening.hoursLeftBeforeStart(clock));
         ticket.removeUserId();
         log.info("Ticket cancelled:{}", ticket);

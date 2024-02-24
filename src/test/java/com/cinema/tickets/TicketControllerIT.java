@@ -138,7 +138,7 @@ class TicketControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getId(), hall.getId());
-        var ticket = addTicket(screening);
+        var ticket = addTicket(screening.getId());
         var user = addUser();
         var ticketBookRequest = new TicketBookRequest(
                 screening.getId(),
@@ -159,7 +159,7 @@ class TicketControllerIT extends BaseIT {
                 .hasValueSatisfying(bookedTicket -> {
                     assertEquals(1L, bookedTicket.getUserId());
                     assertEquals(user.getId(), bookedTicket.getUserId());
-                    assertEquals(ticketBookRequest.screeningId(), bookedTicket.getScreening().getId());
+                    assertEquals(ticketBookRequest.screeningId(), bookedTicket.getScreeningId());
                     assertEquals(ticketBookRequest.seats().getFirst(), bookedTicket.getSeat());
                 });
     }
@@ -169,7 +169,7 @@ class TicketControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getId(), hall.getId());
-        var tickets = addTickets(screening);
+        var tickets = addTickets(screening.getId());
         var user = addUser();
         var seat1 = tickets.get(0).getSeat();
         var seat2 = tickets.get(1).getSeat();
@@ -198,7 +198,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
-        var ticket = addTicket(screening, user.getId());
+        var ticket = addTicket(screening.getId(), user.getId());
         var bookTicketRequest = new TicketBookRequest(
                 screening.getId(),
                 List.of(ticket.getSeat())
@@ -222,7 +222,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
-        var ticket = addTicket(screening);
+        var ticket = addTicket(screening.getId());
         setCurrentDate(screening.getDate().plusMinutes(59));
         var bookTicketRequest = new TicketBookRequest(
                 screening.getId(),
@@ -247,7 +247,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
-        var ticket = addTicket(screening, user.getId());
+        var ticket = addTicket(screening.getId(), user.getId());
 
         webTestClient
                 .patch()
@@ -268,7 +268,7 @@ class TicketControllerIT extends BaseIT {
         var screening = addScreening(film.getId(), hall.getId());
         setCurrentDate(screening.getDate().plusHours(23));
         var user = addUser();
-        var ticket = addTicket(screening, user.getId());
+        var ticket = addTicket(screening.getId(), user.getId());
 
         webTestClient
                 .patch()
@@ -287,7 +287,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
-        var ticket = addTicket(screening, user.getId());
+        var ticket = addTicket(screening.getId(), user.getId());
 
         webTestClient
                 .get()
@@ -312,7 +312,7 @@ class TicketControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getId(), hall.getId());
-        var ticket = addTicket(screening);
+        var ticket = addTicket(screening.getId());
 
         webTestClient
                 .get()
@@ -331,19 +331,19 @@ class TicketControllerIT extends BaseIT {
                 .jsonPath("$[0].userId").value(Matchers.nullValue());
     }
 
-    private Ticket addTicket(Screening screening) {
-        return ticketRepository.save(TicketFixtures.createTicket(screening));
+    private Ticket addTicket(Long screeningId) {
+        return ticketRepository.save(TicketFixtures.createTicket(screeningId));
     }
 
-    private Ticket addTicket(Screening screening, Long userId) {
-        return ticketRepository.save(TicketFixtures.createTicket(screening, userId));
+    private Ticket addTicket(Long screeningId, Long userId) {
+        return ticketRepository.save(TicketFixtures.createTicket(screeningId, userId));
     }
 
-    private List<Ticket> addTickets(Screening screening) {
+    private List<Ticket> addTickets(Long screeningId) {
         return ticketRepository.saveAll(
                 List.of(
-                        new Ticket(screening, new Seat(1, 1)),
-                        new Ticket(screening, new Seat(1, 2))
+                        new Ticket(screeningId, new Seat(1, 1)),
+                        new Ticket(screeningId, new Seat(1, 2))
                 )
         );
     }

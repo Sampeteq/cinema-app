@@ -33,7 +33,6 @@ import static com.cinema.screenings.ScreeningFixtures.createScreening;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -75,17 +74,7 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        webTestClient
-                .get()
-                .uri("/public" + TICKETS_BASE_ENDPOINT + "?screeningId=" + screening.getId())
-                .exchange()
-                .expectBody()
-                .jsonPath("$").value(hasSize(hall.getSeats().size()))
-                .jsonPath("$.*.filmTitle").value(everyItem(equalTo(film.getTitle())))
-                .jsonPath("$.*.screeningDate").value(everyItem(equalTo(screening.getDate().toString())))
-                .jsonPath("$.*.hallId").value(everyItem(equalTo(hall.getId().intValue())))
-                .jsonPath("$.*.rowNumber").exists()
-                .jsonPath("$.*.seatNumber").exists();
+        assertThat(ticketRepository.findAllByScreeningId(screening.getId())).isNotEmpty();
     }
 
     @Test

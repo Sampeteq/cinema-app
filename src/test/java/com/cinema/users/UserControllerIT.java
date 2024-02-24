@@ -68,21 +68,15 @@ class UserControllerIT extends BaseIT {
 
         webTestClient
                 .post()
-                .uri(uriBuilder -> uriBuilder
-                        .path(USERS_BASE_ENDPOINT + "/password/reset")
-                        .queryParam("mail", user.getMail())
-                        .build()
-                )
+                .uri(USERS_BASE_ENDPOINT + "/password/reset" + "?mail=" + user.getMail())
                 .attribute("mail", user.getMail())
                 .exchange()
                 .expectStatus()
                 .isOk();
 
-        var userPasswordResetToken = userRepository
-                .findByMail(user.getMail())
-                .orElseThrow()
-                .getPasswordResetToken();
-        assertThat(userPasswordResetToken).isNotNull();
+        assertThat(userRepository.findByMail(user.getMail()))
+                .map(User::getPasswordResetToken)
+                .isNotEmpty();
     }
 
     @Test
@@ -102,12 +96,10 @@ class UserControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        assertThat(
-                userRepository.findByMail(addedUser.getMail())
-        ).hasValueSatisfying(
-                user -> assertTrue(
-                        passwordEncoder.matches(userNewPasswordRequest.newPassword(), user.getPassword())
-                )
-        );
+        assertThat(userRepository.findByMail(addedUser.getMail()))
+                .map(User::getPassword)
+                .isNotEmpty()
+                .get()
+                .matches(password -> passwordEncoder.matches(userNewPasswordRequest.newPassword(), password));
     }
 }

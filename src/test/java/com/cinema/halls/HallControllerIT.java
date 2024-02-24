@@ -62,6 +62,7 @@ class HallControllerIT extends BaseIT {
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus().isNoContent();
+
         assertThat(hallRepository.findById(hall.getId())).isEmpty();
     }
 

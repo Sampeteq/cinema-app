@@ -69,7 +69,7 @@ class FilmControllerIT extends BaseIT {
                 .expectStatus()
                 .isNoContent();
 
-        assertThat(filmRepository.findByTitle(film.getTitle())).isEmpty();
+        assertThat(filmRepository.findById(film.getId())).isEmpty();
     }
 
     @Test
@@ -99,10 +99,7 @@ class FilmControllerIT extends BaseIT {
 
         webTestClient
                 .get()
-                .uri(uriBuilder -> uriBuilder
-                        .path(FILM_PUBLIC_ENDPOINT + "/" + title)
-                        .build()
-                )
+                .uri(FILM_PUBLIC_ENDPOINT + "/" + title)
                 .exchange()
                 .expectBody()
                 .jsonPath("$.*.title").value(everyItem(equalTo(title)));
@@ -117,11 +114,7 @@ class FilmControllerIT extends BaseIT {
 
         webTestClient
                 .get()
-                .uri(uriBuilder -> uriBuilder
-                        .path(FILM_PUBLIC_ENDPOINT)
-                        .queryParam("category", category)
-                        .build()
-                )
+                .uri(FILM_PUBLIC_ENDPOINT + "?category=" + category)
                 .exchange()
                 .expectBody()
                 .jsonPath("$.*.category").value(everyItem(equalTo(category.name())));

@@ -12,7 +12,6 @@ import java.util.UUID;
 import static com.cinema.users.UserFixtures.createUser;
 import static com.cinema.users.UserFixtures.createUserCreateRequest;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -59,7 +58,7 @@ class UserControllerIT extends BaseIT {
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
-                .jsonPath("$.message", equalTo(new UserMailNotUniqueException().getMessage()));
+                .jsonPath("$").isEqualTo(new UserMailNotUniqueException().getMessage());
     }
 
     @Test

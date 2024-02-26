@@ -10,10 +10,10 @@ import com.cinema.halls.Seat;
 import com.cinema.screenings.Screening;
 import com.cinema.screenings.ScreeningService;
 import com.cinema.screenings.exceptions.ScreeningNotFoundException;
-import com.cinema.screenings.exceptions.ScreeningSeatNotFoundException;
 import com.cinema.tickets.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.exceptions.TicketCancelTooLateException;
+import com.cinema.tickets.exceptions.TicketNotFoundException;
 import com.cinema.users.User;
 import com.cinema.users.UserFixtures;
 import com.cinema.users.UserRepository;
@@ -31,7 +31,6 @@ import java.util.List;
 import static com.cinema.films.FilmFixtures.createFilm;
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -95,7 +94,7 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isNotFound()
                 .expectBody()
-                .jsonPath("$.message", equalTo(new ScreeningNotFoundException().getMessage()));
+                .jsonPath("$").isEqualTo(new ScreeningNotFoundException().getMessage());
     }
 
     @Test
@@ -119,7 +118,7 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isNotFound()
                 .expectBody()
-                .jsonPath("$.message", equalTo(new ScreeningSeatNotFoundException().getMessage()));
+                .jsonPath("$").isEqualTo(new TicketNotFoundException().getMessage());
     }
 
     @Test
@@ -202,7 +201,7 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
-                .jsonPath("$.message", equalTo(new TicketAlreadyBookedException().getMessage()));
+                .jsonPath("$").isEqualTo(new TicketAlreadyBookedException().getMessage());
     }
 
     @Test
@@ -227,7 +226,7 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
-                .jsonPath("$.message", equalTo(new TicketBookTooLateException().getMessage()));
+                .jsonPath("$").isEqualTo(new TicketBookTooLateException().getMessage());
     }
 
     @Test
@@ -267,7 +266,7 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()
-                .jsonPath("$.message", equalTo(new TicketCancelTooLateException().getMessage()));
+                .jsonPath("$").isEqualTo(new TicketCancelTooLateException().getMessage());
     }
 
     @Test

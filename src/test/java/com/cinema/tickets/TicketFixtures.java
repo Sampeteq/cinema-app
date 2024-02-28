@@ -11,6 +11,8 @@ class TicketFixtures {
     }
 
     static Ticket createTicket(Long screeningId, Long userId) {
-        return new Ticket(screeningId, SEAT, userId);
+        var ticket = new Ticket(screeningId, SEAT);
+        ticket.assignUserId(userId);
+        return ticket;
     }
 }

@@ -37,12 +37,6 @@ class Ticket {
         this.seat = seat;
     }
 
-    Ticket(Long screeningId, Seat seat, Long userId) {
-        this.screeningId = screeningId;
-        this.seat = seat;
-        this.userId = userId;
-    }
-
     void assignUserId(Long userId) {
         if (this.userId != null) {
             throw new TicketAlreadyBookedException();

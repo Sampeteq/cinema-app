@@ -35,14 +35,12 @@ public class FilmService {
                 .orElseThrow(FilmNotFoundException::new);
     }
 
-    public Film getFilmByTitle(String title) {
-        return filmRepository
-                .findByTitle(title)
-                .orElseThrow(FilmNotFoundException::new);
-    }
-
     public List<Film> getAllFilms() {
         return filmRepository.findAll();
+    }
+
+    public List<Film> getFilmsByTitle(String title) {
+        return filmRepository.findByTitle(title);
     }
 
     public List<Film> getFilmsByCategory(Film.Category category) {

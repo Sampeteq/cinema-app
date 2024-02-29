@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,13 +34,18 @@ class FilmController {
         filmService.deleteFilm(id);
     }
 
-    @GetMapping("/public/films/{title}")
-    Film getFilmByTitle(@PathVariable String title) {
-        return filmService.getFilmByTitle(title);
+    @GetMapping("/public/films")
+    List<Film> getAllFilms() {
+        return filmService.getAllFilms();
     }
 
-    @GetMapping("/public/films")
-    List<Film> getAllFilms(@RequestParam(required = false) Film.Category category) {
-        return category == null ? filmService.getAllFilms() : filmService.getFilmsByCategory(category);
+    @GetMapping("/public/films/title/{title}")
+    List<Film> getAllFilms(@PathVariable String title) {
+        return filmService.getFilmsByTitle(title);
+    }
+
+    @GetMapping("/public/films/category/{category}")
+    List<Film> getAllFilms(@PathVariable Film.Category category) {
+        return filmService.getFilmsByCategory(category);
     }
 }

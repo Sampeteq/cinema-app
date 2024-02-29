@@ -92,14 +92,14 @@ class FilmControllerIT extends BaseIT {
 
     @Test
     void films_are_gotten_by_title() {
-        var title = "Film";
-        var otherTitle = "Other Film";
+        var title = "Title 1";
+        var otherTitle = "Title 2";
         addFilm(title);
         addFilm(otherTitle);
 
         webTestClient
                 .get()
-                .uri(FILM_PUBLIC_ENDPOINT + "/" + title)
+                .uri(FILM_PUBLIC_ENDPOINT + "/title/" + title)
                 .exchange()
                 .expectBody()
                 .jsonPath("$.*.title").value(everyItem(equalTo(title)));
@@ -114,7 +114,7 @@ class FilmControllerIT extends BaseIT {
 
         webTestClient
                 .get()
-                .uri(FILM_PUBLIC_ENDPOINT + "?category=" + category)
+                .uri(FILM_PUBLIC_ENDPOINT + "/category/" + category)
                 .exchange()
                 .expectBody()
                 .jsonPath("$.*.category").value(everyItem(equalTo(category.name())));

@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -21,11 +22,14 @@ public class Screening {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime date;
 
+    @NotNull
     private Long filmId;
 
+    @NotNull
     private Long hallId;
 
     protected Screening() {}

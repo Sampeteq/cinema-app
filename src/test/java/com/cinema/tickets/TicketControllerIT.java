@@ -27,6 +27,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.cinema.films.FilmFixtures.createFilm;
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
@@ -73,7 +74,7 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        assertThat(ticketRepository.findAllByScreeningId(screening.getId())).isNotEmpty();
+        assertThat(ticketRepository.getAllByScreeningId(screening.getId())).isNotEmpty();
     }
 
     @Test
@@ -142,7 +143,7 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        assertThat(ticketRepository.findByIdAndUserId(1L, 1L))
+        assertThat(ticketRepository.getByIdAndUserId(1L, 1L))
                 .isNotEmpty()
                 .hasValueSatisfying(bookedTicket -> {
                     assertEquals(1L, bookedTicket.getUserId());
@@ -175,7 +176,7 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        assertThat(ticketRepository.findAllByUserId(user.getId()))
+        assertThat(ticketRepository.getAllByUserId(user.getId()))
                 .isNotEmpty()
                 .allSatisfy(ticket -> assertEquals(user.getId(), ticket.getUserId()));
     }
@@ -244,7 +245,7 @@ class TicketControllerIT extends BaseIT {
                 .exchange()
                 .expectStatus().isOk();
 
-        assertThat(ticketRepository.findById(ticket.getId()))
+        assertThat(ticketRepository.getById(ticket.getId()))
                 .isNotEmpty()
                 .hasValueSatisfying(cancelledTicket -> assertNull(cancelledTicket.getUserId()));
     }
@@ -320,20 +321,20 @@ class TicketControllerIT extends BaseIT {
     }
 
     private Ticket addTicket(Long screeningId) {
-        return ticketRepository.save(TicketFixtures.createTicket(screeningId));
+        return ticketRepository.add(TicketFixtures.createTicket(screeningId));
     }
 
     private Ticket addTicket(Long screeningId, Long userId) {
-        return ticketRepository.save(TicketFixtures.createTicket(screeningId, userId));
+        return ticketRepository.add(TicketFixtures.createTicket(screeningId, userId));
     }
 
     private List<Ticket> addTickets(Long screeningId) {
-        return ticketRepository.saveAll(
-                List.of(
+        return Stream.of(
                         new Ticket(screeningId, new Seat(1, 1)),
                         new Ticket(screeningId, new Seat(1, 2))
                 )
-        );
+                .map(ticketRepository::add)
+                .toList();
     }
 
     private Screening addScreening(Long filmId, Long hallId) {

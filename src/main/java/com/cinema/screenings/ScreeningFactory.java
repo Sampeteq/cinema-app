@@ -25,7 +25,7 @@ class ScreeningFactory {
         }
         var start = screening.getDate().toLocalDate().atStartOfDay();
         var end = start.plusHours(24).minusMinutes(1);
-        var screenings = screeningRepository.findByHallIdAndDateBetween(
+        var screenings = screeningRepository.getByHallIdAndDateBetween(
                 screening.getHallId(),
                 start,
                 end

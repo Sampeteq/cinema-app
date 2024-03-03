@@ -1,13 +1,20 @@
 package com.cinema.screenings;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-interface ScreeningRepository extends JpaRepository<Screening, Long> {
+interface ScreeningRepository {
 
-    List<Screening> findScreeningsByDateBetween(LocalDateTime start, LocalDateTime end);
+    Screening save(Screening screening);
 
-    List<Screening> findByHallIdAndDateBetween(Long id, LocalDateTime start, LocalDateTime end);
+    void delete(Screening screening);
+
+    Optional<Screening> getById(Long id);
+
+    List<Screening> getAll();
+
+    List<Screening> getScreeningsByDateBetween(LocalDateTime start, LocalDateTime end);
+
+    List<Screening> getByHallIdAndDateBetween(Long id, LocalDateTime start, LocalDateTime end);
 }

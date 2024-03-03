@@ -1,18 +1,21 @@
 package com.cinema.tickets;
 
 import com.cinema.halls.Seat;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-interface TicketRepository extends JpaRepository<Ticket, Long> {
+interface TicketRepository {
 
-    Optional<Ticket> findBySeat(Seat seat);
+    Ticket add(Ticket ticket);
 
-    Optional<Ticket> findByIdAndUserId(Long ticketId, Long userId);
+    Optional<Ticket> getById(Long id);
 
-    List<Ticket> findAllByUserId(Long userId);
+    Optional<Ticket> getBySeat(Seat seat);
 
-    List<Ticket> findAllByScreeningId(Long screeningId);
+    Optional<Ticket> getByIdAndUserId(Long ticketId, Long userId);
+
+    List<Ticket> getAllByUserId(Long userId);
+
+    List<Ticket> getAllByScreeningId(Long screeningId);
 }

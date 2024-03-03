@@ -29,7 +29,7 @@ public class ScreeningService {
     public void deleteScreening(Long id) {
         log.info("Screening id:{}", id);
         var screening = screeningRepository
-                .findById(id)
+                .getById(id)
                 .orElseThrow(ScreeningNotFoundException::new);
         screeningRepository.delete(screening);
     }
@@ -37,16 +37,16 @@ public class ScreeningService {
     public Screening getScreeningById(Long screeningId) {
         log.info("Screening id:{}", screeningId);
         return screeningRepository
-                .findById(screeningId)
+                .getById(screeningId)
                 .orElseThrow(ScreeningNotFoundException::new);
     }
 
     public List<Screening> getAllScreenings() {
-        return screeningRepository.findAll();
+        return screeningRepository.getAll();
     }
 
     public List<Screening> getScreeningsByDate(LocalDate date) {
-        return screeningRepository.findScreeningsByDateBetween(
+        return screeningRepository.getScreeningsByDateBetween(
                 date.atStartOfDay(),
                 date.atStartOfDay().plusHours(23).plusMinutes(59)
         );

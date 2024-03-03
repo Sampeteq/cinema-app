@@ -1,20 +1,19 @@
 package com.cinema.halls;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
 import java.util.Optional;
 
-interface HallRepository extends JpaRepository<Hall, Long> {
+interface HallRepository {
 
-    @Query("""
-            select hall from Hall hall left join fetch hall.seats
-            """)
-    List<Hall> findAllWithSeats();
+    Hall save(Hall hall);
 
-    @Query("""
-                select hall from Hall hall left join fetch hall.seats
-            """)
-    Optional<Hall> findByIdWithSeats(Long hallId);
+    void delete(Hall hall);
+
+    boolean existsById(Long id);
+
+    Optional<Hall> getById(Long id);
+
+    Optional<Hall> getByIdWithSeats(Long id);
+
+    List<Hall> getAllWithSeats();
 }

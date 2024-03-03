@@ -63,7 +63,7 @@ class HallControllerIT extends BaseIT {
                 .exchange()
                 .expectStatus().isNoContent();
 
-        assertThat(hallRepository.findById(hall.getId())).isEmpty();
+        assertThat(hallRepository.getById(hall.getId())).isEmpty();
     }
 
     @Test

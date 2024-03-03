@@ -24,7 +24,7 @@ public class HallService {
     public void deleteHall(Long id) {
         log.info("Hall id:{}", id);
         var hall = hallRepository
-                .findById(id)
+                .getById(id)
                 .orElseThrow(HallNotFoundException::new);
         log.info("Found hall:{}", hall);
         hallRepository.delete(hall);
@@ -32,12 +32,12 @@ public class HallService {
     }
 
     public List<Hall> getAllHallsWithSeats() {
-        return hallRepository.findAllWithSeats();
+        return hallRepository.getAllWithSeats();
     }
 
     public Hall getHallWithSeatsById(Long hallId) {
         return hallRepository
-                .findByIdWithSeats(hallId)
+                .getByIdWithSeats(hallId)
                 .orElseThrow(HallNotFoundException::new);
     }
 

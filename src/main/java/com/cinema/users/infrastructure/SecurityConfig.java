@@ -69,7 +69,7 @@ class SecurityConfig {
     @Bean
     UserDetailsService userDetailsService(UserRepository userRepository) {
         return username -> userRepository
-                .findByMail(username)
+                .getByMail(username)
                 .map(user -> User
                         .builder()
                         .username(user.getMail())

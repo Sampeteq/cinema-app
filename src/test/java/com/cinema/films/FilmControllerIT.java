@@ -69,7 +69,7 @@ class FilmControllerIT extends BaseIT {
                 .expectStatus()
                 .isNoContent();
 
-        assertThat(filmRepository.findById(film.getId())).isEmpty();
+        assertThat(filmRepository.getById(film.getId())).isEmpty();
     }
 
     @Test

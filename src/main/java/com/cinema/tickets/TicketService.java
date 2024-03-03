@@ -34,7 +34,7 @@ public class TicketService {
                 .stream()
                 .map(seat -> new Ticket(screening.getId(), seat))
                 .toList();
-        ticketRepository.saveAll(tickets);
+        tickets.forEach(ticketRepository::add);
     }
 
     @Transactional
@@ -47,7 +47,7 @@ public class TicketService {
         seats.forEach(
                 seat -> {
                     var ticket = ticketRepository
-                            .findBySeat(seat)
+                            .getBySeat(seat)
                             .orElseThrow(TicketNotFoundException::new);
                     log.info("Found ticket: {}", ticket);
                     ticket.assignUserId(userId);
@@ -60,7 +60,7 @@ public class TicketService {
     public void cancelTicket(Long ticketId, Long userId) {
         log.info("Ticket id:{}", ticketId);
         var ticket = ticketRepository
-                .findByIdAndUserId(ticketId, userId)
+                .getByIdAndUserId(ticketId, userId)
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
         var screening = screeningService.getScreeningById(ticket.getScreeningId());
@@ -70,10 +70,10 @@ public class TicketService {
     }
 
     public List<Ticket> getAllTicketsByUserId(Long userId) {
-        return ticketRepository.findAllByUserId(userId);
+        return ticketRepository.getAllByUserId(userId);
     }
 
     public List<Ticket> getAllTicketsByScreeningId(Long screeningId) {
-        return ticketRepository.findAllByScreeningId(screeningId);
+        return ticketRepository.getAllByScreeningId(screeningId);
     }
 }

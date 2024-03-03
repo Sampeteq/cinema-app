@@ -37,7 +37,7 @@ class UserControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        assertThat(userRepository.findByMail(userCreateRequest.mail()))
+        assertThat(userRepository.getByMail(userCreateRequest.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {
                     assertEquals(userCreateRequest.mail(), user.getMail());
@@ -73,7 +73,7 @@ class UserControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        assertThat(userRepository.findByMail(user.getMail()))
+        assertThat(userRepository.getByMail(user.getMail()))
                 .map(User::getPasswordResetToken)
                 .isNotEmpty();
     }
@@ -95,7 +95,7 @@ class UserControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        assertThat(userRepository.findByMail(addedUser.getMail()))
+        assertThat(userRepository.getByMail(addedUser.getMail()))
                 .map(User::getPassword)
                 .isNotEmpty()
                 .get()

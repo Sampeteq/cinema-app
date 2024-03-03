@@ -23,7 +23,7 @@ public class UserService {
     private final MailService mailService;
 
     public void createUser(String mail, String password) {
-        if (userRepository.findByMail(mail).isPresent()) {
+        if (userRepository.getByMail(mail).isPresent()) {
             throw new UserMailNotUniqueException();
         }
         var user = new User(mail, passwordEncoder.encode(password), User.Role.COMMON);
@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public void createAdmin(String mail, String password) {
-        if (userRepository.findByMail(mail).isEmpty()) {
+        if (userRepository.getByMail(mail).isEmpty()) {
             var admin = new User(mail, passwordEncoder.encode(password), User.Role.ADMIN);
             userRepository.save(admin);
             log.info("Admin added");
@@ -41,7 +41,7 @@ public class UserService {
     @Transactional
     public void resetUserPassword(String mail) {
         var user = userRepository
-                .findByMail(mail)
+                .getByMail(mail)
                 .orElseThrow(UserNotFoundException::new);
         var passwordResetToken = UUID.randomUUID();
         user.setPasswordResetToken(passwordResetToken);
@@ -53,7 +53,7 @@ public class UserService {
     @Transactional
     public void setNewUserPassword(String newUserPassword, UUID token) {
         var user = userRepository
-                .findByPasswordResetToken(token)
+                .getByPasswordResetToken(token)
                 .orElseThrow(UserNotFoundException::new);
         var encodedPassword = passwordEncoder.encode(newUserPassword);
         user.setNewPassword(encodedPassword);
@@ -65,7 +65,7 @@ public class UserService {
                 .getAuthentication()
                 .getName();
         return userRepository
-                .findByMail(mail)
+                .getByMail(mail)
                 .orElseThrow(() -> new UsernameNotFoundException(mail))
                 .getId();
     }

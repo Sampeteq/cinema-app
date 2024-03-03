@@ -1,5 +1,7 @@
 package com.cinema.films;
 
+import com.cinema.films.domain.Film;
+
 import java.time.Year;
 
 public class FilmFixtures {

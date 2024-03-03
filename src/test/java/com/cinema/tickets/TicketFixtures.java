@@ -1,16 +1,17 @@
 package com.cinema.tickets;
 
-import com.cinema.halls.Seat;
+import com.cinema.halls.domain.Seat;
+import com.cinema.tickets.domain.Ticket;
 
-class TicketFixtures {
+public class TicketFixtures {
 
-    static final Seat SEAT = new Seat(1, 1);
+    public static final Seat SEAT = new Seat(1, 1);
 
-    static Ticket createTicket(Long screeningId) {
+    public static Ticket createTicket(Long screeningId) {
         return new Ticket(screeningId, SEAT);
     }
 
-    static Ticket createTicket(Long screeningId, Long userId) {
+    public static Ticket createTicket(Long screeningId, Long userId) {
         var ticket = new Ticket(screeningId, SEAT);
         ticket.assignUserId(userId);
         return ticket;

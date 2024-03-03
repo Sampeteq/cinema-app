@@ -1,5 +1,7 @@
 package com.cinema.users;
 
+import com.cinema.users.domain.User;
+import com.cinema.users.infrastructure.UserCreateRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;

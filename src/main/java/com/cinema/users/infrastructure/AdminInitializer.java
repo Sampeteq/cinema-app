@@ -1,6 +1,6 @@
 package com.cinema.users.infrastructure;
 
-import com.cinema.users.UserService;
+import com.cinema.users.domain.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Profile;

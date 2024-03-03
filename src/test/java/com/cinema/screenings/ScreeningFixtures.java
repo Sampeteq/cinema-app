@@ -1,5 +1,7 @@
 package com.cinema.screenings;
 
+import com.cinema.screenings.domain.Screening;
+
 import java.time.LocalDateTime;
 
 import static com.cinema.ClockFixtures.CURRENT_DATE;

@@ -51,7 +51,7 @@ public final class UserFixtures {
 
     public static User createUser(UUID passwordResetToken) {
         var user = new User(MAIL, PASSWORD, User.Role.COMMON);
-        user.setPasswordResetToken(passwordResetToken);
+        user.assignPasswordResetToken(passwordResetToken);
         return user;
     }
 }

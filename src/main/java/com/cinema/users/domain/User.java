@@ -48,7 +48,7 @@ public class User {
         this.passwordResetToken = null;
     }
 
-    public void setPasswordResetToken(UUID passwordResetToken) {
+    public void assignPasswordResetToken(UUID passwordResetToken) {
         this.passwordResetToken = passwordResetToken;
     }
 }

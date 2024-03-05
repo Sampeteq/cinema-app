@@ -44,7 +44,7 @@ public class UserService {
                 .getByMail(mail)
                 .orElseThrow(UserNotFoundException::new);
         var passwordResetToken = UUID.randomUUID();
-        user.setPasswordResetToken(passwordResetToken);
+        user.assignPasswordResetToken(passwordResetToken);
         var subject = "Password reset";
         var text = "Your password reset token";
         mailService.sendMail(mail, subject, text);

@@ -46,7 +46,7 @@ public class UserService {
         var passwordResetToken = UUID.randomUUID();
         user.assignPasswordResetToken(passwordResetToken);
         var subject = "Password reset";
-        var text = "Your password reset token";
+        var text = "Your password reset token: " + passwordResetToken;
         mailService.sendMail(mail, subject, text);
     }
 

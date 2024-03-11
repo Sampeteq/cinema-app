@@ -6,12 +6,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.Clock;
 
 import static com.cinema.ClockFixtures.INSTANT;
-import static com.cinema.ClockFixtures.ZONE_OFFSET;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -28,14 +28,13 @@ public abstract class BaseIT {
     @MockBean
     private MailService mailService;
 
-    @MockBean
+    @SpyBean
     private Clock clock;
 
     @BeforeEach
     protected void setUpMocks() {
         doNothing().when(mailService).sendMail(any(), any(), any());
         when(clock.instant()).thenReturn(INSTANT);
-        when(clock.getZone()).thenReturn(ZONE_OFFSET);
     }
 
     @AfterEach

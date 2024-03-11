@@ -2,15 +2,13 @@ package com.cinema.screenings.domain;
 
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-@Component
 @RequiredArgsConstructor
-class ScreeningDatePolicy {
+public class ScreeningDatePolicy {
 
     private final Clock clock;
 

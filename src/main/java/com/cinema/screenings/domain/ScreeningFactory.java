@@ -5,13 +5,11 @@ import com.cinema.halls.domain.HallService;
 import com.cinema.halls.domain.exceptions.HallNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-@Component
 @RequiredArgsConstructor
-class ScreeningFactory {
+public class ScreeningFactory {
 
     private final ScreeningDatePolicy screeningDatePolicy;
     private final ScreeningRepository screeningRepository;

@@ -1,10 +1,8 @@
 package com.cinema.tickets.domain;
 
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
-import org.springframework.stereotype.Component;
 
-@Component
-class TicketBookingPolicy {
+public class TicketBookingPolicy {
 
     public void checkIfBookingIsPossible(long hoursLeftBeforeScreeningStart) {
         if (hoursLeftBeforeScreeningStart < 1) {

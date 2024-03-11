@@ -4,6 +4,8 @@ import com.cinema.BaseIT;
 import com.cinema.users.domain.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.cinema.users.UserFixtures.MAIL;
 import static com.cinema.users.UserFixtures.PASSWORD;
@@ -19,7 +21,7 @@ class PermissionsIT extends BaseIT {
 
         webTestClient
                 .options()
-                .uri("/admin/halls")
+                .uri("/admin/test")
                 .headers(httpHeaders -> httpHeaders.setBasicAuth(MAIL, PASSWORD))
                 .exchange()
                 .expectStatus()
@@ -32,7 +34,7 @@ class PermissionsIT extends BaseIT {
 
         webTestClient
                 .options()
-                .uri("/admin/halls")
+                .uri("/admin/test")
                 .headers(httpHeaders -> httpHeaders.setBasicAuth(MAIL, PASSWORD))
                 .exchange()
                 .expectStatus()
@@ -48,4 +50,14 @@ class PermissionsIT extends BaseIT {
                 .expectStatus()
                 .isOk();
     }
+}
+
+@RestController
+class TestController {
+
+    @GetMapping("/admin/test")
+    void adminEndpoint() {}
+
+    @GetMapping("/public/test")
+    void publicEndpoint() {}
 }

@@ -6,6 +6,7 @@ import com.cinema.halls.domain.exceptions.HallNotFoundException;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import lombok.RequiredArgsConstructor;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
@@ -15,9 +16,10 @@ public class ScreeningFactory {
     private final ScreeningRepository screeningRepository;
     private final FilmService filmService;
     private final HallService hallService;
+    private final Clock clock;
 
     void validateScreening(Screening screening) {
-        screeningDatePolicy.checkScreeningDate(screening.getDate());
+        screeningDatePolicy.checkScreeningDate(screening.getDate(), clock);
         if (!hallService.hallExistsById(screening.getHallId())) {
             throw new HallNotFoundException();
         }

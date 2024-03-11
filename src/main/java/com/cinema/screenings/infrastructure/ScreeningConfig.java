@@ -21,12 +21,13 @@ class ScreeningConfig {
             HallService hallService,
             Clock clock
     ) {
-        var screeningDatePolicy = new ScreeningDatePolicy(clock);
+        var screeningDatePolicy = new ScreeningDatePolicy();
         var screeningFactory = new ScreeningFactory(
                 screeningDatePolicy,
                 screeningRepository,
                 filmService,
-                hallService
+                hallService,
+                clock
         );
         return new ScreeningService(screeningFactory, screeningRepository);
     }

@@ -1,7 +1,6 @@
 package com.cinema.users.infrastructure;
 
 import com.cinema.BaseIT;
-import com.cinema.users.UserFixtures;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
@@ -13,8 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
+import static com.cinema.users.UserFixtures.MAIL;
+import static com.cinema.users.UserFixtures.PASSWORD;
 import static com.cinema.users.UserFixtures.createUser;
-import static com.cinema.users.UserFixtures.createUserCreateRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,7 +31,7 @@ class UserControllerIT extends BaseIT {
 
     @Test
     void user_is_created() {
-        var userCreateRequest = UserFixtures.createUserCreateRequest();
+        var userCreateRequest = new UserCreateRequest(MAIL, PASSWORD);
 
         webTestClient
                 .post()
@@ -52,8 +52,8 @@ class UserControllerIT extends BaseIT {
 
     @Test
     void user_name_cannot_be_duplicated() {
-        var user = userRepository.save(createUser("user1@mail.com"));
-        var userCreateRequest = createUserCreateRequest(user.getMail());
+        var user = userRepository.save(createUser());
+        var userCreateRequest = new UserCreateRequest(user.getMail(), PASSWORD);
 
         webTestClient
                 .post()

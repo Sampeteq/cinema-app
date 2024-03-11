@@ -1,7 +1,6 @@
 package com.cinema.users;
 
 import com.cinema.users.domain.User;
-import com.cinema.users.infrastructure.UserCreateRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
@@ -13,20 +12,6 @@ public final class UserFixtures {
     public static final String PASSWORD = "password1";
 
     private UserFixtures() {
-    }
-
-    public static UserCreateRequest createUserCreateRequest() {
-        return new UserCreateRequest(
-                MAIL,
-                PASSWORD
-        );
-    }
-
-    public static UserCreateRequest createUserCreateRequest(String mail) {
-        return new UserCreateRequest(
-                mail,
-                PASSWORD
-        );
     }
 
     public static User createUser() {

@@ -7,7 +7,6 @@ import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 public class ScreeningFactory {
@@ -24,7 +23,7 @@ public class ScreeningFactory {
             throw new HallNotFoundException();
         }
         var film = filmService.getFilmById(screening.getFilmId());
-        var screeningEndDate = calculateEndDate(screening.getDate(), film.getDurationInMinutes());
+        var screeningEndDate = screening.getDate().plusMinutes(film.getDurationInMinutes());
         var collisions = screeningRepository.getCollisions(
                 screening.getDate(),
                 screeningEndDate,
@@ -34,9 +33,5 @@ public class ScreeningFactory {
             throw new ScreeningsCollisionsException();
         }
         screening.assignEndDate(screeningEndDate);
-    }
-
-    private static LocalDateTime calculateEndDate(LocalDateTime date, int filmDurationInMinutes) {
-        return date.plusMinutes(filmDurationInMinutes);
     }
 }

@@ -16,5 +16,5 @@ public interface ScreeningRepository {
 
     List<Screening> getScreeningsByDateBetween(LocalDateTime start, LocalDateTime end);
 
-    List<Screening> getByHallIdAndDateBetween(Long id, LocalDateTime start, LocalDateTime end);
+    List<Screening> getCollisions(LocalDateTime date, LocalDateTime endDate, Long hallId);
 }

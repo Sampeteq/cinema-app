@@ -23,41 +23,20 @@ public class ScreeningFactory {
         if (!hallService.hallExistsById(screening.getHallId())) {
             throw new HallNotFoundException();
         }
-        var start = screening.getDate().toLocalDate().atStartOfDay();
-        var end = start.plusHours(24).minusMinutes(1);
-        var screenings = screeningRepository.getByHallIdAndDateBetween(
-                screening.getHallId(),
-                start,
-                end
-        );
         var film = filmService.getFilmById(screening.getFilmId());
         var screeningEndDate = calculateEndDate(screening.getDate(), film.getDurationInMinutes());
-        var isCollision = screenings
-                .stream()
-                .anyMatch(otherScreening -> collide(
-                                screening.getDate(),
-                                screeningEndDate,
-                                otherScreening.getDate(),
-                                calculateEndDate(otherScreening.getDate(), film.getDurationInMinutes())
-                        )
-                );
-        if (isCollision) {
+        var collisions = screeningRepository.getCollisions(
+                screening.getDate(),
+                screeningEndDate,
+                screening.getHallId()
+        );
+        if (!collisions.isEmpty()) {
             throw new ScreeningsCollisionsException();
         }
+        screening.assignEndDate(screeningEndDate);
     }
 
     private static LocalDateTime calculateEndDate(LocalDateTime date, int filmDurationInMinutes) {
         return date.plusMinutes(filmDurationInMinutes);
-    }
-
-    private static boolean collide(
-            LocalDateTime date,
-            LocalDateTime endDate,
-            LocalDateTime otherDate,
-            LocalDateTime otherEndDate
-    ) {
-        return
-                (!otherDate.isAfter(date) && !otherEndDate.isBefore(date)) ||
-                (otherDate.isAfter(date) && !otherDate.isAfter(endDate));
     }
 }

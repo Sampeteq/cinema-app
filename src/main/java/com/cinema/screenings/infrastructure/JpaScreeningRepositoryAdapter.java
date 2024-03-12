@@ -39,7 +39,7 @@ class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     @Override
-    public List<Screening> getByHallIdAndDateBetween(Long id, LocalDateTime start, LocalDateTime end) {
-        return jpaScreeningRepository.findByHallIdAndDateBetween(id, start, end);
+    public List<Screening> getCollisions(LocalDateTime date, LocalDateTime endDate, Long hallId) {
+        return jpaScreeningRepository.getCollisions(date, endDate, hallId);
     }
 }

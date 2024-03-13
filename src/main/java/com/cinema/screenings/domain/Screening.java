@@ -38,15 +38,10 @@ public class Screening {
 
     protected Screening() {}
 
-    public Screening(LocalDateTime date, Long filmId, Long hallId) {
-        this.date = date;
-        this.filmId = filmId;
-        this.hallId = hallId;
-    }
-
-    public Screening(LocalDateTime date, LocalDateTime endDate, Long hallId) {
+    public Screening(LocalDateTime date, LocalDateTime endDate, Long filmId, Long hallId) {
         this.date = date;
         this.endDate = endDate;
+        this.filmId = filmId;
         this.hallId = hallId;
     }
 

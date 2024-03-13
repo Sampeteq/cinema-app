@@ -17,43 +17,39 @@ public class ScreeningFixtures {
     public static final long HALL_ID = 1L;
 
     public static Screening createScreening() {
-        var screening = new Screening(
+        return new Screening(
                 SCREENING_DATE,
+                SCREENING_END_DATE,
                 FILM_ID,
                 HALL_ID
         );
-        screening.assignEndDate(SCREENING_END_DATE);
-        return screening;
     }
 
     public static Screening createScreening(Long filmId, Long hallId) {
-        var screening = new Screening(
+        return new Screening(
                 SCREENING_DATE,
+                SCREENING_END_DATE,
                 filmId,
                 hallId
         );
-        screening.assignEndDate(SCREENING_END_DATE);
-        return screening;
     }
 
 
     public static Screening createScreening(LocalDateTime screeningDate) {
-        var screening = new Screening(
+        return new Screening(
                 screeningDate,
+                SCREENING_END_DATE,
                 FILM_ID,
                 HALL_ID
         );
-        screening.assignEndDate(SCREENING_END_DATE);
-        return screening;
     }
 
     public static Screening createScreening(LocalDateTime screeningDate, Long hallId) {
-        var screening = new Screening(
+        return new Screening(
                 screeningDate,
+                SCREENING_END_DATE,
                 FILM_ID,
                 hallId
         );
-        screening.assignEndDate(SCREENING_END_DATE);
-        return screening;
     }
 }

@@ -50,7 +50,7 @@ class ScreeningControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
-        var screening = new Screening(SCREENING_DATE, film.getId(), hall.getId());
+        var screening = new Screening(SCREENING_DATE, null, film.getId(), hall.getId());
 
         //when
         webTestClient
@@ -75,6 +75,7 @@ class ScreeningControllerIT extends BaseIT {
         var user = addUser();
         var screening = new Screening(
                 CURRENT_DATE.plusDays(6),
+                null,
                 film.getId(),
                 hall.getId()
         );
@@ -98,6 +99,7 @@ class ScreeningControllerIT extends BaseIT {
         var user = addUser();
         var screening = new Screening(
                 CURRENT_DATE.plusDays(22),
+                null,
                 film.getId(),
                 hall.getId()
         );
@@ -122,6 +124,7 @@ class ScreeningControllerIT extends BaseIT {
         var user = addUser();
         var otherScreening = new Screening(
                 screening.getDate(),
+                null,
                 film.getId(),
                 hall.getId()
         );

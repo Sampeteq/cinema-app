@@ -8,6 +8,7 @@ import com.cinema.halls.domain.Hall;
 import com.cinema.halls.HallFixtures;
 import com.cinema.halls.domain.HallService;
 import com.cinema.screenings.domain.Screening;
+import com.cinema.screenings.domain.ScreeningCreateDto;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
@@ -50,22 +51,22 @@ class ScreeningControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
-        var screening = new Screening(SCREENING_DATE, null, film.getId(), hall.getId());
+        var screeningCreateDto = new ScreeningCreateDto(SCREENING_DATE, film.getId(), hall.getId());
 
         //when
         webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .bodyValue(screening)
+                .bodyValue(screeningCreateDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isCreated()
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(1L)
-                .jsonPath("$.date").isEqualTo(screening.getDate().toString())
+                .jsonPath("$.date").isEqualTo(screeningCreateDto.date().toString())
                 .jsonPath("$.filmId").isEqualTo(film.getId())
-                .jsonPath("$.hallId").isEqualTo(screening.getHallId());
+                .jsonPath("$.hallId").isEqualTo(screeningCreateDto.hallId());
     }
 
     @Test
@@ -73,9 +74,8 @@ class ScreeningControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
-        var screening = new Screening(
+        var screeningCreateDto = new ScreeningCreateDto(
                 CURRENT_DATE.plusDays(6),
-                null,
                 film.getId(),
                 hall.getId()
         );
@@ -83,7 +83,7 @@ class ScreeningControllerIT extends BaseIT {
         webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .bodyValue(screening)
+                .bodyValue(screeningCreateDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
@@ -97,9 +97,8 @@ class ScreeningControllerIT extends BaseIT {
         var film = addFilm();
         var hall = addHall();
         var user = addUser();
-        var screening = new Screening(
+        var screeningCreateDto = new ScreeningCreateDto(
                 CURRENT_DATE.plusDays(22),
-                null,
                 film.getId(),
                 hall.getId()
         );
@@ -107,7 +106,7 @@ class ScreeningControllerIT extends BaseIT {
         webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .bodyValue(screening)
+                .bodyValue(screeningCreateDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
@@ -122,9 +121,8 @@ class ScreeningControllerIT extends BaseIT {
         var hall = addHall();
         var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
-        var otherScreening = new Screening(
+        var screeningCreateDto = new ScreeningCreateDto(
                 screening.getDate(),
-                null,
                 film.getId(),
                 hall.getId()
         );
@@ -132,7 +130,7 @@ class ScreeningControllerIT extends BaseIT {
         webTestClient
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .bodyValue(otherScreening)
+                .bodyValue(screeningCreateDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()

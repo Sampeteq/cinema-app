@@ -17,21 +17,26 @@ public class ScreeningFactory {
     private final HallService hallService;
     private final Clock clock;
 
-    void validateScreening(Screening screening) {
-        screeningDatePolicy.checkScreeningDate(screening.getDate(), clock);
-        if (!hallService.hallExistsById(screening.getHallId())) {
+    Screening createScreening(ScreeningCreateDto screeningCreateDto) {
+        screeningDatePolicy.checkScreeningDate(screeningCreateDto.date(), clock);
+        if (!hallService.hallExistsById(screeningCreateDto.hallId())) {
             throw new HallNotFoundException();
         }
-        var film = filmService.getFilmById(screening.getFilmId());
-        var screeningEndDate = screening.getDate().plusMinutes(film.getDurationInMinutes());
+        var film = filmService.getFilmById(screeningCreateDto.filmId());
+        var screeningEndDate = screeningCreateDto.date().plusMinutes(film.getDurationInMinutes());
         var collisions = screeningRepository.getCollisions(
-                screening.getDate(),
+                screeningCreateDto.date(),
                 screeningEndDate,
-                screening.getHallId()
+                screeningCreateDto.hallId()
         );
         if (!collisions.isEmpty()) {
             throw new ScreeningsCollisionsException();
         }
-        screening.assignEndDate(screeningEndDate);
+        return new Screening(
+                screeningCreateDto.date(),
+                screeningEndDate,
+                screeningCreateDto.filmId(),
+                screeningCreateDto.hallId()
+        );
     }
 }

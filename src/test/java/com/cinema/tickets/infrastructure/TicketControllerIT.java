@@ -3,8 +3,8 @@ package com.cinema.tickets.infrastructure;
 import com.cinema.BaseIT;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmService;
-import com.cinema.halls.domain.Hall;
 import com.cinema.halls.HallFixtures;
+import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallService;
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.Screening;
@@ -17,9 +17,8 @@ import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
-import com.cinema.tickets.infrastructure.TicketBookRequest;
-import com.cinema.users.domain.User;
 import com.cinema.users.UserFixtures;
+import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -34,7 +33,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static com.cinema.films.FilmFixtures.createFilm;
-import static com.cinema.screenings.ScreeningFixtures.createScreening;
+import static com.cinema.screenings.ScreeningFixtures.createScreeningCreateDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
@@ -342,7 +341,7 @@ class TicketControllerIT extends BaseIT {
     }
 
     private Screening addScreening(Long filmId, Long hallId) {
-        return screeningService.addScreening(createScreening(filmId, hallId));
+        return screeningService.createScreening(createScreeningCreateDto(filmId, hallId));
     }
 
     private Film addFilm() {

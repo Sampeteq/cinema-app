@@ -1,6 +1,7 @@
 package com.cinema.screenings.infrastructure;
 
 import com.cinema.screenings.domain.Screening;
+import com.cinema.screenings.domain.ScreeningCreateDto;
 import com.cinema.screenings.domain.ScreeningService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -27,8 +28,8 @@ class ScreeningController {
     @PostMapping("admin/screenings")
     @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "basic")
-    Screening createScreening(@RequestBody @Valid Screening screening) {
-        return screeningService.addScreening(screening);
+    Screening createScreening(@RequestBody @Valid ScreeningCreateDto screeningCreateDto) {
+        return screeningService.createScreening(screeningCreateDto);
     }
 
     @DeleteMapping("/admin/screenings/{id}")

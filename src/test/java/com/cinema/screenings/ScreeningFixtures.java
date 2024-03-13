@@ -1,6 +1,7 @@
 package com.cinema.screenings;
 
 import com.cinema.screenings.domain.Screening;
+import com.cinema.screenings.domain.ScreeningCreateDto;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +16,14 @@ public class ScreeningFixtures {
     public static final long FILM_ID = 1L;
 
     public static final long HALL_ID = 1L;
+
+    public static ScreeningCreateDto createScreeningCreateDto(Long filmId, Long hallId) {
+        return new ScreeningCreateDto(
+                SCREENING_DATE,
+                filmId,
+                hallId
+        );
+    }
 
     public static Screening createScreening() {
         return new Screening(

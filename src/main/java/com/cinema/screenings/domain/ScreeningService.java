@@ -18,9 +18,9 @@ public class ScreeningService {
     private final ScreeningRepository screeningRepository;
 
     @Transactional
-    public Screening addScreening(Screening screening) {
-        log.info("Screening:{}", screening);
-        screeningFactory.validateScreening(screening);
+    public Screening createScreening(ScreeningCreateDto screeningCreateDto) {
+        log.info("ScreeningCreateDto:{}", screeningCreateDto);
+        var screening = screeningFactory.createScreening(screeningCreateDto);
         var addedScreening = screeningRepository.save(screening);
         log.info("Screening added:{}", addedScreening);
         return addedScreening;

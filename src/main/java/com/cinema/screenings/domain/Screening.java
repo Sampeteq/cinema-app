@@ -1,6 +1,5 @@
 package com.cinema.screenings.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +20,6 @@ public class Screening {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime date;
 
     private LocalDateTime endDate;

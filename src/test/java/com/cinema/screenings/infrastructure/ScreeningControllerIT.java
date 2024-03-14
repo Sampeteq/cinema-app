@@ -1,19 +1,19 @@
 package com.cinema.screenings.infrastructure;
 
 import com.cinema.BaseIT;
-import com.cinema.films.domain.Film;
 import com.cinema.films.FilmFixtures;
+import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmService;
-import com.cinema.halls.domain.Hall;
 import com.cinema.halls.HallFixtures;
+import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallService;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningCreateDto;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
-import com.cinema.users.domain.User;
 import com.cinema.users.UserFixtures;
+import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import static com.cinema.ClockFixtures.CURRENT_DATE;
 import static com.cinema.screenings.ScreeningFixtures.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
+import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
@@ -64,7 +65,7 @@ class ScreeningControllerIT extends BaseIT {
                 .isCreated()
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(1L)
-                .jsonPath("$.date").isEqualTo(screeningCreateDto.date().toString())
+                .jsonPath("$.date").isEqualTo(screeningCreateDto.date().format(ISO_DATE_TIME))
                 .jsonPath("$.filmId").isEqualTo(film.getId())
                 .jsonPath("$.hallId").isEqualTo(screeningCreateDto.hallId());
     }
@@ -168,7 +169,7 @@ class ScreeningControllerIT extends BaseIT {
                 .expectBody()
                 .jsonPath("$[*].*").value(everyItem(notNullValue()))
                 .jsonPath("$[0].id").isEqualTo(screening.getId())
-                .jsonPath("$[0].date").isEqualTo(screening.getDate().toString())
+                .jsonPath("$[0].date").isEqualTo(screening.getDate().format(ISO_DATE_TIME))
                 .jsonPath("$[0].filmId").isEqualTo(screening.getFilmId())
                 .jsonPath("$[0].hallId").isEqualTo(screening.getHallId());
     }
@@ -186,7 +187,7 @@ class ScreeningControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk()
                 .expectBody()
-                .jsonPath("$[*].date").isEqualTo(screeningWithRequiredDate.getDate().toString());
+                .jsonPath("$[*].date").isEqualTo(screeningWithRequiredDate.getDate().format(ISO_DATE_TIME));
     }
 
     private Film addFilm() {

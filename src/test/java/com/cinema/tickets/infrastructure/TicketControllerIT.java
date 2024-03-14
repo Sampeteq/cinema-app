@@ -34,6 +34,7 @@ import java.util.stream.Stream;
 
 import static com.cinema.films.FilmFixtures.createFilm;
 import static com.cinema.screenings.ScreeningFixtures.createScreeningCreateDto;
+import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
@@ -292,7 +293,7 @@ class TicketControllerIT extends BaseIT {
                 .jsonPath("$[*]").value(everyItem(notNullValue()))
                 .jsonPath("$[0].id").isEqualTo(ticket.getId())
                 .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle())
-                .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().toString())
+                .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().format(ISO_DATE_TIME))
                 .jsonPath("$[0].hallId").isEqualTo(screening.getHallId())
                 .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().rowNumber())
                 .jsonPath("$[0].seatNumber").isEqualTo(ticket.getSeat().number())
@@ -316,7 +317,7 @@ class TicketControllerIT extends BaseIT {
                 .jsonPath("$[*]").value(everyItem(notNullValue()))
                 .jsonPath("$[0].id").isEqualTo(ticket.getId())
                 .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle())
-                .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().toString())
+                .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().format(ISO_DATE_TIME))
                 .jsonPath("$[0].hallId").isEqualTo(screening.getHallId())
                 .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().rowNumber())
                 .jsonPath("$[0].seatNumber").isEqualTo(ticket.getSeat().number())

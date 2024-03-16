@@ -1,6 +1,5 @@
 package com.cinema.tickets.domain;
 
-import com.cinema.halls.domain.HallService;
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.ScreeningService;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
@@ -19,15 +18,14 @@ public class TicketService {
     private final TicketBookingPolicy ticketBookingPolicy;
     private final TicketCancellingPolicy ticketCancellingPolicy;
     private final ScreeningService screeningService;
-    private final HallService hallService;
     private final Clock clock;
 
     @Transactional
     public void addTickets(Long screeningId) {
         log.info("Screening id:{}", screeningId);
         var screening = screeningService.getScreeningById(screeningId);
-        var tickets = hallService
-                .getHallWithSeatsById(screening.getHallId())
+        var tickets = screening
+                .getHall()
                 .getSeats()
                 .stream()
                 .map(seat -> new Ticket(screening.getId(), seat))

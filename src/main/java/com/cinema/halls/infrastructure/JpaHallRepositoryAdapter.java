@@ -23,11 +23,6 @@ class JpaHallRepositoryAdapter implements HallRepository {
     }
 
     @Override
-    public boolean existsById(Long id) {
-        return hallRepository.existsById(id);
-    }
-
-    @Override
     public Optional<Hall> getById(Long id) {
         return hallRepository.findById(id);
     }
@@ -35,10 +30,5 @@ class JpaHallRepositoryAdapter implements HallRepository {
     @Override
     public List<Hall> getAllWithSeats() {
         return hallRepository.findAllWithSeats();
-    }
-
-    @Override
-    public Optional<Hall> getByIdWithSeats(Long hallId) {
-        return hallRepository.findByIdWithSeats(hallId);
     }
 }

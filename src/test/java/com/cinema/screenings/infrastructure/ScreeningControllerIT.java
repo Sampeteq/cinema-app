@@ -120,7 +120,7 @@ class ScreeningControllerIT extends BaseIT {
     void screenings_collision_cannot_exist() {
         var film = addFilm();
         var hall = addHall();
-        var screening = addScreening(film.getId(), hall.getId());
+        var screening = addScreening(film, hall);
         var user = addUser();
         var screeningCreateDto = new ScreeningCreateDto(
                 screening.getDate(),
@@ -142,7 +142,9 @@ class ScreeningControllerIT extends BaseIT {
 
     @Test
     void screening_is_deleted() {
-        var screening = addScreening();
+        var film = addFilm();
+        var hall = addHall();
+        var screening = addScreening(film, hall);
         var user = addUser();
 
         webTestClient
@@ -158,7 +160,9 @@ class ScreeningControllerIT extends BaseIT {
 
     @Test
     void screenings_are_gotten() {
-        var screening = addScreening();
+        var film = addFilm();
+        var hall = addHall();
+        var screening = addScreening(film, hall);
 
         webTestClient
                 .get()
@@ -170,15 +174,17 @@ class ScreeningControllerIT extends BaseIT {
                 .jsonPath("$[*].*").value(everyItem(notNullValue()))
                 .jsonPath("$[0].id").isEqualTo(screening.getId())
                 .jsonPath("$[0].date").isEqualTo(screening.getDate().format(ISO_DATE_TIME))
-                .jsonPath("$[0].filmId").isEqualTo(screening.getFilmId())
-                .jsonPath("$[0].hallId").isEqualTo(screening.getHallId());
+                .jsonPath("$[0].filmId").isEqualTo(screening.getFilm().getId())
+                .jsonPath("$[0].hallId").isEqualTo(screening.getHall().getId());
     }
 
     @Test
     void screenings_are_gotten_by_date() {
+        var film = addFilm();
+        var hall = addHall();
         var requiredDate = LocalDate.of(2023, 12, 13);
-        var screeningWithRequiredDate = addScreening(requiredDate);
-        addScreening(requiredDate.minusDays(1));
+        var screeningWithRequiredDate = addScreening(requiredDate, film, hall);
+        addScreening(requiredDate.minusDays(1), film, hall);
 
         webTestClient
                 .get()
@@ -198,17 +204,13 @@ class ScreeningControllerIT extends BaseIT {
         return hallService.createHall(HallFixtures.createHall());
     }
 
-    private Screening addScreening() {
-        return screeningRepository.save(createScreening());
+    private Screening addScreening(Film film, Hall hall) {
+        return screeningRepository.save(createScreening(film, hall));
     }
 
-    private Screening addScreening(Long filmId, Long hallId) {
-        return screeningRepository.save(createScreening(filmId, hallId));
-    }
-
-    private Screening addScreening(LocalDate date) {
+    private Screening addScreening(LocalDate date, Film film, Hall hall) {
         var dateTime = date.atStartOfDay().plusHours(16);
-        var screening = createScreening(dateTime);
+        var screening = createScreening(dateTime, film, hall);
         return screeningRepository.save(screening);
     }
 

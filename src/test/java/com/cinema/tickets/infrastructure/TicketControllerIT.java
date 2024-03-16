@@ -294,7 +294,7 @@ class TicketControllerIT extends BaseIT {
                 .jsonPath("$[0].id").isEqualTo(ticket.getId())
                 .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle())
                 .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().format(ISO_DATE_TIME))
-                .jsonPath("$[0].hallId").isEqualTo(screening.getHallId())
+                .jsonPath("$[0].hallId").isEqualTo(screening.getHall().getId())
                 .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().rowNumber())
                 .jsonPath("$[0].seatNumber").isEqualTo(ticket.getSeat().number())
                 .jsonPath("$[0].userId").isEqualTo(user.getId());
@@ -318,7 +318,7 @@ class TicketControllerIT extends BaseIT {
                 .jsonPath("$[0].id").isEqualTo(ticket.getId())
                 .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle())
                 .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().format(ISO_DATE_TIME))
-                .jsonPath("$[0].hallId").isEqualTo(screening.getHallId())
+                .jsonPath("$[0].hallId").isEqualTo(screening.getHall().getId())
                 .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().rowNumber())
                 .jsonPath("$[0].seatNumber").isEqualTo(ticket.getSeat().number())
                 .jsonPath("$[0].userId").value(Matchers.nullValue());

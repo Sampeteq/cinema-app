@@ -35,13 +35,9 @@ public class HallService {
         return hallRepository.getAllWithSeats();
     }
 
-    public Hall getHallWithSeatsById(Long hallId) {
+    public Hall getHallById(Long hallId) {
         return hallRepository
-                .getByIdWithSeats(hallId)
+                .getById(hallId)
                 .orElseThrow(HallNotFoundException::new);
-    }
-
-    public boolean hallExistsById(Long hallId) {
-        return hallRepository.existsById(hallId);
     }
 }

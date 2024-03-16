@@ -1,6 +1,5 @@
 package com.cinema.screenings.infrastructure;
 
-import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningCreateDto;
 import com.cinema.screenings.domain.ScreeningService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -24,12 +23,13 @@ import java.util.List;
 class ScreeningController {
 
     private final ScreeningService screeningService;
+    private final ScreeningMapper screeningMapper;
 
     @PostMapping("admin/screenings")
     @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "basic")
-    Screening createScreening(@RequestBody @Valid ScreeningCreateDto screeningCreateDto) {
-        return screeningService.createScreening(screeningCreateDto);
+    ScreeningDto createScreening(@RequestBody @Valid ScreeningCreateDto screeningCreateDto) {
+        return screeningMapper.mapToDto(screeningService.createScreening(screeningCreateDto));
     }
 
     @DeleteMapping("/admin/screenings/{id}")
@@ -40,9 +40,12 @@ class ScreeningController {
     }
 
     @GetMapping("/public/screenings")
-    List<Screening> getScreenings(@RequestParam(required = false) LocalDate date) {
-        return date == null ?
+    List<ScreeningDto> getScreenings(@RequestParam(required = false) LocalDate date) {
+        return (date == null ?
                 screeningService.getAllScreenings() :
-                screeningService.getScreeningsByDate(date);
+                screeningService.getScreeningsByDate(date))
+                .stream()
+                .map(screeningMapper::mapToDto)
+                .toList();
     }
 }

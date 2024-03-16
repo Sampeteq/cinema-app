@@ -36,4 +36,9 @@ class ScreeningConfig {
     ScreeningRepository screeningRepository(JpaScreeningRepository jpaScreeningRepository) {
         return new JpaScreeningRepositoryAdapter(jpaScreeningRepository);
     }
+
+    @Bean
+    ScreeningMapper screeningMapper() {
+        return new ScreeningMapper();
+    }
 }

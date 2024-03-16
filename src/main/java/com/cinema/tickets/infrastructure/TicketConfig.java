@@ -1,6 +1,5 @@
 package com.cinema.tickets.infrastructure;
 
-import com.cinema.halls.domain.HallService;
 import com.cinema.screenings.domain.ScreeningService;
 import com.cinema.tickets.domain.TicketBookingPolicy;
 import com.cinema.tickets.domain.TicketCancellingPolicy;
@@ -18,7 +17,6 @@ class TicketConfig {
     TicketService ticketService(
             TicketRepository ticketRepository,
             ScreeningService screeningService,
-            HallService hallService,
             Clock clock
     ) {
         var ticketBookingPolicy = new TicketBookingPolicy();
@@ -28,7 +26,6 @@ class TicketConfig {
                 ticketBookingPolicy,
                 ticketCancellingPolicy,
                 screeningService,
-                hallService,
                 clock
         );
     }

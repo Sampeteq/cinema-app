@@ -13,7 +13,7 @@ interface JpaScreeningRepository extends JpaRepository<Screening, Long> {
 
     @Query("""
                 select screening from Screening screening where
-                screening.hallId = :hallId and
+                screening.hall.id = :hallId and
                 (:date >= screening.date and :date <= screening.endDate) or
                 (:date <= screening.date and :endDate >= screening.endDate) or
                 (:date <= screening.date and :endDate <= screening.endDate)

@@ -1,6 +1,5 @@
 package com.cinema.tickets.infrastructure;
 
-import com.cinema.films.domain.FilmService;
 import com.cinema.screenings.domain.ScreeningService;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketService;
@@ -25,7 +24,6 @@ class TicketController {
     private final TicketService ticketService;
     private final TicketMapper ticketMapper;
     private final ScreeningService screeningService;
-    private final FilmService filmService;
     private final UserService userService;
 
     @PostMapping("/admin/tickets")
@@ -70,12 +68,11 @@ class TicketController {
 
     private TicketView mapTicketToView(Ticket ticket) {
         var screening = screeningService.getScreeningById(ticket.getScreeningId());
-        var film = filmService.getFilmById(screening.getFilmId());
         return ticketMapper.mapToView(
                 ticket,
-                film.getTitle(),
+                screening.getFilm().getTitle(),
                 screening.getDate(),
-                screening.getHallId()
+                screening.getHall().getId()
         );
     }
 }

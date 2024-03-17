@@ -23,9 +23,6 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Version
-    private int version;
-
     @ManyToOne
     private Screening screening;
 
@@ -34,6 +31,9 @@ public class Ticket {
 
     @ManyToOne
     private User user;
+
+    @Version
+    private int version;
 
     protected Ticket() {}
 

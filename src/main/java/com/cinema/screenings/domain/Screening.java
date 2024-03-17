@@ -3,6 +3,7 @@ package com.cinema.screenings.domain;
 import com.cinema.films.domain.Film;
 import com.cinema.halls.domain.Hall;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,10 +28,10 @@ public class Screening {
 
     private LocalDateTime endDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Film film;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Hall hall;
 
     protected Screening() {}

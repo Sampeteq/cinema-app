@@ -150,8 +150,8 @@ class TicketControllerIT extends BaseIT {
         assertThat(ticketRepository.getByIdAndUserId(1L, 1L))
                 .isNotEmpty()
                 .hasValueSatisfying(bookedTicket -> {
-                    assertEquals(1L, bookedTicket.getUserId());
-                    assertEquals(user.getId(), bookedTicket.getUserId());
+                    assertEquals(user, bookedTicket.getUser());
+                    assertEquals(user, bookedTicket.getUser());
                     assertEquals(ticketBookRequest.screeningId(), bookedTicket.getScreening().getId());
                     assertEquals(ticketBookRequest.seats().getFirst(), bookedTicket.getSeat());
                 });
@@ -182,7 +182,7 @@ class TicketControllerIT extends BaseIT {
 
         assertThat(ticketRepository.getAllByUserId(user.getId()))
                 .isNotEmpty()
-                .allSatisfy(ticket -> assertEquals(user.getId(), ticket.getUserId()));
+                .allSatisfy(ticket -> assertEquals(user, ticket.getUser()));
     }
 
     @Test
@@ -191,7 +191,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
-        var ticket = addTicket(screening, user.getId());
+        var ticket = addTicket(screening, user);
         var bookTicketRequest = new TicketBookRequest(
                 screening.getId(),
                 List.of(ticket.getSeat())
@@ -240,7 +240,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
-        var ticket = addTicket(screening, user.getId());
+        var ticket = addTicket(screening, user);
 
         webTestClient
                 .patch()
@@ -251,7 +251,7 @@ class TicketControllerIT extends BaseIT {
 
         assertThat(ticketRepository.getById(ticket.getId()))
                 .isNotEmpty()
-                .hasValueSatisfying(cancelledTicket -> assertNull(cancelledTicket.getUserId()));
+                .hasValueSatisfying(cancelledTicket -> assertNull(cancelledTicket.getUser()));
     }
 
     @Test
@@ -261,7 +261,7 @@ class TicketControllerIT extends BaseIT {
         var screening = addScreening(film.getId(), hall.getId());
         setCurrentDate(screening.getDate().plusHours(23));
         var user = addUser();
-        var ticket = addTicket(screening, user.getId());
+        var ticket = addTicket(screening, user);
 
         webTestClient
                 .patch()
@@ -280,7 +280,7 @@ class TicketControllerIT extends BaseIT {
         var hall = addHall();
         var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
-        var ticket = addTicket(screening, user.getId());
+        var ticket = addTicket(screening, user);
 
         webTestClient
                 .get()
@@ -328,8 +328,8 @@ class TicketControllerIT extends BaseIT {
         return ticketRepository.add(TicketFixtures.createTicket(screening));
     }
 
-    private Ticket addTicket(Screening screening, Long userId) {
-        return ticketRepository.add(TicketFixtures.createTicket(screening, userId));
+    private Ticket addTicket(Screening screening, User user) {
+        return ticketRepository.add(TicketFixtures.createTicket(screening, user));
     }
 
     private List<Ticket> addTickets(Screening screening) {

@@ -59,14 +59,13 @@ public class UserService {
         user.setNewPassword(encodedPassword);
     }
 
-    public Long getLoggedUserId() {
+    public User getLoggedUser() {
         var mail = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getName();
         return userRepository
                 .getByMail(mail)
-                .orElseThrow(() -> new UsernameNotFoundException(mail))
-                .getId();
+                .orElseThrow(() -> new UsernameNotFoundException(mail));
     }
 }

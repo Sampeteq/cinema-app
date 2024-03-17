@@ -3,6 +3,7 @@ package com.cinema.tickets.domain;
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
+import com.cinema.users.domain.User;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,7 +32,8 @@ public class Ticket {
     @Embedded
     private Seat seat;
 
-    private Long userId;
+    @ManyToOne
+    private User user;
 
     protected Ticket() {}
 
@@ -40,14 +42,14 @@ public class Ticket {
         this.seat = seat;
     }
 
-    public void assignUserId(Long userId) {
-        if (this.userId != null) {
+    public void assignUser(User user) {
+        if (this.user != null) {
             throw new TicketAlreadyBookedException();
         }
-        this.userId = userId;
+        this.user = user;
     }
 
-    public void removeUserId() {
-        this.userId = null;
+    public void removeUser() {
+        this.user = null;
     }
 }

@@ -32,23 +32,23 @@ class TicketController {
     @PostMapping("/tickets/book")
     @SecurityRequirement(name = "basic")
     void bookTickets(@RequestBody @Valid TicketBookRequest request) {
-        var userId = userService.getLoggedUserId();
-        ticketService.bookTickets(request.screeningId(), request.seats(), userId);
+        var user = userService.getLoggedUser();
+        ticketService.bookTickets(request.screeningId(), request.seats(), user);
     }
 
     @PatchMapping("/tickets/{ticketId}/cancel")
     @SecurityRequirement(name = "basic")
     void cancelTicket(@PathVariable Long ticketId) {
-        var userId = userService.getLoggedUserId();
-        ticketService.cancelTicket(ticketId, userId);
+        var user = userService.getLoggedUser();
+        ticketService.cancelTicket(ticketId, user);
     }
 
     @GetMapping("/tickets/my")
     @SecurityRequirement(name = "basic")
     List<TicketView> getAllTicketsByLoggedUser() {
-        var userId = userService.getLoggedUserId();
+        var user = userService.getLoggedUser();
         return ticketService
-                .getAllTicketsByUserId(userId)
+                .getAllTicketsByUserId(user.getId())
                 .stream()
                 .map(ticketMapper::mapToView)
                 .toList();

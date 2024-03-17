@@ -3,6 +3,7 @@ package com.cinema.tickets.domain;
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.ScreeningService;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
+import com.cinema.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,7 @@ public class TicketService {
     }
 
     @Transactional
-    public void bookTickets(Long screeningId, List<Seat> seats, Long userId) {
+    public void bookTickets(Long screeningId, List<Seat> seats, User user) {
         log.info("Screening id:{}", screeningId);
         log.info("Seats ids:{}", seats);
         var screening = screeningService.getScreeningById(screeningId);
@@ -46,22 +47,22 @@ public class TicketService {
                             .getBySeat(seat)
                             .orElseThrow(TicketNotFoundException::new);
                     log.info("Found ticket: {}", ticket);
-                    ticket.assignUserId(userId);
+                    ticket.assignUser(user);
                     log.info("Booked ticket:{}", ticket);
                 }
         );
     }
 
     @Transactional
-    public void cancelTicket(Long ticketId, Long userId) {
+    public void cancelTicket(Long ticketId, User user) {
         log.info("Ticket id:{}", ticketId);
         var ticket = ticketRepository
-                .getByIdAndUserId(ticketId, userId)
+                .getByIdAndUserId(ticketId, user.getId())
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
         var hoursLeftBeforeStart = ticket.getScreening().hoursLeftBeforeStart(clock);
         ticketCancellingPolicy.checkIfCancellingIsPossible(hoursLeftBeforeStart);
-        ticket.removeUserId();
+        ticket.removeUser();
         log.info("Ticket cancelled:{}", ticket);
     }
 

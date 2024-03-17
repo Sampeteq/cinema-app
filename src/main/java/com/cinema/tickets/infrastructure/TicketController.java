@@ -1,7 +1,5 @@
 package com.cinema.tickets.infrastructure;
 
-import com.cinema.screenings.domain.ScreeningService;
-import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketService;
 import com.cinema.users.domain.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -23,7 +21,6 @@ class TicketController {
 
     private final TicketService ticketService;
     private final TicketMapper ticketMapper;
-    private final ScreeningService screeningService;
     private final UserService userService;
 
     @PostMapping("/admin/tickets")
@@ -53,7 +50,7 @@ class TicketController {
         return ticketService
                 .getAllTicketsByUserId(userId)
                 .stream()
-                .map(this::mapTicketToView)
+                .map(ticketMapper::mapToView)
                 .toList();
     }
 
@@ -62,17 +59,7 @@ class TicketController {
         return ticketService
                 .getAllTicketsByScreeningId(screeningId)
                 .stream()
-                .map(this::mapTicketToView)
+                .map(ticketMapper::mapToView)
                 .toList();
-    }
-
-    private TicketView mapTicketToView(Ticket ticket) {
-        var screening = screeningService.getScreeningById(ticket.getScreeningId());
-        return ticketMapper.mapToView(
-                ticket,
-                screening.getFilm().getTitle(),
-                screening.getDate(),
-                screening.getHall().getId()
-        );
     }
 }

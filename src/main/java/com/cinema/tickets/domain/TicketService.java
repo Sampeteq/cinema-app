@@ -28,7 +28,7 @@ public class TicketService {
                 .getHall()
                 .getSeats()
                 .stream()
-                .map(seat -> new Ticket(screening.getId(), seat))
+                .map(seat -> new Ticket(screening, seat))
                 .toList();
         tickets.forEach(ticketRepository::add);
     }
@@ -59,8 +59,8 @@ public class TicketService {
                 .getByIdAndUserId(ticketId, userId)
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
-        var screening = screeningService.getScreeningById(ticket.getScreeningId());
-        ticketCancellingPolicy.checkIfCancellingIsPossible(screening.hoursLeftBeforeStart(clock));
+        var hoursLeftBeforeStart = ticket.getScreening().hoursLeftBeforeStart(clock);
+        ticketCancellingPolicy.checkIfCancellingIsPossible(hoursLeftBeforeStart);
         ticket.removeUserId();
         log.info("Ticket cancelled:{}", ticket);
     }

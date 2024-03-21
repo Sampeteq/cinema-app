@@ -4,7 +4,6 @@ import com.cinema.BaseIT;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
-import com.cinema.users.infrastructure.UserNewPasswordRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,21 +30,21 @@ class UserControllerIT extends BaseIT {
 
     @Test
     void user_is_created() {
-        var userCreateRequest = new UserCreateRequest(MAIL, PASSWORD);
+        var userCreateDto = new UserCreateDto(MAIL, PASSWORD);
 
         webTestClient
                 .post()
                 .uri(USERS_BASE_ENDPOINT)
-                .bodyValue(userCreateRequest)
+                .bodyValue(userCreateDto)
                 .exchange()
                 .expectStatus()
                 .isOk();
 
-        assertThat(userRepository.getByMail(userCreateRequest.mail()))
+        assertThat(userRepository.getByMail(userCreateDto.mail()))
                 .isNotEmpty()
                 .hasValueSatisfying(user -> {
-                    assertEquals(userCreateRequest.mail(), user.getMail());
-                    assertTrue(passwordEncoder.matches(userCreateRequest.password(), user.getPassword()));
+                    assertEquals(userCreateDto.mail(), user.getMail());
+                    assertTrue(passwordEncoder.matches(userCreateDto.password(), user.getPassword()));
                     assertEquals(User.Role.COMMON, user.getRole());
                 });
     }
@@ -53,12 +52,12 @@ class UserControllerIT extends BaseIT {
     @Test
     void user_name_cannot_be_duplicated() {
         var user = userRepository.save(createUser());
-        var userCreateRequest = new UserCreateRequest(user.getMail(), PASSWORD);
+        var userCreateDto = new UserCreateDto(user.getMail(), PASSWORD);
 
         webTestClient
                 .post()
                 .uri(USERS_BASE_ENDPOINT)
-                .bodyValue(userCreateRequest)
+                .bodyValue(userCreateDto)
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
                 .expectBody()

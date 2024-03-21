@@ -16,8 +16,8 @@ class UserController {
     private final UserService userService;
 
     @PostMapping("/public/users")
-    void createUser(@RequestBody @Valid UserCreateRequest request) {
-        userService.createUser(request.mail(), request.password());
+    void createUser(@RequestBody @Valid UserCreateDto userCreateDto) {
+        userService.createUser(userCreateDto.mail(), userCreateDto.password());
     }
 
     @PostMapping("/public/users/password/reset")

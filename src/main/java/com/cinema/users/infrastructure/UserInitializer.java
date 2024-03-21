@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 class UserInitializer {
 
-    private final AdminProperties adminProperties;
+    private final UserAdminProperties userAdminProperties;
     private final UserService userService;
 
     @EventListener(ContextRefreshedEvent.class)
     void createAdminOnStartUp() {
-        userService.createAdmin(adminProperties.mail(), adminProperties.password());
+        userService.createAdmin(userAdminProperties.mail(), userAdminProperties.password());
     }
 }
-@ConfigurationProperties(prefix = "admin")
-record AdminProperties(String mail, String password) {}
+@ConfigurationProperties(prefix = "user.admin")
+record UserAdminProperties(String mail, String password) {}

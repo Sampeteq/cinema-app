@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 
-interface JpaScreeningRepository extends JpaRepository<Screening, Long> {
+interface ScreeningJpaRepository extends JpaRepository<Screening, Long> {
 
     List<Screening> findScreeningsByDateBetween(LocalDateTime start, LocalDateTime end);
 

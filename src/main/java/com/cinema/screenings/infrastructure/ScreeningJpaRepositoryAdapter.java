@@ -9,37 +9,37 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-class JpaScreeningRepositoryAdapter implements ScreeningRepository {
+class ScreeningJpaRepositoryAdapter implements ScreeningRepository {
 
-    private final JpaScreeningRepository jpaScreeningRepository;
+    private final ScreeningJpaRepository screeningJpaRepository;
 
     @Override
     public Screening save(Screening screening) {
-        return jpaScreeningRepository.save(screening);
+        return screeningJpaRepository.save(screening);
     }
 
     @Override
     public void delete(Screening screening) {
-        jpaScreeningRepository.delete(screening);
+        screeningJpaRepository.delete(screening);
     }
 
     @Override
     public Optional<Screening> getById(Long id) {
-        return jpaScreeningRepository.findById(id);
+        return screeningJpaRepository.findById(id);
     }
 
     @Override
     public List<Screening> getAll() {
-        return jpaScreeningRepository.findAll();
+        return screeningJpaRepository.findAll();
     }
 
     @Override
     public List<Screening> getScreeningsByDateBetween(LocalDateTime start, LocalDateTime end) {
-        return jpaScreeningRepository.findScreeningsByDateBetween(start, end);
+        return screeningJpaRepository.findScreeningsByDateBetween(start, end);
     }
 
     @Override
     public List<Screening> getCollisions(LocalDateTime date, LocalDateTime endDate, Long hallId) {
-        return jpaScreeningRepository.getCollisions(date, endDate, hallId);
+        return screeningJpaRepository.getCollisions(date, endDate, hallId);
     }
 }

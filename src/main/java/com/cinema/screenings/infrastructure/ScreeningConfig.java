@@ -33,8 +33,8 @@ class ScreeningConfig {
     }
 
     @Bean
-    ScreeningRepository screeningRepository(JpaScreeningRepository jpaScreeningRepository) {
-        return new JpaScreeningRepositoryAdapter(jpaScreeningRepository);
+    ScreeningRepository screeningRepository(ScreeningJpaRepository screeningJpaRepository) {
+        return new ScreeningJpaRepositoryAdapter(screeningJpaRepository);
     }
 
     @Bean

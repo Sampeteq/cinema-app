@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-interface JpaHallRepository extends JpaRepository<Hall, Long> {
+interface HallJpaRepository extends JpaRepository<Hall, Long> {
 
     @Query("""
 

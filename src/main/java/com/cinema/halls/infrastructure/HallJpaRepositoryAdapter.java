@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-class JpaHallRepositoryAdapter implements HallRepository {
+class HallJpaRepositoryAdapter implements HallRepository {
 
-    private final JpaHallRepository hallRepository;
+    private final HallJpaRepository hallRepository;
 
     @Override
     public Hall save(Hall hall) {

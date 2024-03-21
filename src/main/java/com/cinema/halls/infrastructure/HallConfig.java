@@ -14,7 +14,7 @@ class HallConfig {
     }
 
     @Bean
-    HallRepository hallRepository(JpaHallRepository jpaHallRepository) {
-        return new JpaHallRepositoryAdapter(jpaHallRepository);
+    HallRepository hallRepository(HallJpaRepository hallJpaRepository) {
+        return new HallJpaRepositoryAdapter(hallJpaRepository);
     }
 }

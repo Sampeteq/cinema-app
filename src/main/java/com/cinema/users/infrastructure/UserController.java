@@ -26,7 +26,7 @@ class UserController {
     }
 
     @PatchMapping("/public/users/password/new")
-    void setNewUserPassword(@RequestBody @Valid UserNewPasswordRequest request) {
-        userService.setNewUserPassword(request.newPassword(), request.passwordResetToken());
+    void setNewUserPassword(@RequestBody @Valid UserNewPasswordDto userNewPasswordDto) {
+        userService.setNewUserPassword(userNewPasswordDto.newPassword(), userNewPasswordDto.passwordResetToken());
     }
 }

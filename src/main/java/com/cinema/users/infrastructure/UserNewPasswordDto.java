@@ -6,12 +6,8 @@ import jakarta.validation.constraints.Size;
 
 import java.util.UUID;
 
-record UserNewPasswordRequest(
-        @NotNull
-        UUID passwordResetToken,
-
-        @NotBlank
-        @Size(min = 5, max = 20)
-        String newPassword
+record UserNewPasswordDto(
+        @NotNull UUID passwordResetToken,
+        @NotBlank @Size(min = 5, max = 20) String newPassword
 ) {
 }

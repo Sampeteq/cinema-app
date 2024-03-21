@@ -85,7 +85,7 @@ class UserControllerIT extends BaseIT {
     void user_new_password_is_set() {
         var passwordResetToken = UUID.randomUUID();
         var addedUser = userRepository.save(createUser(passwordResetToken));
-        var userNewPasswordRequest = new UserNewPasswordRequest(
+        var userNewPasswordDto = new UserNewPasswordDto(
                 passwordResetToken,
                 addedUser.getPassword() + "new"
         );
@@ -93,7 +93,7 @@ class UserControllerIT extends BaseIT {
         webTestClient
                 .patch()
                 .uri(USERS_BASE_ENDPOINT + "/password/new")
-                .bodyValue(userNewPasswordRequest)
+                .bodyValue(userNewPasswordDto)
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -102,6 +102,6 @@ class UserControllerIT extends BaseIT {
                 .map(User::getPassword)
                 .isNotEmpty()
                 .get()
-                .matches(password -> passwordEncoder.matches(userNewPasswordRequest.newPassword(), password));
+                .matches(password -> passwordEncoder.matches(userNewPasswordDto.newPassword(), password));
     }
 }

@@ -20,7 +20,7 @@ class UserConfig {
     }
 
     @Bean
-    UserRepository userRepository(JpaUserRepository jpaUserRepository) {
-        return new JpaUserRepositoryAdapter(jpaUserRepository);
+    UserRepository userRepository(UserJpaRepository userJpaRepository) {
+        return new UserJpaRepositoryAdapter(userJpaRepository);
     }
 }

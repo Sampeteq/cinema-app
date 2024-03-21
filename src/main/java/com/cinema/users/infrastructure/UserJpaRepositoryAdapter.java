@@ -10,22 +10,22 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
-class JpaUserRepositoryAdapter implements UserRepository {
+class UserJpaRepositoryAdapter implements UserRepository {
 
-    private final JpaUserRepository jpaUserRepository;
+    private final UserJpaRepository userJpaRepository;
 
     @Override
     public User save(User user) {
-        return jpaUserRepository.save(user);
+        return userJpaRepository.save(user);
     }
 
     @Override
     public Optional<User> getByMail(String mail) {
-        return jpaUserRepository.findByMail(mail);
+        return userJpaRepository.findByMail(mail);
     }
 
     @Override
     public Optional<User> getByPasswordResetToken(UUID passwordResetToken) {
-        return jpaUserRepository.findByPasswordResetToken(passwordResetToken);
+        return userJpaRepository.findByPasswordResetToken(passwordResetToken);
     }
 }

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-record TicketBookRequest(
+record TicketBookDto(
         @NotNull
         Long screeningId,
         @NotNull

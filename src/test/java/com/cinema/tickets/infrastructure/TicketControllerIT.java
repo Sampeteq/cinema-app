@@ -85,7 +85,7 @@ class TicketControllerIT extends BaseIT {
     void ticket_is_booked_for_existing_screening() {
         var user = addUser();
         var nonExistingScreeningId = 0L;
-        var bookTicketDto = new TicketBookRequest(
+        var ticketBookDto = new TicketBookDto(
                 nonExistingScreeningId,
                 List.of(new Seat(1, 1))
         );
@@ -93,7 +93,7 @@ class TicketControllerIT extends BaseIT {
         webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(bookTicketDto)
+                .bodyValue(ticketBookDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
@@ -109,7 +109,7 @@ class TicketControllerIT extends BaseIT {
         var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
         var nonExistingSeatId = new Seat(0,0);
-        var bookTicketDto = new TicketBookRequest(
+        var ticketBookDto = new TicketBookDto(
                 screening.getId(),
                 List.of(nonExistingSeatId)
         );
@@ -117,7 +117,7 @@ class TicketControllerIT extends BaseIT {
         webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(bookTicketDto)
+                .bodyValue(ticketBookDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
@@ -133,7 +133,7 @@ class TicketControllerIT extends BaseIT {
         var screening = addScreening(film.getId(), hall.getId());
         var ticket = addTicket(screening);
         var user = addUser();
-        var ticketBookRequest = new TicketBookRequest(
+        var ticketBookDto = new TicketBookDto(
                 screening.getId(),
                 List.of(ticket.getSeat())
         );
@@ -141,7 +141,7 @@ class TicketControllerIT extends BaseIT {
         webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(ticketBookRequest)
+                .bodyValue(ticketBookDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
@@ -152,8 +152,8 @@ class TicketControllerIT extends BaseIT {
                 .hasValueSatisfying(bookedTicket -> {
                     assertEquals(user, bookedTicket.getUser());
                     assertEquals(user, bookedTicket.getUser());
-                    assertEquals(ticketBookRequest.screeningId(), bookedTicket.getScreening().getId());
-                    assertEquals(ticketBookRequest.seats().getFirst(), bookedTicket.getSeat());
+                    assertEquals(ticketBookDto.screeningId(), bookedTicket.getScreening().getId());
+                    assertEquals(ticketBookDto.seats().getFirst(), bookedTicket.getSeat());
                 });
     }
 
@@ -166,7 +166,7 @@ class TicketControllerIT extends BaseIT {
         var user = addUser();
         var seat1 = tickets.get(0).getSeat();
         var seat2 = tickets.get(1).getSeat();
-        var bookTicketDto = new TicketBookRequest(
+        var ticketBookDto = new TicketBookDto(
                 screening.getId(),
                 List.of(seat1, seat2)
         );
@@ -174,7 +174,7 @@ class TicketControllerIT extends BaseIT {
         webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(bookTicketDto)
+                .bodyValue(ticketBookDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
@@ -192,7 +192,7 @@ class TicketControllerIT extends BaseIT {
         var screening = addScreening(film.getId(), hall.getId());
         var user = addUser();
         var ticket = addTicket(screening, user);
-        var bookTicketRequest = new TicketBookRequest(
+        var ticketBookDto = new TicketBookDto(
                 screening.getId(),
                 List.of(ticket.getSeat())
         );
@@ -200,7 +200,7 @@ class TicketControllerIT extends BaseIT {
         webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(bookTicketRequest)
+                .bodyValue(ticketBookDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
@@ -217,7 +217,7 @@ class TicketControllerIT extends BaseIT {
         var user = addUser();
         var ticket = addTicket(screening);
         setCurrentDate(screening.getDate().plusMinutes(59));
-        var bookTicketRequest = new TicketBookRequest(
+        var ticketBookDto = new TicketBookDto(
                 screening.getId(),
                 List.of(ticket.getSeat())
         );
@@ -225,7 +225,7 @@ class TicketControllerIT extends BaseIT {
         webTestClient
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(bookTicketRequest)
+                .bodyValue(ticketBookDto)
                 .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()

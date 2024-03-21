@@ -1,6 +1,7 @@
 package com.cinema.films;
 
 import com.cinema.films.domain.Film;
+import com.cinema.films.infrastrcture.FilmCreateDto;
 
 import java.time.Year;
 
@@ -13,6 +14,15 @@ public class FilmFixtures {
     private static final int YEAR = Year.now().getValue();
 
     private static final int DURATION_IN_MINUTES = 100;
+
+    public static FilmCreateDto createFilmCreateDto() {
+        return new FilmCreateDto(
+                TITLE,
+                CATEGORY,
+                YEAR,
+                DURATION_IN_MINUTES
+        );
+    }
 
     public static Film createFilm() {
         return new Film(

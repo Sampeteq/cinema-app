@@ -3,6 +3,7 @@ package com.cinema.films.infrastructure;
 import com.cinema.BaseIT;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmRepository;
+import com.cinema.films.infrastrcture.FilmCreateDto;
 import com.cinema.users.domain.User;
 import com.cinema.users.UserFixtures;
 import com.cinema.users.domain.UserRepository;
@@ -34,7 +35,7 @@ class FilmControllerIT extends BaseIT {
         var category = Film.Category.COMEDY;
         var year = 2023;
         var durationInMinutes = 100;
-        var film = new Film(
+        var film = new FilmCreateDto(
                 title,
                 category,
                 year,
@@ -52,10 +53,10 @@ class FilmControllerIT extends BaseIT {
                 .isCreated()
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(id)
-                .jsonPath("$.title").isEqualTo(film.getTitle())
-                .jsonPath("$.category").isEqualTo(film.getCategory().name())
-                .jsonPath("$.year").isEqualTo(film.getYear())
-                .jsonPath("$.durationInMinutes").isEqualTo(film.getDurationInMinutes());
+                .jsonPath("$.title").isEqualTo(film.title())
+                .jsonPath("$.category").isEqualTo(film.category().name())
+                .jsonPath("$.year").isEqualTo(film.year())
+                .jsonPath("$.durationInMinutes").isEqualTo(film.durationInMinutes());
     }
 
     @Test

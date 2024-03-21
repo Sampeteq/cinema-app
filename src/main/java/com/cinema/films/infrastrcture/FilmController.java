@@ -25,8 +25,8 @@ class FilmController {
     @PostMapping("/admin/films")
     @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "basic")
-    Film addFilm(@RequestBody @Valid Film film) {
-        return filmService.addFilm(film);
+    Film addFilm(@RequestBody @Valid FilmCreateDto filmCreateDto) {
+        return filmService.addFilm(filmCreateDto);
     }
 
     @DeleteMapping("/admin/films/{id}")

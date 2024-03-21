@@ -32,7 +32,7 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.cinema.films.FilmFixtures.createFilm;
+import static com.cinema.films.FilmFixtures.createFilmCreateDto;
 import static com.cinema.screenings.ScreeningFixtures.createScreeningCreateDto;
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -346,7 +346,7 @@ class TicketControllerIT extends BaseIT {
     }
 
     private Film addFilm() {
-        return filmService.addFilm(createFilm());
+        return filmService.addFilm(createFilmCreateDto());
     }
 
     private Hall addHall() {

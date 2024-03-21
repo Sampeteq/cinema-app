@@ -1,7 +1,6 @@
 package com.cinema.screenings.infrastructure;
 
 import com.cinema.BaseIT;
-import com.cinema.films.FilmFixtures;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmService;
 import com.cinema.halls.HallFixtures;
@@ -22,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDate;
 
 import static com.cinema.ClockFixtures.CURRENT_DATE;
+import static com.cinema.films.FilmFixtures.createFilmCreateDto;
 import static com.cinema.screenings.ScreeningFixtures.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
@@ -197,7 +197,7 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     private Film addFilm() {
-        return filmService.addFilm(FilmFixtures.createFilm());
+        return filmService.addFilm(createFilmCreateDto());
     }
 
     private Hall addHall() {

@@ -1,6 +1,7 @@
 package com.cinema.films.domain;
 
 import com.cinema.films.domain.exceptions.FilmNotFoundException;
+import com.cinema.films.infrastrcture.FilmCreateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,8 +13,14 @@ public class FilmService {
 
     private final FilmRepository filmRepository;
 
-    public Film addFilm(Film film) {
-        log.info("Film:{}", film);
+    public Film addFilm(FilmCreateDto filmCreateDto) {
+        log.info("Dto:{}", filmCreateDto);
+        var film = new Film(
+                filmCreateDto.title(),
+                filmCreateDto.category(),
+                filmCreateDto.year(),
+                filmCreateDto.durationInMinutes()
+        );
         var addedFilm = filmRepository.save(film);
         log.info("Added film:{}", addedFilm);
         return addedFilm;

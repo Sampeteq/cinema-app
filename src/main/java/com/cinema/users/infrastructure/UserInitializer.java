@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Profile("prod")
 @RequiredArgsConstructor
-class AdminInitializer {
+class UserInitializer {
 
     private final AdminProperties adminProperties;
     private final UserService userService;

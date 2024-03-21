@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-interface JpaTicketRepository extends JpaRepository<Ticket, Long> {
+interface TicketJpaRepository extends JpaRepository<Ticket, Long> {
     Optional<Ticket> findBySeat(Seat seat);
 
     Optional<Ticket> findByIdAndUserId(Long ticketId, Long userId);

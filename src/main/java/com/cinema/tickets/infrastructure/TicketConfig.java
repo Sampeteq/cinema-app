@@ -31,7 +31,7 @@ class TicketConfig {
     }
 
     @Bean
-    TicketRepository ticketRepository(JpaTicketRepository jpaTicketRepository) {
-        return new JpaTicketRepositoryAdapter(jpaTicketRepository);
+    TicketRepository ticketRepository(TicketJpaRepository ticketJpaRepository) {
+        return new TicketJpaRepositoryAdapter(ticketJpaRepository);
     }
 }

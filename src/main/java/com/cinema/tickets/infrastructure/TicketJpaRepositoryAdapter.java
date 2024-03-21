@@ -9,37 +9,37 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-class JpaTicketRepositoryAdapter implements TicketRepository {
+class TicketJpaRepositoryAdapter implements TicketRepository {
 
-    private final JpaTicketRepository jpaTicketRepository;
+    private final TicketJpaRepository ticketJpaRepository;
 
     @Override
     public Ticket add(Ticket ticket) {
-        return jpaTicketRepository.save(ticket);
+        return ticketJpaRepository.save(ticket);
     }
 
     @Override
     public Optional<Ticket> getById(Long id) {
-        return jpaTicketRepository.findById(id);
+        return ticketJpaRepository.findById(id);
     }
 
     @Override
     public Optional<Ticket> getBySeat(Seat seat) {
-        return jpaTicketRepository.findBySeat(seat);
+        return ticketJpaRepository.findBySeat(seat);
     }
 
     @Override
     public Optional<Ticket> getByIdAndUserId(Long ticketId, Long userId) {
-        return jpaTicketRepository.findByIdAndUserId(ticketId, userId);
+        return ticketJpaRepository.findByIdAndUserId(ticketId, userId);
     }
 
     @Override
     public List<Ticket> getAllByUserId(Long userId) {
-        return jpaTicketRepository.findAllByUserId(userId);
+        return ticketJpaRepository.findAllByUserId(userId);
     }
 
     @Override
     public List<Ticket> getAllByScreeningId(Long screeningId) {
-        return jpaTicketRepository.findAllByScreeningId(screeningId);
+        return ticketJpaRepository.findAllByScreeningId(screeningId);
     }
 }

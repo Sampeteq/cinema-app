@@ -8,37 +8,37 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-class JpaFilmRepositoryAdapter implements FilmRepository {
+class FilmJpaRepositoryAdapter implements FilmRepository {
 
-    private final JpaFilmRepository jpaFilmRepository;
+    private final FilmJpaRepository filmJpaRepository;
 
     @Override
     public Film save(Film film) {
-        return jpaFilmRepository.save(film);
+        return filmJpaRepository.save(film);
     }
 
     @Override
     public void delete(Film film) {
-        jpaFilmRepository.delete(film);
+        filmJpaRepository.delete(film);
     }
 
     @Override
     public Optional<Film> getById(Long id) {
-        return jpaFilmRepository.findById(id);
+        return filmJpaRepository.findById(id);
     }
 
     @Override
     public List<Film> getAll() {
-        return jpaFilmRepository.findAll();
+        return filmJpaRepository.findAll();
     }
 
     @Override
     public List<Film> getByTitle(String title) {
-        return jpaFilmRepository.getByTitle(title);
+        return filmJpaRepository.getByTitle(title);
     }
 
     @Override
     public List<Film> getByCategory(Film.Category category) {
-        return jpaFilmRepository.getByCategory(category);
+        return filmJpaRepository.getByCategory(category);
     }
 }

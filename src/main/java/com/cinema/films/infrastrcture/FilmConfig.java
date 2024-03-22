@@ -14,7 +14,7 @@ class FilmConfig {
     }
 
     @Bean
-    FilmRepository filmRepository(JpaFilmRepository jpaFilmRepository) {
-        return new JpaFilmRepositoryAdapter(jpaFilmRepository);
+    FilmRepository filmRepository(FilmJpaRepository filmJpaRepository) {
+        return new FilmJpaRepositoryAdapter(filmJpaRepository);
     }
 }

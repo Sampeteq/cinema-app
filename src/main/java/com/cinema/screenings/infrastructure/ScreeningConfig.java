@@ -2,7 +2,6 @@ package com.cinema.screenings.infrastructure;
 
 import com.cinema.films.domain.FilmService;
 import com.cinema.halls.domain.HallService;
-import com.cinema.screenings.domain.ScreeningDatePolicy;
 import com.cinema.screenings.domain.ScreeningFactory;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.ScreeningService;
@@ -21,9 +20,7 @@ class ScreeningConfig {
             HallService hallService,
             Clock clock
     ) {
-        var screeningDatePolicy = new ScreeningDatePolicy();
         var screeningFactory = new ScreeningFactory(
-                screeningDatePolicy,
                 screeningRepository,
                 filmService,
                 hallService,

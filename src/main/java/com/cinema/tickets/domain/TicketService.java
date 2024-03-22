@@ -2,6 +2,8 @@ package com.cinema.tickets.domain;
 
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.ScreeningService;
+import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
+import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.users.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +18,6 @@ import java.util.List;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
-    private final TicketBookingPolicy ticketBookingPolicy;
-    private final TicketCancellingPolicy ticketCancellingPolicy;
     private final ScreeningService screeningService;
     private final Clock clock;
 
@@ -40,7 +40,9 @@ public class TicketService {
         log.info("Seats ids:{}", seats);
         var screening = screeningService.getScreeningById(screeningId);
         log.info("Found screening:{}", screening);
-        ticketBookingPolicy.checkIfBookingIsPossible(screening.hoursLeftBeforeStart(clock));
+        if (screening.hoursLeftBeforeStart(clock) < 1) {
+            throw new TicketBookTooLateException();
+        }
         seats.forEach(
                 seat -> {
                     var ticket = ticketRepository
@@ -61,7 +63,9 @@ public class TicketService {
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
         var hoursLeftBeforeStart = ticket.getScreening().hoursLeftBeforeStart(clock);
-        ticketCancellingPolicy.checkIfCancellingIsPossible(hoursLeftBeforeStart);
+        if (hoursLeftBeforeStart < 24) {
+            throw new TicketCancelTooLateException();
+        }
         ticket.removeUser();
         log.info("Ticket cancelled:{}", ticket);
     }

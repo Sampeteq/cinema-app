@@ -45,21 +45,21 @@ class TicketController {
 
     @GetMapping("/tickets/my")
     @SecurityRequirement(name = "basic")
-    List<TicketView> getAllTicketsByLoggedUser() {
+    List<TicketDto> getAllTicketsByLoggedUser() {
         var user = userService.getLoggedUser();
         return ticketService
                 .getAllTicketsByUserId(user.getId())
                 .stream()
-                .map(ticketMapper::mapToView)
+                .map(ticketMapper::toDto)
                 .toList();
     }
 
     @GetMapping("/public/tickets")
-    List<TicketView> getAllByScreeningId(@RequestParam Long screeningId) {
+    List<TicketDto> getAllByScreeningId(@RequestParam Long screeningId) {
         return ticketService
                 .getAllTicketsByScreeningId(screeningId)
                 .stream()
-                .map(ticketMapper::mapToView)
+                .map(ticketMapper::toDto)
                 .toList();
     }
 }

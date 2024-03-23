@@ -2,7 +2,7 @@ package com.cinema.tickets.infrastructure;
 
 import java.time.LocalDateTime;
 
-record TicketView(
+record TicketDto(
         Long id,
         String filmTitle,
         LocalDateTime screeningDate,

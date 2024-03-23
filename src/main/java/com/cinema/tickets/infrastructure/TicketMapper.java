@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 class TicketMapper {
 
-    TicketView mapToView(Ticket ticket) {
-        return new TicketView(
+    TicketDto toDto(Ticket ticket) {
+        return new TicketDto(
                 ticket.getId(),
                 ticket.getScreening().getFilm().getTitle(),
                 ticket.getScreening().getDate(),

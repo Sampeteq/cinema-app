@@ -20,7 +20,7 @@ class UserController {
         userService.createUser(userCreateDto.mail(), userCreateDto.password());
     }
 
-    @PostMapping("/public/users/password/reset")
+    @PatchMapping("/public/users/password/reset")
     void resetUserPassword(@RequestParam String mail) {
         userService.resetUserPassword(mail);
     }

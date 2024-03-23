@@ -69,7 +69,7 @@ class UserControllerIT extends BaseIT {
         var user = userRepository.save(createUser());
 
         webTestClient
-                .post()
+                .patch()
                 .uri(USERS_BASE_ENDPOINT + "/password/reset" + "?mail=" + user.getMail())
                 .attribute("mail", user.getMail())
                 .exchange()

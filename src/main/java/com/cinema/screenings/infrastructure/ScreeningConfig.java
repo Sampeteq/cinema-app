@@ -2,7 +2,6 @@ package com.cinema.screenings.infrastructure;
 
 import com.cinema.films.domain.FilmService;
 import com.cinema.halls.domain.HallService;
-import com.cinema.screenings.domain.ScreeningFactory;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.ScreeningService;
 import org.springframework.context.annotation.Bean;
@@ -20,13 +19,12 @@ class ScreeningConfig {
             HallService hallService,
             Clock clock
     ) {
-        var screeningFactory = new ScreeningFactory(
-                screeningRepository,
-                filmService,
+        return new ScreeningService(
+                clock,
                 hallService,
-                clock
+                filmService,
+                screeningRepository
         );
-        return new ScreeningService(screeningFactory, screeningRepository);
     }
 
     @Bean

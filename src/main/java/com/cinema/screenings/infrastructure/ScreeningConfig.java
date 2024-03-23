@@ -20,10 +20,10 @@ class ScreeningConfig {
             Clock clock
     ) {
         return new ScreeningService(
-                clock,
+                screeningRepository,
                 hallService,
                 filmService,
-                screeningRepository
+                clock
         );
     }
 

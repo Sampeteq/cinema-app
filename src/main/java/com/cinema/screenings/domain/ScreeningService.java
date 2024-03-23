@@ -21,10 +21,10 @@ import java.util.List;
 @Slf4j
 public class ScreeningService {
 
-    private final Clock clock;
+    private final ScreeningRepository screeningRepository;
     private final HallService hallService;
     private final FilmService filmService;
-    private final ScreeningRepository screeningRepository;
+    private final Clock clock;
 
     @Transactional
     public Screening createScreening(ScreeningCreateDto screeningCreateDto) {

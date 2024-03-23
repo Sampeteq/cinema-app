@@ -18,5 +18,5 @@ interface ScreeningJpaRepository extends JpaRepository<Screening, Long> {
                 (:date <= screening.date and :endDate >= screening.endDate) or
                 (:date <= screening.date and :endDate <= screening.endDate)
             """)
-    List<Screening> getCollisions(LocalDateTime date, LocalDateTime endDate, Long hallId);
+    List<Screening> findCollisions(LocalDateTime date, LocalDateTime endDate, Long hallId);
 }

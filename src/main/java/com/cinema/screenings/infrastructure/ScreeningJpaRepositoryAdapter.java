@@ -40,6 +40,6 @@ class ScreeningJpaRepositoryAdapter implements ScreeningRepository {
 
     @Override
     public List<Screening> getCollisions(LocalDateTime date, LocalDateTime endDate, Long hallId) {
-        return screeningJpaRepository.getCollisions(date, endDate, hallId);
+        return screeningJpaRepository.findCollisions(date, endDate, hallId);
     }
 }

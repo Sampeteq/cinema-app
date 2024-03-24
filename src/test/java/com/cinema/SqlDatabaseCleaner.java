@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
 @Component
 @RequiredArgsConstructor
 public class SqlDatabaseCleaner {
@@ -13,12 +15,14 @@ public class SqlDatabaseCleaner {
     private final JdbcTemplate jdbcTemplate;
 
     public void clean() {
-        jdbcTemplate.queryForList(
+        var tables = jdbcTemplate.queryForList(
                 "SELECT table_name " +
                         "FROM information_schema.tables " +
                         "WHERE table_schema='public'", String.class
-        ).forEach(tableName -> jdbcTemplate.execute(
-                String.format("TRUNCATE TABLE \"%s\" RESTART IDENTITY CASCADE", tableName)
-        ));
+        )
+                .stream()
+                .map(tableName -> "\"" + tableName + "\"")
+                .collect(Collectors.joining(", "));
+        jdbcTemplate.execute(String.format("TRUNCATE TABLE %s RESTART IDENTITY CASCADE", tables));
     }
 }

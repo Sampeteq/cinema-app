@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -31,22 +32,22 @@ class TicketController {
 
     @PostMapping("/tickets/book")
     @SecurityRequirement(name = "basic")
-    void bookTickets(@RequestBody @Valid TicketBookDto ticketBookDto) {
-        var user = userService.getLoggedUser();
+    void bookTickets(@RequestBody @Valid TicketBookDto ticketBookDto, Principal principal) {
+        var user = userService.getByMail(principal.getName());
         ticketService.bookTickets(ticketBookDto.screeningId(), ticketBookDto.seats(), user);
     }
 
     @PatchMapping("/tickets/{ticketId}/cancel")
     @SecurityRequirement(name = "basic")
-    void cancelTicket(@PathVariable Long ticketId) {
-        var user = userService.getLoggedUser();
+    void cancelTicket(@PathVariable Long ticketId, Principal principal) {
+        var user = userService.getByMail(principal.getName());
         ticketService.cancelTicket(ticketId, user);
     }
 
     @GetMapping("/tickets/my")
     @SecurityRequirement(name = "basic")
-    List<TicketDto> getAllTicketsByLoggedUser() {
-        var user = userService.getLoggedUser();
+    List<TicketDto> getAllTicketsByLoggedUser(Principal principal) {
+        var user = userService.getByMail(principal.getName());
         return ticketService.getAllTicketsByUserId(user.getId());
     }
 

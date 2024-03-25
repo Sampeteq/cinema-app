@@ -5,7 +5,6 @@ import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,11 +58,7 @@ public class UserService {
         user.setNewPassword(encodedPassword);
     }
 
-    public User getLoggedUser() {
-        var mail = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
+    public User getByMail(String mail) {
         return userRepository
                 .getByMail(mail)
                 .orElseThrow(() -> new UsernameNotFoundException(mail));

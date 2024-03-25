@@ -1,6 +1,6 @@
 package com.cinema.users.infrastructure;
 
-import com.cinema.mails.MailService;
+import com.cinema.mails.domain.MailService;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserService;
 import org.springframework.context.annotation.Bean;

@@ -1,6 +1,6 @@
 package com.cinema.users.domain;
 
-import com.cinema.mails.MailService;
+import com.cinema.mails.domain.MailService;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,7 @@ public class UserService {
         user.assignPasswordResetToken(passwordResetToken);
         var subject = "Password reset";
         var text = "Your password reset token: " + passwordResetToken;
-        mailService.sendMail(mail, subject, text);
+        mailService.sendMail(user, subject, text);
     }
 
     @Transactional

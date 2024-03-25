@@ -23,8 +23,8 @@ class TicketJpaRepositoryAdapter implements TicketRepository {
     }
 
     @Override
-    public Optional<Ticket> getBySeat(Seat seat) {
-        return ticketJpaRepository.findBySeat(seat);
+    public Optional<Ticket> getByScreeningIdAndSeat(Long id, Seat seat) {
+        return ticketJpaRepository.findByScreeningIdAndSeat(id, seat);
     }
 
     @Override

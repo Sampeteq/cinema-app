@@ -10,7 +10,7 @@ public interface TicketRepository {
 
     Optional<Ticket> getById(Long id);
 
-    Optional<Ticket> getBySeat(Seat seat);
+    Optional<Ticket> getByScreeningIdAndSeat(Long id, Seat seat);
 
     Optional<Ticket> getByIdAndUserId(Long ticketId, Long userId);
 }

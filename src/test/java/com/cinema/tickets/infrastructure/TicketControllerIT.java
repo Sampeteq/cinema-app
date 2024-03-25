@@ -184,8 +184,18 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        assertThat(ticketRepository.getBySeat(seat1).orElseThrow().getUser()).isEqualTo(user);
-        assertThat(ticketRepository.getBySeat(seat2).orElseThrow().getUser()).isEqualTo(user);
+        assertThat(
+                ticketRepository
+                        .getByScreeningIdAndSeat(screening.getId(), seat1)
+                        .orElseThrow()
+                        .getUser()
+        ).isEqualTo(user);
+        assertThat(
+                ticketRepository
+                        .getByScreeningIdAndSeat(screening.getId(), seat2)
+                        .orElseThrow()
+                        .getUser()
+        ).isEqualTo(user);
     }
 
     @Test

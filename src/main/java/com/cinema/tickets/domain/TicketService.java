@@ -47,7 +47,7 @@ public class TicketService {
         seats.forEach(
                 seat -> {
                     var ticket = ticketRepository
-                            .getBySeat(seat)
+                            .getByScreeningIdAndSeat(screeningId, seat)
                             .orElseThrow(TicketNotFoundException::new);
                     log.info("Found ticket: {}", ticket);
                     ticket.assignUser(user);

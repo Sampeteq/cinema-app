@@ -8,7 +8,7 @@ import java.util.Optional;
 
 interface TicketJpaRepository extends JpaRepository<Ticket, Long> {
 
-    Optional<Ticket> findBySeat(Seat seat);
+    Optional<Ticket> findByScreeningIdAndSeat(Long id, Seat seat);
 
     Optional<Ticket> findByIdAndUserId(Long ticketId, Long userId);
 }

@@ -1,8 +1,8 @@
-package com.cinema.tickets.infrastructure;
+package com.cinema.tickets.domain;
 
 import java.time.LocalDateTime;
 
-record TicketDto(
+public record TicketDto(
         Long id,
         String filmTitle,
         LocalDateTime screeningDate,

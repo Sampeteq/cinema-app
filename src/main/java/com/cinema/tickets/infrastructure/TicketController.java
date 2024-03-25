@@ -1,5 +1,6 @@
 package com.cinema.tickets.infrastructure;
 
+import com.cinema.tickets.domain.TicketDto;
 import com.cinema.tickets.domain.TicketService;
 import com.cinema.users.domain.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -20,7 +21,6 @@ import java.util.List;
 class TicketController {
 
     private final TicketService ticketService;
-    private final TicketMapper ticketMapper;
     private final UserService userService;
 
     @PostMapping("/admin/tickets")
@@ -47,19 +47,11 @@ class TicketController {
     @SecurityRequirement(name = "basic")
     List<TicketDto> getAllTicketsByLoggedUser() {
         var user = userService.getLoggedUser();
-        return ticketService
-                .getAllTicketsByUserId(user.getId())
-                .stream()
-                .map(ticketMapper::toDto)
-                .toList();
+        return ticketService.getAllTicketsByUserId(user.getId());
     }
 
     @GetMapping("/public/tickets")
     List<TicketDto> getAllByScreeningId(@RequestParam Long screeningId) {
-        return ticketService
-                .getAllTicketsByScreeningId(screeningId)
-                .stream()
-                .map(ticketMapper::toDto)
-                .toList();
+        return ticketService.getAllTicketsByScreeningId(screeningId);
     }
 }

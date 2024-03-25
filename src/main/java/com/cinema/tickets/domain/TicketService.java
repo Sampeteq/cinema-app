@@ -18,6 +18,7 @@ import java.util.List;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
+    private final TicketReadRepository ticketReadRepository;
     private final ScreeningService screeningService;
     private final Clock clock;
 
@@ -70,11 +71,11 @@ public class TicketService {
         log.info("Ticket cancelled:{}", ticket);
     }
 
-    public List<Ticket> getAllTicketsByUserId(Long userId) {
-        return ticketRepository.getAllByUserId(userId);
+    public List<TicketDto> getAllTicketsByUserId(Long userId) {
+        return ticketReadRepository.getByUserId(userId);
     }
 
-    public List<Ticket> getAllTicketsByScreeningId(Long screeningId) {
-        return ticketRepository.getAllByScreeningId(screeningId);
+    public List<TicketDto> getAllTicketsByScreeningId(Long screeningId) {
+        return ticketReadRepository.getByScreeningId(screeningId);
     }
 }

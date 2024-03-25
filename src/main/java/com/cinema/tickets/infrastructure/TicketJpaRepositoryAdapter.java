@@ -5,7 +5,6 @@ import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketRepository;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -31,15 +30,5 @@ class TicketJpaRepositoryAdapter implements TicketRepository {
     @Override
     public Optional<Ticket> getByIdAndUserId(Long ticketId, Long userId) {
         return ticketJpaRepository.findByIdAndUserId(ticketId, userId);
-    }
-
-    @Override
-    public List<Ticket> getAllByUserId(Long userId) {
-        return ticketJpaRepository.findAllByUserId(userId);
-    }
-
-    @Override
-    public List<Ticket> getAllByScreeningId(Long screeningId) {
-        return ticketJpaRepository.findAllByScreeningId(screeningId);
     }
 }

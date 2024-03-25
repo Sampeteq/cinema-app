@@ -12,6 +12,7 @@ import com.cinema.screenings.domain.ScreeningService;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.tickets.TicketFixtures;
 import com.cinema.tickets.domain.Ticket;
+import com.cinema.tickets.domain.TicketReadRepository;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
@@ -49,6 +50,9 @@ class TicketControllerIT extends BaseIT {
     private TicketRepository ticketRepository;
 
     @Autowired
+    private TicketReadRepository ticketReadRepository;
+
+    @Autowired
     private ScreeningService screeningService;
 
     @Autowired
@@ -78,7 +82,7 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        assertThat(ticketRepository.getAllByScreeningId(screening.getId())).isNotEmpty();
+        assertThat(ticketReadRepository.getByScreeningId(screening.getId())).isNotEmpty();
     }
 
     @Test
@@ -180,9 +184,8 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        assertThat(ticketRepository.getAllByUserId(user.getId()))
-                .isNotEmpty()
-                .allSatisfy(ticket -> assertEquals(user, ticket.getUser()));
+        assertThat(ticketRepository.getBySeat(seat1).orElseThrow().getUser()).isEqualTo(user);
+        assertThat(ticketRepository.getBySeat(seat2).orElseThrow().getUser()).isEqualTo(user);
     }
 
     @Test

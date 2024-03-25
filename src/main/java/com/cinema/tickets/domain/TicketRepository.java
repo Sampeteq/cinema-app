@@ -2,7 +2,6 @@ package com.cinema.tickets.domain;
 
 import com.cinema.halls.domain.Seat;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface TicketRepository {
@@ -14,8 +13,4 @@ public interface TicketRepository {
     Optional<Ticket> getBySeat(Seat seat);
 
     Optional<Ticket> getByIdAndUserId(Long ticketId, Long userId);
-
-    List<Ticket> getAllByUserId(Long userId);
-
-    List<Ticket> getAllByScreeningId(Long screeningId);
 }

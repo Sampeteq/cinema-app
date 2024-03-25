@@ -349,7 +349,7 @@ class TicketControllerIT extends BaseIT {
     }
 
     private Film addFilm() {
-        return filmService.addFilm(createFilmCreateDto());
+        return filmService.createFilm(createFilmCreateDto());
     }
 
     private Hall addHall() {

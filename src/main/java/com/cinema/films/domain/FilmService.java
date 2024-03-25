@@ -13,7 +13,7 @@ public class FilmService {
 
     private final FilmRepository filmRepository;
 
-    public Film addFilm(FilmCreateDto filmCreateDto) {
+    public Film createFilm(FilmCreateDto filmCreateDto) {
         log.info("Dto:{}", filmCreateDto);
         var film = new Film(
                 filmCreateDto.title(),

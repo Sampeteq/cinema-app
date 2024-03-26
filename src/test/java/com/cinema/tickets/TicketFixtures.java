@@ -18,4 +18,15 @@ public class TicketFixtures {
         ticket.assignUser(user);
         return ticket;
     }
+
+    public static Ticket createTicket(Screening screening, Seat seat) {
+        return new Ticket(screening, seat);
+    }
+
+    public static Ticket createTicket(Screening screening, Seat seat, User user) {
+        var ticket = new Ticket(screening, seat);
+        ticket.assignUser(user);
+        ticket.setId(1L);
+        return ticket;
+    }
 }

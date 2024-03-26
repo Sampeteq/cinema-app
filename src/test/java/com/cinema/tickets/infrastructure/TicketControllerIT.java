@@ -9,27 +9,17 @@ import com.cinema.halls.domain.HallService;
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningService;
-import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
 import com.cinema.tickets.TicketFixtures;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketReadRepository;
 import com.cinema.tickets.domain.TicketRepository;
-import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
-import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
-import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
-import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.users.UserFixtures;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -64,9 +54,6 @@ class TicketControllerIT extends BaseIT {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private Clock clock;
-
     @Test
     void tickets_are_added() {
         var film = addFilm();
@@ -83,51 +70,6 @@ class TicketControllerIT extends BaseIT {
                 .isOk();
 
         assertThat(ticketReadRepository.getByScreeningId(screening.getId())).isNotEmpty();
-    }
-
-    @Test
-    void ticket_is_booked_for_existing_screening() {
-        var user = addUser();
-        var nonExistingScreeningId = 0L;
-        var ticketBookDto = new TicketBookDto(
-                nonExistingScreeningId,
-                List.of(new Seat(1, 1))
-        );
-
-        webTestClient
-                .post()
-                .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(ticketBookDto)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange()
-                .expectStatus()
-                .isNotFound()
-                .expectBody()
-                .jsonPath("$").isEqualTo(new ScreeningNotFoundException().getMessage());
-    }
-
-    @Test
-    void ticket_is_booked_for_existing_seat() {
-        var film = addFilm();
-        var hall = addHall();
-        var screening = addScreening(film.getId(), hall.getId());
-        var user = addUser();
-        var nonExistingSeatId = new Seat(0,0);
-        var ticketBookDto = new TicketBookDto(
-                screening.getId(),
-                List.of(nonExistingSeatId)
-        );
-
-        webTestClient
-                .post()
-                .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(ticketBookDto)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange()
-                .expectStatus()
-                .isNotFound()
-                .expectBody()
-                .jsonPath("$").isEqualTo(new TicketNotFoundException().getMessage());
     }
 
     @Test
@@ -199,55 +141,6 @@ class TicketControllerIT extends BaseIT {
     }
 
     @Test
-    void ticket_is_booked_for_free_seat() {
-        var film = addFilm();
-        var hall = addHall();
-        var screening = addScreening(film.getId(), hall.getId());
-        var user = addUser();
-        var ticket = addTicket(screening, user);
-        var ticketBookDto = new TicketBookDto(
-                screening.getId(),
-                List.of(ticket.getSeat())
-        );
-
-        webTestClient
-                .post()
-                .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(ticketBookDto)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange()
-                .expectStatus()
-                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-                .expectBody()
-                .jsonPath("$").isEqualTo(new TicketAlreadyBookedException().getMessage());
-    }
-
-    @Test
-    void ticket_is_booked_at_least_1h_before_screening() {
-        var film = addFilm();
-        var hall = addHall();
-        var screening = addScreening(film.getId(), hall.getId());
-        var user = addUser();
-        var ticket = addTicket(screening);
-        setCurrentDate(screening.getDate().plusMinutes(59));
-        var ticketBookDto = new TicketBookDto(
-                screening.getId(),
-                List.of(ticket.getSeat())
-        );
-
-        webTestClient
-                .post()
-                .uri(TICKETS_BASE_ENDPOINT + "/book")
-                .bodyValue(ticketBookDto)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange()
-                .expectStatus()
-                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-                .expectBody()
-                .jsonPath("$").isEqualTo(new TicketBookTooLateException().getMessage());
-    }
-
-    @Test
     void ticket_is_cancelled() {
         var film = addFilm();
         var hall = addHall();
@@ -265,26 +158,6 @@ class TicketControllerIT extends BaseIT {
         assertThat(ticketRepository.getById(ticket.getId()))
                 .isNotEmpty()
                 .hasValueSatisfying(cancelledTicket -> assertNull(cancelledTicket.getUser()));
-    }
-
-    @Test
-    void ticket_is_cancelled_at_least_24h_before_screening() {
-        var film = addFilm();
-        var hall = addHall();
-        var screening = addScreening(film.getId(), hall.getId());
-        setCurrentDate(screening.getDate().plusHours(23));
-        var user = addUser();
-        var ticket = addTicket(screening, user);
-
-        webTestClient
-                .patch()
-                .uri(TICKETS_BASE_ENDPOINT + "/" + ticket.getId() + "/cancel")
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
-                .exchange()
-                .expectStatus()
-                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-                .expectBody()
-                .jsonPath("$").isEqualTo(new TicketCancelTooLateException().getMessage());
     }
 
     @Test
@@ -372,9 +245,5 @@ class TicketControllerIT extends BaseIT {
 
     private User addAdmin() {
         return userRepository.save(UserFixtures.createUser(User.Role.ADMIN));
-    }
-
-    private void setCurrentDate(LocalDateTime date) {
-        Mockito.when(clock.instant()).thenReturn(date.toInstant(ZoneOffset.UTC));
     }
 }

@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Version;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
@@ -21,6 +22,7 @@ public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter
     private Long id;
 
     @ManyToOne

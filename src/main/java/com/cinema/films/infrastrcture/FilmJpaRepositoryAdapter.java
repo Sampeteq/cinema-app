@@ -3,10 +3,12 @@ package com.cinema.films.infrastrcture;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 @RequiredArgsConstructor
 class FilmJpaRepositoryAdapter implements FilmRepository {
 

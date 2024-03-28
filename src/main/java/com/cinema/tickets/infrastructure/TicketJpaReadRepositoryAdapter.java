@@ -3,9 +3,11 @@ package com.cinema.tickets.infrastructure;
 import com.cinema.tickets.domain.TicketDto;
 import com.cinema.tickets.domain.TicketReadRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 @RequiredArgsConstructor
 class TicketJpaReadRepositoryAdapter implements TicketReadRepository {
 

@@ -3,11 +3,13 @@ package com.cinema.screenings.infrastructure;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 @RequiredArgsConstructor
 class ScreeningJpaRepositoryAdapter implements ScreeningRepository {
 

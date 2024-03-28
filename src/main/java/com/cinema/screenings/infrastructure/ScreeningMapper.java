@@ -1,7 +1,9 @@
 package com.cinema.screenings.infrastructure;
 
 import com.cinema.screenings.domain.Screening;
+import org.springframework.stereotype.Component;
 
+@Component
 class ScreeningMapper {
 
     ScreeningDto mapToDto(Screening screening) {

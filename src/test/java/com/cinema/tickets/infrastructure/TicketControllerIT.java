@@ -19,6 +19,7 @@ import com.cinema.users.domain.UserRepository;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -55,16 +56,15 @@ class TicketControllerIT extends BaseIT {
     private UserRepository userRepository;
 
     @Test
+    @WithMockUser(authorities = "ADMIN")
     void tickets_are_added() {
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film.getId(), hall.getId());
-        var admin = addAdmin();
 
         webTestClient
                 .post()
                 .uri("/admin" + TICKETS_BASE_ENDPOINT + "?screeningId=" + screening.getId())
-                .headers(headers -> headers.setBasicAuth(admin.getMail(), admin.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -73,6 +73,7 @@ class TicketControllerIT extends BaseIT {
     }
 
     @Test
+    @WithMockUser(username = "user1@mail.com")
     void ticket_is_booked() {
         var film = addFilm();
         var hall = addHall();
@@ -104,6 +105,7 @@ class TicketControllerIT extends BaseIT {
     }
 
     @Test
+    @WithMockUser(username = "user1@mail.com")
     void tickets_are_booked() {
         var film = addFilm();
         var hall = addHall();
@@ -121,7 +123,6 @@ class TicketControllerIT extends BaseIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .bodyValue(ticketBookDto)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -141,6 +142,7 @@ class TicketControllerIT extends BaseIT {
     }
 
     @Test
+    @WithMockUser(username = "user1@mail.com")
     void ticket_is_cancelled() {
         var film = addFilm();
         var hall = addHall();
@@ -161,6 +163,7 @@ class TicketControllerIT extends BaseIT {
     }
 
     @Test
+    @WithMockUser(username = "user1@mail.com")
     void tickets_are_gotten_by_user_id() {
         var film = addFilm();
         var hall = addHall();
@@ -241,9 +244,5 @@ class TicketControllerIT extends BaseIT {
 
     private User addUser() {
         return userRepository.save(UserFixtures.createUser());
-    }
-
-    private User addAdmin() {
-        return userRepository.save(UserFixtures.createUser(User.Role.ADMIN));
     }
 }

@@ -5,12 +5,9 @@ import com.cinema.halls.HallFixtures;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.halls.domain.Seat;
-import com.cinema.users.domain.User;
-import com.cinema.users.UserFixtures;
-import com.cinema.users.domain.UserRepository;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 
@@ -25,11 +22,8 @@ class HallControllerIT extends BaseIT {
     @Autowired
     private HallRepository hallRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Test
-    @SneakyThrows
+    @WithMockUser(authorities = "ADMIN")
     void hall_is_created() {
         var hall = new Hall(
                 List.of(
@@ -37,13 +31,11 @@ class HallControllerIT extends BaseIT {
                         new Seat(1, 2)
                 )
         );
-        var user = addUser();
 
         webTestClient
                 .post()
                 .uri(HALL_ADMIN_ENDPOINT)
                 .bodyValue(hall)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isCreated()
@@ -56,14 +48,13 @@ class HallControllerIT extends BaseIT {
     }
 
     @Test
+    @WithMockUser(authorities = "ADMIN")
     void hall_is_deleted() {
         var hall = addHall();
-        var user = addUser();
 
         webTestClient
                 .delete()
                 .uri(HALL_ADMIN_ENDPOINT + "/" + hall.getId())
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus().isNoContent();
 
@@ -71,14 +62,13 @@ class HallControllerIT extends BaseIT {
     }
 
     @Test
+    @WithMockUser(authorities = "ADMIN")
     void halls_with_seats_are_gotten() {
         var hall = hallRepository.save(createHall());
-        var user = addUser();
 
         webTestClient
                 .get()
                 .uri(HALL_ADMIN_ENDPOINT)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -89,9 +79,5 @@ class HallControllerIT extends BaseIT {
 
     private Hall addHall() {
         return hallRepository.save(HallFixtures.createHall());
-    }
-
-    private User addUser() {
-        return userRepository.save(UserFixtures.createUser(User.Role.ADMIN));
     }
 }

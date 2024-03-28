@@ -11,12 +11,10 @@ import com.cinema.screenings.domain.ScreeningCreateDto;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
-import com.cinema.users.UserFixtures;
-import com.cinema.users.domain.User;
-import com.cinema.users.domain.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDate;
 
@@ -44,14 +42,11 @@ class ScreeningControllerIT extends BaseIT {
     @Autowired
     private HallService hallService;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Test
+    @WithMockUser(authorities = "ADMIN")
     void screening_is_created() {
         var film = addFilm();
         var hall = addHall();
-        var user = addUser();
         var screeningCreateDto = new ScreeningCreateDto(SCREENING_DATE, film.getId(), hall.getId());
 
         //when
@@ -59,7 +54,6 @@ class ScreeningControllerIT extends BaseIT {
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .bodyValue(screeningCreateDto)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isCreated()
@@ -71,10 +65,10 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     @Test
+    @WithMockUser(authorities = "ADMIN")
     void screening_and_current_date_difference_is_min_7_days() {
         var film = addFilm();
         var hall = addHall();
-        var user = addUser();
         var screeningCreateDto = new ScreeningCreateDto(
                 CURRENT_DATE.plusDays(6),
                 film.getId(),
@@ -85,7 +79,6 @@ class ScreeningControllerIT extends BaseIT {
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .bodyValue(screeningCreateDto)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -94,10 +87,10 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     @Test
+    @WithMockUser(authorities = "ADMIN")
     void screening_and_current_date_difference_is_max_21_days() {
         var film = addFilm();
         var hall = addHall();
-        var user = addUser();
         var screeningCreateDto = new ScreeningCreateDto(
                 CURRENT_DATE.plusDays(22),
                 film.getId(),
@@ -108,7 +101,6 @@ class ScreeningControllerIT extends BaseIT {
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .bodyValue(screeningCreateDto)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -117,11 +109,11 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     @Test
+    @WithMockUser(authorities = "ADMIN")
     void screenings_collision_cannot_exist() {
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film, hall);
-        var user = addUser();
         var screeningCreateDto = new ScreeningCreateDto(
                 screening.getDate(),
                 film.getId(),
@@ -132,7 +124,6 @@ class ScreeningControllerIT extends BaseIT {
                 .post()
                 .uri(SCREENINGS_ADMIN_ENDPOINT)
                 .bodyValue(screeningCreateDto)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -141,16 +132,15 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     @Test
+    @WithMockUser(authorities = "ADMIN")
     void screening_is_deleted() {
         var film = addFilm();
         var hall = addHall();
         var screening = addScreening(film, hall);
-        var user = addUser();
 
         webTestClient
                 .delete()
                 .uri(SCREENINGS_ADMIN_ENDPOINT + "/" + screening.getId())
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isNoContent();
@@ -212,9 +202,5 @@ class ScreeningControllerIT extends BaseIT {
         var dateTime = date.atStartOfDay().plusHours(16);
         var screening = createScreening(dateTime, film, hall);
         return screeningRepository.save(screening);
-    }
-
-    private User addUser() {
-        return userRepository.save(UserFixtures.createUser(User.Role.ADMIN));
     }
 }

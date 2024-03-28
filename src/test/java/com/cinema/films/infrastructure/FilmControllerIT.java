@@ -4,11 +4,9 @@ import com.cinema.BaseIT;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.infrastrcture.FilmCreateDto;
-import com.cinema.users.domain.User;
-import com.cinema.users.UserFixtures;
-import com.cinema.users.domain.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import static com.cinema.films.FilmFixtures.createFilm;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,10 +23,8 @@ class FilmControllerIT extends BaseIT {
     @Autowired
     private FilmRepository filmRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Test
+    @WithMockUser(authorities = "ADMIN")
     void film_is_created() {
         var id = 1L;
         var title = "Some title";
@@ -41,13 +37,11 @@ class FilmControllerIT extends BaseIT {
                 year,
                 durationInMinutes
         );
-        var user = addUser();
 
         webTestClient
                 .post()
                 .uri(FILM_ADMIN_ENDPOINT)
                 .bodyValue(film)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isCreated()
@@ -60,14 +54,13 @@ class FilmControllerIT extends BaseIT {
     }
 
     @Test
+    @WithMockUser(authorities = "ADMIN")
     void film_is_deleted() {
         var film = addFilm();
-        var user = addUser();
 
         webTestClient
                 .delete()
                 .uri(FILM_ADMIN_ENDPOINT + "/" + film.getId())
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isNoContent();
@@ -133,9 +126,5 @@ class FilmControllerIT extends BaseIT {
 
     private void addFilm(Film.Category category) {
         filmRepository.save(createFilm(category));
-    }
-
-    private User addUser() {
-        return userRepository.save(UserFixtures.createUser(User.Role.ADMIN));
     }
 }

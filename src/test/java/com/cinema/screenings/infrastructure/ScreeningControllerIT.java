@@ -145,7 +145,7 @@ class ScreeningControllerIT extends BaseIT {
                 .expectStatus()
                 .isNoContent();
 
-        assertThat(screeningRepository.getById(screening.getId())).isEmpty();
+        assertThat(screeningRepository.findById(screening.getId())).isEmpty();
     }
 
     @Test

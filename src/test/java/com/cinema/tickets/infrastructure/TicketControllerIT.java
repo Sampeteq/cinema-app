@@ -157,7 +157,7 @@ class TicketControllerIT extends BaseIT {
                 .exchange()
                 .expectStatus().isOk();
 
-        assertThat(ticketRepository.getById(ticket.getId()))
+        assertThat(ticketRepository.findById(ticket.getId()))
                 .isNotEmpty()
                 .hasValueSatisfying(cancelledTicket -> assertNull(cancelledTicket.getUser()));
     }
@@ -214,11 +214,11 @@ class TicketControllerIT extends BaseIT {
     }
 
     private Ticket addTicket(Screening screening) {
-        return ticketRepository.add(TicketFixtures.createTicket(screening));
+        return ticketRepository.save(TicketFixtures.createTicket(screening));
     }
 
     private Ticket addTicket(Screening screening, User user) {
-        return ticketRepository.add(TicketFixtures.createTicket(screening, user));
+        return ticketRepository.save(TicketFixtures.createTicket(screening, user));
     }
 
     private List<Ticket> addTickets(Screening screening) {
@@ -226,7 +226,7 @@ class TicketControllerIT extends BaseIT {
                         new Ticket(screening, new Seat(1, 1)),
                         new Ticket(screening, new Seat(1, 2))
                 )
-                .map(ticketRepository::add)
+                .map(ticketRepository::save)
                 .toList();
     }
 

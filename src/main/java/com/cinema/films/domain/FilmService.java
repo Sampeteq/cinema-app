@@ -31,19 +31,19 @@ public class FilmService {
     public void deleteFilm(Long id) {
         log.info("Film id:{}", id);
         var film = filmRepository
-                .getById(id)
+                .findById(id)
                 .orElseThrow(FilmNotFoundException::new);
         filmRepository.delete(film);
     }
 
     public Film getFilmById(Long filmId) {
         return filmRepository
-                .getById(filmId)
+                .findById(filmId)
                 .orElseThrow(FilmNotFoundException::new);
     }
 
     public List<Film> getAllFilms() {
-        return filmRepository.getAll();
+        return filmRepository.findAll();
     }
 
     public List<Film> getFilmsByTitle(String title) {

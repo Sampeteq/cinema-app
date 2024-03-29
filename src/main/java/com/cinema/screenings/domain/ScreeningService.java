@@ -61,7 +61,7 @@ public class ScreeningService {
     public void deleteScreening(Long id) {
         log.info("Screening id:{}", id);
         var screening = screeningRepository
-                .getById(id)
+                .findById(id)
                 .orElseThrow(ScreeningNotFoundException::new);
         screeningRepository.delete(screening);
     }
@@ -69,12 +69,12 @@ public class ScreeningService {
     public Screening getScreeningById(Long screeningId) {
         log.info("Screening id:{}", screeningId);
         return screeningRepository
-                .getById(screeningId)
+                .findById(screeningId)
                 .orElseThrow(ScreeningNotFoundException::new);
     }
 
     public List<Screening> getAllScreenings() {
-        return screeningRepository.getAll();
+        return screeningRepository.findAll();
     }
 
     public List<Screening> getScreeningsByDate(LocalDate date) {

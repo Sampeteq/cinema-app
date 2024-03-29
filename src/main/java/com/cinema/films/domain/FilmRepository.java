@@ -1,17 +1,10 @@
 package com.cinema.films.domain;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
-import java.util.Optional;
 
-public interface FilmRepository  {
-
-    Film save(Film film);
-
-    void delete(Film film);
-
-    Optional<Film> getById(Long id);
-
-    List<Film> getAll();
+public interface FilmRepository extends JpaRepository<Film, Long> {
 
     List<Film> getByTitle(String title);
 

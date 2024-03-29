@@ -34,7 +34,7 @@ public class TicketService {
                 .stream()
                 .map(seat -> new Ticket(screening, seat))
                 .toList();
-        tickets.forEach(ticketRepository::add);
+        ticketRepository.saveAll(tickets);
     }
 
     @Transactional

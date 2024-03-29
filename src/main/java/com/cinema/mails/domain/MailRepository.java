@@ -1,6 +1,6 @@
 package com.cinema.mails.domain;
 
-public interface MailRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    Mail save(Mail mail);
+public interface MailRepository extends JpaRepository<Mail, Long> {
 }

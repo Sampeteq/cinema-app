@@ -1,4 +1,4 @@
-package com.cinema.mails.domain;
+package com.cinema.mail.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

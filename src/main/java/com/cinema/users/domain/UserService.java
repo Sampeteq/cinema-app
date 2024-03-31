@@ -1,6 +1,6 @@
 package com.cinema.users.domain;
 
-import com.cinema.mails.domain.MailService;
+import com.cinema.mail.domain.MailService;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.cinema.mails.domain;
+package com.cinema.mail.domain;
 
 import com.cinema.users.domain.User;
 import lombok.RequiredArgsConstructor;

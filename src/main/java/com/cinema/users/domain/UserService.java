@@ -46,7 +46,7 @@ public class UserService {
         user.assignPasswordResetToken(passwordResetToken);
         var subject = "Password reset";
         var text = "Your password reset token: " + passwordResetToken;
-        mailService.sendMail(user, subject, text);
+        mailService.sendMail(subject, text, user);
     }
 
     @Transactional

@@ -16,21 +16,20 @@ public class Mail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String receiver;
+
     private String subject;
 
     private String content;
 
     private LocalDateTime sentAt;
 
-    @ManyToOne
-    private User user;
-
     protected Mail() {}
 
-    public Mail(String subject, String content, LocalDateTime sentAt, User user) {
+    public Mail(String receiver, String subject, String content, LocalDateTime sentAt) {
+        this.receiver = receiver;
         this.subject = subject;
         this.content = content;
         this.sentAt = sentAt;
-        this.user = user;
     }
 }

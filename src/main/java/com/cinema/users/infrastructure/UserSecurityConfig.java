@@ -1,6 +1,5 @@
 package com.cinema.users.infrastructure;
 
-import com.cinema.users.domain.UserRepository;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -11,9 +10,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -54,19 +50,5 @@ class UserSecurityConfig {
     @Bean
     PasswordEncoder prodPasswordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    UserDetailsService userDetailsService(UserRepository userRepository) {
-        return username -> userRepository
-                .getByMail(username)
-                .map(user -> User
-                        .builder()
-                        .username(user.getMail())
-                        .password(user.getPassword())
-                        .authorities(user.getRole().name())
-                        .build()
-                )
-                .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 }

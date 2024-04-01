@@ -1,43 +1,45 @@
 package com.cinema.users.infrastructure;
 
-import com.cinema.BaseIT;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-class PermissionsIT extends BaseIT {
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(TestController.class)
+@Import(UserSecurityConfig.class)
+class PermissionsIT  {
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void user_with_admin_role_has_access_to_endpoints_with_admin_prefix() {
-        webTestClient
-                .options()
-                .uri("/admin/test")
-                .exchange()
-                .expectStatus()
-                .isOk();
+    void user_with_admin_role_has_access_to_admin_endpoints() throws Exception {
+        mockMvc
+                .perform(get("/admin/test"))
+                .andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(authorities = "COMMON")
-    void user_with_common_role_has_no_access_to_endpoints_with_admin_prefix() {
-        webTestClient
-                .options()
-                .uri("/admin/test")
-                .exchange()
-                .expectStatus()
-                .isForbidden();
+    void user_with_common_role_has_no_access_to_admin_endpoints() throws Exception {
+        mockMvc
+                .perform(get("/admin/test"))
+                .andExpect(status().isForbidden());
     }
 
     @Test
-    void user_dont_have_to_be_authenticated_to_have_access_to_endpoint_with_public_prefix() {
-        webTestClient
-                .options()
-                .uri("/public/films")
-                .exchange()
-                .expectStatus()
-                .isOk();
+    void user_have_access_to_public_endpoints() throws Exception {
+        mockMvc
+                .perform(get("/public/test"))
+                .andExpect(status().isOk());
     }
 }
 

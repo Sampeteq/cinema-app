@@ -20,6 +20,7 @@
     <properties>
         <java.version>21</java.version>
         <lombok.version>1.18.30</lombok.version>
+        <postgresql.version>42.7.3</postgresql.version>
         <org.liquibase.version>4.24.0</org.liquibase.version>
         <org.springdoc.version>2.2.0</org.springdoc.version>
         <testcontainers.version>1.19.2</testcontainers.version>
@@ -84,6 +85,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
             <scope>runtime</scope>
         </dependency>
 

@@ -17,6 +17,16 @@ public class ScreeningFixtures {
 
     public static final LocalDateTime SCREENING_END_DATE = SCREENING_DATE.plusHours(2);
 
+    public static ScreeningCreateDto createScreeningCreateDto() {
+        var filmId = 1L;
+        var hallI = 1L;
+        return new ScreeningCreateDto(
+                SCREENING_DATE,
+                filmId,
+                hallI
+        );
+    }
+
     public static ScreeningCreateDto createScreeningCreateDto(Long filmId, Long hallId) {
         return new ScreeningCreateDto(
                 SCREENING_DATE,

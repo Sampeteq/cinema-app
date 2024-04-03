@@ -9,22 +9,17 @@ import com.cinema.halls.domain.HallService;
 import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningCreateDto;
 import com.cinema.screenings.domain.ScreeningRepository;
-import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
-import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDate;
 
-import static com.cinema.ClockFixtures.CURRENT_DATE;
 import static com.cinema.films.FilmFixtures.createFilmCreateDto;
 import static com.cinema.screenings.ScreeningFixtures.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -62,73 +57,6 @@ class ScreeningControllerIT extends BaseIT {
                 .jsonPath("$.date").isEqualTo(screeningCreateDto.date().format(ISO_DATE_TIME))
                 .jsonPath("$.filmId").isEqualTo(film.getId())
                 .jsonPath("$.hallId").isEqualTo(screeningCreateDto.hallId());
-    }
-
-    @Test
-    @WithMockUser(authorities = "ADMIN")
-    void screening_and_current_date_difference_is_min_7_days() {
-        var film = addFilm();
-        var hall = addHall();
-        var screeningCreateDto = new ScreeningCreateDto(
-                CURRENT_DATE.plusDays(6),
-                film.getId(),
-                hall.getId()
-        );
-
-        webTestClient
-                .post()
-                .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .bodyValue(screeningCreateDto)
-                .exchange()
-                .expectStatus()
-                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-                .expectBody()
-                .jsonPath("$.message", equalTo(new ScreeningDateOutOfRangeException().getMessage()));
-    }
-
-    @Test
-    @WithMockUser(authorities = "ADMIN")
-    void screening_and_current_date_difference_is_max_21_days() {
-        var film = addFilm();
-        var hall = addHall();
-        var screeningCreateDto = new ScreeningCreateDto(
-                CURRENT_DATE.plusDays(22),
-                film.getId(),
-                hall.getId()
-        );
-
-        webTestClient
-                .post()
-                .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .bodyValue(screeningCreateDto)
-                .exchange()
-                .expectStatus()
-                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-                .expectBody()
-                .jsonPath("$.message", equalTo(new ScreeningDateOutOfRangeException().getMessage()));
-    }
-
-    @Test
-    @WithMockUser(authorities = "ADMIN")
-    void screenings_collision_cannot_exist() {
-        var film = addFilm();
-        var hall = addHall();
-        var screening = addScreening(film, hall);
-        var screeningCreateDto = new ScreeningCreateDto(
-                screening.getDate(),
-                film.getId(),
-                hall.getId()
-        );
-
-        webTestClient
-                .post()
-                .uri(SCREENINGS_ADMIN_ENDPOINT)
-                .bodyValue(screeningCreateDto)
-                .exchange()
-                .expectStatus()
-                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-                .expectBody()
-                .jsonPath("$.message", equalTo(new ScreeningsCollisionsException().getMessage()));
     }
 
     @Test

@@ -29,10 +29,14 @@ class SecurityConfig {
         return http
                 .authorizeHttpRequests(
                         configurer -> configurer
-                                .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                                .requestMatchers("/public/**").permitAll()
-                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers("/admin/**")
+                                .hasAuthority("ADMIN")
+                                .requestMatchers("/public/**")
+                                .permitAll()
+                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(configurer -> configurer

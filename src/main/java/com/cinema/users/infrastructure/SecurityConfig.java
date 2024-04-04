@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
         type = SecuritySchemeType.HTTP,
         in = SecuritySchemeIn.HEADER
 )
-class UserSecurityConfig {
+class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

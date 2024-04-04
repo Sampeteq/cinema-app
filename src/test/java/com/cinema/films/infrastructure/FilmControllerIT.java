@@ -3,7 +3,7 @@ package com.cinema.films.infrastructure;
 import com.cinema.BaseIT;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmRepository;
-import com.cinema.films.infrastrcture.FilmCreateDto;
+import com.cinema.films.domain.FilmCreateDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;

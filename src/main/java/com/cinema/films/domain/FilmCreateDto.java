@@ -1,6 +1,5 @@
-package com.cinema.films.infrastrcture;
+package com.cinema.films.domain;
 
-import com.cinema.films.domain.Film;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

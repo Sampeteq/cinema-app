@@ -1,7 +1,7 @@
 package com.cinema.films;
 
 import com.cinema.films.domain.Film;
-import com.cinema.films.infrastrcture.FilmCreateDto;
+import com.cinema.films.domain.FilmCreateDto;
 
 import java.time.Year;
 

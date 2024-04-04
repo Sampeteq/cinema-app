@@ -1,6 +1,7 @@
 package com.cinema.films.infrastrcture;
 
 import com.cinema.films.domain.Film;
+import com.cinema.films.domain.FilmCreateDto;
 import com.cinema.films.domain.FilmService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;

@@ -157,7 +157,7 @@ class TicketControllerIT extends BaseIT {
                 .exchange()
                 .expectStatus().isOk();
 
-        assertThat(ticketRepository.findById(ticket.getId()))
+        assertThat(ticketRepository.getById(ticket.getId()))
                 .isNotEmpty()
                 .hasValueSatisfying(cancelledTicket -> assertNull(cancelledTicket.getUser()));
     }

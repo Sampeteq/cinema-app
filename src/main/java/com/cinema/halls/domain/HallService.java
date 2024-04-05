@@ -24,7 +24,7 @@ public class HallService {
     public void deleteHall(Long id) {
         log.info("Hall id:{}", id);
         var hall = hallRepository
-                .findById(id)
+                .getById(id)
                 .orElseThrow(HallNotFoundException::new);
         log.info("Found hall:{}", hall);
         hallRepository.delete(hall);
@@ -37,7 +37,7 @@ public class HallService {
 
     public Hall getHallById(Long hallId) {
         return hallRepository
-                .findById(hallId)
+                .getById(hallId)
                 .orElseThrow(HallNotFoundException::new);
     }
 }

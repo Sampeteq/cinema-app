@@ -30,19 +30,19 @@ public class FilmService {
     public void deleteFilm(Long id) {
         log.info("Film id:{}", id);
         var film = filmRepository
-                .findById(id)
+                .getById(id)
                 .orElseThrow(FilmNotFoundException::new);
         filmRepository.delete(film);
     }
 
     public Film getFilmById(Long filmId) {
         return filmRepository
-                .findById(filmId)
+                .getById(filmId)
                 .orElseThrow(FilmNotFoundException::new);
     }
 
     public List<Film> getAllFilms() {
-        return filmRepository.findAll();
+        return filmRepository.getAll();
     }
 
     public List<Film> getFilmsByTitle(String title) {

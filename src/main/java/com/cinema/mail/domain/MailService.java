@@ -1,4 +1,4 @@
-package com.cinema.mail;
+package com.cinema.mail.domain;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailSender;

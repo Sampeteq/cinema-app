@@ -28,13 +28,12 @@ public class TicketService {
     public void addTickets(Long screeningId) {
         log.info("Screening id:{}", screeningId);
         var screening = screeningService.getScreeningById(screeningId);
-        var tickets = screening
+        screening
                 .getHall()
                 .getSeats()
                 .stream()
                 .map(seat -> new Ticket(screening, seat))
-                .toList();
-        ticketRepository.saveAll(tickets);
+                .forEach(ticketRepository::save);
     }
 
     @Transactional

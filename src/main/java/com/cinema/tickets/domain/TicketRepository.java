@@ -1,11 +1,14 @@
 package com.cinema.tickets.domain;
 
 import com.cinema.halls.domain.Seat;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface TicketRepository extends JpaRepository<Ticket, Long> {
+public interface TicketRepository {
+
+    Ticket save(Ticket ticket);
+
+    Optional<Ticket> getById(Long id);
 
     Optional<Ticket> getByScreeningIdAndSeat(Long id, Seat seat);
 

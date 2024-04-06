@@ -1,5 +1,6 @@
 package com.cinema;
 
+import com.cinema.mail.domain.MailSenderPort;
 import com.cinema.mail.domain.MailService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +17,11 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import java.time.Clock;
 
 import static com.cinema.ClockFixtures.INSTANT;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 @SpringBootTest
+@MockBean({MailService.class, MailSenderPort.class})
 public abstract class BaseIT {
 
     @ServiceConnection
@@ -41,9 +41,6 @@ public abstract class BaseIT {
 
     protected WebTestClient webTestClient;
 
-    @MockBean
-    private MailService mailService;
-
     @SpyBean
     private Clock clock;
 
@@ -53,7 +50,6 @@ public abstract class BaseIT {
                 .bindToApplicationContext(this.wac)
                 .apply(springSecurity())
                 .build();
-        doNothing().when(mailService).sendMail(any(), any(), any());
         when(clock.instant()).thenReturn(INSTANT);
     }
 

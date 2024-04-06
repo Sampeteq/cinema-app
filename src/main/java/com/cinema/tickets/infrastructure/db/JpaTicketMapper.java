@@ -6,14 +6,12 @@ import com.cinema.screenings.infrastructure.db.JpaScreeningMapper;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.users.infrastructure.db.JpaUserMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
-class JpaTicketMapper {
+public class JpaTicketMapper {
 
-    private final JpaUserMapper userMapper;
     private final JpaScreeningMapper screeningMapper;
+    private final JpaUserMapper userMapper;
 
     public JpaTicket toJpa(Ticket ticket) {
         return new JpaTicket(

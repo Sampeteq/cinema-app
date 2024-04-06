@@ -23,7 +23,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString(exclude = "screening")
-class JpaTicket {
+public class JpaTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter

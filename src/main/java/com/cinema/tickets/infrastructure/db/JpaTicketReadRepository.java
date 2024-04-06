@@ -1,14 +1,12 @@
 package com.cinema.tickets.infrastructure.db;
 
 import com.cinema.tickets.domain.TicketDto;
-import com.cinema.tickets.domain.TicketReadRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 
 import java.util.List;
 
-interface JpaTicketReadRepository extends Repository<JpaTicket, Integer> {
+public interface JpaTicketReadRepository extends Repository<JpaTicket, Integer> {
 
     @Query("""
             select new com.cinema.tickets.domain.TicketDto(
@@ -35,19 +33,3 @@ interface JpaTicketReadRepository extends Repository<JpaTicket, Integer> {
     List<TicketDto> getByUserId(Long id);
 }
 
-@org.springframework.stereotype.Repository
-@RequiredArgsConstructor
-class JpaTicketReadRepositoryAdapter implements TicketReadRepository {
-
-    private final JpaTicketReadRepository jpaTicketReadRepository;
-
-    @Override
-    public List<TicketDto> getByScreeningId(Long id) {
-        return jpaTicketReadRepository.getByScreeningId(id);
-    }
-
-    @Override
-    public List<TicketDto> getByUserId(Long id) {
-        return jpaTicketReadRepository.getByUserId(id);
-    }
-}

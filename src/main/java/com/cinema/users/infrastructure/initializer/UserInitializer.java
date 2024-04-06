@@ -1,17 +1,12 @@
-package com.cinema.users.infrastructure;
+package com.cinema.users.infrastructure.initializer;
 
 import com.cinema.users.domain.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
-@Component
-@Profile("prod")
 @RequiredArgsConstructor
-class UserInitializer {
+public class UserInitializer {
 
     private final UserAdminProperties userAdminProperties;
     private final UserService userService;
@@ -21,5 +16,3 @@ class UserInitializer {
         userService.createAdmin(userAdminProperties.mail(), userAdminProperties.password());
     }
 }
-@ConfigurationProperties(prefix = "user.admin")
-record UserAdminProperties(String mail, String password) {}

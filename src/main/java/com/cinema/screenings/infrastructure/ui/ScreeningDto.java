@@ -2,7 +2,7 @@ package com.cinema.screenings.infrastructure.ui;
 
 import java.time.LocalDateTime;
 
-record ScreeningDto(
+public record ScreeningDto(
         Long id,
         LocalDateTime date,
         LocalDateTime endDate,

@@ -2,9 +2,7 @@ package com.cinema.halls.infrastructure.db;
 
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.Seat;
-import org.springframework.stereotype.Component;
 
-@Component
 public class JpaHallMapper {
 
     public JpaHall toJpa(Hall hall) {

@@ -1,9 +1,7 @@
 package com.cinema.users.infrastructure.db;
 
 import com.cinema.users.domain.User;
-import org.springframework.stereotype.Component;
 
-@Component
 public class JpaUserMapper {
 
     public JpaUser toJpa(User user) {

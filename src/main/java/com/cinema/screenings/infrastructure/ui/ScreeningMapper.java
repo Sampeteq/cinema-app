@@ -1,12 +1,10 @@
 package com.cinema.screenings.infrastructure.ui;
 
 import com.cinema.screenings.domain.Screening;
-import org.springframework.stereotype.Component;
 
-@Component
-class ScreeningMapper {
+public class ScreeningMapper {
 
-    ScreeningDto mapToDto(Screening screening) {
+    public ScreeningDto mapToDto(Screening screening) {
         return new ScreeningDto(
                 screening.getId(),
                 screening.getDate(),

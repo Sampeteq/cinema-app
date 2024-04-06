@@ -4,9 +4,7 @@ import com.cinema.films.infrastrcture.db.JpaFilmMapper;
 import com.cinema.halls.infrastructure.db.JpaHallMapper;
 import com.cinema.screenings.domain.Screening;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 public class JpaScreeningMapper {
 

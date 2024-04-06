@@ -1,9 +1,7 @@
 package com.cinema.films.infrastrcture.db;
 
 import com.cinema.films.domain.Film;
-import org.springframework.stereotype.Component;
 
-@Component
 public class JpaFilmMapper {
 
     public JpaFilm toJpa(Film film) {

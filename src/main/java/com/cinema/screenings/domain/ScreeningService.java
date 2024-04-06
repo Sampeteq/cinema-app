@@ -48,6 +48,7 @@ public class ScreeningService {
             throw new ScreeningsCollisionsException();
         }
         var screening = new Screening(
+                null,
                 screeningCreateDto.date(),
                 screeningEndDate,
                 film,

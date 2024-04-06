@@ -1,15 +1,18 @@
 package com.cinema.films;
 
 import com.cinema.films.domain.Film;
+import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmCreateDto;
 
 import java.time.Year;
 
 public class FilmFixtures {
 
+    private static final Long ID = 1L;
+
     private static final String TITLE = "TITLE 1";
 
-    private static final Film.Category CATEGORY = Film.Category.COMEDY;
+    private static final FilmCategory CATEGORY = FilmCategory.COMEDY;
 
     private static final int YEAR = Year.now().getValue();
 
@@ -26,6 +29,7 @@ public class FilmFixtures {
 
     public static Film createFilm() {
         return new Film(
+                ID,
                 TITLE,
                 CATEGORY,
                 YEAR,
@@ -33,8 +37,9 @@ public class FilmFixtures {
         );
     }
 
-    public static Film createFilm(Film.Category category) {
+    public static Film createFilm(FilmCategory category) {
         return new Film(
+                ID,
                 TITLE,
                 category,
                 YEAR,
@@ -44,6 +49,7 @@ public class FilmFixtures {
 
     public static Film createFilm(String title) {
         return new Film(
+                ID,
                 title,
                 CATEGORY,
                 YEAR,

@@ -9,6 +9,7 @@ public class HallFixtures {
 
     public static Hall createHall() {
         return new Hall(
+                null,
                 List.of(
                         new Seat(1, 1),
                         new Seat(1, 2)

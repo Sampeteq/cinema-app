@@ -24,6 +24,6 @@ public class MailService {
         message.setSubject(subject);
         message.setText(content);
         mailSender.send(message);
-        mailRepository.save(new Mail(receiver, subject, content, LocalDateTime.now(clock)));
+        mailRepository.save(new Mail(null, receiver, subject, content, LocalDateTime.now(clock)));
     }
 }

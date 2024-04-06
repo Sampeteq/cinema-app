@@ -9,7 +9,6 @@ import com.cinema.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.util.List;
@@ -24,7 +23,6 @@ public class TicketService {
     private final ScreeningService screeningService;
     private final Clock clock;
 
-    @Transactional
     public void addTickets(Long screeningId) {
         log.info("Screening id:{}", screeningId);
         var screening = screeningService.getScreeningById(screeningId);
@@ -32,11 +30,10 @@ public class TicketService {
                 .getHall()
                 .getSeats()
                 .stream()
-                .map(seat -> new Ticket(screening, seat))
+                .map(seat -> new Ticket(null, screening, seat, null, 0))
                 .forEach(ticketRepository::save);
     }
 
-    @Transactional
     public void bookTickets(Long screeningId, List<Seat> seats, User user) {
         log.info("Screening id:{}", screeningId);
         log.info("Seats ids:{}", seats);
@@ -52,12 +49,12 @@ public class TicketService {
                             .orElseThrow(TicketNotFoundException::new);
                     log.info("Found ticket: {}", ticket);
                     ticket.assignUser(user);
+                    ticketRepository.save(ticket);
                     log.info("Booked ticket:{}", ticket);
                 }
         );
     }
 
-    @Transactional
     public void cancelTicket(Long ticketId, User user) {
         log.info("Ticket id:{}", ticketId);
         var ticket = ticketRepository
@@ -69,6 +66,7 @@ public class TicketService {
             throw new TicketCancelTooLateException();
         }
         ticket.removeUser();
+        ticketRepository.save(ticket);
         log.info("Ticket cancelled:{}", ticket);
     }
 

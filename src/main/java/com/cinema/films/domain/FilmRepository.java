@@ -15,5 +15,5 @@ public interface FilmRepository {
 
     List<Film> getByTitle(String title);
 
-    List<Film> getByCategory(Film.Category category);
+    List<Film> getByCategory(FilmCategory category);
 }

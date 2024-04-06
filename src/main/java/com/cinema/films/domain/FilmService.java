@@ -17,6 +17,7 @@ public class FilmService {
     public Film createFilm(FilmCreateDto filmCreateDto) {
         log.info("Dto:{}", filmCreateDto);
         var film = new Film(
+                null,
                 filmCreateDto.title(),
                 filmCreateDto.category(),
                 filmCreateDto.year(),
@@ -49,7 +50,7 @@ public class FilmService {
         return filmRepository.getByTitle(title);
     }
 
-    public List<Film> getFilmsByCategory(Film.Category category) {
+    public List<Film> getFilmsByCategory(FilmCategory category) {
         return filmRepository.getByCategory(category);
     }
 }

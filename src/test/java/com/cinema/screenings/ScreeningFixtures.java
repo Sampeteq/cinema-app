@@ -36,18 +36,18 @@ public class ScreeningFixtures {
     }
 
     public static Screening createScreening() {
-        var screening = new Screening(
+        return new Screening(
+                null,
                 SCREENING_DATE,
                 SCREENING_END_DATE,
                 createFilm(),
                 createHall()
         );
-        screening.setId(1L);
-        return screening;
     }
 
     public static Screening createScreening(Film film, Hall hall) {
         return new Screening(
+                null,
                 SCREENING_DATE,
                 SCREENING_END_DATE,
                 film,
@@ -57,6 +57,7 @@ public class ScreeningFixtures {
 
     public static Screening createScreening(LocalDateTime screeningDate, Film film, Hall hall) {
         return new Screening(
+                null,
                 screeningDate,
                 SCREENING_END_DATE,
                 film,

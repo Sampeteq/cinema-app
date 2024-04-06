@@ -1,13 +1,9 @@
 package com.cinema.screenings.infrastructure.db;
 
-import com.cinema.films.infrastrcture.db.JpaFilm;
-import com.cinema.halls.infrastructure.db.JpaHall;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,8 +26,6 @@ public class JpaScreening {
     private Long id;
     private LocalDateTime date;
     private LocalDateTime endDate;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private JpaFilm film;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private JpaHall hall;
+    private Long filmId;
+    private Long hallId;
 }

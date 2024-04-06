@@ -1,9 +1,7 @@
 package com.cinema.screenings.infrastructure.ioc;
 
 import com.cinema.films.domain.FilmService;
-import com.cinema.films.infrastrcture.db.JpaFilmMapper;
 import com.cinema.halls.domain.HallService;
-import com.cinema.halls.infrastructure.db.JpaHallMapper;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.ScreeningService;
 import com.cinema.screenings.infrastructure.db.JpaScreeningMapper;
@@ -37,8 +35,8 @@ class ScreeningIoc {
     }
 
     @Bean
-    JpaScreeningMapper jpaScreeningMapper(JpaFilmMapper jpaFilmMapper, JpaHallMapper jpaHallMapper) {
-        return new JpaScreeningMapper(jpaFilmMapper, jpaHallMapper);
+    JpaScreeningMapper jpaScreeningMapper() {
+        return new JpaScreeningMapper();
     }
 
     @Bean

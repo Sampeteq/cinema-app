@@ -9,8 +9,8 @@ public class ScreeningMapper {
                 screening.getId(),
                 screening.getDate(),
                 screening.getEndDate(),
-                screening.getFilm().getId(),
-                screening.getHall().getId()
+                screening.getFilmId(),
+                screening.getHallId()
         );
     }
 }

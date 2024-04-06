@@ -49,8 +49,8 @@ public class ScreeningService {
                 null,
                 screeningCreateDto.date(),
                 screeningEndDate,
-                film,
-                hall
+                film.getId(),
+                hall.getId()
         );
         var addedScreening = screeningRepository.save(screening);
         log.info("Screening added:{}", addedScreening);

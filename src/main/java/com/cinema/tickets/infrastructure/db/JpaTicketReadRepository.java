@@ -11,24 +11,28 @@ public interface JpaTicketReadRepository extends Repository<JpaTicket, Integer> 
     @Query("""
             select new com.cinema.tickets.domain.TicketDto(
             t.id,
-            t.screening.film.title,
+            f.title,
             t.screening.date,
-            t.screening.hall.id,
+            t.screening.hallId,
             t.seat.rowNumber,
             t.seat.number,
-            t.user.id) from JpaTicket t where t.screening.id = :id
+            t.user.id) from JpaTicket t
+            left join JpaFilm f on f.id = t.screening.filmId
+            where t.screening.id = :id
             """)
     List<TicketDto> getByScreeningId(Long id);
 
     @Query("""
             select new com.cinema.tickets.domain.TicketDto(
             t.id,
-            t.screening.film.title,
+            f.title,
             t.screening.date,
-            t.screening.hall.id,
+            t.screening.hallId,
             t.seat.rowNumber,
             t.seat.number,
-            t.user.id) from JpaTicket t where t.user.id = :id
+            t.user.id) from JpaTicket t
+            left join JpaFilm f on f.id = t.screening.filmId
+            where t.user.id = :id
             """)
     List<TicketDto> getByUserId(Long id);
 }

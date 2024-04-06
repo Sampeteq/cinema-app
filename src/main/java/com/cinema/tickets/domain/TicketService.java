@@ -1,5 +1,6 @@
 package com.cinema.tickets.domain;
 
+import com.cinema.halls.domain.HallService;
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.ScreeningService;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
@@ -19,13 +20,14 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final TicketReadRepository ticketReadRepository;
     private final ScreeningService screeningService;
+    private final HallService hallService;
     private final Clock clock;
 
     public void addTickets(Long screeningId) {
         log.info("Screening id:{}", screeningId);
         var screening = screeningService.getScreeningById(screeningId);
-        screening
-                .getHall()
+        hallService
+                .getHallById(screening.getHallId())
                 .getSeats()
                 .stream()
                 .map(seat -> new Ticket(null, screening, seat, null, 0))

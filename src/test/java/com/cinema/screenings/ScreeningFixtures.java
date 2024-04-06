@@ -8,8 +8,6 @@ import com.cinema.screenings.domain.ScreeningCreateDto;
 import java.time.LocalDateTime;
 
 import static com.cinema.ClockFixtures.CURRENT_DATE;
-import static com.cinema.films.FilmFixtures.createFilm;
-import static com.cinema.halls.HallFixtures.createHall;
 
 public class ScreeningFixtures {
 
@@ -40,8 +38,8 @@ public class ScreeningFixtures {
                 null,
                 SCREENING_DATE,
                 SCREENING_END_DATE,
-                createFilm(),
-                createHall()
+               1L,
+                1L
         );
     }
 
@@ -50,8 +48,8 @@ public class ScreeningFixtures {
                 null,
                 SCREENING_DATE,
                 SCREENING_END_DATE,
-                film,
-                hall
+                film.getId(),
+                hall.getId()
         );
     }
 
@@ -60,8 +58,8 @@ public class ScreeningFixtures {
                 null,
                 screeningDate,
                 SCREENING_END_DATE,
-                film,
-                hall
+                film.getId(),
+                hall.getId()
         );
     }
 }

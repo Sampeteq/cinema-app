@@ -1,5 +1,6 @@
 package com.cinema.tickets.domain;
 
+import com.cinema.halls.domain.HallService;
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.domain.ScreeningService;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
@@ -29,11 +30,13 @@ class JpaTicketServiceTest {
     TicketRepository ticketRepository = mock();
     TicketReadRepository ticketReadRepository = mock();
     ScreeningService screeningService = mock();
+    HallService hallService = mock();
     Clock clock = mock();
     TicketService ticketService = new TicketService(
             ticketRepository,
             ticketReadRepository,
             screeningService,
+            hallService,
             clock
     );
 

@@ -92,8 +92,8 @@ class JpaScreeningControllerIT extends BaseIT {
                 .jsonPath("$[*].*").value(everyItem(notNullValue()))
                 .jsonPath("$[0].id").isEqualTo(screening.getId())
                 .jsonPath("$[0].date").isEqualTo(screening.getDate().format(ISO_DATE_TIME))
-                .jsonPath("$[0].filmId").isEqualTo(screening.getFilm().getId())
-                .jsonPath("$[0].hallId").isEqualTo(screening.getHall().getId());
+                .jsonPath("$[0].filmId").isEqualTo(screening.getFilmId())
+                .jsonPath("$[0].hallId").isEqualTo(screening.getHallId());
     }
 
     @Test

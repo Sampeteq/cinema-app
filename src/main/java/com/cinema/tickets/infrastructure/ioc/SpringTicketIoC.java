@@ -1,5 +1,6 @@
 package com.cinema.tickets.infrastructure.ioc;
 
+import com.cinema.halls.domain.HallService;
 import com.cinema.screenings.domain.ScreeningService;
 import com.cinema.screenings.infrastructure.db.JpaScreeningMapper;
 import com.cinema.tickets.domain.TicketReadRepository;
@@ -24,9 +25,10 @@ class SpringTicketIoC {
             TicketRepository ticketRepository,
             TicketReadRepository ticketReadRepository,
             ScreeningService screeningService,
+            HallService hallService,
             Clock clock
     ) {
-        return new TicketService(ticketRepository, ticketReadRepository, screeningService, clock);
+        return new TicketService(ticketRepository, ticketReadRepository, screeningService, hallService, clock);
     }
 
     @Bean

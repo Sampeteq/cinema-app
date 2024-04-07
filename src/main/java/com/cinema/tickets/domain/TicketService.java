@@ -57,6 +57,7 @@ public class TicketService {
         );
     }
 
+    @Transactional
     public void cancelTicket(Long ticketId, User user) {
         log.info("Ticket id:{}", ticketId);
         var ticket = ticketRepository

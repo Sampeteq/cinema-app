@@ -15,7 +15,7 @@ import static com.cinema.halls.HallFixtures.createHall;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
-class JpaHallControllerIT extends BaseIT {
+class HallControllerIT extends BaseIT {
 
     private static final String HALL_ADMIN_ENDPOINT = "/admin/halls";
 

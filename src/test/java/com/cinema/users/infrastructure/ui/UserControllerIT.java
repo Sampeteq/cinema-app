@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class JpaUserControllerIT extends BaseIT {
+class UserControllerIT extends BaseIT {
 
     private static final String USERS_BASE_ENDPOINT = "/public/users";
 

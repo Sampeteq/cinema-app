@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.notNullValue;
 
-class JpaScreeningControllerIT extends BaseIT {
+class ScreeningControllerIT extends BaseIT {
 
     private static final String SCREENINGS_ADMIN_ENDPOINT = "/admin/screenings";
     private static final String SCREENINGS_PUBLIC_ENDPOINT = "/public/screenings";

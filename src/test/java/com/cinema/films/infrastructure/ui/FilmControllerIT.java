@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasSize;
 
-class JpaFilmControllerIT extends BaseIT {
+class FilmControllerIT extends BaseIT {
 
     private static final String FILM_PUBLIC_ENDPOINT = "/public/films";
 

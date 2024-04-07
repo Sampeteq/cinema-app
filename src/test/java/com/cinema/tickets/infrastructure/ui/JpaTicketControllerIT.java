@@ -69,7 +69,9 @@ class JpaTicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        assertThat(ticketReadRepository.getByScreeningId(screening.getId())).isNotEmpty();
+        assertThat(ticketReadRepository.getByScreeningId(screening.getId()))
+                .isNotEmpty()
+                .hasSize(hall.getSeats().size());
     }
 
     @Test

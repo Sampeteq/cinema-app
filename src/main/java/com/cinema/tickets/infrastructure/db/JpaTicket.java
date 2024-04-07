@@ -4,6 +4,7 @@ import com.cinema.halls.infrastructure.db.JpaSeat;
 import com.cinema.screenings.infrastructure.db.JpaScreening;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +28,7 @@ public class JpaTicket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter
     private Long id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private JpaScreening screening;
     @Embedded
     private JpaSeat seat;

@@ -9,6 +9,7 @@ import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
 import com.cinema.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.util.List;
@@ -34,6 +35,7 @@ public class TicketService {
                 .forEach(ticketRepository::save);
     }
 
+    @Transactional
     public void bookTickets(Long screeningId, List<Seat> seats, User user) {
         log.info("Screening id:{}", screeningId);
         log.info("Seats ids:{}", seats);

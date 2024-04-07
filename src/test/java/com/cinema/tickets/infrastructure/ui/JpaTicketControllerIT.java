@@ -91,7 +91,6 @@ class JpaTicketControllerIT extends BaseIT {
                 .post()
                 .uri(TICKETS_BASE_ENDPOINT + "/book")
                 .bodyValue(ticketBookDto)
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -154,7 +153,6 @@ class JpaTicketControllerIT extends BaseIT {
         webTestClient
                 .patch()
                 .uri(TICKETS_BASE_ENDPOINT + "/" + ticket.getId() + "/cancel")
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus().isOk();
 
@@ -175,7 +173,6 @@ class JpaTicketControllerIT extends BaseIT {
         webTestClient
                 .get()
                 .uri(TICKETS_BASE_ENDPOINT + "/my")
-                .headers(headers -> headers.setBasicAuth(user.getMail(), user.getPassword()))
                 .exchange()
                 .expectStatus()
                 .isOk()

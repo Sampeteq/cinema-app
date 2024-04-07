@@ -4,21 +4,19 @@ import com.cinema.halls.domain.Seat;
 import com.cinema.halls.infrastructure.db.JpaSeat;
 import com.cinema.screenings.infrastructure.db.JpaScreeningMapper;
 import com.cinema.tickets.domain.Ticket;
-import com.cinema.users.infrastructure.db.JpaUserMapper;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class JpaTicketMapper {
 
     private final JpaScreeningMapper screeningMapper;
-    private final JpaUserMapper userMapper;
 
     public JpaTicket toJpa(Ticket ticket) {
         return new JpaTicket(
                 ticket.getId(),
                 screeningMapper.toJpa(ticket.getScreening()),
                 new JpaSeat(ticket.getSeat().rowNumber(), ticket.getSeat().number()),
-                ticket.getUser() == null ? null : userMapper.toJpa(ticket.getUser()),
+                ticket.getUserId(),
                 ticket.getVersion()
         );
     }
@@ -28,7 +26,7 @@ public class JpaTicketMapper {
                 jpaTicket.getId(),
                 screeningMapper.toDomain(jpaTicket.getScreening()),
                 new Seat(jpaTicket.getSeat().rowNumber(), jpaTicket.getSeat().number()),
-                jpaTicket.getUser() == null ? null : userMapper.toDomain(jpaTicket.getUser()),
+                jpaTicket.getUserId(),
                 jpaTicket.getVersion()
         );
     }

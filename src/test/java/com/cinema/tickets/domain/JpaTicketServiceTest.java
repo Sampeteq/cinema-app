@@ -52,7 +52,7 @@ class JpaTicketServiceTest {
 
         ticketService.bookTickets(screening.getId(), List.of(seat), user);
 
-        assertEquals(user, ticket.getUser());
+        assertEquals(user.getId(), ticket.getUserId());
     }
 
     @Test
@@ -91,7 +91,7 @@ class JpaTicketServiceTest {
 
         ticketService.cancelTicket(ticket.getId(), user);
 
-        assertNull(ticket.getUser());
+        assertNull(ticket.getUserId());
     }
 
     @Test

@@ -16,7 +16,7 @@ public interface JpaTicketReadRepository extends Repository<JpaTicket, Integer> 
             t.screening.hallId,
             t.seat.rowNumber,
             t.seat.number,
-            t.user.id) from JpaTicket t
+            t.userId) from JpaTicket t
             left join JpaFilm f on f.id = t.screening.filmId
             where t.screening.id = :id
             """)
@@ -30,9 +30,9 @@ public interface JpaTicketReadRepository extends Repository<JpaTicket, Integer> 
             t.screening.hallId,
             t.seat.rowNumber,
             t.seat.number,
-            t.user.id) from JpaTicket t
+            t.userId) from JpaTicket t
             left join JpaFilm f on f.id = t.screening.filmId
-            where t.user.id = :id
+            where t.userId = :id
             """)
     List<TicketDto> getByUserId(Long id);
 }

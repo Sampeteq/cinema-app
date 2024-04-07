@@ -15,7 +15,7 @@ public class TicketFixtures {
 
     public static Ticket createTicket(Screening screening, User user) {
         var ticket = new Ticket(null, screening, SEAT, null, 0);
-        ticket.assignUser(user);
+        ticket.assignUser(user.getId());
         return ticket;
     }
 
@@ -24,6 +24,6 @@ public class TicketFixtures {
     }
 
     public static Ticket createTicket(Screening screening, Seat seat, User user) {
-        return new Ticket(1L, screening, seat, user, 0);
+        return new Ticket(1L, screening, seat, user.getId(), 0);
     }
 }

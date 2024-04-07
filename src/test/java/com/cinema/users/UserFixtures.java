@@ -16,7 +16,7 @@ public final class UserFixtures {
     }
 
     public static User createUser() {
-        return new User(null, MAIL, PASSWORD, UserRole.COMMON, null);
+        return new User(1L, MAIL, PASSWORD, UserRole.COMMON, null);
     }
 
     public static User createUser(UserRole role) {

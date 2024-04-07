@@ -97,7 +97,7 @@ class JpaTicketControllerIT extends BaseIT {
         assertThat(ticketRepository.getByIdAndUserId(1L, 1L))
                 .isNotEmpty()
                 .hasValueSatisfying(bookedTicket -> {
-                    assertEquals(user, bookedTicket.getUser());
+                    assertEquals(user.getId(), bookedTicket.getUserId());
                     assertEquals(ticketBookDto.screeningId(), bookedTicket.getScreening().getId());
                     assertEquals(ticketBookDto.seats().getFirst(), bookedTicket.getSeat());
                 });
@@ -130,14 +130,14 @@ class JpaTicketControllerIT extends BaseIT {
                 ticketRepository
                         .getByScreeningIdAndSeat(screening.getId(), seat1)
                         .orElseThrow()
-                        .getUser()
-        ).isEqualTo(user);
+                        .getUserId()
+        ).isEqualTo(user.getId());
         assertThat(
                 ticketRepository
                         .getByScreeningIdAndSeat(screening.getId(), seat2)
                         .orElseThrow()
-                        .getUser()
-        ).isEqualTo(user);
+                        .getUserId()
+        ).isEqualTo(user.getId());
     }
 
     @Test
@@ -158,7 +158,7 @@ class JpaTicketControllerIT extends BaseIT {
 
         assertThat(ticketRepository.getById(ticket.getId()))
                 .isNotEmpty()
-                .hasValueSatisfying(cancelledTicket -> assertNull(cancelledTicket.getUser()));
+                .hasValueSatisfying(cancelledTicket -> assertNull(cancelledTicket.getUserId()));
     }
 
     @Test

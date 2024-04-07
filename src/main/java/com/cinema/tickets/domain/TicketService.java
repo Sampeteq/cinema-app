@@ -48,7 +48,7 @@ public class TicketService {
                             .getByScreeningIdAndSeat(screeningId, seat)
                             .orElseThrow(TicketNotFoundException::new);
                     log.info("Found ticket: {}", ticket);
-                    ticket.assignUser(user);
+                    ticket.assignUser(user.getId());
                     ticketRepository.save(ticket);
                     log.info("Booked ticket:{}", ticket);
                 }

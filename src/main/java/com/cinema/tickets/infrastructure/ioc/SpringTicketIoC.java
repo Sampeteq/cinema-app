@@ -11,7 +11,6 @@ import com.cinema.tickets.infrastructure.db.JpaTicketReadRepository;
 import com.cinema.tickets.infrastructure.db.JpaTicketReadRepositoryAdapter;
 import com.cinema.tickets.infrastructure.db.JpaTicketRepository;
 import com.cinema.tickets.infrastructure.db.JpaTicketRepositoryAdapter;
-import com.cinema.users.infrastructure.db.JpaUserMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,7 +41,7 @@ class SpringTicketIoC {
     }
 
     @Bean
-    JpaTicketMapper jpaTicketMapper(JpaScreeningMapper screeningMapper, JpaUserMapper userMapper) {
-        return new JpaTicketMapper(screeningMapper, userMapper);
+    JpaTicketMapper jpaTicketMapper(JpaScreeningMapper screeningMapper) {
+        return new JpaTicketMapper(screeningMapper);
     }
 }

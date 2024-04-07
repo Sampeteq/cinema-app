@@ -2,7 +2,6 @@ package com.cinema.tickets.infrastructure.db;
 
 import com.cinema.halls.infrastructure.db.JpaSeat;
 import com.cinema.screenings.infrastructure.db.JpaScreening;
-import com.cinema.users.infrastructure.db.JpaUser;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,8 +31,7 @@ public class JpaTicket {
     private JpaScreening screening;
     @Embedded
     private JpaSeat seat;
-    @ManyToOne
-    private JpaUser user;
+    private Long userId;
     @Version
     private int version;
 }

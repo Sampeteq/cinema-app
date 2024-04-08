@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface TicketReadRepository {
 
-    List<TicketDto> getByScreeningId(Long id);
+    List<TicketDto> getByScreeningId(long id);
 
-    List<TicketDto> getByUserId(Long id);
+    List<TicketDto> getByUserId(long id);
 }

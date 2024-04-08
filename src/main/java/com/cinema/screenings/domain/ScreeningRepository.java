@@ -10,11 +10,11 @@ public interface ScreeningRepository {
 
     void delete(Screening screening);
 
-    Optional<Screening> getById(Long id);
+    Optional<Screening> getById(long id);
 
     List<Screening> getAll();
 
     List<Screening> getScreeningsByDateBetween(LocalDateTime start, LocalDateTime end);
 
-    List<Screening> getCollisions(LocalDateTime date, LocalDateTime endDate, Long hallId);
+    List<Screening> getCollisions(LocalDateTime date, LocalDateTime endDate, long hallId);
 }

@@ -26,7 +26,7 @@ class TicketController {
 
     @PostMapping("/admin/tickets")
     @SecurityRequirement(name = "basic")
-    void addTickets(@RequestParam Long screeningId) {
+    void addTickets(@RequestParam long screeningId) {
         ticketService.addTickets(screeningId);
     }
 
@@ -39,7 +39,7 @@ class TicketController {
 
     @PatchMapping("/tickets/{ticketId}/cancel")
     @SecurityRequirement(name = "basic")
-    void cancelTicket(@PathVariable Long ticketId, Principal principal) {
+    void cancelTicket(@PathVariable long ticketId, Principal principal) {
         var user = userService.getByMail(principal.getName());
         ticketService.cancelTicket(ticketId, user);
     }
@@ -52,7 +52,7 @@ class TicketController {
     }
 
     @GetMapping("/public/tickets")
-    List<TicketDto> getAllByScreeningId(@RequestParam Long screeningId) {
+    List<TicketDto> getAllByScreeningId(@RequestParam long screeningId) {
         return ticketService.getAllTicketsByScreeningId(screeningId);
     }
 }

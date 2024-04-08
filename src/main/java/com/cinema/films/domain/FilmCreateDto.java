@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Positive;
 public record FilmCreateDto(
         @NotEmpty String title,
         @NotNull FilmCategory category,
-        @NotNull @Positive Integer year,
-        @NotNull @Positive Integer durationInMinutes
+        @Positive int year,
+        @Positive int durationInMinutes
 ) {
 }

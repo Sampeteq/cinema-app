@@ -22,7 +22,7 @@ public class JpaTicketRepositoryAdapter implements TicketRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Ticket> getById(Long id) {
+    public Optional<Ticket> getById(long id) {
         return jpaTicketRepository
                 .findById(id)
                 .map(mapper::toDomain);
@@ -30,7 +30,7 @@ public class JpaTicketRepositoryAdapter implements TicketRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Ticket> getByScreeningIdAndSeat(Long id, Seat seat) {
+    public Optional<Ticket> getByScreeningIdAndSeat(long id, Seat seat) {
         return jpaTicketRepository
                 .getByScreeningIdAndSeat(id, new JpaSeat(seat.rowNumber(), seat.number()))
                 .map(mapper::toDomain);
@@ -38,7 +38,7 @@ public class JpaTicketRepositoryAdapter implements TicketRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Ticket> getByIdAndUserId(Long ticketId, Long userId) {
+    public Optional<Ticket> getByIdAndUserId(long ticketId, long userId) {
         return jpaTicketRepository
                 .getByIdAndUserId(ticketId, userId)
                 .map(mapper::toDomain);

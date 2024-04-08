@@ -24,7 +24,7 @@ public class TicketService {
     private final HallService hallService;
     private final Clock clock;
 
-    public void addTickets(Long screeningId) {
+    public void addTickets(long screeningId) {
         log.info("Screening id:{}", screeningId);
         var screening = screeningService.getScreeningById(screeningId);
         hallService
@@ -36,7 +36,7 @@ public class TicketService {
     }
 
     @Transactional
-    public void bookTickets(Long screeningId, List<Seat> seats, User user) {
+    public void bookTickets(long screeningId, List<Seat> seats, User user) {
         log.info("Screening id:{}", screeningId);
         log.info("Seats ids:{}", seats);
         var screening = screeningService.getScreeningById(screeningId);
@@ -58,7 +58,7 @@ public class TicketService {
     }
 
     @Transactional
-    public void cancelTicket(Long ticketId, User user) {
+    public void cancelTicket(long ticketId, User user) {
         log.info("Ticket id:{}", ticketId);
         var ticket = ticketRepository
                 .getByIdAndUserId(ticketId, user.getId())
@@ -73,11 +73,11 @@ public class TicketService {
         log.info("Ticket cancelled:{}", ticket);
     }
 
-    public List<TicketDto> getAllTicketsByUserId(Long userId) {
+    public List<TicketDto> getAllTicketsByUserId(long userId) {
         return ticketReadRepository.getByUserId(userId);
     }
 
-    public List<TicketDto> getAllTicketsByScreeningId(Long screeningId) {
+    public List<TicketDto> getAllTicketsByScreeningId(long screeningId) {
         return ticketReadRepository.getByScreeningId(screeningId);
     }
 }

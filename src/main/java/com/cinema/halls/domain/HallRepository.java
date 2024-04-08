@@ -9,7 +9,7 @@ public interface HallRepository {
 
     void delete(Hall hall);
 
-    Optional<Hall> getById(Long id);
+    Optional<Hall> getById(long id);
 
     List<Hall> getAllWithSeats();
 }

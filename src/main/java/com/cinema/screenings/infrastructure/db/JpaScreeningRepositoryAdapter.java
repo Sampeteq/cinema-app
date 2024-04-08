@@ -25,7 +25,7 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     @Override
-    public Optional<Screening> getById(Long id) {
+    public Optional<Screening> getById(long id) {
         return jpaScreeningRepository
                 .findById(id)
                 .map(mapper::toDomain);
@@ -50,7 +50,7 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     @Override
-    public List<Screening> getCollisions(LocalDateTime date, LocalDateTime endDate, Long hallId) {
+    public List<Screening> getCollisions(LocalDateTime date, LocalDateTime endDate, long hallId) {
         return jpaScreeningRepository
                 .getCollisions(date, endDate, hallId)
                 .stream()

@@ -26,7 +26,7 @@ public class FilmService {
         return addedFilm;
     }
 
-    public void deleteFilm(Long id) {
+    public void deleteFilm(long id) {
         log.info("Film id:{}", id);
         var film = filmRepository
                 .getById(id)
@@ -34,7 +34,7 @@ public class FilmService {
         filmRepository.delete(film);
     }
 
-    public Film getFilmById(Long filmId) {
+    public Film getFilmById(long filmId) {
         return filmRepository
                 .getById(filmId)
                 .orElseThrow(FilmNotFoundException::new);

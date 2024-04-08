@@ -31,7 +31,7 @@ class HallController {
     @DeleteMapping("/admin/halls/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
-    void deleteHall(@PathVariable Long id) {
+    void deleteHall(@PathVariable long id) {
         hallService.deleteHall(id);
     }
 

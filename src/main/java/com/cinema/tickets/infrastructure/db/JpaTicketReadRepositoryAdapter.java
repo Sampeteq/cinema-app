@@ -12,12 +12,12 @@ public class JpaTicketReadRepositoryAdapter implements TicketReadRepository {
     private final JpaTicketReadRepository jpaTicketReadRepository;
 
     @Override
-    public List<TicketDto> getByScreeningId(Long id) {
+    public List<TicketDto> getByScreeningId(long id) {
         return jpaTicketReadRepository.getByScreeningId(id);
     }
 
     @Override
-    public List<TicketDto> getByUserId(Long id) {
+    public List<TicketDto> getByUserId(long id) {
         return jpaTicketReadRepository.getByUserId(id);
     }
 }

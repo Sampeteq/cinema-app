@@ -6,7 +6,7 @@ import org.springframework.data.repository.Repository;
 
 import java.util.List;
 
-public interface JpaTicketReadRepository extends Repository<JpaTicket, Integer> {
+public interface JpaTicketReadRepository extends Repository<JpaTicket, Long> {
 
     @Query("""
             select new com.cinema.tickets.domain.TicketDto(
@@ -20,7 +20,7 @@ public interface JpaTicketReadRepository extends Repository<JpaTicket, Integer> 
             left join JpaFilm f on f.id = t.screening.filmId
             where t.screening.id = :id
             """)
-    List<TicketDto> getByScreeningId(Long id);
+    List<TicketDto> getByScreeningId(long id);
 
     @Query("""
             select new com.cinema.tickets.domain.TicketDto(
@@ -34,6 +34,6 @@ public interface JpaTicketReadRepository extends Repository<JpaTicket, Integer> 
             left join JpaFilm f on f.id = t.screening.filmId
             where t.userId = :id
             """)
-    List<TicketDto> getByUserId(Long id);
+    List<TicketDto> getByUserId(long id);
 }
 

@@ -35,7 +35,7 @@ public class ScreeningFixtures {
 
     public static Screening createScreening() {
         return new Screening(
-                null,
+                1L,
                 SCREENING_DATE,
                 SCREENING_END_DATE,
                1L,

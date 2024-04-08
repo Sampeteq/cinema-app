@@ -8,9 +8,9 @@ public interface TicketRepository {
 
     Ticket save(Ticket ticket);
 
-    Optional<Ticket> getById(Long id);
+    Optional<Ticket> getById(long id);
 
-    Optional<Ticket> getByScreeningIdAndSeat(Long id, Seat seat);
+    Optional<Ticket> getByScreeningIdAndSeat(long id, Seat seat);
 
-    Optional<Ticket> getByIdAndUserId(Long ticketId, Long userId);
+    Optional<Ticket> getByIdAndUserId(long ticketId, long userId);
 }

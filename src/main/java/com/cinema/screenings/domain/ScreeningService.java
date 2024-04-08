@@ -57,7 +57,7 @@ public class ScreeningService {
         return addedScreening;
     }
 
-    public void deleteScreening(Long id) {
+    public void deleteScreening(long id) {
         log.info("Screening id:{}", id);
         var screening = screeningRepository
                 .getById(id)
@@ -65,7 +65,7 @@ public class ScreeningService {
         screeningRepository.delete(screening);
     }
 
-    public Screening getScreeningById(Long screeningId) {
+    public Screening getScreeningById(long screeningId) {
         log.info("Screening id:{}", screeningId);
         return screeningRepository
                 .getById(screeningId)

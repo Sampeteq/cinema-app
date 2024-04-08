@@ -34,7 +34,7 @@ class FilmController {
     @DeleteMapping("/admin/films/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
-    void deleteFilm(@PathVariable Long id) {
+    void deleteFilm(@PathVariable long id) {
         filmService.deleteFilm(id);
     }
 

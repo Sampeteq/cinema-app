@@ -12,13 +12,13 @@ public interface JpaTicketRepository extends JpaRepository<JpaTicket, Long> {
                 from JpaTicket ticket
                 where ticket.screening.id = :id and ticket.seat = :seat
             """)
-    Optional<JpaTicket> getByScreeningIdAndSeat(Long id, JpaSeat seat);
+    Optional<JpaTicket> getByScreeningIdAndSeat(long id, JpaSeat seat);
 
     @Query("""
                 from JpaTicket ticket
                 left join fetch ticket.screening
                 where ticket.id = :ticketId and ticket.userId = :userId
             """)
-    Optional<JpaTicket> getByIdAndUserId(Long ticketId, Long userId);
+    Optional<JpaTicket> getByIdAndUserId(long ticketId, long userId);
 }
 

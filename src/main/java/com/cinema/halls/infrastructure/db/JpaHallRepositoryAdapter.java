@@ -24,7 +24,7 @@ public class JpaHallRepositoryAdapter implements HallRepository {
     }
 
     @Override
-    public Optional<Hall> getById(Long id) {
+    public Optional<Hall> getById(long id) {
         return jpaHallRepository
                 .findById(id)
                 .map(mapper::toDomain);

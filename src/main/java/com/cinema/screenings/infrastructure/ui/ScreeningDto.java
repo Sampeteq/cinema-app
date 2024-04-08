@@ -3,10 +3,10 @@ package com.cinema.screenings.infrastructure.ui;
 import java.time.LocalDateTime;
 
 public record ScreeningDto(
-        Long id,
+        long id,
         LocalDateTime date,
         LocalDateTime endDate,
-        Long filmId,
-        Long hallId
+        long filmId,
+        long hallId
 ) {
 }

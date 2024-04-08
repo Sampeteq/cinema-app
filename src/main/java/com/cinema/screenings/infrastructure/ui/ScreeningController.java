@@ -35,7 +35,7 @@ class ScreeningController {
     @DeleteMapping("/admin/screenings/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
-    void deleteScreening(@PathVariable Long id) {
+    void deleteScreening(@PathVariable long id) {
         screeningService.deleteScreening(id);
     }
 

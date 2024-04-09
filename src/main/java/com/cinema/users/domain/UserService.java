@@ -18,12 +18,12 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
 
-    public void createUser(String mail, String password) {
+    public User createUser(String mail, String password) {
         if (userRepository.getByMail(mail).isPresent()) {
             throw new UserMailNotUniqueException();
         }
         var user = new User(UUID.randomUUID(), mail, passwordEncoder.encode(password), UserRole.COMMON, null);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public void createAdmin(String mail, String password) {

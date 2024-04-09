@@ -13,9 +13,8 @@ import com.cinema.tickets.TicketFixtures;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketReadRepository;
 import com.cinema.tickets.domain.TicketRepository;
-import com.cinema.users.UserFixtures;
 import com.cinema.users.domain.User;
-import com.cinema.users.domain.UserRepository;
+import com.cinema.users.domain.UserService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,8 @@ import java.util.stream.Stream;
 
 import static com.cinema.films.FilmFixtures.createFilmCreateDto;
 import static com.cinema.screenings.ScreeningFixtures.createScreeningCreateDto;
+import static com.cinema.users.UserFixtures.MAIL;
+import static com.cinema.users.UserFixtures.PASSWORD;
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.everyItem;
@@ -54,7 +55,7 @@ class TicketControllerIT extends BaseIT {
     private HallService hallService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Test
     @WithMockUser(authorities = "ADMIN")
@@ -242,6 +243,6 @@ class TicketControllerIT extends BaseIT {
     }
 
     private User addUser() {
-        return userRepository.save(UserFixtures.createUser());
+        return userService.createUser(MAIL, PASSWORD);
     }
 }

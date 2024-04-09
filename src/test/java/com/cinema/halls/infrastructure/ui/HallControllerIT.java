@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.cinema.halls.HallFixtures.createHall;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,7 +27,7 @@ class HallControllerIT extends BaseIT {
     @WithMockUser(authorities = "ADMIN")
     void hall_is_created() {
         var hall = new Hall(
-                null,
+                UUID.randomUUID(),
                 List.of(
                         new Seat(1, 1),
                         new Seat(1, 2)
@@ -41,7 +42,7 @@ class HallControllerIT extends BaseIT {
                 .expectStatus()
                 .isCreated()
                 .expectBody()
-                .jsonPath("$.id").isEqualTo(1)
+                .jsonPath("$.id").isEqualTo(hall.getId().toString())
                 .jsonPath("$.seats[0].number").isEqualTo(hall.getSeats().get(0).number())
                 .jsonPath("$.seats[0].rowNumber").isEqualTo(hall.getSeats().get(0).rowNumber())
                 .jsonPath("$.seats[1].number").isEqualTo(hall.getSeats().get(1).number())
@@ -74,7 +75,7 @@ class HallControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk()
                 .expectBody()
-                .jsonPath("$[0].id").isEqualTo(hall.getId())
+                .jsonPath("$[0].id").isEqualTo(hall.getId().toString())
                 .jsonPath("$[0].seats").value(hasSize(hall.getSeats().size()));
     }
 

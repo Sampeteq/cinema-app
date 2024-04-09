@@ -53,10 +53,10 @@ class ScreeningControllerIT extends BaseIT {
                 .expectStatus()
                 .isCreated()
                 .expectBody()
-                .jsonPath("$.id").isEqualTo(1L)
+                .jsonPath("$.id").isNotEmpty()
                 .jsonPath("$.date").isEqualTo(screeningCreateDto.date().format(ISO_DATE_TIME))
-                .jsonPath("$.filmId").isEqualTo(film.getId())
-                .jsonPath("$.hallId").isEqualTo(screeningCreateDto.hallId());
+                .jsonPath("$.filmId").isEqualTo(film.getId().toString())
+                .jsonPath("$.hallId").isEqualTo(screeningCreateDto.hallId().toString());
     }
 
     @Test
@@ -90,10 +90,10 @@ class ScreeningControllerIT extends BaseIT {
                 .isOk()
                 .expectBody()
                 .jsonPath("$[*].*").value(everyItem(notNullValue()))
-                .jsonPath("$[0].id").isEqualTo(screening.getId())
+                .jsonPath("$[0].id").isEqualTo(screening.getId().toString())
                 .jsonPath("$[0].date").isEqualTo(screening.getDate().format(ISO_DATE_TIME))
-                .jsonPath("$[0].filmId").isEqualTo(screening.getFilmId())
-                .jsonPath("$[0].hallId").isEqualTo(screening.getHallId());
+                .jsonPath("$[0].filmId").isEqualTo(screening.getFilmId().toString())
+                .jsonPath("$[0].hallId").isEqualTo(screening.getHallId().toString());
     }
 
     @Test

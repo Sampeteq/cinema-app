@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
@@ -25,7 +26,7 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     @Override
-    public Optional<Screening> getById(long id) {
+    public Optional<Screening> getById(UUID id) {
         return jpaScreeningRepository
                 .findById(id)
                 .map(mapper::toDomain);
@@ -50,7 +51,7 @@ public class JpaScreeningRepositoryAdapter implements ScreeningRepository {
     }
 
     @Override
-    public List<Screening> getCollisions(LocalDateTime date, LocalDateTime endDate, long hallId) {
+    public List<Screening> getCollisions(LocalDateTime date, LocalDateTime endDate, UUID hallId) {
         return jpaScreeningRepository
                 .getCollisions(date, endDate, hallId)
                 .stream()

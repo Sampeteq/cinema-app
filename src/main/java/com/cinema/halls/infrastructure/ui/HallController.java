@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ class HallController {
     @DeleteMapping("/admin/halls/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
-    void deleteHall(@PathVariable long id) {
+    void deleteHall(@PathVariable UUID id) {
         hallService.deleteHall(id);
     }
 

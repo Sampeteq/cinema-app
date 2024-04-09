@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -46,7 +47,7 @@ public class ScreeningService {
             throw new ScreeningsCollisionsException();
         }
         var screening = new Screening(
-                null,
+                UUID.randomUUID(),
                 screeningCreateDto.date(),
                 screeningEndDate,
                 film.getId(),
@@ -57,7 +58,7 @@ public class ScreeningService {
         return addedScreening;
     }
 
-    public void deleteScreening(long id) {
+    public void deleteScreening(UUID id) {
         log.info("Screening id:{}", id);
         var screening = screeningRepository
                 .getById(id)
@@ -65,7 +66,7 @@ public class ScreeningService {
         screeningRepository.delete(screening);
     }
 
-    public Screening getScreeningById(long screeningId) {
+    public Screening getScreeningById(UUID screeningId) {
         log.info("Screening id:{}", screeningId);
         return screeningRepository
                 .getById(screeningId)

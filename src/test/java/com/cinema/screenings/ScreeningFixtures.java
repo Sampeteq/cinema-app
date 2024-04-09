@@ -6,6 +6,7 @@ import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.domain.ScreeningCreateDto;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static com.cinema.ClockFixtures.CURRENT_DATE;
 
@@ -16,8 +17,8 @@ public class ScreeningFixtures {
     public static final LocalDateTime SCREENING_END_DATE = SCREENING_DATE.plusHours(2);
 
     public static ScreeningCreateDto createScreeningCreateDto() {
-        var filmId = 1L;
-        var hallI = 1L;
+        var filmId = UUID.randomUUID();
+        var hallI = UUID.randomUUID();
         return new ScreeningCreateDto(
                 SCREENING_DATE,
                 filmId,
@@ -25,7 +26,7 @@ public class ScreeningFixtures {
         );
     }
 
-    public static ScreeningCreateDto createScreeningCreateDto(Long filmId, Long hallId) {
+    public static ScreeningCreateDto createScreeningCreateDto(UUID filmId, UUID hallId) {
         return new ScreeningCreateDto(
                 SCREENING_DATE,
                 filmId,
@@ -35,17 +36,17 @@ public class ScreeningFixtures {
 
     public static Screening createScreening() {
         return new Screening(
-                1L,
+                UUID.randomUUID(),
                 SCREENING_DATE,
                 SCREENING_END_DATE,
-               1L,
-                1L
+                UUID.randomUUID(),
+                UUID.randomUUID()
         );
     }
 
     public static Screening createScreening(Film film, Hall hall) {
         return new Screening(
-                null,
+                UUID.randomUUID(),
                 SCREENING_DATE,
                 SCREENING_END_DATE,
                 film.getId(),
@@ -55,7 +56,7 @@ public class ScreeningFixtures {
 
     public static Screening createScreening(LocalDateTime screeningDate, Film film, Hall hall) {
         return new Screening(
-                null,
+                UUID.randomUUID(),
                 screeningDate,
                 SCREENING_END_DATE,
                 film.getId(),

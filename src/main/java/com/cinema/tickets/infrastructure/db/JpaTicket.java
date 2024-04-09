@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "ticket")
 @NoArgsConstructor
@@ -25,14 +27,12 @@ import lombok.ToString;
 @ToString(exclude = "screening")
 public class JpaTicket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter
-    private Long id;
+    private UUID id;
     @ManyToOne(fetch = FetchType.LAZY)
     private JpaScreening screening;
     @Embedded
     private JpaSeat seat;
-    private Long userId;
+    private UUID userId;
     @Version
     private int version;
 }

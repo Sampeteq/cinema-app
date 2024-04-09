@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -24,19 +25,19 @@ public class TicketService {
     private final HallService hallService;
     private final Clock clock;
 
-    public void addTickets(long screeningId) {
+    public void addTickets(UUID screeningId) {
         log.info("Screening id:{}", screeningId);
         var screening = screeningService.getScreeningById(screeningId);
         hallService
                 .getHallById(screening.getHallId())
                 .getSeats()
                 .stream()
-                .map(seat -> new Ticket(null, screening, seat, null, 0))
+                .map(seat -> new Ticket(UUID.randomUUID(), screening, seat, null, 0))
                 .forEach(ticketRepository::save);
     }
 
     @Transactional
-    public void bookTickets(long screeningId, List<Seat> seats, User user) {
+    public void bookTickets(UUID screeningId, List<Seat> seats, User user) {
         log.info("Screening id:{}", screeningId);
         log.info("Seats ids:{}", seats);
         var screening = screeningService.getScreeningById(screeningId);
@@ -58,7 +59,7 @@ public class TicketService {
     }
 
     @Transactional
-    public void cancelTicket(long ticketId, User user) {
+    public void cancelTicket(UUID ticketId, User user) {
         log.info("Ticket id:{}", ticketId);
         var ticket = ticketRepository
                 .getByIdAndUserId(ticketId, user.getId())
@@ -73,11 +74,11 @@ public class TicketService {
         log.info("Ticket cancelled:{}", ticket);
     }
 
-    public List<TicketDto> getAllTicketsByUserId(long userId) {
+    public List<TicketDto> getAllTicketsByUserId(UUID userId) {
         return ticketReadRepository.getByUserId(userId);
     }
 
-    public List<TicketDto> getAllTicketsByScreeningId(long screeningId) {
+    public List<TicketDto> getAllTicketsByScreeningId(UUID screeningId) {
         return ticketReadRepository.getByScreeningId(screeningId);
     }
 }

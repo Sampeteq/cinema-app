@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -19,7 +20,7 @@ public class HallService {
         return addedHall;
     }
 
-    public void deleteHall(long id) {
+    public void deleteHall(UUID id) {
         log.info("Hall id:{}", id);
         var hall = hallRepository
                 .getById(id)
@@ -33,7 +34,7 @@ public class HallService {
         return hallRepository.getAllWithSeats();
     }
 
-    public Hall getHallById(long hallId) {
+    public Hall getHallById(UUID hallId) {
         return hallRepository
                 .getById(hallId)
                 .orElseThrow(HallNotFoundException::new);

@@ -7,17 +7,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @Getter
 @ToString(exclude = "screening")
 public class Ticket {
-    private Long id;
+    private UUID id;
     private Screening screening;
     private Seat seat;
-    private Long userId;
+    private UUID userId;
     private int version;
 
-    public void assignUser(Long userId) {
+    public void assignUser(UUID userId) {
         if (this.userId != null) {
             throw new TicketAlreadyBookedException();
         }

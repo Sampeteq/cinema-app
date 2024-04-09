@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 @EqualsAndHashCode
 public class User {
-    private Long id;
+    private UUID id;
     private String mail;
     private String password;
     private UserRole role;

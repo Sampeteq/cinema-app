@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class JpaFilmRepositoryAdapter implements FilmRepository {
@@ -25,7 +26,7 @@ public class JpaFilmRepositoryAdapter implements FilmRepository {
     }
 
     @Override
-    public Optional<Film> getById(long id) {
+    public Optional<Film> getById(UUID id) {
         return jpaFilmRepository
                 .findById(id)
                 .map(mapper::toDomain);

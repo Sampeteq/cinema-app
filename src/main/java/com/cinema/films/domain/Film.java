@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @Getter
 @ToString
 public class Film {
-    private Long id;
+    private UUID id;
     private String title;
     private FilmCategory category;
     private int year;

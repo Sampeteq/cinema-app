@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class JpaHallRepositoryAdapter implements HallRepository {
@@ -24,7 +25,7 @@ public class JpaHallRepositoryAdapter implements HallRepository {
     }
 
     @Override
-    public Optional<Hall> getById(long id) {
+    public Optional<Hall> getById(UUID id) {
         return jpaHallRepository
                 .findById(id)
                 .map(mapper::toDomain);

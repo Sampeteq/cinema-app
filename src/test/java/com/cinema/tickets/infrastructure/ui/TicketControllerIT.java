@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static com.cinema.films.FilmFixtures.createFilmCreateDto;
@@ -95,7 +96,7 @@ class TicketControllerIT extends BaseIT {
                 .expectStatus()
                 .isOk();
 
-        assertThat(ticketRepository.getByIdAndUserId(1L, 1L))
+        assertThat(ticketRepository.getByIdAndUserId(ticket.getId(), user.getId()))
                 .isNotEmpty()
                 .hasValueSatisfying(bookedTicket -> {
                     assertEquals(user.getId(), bookedTicket.getUserId());
@@ -178,13 +179,13 @@ class TicketControllerIT extends BaseIT {
                 .isOk()
                 .expectBody()
                 .jsonPath("$[*]").value(everyItem(notNullValue()))
-                .jsonPath("$[0].id").isEqualTo(ticket.getId())
+                .jsonPath("$[0].id").isEqualTo(ticket.getId().toString())
                 .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle())
                 .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().format(ISO_DATE_TIME))
-                .jsonPath("$[0].hallId").isEqualTo(screening.getHallId())
+                .jsonPath("$[0].hallId").isEqualTo(screening.getHallId().toString())
                 .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().rowNumber())
                 .jsonPath("$[0].seatNumber").isEqualTo(ticket.getSeat().number())
-                .jsonPath("$[0].userId").isEqualTo(user.getId());
+                .jsonPath("$[0].userId").isEqualTo(user.getId().toString());
     }
 
     @Test
@@ -202,10 +203,10 @@ class TicketControllerIT extends BaseIT {
                 .isOk()
                 .expectBody()
                 .jsonPath("$[*]").value(everyItem(notNullValue()))
-                .jsonPath("$[0].id").isEqualTo(ticket.getId())
+                .jsonPath("$[0].id").isEqualTo(ticket.getId().toString())
                 .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle())
                 .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().format(ISO_DATE_TIME))
-                .jsonPath("$[0].hallId").isEqualTo(screening.getHallId())
+                .jsonPath("$[0].hallId").isEqualTo(screening.getHallId().toString())
                 .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().rowNumber())
                 .jsonPath("$[0].seatNumber").isEqualTo(ticket.getSeat().number())
                 .jsonPath("$[0].userId").value(Matchers.nullValue());
@@ -221,14 +222,14 @@ class TicketControllerIT extends BaseIT {
 
     private List<Ticket> addTickets(Screening screening) {
         return Stream.of(
-                        new Ticket(null, screening, new Seat(1, 1), null, 0),
-                        new Ticket(null, screening, new Seat(1, 2), null, 0)
+                        new Ticket(UUID.randomUUID(), screening, new Seat(1, 1), null, 0),
+                        new Ticket(UUID.randomUUID(), screening, new Seat(1, 2), null, 0)
                 )
                 .map(ticketRepository::save)
                 .toList();
     }
 
-    private Screening addScreening(Long filmId, Long hallId) {
+    private Screening addScreening(UUID filmId, UUID hallId) {
         return screeningService.createScreening(createScreeningCreateDto(filmId, hallId));
     }
 

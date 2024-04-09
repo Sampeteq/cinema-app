@@ -5,10 +5,11 @@ import com.cinema.films.domain.FilmCategory;
 import com.cinema.films.domain.FilmCreateDto;
 
 import java.time.Year;
+import java.util.UUID;
 
 public class FilmFixtures {
 
-    private static final Long ID = 1L;
+    private static final UUID ID = UUID.randomUUID();
 
     private static final String TITLE = "TITLE 1";
 

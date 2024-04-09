@@ -2,6 +2,7 @@ package com.cinema.films.domain;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface FilmRepository {
 
@@ -9,7 +10,7 @@ public interface FilmRepository {
 
     void delete(Film film);
 
-    Optional<Film> getById(long id);
+    Optional<Film> getById(UUID id);
 
     List<Film> getAll();
 

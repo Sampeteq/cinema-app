@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
 import static com.cinema.tickets.TicketFixtures.createTicket;
@@ -57,7 +58,7 @@ class JpaTicketServiceTest {
 
     @Test
     void ticket_is_booked_for_existing_screening() {
-        var screeningId = 0L;
+        var screeningId = UUID.randomUUID();
         var seats = List.of(new Seat(1, 1));
         var user = createUser();
         when(screeningService.getScreeningById(screeningId)).thenThrow(ScreeningNotFoundException.class);

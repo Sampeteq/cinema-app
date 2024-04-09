@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ class FilmController {
     @DeleteMapping("/admin/films/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
-    void deleteFilm(@PathVariable long id) {
+    void deleteFilm(@PathVariable UUID id) {
         filmService.deleteFilm(id);
     }
 

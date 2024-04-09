@@ -10,6 +10,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.UUID;
 
 import static com.cinema.films.FilmFixtures.createFilm;
 import static com.cinema.halls.HallFixtures.createHall;
@@ -18,7 +19,6 @@ import static com.cinema.screenings.ScreeningFixtures.createScreeningCreateDto;
 import static org.assertj.core.api.Assertions.catchException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -63,13 +63,13 @@ class JpaScreeningServiceTest {
     void screenings_collision_cannot_exists() {
         var screeningCreateDto = createScreeningCreateDto();
         setCurrentDate(screeningCreateDto.date().minusDays(7));
-        when(filmService.getFilmById(anyLong())).thenReturn(createFilm());
-        when(hallService.getHallById(anyLong())).thenReturn(createHall());
+        when(filmService.getFilmById(any(UUID.class))).thenReturn(createFilm());
+        when(hallService.getHallById(any(UUID.class))).thenReturn(createHall());
         when(
                 screeningRepository.getCollisions(
                         any(LocalDateTime.class),
                         any(LocalDateTime.class),
-                        anyLong()
+                        any(UUID.class)
                 )
         ).thenReturn(List.of(createScreening()));
 

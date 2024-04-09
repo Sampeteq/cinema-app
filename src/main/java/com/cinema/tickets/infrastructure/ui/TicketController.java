@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ class TicketController {
 
     @PostMapping("/admin/tickets")
     @SecurityRequirement(name = "basic")
-    void addTickets(@RequestParam long screeningId) {
+    void addTickets(@RequestParam UUID screeningId) {
         ticketService.addTickets(screeningId);
     }
 
@@ -39,7 +40,7 @@ class TicketController {
 
     @PatchMapping("/tickets/{ticketId}/cancel")
     @SecurityRequirement(name = "basic")
-    void cancelTicket(@PathVariable long ticketId, Principal principal) {
+    void cancelTicket(@PathVariable UUID ticketId, Principal principal) {
         var user = userService.getByMail(principal.getName());
         ticketService.cancelTicket(ticketId, user);
     }
@@ -52,7 +53,7 @@ class TicketController {
     }
 
     @GetMapping("/public/tickets")
-    List<TicketDto> getAllByScreeningId(@RequestParam long screeningId) {
+    List<TicketDto> getAllByScreeningId(@RequestParam UUID screeningId) {
         return ticketService.getAllTicketsByScreeningId(screeningId);
     }
 }

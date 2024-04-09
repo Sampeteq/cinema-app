@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
@@ -23,13 +22,13 @@ public class UserService {
         if (userRepository.getByMail(mail).isPresent()) {
             throw new UserMailNotUniqueException();
         }
-        var user = new User(null, mail, passwordEncoder.encode(password), UserRole.COMMON, null);
+        var user = new User(UUID.randomUUID(), mail, passwordEncoder.encode(password), UserRole.COMMON, null);
         userRepository.save(user);
     }
 
     public void createAdmin(String mail, String password) {
         if (userRepository.getByMail(mail).isEmpty()) {
-            var admin = new User(null, mail, passwordEncoder.encode(password), UserRole.ADMIN, null);
+            var admin = new User(UUID.randomUUID(), mail, passwordEncoder.encode(password), UserRole.ADMIN, null);
             userRepository.save(admin);
             log.info("Admin added");
         }

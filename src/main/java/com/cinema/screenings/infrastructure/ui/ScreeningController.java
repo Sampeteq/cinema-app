@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ class ScreeningController {
     @DeleteMapping("/admin/screenings/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @SecurityRequirement(name = "basic")
-    void deleteScreening(@PathVariable long id) {
+    void deleteScreening(@PathVariable UUID id) {
         screeningService.deleteScreening(id);
     }
 

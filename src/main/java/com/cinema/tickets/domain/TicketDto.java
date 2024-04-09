@@ -1,14 +1,15 @@
 package com.cinema.tickets.domain;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record TicketDto(
-        Long id,
+        UUID id,
         String filmTitle,
         LocalDateTime screeningDate,
-        Long hallId,
+        UUID hallId,
         Integer rowNumber,
         Integer seatNumber,
-        Long userId
+        UUID userId
 ) {
 }

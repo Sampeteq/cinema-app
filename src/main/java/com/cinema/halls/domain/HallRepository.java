@@ -2,6 +2,7 @@ package com.cinema.halls.domain;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface HallRepository {
 
@@ -9,7 +10,7 @@ public interface HallRepository {
 
     void delete(Hall hall);
 
-    Optional<Hall> getById(long id);
+    Optional<Hall> getById(UUID id);
 
     List<Hall> getAllWithSeats();
 }

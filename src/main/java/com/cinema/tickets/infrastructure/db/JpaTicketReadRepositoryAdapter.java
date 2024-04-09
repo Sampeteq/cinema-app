@@ -5,6 +5,7 @@ import com.cinema.tickets.domain.TicketReadRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class JpaTicketReadRepositoryAdapter implements TicketReadRepository {
@@ -12,12 +13,12 @@ public class JpaTicketReadRepositoryAdapter implements TicketReadRepository {
     private final JpaTicketReadRepository jpaTicketReadRepository;
 
     @Override
-    public List<TicketDto> getByScreeningId(long id) {
+    public List<TicketDto> getByScreeningId(UUID id) {
         return jpaTicketReadRepository.getByScreeningId(id);
     }
 
     @Override
-    public List<TicketDto> getByUserId(long id) {
+    public List<TicketDto> getByUserId(UUID id) {
         return jpaTicketReadRepository.getByUserId(id);
     }
 }

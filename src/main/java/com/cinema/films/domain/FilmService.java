@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -15,7 +16,7 @@ public class FilmService {
     public Film createFilm(FilmCreateDto filmCreateDto) {
         log.info("Dto:{}", filmCreateDto);
         var film = new Film(
-                null,
+                UUID.randomUUID(),
                 filmCreateDto.title(),
                 filmCreateDto.category(),
                 filmCreateDto.year(),
@@ -26,7 +27,7 @@ public class FilmService {
         return addedFilm;
     }
 
-    public void deleteFilm(long id) {
+    public void deleteFilm(UUID id) {
         log.info("Film id:{}", id);
         var film = filmRepository
                 .getById(id)
@@ -34,7 +35,7 @@ public class FilmService {
         filmRepository.delete(film);
     }
 
-    public Film getFilmById(long filmId) {
+    public Film getFilmById(UUID filmId) {
         return filmRepository
                 .getById(filmId)
                 .orElseThrow(FilmNotFoundException::new);

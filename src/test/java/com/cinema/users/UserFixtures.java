@@ -16,15 +16,15 @@ public final class UserFixtures {
     }
 
     public static User createUser() {
-        return new User(1L, MAIL, PASSWORD, UserRole.COMMON, null);
+        return new User(UUID.randomUUID(), MAIL, PASSWORD, UserRole.COMMON, null);
     }
 
     public static User createUser(UserRole role) {
-        return new User(null, MAIL, PASSWORD, role, null);
+        return new User(UUID.randomUUID(), MAIL, PASSWORD, role, null);
     }
 
     public static User createUser(PasswordEncoder passwordEncoder) {
-        return new User(null, MAIL, passwordEncoder.encode(PASSWORD), UserRole.COMMON, null);
+        return new User(UUID.randomUUID(), MAIL, passwordEncoder.encode(PASSWORD), UserRole.COMMON, null);
     }
 
     public static User createUser(String mail) {
@@ -32,11 +32,11 @@ public final class UserFixtures {
     }
 
     public static User createUser(String mail, String password) {
-        return new User(null, mail, password, UserRole.COMMON, null);
+        return new User(UUID.randomUUID(), mail, password, UserRole.COMMON, null);
     }
 
     public static User createUser(UUID passwordResetToken) {
-        var user = new User(null, MAIL, PASSWORD, UserRole.COMMON, null);
+        var user = new User(UUID.randomUUID(), MAIL, PASSWORD, UserRole.COMMON, null);
         user.assignPasswordResetToken(passwordResetToken);
         return user;
     }

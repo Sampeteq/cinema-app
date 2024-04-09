@@ -1,12 +1,13 @@
 package com.cinema.screenings.infrastructure.ui;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record ScreeningDto(
-        long id,
+        UUID id,
         LocalDateTime date,
         LocalDateTime endDate,
-        long filmId,
-        long hallId
+        UUID filmId,
+        UUID hallId
 ) {
 }

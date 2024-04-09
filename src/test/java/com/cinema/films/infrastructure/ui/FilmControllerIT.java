@@ -3,8 +3,8 @@ package com.cinema.films.infrastructure.ui;
 import com.cinema.BaseIT;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmCategory;
-import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.FilmCreateDto;
+import com.cinema.films.domain.FilmRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -27,7 +27,6 @@ class FilmControllerIT extends BaseIT {
     @Test
     @WithMockUser(authorities = "ADMIN")
     void film_is_created() {
-        var id = 1L;
         var title = "Some title";
         var category = FilmCategory.COMEDY;
         var year = 2023;
@@ -47,7 +46,7 @@ class FilmControllerIT extends BaseIT {
                 .expectStatus()
                 .isCreated()
                 .expectBody()
-                .jsonPath("$.id").isEqualTo(id)
+                .jsonPath("$.id").isNotEmpty()
                 .jsonPath("$.title").isEqualTo(film.title())
                 .jsonPath("$.category").isEqualTo(film.category().name())
                 .jsonPath("$.year").isEqualTo(film.year())

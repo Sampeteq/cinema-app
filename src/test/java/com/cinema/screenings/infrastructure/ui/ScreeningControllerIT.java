@@ -3,7 +3,6 @@ package com.cinema.screenings.infrastructure.ui;
 import com.cinema.BaseIT;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmService;
-import com.cinema.halls.HallFixtures;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallService;
 import com.cinema.screenings.domain.Screening;
@@ -16,6 +15,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import java.time.LocalDate;
 
 import static com.cinema.films.FilmFixtures.createFilmCreateDto;
+import static com.cinema.halls.HallFixtures.createHallCreateDto;
 import static com.cinema.screenings.ScreeningFixtures.SCREENING_DATE;
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
@@ -119,7 +119,7 @@ class ScreeningControllerIT extends BaseIT {
     }
 
     private Hall addHall() {
-        return hallService.createHall(HallFixtures.createHall());
+        return hallService.createHall(createHallCreateDto());
     }
 
     private Screening addScreening(Film film, Hall hall) {

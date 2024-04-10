@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
-import java.util.UUID;
 
 import static com.cinema.halls.HallFixtures.createHall;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,8 +25,7 @@ class HallControllerIT extends BaseIT {
     @Test
     @WithMockUser(authorities = "ADMIN")
     void hall_is_created() {
-        var hall = new Hall(
-                UUID.randomUUID(),
+        var hallCreateDto = new HallCreateDto(
                 List.of(
                         new Seat(1, 1),
                         new Seat(1, 2)
@@ -37,16 +35,16 @@ class HallControllerIT extends BaseIT {
         webTestClient
                 .post()
                 .uri(HALL_ADMIN_ENDPOINT)
-                .bodyValue(hall)
+                .bodyValue(hallCreateDto)
                 .exchange()
                 .expectStatus()
                 .isCreated()
                 .expectBody()
-                .jsonPath("$.id").isEqualTo(hall.getId().toString())
-                .jsonPath("$.seats[0].number").isEqualTo(hall.getSeats().get(0).number())
-                .jsonPath("$.seats[0].rowNumber").isEqualTo(hall.getSeats().get(0).rowNumber())
-                .jsonPath("$.seats[1].number").isEqualTo(hall.getSeats().get(1).number())
-                .jsonPath("$.seats[1].rowNumber").isEqualTo(hall.getSeats().get(1).rowNumber());
+                .jsonPath("$.id").isNotEmpty()
+                .jsonPath("$.seats[0].number").isEqualTo(hallCreateDto.seats().get(0).number())
+                .jsonPath("$.seats[0].rowNumber").isEqualTo(hallCreateDto.seats().get(0).rowNumber())
+                .jsonPath("$.seats[1].number").isEqualTo(hallCreateDto.seats().get(1).number())
+                .jsonPath("$.seats[1].rowNumber").isEqualTo(hallCreateDto.seats().get(1).rowNumber());
     }
 
     @Test

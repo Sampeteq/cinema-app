@@ -1,6 +1,7 @@
 package com.cinema.halls.domain;
 
 import com.cinema.halls.domain.exceptions.HallNotFoundException;
+import com.cinema.halls.infrastructure.ui.HallCreateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,9 +14,9 @@ public class HallService {
 
     private final HallRepository hallRepository;
 
-    public Hall createHall(Hall hall) {
-        log.info("Hall:{}", hall);
-        var addedHall = hallRepository.save(hall);
+    public Hall createHall(HallCreateDto hallCreateDto) {
+        log.info("HallCreateDto:{}", hallCreateDto);
+        var addedHall = hallRepository.save(new Hall(UUID.randomUUID(), hallCreateDto.seats()));
         log.info("Hall added:{}", addedHall);
         return addedHall;
     }

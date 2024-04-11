@@ -25,6 +25,7 @@ public class TicketService {
     private final HallService hallService;
     private final Clock clock;
 
+    @Transactional
     public void addTickets(UUID screeningId) {
         log.info("Screening id:{}", screeningId);
         var screening = screeningService.getScreeningById(screeningId);

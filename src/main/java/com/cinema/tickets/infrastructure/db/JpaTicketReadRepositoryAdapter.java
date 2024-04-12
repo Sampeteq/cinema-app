@@ -1,6 +1,7 @@
 package com.cinema.tickets.infrastructure.db;
 
 import com.cinema.tickets.domain.TicketDto;
+import com.cinema.tickets.domain.TicketUserDto;
 import com.cinema.tickets.domain.TicketReadRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +19,7 @@ public class JpaTicketReadRepositoryAdapter implements TicketReadRepository {
     }
 
     @Override
-    public List<TicketDto> getByUserId(UUID id) {
+    public List<TicketUserDto> getByUserId(UUID id) {
         return jpaTicketReadRepository.getByUserId(id);
     }
 }

@@ -7,5 +7,5 @@ public interface TicketReadRepository {
 
     List<TicketDto> getByScreeningId(UUID id);
 
-    List<TicketDto> getByUserId(UUID id);
+    List<TicketUserDto> getByUserId(UUID id);
 }

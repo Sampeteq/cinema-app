@@ -204,13 +204,9 @@ class TicketControllerIT extends BaseIT {
                 .isOk()
                 .expectBody()
                 .jsonPath("$[*]").value(everyItem(notNullValue()))
-                .jsonPath("$[0].id").isEqualTo(ticket.getId().toString())
-                .jsonPath("$[0].filmTitle").isEqualTo(film.getTitle())
-                .jsonPath("$[0].screeningDate").isEqualTo(screening.getDate().format(ISO_DATE_TIME))
-                .jsonPath("$[0].hallId").isEqualTo(screening.getHallId().toString())
                 .jsonPath("$[0].rowNumber").isEqualTo(ticket.getSeat().rowNumber())
                 .jsonPath("$[0].seatNumber").isEqualTo(ticket.getSeat().number())
-                .jsonPath("$[0].userId").value(Matchers.nullValue());
+                .jsonPath("$[0].free").isEqualTo(true);
     }
 
     private Ticket addTicket(Screening screening) {

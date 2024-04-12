@@ -1,6 +1,7 @@
 package com.cinema.tickets.infrastructure.ui;
 
 import com.cinema.tickets.domain.TicketDto;
+import com.cinema.tickets.domain.TicketUserDto;
 import com.cinema.tickets.domain.TicketService;
 import com.cinema.users.domain.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -47,7 +48,7 @@ class TicketController {
 
     @GetMapping("/tickets/my")
     @SecurityRequirement(name = "basic")
-    List<TicketDto> getAllTicketsByLoggedUser(Principal principal) {
+    List<TicketUserDto> getAllTicketsByLoggedUser(Principal principal) {
         var user = userService.getByMail(principal.getName());
         return ticketService.getAllTicketsByUserId(user.getId());
     }

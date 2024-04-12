@@ -75,7 +75,7 @@ public class TicketService {
         log.info("Ticket cancelled:{}", ticket);
     }
 
-    public List<TicketDto> getAllTicketsByUserId(UUID userId) {
+    public List<TicketUserDto> getAllTicketsByUserId(UUID userId) {
         return ticketReadRepository.getByUserId(userId);
     }
 

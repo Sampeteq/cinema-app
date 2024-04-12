@@ -1,9 +1,9 @@
 package com.cinema.tickets.infrastructure.ui;
 
-import com.cinema.tickets.domain.TicketDto;
-import com.cinema.tickets.domain.TicketUserDto;
-import com.cinema.tickets.domain.TicketService;
-import com.cinema.users.domain.UserService;
+import com.cinema.tickets.application.dto.TicketDto;
+import com.cinema.tickets.application.dto.TicketUserDto;
+import com.cinema.tickets.application.TicketService;
+import com.cinema.users.application.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,8 @@
 package com.cinema.halls.infrastructure.ui;
 
+import com.cinema.halls.application.dto.HallCreateDto;
 import com.cinema.halls.domain.Hall;
-import com.cinema.halls.domain.HallService;
+import com.cinema.halls.application.HallService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

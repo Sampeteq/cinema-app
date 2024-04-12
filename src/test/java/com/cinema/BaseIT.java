@@ -1,7 +1,7 @@
 package com.cinema;
 
 import com.cinema.mail.domain.MailSenderPort;
-import com.cinema.mail.domain.MailService;
+import com.cinema.mail.application.MailService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;

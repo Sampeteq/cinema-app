@@ -2,6 +2,7 @@ package com.cinema.halls.infrastructure.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.halls.HallFixtures;
+import com.cinema.halls.application.dto.HallCreateDto;
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.halls.domain.Seat;

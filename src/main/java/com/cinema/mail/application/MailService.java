@@ -1,5 +1,8 @@
-package com.cinema.mail.domain;
+package com.cinema.mail.application;
 
+import com.cinema.mail.domain.Mail;
+import com.cinema.mail.domain.MailRepository;
+import com.cinema.mail.domain.MailSenderPort;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Clock;

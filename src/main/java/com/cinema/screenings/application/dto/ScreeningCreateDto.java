@@ -1,4 +1,4 @@
-package com.cinema.screenings.domain;
+package com.cinema.screenings.application.dto;
 
 import jakarta.validation.constraints.NotNull;
 

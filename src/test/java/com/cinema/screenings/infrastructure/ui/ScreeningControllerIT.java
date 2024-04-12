@@ -2,11 +2,11 @@ package com.cinema.screenings.infrastructure.ui;
 
 import com.cinema.BaseIT;
 import com.cinema.films.domain.Film;
-import com.cinema.films.domain.FilmService;
+import com.cinema.films.application.FilmService;
 import com.cinema.halls.domain.Hall;
-import com.cinema.halls.domain.HallService;
+import com.cinema.halls.application.HallService;
 import com.cinema.screenings.domain.Screening;
-import com.cinema.screenings.domain.ScreeningCreateDto;
+import com.cinema.screenings.application.dto.ScreeningCreateDto;
 import com.cinema.screenings.domain.ScreeningRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,9 @@
-package com.cinema.users.domain;
+package com.cinema.users.application;
 
-import com.cinema.mail.domain.MailService;
+import com.cinema.mail.application.MailService;
+import com.cinema.users.domain.User;
+import com.cinema.users.domain.UserRepository;
+import com.cinema.users.domain.UserRole;
 import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
 import com.cinema.users.domain.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;

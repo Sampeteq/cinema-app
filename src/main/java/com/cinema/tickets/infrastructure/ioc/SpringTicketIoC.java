@@ -1,11 +1,11 @@
 package com.cinema.tickets.infrastructure.ioc;
 
-import com.cinema.halls.domain.HallService;
-import com.cinema.screenings.domain.ScreeningService;
+import com.cinema.halls.application.HallService;
+import com.cinema.screenings.application.ScreeningService;
 import com.cinema.screenings.infrastructure.db.JpaScreeningMapper;
 import com.cinema.tickets.domain.TicketReadRepository;
 import com.cinema.tickets.domain.TicketRepository;
-import com.cinema.tickets.domain.TicketService;
+import com.cinema.tickets.application.TicketService;
 import com.cinema.tickets.infrastructure.db.JpaTicketMapper;
 import com.cinema.tickets.infrastructure.db.JpaTicketReadRepository;
 import com.cinema.tickets.infrastructure.db.JpaTicketReadRepositoryAdapter;

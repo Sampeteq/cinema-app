@@ -3,7 +3,7 @@ package com.cinema.screenings;
 import com.cinema.films.domain.Film;
 import com.cinema.halls.domain.Hall;
 import com.cinema.screenings.domain.Screening;
-import com.cinema.screenings.domain.ScreeningCreateDto;
+import com.cinema.screenings.application.dto.ScreeningCreateDto;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

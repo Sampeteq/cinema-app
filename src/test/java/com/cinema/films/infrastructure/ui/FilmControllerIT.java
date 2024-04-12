@@ -3,7 +3,7 @@ package com.cinema.films.infrastructure.ui;
 import com.cinema.BaseIT;
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmCategory;
-import com.cinema.films.domain.FilmCreateDto;
+import com.cinema.films.application.dto.FilmCreateDto;
 import com.cinema.films.domain.FilmRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,10 @@
 package com.cinema.tickets.domain;
 
-import com.cinema.halls.domain.HallService;
+import com.cinema.halls.application.HallService;
 import com.cinema.halls.domain.Seat;
-import com.cinema.screenings.domain.ScreeningService;
+import com.cinema.screenings.application.ScreeningService;
 import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
+import com.cinema.tickets.application.TicketService;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;

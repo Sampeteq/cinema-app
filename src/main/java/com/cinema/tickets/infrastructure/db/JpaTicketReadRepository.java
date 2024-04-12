@@ -1,7 +1,7 @@
 package com.cinema.tickets.infrastructure.db;
 
-import com.cinema.tickets.domain.TicketDto;
-import com.cinema.tickets.domain.TicketUserDto;
+import com.cinema.tickets.application.dto.TicketDto;
+import com.cinema.tickets.application.dto.TicketUserDto;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 
@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface JpaTicketReadRepository extends Repository<JpaTicket, UUID> {
 
     @Query("""
-            select new com.cinema.tickets.domain.TicketDto(
+            select new com.cinema.tickets.application.dto.TicketDto(
             t.seat.rowNumber,
             t.seat.number,
             case when t.userId is null then true else false end) from JpaTicket t
@@ -20,7 +20,7 @@ public interface JpaTicketReadRepository extends Repository<JpaTicket, UUID> {
     List<TicketDto> getByScreeningId(UUID id);
 
     @Query("""
-            select new com.cinema.tickets.domain.TicketUserDto(
+            select new com.cinema.tickets.application.dto.TicketUserDto(
             t.id,
             f.title,
             t.screening.date,

@@ -1,6 +1,8 @@
 package com.cinema.users.infrastructure.ui;
 
 import com.cinema.BaseIT;
+import com.cinema.users.application.dto.UserCreateDto;
+import com.cinema.users.application.dto.UserNewPasswordDto;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;

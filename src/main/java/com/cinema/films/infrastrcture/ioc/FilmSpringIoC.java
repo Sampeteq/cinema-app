@@ -1,7 +1,7 @@
 package com.cinema.films.infrastrcture.ioc;
 
 import com.cinema.films.domain.FilmRepository;
-import com.cinema.films.domain.FilmService;
+import com.cinema.films.application.FilmService;
 import com.cinema.films.infrastrcture.db.JpaFilmMapper;
 import com.cinema.films.infrastrcture.db.JpaFilmRepository;
 import com.cinema.films.infrastrcture.db.JpaFilmRepositoryAdapter;

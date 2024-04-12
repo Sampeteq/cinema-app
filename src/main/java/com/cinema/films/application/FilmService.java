@@ -1,5 +1,9 @@
-package com.cinema.films.domain;
+package com.cinema.films.application;
 
+import com.cinema.films.domain.Film;
+import com.cinema.films.domain.FilmCategory;
+import com.cinema.films.application.dto.FilmCreateDto;
+import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.domain.exceptions.FilmNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,8 @@
 package com.cinema.users.infrastructure.ui;
 
-import com.cinema.users.domain.UserService;
+import com.cinema.users.application.dto.UserCreateDto;
+import com.cinema.users.application.dto.UserNewPasswordDto;
+import com.cinema.users.application.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PatchMapping;

@@ -1,4 +1,4 @@
-package com.cinema.tickets.domain;
+package com.cinema.tickets.application.dto;
 
 public record TicketDto(
         int rowNumber,

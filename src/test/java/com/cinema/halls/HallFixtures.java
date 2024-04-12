@@ -2,7 +2,7 @@ package com.cinema.halls;
 
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.Seat;
-import com.cinema.halls.infrastructure.ui.HallCreateDto;
+import com.cinema.halls.application.dto.HallCreateDto;
 
 import java.util.List;
 import java.util.UUID;

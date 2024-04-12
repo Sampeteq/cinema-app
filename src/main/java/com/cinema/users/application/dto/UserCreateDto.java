@@ -1,10 +1,10 @@
-package com.cinema.users.infrastructure.ui;
+package com.cinema.users.application.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-record UserCreateDto(
+public record UserCreateDto(
         @NotBlank
         @Email
         String mail,

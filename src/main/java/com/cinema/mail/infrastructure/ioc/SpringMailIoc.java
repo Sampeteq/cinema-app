@@ -2,7 +2,7 @@ package com.cinema.mail.infrastructure.ioc;
 
 import com.cinema.mail.domain.MailRepository;
 import com.cinema.mail.domain.MailSenderPort;
-import com.cinema.mail.domain.MailService;
+import com.cinema.mail.application.MailService;
 import com.cinema.mail.infrastructure.db.JpaMailRepository;
 import com.cinema.mail.infrastructure.db.JpaMailRepositoryAdapter;
 import com.cinema.mail.infrastructure.smtp.SpringMailSenderPort;

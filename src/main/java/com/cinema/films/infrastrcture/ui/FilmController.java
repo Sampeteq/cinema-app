@@ -2,8 +2,8 @@ package com.cinema.films.infrastrcture.ui;
 
 import com.cinema.films.domain.Film;
 import com.cinema.films.domain.FilmCategory;
-import com.cinema.films.domain.FilmCreateDto;
-import com.cinema.films.domain.FilmService;
+import com.cinema.films.application.dto.FilmCreateDto;
+import com.cinema.films.application.FilmService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

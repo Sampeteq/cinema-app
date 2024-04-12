@@ -1,8 +1,8 @@
 package com.cinema.users.infrastructure.ioc;
 
-import com.cinema.mail.domain.MailService;
+import com.cinema.mail.application.MailService;
 import com.cinema.users.domain.UserRepository;
-import com.cinema.users.domain.UserService;
+import com.cinema.users.application.UserService;
 import com.cinema.users.infrastructure.initializer.UserAdminProperties;
 import com.cinema.users.infrastructure.initializer.UserInitializer;
 import com.cinema.users.infrastructure.db.JpaUserMapper;

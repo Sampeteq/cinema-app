@@ -1,7 +1,7 @@
 package com.cinema.halls.infrastructure.ioc;
 
 import com.cinema.halls.domain.HallRepository;
-import com.cinema.halls.domain.HallService;
+import com.cinema.halls.application.HallService;
 import com.cinema.halls.infrastructure.db.JpaHallMapper;
 import com.cinema.halls.infrastructure.db.JpaHallRepository;
 import com.cinema.halls.infrastructure.db.JpaHallRepositoryAdapter;

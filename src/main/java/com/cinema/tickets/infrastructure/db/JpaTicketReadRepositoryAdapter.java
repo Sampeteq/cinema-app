@@ -1,7 +1,7 @@
 package com.cinema.tickets.infrastructure.db;
 
-import com.cinema.tickets.domain.TicketDto;
-import com.cinema.tickets.domain.TicketUserDto;
+import com.cinema.tickets.application.dto.TicketDto;
+import com.cinema.tickets.application.dto.TicketUserDto;
 import com.cinema.tickets.domain.TicketReadRepository;
 import lombok.RequiredArgsConstructor;
 

@@ -1,9 +1,9 @@
 package com.cinema.screenings.infrastructure.ioc;
 
-import com.cinema.films.domain.FilmService;
-import com.cinema.halls.domain.HallService;
+import com.cinema.films.application.FilmService;
+import com.cinema.halls.application.HallService;
 import com.cinema.screenings.domain.ScreeningRepository;
-import com.cinema.screenings.domain.ScreeningService;
+import com.cinema.screenings.application.ScreeningService;
 import com.cinema.screenings.infrastructure.db.JpaScreeningMapper;
 import com.cinema.screenings.infrastructure.db.JpaScreeningRepository;
 import com.cinema.screenings.infrastructure.db.JpaScreeningRepositoryAdapter;

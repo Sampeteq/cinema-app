@@ -1,4 +1,4 @@
-package com.cinema.halls.infrastructure.ui;
+package com.cinema.halls.application.dto;
 
 import com.cinema.halls.domain.Seat;
 import jakarta.validation.constraints.NotEmpty;

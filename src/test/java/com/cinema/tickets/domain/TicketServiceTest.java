@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class JpaTicketServiceTest {
+class TicketServiceTest {
 
     TicketRepository ticketRepository = mock();
     TicketReadRepository ticketReadRepository = mock();

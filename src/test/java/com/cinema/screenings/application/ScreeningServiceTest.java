@@ -1,8 +1,8 @@
-package com.cinema.screenings.domain;
+package com.cinema.screenings.application;
 
 import com.cinema.films.application.FilmService;
 import com.cinema.halls.application.HallService;
-import com.cinema.screenings.application.ScreeningService;
+import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
 import org.junit.jupiter.api.Test;

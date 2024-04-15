@@ -1,7 +1,7 @@
 package com.cinema.halls.infrastructure.ui;
 
 import com.cinema.halls.application.exceptions.HallNotFoundException;
-import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
+import com.cinema.screenings.application.exceptions.ScreeningsCollisionsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

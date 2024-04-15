@@ -1,7 +1,7 @@
 package com.cinema.screenings.infrastructure.ui;
 
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
-import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
+import com.cinema.screenings.application.exceptions.ScreeningNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

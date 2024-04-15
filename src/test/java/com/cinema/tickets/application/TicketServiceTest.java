@@ -3,7 +3,7 @@ package com.cinema.tickets.application;
 import com.cinema.halls.application.HallService;
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.application.ScreeningService;
-import com.cinema.screenings.domain.exceptions.ScreeningNotFoundException;
+import com.cinema.screenings.application.exceptions.ScreeningNotFoundException;
 import com.cinema.tickets.domain.TicketReadRepository;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;

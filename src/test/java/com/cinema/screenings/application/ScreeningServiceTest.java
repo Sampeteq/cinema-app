@@ -4,7 +4,7 @@ import com.cinema.films.application.FilmService;
 import com.cinema.halls.application.HallService;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
-import com.cinema.screenings.domain.exceptions.ScreeningsCollisionsException;
+import com.cinema.screenings.application.exceptions.ScreeningsCollisionsException;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;

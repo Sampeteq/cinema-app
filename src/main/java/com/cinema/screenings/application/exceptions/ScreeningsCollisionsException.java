@@ -1,4 +1,4 @@
-package com.cinema.screenings.domain.exceptions;
+package com.cinema.screenings.application.exceptions;
 
 public class ScreeningsCollisionsException extends RuntimeException {
 

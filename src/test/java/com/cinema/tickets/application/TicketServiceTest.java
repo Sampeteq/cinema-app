@@ -9,7 +9,7 @@ import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
-import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
+import com.cinema.tickets.application.exceptions.TicketNotFoundException;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;

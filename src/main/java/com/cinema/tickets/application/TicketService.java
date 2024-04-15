@@ -10,7 +10,7 @@ import com.cinema.tickets.domain.TicketReadRepository;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
-import com.cinema.tickets.domain.exceptions.TicketNotFoundException;
+import com.cinema.tickets.application.exceptions.TicketNotFoundException;
 import com.cinema.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

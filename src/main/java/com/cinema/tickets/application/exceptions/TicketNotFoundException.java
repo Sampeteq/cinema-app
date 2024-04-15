@@ -1,4 +1,4 @@
-package com.cinema.tickets.domain.exceptions;
+package com.cinema.tickets.application.exceptions;
 
 public class TicketNotFoundException extends RuntimeException {
 

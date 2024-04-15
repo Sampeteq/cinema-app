@@ -1,4 +1,4 @@
-package com.cinema.users.domain.exceptions;
+package com.cinema.users.application.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
 

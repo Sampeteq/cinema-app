@@ -1,7 +1,7 @@
 package com.cinema.users.infrastructure.ui;
 
-import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
-import com.cinema.users.domain.exceptions.UserNotFoundException;
+import com.cinema.users.application.exceptions.UserMailNotUniqueException;
+import com.cinema.users.application.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

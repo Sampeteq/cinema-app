@@ -6,7 +6,7 @@ import com.cinema.users.application.dto.UserNewPasswordDto;
 import com.cinema.users.domain.User;
 import com.cinema.users.domain.UserRepository;
 import com.cinema.users.domain.UserRole;
-import com.cinema.users.domain.exceptions.UserMailNotUniqueException;
+import com.cinema.users.application.exceptions.UserMailNotUniqueException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

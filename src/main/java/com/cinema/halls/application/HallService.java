@@ -2,7 +2,7 @@ package com.cinema.halls.application;
 
 import com.cinema.halls.domain.Hall;
 import com.cinema.halls.domain.HallRepository;
-import com.cinema.halls.domain.exceptions.HallNotFoundException;
+import com.cinema.halls.application.exceptions.HallNotFoundException;
 import com.cinema.halls.application.dto.HallCreateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

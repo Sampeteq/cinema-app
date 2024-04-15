@@ -1,4 +1,4 @@
-package com.cinema.halls.domain.exceptions;
+package com.cinema.halls.application.exceptions;
 
 public class HallNotFoundException extends RuntimeException {
 

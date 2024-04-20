@@ -4,12 +4,12 @@ import com.cinema.halls.application.HallService;
 import com.cinema.halls.domain.Seat;
 import com.cinema.screenings.application.ScreeningService;
 import com.cinema.screenings.application.exceptions.ScreeningNotFoundException;
+import com.cinema.tickets.application.exceptions.TicketNotFoundException;
 import com.cinema.tickets.domain.TicketReadRepository;
 import com.cinema.tickets.domain.TicketRepository;
 import com.cinema.tickets.domain.exceptions.TicketAlreadyBookedException;
 import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
 import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
-import com.cinema.tickets.application.exceptions.TicketNotFoundException;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
@@ -21,6 +21,8 @@ import java.util.UUID;
 
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
 import static com.cinema.tickets.TicketFixtures.createTicket;
+import static com.cinema.tickets.domain.TicketConstants.MIN_BOOKING_HOURS;
+import static com.cinema.tickets.domain.TicketConstants.MIN_CANCELLATION_HOURS;
 import static com.cinema.users.UserFixtures.createUser;
 import static org.assertj.core.api.Assertions.catchException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,7 +53,7 @@ class TicketServiceTest {
         var ticket = createTicket(screening, seat);
         when(screeningService.getScreeningById(screening.getId())).thenReturn(screening);
         when(ticketRepository.getByScreeningIdAndSeat(screening.getId(), seat)).thenReturn(Optional.of(ticket));
-        setCurrentDate(screening.getDate().plusHours(1));
+        setCurrentDate(screening.getDate().plusHours(MIN_BOOKING_HOURS));
 
         ticketService.bookTickets(screening.getId(), List.of(seat), user);
 
@@ -76,7 +78,7 @@ class TicketServiceTest {
         var seats = List.of(new Seat(1, 1));
         var user = createUser();
         when(screeningService.getScreeningById(screening.getId())).thenReturn(screening);
-        setCurrentDate(screening.getDate().plusMinutes(59));
+        setCurrentDate(screening.getDate().plusHours(MIN_BOOKING_HOURS - 1));
 
         var exception = catchException(() -> ticketService.bookTickets(screening.getId(), seats, user));
 
@@ -90,7 +92,7 @@ class TicketServiceTest {
         var user = createUser();
         var ticket = createTicket(screening, seat, user);
         when(ticketRepository.getByIdAndUserId(ticket.getId(), user.getId())).thenReturn(Optional.of(ticket));
-        setCurrentDate(screening.getDate().plusHours(24));
+        setCurrentDate(screening.getDate().plusHours(MIN_CANCELLATION_HOURS));
 
         ticketService.cancelTicket(ticket.getId(), user);
 
@@ -104,7 +106,7 @@ class TicketServiceTest {
         var user = createUser();
         var ticket = createTicket(screening, seat, user);
         when(ticketRepository.getByIdAndUserId(ticket.getId(), user.getId())).thenReturn(Optional.of(ticket));
-        setCurrentDate(screening.getDate().plusHours(23));
+        setCurrentDate(screening.getDate().plusHours(MIN_CANCELLATION_HOURS - 1));
 
         var exception = catchException(() -> ticketService.cancelTicket(ticket.getId(), user));
 
@@ -118,7 +120,7 @@ class TicketServiceTest {
         var user = createUser();
         when(screeningService.getScreeningById(screening.getId())).thenReturn(screening);
         when(ticketRepository.getByScreeningIdAndSeat(screening.getId(), seat)).thenReturn(Optional.empty());
-        setCurrentDate(screening.getDate().plusHours(24));
+        setCurrentDate(screening.getDate().plusHours(MIN_BOOKING_HOURS));
 
         var exception = catchException(() -> ticketService.bookTickets(screening.getId(), List.of(seat), user));
 
@@ -133,7 +135,7 @@ class TicketServiceTest {
         var ticket = createTicket(screening, seat, user);
         when(screeningService.getScreeningById(screening.getId())).thenReturn(screening);
         when(ticketRepository.getByScreeningIdAndSeat(screening.getId(), seat)).thenReturn(Optional.of(ticket));
-        setCurrentDate(screening.getDate().plusHours(24));
+        setCurrentDate(screening.getDate().plusHours(MIN_BOOKING_HOURS));
 
         var exception = catchException(() -> ticketService.bookTickets(screening.getId(), List.of(seat), user));
 

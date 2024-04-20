@@ -6,6 +6,8 @@ import com.cinema.screenings.application.exceptions.ScreeningsCollisionsExceptio
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -42,20 +44,11 @@ class ScreeningServiceTest {
             clock
     );
 
-    @Test
-    void screening_and_current_date_difference_is_min_7_days() {
+    @ParameterizedTest
+    @ValueSource(ints = {MIN_DAYS_BEFORE_SCREENING - 1, MAX_DAYS_BEFORE_SCREENING + 1})
+    void screening_date_cannot_be_out_of_the_range(int daysNumber) {
         var screeningCreateDto = createScreeningCreateDto();
-        setCurrentDate(screeningCreateDto.date().minusDays(MIN_DAYS_BEFORE_SCREENING - 1));
-
-        var exception = catchException(() -> screeningService.createScreening(screeningCreateDto));
-
-        assertEquals(ScreeningDateOutOfRangeException.class, exception.getClass());
-    }
-
-    @Test
-    void screening_and_current_date_difference_is_max_21_days() {
-        var screeningCreateDto = createScreeningCreateDto();
-        setCurrentDate(screeningCreateDto.date().minusDays(MAX_DAYS_BEFORE_SCREENING + 1));
+        setCurrentDate(screeningCreateDto.date().minusDays(daysNumber));
 
         var exception = catchException(() -> screeningService.createScreening(screeningCreateDto));
 

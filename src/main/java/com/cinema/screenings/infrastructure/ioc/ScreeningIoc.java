@@ -2,6 +2,7 @@ package com.cinema.screenings.infrastructure.ioc;
 
 import com.cinema.films.application.FilmService;
 import com.cinema.halls.application.HallService;
+import com.cinema.screenings.domain.ScreeningCollisionsService;
 import com.cinema.screenings.domain.ScreeningDatePolicy;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.application.ScreeningService;
@@ -21,16 +22,29 @@ class ScreeningIoc {
     ScreeningService screeningService(
             ScreeningRepository screeningRepository,
             ScreeningDatePolicy screeningDatePolicy,
+            ScreeningCollisionsService screeningCollisionsService,
             FilmService filmService,
             HallService hallService,
             Clock clock
     ) {
-        return new ScreeningService(screeningRepository, screeningDatePolicy, hallService, filmService, clock);
+        return new ScreeningService(
+                screeningRepository,
+                screeningDatePolicy,
+                screeningCollisionsService,
+                hallService,
+                filmService,
+                clock
+        );
     }
 
     @Bean
     ScreeningDatePolicy screeningDatePolicy() {
         return new ScreeningDatePolicy();
+    }
+
+    @Bean
+    ScreeningCollisionsService screeningCollisionsService(ScreeningRepository screeningRepository) {
+        return new ScreeningCollisionsService(screeningRepository);
     }
 
     @Bean

@@ -4,8 +4,8 @@ import com.cinema.films.application.FilmService;
 import com.cinema.halls.application.HallService;
 import com.cinema.screenings.application.dto.ScreeningCreateDto;
 import com.cinema.screenings.application.exceptions.ScreeningNotFoundException;
-import com.cinema.screenings.application.exceptions.ScreeningsCollisionsException;
 import com.cinema.screenings.domain.Screening;
+import com.cinema.screenings.domain.ScreeningCollisionsService;
 import com.cinema.screenings.domain.ScreeningDatePolicy;
 import com.cinema.screenings.domain.ScreeningRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +22,7 @@ import java.util.UUID;
 public class ScreeningService {
     private final ScreeningRepository screeningRepository;
     private final ScreeningDatePolicy screeningDatePolicy;
+    private final ScreeningCollisionsService screeningCollisionsService;
     private final HallService hallService;
     private final FilmService filmService;
     private final Clock clock;
@@ -33,14 +34,7 @@ public class ScreeningService {
         var hall = hallService.getHallById(screeningCreateDto.hallId());
         var film = filmService.getFilmById(screeningCreateDto.filmId());
         var screeningEndDate = screeningCreateDto.date().plusMinutes(film.getDurationInMinutes());
-        var collisions = screeningRepository.getCollisions(
-                screeningCreateDto.date(),
-                screeningEndDate,
-                screeningCreateDto.hallId()
-        );
-        if (!collisions.isEmpty()) {
-            throw new ScreeningsCollisionsException();
-        }
+        screeningCollisionsService.validate(screeningCreateDto.date(), screeningEndDate, hall.getId());
         var screening = new Screening(
                 UUID.randomUUID(),
                 screeningCreateDto.date(),

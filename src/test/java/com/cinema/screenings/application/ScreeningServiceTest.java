@@ -3,11 +3,9 @@ package com.cinema.screenings.application;
 import com.cinema.films.application.FilmService;
 import com.cinema.halls.application.HallService;
 import com.cinema.screenings.application.exceptions.ScreeningsCollisionsException;
+import com.cinema.screenings.domain.ScreeningDatePolicy;
 import com.cinema.screenings.domain.ScreeningRepository;
-import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -19,8 +17,6 @@ import static com.cinema.films.FilmFixtures.createFilm;
 import static com.cinema.halls.HallFixtures.createHall;
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
 import static com.cinema.screenings.ScreeningFixtures.createScreeningCreateDto;
-import static com.cinema.screenings.domain.ScreeningConstants.MAX_DAYS_BEFORE_SCREENING;
-import static com.cinema.screenings.domain.ScreeningConstants.MIN_DAYS_BEFORE_SCREENING;
 import static org.assertj.core.api.Assertions.catchException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,23 +33,15 @@ class ScreeningServiceTest {
 
     Clock clock = mock();
 
+    ScreeningDatePolicy screeningDatePolicy = mock();
+
     ScreeningService screeningService = new ScreeningService(
             screeningRepository,
+            screeningDatePolicy,
             hallService,
             filmService,
             clock
     );
-
-    @ParameterizedTest
-    @ValueSource(ints = {MIN_DAYS_BEFORE_SCREENING - 1, MAX_DAYS_BEFORE_SCREENING + 1})
-    void screening_date_cannot_be_out_of_the_range(int daysNumber) {
-        var screeningCreateDto = createScreeningCreateDto();
-        setCurrentDate(screeningCreateDto.date().minusDays(daysNumber));
-
-        var exception = catchException(() -> screeningService.createScreening(screeningCreateDto));
-
-        assertEquals(ScreeningDateOutOfRangeException.class, exception.getClass());
-    }
 
     @Test
     void screenings_collision_cannot_exists() {

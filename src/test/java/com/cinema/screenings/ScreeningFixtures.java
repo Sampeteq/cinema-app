@@ -2,17 +2,18 @@ package com.cinema.screenings;
 
 import com.cinema.films.domain.Film;
 import com.cinema.halls.domain.Hall;
-import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.application.dto.ScreeningCreateDto;
+import com.cinema.screenings.domain.Screening;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.cinema.ClockFixtures.CURRENT_DATE;
+import static com.cinema.screenings.domain.ScreeningConstants.MIN_DAYS_BEFORE_SCREENING;
 
 public class ScreeningFixtures {
 
-    public static final LocalDateTime SCREENING_DATE = CURRENT_DATE.plusDays(7);
+    public static final LocalDateTime SCREENING_DATE = CURRENT_DATE.plusDays(MIN_DAYS_BEFORE_SCREENING);
 
     public static final LocalDateTime SCREENING_END_DATE = SCREENING_DATE.plusHours(2);
 

@@ -2,9 +2,9 @@ package com.cinema.screenings.application;
 
 import com.cinema.films.application.FilmService;
 import com.cinema.halls.application.HallService;
+import com.cinema.screenings.application.exceptions.ScreeningsCollisionsException;
 import com.cinema.screenings.domain.ScreeningRepository;
 import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
-import com.cinema.screenings.application.exceptions.ScreeningsCollisionsException;
 import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
@@ -17,6 +17,8 @@ import static com.cinema.films.FilmFixtures.createFilm;
 import static com.cinema.halls.HallFixtures.createHall;
 import static com.cinema.screenings.ScreeningFixtures.createScreening;
 import static com.cinema.screenings.ScreeningFixtures.createScreeningCreateDto;
+import static com.cinema.screenings.domain.ScreeningConstants.MAX_DAYS_BEFORE_SCREENING;
+import static com.cinema.screenings.domain.ScreeningConstants.MIN_DAYS_BEFORE_SCREENING;
 import static org.assertj.core.api.Assertions.catchException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -43,7 +45,7 @@ class ScreeningServiceTest {
     @Test
     void screening_and_current_date_difference_is_min_7_days() {
         var screeningCreateDto = createScreeningCreateDto();
-        setCurrentDate(screeningCreateDto.date().minusDays(6));
+        setCurrentDate(screeningCreateDto.date().minusDays(MIN_DAYS_BEFORE_SCREENING - 1));
 
         var exception = catchException(() -> screeningService.createScreening(screeningCreateDto));
 
@@ -53,7 +55,7 @@ class ScreeningServiceTest {
     @Test
     void screening_and_current_date_difference_is_max_21_days() {
         var screeningCreateDto = createScreeningCreateDto();
-        setCurrentDate(screeningCreateDto.date().minusDays(22));
+        setCurrentDate(screeningCreateDto.date().minusDays(MAX_DAYS_BEFORE_SCREENING + 1));
 
         var exception = catchException(() -> screeningService.createScreening(screeningCreateDto));
 

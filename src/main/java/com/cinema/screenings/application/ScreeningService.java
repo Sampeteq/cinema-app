@@ -2,12 +2,12 @@ package com.cinema.screenings.application;
 
 import com.cinema.films.application.FilmService;
 import com.cinema.halls.application.HallService;
-import com.cinema.screenings.domain.Screening;
 import com.cinema.screenings.application.dto.ScreeningCreateDto;
-import com.cinema.screenings.domain.ScreeningRepository;
-import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import com.cinema.screenings.application.exceptions.ScreeningNotFoundException;
 import com.cinema.screenings.application.exceptions.ScreeningsCollisionsException;
+import com.cinema.screenings.domain.Screening;
+import com.cinema.screenings.domain.ScreeningRepository;
+import com.cinema.screenings.domain.exceptions.ScreeningDateOutOfRangeException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +18,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+
+import static com.cinema.screenings.domain.ScreeningConstants.MAX_DAYS_BEFORE_SCREENING;
+import static com.cinema.screenings.domain.ScreeningConstants.MIN_DAYS_BEFORE_SCREENING;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -35,7 +38,7 @@ public class ScreeningService {
                 .between(LocalDateTime.now(clock), screeningCreateDto.date())
                 .abs()
                 .toDays();
-        if (daysDifference < 7 || daysDifference > 21) {
+        if (daysDifference < MIN_DAYS_BEFORE_SCREENING || daysDifference > MAX_DAYS_BEFORE_SCREENING) {
             throw new ScreeningDateOutOfRangeException();
         }
         var hall = hallService.getHallById(screeningCreateDto.hallId());

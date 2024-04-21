@@ -1,4 +1,4 @@
-package com.cinema.screenings.infrastructure.ioc;
+package com.cinema.screenings.infrastructure;
 
 import com.cinema.films.application.FilmService;
 import com.cinema.halls.application.HallService;

@@ -1,4 +1,4 @@
-package com.cinema.films.infrastrcture.ioc;
+package com.cinema.films.infrastrcture;
 
 import com.cinema.films.domain.FilmRepository;
 import com.cinema.films.application.FilmService;

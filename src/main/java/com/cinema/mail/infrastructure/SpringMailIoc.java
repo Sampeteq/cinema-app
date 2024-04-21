@@ -1,4 +1,4 @@
-package com.cinema.mail.infrastructure.ioc;
+package com.cinema.mail.infrastructure;
 
 import com.cinema.mail.domain.MailRepository;
 import com.cinema.mail.domain.MailSenderPort;

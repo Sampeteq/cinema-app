@@ -1,4 +1,4 @@
-package com.cinema.users.infrastructure.ioc;
+package com.cinema.users.infrastructure;
 
 import com.cinema.mail.application.MailService;
 import com.cinema.users.domain.UserRepository;

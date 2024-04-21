@@ -1,4 +1,4 @@
-package com.cinema.halls.infrastructure.ioc;
+package com.cinema.halls.infrastructure;
 
 import com.cinema.halls.domain.HallRepository;
 import com.cinema.halls.application.HallService;

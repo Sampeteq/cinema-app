@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public record TicketBookDto(
+        @NotNull
         UUID screeningId,
         @NotNull
         List<Seat> seats

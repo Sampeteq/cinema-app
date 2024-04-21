@@ -9,8 +9,6 @@ import com.cinema.tickets.application.exceptions.TicketNotFoundException;
 import com.cinema.tickets.domain.Ticket;
 import com.cinema.tickets.domain.TicketReadRepository;
 import com.cinema.tickets.domain.TicketRepository;
-import com.cinema.tickets.domain.exceptions.TicketBookTooLateException;
-import com.cinema.tickets.domain.exceptions.TicketCancelTooLateException;
 import com.cinema.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
-
-import static com.cinema.tickets.domain.TicketConstants.MIN_BOOKING_HOURS;
-import static com.cinema.tickets.domain.TicketConstants.MIN_CANCELLATION_HOURS;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -49,18 +44,13 @@ public class TicketService {
     public void bookTickets(UUID screeningId, List<Seat> seats, User user) {
         log.info("Screening id:{}", screeningId);
         log.info("Seats ids:{}", seats);
-        var screening = screeningService.getScreeningById(screeningId);
-        log.info("Found screening:{}", screening);
-        if (screening.hoursLeftBeforeStart(clock) < MIN_BOOKING_HOURS) {
-            throw new TicketBookTooLateException();
-        }
         seats.forEach(
                 seat -> {
                     var ticket = ticketRepository
                             .getByScreeningIdAndSeat(screeningId, seat)
                             .orElseThrow(TicketNotFoundException::new);
                     log.info("Found ticket: {}", ticket);
-                    ticket.assignUser(user.getId());
+                    ticket.book(clock, user.getId());
                     ticketRepository.save(ticket);
                     log.info("Booked ticket:{}", ticket);
                 }
@@ -74,11 +64,7 @@ public class TicketService {
                 .getByIdAndUserId(ticketId, user.getId())
                 .orElseThrow(TicketNotFoundException::new);
         log.info("Found ticket:{}", ticket);
-        var hoursLeftBeforeStart = ticket.getScreening().hoursLeftBeforeStart(clock);
-        if (hoursLeftBeforeStart < MIN_CANCELLATION_HOURS) {
-            throw new TicketCancelTooLateException();
-        }
-        ticket.removeUser();
+        ticket.cancel(clock);
         ticketRepository.save(ticket);
         log.info("Ticket cancelled:{}", ticket);
     }

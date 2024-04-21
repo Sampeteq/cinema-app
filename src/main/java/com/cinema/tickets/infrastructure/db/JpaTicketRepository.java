@@ -11,6 +11,7 @@ public interface JpaTicketRepository extends JpaRepository<JpaTicket, UUID> {
 
     @Query("""
                 from JpaTicket ticket
+                left join fetch ticket.screening
                 where ticket.screening.id = :id and ticket.seat = :seat
             """)
     Optional<JpaTicket> getByScreeningIdAndSeat(UUID id, JpaSeat seat);

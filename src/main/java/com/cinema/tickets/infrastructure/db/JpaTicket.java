@@ -4,9 +4,6 @@ import com.cinema.halls.infrastructure.db.JpaSeat;
 import com.cinema.screenings.infrastructure.db.JpaScreening;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -14,7 +11,6 @@ import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.util.UUID;
@@ -28,7 +24,7 @@ import java.util.UUID;
 public class JpaTicket {
     @Id
     private UUID id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private JpaScreening screening;
     @Embedded
     private JpaSeat seat;
